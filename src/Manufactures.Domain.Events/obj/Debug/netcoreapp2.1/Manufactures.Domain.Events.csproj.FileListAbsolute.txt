@@ -1,0 +1,12 @@
+D:\DL\id.co.danliris-garment-web\src\Manufactures.Domain.Events\bin\Debug\netcoreapp2.1\Manufactures.Domain.Events.deps.json
+D:\DL\id.co.danliris-garment-web\src\Manufactures.Domain.Events\bin\Debug\netcoreapp2.1\Manufactures.Domain.Events.dll
+D:\DL\id.co.danliris-garment-web\src\Manufactures.Domain.Events\bin\Debug\netcoreapp2.1\Manufactures.Domain.Events.pdb
+D:\DL\id.co.danliris-garment-web\src\Manufactures.Domain.Events\bin\Debug\netcoreapp2.1\Infrastructure.Domain.Events.dll
+D:\DL\id.co.danliris-garment-web\src\Manufactures.Domain.Events\bin\Debug\netcoreapp2.1\Infrastructure.Domain.Events.pdb
+D:\DL\id.co.danliris-garment-web\src\Manufactures.Domain.Events\obj\Debug\netcoreapp2.1\Manufactures.Domain.Events.csprojAssemblyReference.cache
+D:\DL\id.co.danliris-garment-web\src\Manufactures.Domain.Events\obj\Debug\netcoreapp2.1\Manufactures.Domain.Events.csproj.CoreCompileInputs.cache
+D:\DL\id.co.danliris-garment-web\src\Manufactures.Domain.Events\obj\Debug\netcoreapp2.1\Manufactures.Domain.Events.AssemblyInfoInputs.cache
+D:\DL\id.co.danliris-garment-web\src\Manufactures.Domain.Events\obj\Debug\netcoreapp2.1\Manufactures.Domain.Events.AssemblyInfo.cs
+D:\DL\id.co.danliris-garment-web\src\Manufactures.Domain.Events\obj\Debug\netcoreapp2.1\Manufactures.Domain.Events.csproj.CopyComplete
+D:\DL\id.co.danliris-garment-web\src\Manufactures.Domain.Events\obj\Debug\netcoreapp2.1\Manufactures.Domain.Events.dll
+D:\DL\id.co.danliris-garment-web\src\Manufactures.Domain.Events\obj\Debug\netcoreapp2.1\Manufactures.Domain.Events.pdb
