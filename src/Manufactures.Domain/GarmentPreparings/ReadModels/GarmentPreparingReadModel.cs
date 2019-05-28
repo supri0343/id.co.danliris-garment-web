@@ -1,0 +1,24 @@
+﻿using Infrastructure.Domain.ReadModels;
+using System;
+
+namespace Manufactures.Domain.GarmentPreparings.ReadModels
+{
+    public class GarmentPreparingReadModel : ReadModelBase
+    {
+        public GarmentPreparingReadModel(Guid identity) : base(identity)
+        {
+
+        }
+
+        public int UENId {get; internal set;}
+        public string UENNo { get; internal set; }
+        public int UnitId { get; internal set; }
+        //public string UnitCode { get; internal set; }
+        //public string UnitName { get; internal set; }
+        public DateTimeOffset ProcessDate { get; internal set; }
+        public string RONo { get; internal set; }
+        public string Article { get; internal set; }
+        public bool IsCuttingIn { get; internal set; }
+
+    }
+}

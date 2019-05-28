@@ -1,0 +1,46 @@
+﻿using Manufactures.Domain.GarmentPreparings;
+using Manufactures.Domain.GarmentPreparings.ValueObjects;
+using System;
+using System.Collections.Generic;
+
+namespace Manufactures.Dtos
+{
+    public class GarmentPreparingDto
+    {
+        public GarmentPreparingDto()
+        {
+            Items = new List<GarmentPreparingItemDto>();
+        }
+
+        public GarmentPreparingDto(GarmentPreparing garmentPreparing)
+        {
+            Id = garmentPreparing.Identity;
+
+            LastModifiedDate = garmentPreparing.AuditTrail.ModifiedDate ?? garmentPreparing.AuditTrail.CreatedDate;
+            LastModifiedBy = garmentPreparing.AuditTrail.ModifiedBy ?? garmentPreparing.AuditTrail.CreatedBy;
+
+            UENId = garmentPreparing.UENId;
+            UENNo = garmentPreparing.UENNo;
+            UnitId = new UnitDepartment(garmentPreparing.UnitId.Value, "", "");
+            ProcessDate = garmentPreparing.ProcessDate;
+            RONo = garmentPreparing.RONo;
+            Article = garmentPreparing.Article;
+            IsCuttingIn = garmentPreparing.IsCuttingIn;
+
+        }
+
+        public Guid Id { get; set; }
+
+        public string LastModifiedBy { get; set; }
+
+        public DateTimeOffset LastModifiedDate { get; set; }
+        public int UENId { get; set; }
+        public string UENNo { get; set; }
+        public UnitDepartment UnitId { get; set; }
+        public DateTimeOffset ProcessDate { get; set; }
+        public string RONo { get; set; }
+        public string Article { get; set; }
+        public bool IsCuttingIn { get; set; }
+        public List<GarmentPreparingItemDto> Items { get; set; }
+    }
+}
