@@ -39,7 +39,7 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
             {
                 garmentPreparing = new GarmentPreparing(Guid.NewGuid(), request.UENId, request.UENNo, request.UnitId, request.ProcessDate, request.RONo,
                         request.Article, request.IsCuttingIn);
-                request.Items.Select(x => new GarmentPreparingItem(Guid.NewGuid(), x.PreparingId, x.UENItemId, x.ProductId, x.DesignColor, x.Quantity, x.UomId, x.FabricType, x.RemainingQuantity, x.BasicPrice, garmentPreparing.Identity)).ToList()
+                request.Items.Select(x => new GarmentPreparingItem(Guid.NewGuid(), x.UENItemId, x.Product, x.DesignColor, x.Quantity, x.Uom, x.FabricType, x.RemainingQuantity, x.BasicPrice, garmentPreparing.Identity)).ToList()
                     .ForEach(async x => await _garmentPreparingItemRepository.Update(x));
             }
 

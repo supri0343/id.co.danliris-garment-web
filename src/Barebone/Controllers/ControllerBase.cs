@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Barebone.Controllers
 {
@@ -50,8 +51,8 @@ namespace Barebone.Controllers
         protected string GetTokenAsync()
         {
 
-            var response = _http.PostAsync(MasterDataSettings.TokenEndpoint,
-                new StringContent(JsonConvert.SerializeObject(new { username = MasterDataSettings.Username, password = MasterDataSettings.Password }), Encoding.UTF8, "application/json")).Result;
+            var response = _http.PostAsync(PurchasingDataSettings.TokenEndpoint,
+                new StringContent(JsonConvert.SerializeObject(new { username = PurchasingDataSettings.Username, password = PurchasingDataSettings.Password }), Encoding.UTF8, "application/json")).Result;
             TokenResult tokenResult = new TokenResult();
             if (response.IsSuccessStatusCode)
             {
@@ -168,7 +169,7 @@ namespace Barebone.Controllers
 
         protected UnitResult GetUnitDepartments(string keyword = null)
         {
-            var masterUnitUri = MasterDataSettings.Endpoint + $"master/units?size={int.MaxValue}" + "&filter={'DivisionName.toUpper()': 'SPINNING'}" + $"&keyword={keyword}";
+            var masterUnitUri = MasterDataSettings.Endpoint + $"master/units?size={int.MaxValue}" + "&filter={}" + $"&keyword={keyword}";
             //var masterUnitUri = $"https://com-danliris-service-core-dev.azurewebsites.net/v1/master/units/simple";
             var unitResponse = _http.GetAsync(masterUnitUri).Result;
 
@@ -238,6 +239,68 @@ namespace Barebone.Controllers
             }
             return uomResult;
         }
+
+        protected async Task<string> PutGarmentUnitExpenditureNoteCreate(int id)
+        {
+            var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-unit-expenditure-notes/isPreparingTrue/{id}";
+            var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, Token, new StringContent(JsonConvert.SerializeObject(new { username = PurchasingDataSettings.Username, password = PurchasingDataSettings.Password }), Encoding.UTF8, "application/json"));
+
+            //TokenResult tokenResult = new TokenResult();
+            //if (garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().IsSuccessStatusCode)
+            //{
+            //    return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
+            //}
+            return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
+        }
+
+        protected async Task<string> PutGarmentUnitExpenditureNoteDelete(int id)
+        {
+            var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-unit-expenditure-notes/isPreparingFalse/{id}";
+            var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, Token, new StringContent(JsonConvert.SerializeObject(new { username = PurchasingDataSettings.Username, password = PurchasingDataSettings.Password }), Encoding.UTF8, "application/json"));
+
+            //TokenResult tokenResult = new TokenResult();
+            //if (garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().IsSuccessStatusCode)
+            //{
+            //    tokenResult = JsonConvert.DeserializeObject<TokenResult>(await garmentUnitExpenditureNoteResponse.Content.ReadAsStringAsync());
+
+            //}
+            return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
+        }
+
+        protected ProductResult GetGarmentProducts(string keyword = null)
+        {
+            var masterProductUri = MasterDataSettings.Endpoint + $"master/garmentProducts?size={int.MaxValue}&keyword={keyword}";
+            //var masterUnitUri = $"https://com-danliris-service-core-dev.azurewebsites.net/v1/master/products/simple";
+            var productResponse = _http.GetAsync(masterProductUri).Result;
+
+            var productResult = new ProductResult();
+            if (productResponse.IsSuccessStatusCode)
+            {
+                productResult = JsonConvert.DeserializeObject<ProductResult>(productResponse.Content.ReadAsStringAsync().Result);
+            }
+            else
+            {
+                GetProducts(keyword);
+            }
+            return productResult;
+        }
+
+        protected SingleProductResult GetGarmentProduct(int id, string token)
+        {
+            var masterProductUri = MasterDataSettings.Endpoint + $"master/garmentProducts/{id}";
+            var productResponse = _http.GetAsync(masterProductUri).Result;
+
+            if (productResponse.IsSuccessStatusCode)
+            {
+                SingleProductResult productResult = JsonConvert.DeserializeObject<SingleProductResult>(productResponse.Content.ReadAsStringAsync().Result);
+                return productResult;
+            }
+            else
+            {
+                return new SingleProductResult();
+            }
+        }
+
         protected void VerifyUser()
         {
             WorkContext.UserName = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;

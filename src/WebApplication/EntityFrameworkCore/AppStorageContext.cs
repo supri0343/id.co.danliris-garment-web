@@ -70,6 +70,8 @@ namespace DanLiris.Admin.Web
                 added.CreatedBy = currentUser;
                 added.CreatedDate = now;
                 added.Deleted = false;
+                added.ModifiedBy = currentUser;
+                added.ModifiedDate = now;
             }
 
             foreach (var modified in modifiedAuditedEntities)

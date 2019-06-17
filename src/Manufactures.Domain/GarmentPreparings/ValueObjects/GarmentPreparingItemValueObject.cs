@@ -12,15 +12,14 @@ namespace Manufactures.Domain.GarmentPreparings.ValueObjects
         }
 
 
-        public GarmentPreparingItemValueObject(Guid id, int preparingId, int uenItemId, ProductId productId, string designColor, double quantity, UomId uomId, string fabricType, double remainingQuantity, double basicPrice, Guid garmentPreparingId)
+        public GarmentPreparingItemValueObject(Guid id, int uenItemId, ProductId product, string designColor, double quantity, UomId uom, string fabricType, double remainingQuantity, double basicPrice, Guid garmentPreparingId)
         {
             Identity = id;
-            PreparingId = preparingId;
             UENItemId = uenItemId;
-            ProductId = productId;
+            Product = product;
             DesignColor = designColor;
             Quantity = quantity;
-            UomId = uomId;
+            Uom = uom;
             FabricType = fabricType;
             RemainingQuantity = remainingQuantity;
             BasicPrice = basicPrice;
@@ -28,12 +27,11 @@ namespace Manufactures.Domain.GarmentPreparings.ValueObjects
         }
 
         public Guid Identity { get; set; }
-        public int PreparingId { get; set; }
         public int UENItemId { get; set; }
-        public ProductId ProductId { get; set; }
+        public ProductId Product { get; set; }
         public string DesignColor { get; set; }
         public double Quantity { get; set; }
-        public UomId UomId { get; set; }
+        public UomId Uom { get; set; }
         public string FabricType { get; set; }
         public double RemainingQuantity { get; set; }
         public double BasicPrice { get; set; }

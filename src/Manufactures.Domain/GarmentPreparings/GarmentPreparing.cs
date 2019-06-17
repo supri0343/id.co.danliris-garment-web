@@ -23,7 +23,7 @@ namespace Manufactures.Domain.GarmentPreparings
 
         public GarmentPreparing(Guid identity, int uenId, string uenNo, UnitDepartmentId unitId, DateTimeOffset processDate, string roNo, string article, bool isCuttingIn) : base(identity)
         {
-            Validator.ThrowIfNull(() => uenId);
+            Validator.ThrowIfNullOrEmpty(() => uenNo);
             this.MarkTransient();
 
             Identity = identity;

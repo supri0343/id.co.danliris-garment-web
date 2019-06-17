@@ -37,5 +37,16 @@ namespace Infrastructure.External.DanLirisClient.Microservice.HttpClientService
         {
             return await _client.PostAsync(url, content);
         }
+
+        public async Task<HttpResponseMessage> PutAsync(string url, string token, HttpContent content)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            return await _client.PutAsync(url, content);
+        }
+
+        public async Task<HttpResponseMessage> PutAsync(string url, HttpContent content)
+        {
+            return await _client.PutAsync(url, content);
+        }
     }
 }

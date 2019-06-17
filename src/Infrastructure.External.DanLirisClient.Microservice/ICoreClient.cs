@@ -10,5 +10,6 @@ namespace Infrastructure.External.DanLirisClient.Microservice
         //void SetMachineSpinning();
         void SetMachineType();
         void SetUoms();
+        void SetGarmentProducts();
     }
 }
