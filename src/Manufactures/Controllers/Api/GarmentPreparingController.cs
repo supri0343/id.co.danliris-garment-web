@@ -34,7 +34,7 @@ namespace Manufactures.Controllers.Api
         [HttpGet]
         public async Task<IActionResult> Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
         {
-
+            VerifyUser();
             var query = _garmentPreparingRepository.Read(order, select, filter);
             int totalRows = query.Count();
             var garmentPreparingDto = _garmentPreparingRepository.Find(query).Select(o => new GarmentPreparingDto(o)).ToArray();
@@ -56,18 +56,18 @@ namespace Manufactures.Controllers.Api
 
                 Parallel.ForEach(itemDto.Items, orderItem =>
                 {
-                    var selectedProduct = GetProduct(orderItem.ProductId.Id, Token);
-                    var selectedUom = GetUom(orderItem.UomId.Id, Token);
+                    var selectedProduct = GetGarmentProduct(orderItem.Product.Id, Token);
+                    var selectedUom = GetUom(orderItem.Uom.Id, Token);
 
                     if(selectedProduct != null && selectedProduct.data != null)
                     {
-                        orderItem.ProductId.Name = selectedProduct.data.Name;
-                        orderItem.ProductId.Code = selectedProduct.data.Code;
+                        orderItem.Product.Name = selectedProduct.data.Name;
+                        orderItem.Product.Code = selectedProduct.data.Code;
                     }
 
                     if (selectedUom != null && selectedUom.data != null)
                     {
-                        orderItem.UomId.Unit = selectedUom.data.Unit;
+                        orderItem.Uom.Unit = selectedUom.data.Unit;
                     }
                 });
 
@@ -76,7 +76,7 @@ namespace Manufactures.Controllers.Api
 
             if (!string.IsNullOrEmpty(keyword))
             {
-                garmentPreparingItemDtoArray = garmentPreparingItemDto.Where(x => x.ProductId.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToArray();
+                garmentPreparingItemDtoArray = garmentPreparingItemDto.Where(x => x.Product.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToArray();
                 List<GarmentPreparingDto> ListTemp = new List<GarmentPreparingDto>();
                 foreach(var a in garmentPreparingItemDtoArray)
                 {
@@ -98,7 +98,7 @@ namespace Manufactures.Controllers.Api
                 var i = 0;
                 foreach(var data in ListTemp)
                 {
-                    foreach(var item in garmentPreparingDto)
+                    foreach(var item in garmentPreparingDtoList)
                     {
                         if(data.Id == item.Id)
                         {
@@ -110,23 +110,166 @@ namespace Manufactures.Controllers.Api
                         garmentPreparingDtoList.Add(data);
                     }
                 }
-            }
+                var garmentPreparingDtoListArray = garmentPreparingDtoList.ToArray();
+                if (order != "{}")
+                {
+                    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                    garmentPreparingDtoListArray = QueryHelper<GarmentPreparingDto>.Order(garmentPreparingDtoList.AsQueryable(), OrderDictionary).ToArray();
+                }
+                else
+                {
+                    garmentPreparingDtoListArray = garmentPreparingDtoList.OrderByDescending(x => x.LastModifiedDate).ToArray();
+                }
 
-            if (order != "{}")
+                garmentPreparingDtoListArray = garmentPreparingDtoListArray.Take(size).Skip((page - 1) * size).ToArray();
+
+                await Task.Yield();
+                return Ok(garmentPreparingDtoListArray, info: new
+                {
+                    page,
+                    size,
+                    count = totalRows
+                });
+            } else
             {
-                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                garmentPreparingDto = QueryHelper<GarmentPreparingDto>.Order(garmentPreparingDto.AsQueryable(), OrderDictionary).ToArray();
+                if (order != "{}")
+                {
+                    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                    garmentPreparingDto = QueryHelper<GarmentPreparingDto>.Order(garmentPreparingDto.AsQueryable(), OrderDictionary).ToArray();
+                }
+                else
+                {
+                    garmentPreparingDto = garmentPreparingDto.OrderByDescending(x => x.LastModifiedDate).ToArray();
+                }
+
+                garmentPreparingDto = garmentPreparingDto.Take(size).Skip((page - 1) * size).ToArray();
+
+                await Task.Yield();
+                return Ok(garmentPreparingDto, info: new
+                {
+                    page,
+                    size,
+                    count = totalRows
+                });
             }
-
-            garmentPreparingDto = garmentPreparingDto.Take(size).Skip((page - 1) * size).ToArray();
-
-            await Task.Yield();
-            return Ok(garmentPreparingDto, info: new
-            {
-                page,
-                size,
-                count = totalRows
-            });
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            var preparingId = Guid.Parse(id);
+            VerifyUser();
+            var preparingDto = _garmentPreparingRepository.Find(o => o.Identity == preparingId).Select(o => new GarmentPreparingDto(o)).FirstOrDefault();
+
+            if (preparingDto == null)
+                return NotFound();
+
+            var selectedUnit = GetUnit(preparingDto.UnitId.Id, WorkContext.Token).data;
+            
+            if (selectedUnit != null)
+            {
+                preparingDto.UnitId.Name = selectedUnit.Name;
+                preparingDto.UnitId.Code = selectedUnit.Code;
+            }
+
+            var itemConfigs = _garmentPreparingItemRepository.Find(x => x.GarmentPreparingId == preparingDto.Id).Select(o => new GarmentPreparingItemDto(o)).ToList();
+            preparingDto.Items = itemConfigs;
+
+            Parallel.ForEach(preparingDto.Items, orderItem =>
+            {
+                var selectedUOM = GetUom(orderItem.Uom.Id, WorkContext.Token).data;
+                var selectedProduct = GetProduct(orderItem.Product.Id, WorkContext.Token).data;
+
+                if (selectedUOM != null)
+                {
+                    orderItem.Uom.Unit = selectedUOM.Unit;
+                }
+
+                if (selectedProduct != null)
+                {
+                    orderItem.Product.Code = selectedProduct.Code;
+                    orderItem.Product.Name = selectedProduct.Name;
+                }
+
+            });
+            preparingDto.Items = preparingDto.Items.OrderBy(x => x.Id).ToList();
+            await Task.Yield();
+
+            return Ok(preparingDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]PlaceGarmentPreparingCommand command)
+        {
+            try
+            {
+                VerifyUser();
+
+                var garmentPreparingValidation = _garmentPreparingRepository.Find(o => o.UENId == command.UENId && o.UENNo == command.UENNo && o.UnitId == command.UnitId.Value
+                                && o.ProcessDate == command.ProcessDate && o.RONo == command.RONo && o.Article == command.Article && o.IsCuttingIn == command.IsCuttingIn).Select(o => new GarmentPreparingDto(o)).FirstOrDefault();
+                if (garmentPreparingValidation != null)
+                    return BadRequest(new
+                    {
+                        code = HttpStatusCode.BadRequest,
+                        error = "Data sudah ada"
+                    });
+
+                var order = await Mediator.Send(command);
+
+                await PutGarmentUnitExpenditureNoteCreate(command.UENId);
+
+                return Ok(order.Identity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> Put(string id, [FromBody]UpdateGarmentPreparingCommand command)
+        //{
+        //    Guid orderId;
+        //    try
+        //    {
+        //        VerifyUser();
+        //        if (!Guid.TryParse(id, out orderId))
+        //            return NotFound();
+
+        //        command.SetId(orderId);
+
+
+        //        var order = await Mediator.Send(command);
+
+        //        return Ok(order.Identity);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        //    }
+
+        //}
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            VerifyUser();
+            var preparingId = Guid.Parse(id);
+
+            if (!Guid.TryParse(id, out Guid orderId))
+                return NotFound();
+
+            var garmentPreparing = _garmentPreparingRepository.Find(x => x.Identity == preparingId).Select(o => new GarmentPreparingDto(o)).FirstOrDefault();
+
+            var command = new RemoveGarmentPreparingCommand();
+            command.SetId(orderId);
+
+            var order = await Mediator.Send(command);
+            await PutGarmentUnitExpenditureNoteDelete (garmentPreparing.UENId);
+
+            return Ok(order.Identity);
+        }
+
     }
 }

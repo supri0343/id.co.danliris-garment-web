@@ -12,7 +12,6 @@ namespace Manufactures.Domain.GarmentPreparings.ReadModels
 
         }
 
-        public int PreparingId { get; internal set; }
         public int UENItemId { get; internal set; }
         public int ProductId { get; internal set; }
         //public string ProductCode { get; internal set; }

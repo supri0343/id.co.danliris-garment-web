@@ -50,25 +50,25 @@ namespace DanLiris.Admin.Web
             MasterDataSettings.Password = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Password");
         }
 
-        //public void RegisterWeavingDataSettings()
-        //{
-        //    WeavingDataSettings.Endpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("WeavingDataEndpoint");
-        //    WeavingDataSettings.TokenEndpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("TokenEndpoint");
-        //    WeavingDataSettings.Username = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Username");
-        //    WeavingDataSettings.Password = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Password");
-        //}
+        public void RegisterPurchasingDataSettings()
+        {
+            PurchasingDataSettings.Endpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("PurchasingDataEndpoint");
+            PurchasingDataSettings.TokenEndpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("TokenEndpoint");
+            PurchasingDataSettings.Username = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Username");
+            PurchasingDataSettings.Password = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Password");
+        }
 
 
         public void ConfigureServices(IServiceCollection services)
         {
             RegisterMasterDataSettings();
-            //RegisterWeavingDataSettings();
+            RegisterPurchasingDataSettings();
 
             services.AddScoped<IIdentityService, IdentityService>();
 
             services.AddSingleton<IMemoryCacheManager, MemoryCacheManager>()
                     .AddSingleton<ICoreClient, CoreClient>()
-                    //.AddSingleton<IWeavingClient, WeavingClient>()
+                    .AddSingleton<IPurchasingClient, PurchasingClient>()
                     .AddSingleton<IHttpClientService, HttpClientService>();
             //services.Configure<MasterDataSettings>(options =>
             //{

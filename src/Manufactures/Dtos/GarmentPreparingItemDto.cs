@@ -14,12 +14,11 @@ namespace Manufactures.Dtos
 
             LastModifiedDate = garmentPreparingItem.AuditTrail.ModifiedDate ?? garmentPreparingItem.AuditTrail.CreatedDate;
             LastModifiedBy = garmentPreparingItem.AuditTrail.ModifiedBy ?? garmentPreparingItem.AuditTrail.CreatedBy;
-            PreparingId = garmentPreparingItem.PreparingId;
             UENItemId = garmentPreparingItem.UENItemId;
-            ProductId = new Product(garmentPreparingItem.ProductId.Value, "", "");
+            Product = new Product(garmentPreparingItem.Product.Value, "", "");
             DesignColor = garmentPreparingItem.DesignColor;
             Quantity = garmentPreparingItem.Quantity;
-            UomId = new Uom(garmentPreparingItem.UomId.Value, "");
+            Uom = new Uom(garmentPreparingItem.Uom.Value, "");
             FabricType = garmentPreparingItem.FabricType;
             RemainingQuantity = garmentPreparingItem.RemainingQuantity;
             BasicPrice = garmentPreparingItem.BasicPrice;
@@ -32,12 +31,11 @@ namespace Manufactures.Dtos
 
         public DateTimeOffset LastModifiedDate { get; set; }
 
-        public int PreparingId { get; set; }
         public int UENItemId { get; set; }
-        public Product ProductId { get; set; }
+        public Product Product { get; set; }
         public string DesignColor { get; set; }
         public double Quantity { get; set; }
-        public Uom UomId { get; set; }
+        public Uom Uom { get; set; }
         public string FabricType { get; set; }
         public double RemainingQuantity { get; set; }
         public double BasicPrice { get; set; }

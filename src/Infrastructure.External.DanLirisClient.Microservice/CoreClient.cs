@@ -144,5 +144,24 @@ namespace Infrastructure.External.DanLirisClient.Microservice
             }
             return tokenResult.data;
         }
+
+        public void SetGarmentProducts()
+        {
+            var masterGarmentProductUri = MasterDataSettings.Endpoint + $"master/garmentProducts";
+            //var masterUnitUri = $"https://com-danliris-service-core-dev.azurewebsites.net/v1/master/products/simple";
+            var garmentProductResponse = _http.GetAsync(masterGarmentProductUri).Result;
+
+            var garmentProductResult = new ProductResult();
+            if (garmentProductResponse.EnsureSuccessStatusCode().IsSuccessStatusCode)
+            {
+                garmentProductResult = JsonConvert.DeserializeObject<ProductResult>(garmentProductResponse.Content.ReadAsStringAsync().Result);
+            }
+            else
+            {
+                SetProduct();
+            }
+            if (garmentProductResult.data.Count > 0)
+                cacheManager.Set("GarmentProducts", garmentProductResult.data);
+        }
     }
 }

@@ -12,5 +12,7 @@ namespace Infrastructure.External.DanLirisClient.Microservice.HttpClientService
         Task<HttpResponseMessage> GetAsync(string url, string token);
         Task<HttpResponseMessage> PostAsync(string url, string token, HttpContent content);
         Task<HttpResponseMessage> PostAsync(string url, HttpContent content);
+        Task<HttpResponseMessage> PutAsync(string url, string token, HttpContent content);
+        Task<HttpResponseMessage> PutAsync(string url, HttpContent content);
     }
 }
