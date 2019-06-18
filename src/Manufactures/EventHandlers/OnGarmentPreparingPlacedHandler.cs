@@ -9,7 +9,7 @@ namespace Manufactures.EventHandlers
 {
     public class OnGarmentPreparingPlacedHandler : IGarmentPreparingEventHandler<OnGarmentPreparingPlaced>
     {
-        public Task Handle(OnGarmentPreparingPlaced notofication, CancellationToken cancellationToken)
+        public Task Handle(OnGarmentPreparingPlaced notification, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }

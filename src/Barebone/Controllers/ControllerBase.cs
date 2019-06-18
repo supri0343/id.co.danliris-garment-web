@@ -37,7 +37,7 @@ namespace Barebone.Controllers
         protected IMediator Mediator { get; }
         protected readonly string GARMENT_POLICY = "GarmentPolicy";
         protected readonly IHttpClientService _http;
-        protected readonly string Token;
+        //protected readonly string Token;
 
         public ControllerApiBase(IServiceProvider serviceProvider)
         {
@@ -45,26 +45,26 @@ namespace Barebone.Controllers
             this.Storage = serviceProvider.GetService<IStorage>();
             this.WorkContext = serviceProvider.GetService<IWebApiContext>();
             this.Mediator = serviceProvider.GetService<IMediator>();
-            Token = GetTokenAsync();
+            //Token = GetTokenAsync();
         }
 
-        protected string GetTokenAsync()
-        {
+        //protected string GetTokenAsync()
+        //{
 
-            var response = _http.PostAsync(PurchasingDataSettings.TokenEndpoint,
-                new StringContent(JsonConvert.SerializeObject(new { username = PurchasingDataSettings.Username, password = PurchasingDataSettings.Password }), Encoding.UTF8, "application/json")).Result;
-            TokenResult tokenResult = new TokenResult();
-            if (response.IsSuccessStatusCode)
-            {
-                tokenResult = JsonConvert.DeserializeObject<TokenResult>(response.Content.ReadAsStringAsync().Result);
+        //    var response = _http.PostAsync(PurchasingDataSettings.TokenEndpoint,
+        //        new StringContent(JsonConvert.SerializeObject(new { username = PurchasingDataSettings.Username, password = PurchasingDataSettings.Password }), Encoding.UTF8, "application/json")).Result;
+        //    TokenResult tokenResult = new TokenResult();
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        tokenResult = JsonConvert.DeserializeObject<TokenResult>(response.Content.ReadAsStringAsync().Result);
 
-            }
-            else
-            {
-                GetTokenAsync();
-            }
-            return tokenResult.data;
-        }
+        //    }
+        //    else
+        //    {
+        //        GetTokenAsync();
+        //    }
+        //    return tokenResult.data;
+        //}
 
         protected SingleProductResult GetProduct(int id, string token)
         {
@@ -243,7 +243,7 @@ namespace Barebone.Controllers
         protected async Task<string> PutGarmentUnitExpenditureNoteCreate(int id)
         {
             var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-unit-expenditure-notes/isPreparingTrue/{id}";
-            var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, Token, new StringContent(JsonConvert.SerializeObject(new { username = PurchasingDataSettings.Username, password = PurchasingDataSettings.Password }), Encoding.UTF8, "application/json"));
+            var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, WorkContext.Token, new StringContent(JsonConvert.SerializeObject(new { username = PurchasingDataSettings.Username, password = PurchasingDataSettings.Password }), Encoding.UTF8, "application/json"));
 
             //TokenResult tokenResult = new TokenResult();
             //if (garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().IsSuccessStatusCode)
@@ -256,7 +256,7 @@ namespace Barebone.Controllers
         protected async Task<string> PutGarmentUnitExpenditureNoteDelete(int id)
         {
             var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-unit-expenditure-notes/isPreparingFalse/{id}";
-            var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, Token, new StringContent(JsonConvert.SerializeObject(new { username = PurchasingDataSettings.Username, password = PurchasingDataSettings.Password }), Encoding.UTF8, "application/json"));
+            var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, WorkContext.Token, new StringContent(JsonConvert.SerializeObject(new { username = PurchasingDataSettings.Username, password = PurchasingDataSettings.Password }), Encoding.UTF8, "application/json"));
 
             //TokenResult tokenResult = new TokenResult();
             //if (garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().IsSuccessStatusCode)
