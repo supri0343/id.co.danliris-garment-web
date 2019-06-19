@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Infrastructure.External.DanLirisClient.Microservice;
 using Infrastructure.External.DanLirisClient.Microservice.Cache;
 using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
 using Manufactures.Domain.GarmentPreparings.Commands;
@@ -157,7 +158,7 @@ namespace Manufactures.Controllers.Api
                 }
             } catch(Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, MasterDataSettings.Endpoint);
             }
             
         }
