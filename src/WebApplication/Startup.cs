@@ -80,6 +80,7 @@ namespace DanLiris.Admin.Web
             
         }
 
+
         public void ConfigureServices(IServiceCollection services)
         {
             RegisterMasterDataSettings();
