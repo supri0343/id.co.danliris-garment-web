@@ -44,18 +44,40 @@ namespace DanLiris.Admin.Web
 
         public void RegisterMasterDataSettings()
         {
-            MasterDataSettings.Endpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("MasterDataEndpoint");
-            MasterDataSettings.TokenEndpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("TokenEndpoint");
-            MasterDataSettings.Username = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Username");
-            MasterDataSettings.Password = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Password");
+            if (configuration.GetSection("DanLirisSettings") == null)
+            {
+                MasterDataSettings.Endpoint = configuration.GetValue<string>("MasterDataEndpoint") ?? configuration["MasterDataEndpoint"];
+                MasterDataSettings.TokenEndpoint = configuration.GetValue<string>("TokenEndpoint") ?? configuration["TokenEndpoint"];
+                MasterDataSettings.Username = configuration.GetValue<string>("Username") ?? configuration["Username"];
+                MasterDataSettings.Password = configuration.GetValue<string>("Password") ?? configuration["Password"];
+            }
+            else
+            {
+                MasterDataSettings.Endpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("MasterDataEndpoint");
+                MasterDataSettings.TokenEndpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("TokenEndpoint");
+                MasterDataSettings.Username = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Username");
+                MasterDataSettings.Password = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Password");
+            }
+
         }
 
         public void RegisterPurchasingDataSettings()
         {
-            PurchasingDataSettings.Endpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("PurchasingDataEndpoint");
-            PurchasingDataSettings.TokenEndpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("TokenEndpoint");
-            PurchasingDataSettings.Username = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Username");
-            PurchasingDataSettings.Password = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Password");
+            if (configuration.GetSection("DanLirisSettings") == null)
+            {
+                PurchasingDataSettings.Endpoint = configuration.GetValue<string>("PurchasingDataEndpoint") ?? configuration["PurchasingDataEndpoint"];
+                PurchasingDataSettings.TokenEndpoint = configuration.GetValue<string>("TokenEndpoint") ?? configuration["TokenEndpoint"];
+                PurchasingDataSettings.Username = configuration.GetValue<string>("Username") ?? configuration["Username"];
+                PurchasingDataSettings.Password = configuration.GetValue<string>("Password") ?? configuration["Password"];
+            }
+            else
+            {
+                PurchasingDataSettings.Endpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("PurchasingDataEndpoint");
+                PurchasingDataSettings.TokenEndpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("TokenEndpoint");
+                PurchasingDataSettings.Username = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Username");
+                PurchasingDataSettings.Password = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Password");
+            }
+            
         }
 
 
