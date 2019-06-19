@@ -158,7 +158,7 @@ namespace Manufactures.Controllers.Api
                 }
             } catch(Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MasterDataSettings.Endpoint);
+                return StatusCode((int)HttpStatusCode.InternalServerError, MasterDataSettings.Endpoint+"- test -"+PurchasingDataSettings.Endpoint);
             }
             
         }
