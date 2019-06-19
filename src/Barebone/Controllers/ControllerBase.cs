@@ -84,18 +84,27 @@ namespace Barebone.Controllers
 
         protected SingleUnitResult GetUnit(int id, string token)
         {
-            var masterUnitUri = MasterDataSettings.Endpoint + $"master/units/{id}";
-            var unitResponse = _http.GetAsync(masterUnitUri).Result;
-
-            if (unitResponse.IsSuccessStatusCode)
+            try
             {
-                SingleUnitResult unitResult = JsonConvert.DeserializeObject<SingleUnitResult>(unitResponse.Content.ReadAsStringAsync().Result);
-                return unitResult;
+                var masterUnitUri = MasterDataSettings.Endpoint + $"master/units/{id}";
+                var unitResponse = _http.GetAsync(masterUnitUri).Result;
+                if (unitResponse.IsSuccessStatusCode)
+                {
+                    SingleUnitResult unitResult = JsonConvert.DeserializeObject<SingleUnitResult>(unitResponse.Content.ReadAsStringAsync().Result);
+                    return unitResult;
+                }
+                else
+                {
+                    return new SingleUnitResult();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return new SingleUnitResult();
+                SingleUnitResult unitResult = new SingleUnitResult();
+                unitResult.data.Name = MasterDataSettings.Endpoint;
+                throw new Exception(MasterDataSettings.Endpoint);
             }
+            
         }
 
         //protected SingleMaterialTypeResult GetMaterialType(string id, string token)
