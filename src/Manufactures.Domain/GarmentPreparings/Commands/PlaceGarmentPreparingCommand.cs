@@ -23,8 +23,8 @@ namespace Manufactures.Domain.GarmentPreparings.Commands
     {
         public PlaceGarmentPreparingCommandValidator()
         {
-            RuleFor(r => r.UENId).NotNull().WithMessage("Nomor Bukti Pengeluaran Tidak Boleh Kosong");
-            RuleFor(r => r.Items).NotEmpty().WithMessage("Mesin Tidak Boleh Kosong");
+            RuleFor(r => r.UENId).NotNull().WithMessage("Nomor Bon Pengeluaran Unit Tidak Boleh Kosong");
+            RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong");
         }
     }    
 }

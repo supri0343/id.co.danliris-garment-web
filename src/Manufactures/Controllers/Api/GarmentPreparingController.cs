@@ -46,7 +46,7 @@ namespace Manufactures.Controllers.Api
                 var garmentPreparingItems = garmentPreparingItemDto.Where(x => x.GarmentPreparingId == itemDto.Id).ToList();
 
                 itemDto.Items = garmentPreparingItems;
-                var selectedUnit = GetUnit(itemDto.UnitId.Id, Token);
+                var selectedUnit = GetUnit(itemDto.UnitId.Id, WorkContext.Token);
 
                 if (selectedUnit != null && selectedUnit.data != null)
                 {
@@ -56,8 +56,8 @@ namespace Manufactures.Controllers.Api
 
                 Parallel.ForEach(itemDto.Items, orderItem =>
                 {
-                    var selectedProduct = GetGarmentProduct(orderItem.Product.Id, Token);
-                    var selectedUom = GetUom(orderItem.Uom.Id, Token);
+                    var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token);
+                    var selectedUom = GetUom(orderItem.Uom.Id, WorkContext.Token);
 
                     if(selectedProduct != null && selectedProduct.data != null)
                     {
