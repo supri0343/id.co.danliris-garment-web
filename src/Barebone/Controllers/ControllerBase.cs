@@ -100,8 +100,6 @@ namespace Barebone.Controllers
             }
             catch (Exception ex)
             {
-                SingleUnitResult unitResult = new SingleUnitResult();
-                unitResult.data.Name = MasterDataSettings.Endpoint;
                 throw new Exception(MasterDataSettings.Endpoint);
             }
             
