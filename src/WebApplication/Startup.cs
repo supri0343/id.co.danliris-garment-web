@@ -44,7 +44,7 @@ namespace DanLiris.Admin.Web
 
         public void RegisterMasterDataSettings()
         {
-            MasterDataSettings.Endpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("MasterDataEndpoint");
+            MasterDataSettings.Endpoint = configuration.GetValue<string>("MasterDataEndpoint") ?? configuration["MasterDataEndpoint"];
             MasterDataSettings.TokenEndpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("TokenEndpoint");
             MasterDataSettings.Username = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Username");
             MasterDataSettings.Password = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Password");
@@ -52,12 +52,11 @@ namespace DanLiris.Admin.Web
 
         public void RegisterPurchasingDataSettings()
         {
-            PurchasingDataSettings.Endpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("PurchasingDataEndpoint");
+            PurchasingDataSettings.Endpoint = configuration.GetValue<string>("PurchasingDataEndpoint") ?? configuration["PurchasingDataEndpoint"];
             PurchasingDataSettings.TokenEndpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("TokenEndpoint");
             PurchasingDataSettings.Username = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Username");
             PurchasingDataSettings.Password = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Password");
         }
-
 
         public void ConfigureServices(IServiceCollection services)
         {
