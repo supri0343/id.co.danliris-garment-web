@@ -1,5 +1,4 @@
 ﻿using Infrastructure.Data.EntityFrameworkCore.Utilities;
-using Infrastructure.External.DanLirisClient.Microservice;
 using Infrastructure.External.DanLirisClient.Microservice.Cache;
 using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
 using Manufactures.Domain.GarmentPreparings.Commands;
@@ -35,132 +34,124 @@ namespace Manufactures.Controllers.Api
         [HttpGet]
         public async Task<IActionResult> Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
         {
-            try
+            VerifyUser();
+            var query = _garmentPreparingRepository.Read(order, select, filter);
+            int totalRows = query.Count();
+            var garmentPreparingDto = _garmentPreparingRepository.Find(query).Select(o => new GarmentPreparingDto(o)).ToArray();
+            var garmentPreparingItemDto = _garmentPreparingItemRepository.Find(_garmentPreparingItemRepository.Query).Select(o => new GarmentPreparingItemDto(o)).ToList();
+            var garmentPreparingItemDtoArray = _garmentPreparingItemRepository.Find(_garmentPreparingItemRepository.Query).Select(o => new GarmentPreparingItemDto(o)).ToArray();
+
+            Parallel.ForEach(garmentPreparingDto, itemDto =>
             {
-                VerifyUser();
-                var query = _garmentPreparingRepository.Read(order, select, filter);
-                int totalRows = query.Count();
-                var garmentPreparingDto = _garmentPreparingRepository.Find(query).Select(o => new GarmentPreparingDto(o)).ToArray();
-                var garmentPreparingItemDto = _garmentPreparingItemRepository.Find(_garmentPreparingItemRepository.Query).Select(o => new GarmentPreparingItemDto(o)).ToList();
-                var garmentPreparingItemDtoArray = _garmentPreparingItemRepository.Find(_garmentPreparingItemRepository.Query).Select(o => new GarmentPreparingItemDto(o)).ToArray();
+                var garmentPreparingItems = garmentPreparingItemDto.Where(x => x.GarmentPreparingId == itemDto.Id).ToList();
 
-                Parallel.ForEach(garmentPreparingDto, itemDto =>
+                itemDto.Items = garmentPreparingItems;
+                var selectedUnit = GetUnit(itemDto.UnitId.Id, WorkContext.Token);
+
+                if (selectedUnit != null && selectedUnit.data != null)
                 {
-                    var garmentPreparingItems = garmentPreparingItemDto.Where(x => x.GarmentPreparingId == itemDto.Id).ToList();
+                    itemDto.UnitId.Name = selectedUnit.data.Name;
+                    itemDto.UnitId.Code = selectedUnit.data.Code;
+                }
 
-                    itemDto.Items = garmentPreparingItems;
-                    var selectedUnit = GetUnit(itemDto.UnitId.Id, WorkContext.Token).data.Name;
+                Parallel.ForEach(itemDto.Items, orderItem =>
+                {
+                    var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token);
+                    var selectedUom = GetUom(orderItem.Uom.Id, WorkContext.Token);
 
-                    //if (selectedUnit != null && selectedUnit.data != null)
-                    //{
-                    //    itemDto.UnitId.Name = selectedUnit.data.Name;
-                    //    itemDto.UnitId.Code = selectedUnit.data.Code;
-                    //}
-
-                    Parallel.ForEach(itemDto.Items, orderItem =>
+                    if(selectedProduct != null && selectedProduct.data != null)
                     {
-                        var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token);
-                        var selectedUom = GetUom(orderItem.Uom.Id, WorkContext.Token);
+                        orderItem.Product.Name = selectedProduct.data.Name;
+                        orderItem.Product.Code = selectedProduct.data.Code;
+                    }
 
-                        if (selectedProduct != null && selectedProduct.data != null)
-                        {
-                            orderItem.Product.Name = selectedProduct.data.Name;
-                            orderItem.Product.Code = selectedProduct.data.Code;
-                        }
-
-                        if (selectedUom != null && selectedUom.data != null)
-                        {
-                            orderItem.Uom.Unit = selectedUom.data.Unit;
-                        }
-                    });
-
-                    itemDto.Items = itemDto.Items.OrderBy(x => x.Id).ToList();
+                    if (selectedUom != null && selectedUom.data != null)
+                    {
+                        orderItem.Uom.Unit = selectedUom.data.Unit;
+                    }
                 });
 
-                if (!string.IsNullOrEmpty(keyword))
+               itemDto.Items = itemDto.Items.OrderBy(x => x.Id).ToList();
+            });
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                garmentPreparingItemDtoArray = garmentPreparingItemDto.Where(x => x.Product.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToArray();
+                List<GarmentPreparingDto> ListTemp = new List<GarmentPreparingDto>();
+                foreach(var a in garmentPreparingItemDtoArray)
                 {
-                    garmentPreparingItemDtoArray = garmentPreparingItemDto.Where(x => x.Product.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToArray();
-                    List<GarmentPreparingDto> ListTemp = new List<GarmentPreparingDto>();
-                    foreach (var a in garmentPreparingItemDtoArray)
+                    var temp = garmentPreparingDto.Where(x => x.Id.Equals(a.GarmentPreparingId)).ToArray();
+                    foreach(var b in temp)
                     {
-                        var temp = garmentPreparingDto.Where(x => x.Id.Equals(a.GarmentPreparingId)).ToArray();
-                        foreach (var b in temp)
+                        ListTemp.Add(b);
+                    }
+                }
+
+
+                var garmentPreparingDtoList = garmentPreparingDto.Where(x => x.UENNo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    || x.UnitId.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    || x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    //|| x.Items.Where(y => y.ProductId.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+                                    ).ToList();
+
+                var i = 0;
+                foreach(var data in ListTemp)
+                {
+                    foreach(var item in garmentPreparingDtoList)
+                    {
+                        if(data.Id == item.Id)
                         {
-                            ListTemp.Add(b);
+                            i++;
                         }
                     }
-
-
-                    var garmentPreparingDtoList = garmentPreparingDto.Where(x => x.UENNo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                        || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                        || x.UnitId.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                        || x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                        //|| x.Items.Where(y => y.ProductId.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase))
-                                        ).ToList();
-
-                    var i = 0;
-                    foreach (var data in ListTemp)
+                    if (i == 0)
                     {
-                        foreach (var item in garmentPreparingDtoList)
-                        {
-                            if (data.Id == item.Id)
-                            {
-                                i++;
-                            }
-                        }
-                        if (i == 0)
-                        {
-                            garmentPreparingDtoList.Add(data);
-                        }
+                        garmentPreparingDtoList.Add(data);
                     }
-                    var garmentPreparingDtoListArray = garmentPreparingDtoList.ToArray();
-                    if (order != "{}")
-                    {
-                        Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                        garmentPreparingDtoListArray = QueryHelper<GarmentPreparingDto>.Order(garmentPreparingDtoList.AsQueryable(), OrderDictionary).ToArray();
-                    }
-                    else
-                    {
-                        garmentPreparingDtoListArray = garmentPreparingDtoList.OrderByDescending(x => x.LastModifiedDate).ToArray();
-                    }
-
-                    garmentPreparingDtoListArray = garmentPreparingDtoListArray.Take(size).Skip((page - 1) * size).ToArray();
-
-                    await Task.Yield();
-                    return Ok(garmentPreparingDtoListArray, info: new
-                    {
-                        page,
-                        size,
-                        count = totalRows
-                    });
+                }
+                var garmentPreparingDtoListArray = garmentPreparingDtoList.ToArray();
+                if (order != "{}")
+                {
+                    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                    garmentPreparingDtoListArray = QueryHelper<GarmentPreparingDto>.Order(garmentPreparingDtoList.AsQueryable(), OrderDictionary).ToArray();
                 }
                 else
                 {
-                    if (order != "{}")
-                    {
-                        Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                        garmentPreparingDto = QueryHelper<GarmentPreparingDto>.Order(garmentPreparingDto.AsQueryable(), OrderDictionary).ToArray();
-                    }
-                    else
-                    {
-                        garmentPreparingDto = garmentPreparingDto.OrderByDescending(x => x.LastModifiedDate).ToArray();
-                    }
-
-                    garmentPreparingDto = garmentPreparingDto.Take(size).Skip((page - 1) * size).ToArray();
-
-                    await Task.Yield();
-                    return Ok(garmentPreparingDto, info: new
-                    {
-                        page,
-                        size,
-                        count = totalRows
-                    });
+                    garmentPreparingDtoListArray = garmentPreparingDtoList.OrderByDescending(x => x.LastModifiedDate).ToArray();
                 }
-            } catch(Exception ex)
+
+                garmentPreparingDtoListArray = garmentPreparingDtoListArray.Take(size).Skip((page - 1) * size).ToArray();
+
+                await Task.Yield();
+                return Ok(garmentPreparingDtoListArray, info: new
+                {
+                    page,
+                    size,
+                    count = totalRows
+                });
+            } else
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MasterDataSettings.Endpoint+"- test -"+PurchasingDataSettings.Endpoint);
+                if (order != "{}")
+                {
+                    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                    garmentPreparingDto = QueryHelper<GarmentPreparingDto>.Order(garmentPreparingDto.AsQueryable(), OrderDictionary).ToArray();
+                }
+                else
+                {
+                    garmentPreparingDto = garmentPreparingDto.OrderByDescending(x => x.LastModifiedDate).ToArray();
+                }
+
+                garmentPreparingDto = garmentPreparingDto.Take(size).Skip((page - 1) * size).ToArray();
+
+                await Task.Yield();
+                return Ok(garmentPreparingDto, info: new
+                {
+                    page,
+                    size,
+                    count = totalRows
+                });
             }
-            
         }
 
         [HttpGet("{id}")]
