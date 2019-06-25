@@ -12,6 +12,6 @@ namespace Manufactures.Domain.GarmentAvalProducts.ReadModels
 
         public string RONo { get; internal set; }
         public string Article { get; internal set; }
-        public DateTimeOffset AvalDate { get; internal set; }
+        public DateTimeOffset? AvalDate { get; internal set; }
     }
 }

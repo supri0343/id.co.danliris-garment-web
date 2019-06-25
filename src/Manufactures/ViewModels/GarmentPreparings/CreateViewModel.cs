@@ -22,7 +22,7 @@ namespace Manufactures.ViewModels.GarmentPreparings
 
         [Display(Name = "ProcessDate")]
         [Required]
-        public DateTimeOffset ProcessDate { get; set; }
+        public DateTimeOffset? ProcessDate { get; set; }
 
         [Display(Name = "RONo")]
         [Required]

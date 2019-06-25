@@ -2,6 +2,8 @@
 using ExtCore.Mvc.Infrastructure.Actions;
 using FluentValidation.AspNetCore;
 using Infrastructure.Mvc.Filters;
+using Manufactures.Domain.GarmentAvalProducts.Commands;
+using Manufactures.Domain.GarmentPreparings.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -24,6 +26,10 @@ namespace Infrastructure.Mvc
             builder.AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             builder.AddFluentValidation(fv =>
             {
+                fv.RegisterValidatorsFromAssemblyContaining<PlaceGarmentPreparingCommandValidator>();
+                fv.RegisterValidatorsFromAssemblyContaining<UpdateGarmentPreparingCommandValidator>();
+                fv.RegisterValidatorsFromAssemblyContaining<PlaceGarmentAvalProductCommandValidator>();
+                fv.RegisterValidatorsFromAssemblyContaining<UpdateGarmentAvalProductCommandValidator>();
                 fv.RegisterValidatorsFromAssemblyContaining<Startup>();
             });
         }

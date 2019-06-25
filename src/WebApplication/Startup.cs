@@ -44,7 +44,7 @@ namespace DanLiris.Admin.Web
 
         public void RegisterMasterDataSettings()
         {
-            if (configuration.GetSection("DanLirisSettings").Value == null)
+            if (!configuration.GetSection("DanLirisSettings").Exists())
             {
                 MasterDataSettings.Endpoint = configuration.GetValue<string>("MasterDataEndpoint") ?? configuration["MasterDataEndpoint"];
                 MasterDataSettings.TokenEndpoint = configuration.GetValue<string>("TokenEndpoint") ?? configuration["TokenEndpoint"];
@@ -63,7 +63,7 @@ namespace DanLiris.Admin.Web
 
         public void RegisterPurchasingDataSettings()
         {
-            if (configuration.GetSection("DanLirisSettings").Value == null)
+            if (!configuration.GetSection("DanLirisSettings").Exists())
             {
                 PurchasingDataSettings.Endpoint = configuration.GetValue<string>("PurchasingDataEndpoint") ?? configuration["PurchasingDataEndpoint"];
                 PurchasingDataSettings.TokenEndpoint = configuration.GetValue<string>("TokenEndpoint") ?? configuration["TokenEndpoint"];

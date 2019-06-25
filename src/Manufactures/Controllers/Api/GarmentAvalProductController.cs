@@ -3,6 +3,9 @@ using Infrastructure.External.DanLirisClient.Microservice.Cache;
 using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
 using Manufactures.Domain.GarmentAvalProducts.Commands;
 using Manufactures.Domain.GarmentAvalProducts.Repositories;
+using Manufactures.Domain.GarmentPreparings.Commands;
+using Manufactures.Domain.GarmentPreparings.Repositories;
+using Manufactures.Domain.GarmentPreparings.ValueObjects;
 using Manufactures.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,12 +25,16 @@ namespace Manufactures.Controllers.Api
     {
         private readonly IGarmentAvalProductRepository _garmentAvalProductRepository;
         private readonly IGarmentAvalProductItemRepository _garmentAvalProductItemRepository;
+        private readonly IGarmentPreparingRepository _garmentPreparingRepository;
+        private readonly IGarmentPreparingItemRepository _garmentPreparingItemRepository;
         private readonly IMemoryCacheManager _cacheManager;
 
         public GarmentAvalProductController(IServiceProvider serviceProvider, IMemoryCacheManager cacheManager) : base(serviceProvider)
         {
             _garmentAvalProductRepository = Storage.GetRepository<IGarmentAvalProductRepository>();
             _garmentAvalProductItemRepository = Storage.GetRepository<IGarmentAvalProductItemRepository>();
+            _garmentPreparingRepository = Storage.GetRepository<IGarmentPreparingRepository>();
+            _garmentPreparingItemRepository = Storage.GetRepository<IGarmentPreparingItemRepository>();
             _cacheManager = cacheManager;
         }
 
@@ -105,7 +112,7 @@ namespace Manufactures.Controllers.Api
             Parallel.ForEach(avalProductDto.Items, orderItem =>
             {
                 var selectedUOM = GetUom(orderItem.UomId.Id, WorkContext.Token).data;
-                var selectedProduct = GetProduct(orderItem.ProductId.Id, WorkContext.Token).data;
+                var selectedProduct = GetGarmentProduct(orderItem.ProductId.Id, WorkContext.Token).data;
 
                 if (selectedUOM != null)
                 {

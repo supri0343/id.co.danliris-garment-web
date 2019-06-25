@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentAvalProducts;
 using Manufactures.Domain.GarmentAvalProducts.Commands;
 using Manufactures.Domain.GarmentAvalProducts.Repositories;
+using Manufactures.Domain.GarmentPreparings;
+using Manufactures.Domain.GarmentPreparings.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,8 @@ namespace Manufactures.Application.GarmentAvalProducts.CommandHandlers
     {
         private readonly IGarmentAvalProductRepository _garmentAvalProductRepository;
         private readonly IGarmentAvalProductItemRepository _garmentAvalProductItemRepository;
+        private readonly IGarmentPreparingRepository _garmentPreparingRepository;
+        private readonly IGarmentPreparingItemRepository _garmentPreparingItemRepository;
         private readonly IStorage _storage;
 
         public PlaceGarmentAvalProductCommandHandler(IStorage storage)
@@ -22,6 +26,8 @@ namespace Manufactures.Application.GarmentAvalProducts.CommandHandlers
             _storage = storage;
             _garmentAvalProductItemRepository = storage.GetRepository<IGarmentAvalProductItemRepository>();
             _garmentAvalProductRepository = storage.GetRepository<IGarmentAvalProductRepository>();
+            _garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
+            _garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
         }
 
         public async Task<GarmentAvalProduct> Handle(PlaceGarmentAvalProductCommand request, CancellationToken cancellationToken)
@@ -36,6 +42,17 @@ namespace Manufactures.Application.GarmentAvalProducts.CommandHandlers
                 garmentAvalProduct = new GarmentAvalProduct(Guid.NewGuid(), request.RONo, request.Article, request.AvalDate);
                 request.Items.Select(x => new GarmentAvalProductItem(Guid.NewGuid(), garmentAvalProduct.Identity, x.PreparingId, x.PreparingItemId, x.ProductId, x.DesignColor, x.Quantity, x.UomId)).ToList()
                     .ForEach(async x => await _garmentAvalProductItemRepository.Update(x));
+            }
+
+            foreach(var itemPreparing in request.Items)
+            {
+                var garmentPreparingItem = _garmentPreparingItemRepository.Find(o => o.Identity == Guid.Parse(itemPreparing.PreparingItemId.Value)).Single();
+
+                garmentPreparingItem.setRemainingQuantityZeroValue(garmentPreparingItem.RemainingQuantity - itemPreparing.Quantity);
+                
+                garmentPreparingItem.SetModified();
+                await _garmentPreparingItemRepository.Update(garmentPreparingItem);
+
             }
 
             garmentAvalProduct.SetModified();

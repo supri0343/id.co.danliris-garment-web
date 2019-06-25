@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Manufactures.Domain.GarmentAvalProducts.ValueObjects
 {
-    //[JsonConverter(typeof(SingleValueObjectConverter))]
+    [JsonConverter(typeof(SingleValueObjectConverter))]
     public class GarmentPreparingId : SingleValueObject<string>
     {
         public GarmentPreparingId(string value) : base(value)
