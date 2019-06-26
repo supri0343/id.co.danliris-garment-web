@@ -178,7 +178,7 @@ namespace Manufactures.Controllers.Api
             Parallel.ForEach(preparingDto.Items, orderItem =>
             {
                 var selectedUOM = GetUom(orderItem.Uom.Id, WorkContext.Token).data;
-                var selectedProduct = GetProduct(orderItem.Product.Id, WorkContext.Token).data;
+                var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token).data;
 
                 if (selectedUOM != null)
                 {

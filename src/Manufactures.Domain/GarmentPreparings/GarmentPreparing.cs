@@ -16,14 +16,13 @@ namespace Manufactures.Domain.GarmentPreparings
         public UnitDepartmentId UnitId { get; private set; }
         //public string UnitCode { get; internal set; }
         //public string UnitName { get; internal set; }
-        public DateTimeOffset ProcessDate { get; private set; }
+        public DateTimeOffset? ProcessDate { get; private set; }
         public string RONo { get; private set; }
         public string Article { get; private set; }
         public bool IsCuttingIn { get; private set; }
 
-        public GarmentPreparing(Guid identity, int uenId, string uenNo, UnitDepartmentId unitId, DateTimeOffset processDate, string roNo, string article, bool isCuttingIn) : base(identity)
+        public GarmentPreparing(Guid identity, int uenId, string uenNo, UnitDepartmentId unitId, DateTimeOffset? processDate, string roNo, string article, bool isCuttingIn) : base(identity)
         {
-            Validator.ThrowIfNullOrEmpty(() => uenNo);
             this.MarkTransient();
 
             Identity = identity;
@@ -92,7 +91,7 @@ namespace Manufactures.Domain.GarmentPreparings
             }
         }
 
-        public void setProcessDate(DateTimeOffset newProcessDate)
+        public void setProcessDate(DateTimeOffset? newProcessDate)
         {
             if (newProcessDate != ProcessDate)
             {

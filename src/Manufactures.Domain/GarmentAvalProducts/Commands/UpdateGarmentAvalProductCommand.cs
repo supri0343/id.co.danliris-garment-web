@@ -14,7 +14,7 @@ namespace Manufactures.Domain.GarmentAvalProducts.Commands
         public Guid Id { get; private set; }
         public string RONo { get; set; }
         public string Article { get; set; }
-        public DateTimeOffset AvalDate { get; set; }
+        public DateTimeOffset? AvalDate { get; set; }
         public List<GarmentAvalProductItemValueObject> Items { get; set; }
     }
 
@@ -22,7 +22,8 @@ namespace Manufactures.Domain.GarmentAvalProducts.Commands
     {
         public UpdateGarmentAvalProductCommandValidator()
         {
-            RuleFor(r => r.RONo).NotNull().WithMessage("Nomor RO Tidak Boleh Kosong");
+            RuleFor(r => r.RONo).NotEmpty().WithMessage("Nomor RO Tidak Boleh Kosong");
+            RuleFor(r => r.AvalDate).NotNull().WithMessage("Tanggal Aval Tidak Boleh Kosong");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong");
         }
     }

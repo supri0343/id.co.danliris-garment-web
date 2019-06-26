@@ -13,11 +13,10 @@ namespace Manufactures.Domain.GarmentAvalProducts
     {
         public string RONo { get; private set; }
         public string Article { get; private set; }
-        public DateTimeOffset AvalDate { get; private set; }
+        public DateTimeOffset? AvalDate { get; private set; }
 
-        public GarmentAvalProduct(Guid identity, string roNo, string article, DateTimeOffset avalDate) : base(identity)
+        public GarmentAvalProduct(Guid identity, string roNo, string article, DateTimeOffset? avalDate) : base(identity)
         {
-            Validator.ThrowIfNullOrEmpty(() => RONo);
             this.MarkTransient();
 
             Identity = identity;
@@ -60,7 +59,7 @@ namespace Manufactures.Domain.GarmentAvalProducts
             }
         }
 
-        public void SetAvalDate(DateTimeOffset newAvalDate)
+        public void SetAvalDate(DateTimeOffset? newAvalDate)
         {
             if (newAvalDate != AvalDate)
             {

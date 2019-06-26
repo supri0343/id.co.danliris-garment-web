@@ -19,7 +19,7 @@ namespace Manufactures.ViewModels.GarmentAvalProducts
 
         [Display(Name = "AvalDate")]
         [Required]
-        public DateTimeOffset AvalDate { get; set; }
+        public DateTimeOffset? AvalDate { get; set; }
 
         [Display(Name = "Items")]
         [Required]

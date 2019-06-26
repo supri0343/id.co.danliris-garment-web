@@ -15,7 +15,7 @@ namespace Manufactures.Domain.GarmentPreparings.ReadModels
         public int UnitId { get; internal set; }
         //public string UnitCode { get; internal set; }
         //public string UnitName { get; internal set; }
-        public DateTimeOffset ProcessDate { get; internal set; }
+        public DateTimeOffset? ProcessDate { get; internal set; }
         public string RONo { get; internal set; }
         public string Article { get; internal set; }
         public bool IsCuttingIn { get; internal set; }

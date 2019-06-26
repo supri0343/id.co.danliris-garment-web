@@ -31,7 +31,7 @@ namespace Manufactures.Dtos
         public DateTimeOffset LastModifiedDate { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }
-        public DateTimeOffset AvalDate { get; set; }
+        public DateTimeOffset? AvalDate { get; set; }
         public List<GarmentAvalProductItemDto> Items { get; set; }
     }
 }
