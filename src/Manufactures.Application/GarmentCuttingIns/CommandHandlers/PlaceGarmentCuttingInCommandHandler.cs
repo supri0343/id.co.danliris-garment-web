@@ -34,6 +34,8 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
 
         public async Task<GarmentCuttingIn> Handle(PlaceGarmentCuttingInCommand request, CancellationToken cancellationToken)
         {
+            request.Items = request.Items.Where(item => item.Details.Where(detail => detail.IsSave).Count() > 0).ToList();
+
             GarmentCuttingIn garmentCuttingIn = new GarmentCuttingIn(
                 Guid.NewGuid(),
                 GenerateCutInNo(request),
@@ -66,35 +68,38 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
 
                 foreach (var detail in item.Details)
                 {
-                    GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(
-                        Guid.NewGuid(),
-                        garmentCuttingInItem.Identity,
-                        detail.PreparingItemId,
-                        new ProductId(detail.Product.Id),
-                        detail.Product.Code,
-                        detail.Product.Name,
-                        detail.DesignColor,
-                        detail.FabricType,
-                        detail.PreparingQuantity,
-                        new UomId(detail.PreparingUom.Id),
-                        detail.PreparingUom.Unit,
-                        detail.CuttingInQuantity,
-                        new UomId(detail.CuttingInUom.Id),
-                        detail.CuttingInUom.Unit,
-                        detail.RemainingQuantity,
-                        detail.BasicPrice
-                    );
-
-                    if (preparingItemToBeUpdated.ContainsKey(detail.PreparingItemId))
+                    if (detail.IsSave)
                     {
-                        preparingItemToBeUpdated[detail.PreparingItemId] += detail.PreparingQuantity;
-                    }
-                    else
-                    {
-                        preparingItemToBeUpdated.Add(detail.PreparingItemId, detail.PreparingQuantity);
-                    }
+                        GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(
+                            Guid.NewGuid(),
+                            garmentCuttingInItem.Identity,
+                            detail.PreparingItemId,
+                            new ProductId(detail.Product.Id),
+                            detail.Product.Code,
+                            detail.Product.Name,
+                            detail.DesignColor,
+                            detail.FabricType,
+                            detail.PreparingQuantity,
+                            new UomId(detail.PreparingUom.Id),
+                            detail.PreparingUom.Unit,
+                            detail.CuttingInQuantity,
+                            new UomId(detail.CuttingInUom.Id),
+                            detail.CuttingInUom.Unit,
+                            detail.RemainingQuantity,
+                            detail.BasicPrice
+                        );
 
-                    await _garmentCuttingInDetailRepository.Update(garmentCuttingInDetail);
+                        if (preparingItemToBeUpdated.ContainsKey(detail.PreparingItemId))
+                        {
+                            preparingItemToBeUpdated[detail.PreparingItemId] += detail.PreparingQuantity;
+                        }
+                        else
+                        {
+                            preparingItemToBeUpdated.Add(detail.PreparingItemId, detail.PreparingQuantity);
+                        }
+
+                        await _garmentCuttingInDetailRepository.Update(garmentCuttingInDetail);
+                    }
                 }
 
                 await _garmentCuttingInItemRepository.Update(garmentCuttingInItem);
