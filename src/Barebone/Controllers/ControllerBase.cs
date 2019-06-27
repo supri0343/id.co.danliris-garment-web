@@ -68,7 +68,7 @@ namespace Barebone.Controllers
 
         protected SingleProductResult GetProduct(int id, string token)
         {
-            var masterProductUri = MasterDataSettings.Endpoint + $"master/products/{id}";
+            var masterProductUri = MasterDataSettings.Endpoint + $"master/garmentProducts/{id}";
             var productResponse = _http.GetAsync(masterProductUri).Result;
 
             if (productResponse.IsSuccessStatusCode)

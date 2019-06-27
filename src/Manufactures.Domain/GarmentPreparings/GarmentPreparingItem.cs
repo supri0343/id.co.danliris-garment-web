@@ -131,9 +131,14 @@ namespace Manufactures.Domain.GarmentPreparings
             }
         }
 
+        public void SetModified()
+        {
+            MarkModified();
+        }
+
         public void setRemainingQuantity(double newRemainingQuantity)
         {
-            Validator.ThrowIfNull(() => newRemainingQuantity);
+            //Validator.ThrowIfNull(() => newRemainingQuantity);
 
             if (newRemainingQuantity != RemainingQuantity)
             {
@@ -161,11 +166,6 @@ namespace Manufactures.Domain.GarmentPreparings
                 BasicPrice = newBasicPrice;
                 ReadModel.BasicPrice = newBasicPrice;
             }
-        }
-
-        public void SetModified()
-        {
-            MarkModified();
         }
 
         public void SetDeleted()

@@ -271,5 +271,18 @@ namespace Manufactures.Controllers.Api
             return Ok(order.Identity);
         }
 
+        [HttpGet("loader/ro")]
+        public async Task<IActionResult> GetLoaderByRO(string keyword, string filter = "{}")
+        {
+            var query = _garmentPreparingRepository.Read(null, null, filter);
+            query = query.Where(o => o.RONo.Contains(keyword));
+
+            var rOs = _garmentPreparingRepository.Find(query)
+                .Select(o => new { o.RONo, o.Article }).Distinct().ToList();
+
+            await Task.Yield();
+
+            return Ok(rOs);
+        }
     }
 }

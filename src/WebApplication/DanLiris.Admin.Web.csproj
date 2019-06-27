@@ -4,6 +4,11 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20190627041255_CuttingIn.cs" />
+    <Compile Remove="Migrations\20190627061508_CuttingTypeMax.cs" />
+  </ItemGroup>
+
   <!--<ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\" />

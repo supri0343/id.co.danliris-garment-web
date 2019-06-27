@@ -3,6 +3,7 @@
 
 using ExtCore.Data.EntityFramework;
 using Manufactures.Domain.GarmentAvalProducts.ReadModels;
+using Manufactures.Domain.GarmentCuttingIns.ReadModels;
 using Manufactures.Domain.GarmentPreparings.ReadModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,6 +43,33 @@ namespace Manufactures.Data.EntityFrameworkCore
             modelBuilder.Entity<GarmentAvalProductItemReadModel>(etb =>
             {
                 etb.ToTable("GarmentAvalProductItems");
+                etb.HasKey(e => e.Identity);
+
+                etb.ApplyAuditTrail();
+                etb.ApplySoftDelete();
+            });
+
+            modelBuilder.Entity<GarmentCuttingInReadModel>(etb =>
+            {
+                etb.ToTable("GarmentCuttingIns");
+                etb.HasKey(e => e.Identity);
+
+                etb.ApplyAuditTrail();
+                etb.ApplySoftDelete();
+            });
+
+            modelBuilder.Entity<GarmentCuttingInItemReadModel>(etb =>
+            {
+                etb.ToTable("GarmentCuttingInItems");
+                etb.HasKey(e => e.Identity);
+
+                etb.ApplyAuditTrail();
+                etb.ApplySoftDelete();
+            });
+
+            modelBuilder.Entity<GarmentCuttingInDetailReadModel>(etb =>
+            {
+                etb.ToTable("GarmentCuttingInDetails");
                 etb.HasKey(e => e.Identity);
 
                 etb.ApplyAuditTrail();
