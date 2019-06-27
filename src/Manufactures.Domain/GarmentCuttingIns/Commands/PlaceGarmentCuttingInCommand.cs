@@ -48,13 +48,21 @@ namespace Manufactures.Domain.GarmentCuttingIns.Commands
     {
         public GarmentCuttingInDetailValueObjectValidator()
         {
-            //RuleFor(r => r.PreparingUom).NotNull();
-            //RuleFor(r => r.PreparingUom.Unit).NotEmpty().OverridePropertyName("PreparingUom").When(w => w.PreparingUom != null);
-            ////RuleFor(r => r.PreparingUom).Must(m => !string.IsNullOrWhiteSpace(m.Unit)).When(w => w.PreparingUom != null);
+            // not supported at this time: FluentValidation 8.0.100 but some libs are incompatible
+            //When(w => w.IsSave, () =>
+            //{
+            //    //RuleFor(r => r.PreparingUom).NotNull();
+            //    //RuleFor(r => r.PreparingUom.Unit).NotEmpty().OverridePropertyName("PreparingUom").When(w => w.PreparingUom != null);
+            //    ////RuleFor(r => r.PreparingUom).Must(m => !string.IsNullOrWhiteSpace(m.Unit)).When(w => w.PreparingUom != null);
 
-            RuleFor(r => r.CuttingInQuantity).GreaterThan(0);
+            //    RuleFor(r => r.CuttingInQuantity).GreaterThan(0);
 
-            RuleFor(r => r.PreparingQuantity).LessThanOrEqualTo(r => r.PreparingRemainingQuantity);
+            //    RuleFor(r => r.PreparingQuantity).LessThanOrEqualTo(r => r.PreparingRemainingQuantity);
+            //});
+
+            RuleFor(r => r.CuttingInQuantity).GreaterThan(0).When(w => w.IsSave);
+
+            RuleFor(r => r.PreparingQuantity).LessThanOrEqualTo(r => r.PreparingRemainingQuantity).When(w => w.IsSave);
         }
     }
 }
