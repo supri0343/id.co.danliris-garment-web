@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Infrastructure.Domain.ReadModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
@@ -26,10 +27,13 @@ namespace Infrastructure.Data.EntityFrameworkCore.Utilities
         public static IQueryable<TModel> Order(IQueryable<TModel> query, Dictionary<string, string> orderDictionary)
         {
 
-            string Key = orderDictionary.Keys.First();
-            string OrderType = orderDictionary[Key];
+            if (!orderDictionary.Count.Equals(0))
+            {
+                string Key = orderDictionary.Keys.First();
+                string OrderType = orderDictionary[Key];
 
-            query = query.OrderBy(string.Concat(Key, " ", OrderType));
+                query = query.OrderBy(string.Concat(Key, " ", OrderType));
+            }
 
             return query;
         }

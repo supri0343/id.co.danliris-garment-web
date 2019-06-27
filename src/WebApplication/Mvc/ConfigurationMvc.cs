@@ -4,6 +4,7 @@ using FluentValidation.AspNetCore;
 using Infrastructure.Mvc.Filters;
 using Manufactures.Domain.GarmentAvalProducts.Commands;
 using Manufactures.Domain.GarmentPreparings.Commands;
+using Manufactures.Domain.GarmentCuttingIns.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -31,6 +32,7 @@ namespace Infrastructure.Mvc
                 fv.RegisterValidatorsFromAssemblyContaining<PlaceGarmentAvalProductCommandValidator>();
                 fv.RegisterValidatorsFromAssemblyContaining<UpdateGarmentAvalProductCommandValidator>();
                 fv.RegisterValidatorsFromAssemblyContaining<Startup>();
+                fv.RegisterValidatorsFromAssemblyContaining<PlaceGarmentCuttingInCommandValidator>();
             });
         }
     }
