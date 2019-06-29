@@ -65,7 +65,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.Commands
             RuleFor(r => r.PreparingQuantity)
                 .LessThanOrEqualTo(r => r.PreparingRemainingQuantity)
                 .OverridePropertyName("CuttingInQuantity")
-                .WithMessage("Jumlah Potong tidak boleh lebih dari [Jumlah Preparing / FC]")
+                .WithMessage(x => "Jumlah Potong tidak boleh lebih dari " + (long)(x.PreparingRemainingQuantity / (x.PreparingQuantity / x.CuttingInQuantity)))
                 .When(w => w.IsSave && w.CuttingInQuantity > 0);
         }
     }
