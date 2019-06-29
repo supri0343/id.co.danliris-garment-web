@@ -8,6 +8,8 @@ using Manufactures.Domain.GarmentCuttingIns.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Globalization;
+using FluentValidation;
 
 namespace Infrastructure.Mvc
 {
@@ -34,6 +36,9 @@ namespace Infrastructure.Mvc
                 fv.RegisterValidatorsFromAssemblyContaining<Startup>();
                 fv.RegisterValidatorsFromAssemblyContaining<PlaceGarmentCuttingInCommandValidator>();
             });
+
+            ValidatorOptions.LanguageManager = new CustomLanguageManager();
+            ValidatorOptions.LanguageManager.Culture = new CultureInfo("id");
         }
     }
 }
