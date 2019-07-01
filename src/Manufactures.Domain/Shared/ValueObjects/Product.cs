@@ -12,11 +12,11 @@ namespace Manufactures.Domain.Shared.ValueObjects
 
         }
 
-        public Product(int productId, string name, string code)
+        public Product(int productId, string code, string name)
         {
             Id = productId;
-            Name = name;
             Code = code;
+            Name = name;
         }
 
         public int Id { get; set; }
