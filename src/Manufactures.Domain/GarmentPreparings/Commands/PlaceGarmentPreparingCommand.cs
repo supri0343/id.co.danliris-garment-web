@@ -11,7 +11,7 @@ namespace Manufactures.Domain.GarmentPreparings.Commands
     {
         public int UENId { get; set; }
         public string UENNo { get; set; }
-        public UnitDepartmentId UnitId { get; set; }
+        public UnitDepartment Unit { get; set; }
         public DateTimeOffset? ProcessDate { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }

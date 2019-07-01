@@ -14,14 +14,14 @@ namespace Manufactures.Domain.GarmentPreparings
         public int UENId { get; private set; }
         public string UENNo { get; private set; }
         public UnitDepartmentId UnitId { get; private set; }
-        //public string UnitCode { get; internal set; }
-        //public string UnitName { get; internal set; }
+        public string UnitCode { get; internal set; }
+        public string UnitName { get; internal set; }
         public DateTimeOffset? ProcessDate { get; private set; }
         public string RONo { get; private set; }
         public string Article { get; private set; }
         public bool IsCuttingIn { get; private set; }
 
-        public GarmentPreparing(Guid identity, int uenId, string uenNo, UnitDepartmentId unitId, DateTimeOffset? processDate, string roNo, string article, bool isCuttingIn) : base(identity)
+        public GarmentPreparing(Guid identity, int uenId, string uenNo, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset? processDate, string roNo, string article, bool isCuttingIn) : base(identity)
         {
             this.MarkTransient();
 
@@ -29,6 +29,8 @@ namespace Manufactures.Domain.GarmentPreparings
             UENId = uenId;
             UENNo = uenNo;
             UnitId = unitId;
+            UnitCode = unitCode;
+            UnitName = unitName;
             ProcessDate = processDate;
             RONo = roNo;
             Article = article;
@@ -39,6 +41,8 @@ namespace Manufactures.Domain.GarmentPreparings
                 UENId = UENId,
                 UENNo = UENNo,
                 UnitId = UnitId.Value,
+                UnitCode = UnitCode,
+                UnitName = UnitName,
                 ProcessDate = ProcessDate,
                 RONo = RONo,
                 Article = Article,
@@ -52,6 +56,8 @@ namespace Manufactures.Domain.GarmentPreparings
             UENId = ReadModel.UENId;
             UENNo = ReadModel.UENNo;
             UnitId = new UnitDepartmentId(ReadModel.UnitId);
+            UnitCode = ReadModel.UnitCode;
+            UnitName = ReadModel.UnitName;
             ProcessDate = ReadModel.ProcessDate;
             RONo = ReadModel.RONo;
             Article = ReadModel.Article;
@@ -88,6 +94,28 @@ namespace Manufactures.Domain.GarmentPreparings
             {
                 UnitId = newUnitId;
                 ReadModel.UnitId = newUnitId.Value;
+            }
+        }
+
+        public void setUnitCode(string newUnitCode)
+        {
+            Validator.ThrowIfNullOrEmpty(() => newUnitCode);
+
+            if (newUnitCode != UnitCode)
+            {
+                UnitCode = newUnitCode;
+                ReadModel.UnitCode = newUnitCode;
+            }
+        }
+
+        public void setUnitName(string newUnitName)
+        {
+            Validator.ThrowIfNullOrEmpty(() => newUnitName);
+
+            if (newUnitName != UnitName)
+            {
+                UnitName = newUnitName;
+                ReadModel.UnitName = newUnitName;
             }
         }
 

@@ -3,6 +3,7 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentPreparings;
 using Manufactures.Domain.GarmentPreparings.Commands;
 using Manufactures.Domain.GarmentPreparings.Repositories;
+using Manufactures.Domain.GarmentPreparings.ValueObjects;
 using Moonlay;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,9 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
 
             garmentPreparing.setUENId(request.UENId);
             garmentPreparing.setUENNo(request.UENNo);
-            garmentPreparing.SetUnitId(request.UnitId);
+            garmentPreparing.SetUnitId(new UnitDepartmentId(request.Unit.Id));
+            garmentPreparing.setUnitCode(request.Unit.Code);
+            garmentPreparing.setUnitName(request.Unit.Name);
             garmentPreparing.setProcessDate(request.ProcessDate);
             garmentPreparing.setRONo(request.RONo);
             garmentPreparing.setArticle(request.Article);
@@ -52,15 +55,18 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
                 dbItem.setBasicPrice(item.BasicPrice);
                 dbItem.setDesignColor(item.DesignColor);
                 dbItem.setFabricType(item.FabricType);
-                dbItem.setProduct(item.Product);
+                dbItem.setProduct(new ProductId(item.Product.Id));
+                dbItem.setProductCode(item.Product.Code);
+                dbItem.setProductName(item.Product.Name);
                 dbItem.setQuantity(item.Quantity);
                 dbItem.setRemainingQuantity(item.RemainingQuantity);
                 dbItem.setUenItemId(item.UENItemId);
-                dbItem.setUomId(item.Uom);
+                dbItem.setUomId(new UomId(item.Uom.Id));
+                dbItem.setUomUnit(item.Uom.Unit);
                 await _garmentPreparingItemRepository.Update(dbItem);
             }
 
-            addedItems.Select(x => new GarmentPreparingItem(Guid.NewGuid(), x.UENItemId, x.Product, x.DesignColor, x.Quantity, x.Uom, x.FabricType, x.RemainingQuantity, x.BasicPrice, garmentPreparing.Identity)).ToList()
+            addedItems.Select(x => new GarmentPreparingItem(Guid.NewGuid(), x.UENItemId, new ProductId(x.Product.Id), x.Product.Code, x.Product.Name, x.DesignColor, x.Quantity, new UomId(x.Uom.Id), x.Uom.Unit, x.FabricType, x.RemainingQuantity, x.BasicPrice, garmentPreparing.Identity)).ToList()
                 .ForEach(async x => await _garmentPreparingItemRepository.Update(x));
 
             foreach (var item in deletedItems)

@@ -20,6 +20,14 @@ namespace Manufactures.ViewModels.GarmentPreparings
         [Required]
         public int UnitId { get; set; }
 
+        [Display(Name = "UnitCode")]
+        [Required]
+        public string UnitCode { get; set; }
+
+        [Display(Name = "UnitName")]
+        [Required]
+        public string UnitName { get; set; }
+
         [Display(Name = "ProcessDate")]
         [Required]
         public DateTimeOffset? ProcessDate { get; set; }

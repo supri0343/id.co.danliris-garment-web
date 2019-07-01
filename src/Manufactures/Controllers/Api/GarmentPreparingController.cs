@@ -46,12 +46,12 @@ namespace Manufactures.Controllers.Api
                 var garmentPreparingItems = garmentPreparingItemDto.Where(x => x.GarmentPreparingId == itemDto.Id).ToList();
 
                 itemDto.Items = garmentPreparingItems;
-                var selectedUnit = GetUnit(itemDto.UnitId.Id, WorkContext.Token);
+                var selectedUnit = GetUnit(itemDto.Unit.Id, WorkContext.Token);
 
                 if (selectedUnit != null && selectedUnit.data != null)
                 {
-                    itemDto.UnitId.Name = selectedUnit.data.Name;
-                    itemDto.UnitId.Code = selectedUnit.data.Code;
+                    itemDto.Unit.Name = selectedUnit.data.Name;
+                    itemDto.Unit.Code = selectedUnit.data.Code;
                 }
 
                 Parallel.ForEach(itemDto.Items, orderItem =>
@@ -90,7 +90,7 @@ namespace Manufactures.Controllers.Api
 
                 var garmentPreparingDtoList = garmentPreparingDto.Where(x => x.UENNo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                     || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    || x.UnitId.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    || x.Unit.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                     || x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                     //|| x.Items.Where(y => y.ProductId.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase))
                                     ).ToList();
@@ -164,12 +164,12 @@ namespace Manufactures.Controllers.Api
             if (preparingDto == null)
                 return NotFound();
 
-            var selectedUnit = GetUnit(preparingDto.UnitId.Id, WorkContext.Token).data;
+            var selectedUnit = GetUnit(preparingDto.Unit.Id, WorkContext.Token).data;
             
             if (selectedUnit != null)
             {
-                preparingDto.UnitId.Name = selectedUnit.Name;
-                preparingDto.UnitId.Code = selectedUnit.Code;
+                preparingDto.Unit.Name = selectedUnit.Name;
+                preparingDto.Unit.Code = selectedUnit.Code;
             }
 
             var itemConfigs = _garmentPreparingItemRepository.Find(x => x.GarmentPreparingId == preparingDto.Id).Select(o => new GarmentPreparingItemDto(o)).ToList();
@@ -205,7 +205,7 @@ namespace Manufactures.Controllers.Api
             {
                 VerifyUser();
 
-                var garmentPreparingValidation = _garmentPreparingRepository.Find(o => o.UENId == command.UENId && o.UENNo == command.UENNo && o.UnitId == command.UnitId.Value
+                var garmentPreparingValidation = _garmentPreparingRepository.Find(o => o.UENId == command.UENId && o.UENNo == command.UENNo && o.UnitId == command.Unit.Id
                                 && o.ProcessDate == command.ProcessDate && o.RONo == command.RONo && o.Article == command.Article && o.IsCuttingIn == command.IsCuttingIn).Select(o => new GarmentPreparingDto(o)).FirstOrDefault();
                 if (garmentPreparingValidation != null)
                     return BadRequest(new

@@ -3,6 +3,7 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentAvalProducts;
 using Manufactures.Domain.GarmentAvalProducts.Commands;
 using Manufactures.Domain.GarmentAvalProducts.Repositories;
+using Manufactures.Domain.GarmentAvalProducts.ValueObjects;
 using Moonlay;
 using System;
 using System.Collections.Generic;
@@ -48,14 +49,17 @@ namespace Manufactures.Application.GarmentAvalProducts.CommandHandlers
                 var dbItem = dbGarmentAvalProduct.Find(x => x.Identity == item.Identity);
                 dbItem.setPreparingId(item.PreparingId);
                 dbItem.setPreparingItemId(item.PreparingItemId);
-                dbItem.setProductId(item.ProductId);
+                dbItem.setProductId(new ProductId(item.Product.Id));
+                dbItem.setProductCode(item.Product.Code);
+                dbItem.setProductName(item.Product.Name);
                 dbItem.setDesignColor(item.DesignColor);
                 dbItem.setQuantity(item.Quantity);
-                dbItem.setUomId(item.UomId);
+                dbItem.setUomId(new UomId(item.Uom.Id));
+                dbItem.setUomUnit(item.Uom.Unit);
                 await _garmentAvalProductItemRepository.Update(dbItem);
             }
 
-            addedItems.Select(x => new GarmentAvalProductItem(Guid.NewGuid(), garmentAvalProduct.Identity, x.PreparingId, x.PreparingItemId, x.ProductId, x.DesignColor, x.Quantity, x.UomId)).ToList()
+            addedItems.Select(x => new GarmentAvalProductItem(Guid.NewGuid(), garmentAvalProduct.Identity, x.PreparingId, x.PreparingItemId, new ProductId(x.Product.Id), x.Product.Code, x.Product.Name, x.DesignColor, x.Quantity, new UomId(x.Uom.Id), x.Uom.Unit)).ToList()
                 .ForEach(async x => await _garmentAvalProductItemRepository.Update(x));
 
             foreach (var item in deletedItems)

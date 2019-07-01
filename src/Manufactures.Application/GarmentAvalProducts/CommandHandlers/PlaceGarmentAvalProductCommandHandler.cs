@@ -3,6 +3,7 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentAvalProducts;
 using Manufactures.Domain.GarmentAvalProducts.Commands;
 using Manufactures.Domain.GarmentAvalProducts.Repositories;
+using Manufactures.Domain.GarmentAvalProducts.ValueObjects;
 using Manufactures.Domain.GarmentPreparings;
 using Manufactures.Domain.GarmentPreparings.Repositories;
 using System;
@@ -40,7 +41,7 @@ namespace Manufactures.Application.GarmentAvalProducts.CommandHandlers
             if (garmentAvalProduct == null)
             {
                 garmentAvalProduct = new GarmentAvalProduct(Guid.NewGuid(), request.RONo, request.Article, request.AvalDate);
-                request.Items.Select(x => new GarmentAvalProductItem(Guid.NewGuid(), garmentAvalProduct.Identity, x.PreparingId, x.PreparingItemId, x.ProductId, x.DesignColor, x.Quantity, x.UomId)).ToList()
+                request.Items.Select(x => new GarmentAvalProductItem(Guid.NewGuid(), garmentAvalProduct.Identity, x.PreparingId, x.PreparingItemId, new ProductId(x.Product.Id), x.Product.Code, x.Product.Name, x.DesignColor, x.Quantity, new UomId(x.Uom.Id), x.Uom.Unit)).ToList()
                     .ForEach(async x => await _garmentAvalProductItemRepository.Update(x));
             }
 

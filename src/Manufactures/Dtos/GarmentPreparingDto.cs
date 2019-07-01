@@ -21,7 +21,7 @@ namespace Manufactures.Dtos
 
             UENId = garmentPreparing.UENId;
             UENNo = garmentPreparing.UENNo;
-            UnitId = new UnitDepartment(garmentPreparing.UnitId.Value, "", "");
+            Unit = new UnitDepartment(garmentPreparing.UnitId.Value, garmentPreparing.UnitName, garmentPreparing.UnitCode);
             ProcessDate = garmentPreparing.ProcessDate;
             RONo = garmentPreparing.RONo;
             Article = garmentPreparing.Article;
@@ -36,7 +36,7 @@ namespace Manufactures.Dtos
         public DateTimeOffset LastModifiedDate { get; set; }
         public int UENId { get; set; }
         public string UENNo { get; set; }
-        public UnitDepartment UnitId { get; set; }
+        public UnitDepartment Unit { get; set; }
         public DateTimeOffset? ProcessDate { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }

@@ -55,18 +55,18 @@ namespace Manufactures.Controllers.Api
 
                 Parallel.ForEach(itemDto.Items, orderItem =>
                 {
-                    var selectedProduct = GetGarmentProduct(orderItem.ProductId.Id, WorkContext.Token);
-                    var selectedUom = GetUom(orderItem.UomId.Id, WorkContext.Token);
+                    var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token);
+                    var selectedUom = GetUom(orderItem.Uom.Id, WorkContext.Token);
 
                     if (selectedProduct != null && selectedProduct.data != null)
                     {
-                        orderItem.ProductId.Name = selectedProduct.data.Name;
-                        orderItem.ProductId.Code = selectedProduct.data.Code;
+                        orderItem.Product.Name = selectedProduct.data.Name;
+                        orderItem.Product.Code = selectedProduct.data.Code;
                     }
 
                     if (selectedUom != null && selectedUom.data != null)
                     {
-                        orderItem.UomId.Unit = selectedUom.data.Unit;
+                        orderItem.Uom.Unit = selectedUom.data.Unit;
                     }
                 });
 
@@ -111,18 +111,18 @@ namespace Manufactures.Controllers.Api
 
             Parallel.ForEach(avalProductDto.Items, orderItem =>
             {
-                var selectedUOM = GetUom(orderItem.UomId.Id, WorkContext.Token).data;
-                var selectedProduct = GetGarmentProduct(orderItem.ProductId.Id, WorkContext.Token).data;
+                var selectedUOM = GetUom(orderItem.Uom.Id, WorkContext.Token).data;
+                var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token).data;
 
                 if (selectedUOM != null)
                 {
-                    orderItem.UomId.Unit = selectedUOM.Unit;
+                    orderItem.Uom.Unit = selectedUOM.Unit;
                 }
 
                 if (selectedProduct != null)
                 {
-                    orderItem.ProductId.Code = selectedProduct.Code;
-                    orderItem.ProductId.Name = selectedProduct.Name;
+                    orderItem.Product.Code = selectedProduct.Code;
+                    orderItem.Product.Name = selectedProduct.Name;
                 }
 
             });
