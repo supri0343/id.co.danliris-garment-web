@@ -15,10 +15,10 @@ namespace Manufactures.Dtos
             LastModifiedDate = garmentPreparingItem.AuditTrail.ModifiedDate ?? garmentPreparingItem.AuditTrail.CreatedDate;
             LastModifiedBy = garmentPreparingItem.AuditTrail.ModifiedBy ?? garmentPreparingItem.AuditTrail.CreatedBy;
             UENItemId = garmentPreparingItem.UENItemId;
-            Product = new Product(garmentPreparingItem.Product.Value, "", "");
+            Product = new Product(garmentPreparingItem.ProductId.Value, garmentPreparingItem.ProductName, garmentPreparingItem.ProductCode);
             DesignColor = garmentPreparingItem.DesignColor;
             Quantity = garmentPreparingItem.Quantity;
-            Uom = new Uom(garmentPreparingItem.Uom.Value, "");
+            Uom = new Uom(garmentPreparingItem.UomId.Value, garmentPreparingItem.UomUnit);
             FabricType = garmentPreparingItem.FabricType;
             RemainingQuantity = garmentPreparingItem.RemainingQuantity;
             BasicPrice = garmentPreparingItem.BasicPrice;

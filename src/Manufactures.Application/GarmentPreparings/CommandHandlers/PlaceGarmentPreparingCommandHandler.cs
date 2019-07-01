@@ -3,6 +3,7 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentPreparings;
 using Manufactures.Domain.GarmentPreparings.Commands;
 using Manufactures.Domain.GarmentPreparings.Repositories;
+using Manufactures.Domain.GarmentPreparings.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,8 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
             var garmentPreparing  = _garmentPreparingRepository.Find(o =>
                                     o.UENId == request.UENId &&
                                     o.UENNo == request.UENNo &&
-                                    o.UnitId == request.UnitId.Value &&
+                                    o.UnitId == request.Unit.Id &&
+                                    o.UnitCode == request.Unit.Code &&
                                     o.ProcessDate == request.ProcessDate &&
                                     o.RONo == request.RONo &&
                                     o.Article == request.Article &&
@@ -37,9 +39,9 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
             List<GarmentPreparingItem> garmentPreparingItem = new List<GarmentPreparingItem>();
             if (garmentPreparing == null)
             {
-                garmentPreparing = new GarmentPreparing(Guid.NewGuid(), request.UENId, request.UENNo, request.UnitId, request.ProcessDate, request.RONo,
+                garmentPreparing = new GarmentPreparing(Guid.NewGuid(), request.UENId, request.UENNo, new UnitDepartmentId(request.Unit.Id), request.Unit.Code, request.Unit.Name, request.ProcessDate, request.RONo,
                         request.Article, request.IsCuttingIn);
-                request.Items.Select(x => new GarmentPreparingItem(Guid.NewGuid(), x.UENItemId, x.Product, x.DesignColor, x.Quantity, x.Uom, x.FabricType, x.RemainingQuantity, x.BasicPrice, garmentPreparing.Identity)).ToList()
+                request.Items.Select(x => new GarmentPreparingItem(Guid.NewGuid(), x.UENItemId, new ProductId(x.Product.Id), x.Product.Code, x.Product.Name, x.DesignColor, x.Quantity, new UomId(x.Uom.Id), x.Uom.Unit, x.FabricType, x.RemainingQuantity, x.BasicPrice, garmentPreparing.Identity)).ToList()
                     .ForEach(async x => await _garmentPreparingItemRepository.Update(x));
             }
 

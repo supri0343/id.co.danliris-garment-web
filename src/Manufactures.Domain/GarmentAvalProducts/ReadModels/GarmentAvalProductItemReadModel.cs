@@ -16,8 +16,11 @@ namespace Manufactures.Domain.GarmentAvalProducts.ReadModels
         public string PreparingId { get; internal set; }
         public string PreparingItemId { get; internal set; }
         public int ProductId { get; internal set; }
+        public string ProductCode { get; internal set; }
+        public string ProductName { get; internal set; }
         public string DesignColor { get; internal set; }
         public double Quantity { get; internal set; }
         public int UomId { get; internal set; }
+        public string UomUnit { get; internal set; }
     }
 }

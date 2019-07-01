@@ -15,11 +15,14 @@ namespace Manufactures.Domain.GarmentAvalProducts
         public GarmentPreparingId PreparingId { get; private set; }
         public GarmentPreparingItemId PreparingItemId { get; private set; }
         public ProductId ProductId { get; private set; }
+        public string ProductCode { get; private set; }
+        public string ProductName { get; private set; }
         public string DesignColor { get; private set; }
         public double Quantity { get; private set; }
         public UomId UomId { get; private set; }
+        public string UomUnit { get; private set; }
 
-        public GarmentAvalProductItem(Guid identity, Guid apId, GarmentPreparingId preparingId, GarmentPreparingItemId preparingItemId, ProductId productId, string designColor, double quantity, UomId uomId) : base(identity)
+        public GarmentAvalProductItem(Guid identity, Guid apId, GarmentPreparingId preparingId, GarmentPreparingItemId preparingItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit) : base(identity)
         {
             this.MarkTransient();
 
@@ -28,9 +31,12 @@ namespace Manufactures.Domain.GarmentAvalProducts
             PreparingId = preparingId;
             PreparingItemId = preparingItemId;
             ProductId = productId;
+            ProductCode = productCode;
+            ProductName = productName;
             DesignColor = designColor;
             Quantity = quantity;
             UomId = uomId;
+            UomUnit = uomUnit;
 
             ReadModel = new GarmentAvalProductItemReadModel(Identity)
             {
@@ -38,9 +44,12 @@ namespace Manufactures.Domain.GarmentAvalProducts
                 PreparingId = PreparingId.Value,
                 PreparingItemId = PreparingItemId.Value,
                 ProductId = ProductId.Value,
+                ProductCode = ProductCode,
+                ProductName = ProductName,
                 DesignColor = DesignColor,
                 Quantity = Quantity,
-                UomId = UomId.Value
+                UomId = UomId.Value,
+                UomUnit = UomUnit
             };
             ReadModel.AddDomainEvent(new OnGarmentAvalProductPlaced(this.Identity));
         }
@@ -51,9 +60,12 @@ namespace Manufactures.Domain.GarmentAvalProducts
             PreparingId = new GarmentPreparingId(ReadModel.PreparingId);
             PreparingItemId = new GarmentPreparingItemId(ReadModel.PreparingItemId);
             ProductId = new ProductId(ReadModel.ProductId);
+            ProductCode = ReadModel.ProductCode;
+            ProductName = ReadModel.ProductName;
             DesignColor = ReadModel.DesignColor;
             Quantity = ReadModel.Quantity;
             UomId = new UomId(ReadModel.UomId);
+            UomUnit = ReadModel.UomUnit;
         }
 
         public void setPreparingId(GarmentPreparingId newPreparingId)
@@ -89,6 +101,28 @@ namespace Manufactures.Domain.GarmentAvalProducts
             }
         }
 
+        public void setProductCode(string newProductCode)
+        {
+            Validator.ThrowIfNullOrEmpty(() => newProductCode);
+
+            if (newProductCode != ProductCode)
+            {
+                ProductCode = newProductCode;
+                ReadModel.ProductCode = newProductCode;
+            }
+        }
+
+        public void setProductName(string newProductName)
+        {
+            Validator.ThrowIfNullOrEmpty(() => newProductName);
+
+            if (newProductName != ProductName)
+            {
+                ProductName = newProductName;
+                ReadModel.ProductName = newProductName;
+            }
+        }
+
         public void setDesignColor(string newDesignColor)
         {
             Validator.ThrowIfNullOrEmpty(() => newDesignColor);
@@ -119,6 +153,17 @@ namespace Manufactures.Domain.GarmentAvalProducts
             {
                 UomId = newUomId;
                 ReadModel.UomId = newUomId.Value;
+            }
+        }
+
+        public void setUomUnit(string newUomUnit)
+        {
+            Validator.ThrowIfNullOrEmpty(() => newUomUnit);
+
+            if (newUomUnit != UomUnit)
+            {
+                UomUnit = newUomUnit;
+                ReadModel.UomUnit = newUomUnit;
             }
         }
 

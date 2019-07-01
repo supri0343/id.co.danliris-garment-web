@@ -13,25 +13,31 @@ namespace Manufactures.Domain.GarmentPreparings
     public class GarmentPreparingItem : AggregateRoot<GarmentPreparingItem, GarmentPreparingItemReadModel>
     {
         public int UENItemId { get; private set; }
-        public ProductId Product { get; private set; }
+        public ProductId ProductId { get; private set; }
+        public string ProductCode { get; private set; }
+        public string ProductName { get; private set; }
         public string DesignColor { get; private set; }
         public double Quantity { get; private set; }
-        public UomId Uom { get; private set; }
+        public UomId UomId { get; private set; }
+        public string UomUnit { get; private set; }
         public string FabricType { get; private set; }
         public double RemainingQuantity { get; private set; }
         public double BasicPrice { get; private set; }
         public Guid GarmentPreparingId { get; private set; }
 
-        public GarmentPreparingItem(Guid identity, int uenItemId, ProductId product, string designColor, double quantity, UomId uom, string fabricType, double remainingQuantity, double basicPrice, Guid garmentPreparingId) : base(identity)
+        public GarmentPreparingItem(Guid identity, int uenItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, string fabricType, double remainingQuantity, double basicPrice, Guid garmentPreparingId) : base(identity)
         {
             this.MarkTransient();
 
             Identity = identity;
             UENItemId = uenItemId;
-            Product = product;
+            ProductId = productId;
+            ProductCode = productCode;
+            ProductName = productName;
             DesignColor = designColor;
             Quantity = quantity;
-            Uom = uom;
+            UomId = uomId;
+            UomUnit = uomUnit;
             FabricType = fabricType;
             RemainingQuantity = remainingQuantity;
             BasicPrice = basicPrice;
@@ -40,10 +46,13 @@ namespace Manufactures.Domain.GarmentPreparings
             ReadModel = new GarmentPreparingItemReadModel(Identity)
             {
                 UENItemId = UENItemId,
-                ProductId = Product.Value,
+                ProductId = ProductId.Value,
+                ProductCode = ProductCode,
+                ProductName = ProductName,
                 DesignColor = DesignColor,
                 Quantity = Quantity,
-                UomId = Uom.Value,
+                UomId = UomId.Value,
+                UomUnit = UomUnit,
                 FabricType = FabricType,
                 RemainingQuantity = RemainingQuantity,
                 BasicPrice = BasicPrice,
@@ -55,10 +64,13 @@ namespace Manufactures.Domain.GarmentPreparings
         public GarmentPreparingItem(GarmentPreparingItemReadModel readModel) : base(readModel)
         {
             UENItemId = ReadModel.UENItemId;
-            Product = new ProductId(ReadModel.ProductId);
+            ProductId = new ProductId(ReadModel.ProductId);
+            ProductCode = ReadModel.ProductCode;
+            ProductName = ReadModel.ProductName;
             DesignColor = ReadModel.DesignColor;
             Quantity = ReadModel.Quantity;
-            Uom = new UomId(ReadModel.UomId);
+            UomId = new UomId(ReadModel.UomId);
+            UomUnit = ReadModel.UomUnit;
             FabricType = ReadModel.FabricType;
             RemainingQuantity = ReadModel.RemainingQuantity;
             BasicPrice = ReadModel.BasicPrice;
@@ -80,10 +92,32 @@ namespace Manufactures.Domain.GarmentPreparings
         {
             Validator.ThrowIfNull(() => newProduct);
 
-            if (newProduct != Product)
+            if (newProduct != ProductId)
             {
-                Product = newProduct;
+                ProductId = newProduct;
                 ReadModel.ProductId = newProduct.Value;
+            }
+        }
+
+        public void setProductCode(string newProductCode)
+        {
+            Validator.ThrowIfNullOrEmpty(() => newProductCode);
+
+            if (newProductCode != ProductCode)
+            {
+                ProductCode = newProductCode;
+                ReadModel.ProductCode = newProductCode;
+            }
+        }
+
+        public void setProductName(string newProductName)
+        {
+            Validator.ThrowIfNullOrEmpty(() => newProductName);
+
+            if (newProductName != ProductName)
+            {
+                ProductName = newProductName;
+                ReadModel.ProductName = newProductName;
             }
         }
 
@@ -113,10 +147,21 @@ namespace Manufactures.Domain.GarmentPreparings
         {
             Validator.ThrowIfNull(() => newUom);
 
-            if (newUom != Uom)
+            if (newUom != UomId)
             {
-                Uom = newUom;
+                UomId = newUom;
                 ReadModel.UomId = newUom.Value;
+            }
+        }
+
+        public void setUomUnit(string newUomUnit)
+        {
+            Validator.ThrowIfNullOrEmpty(() => newUomUnit);
+
+            if (newUomUnit != UomUnit)
+            {
+                UomUnit = newUomUnit;
+                ReadModel.UomUnit = newUomUnit;
             }
         }
 

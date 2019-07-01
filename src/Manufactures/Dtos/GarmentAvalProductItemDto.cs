@@ -18,10 +18,10 @@ namespace Manufactures.Dtos
             APId = garmentAvalProductItem.APId;
             PreparingId = new GarmentPreparing(garmentAvalProductItem.PreparingId.Value, "", "");
             PreparingItemId = new GarmentPreparingItem(garmentAvalProductItem.PreparingItemId.Value, null, "", 0);
-            ProductId = new Product(garmentAvalProductItem.ProductId.Value, "", "");
+            Product = new Product(garmentAvalProductItem.ProductId.Value, garmentAvalProductItem.ProductName, garmentAvalProductItem.ProductCode);
             DesignColor = garmentAvalProductItem.DesignColor;
             Quantity = garmentAvalProductItem.Quantity;
-            UomId = new Uom(garmentAvalProductItem.UomId.Value, "");
+            Uom = new Uom(garmentAvalProductItem.UomId.Value, garmentAvalProductItem.UomUnit);
         }
 
         public Guid Id { get; set; }
@@ -33,9 +33,9 @@ namespace Manufactures.Dtos
         public Guid APId { get; set; }
         public GarmentPreparing PreparingId { get; set; }
         public GarmentPreparingItem PreparingItemId { get; set; }
-        public Product ProductId { get; set; }
+        public Product Product { get; set; }
         public string DesignColor { get; set; }
         public double Quantity { get; set; }
-        public Uom UomId { get; set; }
+        public Uom Uom { get; set; }
     }
 }

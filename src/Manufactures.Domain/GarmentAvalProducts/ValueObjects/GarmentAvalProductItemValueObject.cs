@@ -11,7 +11,7 @@ namespace Manufactures.Domain.GarmentAvalProducts.ValueObjects
 
         }
 
-        public GarmentAvalProductItemValueObject(Guid id, Guid apId, GarmentPreparingId preparingId, GarmentPreparingItemId preparingItemId, ProductId productId, string designColor, double quantity, UomId uomId)
+        public GarmentAvalProductItemValueObject(Guid id, Guid apId, GarmentPreparingId preparingId, GarmentPreparingItemId preparingItemId, Product product, string designColor, double quantity, Uom uom)
         {
 
         }
@@ -20,10 +20,10 @@ namespace Manufactures.Domain.GarmentAvalProducts.ValueObjects
         public Guid APId { get; set; }
         public GarmentPreparingId PreparingId { get; set; }
         public GarmentPreparingItemId PreparingItemId { get; set; }
-        public ProductId ProductId { get; set; }
+        public Product Product { get; set; }
         public string DesignColor { get; set; }
         public double Quantity { get; set; }
-        public UomId UomId { get; set; }
+        public Uom Uom { get; set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
