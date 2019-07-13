@@ -19,7 +19,7 @@ namespace Manufactures.Domain.GarmentPreparings.ValueObjects
             Code = code;
         }
 
-        public int Id { get; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 

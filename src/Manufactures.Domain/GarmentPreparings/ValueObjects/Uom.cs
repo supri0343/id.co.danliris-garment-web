@@ -17,7 +17,7 @@ namespace Manufactures.Domain.GarmentPreparings.ValueObjects
             Unit = uomUnit;
         }
 
-        public int Id { get; }
+        public int Id { get; set; }
         public string Unit { get; set; }
         protected override IEnumerable<object> GetAtomicValues()
         {

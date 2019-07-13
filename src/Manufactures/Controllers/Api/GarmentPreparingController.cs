@@ -46,30 +46,30 @@ namespace Manufactures.Controllers.Api
                 var garmentPreparingItems = garmentPreparingItemDto.Where(x => x.GarmentPreparingId == itemDto.Id).ToList();
 
                 itemDto.Items = garmentPreparingItems;
-                var selectedUnit = GetUnit(itemDto.Unit.Id, WorkContext.Token);
+                //var selectedUnit = GetUnit(itemDto.Unit.Id, WorkContext.Token);
 
-                if (selectedUnit != null && selectedUnit.data != null)
-                {
-                    itemDto.Unit.Name = selectedUnit.data.Name;
-                    itemDto.Unit.Code = selectedUnit.data.Code;
-                }
+                //if (selectedUnit != null && selectedUnit.data != null)
+                //{
+                //    itemDto.Unit.Name = selectedUnit.data.Name;
+                //    itemDto.Unit.Code = selectedUnit.data.Code;
+                //}
 
-                Parallel.ForEach(itemDto.Items, orderItem =>
-                {
-                    var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token);
-                    var selectedUom = GetUom(orderItem.Uom.Id, WorkContext.Token);
+                //Parallel.ForEach(itemDto.Items, orderItem =>
+                //{
+                //    var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token);
+                //    var selectedUom = GetUom(orderItem.Uom.Id, WorkContext.Token);
 
-                    if(selectedProduct != null && selectedProduct.data != null)
-                    {
-                        orderItem.Product.Name = selectedProduct.data.Name;
-                        orderItem.Product.Code = selectedProduct.data.Code;
-                    }
+                //    if(selectedProduct != null && selectedProduct.data != null)
+                //    {
+                //        orderItem.Product.Name = selectedProduct.data.Name;
+                //        orderItem.Product.Code = selectedProduct.data.Code;
+                //    }
 
-                    if (selectedUom != null && selectedUom.data != null)
-                    {
-                        orderItem.Uom.Unit = selectedUom.data.Unit;
-                    }
-                });
+                //    if (selectedUom != null && selectedUom.data != null)
+                //    {
+                //        orderItem.Uom.Unit = selectedUom.data.Unit;
+                //    }
+                //});
 
                itemDto.Items = itemDto.Items.OrderBy(x => x.Id).ToList();
             });
@@ -164,34 +164,34 @@ namespace Manufactures.Controllers.Api
             if (preparingDto == null)
                 return NotFound();
 
-            var selectedUnit = GetUnit(preparingDto.Unit.Id, WorkContext.Token).data;
+            //var selectedUnit = GetUnit(preparingDto.Unit.Id, WorkContext.Token).data;
             
-            if (selectedUnit != null)
-            {
-                preparingDto.Unit.Name = selectedUnit.Name;
-                preparingDto.Unit.Code = selectedUnit.Code;
-            }
+            //if (selectedUnit != null)
+            //{
+            //    preparingDto.Unit.Name = selectedUnit.Name;
+            //    preparingDto.Unit.Code = selectedUnit.Code;
+            //}
 
             var itemConfigs = _garmentPreparingItemRepository.Find(x => x.GarmentPreparingId == preparingDto.Id).Select(o => new GarmentPreparingItemDto(o)).ToList();
             preparingDto.Items = itemConfigs;
 
-            Parallel.ForEach(preparingDto.Items, orderItem =>
-            {
-                var selectedUOM = GetUom(orderItem.Uom.Id, WorkContext.Token).data;
-                var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token).data;
+            //Parallel.ForEach(preparingDto.Items, orderItem =>
+            //{
+            //    var selectedUOM = GetUom(orderItem.Uom.Id, WorkContext.Token).data;
+            //    var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token).data;
 
-                if (selectedUOM != null)
-                {
-                    orderItem.Uom.Unit = selectedUOM.Unit;
-                }
+            //    if (selectedUOM != null)
+            //    {
+            //        orderItem.Uom.Unit = selectedUOM.Unit;
+            //    }
 
-                if (selectedProduct != null)
-                {
-                    orderItem.Product.Code = selectedProduct.Code;
-                    orderItem.Product.Name = selectedProduct.Name;
-                }
+            //    if (selectedProduct != null)
+            //    {
+            //        orderItem.Product.Code = selectedProduct.Code;
+            //        orderItem.Product.Name = selectedProduct.Name;
+            //    }
 
-            });
+            //});
             preparingDto.Items = preparingDto.Items.OrderBy(x => x.Id).ToList();
             await Task.Yield();
 

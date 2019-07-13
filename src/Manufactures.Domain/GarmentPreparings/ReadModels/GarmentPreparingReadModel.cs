@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Domain.ReadModels;
 using System;
+using System.Collections.Generic;
 
 namespace Manufactures.Domain.GarmentPreparings.ReadModels
 {
@@ -19,6 +20,7 @@ namespace Manufactures.Domain.GarmentPreparings.ReadModels
         public string RONo { get; internal set; }
         public string Article { get; internal set; }
         public bool IsCuttingIn { get; internal set; }
+        public virtual List<GarmentPreparingItemReadModel> GarmentPreparingItem { get; internal set; }
 
     }
 }

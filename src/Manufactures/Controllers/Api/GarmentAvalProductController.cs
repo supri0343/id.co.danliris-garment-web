@@ -53,22 +53,22 @@ namespace Manufactures.Controllers.Api
 
                 itemDto.Items = garmentPreparingItems;
 
-                Parallel.ForEach(itemDto.Items, orderItem =>
-                {
-                    var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token);
-                    var selectedUom = GetUom(orderItem.Uom.Id, WorkContext.Token);
+                //Parallel.ForEach(itemDto.Items, orderItem =>
+                //{
+                //    var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token);
+                //    var selectedUom = GetUom(orderItem.Uom.Id, WorkContext.Token);
 
-                    if (selectedProduct != null && selectedProduct.data != null)
-                    {
-                        orderItem.Product.Name = selectedProduct.data.Name;
-                        orderItem.Product.Code = selectedProduct.data.Code;
-                    }
+                //    if (selectedProduct != null && selectedProduct.data != null)
+                //    {
+                //        orderItem.Product.Name = selectedProduct.data.Name;
+                //        orderItem.Product.Code = selectedProduct.data.Code;
+                //    }
 
-                    if (selectedUom != null && selectedUom.data != null)
-                    {
-                        orderItem.Uom.Unit = selectedUom.data.Unit;
-                    }
-                });
+                //    if (selectedUom != null && selectedUom.data != null)
+                //    {
+                //        orderItem.Uom.Unit = selectedUom.data.Unit;
+                //    }
+                //});
 
                 itemDto.Items = itemDto.Items.OrderBy(x => x.Id).ToList();
             });
@@ -109,23 +109,23 @@ namespace Manufactures.Controllers.Api
             var itemConfigs = _garmentAvalProductItemRepository.Find(x => x.APId == avalProductDto.Id).Select(o => new GarmentAvalProductItemDto(o)).ToList();
             avalProductDto.Items = itemConfigs;
 
-            Parallel.ForEach(avalProductDto.Items, orderItem =>
-            {
-                var selectedUOM = GetUom(orderItem.Uom.Id, WorkContext.Token).data;
-                var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token).data;
+            //Parallel.ForEach(avalProductDto.Items, orderItem =>
+            //{
+            //    var selectedUOM = GetUom(orderItem.Uom.Id, WorkContext.Token).data;
+            //    var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token).data;
 
-                if (selectedUOM != null)
-                {
-                    orderItem.Uom.Unit = selectedUOM.Unit;
-                }
+            //    if (selectedUOM != null)
+            //    {
+            //        orderItem.Uom.Unit = selectedUOM.Unit;
+            //    }
 
-                if (selectedProduct != null)
-                {
-                    orderItem.Product.Code = selectedProduct.Code;
-                    orderItem.Product.Name = selectedProduct.Name;
-                }
+            //    if (selectedProduct != null)
+            //    {
+            //        orderItem.Product.Code = selectedProduct.Code;
+            //        orderItem.Product.Name = selectedProduct.Name;
+            //    }
 
-            });
+            //});
             avalProductDto.Items = avalProductDto.Items.OrderBy(x => x.Id).ToList();
             await Task.Yield();
 

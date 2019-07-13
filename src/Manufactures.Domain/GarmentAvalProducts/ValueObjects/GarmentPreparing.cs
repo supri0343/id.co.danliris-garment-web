@@ -19,7 +19,7 @@ namespace Manufactures.Domain.GarmentAvalProducts.ValueObjects
             Article = article;
         }
 
-        public string Id { get; }
+        public string Id { get; set; }
         public string RONo { get; }
         public string Article { get; }
 
