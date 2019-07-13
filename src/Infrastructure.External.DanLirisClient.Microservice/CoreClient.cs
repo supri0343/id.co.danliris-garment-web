@@ -148,7 +148,6 @@ namespace Infrastructure.External.DanLirisClient.Microservice
         public void SetGarmentProducts()
         {
             var masterGarmentProductUri = MasterDataSettings.Endpoint + $"master/garmentProducts";
-            //var masterUnitUri = $"https://com-danliris-service-core-dev.azurewebsites.net/v1/master/products/simple";
             var garmentProductResponse = _http.GetAsync(masterGarmentProductUri).Result;
 
             var garmentProductResult = new ProductResult();
@@ -158,10 +157,28 @@ namespace Infrastructure.External.DanLirisClient.Microservice
             }
             else
             {
-                SetProduct();
+                SetGarmentProducts();
             }
             if (garmentProductResult.data.Count > 0)
                 cacheManager.Set("GarmentProducts", garmentProductResult.data);
+        }
+
+        public void SetStorages()
+        {
+            var masterStorageUri = MasterDataSettings.Endpoint + $"master/storages";
+            var storageResponse = _http.GetAsync(masterStorageUri).Result;
+
+            var storageResult = new UnitResult();
+            if (storageResponse.EnsureSuccessStatusCode().IsSuccessStatusCode)
+            {
+                storageResult = JsonConvert.DeserializeObject<UnitResult>(storageResponse.Content.ReadAsStringAsync().Result);
+            }
+            else
+            {
+                SetStorages();
+            }
+            if (storageResult.data.Count > 0)
+                cacheManager.Set("Storages", storageResult.data);
         }
     }
 }

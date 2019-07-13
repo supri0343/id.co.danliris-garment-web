@@ -20,10 +20,10 @@ namespace Manufactures.Domain.GarmentAvalProducts.ValueObjects
             Quantity = quantity;
         }
 
-        public string Id { get; }
-        public ProductId ProductId { get; }
-        public string DesignColor { get; }
-        public double Quantity { get; }
+        public string Id { get; set; }
+        public ProductId ProductId { get; set; }
+        public string DesignColor { get; set; }
+        public double Quantity { get; set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

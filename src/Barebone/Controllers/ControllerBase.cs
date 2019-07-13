@@ -301,6 +301,41 @@ namespace Barebone.Controllers
             }
         }
 
+        protected SingleStorageResult GetStorage(int id, string token)
+        {
+            var masterStorageUri = MasterDataSettings.Endpoint + $"master/storages/{id}";
+            var masterStorageResponse = _http.GetAsync(masterStorageUri, token).Result;
+
+            if (masterStorageResponse.IsSuccessStatusCode)
+            {
+                SingleStorageResult storageResult = JsonConvert.DeserializeObject<SingleStorageResult>(masterStorageResponse.Content.ReadAsStringAsync().Result);
+                return storageResult;
+            }
+            else
+            {
+                return new SingleStorageResult();
+            }
+
+        }
+
+        protected StorageResult GetStorages(string keyword = null)
+        {
+            var masterStorageUri = MasterDataSettings.Endpoint + $"master/storages?size={int.MaxValue}&keyword={keyword}";
+            //var masterUnitUri = $"https://com-danliris-service-core-dev.azurewebsites.net/v1/master/products/simple";
+            var storageResponse = _http.GetAsync(masterStorageUri).Result;
+
+            var storageResult = new StorageResult();
+            if (storageResponse.IsSuccessStatusCode)
+            {
+                storageResult = JsonConvert.DeserializeObject<StorageResult>(storageResponse.Content.ReadAsStringAsync().Result);
+            }
+            else
+            {
+                GetStorages(keyword);
+            }
+            return storageResult;
+        }
+
         protected void VerifyUser()
         {
             WorkContext.UserName = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;

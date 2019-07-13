@@ -22,5 +22,6 @@ namespace Manufactures.Domain.GarmentAvalProducts.ReadModels
         public double Quantity { get; internal set; }
         public int UomId { get; internal set; }
         public string UomUnit { get; internal set; }
+        public virtual GarmentAvalProductReadModel GarmentAvalProductIdentity { get; internal set; }
     }
 }
