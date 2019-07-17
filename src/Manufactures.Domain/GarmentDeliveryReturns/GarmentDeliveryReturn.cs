@@ -37,6 +37,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
             RONo = roNo;
             Article = article;
             UnitDOId = unitDOId;
+            UnitDONo = unitDONo;
             UENId = uenId;
             PreparingId = preparingId;
             ReturnDate = returnDate;
@@ -55,6 +56,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
                 RONo = RONo,
                 Article = Article,
                 UnitDOId = UnitDOId,
+                UnitDONo = UnitDONo,
                 UENId = UENId,
                 PreparingId = PreparingId,
                 ReturnDate = ReturnDate,
@@ -76,6 +78,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
             RONo = ReadModel.RONo;
             Article = ReadModel.Article;
             UnitDOId = ReadModel.UnitDOId;
+            UnitDONo = ReadModel.UnitDONo;
             UENId = ReadModel.UENId;
             PreparingId = ReadModel.PreparingId;
             ReturnDate = ReadModel.ReturnDate;
@@ -121,8 +124,6 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
         }
         public void setUnitDOId(int newUnitDOId)
         {
-            Validator.ThrowIfNull(() => newUnitDOId);
-
             if (newUnitDOId != UnitDOId)
             {
                 UnitDOId = newUnitDOId;
@@ -141,8 +142,6 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
         }
         public void setUENId(int newUENId)
         {
-            Validator.ThrowIfNull(() => newUENId);
-
             if (newUENId != UENId)
             {
                 UENId = newUENId;
@@ -161,8 +160,6 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
         }
         public void setReturnDate(DateTimeOffset newReturnDate)
         {
-            Validator.ThrowIfNull(() => newReturnDate);
-
             if (newReturnDate != ReturnDate)
             {
                 ReturnDate = newReturnDate;

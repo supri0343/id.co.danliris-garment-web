@@ -47,7 +47,7 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
             List<GarmentDeliveryReturnItem> garmentDeliveryReturnItem = new List<GarmentDeliveryReturnItem>();
             if (garmentDeliveryReturn == null)
             {
-                garmentDeliveryReturn = new GarmentDeliveryReturn(Guid.NewGuid(), request.DRNo, request.RONo, request.Article, request.UnitDOId, request.UnitDONo, request.UENId, request.PreparingId, request.ReturnDate, request.ReturnType, new UnitDepartmentId(request.Unit.Id), request.Unit.Code, request.Unit.Name, new StorageId(request.Storage.Id), request.Storage.Name, request.Storage.Code, request.IsUsed);
+                garmentDeliveryReturn = new GarmentDeliveryReturn(Guid.NewGuid(), GenerateDRNo(request), request.RONo, request.Article, request.UnitDOId, request.UnitDONo, request.UENId, request.PreparingId, request.ReturnDate, request.ReturnType, new UnitDepartmentId(request.Unit.Id), request.Unit.Code, request.Unit.Name, new StorageId(request.Storage.Id), request.Storage.Name, request.Storage.Code, request.IsUsed);
                 request.Items.Select(x => new GarmentDeliveryReturnItem(Guid.NewGuid(), garmentDeliveryReturn.Identity, x.UnitDOItemId, x.UENItemId, x.PreparingItemId, new ProductId(x.Product.Id), x.Product.Code, x.Product.Name, x.DesignColor, x.RONo, x.Quantity, new UomId(x.Uom.Id), x.Uom.Unit)).ToList()
                     .ForEach(async x => await _garmentDeliveryReturnItemRepository.Update(x));
             }
@@ -69,12 +69,12 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
             var month = now.ToString("MM");
             var day = now.ToString("dd");
 
-            var prefix = $"DR{year}{month}";
+            var prefix = $"DR{year}{month}{day}";
 
-            //var lastCutInNo = _garmentCuttingInRepository.Query.Where(w => w.CutInNo.StartsWith(prefix)).Select(s => int.Parse(s.CutInNo.Replace(prefix, ""))).FirstOrDefault();
-            //var CutInNo = $"{prefix}{(lastCutInNo + 1).ToString("D4")}";
+            var lastDRNo = _garmentDeliveryReturnRepository.Query.Where(w => w.DRNo.StartsWith(prefix)).OrderByDescending(o => o.DRNo).Select(s => int.Parse(s.DRNo.Replace(prefix, ""))).FirstOrDefault();
+            var drNo = $"{prefix}{(lastDRNo + 1).ToString("d4")}";
 
-            return CutInNo;
+            return drNo;
         }
     }
 }
