@@ -161,7 +161,10 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
 
             var prefix = $"DC{year}{month}";
 
-            var lastCutInNo = _garmentCuttingInRepository.Query.Where(w => w.CutInNo.StartsWith(prefix)).Select(s => int.Parse(s.CutInNo.Replace(prefix, ""))).FirstOrDefault();
+            var lastCutInNo = _garmentCuttingInRepository.Query.Where(w => w.CutInNo.StartsWith(prefix))
+                .OrderByDescending(o => o.CutInNo)
+                .Select(s => int.Parse(s.CutInNo.Replace(prefix, "")))
+                .FirstOrDefault();
             var CutInNo = $"{prefix}{(lastCutInNo + 1).ToString("D4")}";
 
             return CutInNo;
