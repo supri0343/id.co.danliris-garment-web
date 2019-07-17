@@ -10,8 +10,8 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.Commands
 {
     public class UpdateGarmentDeliveryReturnCommand : ICommand<GarmentDeliveryReturn>
     {
-        public void SetId(Guid id) { Id = id; }
-        public Guid Id { get; private set; }
+        public void SetId(Guid id) { Identity = id; }
+        public Guid Identity { get; private set; }
         public string DRNo { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }
@@ -31,6 +31,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.Commands
         public UpdateGarmentDeliveryReturnCommandValidator()
         {
             RuleFor(r => r.RONo).NotNull().WithMessage("Nomor RO Tidak Boleh Kosong");
+            RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong");
             RuleForEach(r => r.Items).SetValidator(new UpdateGarmentDeliveryReturnItemValueObjectValidator());
         }
     }

@@ -32,9 +32,9 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
             UnitDOItemId = unitDOItemId;
             UENItemId = uenItemId;
             PreparingItemId = preparingItemId;
-            ProductId = ProductId;
-            ProductCode = ProductCode;
-            ProductName = ProductName;
+            ProductId = productId;
+            ProductCode = productCode;
+            ProductName = productName;
             DesignColor = designColor;
             RONo = roNo;
             Quantity = quantity;
@@ -76,8 +76,6 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
 
         public void setUnitDOItemId(int newUnitDOItemId)
         {
-            Validator.ThrowIfNull(() => newUnitDOItemId);
-
             if (newUnitDOItemId != UnitDOItemId)
             {
                 UnitDOItemId = newUnitDOItemId;
@@ -86,8 +84,6 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
         }
         public void setUENItemId(int newUENItemId)
         {
-            Validator.ThrowIfNull(() => newUENItemId);
-
             if (newUENItemId != UENItemId)
             {
                 UENItemId = newUENItemId;
@@ -159,8 +155,6 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
         }
         public void setQuantity(double newQuantity)
         {
-            Validator.ThrowIfNull(() => newQuantity);
-
             if (newQuantity != Quantity)
             {
                 Quantity = newQuantity;

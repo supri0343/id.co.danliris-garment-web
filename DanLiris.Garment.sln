@@ -37,8 +37,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Barebone.Tests", "src\Bareb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DanLiris.Admin.Web", "src\WebApplication\DanLiris.Admin.Web.csproj", "{868FD2FD-E766-4244-A1DB-F7330B05CB1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manufactures.FunctionalTests", "src\Manufactures.FunctionalTests\Manufactures.FunctionalTests.csproj", "{45203988-E601-4F97-B1F6-7FD8AA48A5CC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,10 +95,6 @@ Global
 		{868FD2FD-E766-4244-A1DB-F7330B05CB1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{868FD2FD-E766-4244-A1DB-F7330B05CB1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{868FD2FD-E766-4244-A1DB-F7330B05CB1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45203988-E601-4F97-B1F6-7FD8AA48A5CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45203988-E601-4F97-B1F6-7FD8AA48A5CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45203988-E601-4F97-B1F6-7FD8AA48A5CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45203988-E601-4F97-B1F6-7FD8AA48A5CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,7 +115,6 @@ Global
 		{69D40FB8-F1F9-4F57-B895-8C2B882DFAC8} = {61D6A864-D2C0-4701-98E2-D3AAF3E70815}
 		{34CAF266-BA99-4DAA-868D-66561CDC94B4} = {61D6A864-D2C0-4701-98E2-D3AAF3E70815}
 		{BDC23751-7809-4B7E-9495-21A7B0B704B3} = {4CF48133-4EED-4A78-AFA8-727458BAA686}
-		{45203988-E601-4F97-B1F6-7FD8AA48A5CC} = {61D6A864-D2C0-4701-98E2-D3AAF3E70815}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {68E1390E-AD2A-4E2E-9FCE-05C172709048}

@@ -12,7 +12,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.ValueObjects
 
         public GarmentDeliveryReturnItemValueObject(Guid id, Guid drId, int unitDOItemId, int uenItemId, string preparingItemId, Product product, string designColor, string roNo, double quantity, Uom uom, Guid garmentDeliveryReturnId, double quantityUENItem, double remainingQuantityPreparingItem)
         {
-            Identity = id;
+            Id = id;
             DRId = drId;
             UnitDOItemId = unitDOItemId;
             UENItemId = uenItemId;
@@ -26,7 +26,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.ValueObjects
             RemainingQuantityPreparingItem = remainingQuantityPreparingItem;
         }
 
-        public Guid Identity { get; set; }
+        public Guid Id { get; set; }
         public Guid DRId { get; set; }
         public int UnitDOItemId { get; set; }
         public int UENItemId { get; set; }

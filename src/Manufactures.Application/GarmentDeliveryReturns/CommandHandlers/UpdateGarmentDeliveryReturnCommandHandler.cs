@@ -29,10 +29,10 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
 
         public async Task<GarmentDeliveryReturn> Handle(UpdateGarmentDeliveryReturnCommand request, CancellationToken cancellaitonToken)
         {
-            var garmentDeliveryReturn = _garmentDeliveryReturnRepository.Find(o => o.Identity == request.Id).FirstOrDefault();
+            var garmentDeliveryReturn = _garmentDeliveryReturnRepository.Find(o => o.Identity == request.Identity).FirstOrDefault();
 
             if (garmentDeliveryReturn == null)
-                throw Validator.ErrorValidation(("Id", "Invalid Id: " + request.Id));
+                throw Validator.ErrorValidation(("Id", "Invalid Id: " + request.Identity));
 
             garmentDeliveryReturn.setDRNo(request.DRNo);
             garmentDeliveryReturn.setRONo(request.RONo);
@@ -58,7 +58,7 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
 
             foreach (var item in updatedItems)
             {
-                var dbItem = dbGarmentDeliveryReturnItem.Find(x => x.Identity == item.Identity);
+                var dbItem = dbGarmentDeliveryReturnItem.Find(x => x.Identity == item.Id);
                 dbItem.setUnitDOItemId(item.UnitDOItemId);
                 dbItem.setUENItemId(item.UENItemId);
                 dbItem.setPreparingItemId(item.PreparingItemId);
@@ -70,7 +70,8 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
                 dbItem.setQuantity(item.Quantity);
                 dbItem.setUomId(new UomId(item.Uom.Id));
                 dbItem.setUomUnit(item.Uom.Unit);
-                
+
+                dbItem.SetModified();
                 await _garmentDeliveryReturnItemRepository.Update(dbItem);
             }
 

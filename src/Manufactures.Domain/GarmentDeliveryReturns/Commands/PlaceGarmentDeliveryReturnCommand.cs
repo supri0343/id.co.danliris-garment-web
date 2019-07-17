@@ -29,6 +29,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.Commands
         public PlaceGarmentDeliveryReturnCommandValidator()
         {
             RuleFor(r => r.RONo).NotNull().WithMessage("Nomor RO Tidak Boleh Kosong");
+            RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong");
             RuleForEach(r => r.Items).SetValidator(new PlaceGarmentDeliveryReturnItemValueObjectValidator());
         }
     }

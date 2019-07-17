@@ -37,7 +37,7 @@ namespace Manufactures.Controllers.Api
             VerifyUser();
             var query = _garmentDeliveryReturnRepository.Read(order, select, filter);
             int totalRows = query.Count();
-            var garmentDeliveryReturnDto = _garmentDeliveryReturnRepository.Find(query).Select(o => new GarmentDeliveryReturnDto(o)).ToArray();
+            var garmentDeliveryReturnDto = _garmentDeliveryReturnRepository.Find(query).Select(o => new GarmentDeliveryReturnDto(o)).OrderByDescending(x => x.LastModifiedDate).ToArray();
             var garmentDeliveryReturnItemDto = _garmentDeliveryReturnItemRepository.Find(_garmentDeliveryReturnItemRepository.Query).Select(o => new GarmentDeliveryReturnItemDto(o)).ToList();
 
             Parallel.ForEach(garmentDeliveryReturnDto, itemDto =>
@@ -145,8 +145,6 @@ namespace Manufactures.Controllers.Api
                     });
 
                 var order = await Mediator.Send(command);
-
-                await PutGarmentUnitExpenditureNoteCreate(command.UENId);
 
                 return Ok(order.Identity);
             }
