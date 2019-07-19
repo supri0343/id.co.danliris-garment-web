@@ -19,7 +19,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.ReadModels
         public string UnitDONo { get; internal set; }
         public int UENId { get; internal set; }
         public string PreparingId { get; internal set; }
-        public DateTimeOffset ReturnDate { get; internal set; }
+        public DateTimeOffset? ReturnDate { get; internal set; }
         public string ReturnType { get; internal set; }
         public int UnitId { get; internal set; }
         public string UnitCode { get; internal set; }
