@@ -18,7 +18,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
         public string UnitDONo { get; private set; }
         public int UENId { get; private set; }
         public string PreparingId { get; private set; }
-        public DateTimeOffset ReturnDate { get; private set; }
+        public DateTimeOffset? ReturnDate { get; private set; }
         public string ReturnType { get; private set; }
         public UnitDepartmentId UnitId { get; private set; }
         public string UnitCode { get; private set; }
@@ -28,7 +28,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
         public string StorageName { get; private set; }
         public bool IsUsed { get; private set; }
 
-        public GarmentDeliveryReturn(Guid identity, string drNo, string roNo, string article, int unitDOId, string unitDONo, int uenId, string preparingId, DateTimeOffset returnDate, string returnType, UnitDepartmentId unitId, string unitCode, string unitName, StorageId storageId, string storageName, string storageCode, bool isUsed) : base(identity)
+        public GarmentDeliveryReturn(Guid identity, string drNo, string roNo, string article, int unitDOId, string unitDONo, int uenId, string preparingId, DateTimeOffset? returnDate, string returnType, UnitDepartmentId unitId, string unitCode, string unitName, StorageId storageId, string storageName, string storageCode, bool isUsed) : base(identity)
         {
             this.MarkTransient();
 
@@ -158,7 +158,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
                 ReadModel.PreparingId = newPreparingId;
             }
         }
-        public void setReturnDate(DateTimeOffset newReturnDate)
+        public void setReturnDate(DateTimeOffset? newReturnDate)
         {
             if (newReturnDate != ReturnDate)
             {

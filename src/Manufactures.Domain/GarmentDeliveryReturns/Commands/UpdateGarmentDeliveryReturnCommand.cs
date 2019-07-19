@@ -19,7 +19,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.Commands
         public string UnitDONo { get; set; }
         public int UENId { get; set; }
         public string PreparingId { get; set; }
-        public DateTimeOffset ReturnDate { get; set; }
+        public DateTimeOffset? ReturnDate { get; set; }
         public string ReturnType { get; set; }
         public UnitDepartment Unit { get; set; }
         public Storage Storage { get; set; }
@@ -30,8 +30,10 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.Commands
     {
         public UpdateGarmentDeliveryReturnCommandValidator()
         {
-            RuleFor(r => r.RONo).NotNull().WithMessage("Nomor RO Tidak Boleh Kosong");
-            RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong");
+            RuleFor(r => r.Unit).NotNull().WithMessage("Unit Tidak Boleh Kosong");
+            RuleFor(r => r.UnitDONo).NotNull().WithMessage("No Unit DO Tidak Boleh Kosong");
+            RuleFor(r => r.Storage).NotNull().WithMessage("Gudang Tidak Boleh Kosong");
+            RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("Item"); ;
             RuleForEach(r => r.Items).SetValidator(new UpdateGarmentDeliveryReturnItemValueObjectValidator());
         }
     }
@@ -40,8 +42,12 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.Commands
     {
         public UpdateGarmentDeliveryReturnItemValueObjectValidator()
         {
-            RuleFor(r => r.Quantity).GreaterThan(r => r.QuantityUENItem).WithMessage("Quantity tidak boleh Lebih Dari Quantity pada Bon Pengeluaran Unit").When(w => w.Product.Name != "FABRIC");
-            RuleFor(r => r.Quantity).GreaterThan(r => r.RemainingQuantityPreparingItem).WithMessage("Quantity tidak boleh Lebih Dari RemainingQuantity pada Preparing").When(w => w.Product.Name == "FABRIC");
+            RuleFor(r => r.Quantity)
+                .GreaterThan(0)
+                .WithMessage("Quantity harus lebih besar dari 0");
+
+            RuleFor(r => r.Quantity).LessThanOrEqualTo(r => r.QuantityUENItem).WithMessage("Jumlah tidak boleh Lebih Besar dari Jumlah yang Tampil").When(w => w.Product.Name != "FABRIC");
+            RuleFor(r => r.Quantity).LessThanOrEqualTo(r => r.RemainingQuantityPreparingItem).WithMessage("Jumlah tidak boleh Lebih Besar dari Jumlah yang Tampil").When(w => w.Product.Name == "FABRIC");
         }
     }
 }

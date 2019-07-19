@@ -44,7 +44,7 @@ namespace Manufactures.Dtos
         public string UnitDONo { get; set; }
         public int UENId { get; set; }
         public string PreparingId { get; set; }
-        public DateTimeOffset ReturnDate { get; set; }
+        public DateTimeOffset? ReturnDate { get; set; }
         public string ReturnType { get; set; }
         public UnitDepartment Unit { get; set; }
         public Storage Storage { get; set; }
