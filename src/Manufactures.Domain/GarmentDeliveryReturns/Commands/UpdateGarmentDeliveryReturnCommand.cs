@@ -43,11 +43,11 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.Commands
         public UpdateGarmentDeliveryReturnItemValueObjectValidator()
         {
             RuleFor(r => r.Quantity)
-                .GreaterThan(0)
-                .WithMessage("Quantity harus lebih besar dari 0");
+                 .GreaterThan(0)
+                 .WithMessage("Jumlah harus lebih besar dari 0");
 
-            RuleFor(r => r.Quantity).LessThanOrEqualTo(r => r.QuantityUENItem).WithMessage("Jumlah tidak boleh Lebih Besar dari Jumlah yang Tampil").When(w => w.Product.Name != "FABRIC");
-            RuleFor(r => r.Quantity).LessThanOrEqualTo(r => r.RemainingQuantityPreparingItem).WithMessage("Jumlah tidak boleh Lebih Besar dari Jumlah yang Tampil").When(w => w.Product.Name == "FABRIC");
+            RuleFor(r => r.Quantity).LessThanOrEqualTo(r => r.QuantityUENItem).WithMessage(r => $"Jumlah tidak boleh Lebih Besar dari {r.QuantityUENItem}").When(w => w.Product.Name != "FABRIC");
+            RuleFor(r => r.Quantity).LessThanOrEqualTo(r => r.RemainingQuantityPreparingItem).WithMessage(r => $"Jumlah tidak boleh Lebih Besar dari {r.RemainingQuantityPreparingItem}").When(w => w.Product.Name == "FABRIC");
         }
     }
 }
