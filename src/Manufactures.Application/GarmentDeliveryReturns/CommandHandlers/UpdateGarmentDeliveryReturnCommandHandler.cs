@@ -4,6 +4,8 @@ using Manufactures.Domain.GarmentDeliveryReturns;
 using Manufactures.Domain.GarmentDeliveryReturns.Commands;
 using Manufactures.Domain.GarmentDeliveryReturns.Repositories;
 using Manufactures.Domain.GarmentDeliveryReturns.ValueObjects;
+using Manufactures.Domain.GarmentPreparings;
+using Manufactures.Domain.GarmentPreparings.Repositories;
 using Moonlay;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,8 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
     {
         private readonly IGarmentDeliveryReturnRepository _garmentDeliveryReturnRepository;
         private readonly IGarmentDeliveryReturnItemRepository _garmentDeliveryReturnItemRepository;
+        private readonly IGarmentPreparingRepository _garmentPreparingRepository;
+        private readonly IGarmentPreparingItemRepository _garmentPreparingItemRepository;
         private readonly IStorage _storage;
 
         public UpdateGarmentDeliveryReturnCommandHandler(IStorage storage)
@@ -25,6 +29,8 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
             _storage = storage;
             _garmentDeliveryReturnRepository = storage.GetRepository<IGarmentDeliveryReturnRepository>();
             _garmentDeliveryReturnItemRepository = storage.GetRepository<IGarmentDeliveryReturnItemRepository>();
+            _garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
+            _garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
         }
 
         public async Task<GarmentDeliveryReturn> Handle(UpdateGarmentDeliveryReturnCommand request, CancellationToken cancellaitonToken)
@@ -71,6 +77,14 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
                 dbItem.setUomId(new UomId(item.Uom.Id));
                 dbItem.setUomUnit(item.Uom.Unit);
 
+                if (item.Product.Name == "FABRIC")
+                {
+                    var garmentPreparingItem = _garmentPreparingItemRepository.Query.Where(x => x.Identity == Guid.Parse(item.PreparingItemId)).Select(s => new GarmentPreparingItem(s)).Single();
+                    garmentPreparingItem.setRemainingQuantity(garmentPreparingItem.RemainingQuantity + dbItem.Quantity - item.Quantity);
+                    garmentPreparingItem.SetModified();
+                    await _garmentPreparingItemRepository.Update(garmentPreparingItem);
+                }
+
                 dbItem.SetModified();
                 await _garmentDeliveryReturnItemRepository.Update(dbItem);
             }
@@ -83,7 +97,6 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
                 item.SetDeleted();
                 await _garmentDeliveryReturnItemRepository.Update(item);
             }
-
 
             garmentDeliveryReturn.SetModified();
 

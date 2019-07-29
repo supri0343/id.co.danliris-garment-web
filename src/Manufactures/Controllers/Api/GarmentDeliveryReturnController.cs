@@ -146,6 +146,15 @@ namespace Manufactures.Controllers.Api
 
                 var order = await Mediator.Send(command);
 
+                foreach (var item in command.Items)
+                {
+                    if(item.Product.Name != "FABRIC")
+                    {
+                        await PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(item.UENItemId, item.Quantity);
+                    }
+                };
+                
+
                 return Ok(order.Identity);
             }
             catch (Exception ex)
@@ -165,6 +174,16 @@ namespace Manufactures.Controllers.Api
 
             var order = await Mediator.Send(command);
 
+            foreach (var item in command.Items)
+            {
+                var garmentDeliveryReturnItems = _garmentDeliveryReturnItemRepository.Find(x => x.Identity == item.Id).Single();
+                if (item.Product.Name != "FABRIC")
+                {
+                    var qty = garmentDeliveryReturnItems.Quantity - item.Quantity;
+                    await PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(item.UENItemId, item.Quantity);
+                }
+            };
+
             return Ok(order.Identity);
         }
 
@@ -181,6 +200,15 @@ namespace Manufactures.Controllers.Api
             command.SetId(orderId);
 
             var order = await Mediator.Send(command);
+            var garmentDeliveryReturnItems = _garmentDeliveryReturnItemRepository.Find(x => x.DRId == deliveryReturnId);
+            foreach (var item in garmentDeliveryReturnItems)
+            {
+                if (item.ProductName != "FABRIC")
+                {
+                    var qty = item.Quantity * (-1);
+                    await PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(item.UENItemId, qty);
+                }
+            };
 
             return Ok(order.Identity);
         }

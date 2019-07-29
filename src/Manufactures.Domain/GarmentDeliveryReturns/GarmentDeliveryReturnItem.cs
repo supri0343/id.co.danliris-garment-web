@@ -92,8 +92,6 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
         }
         public void setPreparingItemId(string newPreparingItemId)
         {
-            Validator.ThrowIfNull(() => newPreparingItemId);
-
             if (newPreparingItemId != PreparingItemId)
             {
                 PreparingItemId = newPreparingItemId;
