@@ -3,6 +3,7 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentDeliveryReturns;
 using Manufactures.Domain.GarmentDeliveryReturns.Commands;
 using Manufactures.Domain.GarmentDeliveryReturns.Repositories;
+using Manufactures.Domain.GarmentPreparings.Repositories;
 using Moonlay;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,16 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
     {
         private readonly IGarmentDeliveryReturnRepository _garmentDeliveryReturnRepository;
         private readonly IGarmentDeliveryReturnItemRepository _garmentDeliveryReturnItemRepository;
+        private readonly IGarmentPreparingRepository _garmentPreparingRepository;
+        private readonly IGarmentPreparingItemRepository _garmentPreparingItemRepository;
         private readonly IStorage _storage;
 
         public RemoveGarmentDeliveryReturnCommandHandler(IStorage storage)
         {
             _garmentDeliveryReturnRepository = storage.GetRepository<IGarmentDeliveryReturnRepository>();
             _garmentDeliveryReturnItemRepository = storage.GetRepository<IGarmentDeliveryReturnItemRepository>();
+            _garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
+            _garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
             _storage = storage;
         }
 
@@ -39,8 +44,18 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
             {
                 item.Remove();
                 await _garmentDeliveryReturnItemRepository.Update(item);
-            }
 
+                if (item.ProductName == "FABRIC")
+                {
+                    var garmentPreparingItem = _garmentPreparingItemRepository.Find(o => o.Identity == Guid.Parse(item.PreparingItemId)).Single();
+
+                    garmentPreparingItem.setRemainingQuantityZeroValue(garmentPreparingItem.RemainingQuantity + item.Quantity);
+
+                    garmentPreparingItem.SetModified();
+                    await _garmentPreparingItemRepository.Update(garmentPreparingItem);
+                }
+            }
+           
             garmentDeliveryReturn.Remove();
 
             await _garmentDeliveryReturnRepository.Update(garmentDeliveryReturn);

@@ -267,6 +267,20 @@ namespace Barebone.Controllers
             return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
         }
 
+        protected async Task<string> PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(int id, double quantity)
+        {
+            var garmentUnitExpenditureNoteUri = "http://localhost:53075/v1/" + $"garment-unit-expenditure-notes/returQuantity/{id}";
+            var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, WorkContext.Token, new StringContent(JsonConvert.SerializeObject(new { ReturQuantity = quantity }), Encoding.UTF8, "application/json"));
+            //var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, WorkContext.Token, new StringContent(JsonConvert.SerializeObject("0"), Encoding.UTF8, "application/text"));
+
+            //TokenResult tokenResult = new TokenResult();
+            //if (garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().IsSuccessStatusCode)
+            //{
+            //    return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
+            //}
+            return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
+        }
+
         protected ProductResult GetGarmentProducts(string keyword = null)
         {
             var masterProductUri = MasterDataSettings.Endpoint + $"master/garmentProducts?size={int.MaxValue}&keyword={keyword}";
