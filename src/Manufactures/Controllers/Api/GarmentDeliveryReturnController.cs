@@ -42,6 +42,10 @@ namespace Manufactures.Controllers.Api
 
             Parallel.ForEach(garmentDeliveryReturnDto, itemDto =>
             {
+                if(itemDto.Storage.Name == null)
+                {
+                    itemDto.Storage.Name = "-";
+                }
                 var garmentDeliveryReturnItems = garmentDeliveryReturnItemDto.Where(x => x.DRId == itemDto.Id).ToList();
 
                 itemDto.Items = garmentDeliveryReturnItems;
@@ -69,8 +73,8 @@ namespace Manufactures.Controllers.Api
             if (!string.IsNullOrEmpty(keyword))
             {
                 garmentDeliveryReturnDto = garmentDeliveryReturnDto.Where(x => x.DRNo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    || x.UnitDONo.Contains(keyword, StringComparison.OrdinalIgnoreCase) || x.ReturnType.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    || x.Unit.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase) || x.Storage.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToArray();
+                                    || x.UnitDONo.Contains(keyword, StringComparison.OrdinalIgnoreCase) || x.Unit.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase) 
+                                    || x.Storage.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToArray();
             }
 
             if (order != "{}")

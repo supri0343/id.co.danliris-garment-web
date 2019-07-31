@@ -269,7 +269,7 @@ namespace Barebone.Controllers
 
         protected async Task<string> PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(int id, double quantity)
         {
-            var garmentUnitExpenditureNoteUri = "http://localhost:53075/v1/" + $"garment-unit-expenditure-notes/returQuantity/{id}";
+            var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-unit-expenditure-notes/returQuantity/{id}";
             var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, WorkContext.Token, new StringContent(JsonConvert.SerializeObject(new { ReturQuantity = quantity }), Encoding.UTF8, "application/json"));
             //var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, WorkContext.Token, new StringContent(JsonConvert.SerializeObject("0"), Encoding.UTF8, "application/text"));
 
