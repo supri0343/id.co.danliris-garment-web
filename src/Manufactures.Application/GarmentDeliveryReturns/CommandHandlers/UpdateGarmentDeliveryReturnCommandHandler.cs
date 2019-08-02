@@ -35,6 +35,7 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
 
         public async Task<GarmentDeliveryReturn> Handle(UpdateGarmentDeliveryReturnCommand request, CancellationToken cancellaitonToken)
         {
+            request.Items = request.Items.Where(item => item.IsSave == true).ToList();
             var garmentDeliveryReturn = _garmentDeliveryReturnRepository.Find(o => o.Identity == request.Identity).FirstOrDefault();
 
             if (garmentDeliveryReturn == null)

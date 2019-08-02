@@ -10,7 +10,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.ValueObjects
 
         }
 
-        public GarmentDeliveryReturnItemValueObject(Guid id, Guid drId, int unitDOItemId, int uenItemId, string preparingItemId, Product product, string designColor, string roNo, double quantity, Uom uom, Guid garmentDeliveryReturnId, double quantityUENItem, double remainingQuantityPreparingItem)
+        public GarmentDeliveryReturnItemValueObject(Guid id, Guid drId, int unitDOItemId, int uenItemId, string preparingItemId, Product product, string designColor, string roNo, double quantity, Uom uom, Guid garmentDeliveryReturnId, double quantityUENItem, double remainingQuantityPreparingItem, bool isSave)
         {
             Id = id;
             DRId = drId;
@@ -24,6 +24,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.ValueObjects
             Uom = uom;
             QuantityUENItem = quantityUENItem;
             RemainingQuantityPreparingItem = remainingQuantityPreparingItem;
+            IsSave = isSave;
         }
 
         public Guid Id { get; set; }
@@ -38,6 +39,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.ValueObjects
         public Uom Uom { get; set; }
         public double QuantityUENItem { get; set; }
         public double RemainingQuantityPreparingItem { get; set; }
+        public bool IsSave { get; set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
