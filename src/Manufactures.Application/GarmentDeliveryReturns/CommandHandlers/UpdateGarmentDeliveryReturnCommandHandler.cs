@@ -35,6 +35,8 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
 
         public async Task<GarmentDeliveryReturn> Handle(UpdateGarmentDeliveryReturnCommand request, CancellationToken cancellaitonToken)
         {
+            var requestTempItems = request.Items.Where(item => item.IsSave != true);
+
             request.Items = request.Items.Where(item => item.IsSave == true).ToList();
             var garmentDeliveryReturn = _garmentDeliveryReturnRepository.Find(o => o.Identity == request.Identity).FirstOrDefault();
 
@@ -61,7 +63,7 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
             var dbGarmentDeliveryReturnItem = _garmentDeliveryReturnItemRepository.Find(y => y.DRId == garmentDeliveryReturn.Identity);
             var updatedItems = request.Items.Where(x => dbGarmentDeliveryReturnItem.Any(y => y.DRId == garmentDeliveryReturn.Identity));
             var addedItems = request.Items.Where(x => !dbGarmentDeliveryReturnItem.Any(y => y.DRId == garmentDeliveryReturn.Identity));
-            var deletedItems = dbGarmentDeliveryReturnItem.Where(x => !request.Items.Any(y => y.DRId == garmentDeliveryReturn.Identity));
+            
 
             foreach (var item in updatedItems)
             {
@@ -93,10 +95,11 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
             addedItems.Select(x => new GarmentDeliveryReturnItem(Guid.NewGuid(), garmentDeliveryReturn.Identity, x.UnitDOItemId, x.UENItemId, x.PreparingItemId, new ProductId(x.Product.Id), x.Product.Code, x.Product.Name, x.DesignColor, x.RONo, x.Quantity, new UomId(x.Uom.Id), x.Uom.Unit)).ToList()
                 .ForEach(async x => await _garmentDeliveryReturnItemRepository.Update(x));
 
-            foreach (var item in deletedItems)
+            foreach (var itemDeleted in requestTempItems)
             {
-                item.SetDeleted();
-                await _garmentDeliveryReturnItemRepository.Update(item);
+                var deletedItems = dbGarmentDeliveryReturnItem.Find(x => x.Identity == itemDeleted.Id);
+                deletedItems.Remove();
+                await _garmentDeliveryReturnItemRepository.Update(deletedItems);
             }
 
             garmentDeliveryReturn.SetModified();

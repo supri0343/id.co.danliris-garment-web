@@ -186,7 +186,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns
         }
         public void SetDeleted()
         {
-            MarkModified();
+            MarkRemoved();
         }
         protected override GarmentDeliveryReturnItem GetEntity()
         {
