@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Manufactures.Domain.GarmentCuttingOuts
 {
-    class GarmentCuttingOut
+    public class GarmentCuttingOut
     {
     }
 }

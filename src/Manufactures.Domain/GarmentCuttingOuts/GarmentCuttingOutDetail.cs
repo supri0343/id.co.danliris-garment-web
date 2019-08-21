@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Domain;
+using Manufactures.Domain.Events;
 using Manufactures.Domain.GarmentCuttingOuts.ReadModels;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
@@ -71,43 +72,39 @@ namespace Manufactures.Domain.GarmentCuttingOuts
             }
         }
 
-        public GarmentCuttingOutDetail(Guid identity, Guid cutOutItemId, Guid cuttingInItemId, SizeId sizeId, string sizeName, string color, double remainingQuantity, double cuttingOutQuantity, UomId cuttingOutUomId, string cuttingOutUomUnit, double cuttingInQuantity, UomId cuttingInUomId, string cuttingInUomUnit, double remainingQuantity, double basicPrice) : base(identity)
+        public GarmentCuttingOutDetail(Guid identity, Guid cutOutItemId, Guid cuttingInItemId, SizeId sizeId, string sizeName, string color, double remainingQuantity, double cuttingOutQuantity, UomId cuttingOutUomId, string cuttingOutUomUnit, double otl1, double otl2, double basicPrice, double indirectPrice) : base(identity)
         {
             //MarkTransient();
 
-            CutInItemId = cutInItemId;
-            PreparingItemId = preparingItemId;
-            ProductId = productId;
-            ProductCode = productCode;
-            ProductName = productName;
-            DesignColor = designColor;
-            FabricType = fabricType;
-            PreparingQuantity = preparingQuantity;
-            PreparingUomId = preparingUomId;
-            PreparingUomUnit = preparingUomUnit;
-            CuttingInQuantity = cuttingInQuantity;
-            CuttingInUomId = cuttingInUomId;
-            CuttingInUomUnit = cuttingInUomUnit;
+            CutOutItemId = cutOutItemId;
+            CuttingInItemId = cuttingInItemId;
+            Color = color;
+            SizeId = sizeId;
+            SizeName = sizeName;
             RemainingQuantity = remainingQuantity;
+            CuttingOutQuantity = cuttingOutQuantity;
+            CuttingOutUomId = cuttingOutUomId;
+            CuttingOutUomUnit = cuttingOutUomUnit;
             BasicPrice = basicPrice;
+            IndirectPrice = indirectPrice;
+            OTL1 = otl1;
+            OTL2 = otl2;
 
             ReadModel = new GarmentCuttingOutDetailReadModel(Identity)
             {
-                CutInItemId = CutInItemId,
-                PreparingItemId = PreparingItemId,
-                ProductId = ProductId.Value,
-                ProductCode = ProductCode,
-                ProductName = ProductName,
-                DesignColor = DesignColor,
-                FabricType = FabricType,
-                PreparingQuantity = PreparingQuantity,
-                PreparingUomId = PreparingUomId.Value,
-                PreparingUomUnit = PreparingUomUnit,
-                CuttingInQuantity = CuttingInQuantity,
-                CuttingInUomId = CuttingInUomId.Value,
-                CuttingInUomUnit = CuttingInUomUnit,
+                CutOutItemId = CutOutItemId,
+                CuttingInItemId = CuttingInItemId,
+                Color = Color,
+                SizeId = SizeId.Value,
+                SizeName = SizeName,
                 RemainingQuantity = RemainingQuantity,
+                CuttingOutQuantity = CuttingOutQuantity,
+                CuttingOutUomId = CuttingOutUomId.Value,
+                CuttingOutUomUnit = CuttingOutUomUnit,
                 BasicPrice = BasicPrice,
+                IndirectPrice = IndirectPrice,
+                OTL1 = OTL1,
+                OTL2 = OTL2
             };
 
             ReadModel.AddDomainEvent(new OnGarmentCuttingOutPlaced(Identity));
@@ -115,21 +112,19 @@ namespace Manufactures.Domain.GarmentCuttingOuts
 
         public GarmentCuttingOutDetail(GarmentCuttingOutDetailReadModel readModel) : base(readModel)
         {
-            CutInItemId = readModel.CutInItemId;
-            PreparingItemId = readModel.PreparingItemId;
-            ProductId = new ProductId(readModel.ProductId);
-            ProductCode = readModel.ProductCode;
-            ProductName = readModel.ProductName;
-            DesignColor = readModel.DesignColor;
-            FabricType = readModel.FabricType;
-            PreparingQuantity = readModel.PreparingQuantity;
-            PreparingUomId = new UomId(readModel.PreparingUomId);
-            PreparingUomUnit = readModel.PreparingUomUnit;
-            CuttingInQuantity = readModel.CuttingInQuantity;
-            CuttingInUomId = new UomId(readModel.CuttingInUomId);
-            CuttingInUomUnit = readModel.CuttingInUomUnit;
+            CutOutItemId = readModel.CutOutItemId;
+            CuttingInItemId = readModel.CuttingInItemId;
+            Color = readModel.Color;
+            SizeId = new SizeId(readModel.SizeId);
+            SizeName = readModel.SizeName;
             RemainingQuantity = readModel.RemainingQuantity;
-            BasicPrice = readModel.BasicPrice;
+            CuttingOutQuantity = readModel.CuttingOutQuantity;
+            CuttingOutUomId = new UomId(readModel.CuttingOutUomId);
+            CuttingOutUomUnit = CuttingOutUomUnit;
+            BasicPrice = BasicPrice;
+            IndirectPrice = IndirectPrice;
+            OTL1 = OTL1;
+            OTL2 = OTL2;
         }
 
         public void Modify()
