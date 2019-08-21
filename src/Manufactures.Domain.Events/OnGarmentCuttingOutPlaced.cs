@@ -4,7 +4,12 @@ using System.Text;
 
 namespace Manufactures.Domain.Events
 {
-    class OnGarmentCuttingOutPlaced
+    public class OnGarmentCuttingOutPlaced : IGarmentCuttingOutEvent
     {
+        public OnGarmentCuttingOutPlaced(Guid identity)
+        {
+            GarmentCuttingOutId = identity;
+        }
+        public Guid GarmentCuttingOutId { get; }
     }
 }

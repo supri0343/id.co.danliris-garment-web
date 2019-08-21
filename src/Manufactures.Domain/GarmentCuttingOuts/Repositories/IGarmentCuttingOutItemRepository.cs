@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Manufactures.Domain.GarmentCuttingOuts.Repositories
 {
-    class IGarmentCuttingOutItemRepository
+    public interface IGarmentCuttingOutItemRepository
     {
     }
 }
