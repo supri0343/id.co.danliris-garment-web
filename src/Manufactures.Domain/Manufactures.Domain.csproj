@@ -15,4 +15,9 @@
     <ProjectReference Include="..\Manufactures.Domain.Events\Manufactures.Domain.Events.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="GarmentCuttingOuts\Commands\" />
+    <Folder Include="GarmentCuttingOuts\Repositories\" />
+  </ItemGroup>
+
 </Project>
