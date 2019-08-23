@@ -1,8 +1,6 @@
 ﻿using Infrastructure.Domain.ReadModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Manufactures.Domain.GarmentCuttingIns.ReadModels
 {
@@ -16,5 +14,8 @@ namespace Manufactures.Domain.GarmentCuttingIns.ReadModels
         public Guid PreparingId { get; internal set; }
         public int UENId { get; internal set; }
         public string UENNo { get; internal set; }
+
+        public virtual GarmentCuttingInReadModel GarmentCuttingIn { get; internal set; }
+        public virtual ICollection<GarmentCuttingInDetailReadModel> Details { get; internal set; }
     }
 }

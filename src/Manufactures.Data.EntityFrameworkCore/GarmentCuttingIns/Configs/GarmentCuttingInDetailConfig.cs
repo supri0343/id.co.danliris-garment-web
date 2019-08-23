@@ -18,6 +18,10 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Configs
             builder.Property(p => p.PreparingUomUnit).HasMaxLength(10);
             builder.Property(p => p.CuttingInUomUnit).HasMaxLength(10);
 
+            builder.HasOne(w => w.GarmentCuttingInItem)
+                .WithMany(h => h.Details)
+                .HasForeignKey(f => f.CutInItemId);
+
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();
         }
