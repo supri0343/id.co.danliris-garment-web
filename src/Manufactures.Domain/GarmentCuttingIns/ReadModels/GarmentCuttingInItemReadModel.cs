@@ -15,7 +15,6 @@ namespace Manufactures.Domain.GarmentCuttingIns.ReadModels
         public Guid CutInId { get; internal set; }
         public Guid PreparingId { get; internal set; }
         public int UENId { get; internal set; }
-        [MaxLength(100)]
         public string UENNo { get; internal set; }
     }
 }

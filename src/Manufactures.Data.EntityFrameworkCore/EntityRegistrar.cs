@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using ExtCore.Data.EntityFramework;
+using Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Configs;
 using Manufactures.Domain.GarmentAvalProducts.ReadModels;
 using Manufactures.Domain.GarmentCuttingIns.ReadModels;
 using Manufactures.Domain.GarmentDeliveryReturns.ReadModels;
@@ -92,32 +93,9 @@ namespace Manufactures.Data.EntityFrameworkCore
                 etb.ApplySoftDelete();
             });
 
-            modelBuilder.Entity<GarmentCuttingInReadModel>(etb =>
-            {
-                etb.ToTable("GarmentCuttingIns");
-                etb.HasKey(e => e.Identity);
-
-                etb.ApplyAuditTrail();
-                etb.ApplySoftDelete();
-            });
-
-            modelBuilder.Entity<GarmentCuttingInItemReadModel>(etb =>
-            {
-                etb.ToTable("GarmentCuttingInItems");
-                etb.HasKey(e => e.Identity);
-
-                etb.ApplyAuditTrail();
-                etb.ApplySoftDelete();
-            });
-
-            modelBuilder.Entity<GarmentCuttingInDetailReadModel>(etb =>
-            {
-                etb.ToTable("GarmentCuttingInDetails");
-                etb.HasKey(e => e.Identity);
-
-                etb.ApplyAuditTrail();
-                etb.ApplySoftDelete();
-            });
+            modelBuilder.ApplyConfiguration(new GarmentCuttingInConfig());
+            modelBuilder.ApplyConfiguration(new GarmentCuttingInItemConfig());
+            modelBuilder.ApplyConfiguration(new GarmentCuttingInDetailConfig());
 
             modelBuilder.Entity<GarmentDeliveryReturnReadModel>(etb =>
             {
