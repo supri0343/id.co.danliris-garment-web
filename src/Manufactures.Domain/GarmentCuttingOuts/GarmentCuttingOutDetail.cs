@@ -10,22 +10,19 @@ namespace Manufactures.Domain.GarmentCuttingOuts
 {
     public class GarmentCuttingOutDetail : AggregateRoot<GarmentCuttingOutDetail, GarmentCuttingOutDetailReadModel>
     {
-        public Guid CuttingInItemId { get; private set; }
         public Guid CutOutItemId { get; private set; }
-
         public SizeId SizeId { get; private set; }
         public string SizeName { get; private set; }
-        public string Color { get; private set; }
-
-        public double RemainingQuantity { get; private set; }
         public double CuttingOutQuantity { get; private set; }
+        public UomId CuttingOutUomId { get; private set; }
+        public string CuttingOutUomUnit { get; private set; }
+        public string Color { get; private set; }
+        public double RemainingQuantity { get; private set; }
         public double BasicPrice { get; private set; }
         public double IndirectPrice { get; private set; }
         public double OTL1 { get; private set; }
         public double OTL2 { get; private set; }
-
-        public UomId CuttingOutUomId { get; private set; }
-        public string CuttingOutUomUnit { get; private set; }
+       
 
         public void SetCuttingOutQuantity(double CuttingOutQuantity)
         {
@@ -72,12 +69,11 @@ namespace Manufactures.Domain.GarmentCuttingOuts
             }
         }
 
-        public GarmentCuttingOutDetail(Guid identity, Guid cutOutItemId, Guid cuttingInItemId, SizeId sizeId, string sizeName, string color, double remainingQuantity, double cuttingOutQuantity, UomId cuttingOutUomId, string cuttingOutUomUnit, double otl1, double otl2, double basicPrice, double indirectPrice) : base(identity)
+        public GarmentCuttingOutDetail(Guid identity, Guid cutOutItemId, SizeId sizeId, string sizeName, string color, double remainingQuantity, double cuttingOutQuantity, UomId cuttingOutUomId, string cuttingOutUomUnit, double otl1, double otl2, double basicPrice, double indirectPrice) : base(identity)
         {
             //MarkTransient();
 
             CutOutItemId = cutOutItemId;
-            CuttingInItemId = cuttingInItemId;
             Color = color;
             SizeId = sizeId;
             SizeName = sizeName;
@@ -93,7 +89,6 @@ namespace Manufactures.Domain.GarmentCuttingOuts
             ReadModel = new GarmentCuttingOutDetailReadModel(Identity)
             {
                 CutOutItemId = CutOutItemId,
-                CuttingInItemId = CuttingInItemId,
                 Color = Color,
                 SizeId = SizeId.Value,
                 SizeName = SizeName,
@@ -113,7 +108,6 @@ namespace Manufactures.Domain.GarmentCuttingOuts
         public GarmentCuttingOutDetail(GarmentCuttingOutDetailReadModel readModel) : base(readModel)
         {
             CutOutItemId = readModel.CutOutItemId;
-            CuttingInItemId = readModel.CuttingInItemId;
             Color = readModel.Color;
             SizeId = new SizeId(readModel.SizeId);
             SizeName = readModel.SizeName;

@@ -12,17 +12,16 @@ namespace Manufactures.Domain.GarmentCuttingOuts.ReadModels
         {
         }
 
-        public Guid CuttingInId { get; internal set; }
         public Guid CutOutId { get; internal set; }
+        public Guid CuttingInId { get; internal set; }
+        public Guid CuttingInDetailId { get; internal set; }
         public int ProductId { get; internal set; }
-        [MaxLength(100)]
         public string ProductCode { get; internal set; }
-        [MaxLength(100)]
         public string ProductName { get; internal set; }
-        [MaxLength(100)]
         public string DesignColor { get; internal set; }
         public double TotalCuttingOut { get; internal set; }
-        public double RemainingQuantity { get; internal set; }
 
+        public virtual ICollection<GarmentCuttingOutDetailReadModel> GarmentCuttingOutDetail { get; internal set; }
+        public virtual GarmentCuttingOutReadModel GarmentCuttingOutIdentity { get; internal set; }
     }
 }

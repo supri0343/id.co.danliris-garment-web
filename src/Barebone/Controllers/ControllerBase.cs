@@ -350,6 +350,24 @@ namespace Barebone.Controllers
             return storageResult;
         }
 
+        protected GarmentComodityResult GetGarmentComodities(string keyword = null)
+        {
+            var masterGarmentComoditiesUri = MasterDataSettings.Endpoint + $"master/garment-comodities? size={int.MaxValue}&keyword={keyword}";
+            //var masterUnitUri = $"https://com-danliris-service-core-dev.azurewebsites.net/v1/master/products/simple";
+            var garmentComoditiesResponse = _http.GetAsync(masterGarmentComoditiesUri).Result;
+
+            var garmentComoditiesResult = new GarmentComodityResult();
+            if (garmentComoditiesResponse.IsSuccessStatusCode)
+            {
+                garmentComoditiesResult = JsonConvert.DeserializeObject<GarmentComodityResult>(garmentComoditiesResponse.Content.ReadAsStringAsync().Result);
+            }
+            else
+            {
+                GetGarmentComodities(keyword);
+            }
+            return garmentComoditiesResult;
+        }
+
         protected void VerifyUser()
         {
             WorkContext.UserName = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;

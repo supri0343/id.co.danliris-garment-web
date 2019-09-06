@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="GarmentCuttingOuts\Commands\" />
     <Folder Include="GarmentCuttingOuts\Repositories\" />
   </ItemGroup>
 
