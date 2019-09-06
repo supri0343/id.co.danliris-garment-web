@@ -12,7 +12,7 @@ namespace Manufactures.Domain.GarmentLoadings.ValueObjects
         public Guid SewingDOItemId { get;  set; }
         public Product Product { get;  set; }
         public string DesignColor { get;  set; }
-        public Size Size { get;  set; }
+        public SizeValueObject Size { get;  set; }
         public double Quantity { get;  set; }
         public Uom Uom { get;  set; }
         public string Color { get;  set; }
