@@ -8,12 +8,18 @@ namespace Manufactures.Domain.GarmentCuttingOuts.ValueObjects
 {
     public class GarmentCuttingOutItemValueObject : ValueObject
     {
-        public Guid CuttingInId { get;  set; }
+        public Guid Id { get; set; }
         public Guid CutOutId { get;  set; }
-        public Product ProductId { get;  set; }
+        public Guid CuttingInId { get; set; }
+        public Guid CuttingInDetailId { get; set; }
+        public Product Product { get;  set; }
         public string DesignColor { get;  set; }
         public double TotalCuttingOut { get;  set; }
-        public double RemainingQuantity { get;  set; }
+        public bool IsSave { get; set; }
+        public List<GarmentCuttingOutDetailValueObject> Details { get; set; }
+
+        public double TotalRemainingQuantityCuttingInItem { get; set; }
+        public double TotalCuttingOutQuantity { get; set; }
 
         public GarmentCuttingOutItemValueObject()
         {

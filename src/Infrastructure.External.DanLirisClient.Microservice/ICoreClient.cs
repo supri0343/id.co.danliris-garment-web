@@ -12,5 +12,6 @@ namespace Infrastructure.External.DanLirisClient.Microservice
         void SetUoms();
         void SetGarmentProducts();
         void SetStorages();
+        void SetGarmentComodities();
     }
 }

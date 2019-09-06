@@ -180,5 +180,23 @@ namespace Infrastructure.External.DanLirisClient.Microservice
             if (storageResult.data.Count > 0)
                 cacheManager.Set("Storages", storageResult.data);
         }
+
+        public void SetGarmentComodities()
+        {
+            var masterGarmentComodityUri = MasterDataSettings.Endpoint + $"master/garment-comodities";
+            var garmentComodityResponse = _http.GetAsync(masterGarmentComodityUri).Result;
+
+            var garmentComodityResult = new GarmentComodityResult();
+            if (garmentComodityResponse.EnsureSuccessStatusCode().IsSuccessStatusCode)
+            {
+                garmentComodityResult = JsonConvert.DeserializeObject<GarmentComodityResult>(garmentComodityResponse.Content.ReadAsStringAsync().Result);
+            }
+            else
+            {
+                SetGarmentComodities();
+            }
+            if (garmentComodityResult.data.Count > 0)
+                cacheManager.Set("GarmentComodities", garmentComodityResult.data);
+        }
     }
 }

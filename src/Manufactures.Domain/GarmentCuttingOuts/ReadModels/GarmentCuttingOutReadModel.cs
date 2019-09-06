@@ -12,28 +12,21 @@ namespace Manufactures.Domain.GarmentCuttingOuts.ReadModels
         {
         }
 
-        [MaxLength(25)]
         public string CutOutNo { get; internal set; }
-        [MaxLength(25)]
         public string CuttingOutType { get; internal set; }
-
         public int UnitFromId { get; internal set; }
-        [MaxLength(25)]
         public string UnitFromCode { get; internal set; }
-        [MaxLength(100)]
         public string UnitFromName { get; internal set; }
-        public DateTimeOffset CuttingOutDate { get; internal set; }
-        [MaxLength(25)]
-        public string RONo { get; internal set; }
-        [MaxLength(50)]
-        public string Article { get; internal set; }
         public int UnitId { get; internal set; }
-        [MaxLength(25)]
         public string UnitCode { get; internal set; }
-        [MaxLength(100)]
         public string UnitName { get; internal set; }
-        [MaxLength(100)]
-        public string Comodity { get; internal set; }
+        public string RONo { get; internal set; }
+        public string Article { get; internal set; }
+        public int ComodityId { get; internal set; }
+        public string ComodityCode { get; internal set; }
+        public string ComodityName { get; internal set; }
+        public DateTimeOffset CuttingOutDate { get; internal set; }
 
+        public virtual List<GarmentCuttingOutItemReadModel> GarmentCuttingOutItem { get; internal set; }
     }
 }
