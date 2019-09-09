@@ -25,9 +25,9 @@ namespace Manufactures.Domain.GarmentSewingDOs
         public GarmentComodityId ComodityId { get; private set; }
         public string ComodityCode { get; private set; }
         public string ComodityName { get; private set; }
-        public DateTimeOffset SewingOutDate { get; private set; }
+        public DateTimeOffset SewingDODate { get; private set; }
 
-        public GarmentSewingDO(Guid identity, string sewingDONo, Guid cuttingOutId, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, UnitDepartmentId unitId, string unitCode, string unitName, string roNo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, DateTimeOffset sewingOutDate) : base(identity)
+        public GarmentSewingDO(Guid identity, string sewingDONo, Guid cuttingOutId, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, UnitDepartmentId unitId, string unitCode, string unitName, string roNo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, DateTimeOffset sewingDODate) : base(identity)
         {
             Identity = identity;
             SewingDONo = sewingDONo;
@@ -43,7 +43,7 @@ namespace Manufactures.Domain.GarmentSewingDOs
             ComodityId = comodityId;
             ComodityCode = comodityCode;
             ComodityName = comodityName;
-            SewingOutDate = sewingOutDate;
+            SewingDODate = sewingDODate;
 
             ReadModel = new GarmentSewingDOReadModel(Identity)
             {
@@ -60,7 +60,7 @@ namespace Manufactures.Domain.GarmentSewingDOs
                 ComodityId = ComodityId.Value,
                 ComodityCode = ComodityCode,
                 ComodityName = ComodityName,
-                SewingOutDate = SewingOutDate
+                SewingDODate = SewingDODate
             };
             ReadModel.AddDomainEvent(new OnGarmentSewingDOPlaced(Identity));
         }
@@ -80,7 +80,7 @@ namespace Manufactures.Domain.GarmentSewingDOs
             ComodityId = new GarmentComodityId(readModel.ComodityId);
             ComodityCode = readModel.ComodityCode;
             ComodityName = readModel.ComodityName;
-            SewingOutDate = readModel.SewingOutDate;
+            SewingDODate = readModel.SewingDODate;
         }
 
         public void Modify()

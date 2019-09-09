@@ -21,6 +21,7 @@ namespace Manufactures.Domain.GarmentSewingDOs.ReadModels
         public string DesignColor { get; internal set; }
         public int SizeId { get; internal set; }
         public string SizeName { get; internal set; }
+        public double Quantity { get; internal set; }
         public int UomId { get; internal set; }
         public string UomUnit { get; internal set; }
         public string Color { get; internal set; }

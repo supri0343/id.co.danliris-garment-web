@@ -11,6 +11,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Manufactures.Domain.GarmentSewingDOs;
+using Manufactures.Domain.GarmentSewingDOs.Repositories;
 
 namespace Manufactures.Controllers.Api
 {
@@ -25,6 +27,8 @@ namespace Manufactures.Controllers.Api
         private readonly IGarmentCuttingInRepository _garmentCuttingInRepository;
         private readonly IGarmentCuttingInItemRepository _garmentCuttingInItemRepository;
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
+        private readonly IGarmentSewingDORepository _garmentSewingDORepository;
+        private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
 
         public GarmentCuttingOutController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
@@ -34,6 +38,8 @@ namespace Manufactures.Controllers.Api
             _garmentCuttingInRepository = Storage.GetRepository<IGarmentCuttingInRepository>();
             _garmentCuttingInItemRepository = Storage.GetRepository<IGarmentCuttingInItemRepository>();
             _garmentCuttingInDetailRepository = Storage.GetRepository<IGarmentCuttingInDetailRepository>();
+            _garmentSewingDORepository = Storage.GetRepository<IGarmentSewingDORepository>();
+            _garmentSewingDOItemRepository = Storage.GetRepository<IGarmentSewingDOItemRepository>();
         }
 
         [HttpGet]
@@ -132,11 +138,31 @@ namespace Manufactures.Controllers.Api
             Guid guid = Guid.Parse(id);
 
             VerifyUser();
+            var usedData = false;
+            var garmentSewingDO = _garmentSewingDORepository.Query.Where(o => o.CuttingOutId == guid).Select(o => new GarmentSewingDO(o)).Single();
 
-            RemoveGarmentCuttingOutCommand command = new RemoveGarmentCuttingOutCommand(guid);
-            var order = await Mediator.Send(command);
+            _garmentSewingDOItemRepository.Find(x => x.SewingDOId == garmentSewingDO.Identity).ForEach(async sewingDOItem =>
+            {
+                if (sewingDOItem.RemainingQuantity < sewingDOItem.Quantity)
+                {
+                    usedData = true;
+                }
+            });
 
-            return Ok(order.Identity);
+            if(usedData == true)
+            {
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Data Sudah Digunakan di Sewing In"
+                });
+            } else
+            {
+                RemoveGarmentCuttingOutCommand command = new RemoveGarmentCuttingOutCommand(guid);
+                var order = await Mediator.Send(command);
+
+                return Ok(order.Identity);
+            }
         }
 
        
