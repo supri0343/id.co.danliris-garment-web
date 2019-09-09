@@ -5,6 +5,8 @@ using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentCuttingOuts;
 using Manufactures.Domain.GarmentCuttingOuts.Commands;
 using Manufactures.Domain.GarmentCuttingOuts.Repositories;
+using Manufactures.Domain.GarmentSewingDOs;
+using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -22,6 +24,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
         private readonly IGarmentCuttingOutItemRepository _garmentCuttingOutItemRepository;
         private readonly IGarmentCuttingOutDetailRepository _garmentCuttingOutDetailRepository;
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
+        private readonly IGarmentSewingDORepository _garmentSewingDORepository;
+        private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
         
         public PlaceGarmentCuttingOutCommandHandler(IStorage storage)
         {
@@ -30,6 +34,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
             _garmentCuttingOutItemRepository = storage.GetRepository<IGarmentCuttingOutItemRepository>();
             _garmentCuttingOutDetailRepository = storage.GetRepository<IGarmentCuttingOutDetailRepository>();
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
+            _garmentSewingDORepository = storage.GetRepository<IGarmentSewingDORepository>();
+            _garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
         }
 
         public async Task<GarmentCuttingOut> Handle(PlaceGarmentCuttingOutCommand request, CancellationToken cancellationToken)
@@ -52,6 +58,24 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                 new GarmentComodityId(request.Comodity.Id),
                 request.Comodity.Code,
                 request.Comodity.Name
+            );
+
+            GarmentSewingDO garmentSewingDO = new GarmentSewingDO(
+                Guid.NewGuid(),
+                GenerateSewingDONo(request),
+                garmentCuttingOut.Identity,
+                new UnitDepartmentId(request.UnitFrom.Id),
+                request.UnitFrom.Code,
+                request.UnitFrom.Name,
+                new UnitDepartmentId(request.Unit.Id),
+                request.Unit.Code,
+                request.Unit.Name,
+                request.RONo,
+                request.Article,
+                new GarmentComodityId(request.Comodity.Id),
+                request.Comodity.Code,
+                request.Comodity.Name,
+                request.CuttingOutDate.GetValueOrDefault()
             );
 
             Dictionary<Guid, double> cuttingInDetailToBeUpdated = new Dictionary<Guid, double>();
@@ -98,7 +122,30 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                     }
 
                     await _garmentCuttingOutDetailRepository.Update(garmentCuttingOutDetail);
+
+                    GarmentSewingDOItem garmentSewingDOItem = new GarmentSewingDOItem(
+                        Guid.NewGuid(),
+                        garmentSewingDO.Identity,
+                        garmentCuttingOutDetail.Identity,
+                        garmentCuttingOutItem.Identity,
+                        new ProductId(item.Product.Id),
+                        item.Product.Code,
+                        item.Product.Name,
+                        item.DesignColor,
+                        new SizeId(detail.Size.Id),
+                        detail.Size.Size,
+                        detail.CuttingOutQuantity,
+                        new UomId(detail.CuttingOutUom.Id),
+                        detail.CuttingOutUom.Unit,
+                        detail.Color,
+                        detail.CuttingOutQuantity,
+                        detail.BasicPrice
+                    );
+
+                    await _garmentSewingDOItemRepository.Update(garmentSewingDOItem);
+
                 }
+
                 await _garmentCuttingOutItemRepository.Update(garmentCuttingOutItem);
             }
 
@@ -112,6 +159,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
             }
 
             await _garmentCuttingOutRepository.Update(garmentCuttingOut);
+
+            await _garmentSewingDORepository.Update(garmentSewingDO);
 
             _storage.Save();
 
@@ -133,6 +182,23 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
             var CutOutNo = $"{prefix}{(lastCutOutNo + 1).ToString("D4")}";
 
             return CutOutNo;
+        }
+
+        private string GenerateSewingDONo(PlaceGarmentCuttingOutCommand request)
+        {
+            var now = DateTime.Now;
+            var year = now.ToString("yy");
+            var month = now.ToString("MM");
+            var day = now.ToString("dd");
+            var prefix = $"DS{year}{month}{day}";
+
+            var lastSewingDONo = _garmentSewingDORepository.Query.Where(w => w.SewingDONo.StartsWith(prefix))
+                .OrderByDescending(o => o.SewingDONo)
+                .Select(s => int.Parse(s.SewingDONo.Replace(prefix, "")))
+                .FirstOrDefault();
+            var SewingDONo = $"{prefix}{(lastSewingDONo + 1).ToString("D4")}";
+
+            return SewingDONo;
         }
     }
 }
