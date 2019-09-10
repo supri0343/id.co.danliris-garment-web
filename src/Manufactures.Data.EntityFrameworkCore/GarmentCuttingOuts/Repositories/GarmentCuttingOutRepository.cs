@@ -22,7 +22,10 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingOuts.Repositories
 
             List<string> SearchAttributes = new List<string>
             {
-
+                "CutOutNo",
+                "UnitCode",
+                "RONo",
+                "Article",
             };
 
             data = QueryHelper<GarmentCuttingOutReadModel>.Search(data, SearchAttributes, keyword);
