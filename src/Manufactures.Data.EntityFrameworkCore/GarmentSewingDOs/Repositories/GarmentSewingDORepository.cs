@@ -21,7 +21,10 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSewingDOs.Repositories
 
             List<string> SearchAttributes = new List<string>
             {
-
+                "SewingDONo",
+                "Article",
+                "RONo",
+                "UnitCode"
             };
 
             data = QueryHelper<GarmentSewingDOReadModel>.Search(data, SearchAttributes, keyword);
