@@ -27,5 +27,7 @@ namespace Manufactures.Domain.GarmentLoadings.ReadModels
         public double RemainingQuantity { get; internal set; }
         public double BasicPrice { get; internal set; }
 
+        public virtual GarmentLoadingReadModel GarmentLoading { get; internal set; }
+
     }
 }

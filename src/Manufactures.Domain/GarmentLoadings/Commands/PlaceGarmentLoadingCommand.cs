@@ -10,17 +10,17 @@ namespace Manufactures.Domain.GarmentLoadings.Commands
 {
     public class PlaceGarmentLoadingCommand : ICommand<GarmentLoading>
     {
-        public string LoadingNo { get; internal set; }
-        public Guid SewingDOId { get; internal set; }
-        public string SewingDONo { get; internal set; }
-        public UnitDepartment UnitFrom { get; internal set; }
-        public UnitDepartment Unit { get; internal set; }
-        public string RONo { get; internal set; }
-        public string Article { get; internal set; }
-        public string Comodity { get; internal set; }
-        public DateTimeOffset LoadingDate { get; internal set; }
+        public string LoadingNo { get; set; }
+        public Guid SewingDOId { get; set; }
+        public string SewingDONo { get; set; }
+        public UnitDepartment UnitFrom { get; set; }
+        public UnitDepartment Unit { get; set; }
+        public string RONo { get; set; }
+        public string Article { get; set; }
+        public string Comodity { get; set; }
+        public DateTimeOffset LoadingDate { get; set; }
 
-        public List<GarmentLoadingItemValueObject> Items { get; internal set; }
+        public List<GarmentLoadingItemValueObject> Items { get; set; }
     }
 
     public class PlaceGarmentLoadingCommandValidator : AbstractValidator<PlaceGarmentLoadingCommand>
