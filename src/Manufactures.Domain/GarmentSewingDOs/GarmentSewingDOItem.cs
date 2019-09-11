@@ -19,13 +19,14 @@ namespace Manufactures.Domain.GarmentSewingDOs
         public string DesignColor { get; private set; }
         public SizeId SizeId { get; private set; }
         public string SizeName { get; private set; }
+        public double Quantity { get; set; }
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
         public string Color { get; private set; }
         public double RemainingQuantity { get; private set; }
         public double BasicPrice { get; private set; }
 
-        public GarmentSewingDOItem(Guid identity, Guid sewingDOId, Guid cuttingOutDetailId, Guid cuttingOutItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, UomId uomId, string uomUnit, string color, double remainingQuantity, double basicPrice) : base(identity)
+        public GarmentSewingDOItem(Guid identity, Guid sewingDOId, Guid cuttingOutDetailId, Guid cuttingOutItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity, double basicPrice) : base(identity)
         {
             Identity = identity;
             SewingDOId = sewingDOId;
@@ -37,6 +38,7 @@ namespace Manufactures.Domain.GarmentSewingDOs
             DesignColor = designColor;
             SizeId = sizeId;
             SizeName = sizeName;
+            Quantity = quantity;
             UomId = uomId;
             UomUnit = uomUnit;
             Color = color;
@@ -54,6 +56,7 @@ namespace Manufactures.Domain.GarmentSewingDOs
                 DesignColor = DesignColor,
                 SizeId = SizeId.Value,
                 SizeName = SizeName,
+                Quantity = Quantity,
                 UomId = UomId.Value,
                 UomUnit = UomUnit,
                 Color = Color,
@@ -75,6 +78,7 @@ namespace Manufactures.Domain.GarmentSewingDOs
             DesignColor = readModel.DesignColor;
             SizeId = new SizeId(readModel.SizeId);
             SizeName = readModel.SizeName;
+            Quantity = readModel.Quantity;
             UomId = new UomId(readModel.UomId);
             UomUnit = readModel.UomUnit;
             Color = readModel.Color;

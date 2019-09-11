@@ -50,7 +50,7 @@ namespace Manufactures.Domain.GarmentCuttingOuts.Commands
 
             RuleFor(r => r.TotalCuttingOutQuantity)
                .LessThanOrEqualTo(r => r.TotalCuttingOut)
-               .WithMessage(x => $"'Jumlah Potong' tidak boleh lebih dari '{x.TotalCuttingOut}'.");
+               .WithMessage(x => $"'Jumlah Potong' tidak boleh lebih dari '{x.TotalCuttingOut}'.").When(w => w.IsSave == true);
 
             RuleForEach(r => r.Details).SetValidator(new GarmentCuttingOutDetailValueObjectValidator()).When(w => w.IsSave == true);
         }

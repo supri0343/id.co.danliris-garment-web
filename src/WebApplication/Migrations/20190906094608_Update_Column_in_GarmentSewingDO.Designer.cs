@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20190906094608_Update_Column_in_GarmentSewingDO")]
+    partial class Update_Column_in_GarmentSewingDO
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -606,141 +608,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.ToTable("GarmentDeliveryReturns");
                 });
 
-            modelBuilder.Entity("Manufactures.Domain.GarmentLoadings.ReadModels.GarmentLoadingItemReadModel", b =>
-                {
-                    b.Property<Guid>("Identity")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<double>("BasicPrice");
-
-                    b.Property<string>("Color")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("DesignColor")
-                        .HasMaxLength(50);
-
-                    b.Property<Guid>("LoadingId");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<string>("ProductCode")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<string>("ProductName")
-                        .HasMaxLength(500);
-
-                    b.Property<double>("Quantity");
-
-                    b.Property<double>("RemainingQuantity");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<Guid>("SewingDOItemId");
-
-                    b.Property<int>("SizeId");
-
-                    b.Property<string>("SizeName")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("UomId");
-
-                    b.Property<string>("UomUnit")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Identity");
-
-                    b.HasIndex("LoadingId");
-
-                    b.ToTable("GarmentLoadingItems");
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentLoadings.ReadModels.GarmentLoadingReadModel", b =>
-                {
-                    b.Property<Guid>("Identity")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Article")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Comodity")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<DateTimeOffset>("LoadingDate");
-
-                    b.Property<string>("LoadingNo")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<string>("RONo")
-                        .HasMaxLength(25);
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<Guid>("SewingDOId");
-
-                    b.Property<string>("SewingDONo")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("UnitCode")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("UnitFromCode")
-                        .HasMaxLength(25);
-
-                    b.Property<int>("UnitFromId");
-
-                    b.Property<string>("UnitFromName")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("UnitId");
-
-                    b.Property<string>("UnitName")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Identity");
-
-                    b.ToTable("GarmentLoadings");
-                });
-
             modelBuilder.Entity("Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel", b =>
                 {
                     b.Property<Guid>("Identity")
@@ -1043,14 +910,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasOne("Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel", "GarmentDeliveryReturnIdentity")
                         .WithMany("GarmentDeliveryReturnItem")
                         .HasForeignKey("DRId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentLoadings.ReadModels.GarmentLoadingItemReadModel", b =>
-                {
-                    b.HasOne("Manufactures.Domain.GarmentLoadings.ReadModels.GarmentLoadingReadModel", "GarmentLoading")
-                        .WithMany("Items")
-                        .HasForeignKey("LoadingId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

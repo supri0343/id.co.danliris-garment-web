@@ -11,6 +11,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Manufactures.Domain.GarmentSewingDOs.Repositories;
+using Manufactures.Domain.GarmentSewingDOs;
+using Moonlay;
 
 namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
 {
@@ -21,6 +24,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
         private readonly IGarmentCuttingOutItemRepository _garmentCuttingOutItemRepository;
         private readonly IGarmentCuttingOutDetailRepository _garmentCuttingOutDetailRepository;
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
+        private readonly IGarmentSewingDORepository _garmentSewingDORepository;
+        private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
 
         public RemoveGarmentCuttingOutCommandHandler(IStorage storage)
         {
@@ -29,11 +34,14 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
             _garmentCuttingOutItemRepository = storage.GetRepository<IGarmentCuttingOutItemRepository>();
             _garmentCuttingOutDetailRepository = storage.GetRepository<IGarmentCuttingOutDetailRepository>();
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
+            _garmentSewingDORepository = storage.GetRepository<IGarmentSewingDORepository>();
+            _garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
         }
 
         public async Task<GarmentCuttingOut> Handle(RemoveGarmentCuttingOutCommand request, CancellationToken cancellationToken)
         {
             var cutOut = _garmentCuttingOutRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentCuttingOut(o)).Single();
+            var sewingDO = _garmentSewingDORepository.Query.Where(o => o.CuttingOutId == request.Identity).Select(o => new GarmentSewingDO(o)).Single();
 
             Dictionary<Guid, double> cuttingInDetailToBeUpdated = new Dictionary<Guid, double>();
 
@@ -65,6 +73,15 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                 garmentCuttingInDetail.Modify();
                 await _garmentCuttingInDetailRepository.Update(garmentCuttingInDetail);
             }
+
+            _garmentSewingDOItemRepository.Find(o => o.SewingDOId == sewingDO.Identity).ForEach(async sewingDOItem =>
+            {
+                sewingDOItem.Remove();
+                await _garmentSewingDOItemRepository.Update(sewingDOItem);
+            });
+
+            sewingDO.Remove();
+            await _garmentSewingDORepository.Update(sewingDO);
 
             cutOut.Remove();
             await _garmentCuttingOutRepository.Update(cutOut);
