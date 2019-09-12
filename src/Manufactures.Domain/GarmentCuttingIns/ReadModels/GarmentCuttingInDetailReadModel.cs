@@ -26,7 +26,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.ReadModels
         public int PreparingUomId { get; internal set; }
         public string PreparingUomUnit { get; internal set; }
 
-        public double CuttingInQuantity { get; internal set; }
+        public int CuttingInQuantity { get; internal set; }
         public int CuttingInUomId { get; internal set; }
         public string CuttingInUomUnit { get; internal set; }
 

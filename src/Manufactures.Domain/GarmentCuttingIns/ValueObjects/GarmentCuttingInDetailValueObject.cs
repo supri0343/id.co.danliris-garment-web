@@ -19,7 +19,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.ValueObjects
         public double PreparingQuantity { get; set; }
         public Uom PreparingUom { get; set; }
 
-        public double CuttingInQuantity { get; set; }
+        public int CuttingInQuantity { get; set; }
         public Uom CuttingInUom { get; set; }
 
         public double RemainingQuantity { get; set; }
