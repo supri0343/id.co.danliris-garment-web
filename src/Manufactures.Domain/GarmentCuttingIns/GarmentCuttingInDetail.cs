@@ -24,14 +24,14 @@ namespace Manufactures.Domain.GarmentCuttingIns
         public UomId PreparingUomId { get; private set; }
         public string PreparingUomUnit { get; private set; }
 
-        public double CuttingInQuantity { get; private set; }
+        public int CuttingInQuantity { get; private set; }
         public UomId CuttingInUomId { get; private set; }
         public string CuttingInUomUnit { get; private set; }
 
         public double RemainingQuantity { get; private set; }
         public double BasicPrice { get; private set; }
 
-        public void SetCuttingInQuantity(double CuttingInQuantity)
+        public void SetCuttingInQuantity(int CuttingInQuantity)
         {
             if (this.CuttingInQuantity != CuttingInQuantity)
             {
@@ -58,7 +58,7 @@ namespace Manufactures.Domain.GarmentCuttingIns
             }
         }
 
-        public GarmentCuttingInDetail(Guid identity, Guid cutInItemId, Guid preparingItemId, ProductId productId, string productCode, string productName, string designColor, string fabricType, double preparingQuantity, UomId preparingUomId, string preparingUomUnit, double cuttingInQuantity, UomId cuttingInUomId, string cuttingInUomUnit, double remainingQuantity, double basicPrice) : base(identity)
+        public GarmentCuttingInDetail(Guid identity, Guid cutInItemId, Guid preparingItemId, ProductId productId, string productCode, string productName, string designColor, string fabricType, double preparingQuantity, UomId preparingUomId, string preparingUomUnit, int cuttingInQuantity, UomId cuttingInUomId, string cuttingInUomUnit, double remainingQuantity, double basicPrice) : base(identity)
         {
             //MarkTransient();
 
