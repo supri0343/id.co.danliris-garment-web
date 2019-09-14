@@ -97,7 +97,15 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
 
             foreach (var itemDeleted in requestTempItems)
             {
+                var dbItemDeleted = dbGarmentDeliveryReturnItem.Find(x => x.Identity == itemDeleted.Id);
                 var deletedItems = dbGarmentDeliveryReturnItem.Find(x => x.Identity == itemDeleted.Id);
+                if(itemDeleted.Product.Name == "FABRIC")
+                {
+                    var garmentPreparingItemDeleted = _garmentPreparingItemRepository.Query.Where(x => x.Identity == Guid.Parse(itemDeleted.PreparingItemId)).Select(s => new GarmentPreparingItem(s)).Single();
+                    garmentPreparingItemDeleted.setRemainingQuantity(garmentPreparingItemDeleted.RemainingQuantity + dbItemDeleted.Quantity);
+                    garmentPreparingItemDeleted.SetModified();
+                    await _garmentPreparingItemRepository.Update(garmentPreparingItemDeleted);
+                }
                 deletedItems.Remove();
                 await _garmentDeliveryReturnItemRepository.Update(deletedItems);
             }

@@ -154,7 +154,7 @@ namespace Manufactures.Controllers.Api
                 {
                     if(item.Product.Name != "FABRIC")
                     {
-                        await PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(item.UENItemId, item.Quantity);
+                        await PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(item.UENItemId, item.Quantity, 0);
                     }
                 };
                 
@@ -176,17 +176,21 @@ namespace Manufactures.Controllers.Api
 
             VerifyUser();
 
-            var order = await Mediator.Send(command);
-
             foreach (var item in command.Items)
             {
                 var garmentDeliveryReturnItems = _garmentDeliveryReturnItemRepository.Find(x => x.Identity == item.Id).Single();
-                if (item.Product.Name != "FABRIC")
+                if (item.IsSave == true && item.Product.Name != "FABRIC")
                 {
-                    var qty = garmentDeliveryReturnItems.Quantity - item.Quantity;
-                    await PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(item.UENItemId, item.Quantity);
+                    await PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(item.UENItemId, item.Quantity, garmentDeliveryReturnItems.Quantity);
                 }
+                else if (item.IsSave == false && item.Product.Name != "FABRIC")
+                {
+                    await PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(item.UENItemId, 0, garmentDeliveryReturnItems.Quantity);
+                }
+
             };
+
+            var order = await Mediator.Send(command);
 
             return Ok(order.Identity);
         }
@@ -200,19 +204,20 @@ namespace Manufactures.Controllers.Api
             if (!Guid.TryParse(id, out Guid orderId))
                 return NotFound();
 
-            var command = new RemoveGarmentDeliveryReturnCommand();
-            command.SetId(orderId);
-
-            var order = await Mediator.Send(command);
             var garmentDeliveryReturnItems = _garmentDeliveryReturnItemRepository.Find(x => x.DRId == deliveryReturnId);
             foreach (var item in garmentDeliveryReturnItems)
             {
                 if (item.ProductName != "FABRIC")
                 {
-                    var qty = item.Quantity * (-1);
-                    await PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(item.UENItemId, qty);
+                    await PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(item.UENItemId, 0, item.Quantity);
                 }
             };
+
+            var command = new RemoveGarmentDeliveryReturnCommand();
+            command.SetId(orderId);
+
+            var order = await Mediator.Send(command);
+            
 
             return Ok(order.Identity);
         }

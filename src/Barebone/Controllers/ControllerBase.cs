@@ -267,10 +267,10 @@ namespace Barebone.Controllers
             return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
         }
 
-        protected async Task<string> PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(int id, double quantity)
+        protected async Task<string> PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(int id, double quantity, double quantityBefore)
         {
             var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-unit-expenditure-notes/returQuantity/{id}";
-            var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, WorkContext.Token, new StringContent(JsonConvert.SerializeObject(new { ReturQuantity = quantity }), Encoding.UTF8, "application/json"));
+            var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, WorkContext.Token, new StringContent(JsonConvert.SerializeObject(new { ReturQuantity = quantity, Quantity = quantityBefore }), Encoding.UTF8, "application/json"));
             //var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, WorkContext.Token, new StringContent(JsonConvert.SerializeObject("0"), Encoding.UTF8, "application/text"));
 
             //TokenResult tokenResult = new TokenResult();
