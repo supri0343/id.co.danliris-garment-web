@@ -141,7 +141,7 @@ namespace Manufactures.Controllers.Api
         public async Task<IActionResult> GetLoaderByRO(string keyword, string filter = "{}")
         {
             var query = _garmentCuttingInRepository.Read(1, int.MaxValue, "{}", "", filter);
-            query = query.Where(o => o.RONo.Contains(keyword));
+            query = _garmentCuttingInRepository.Query.Where(o => o.RONo.Contains(keyword));
 
             var rOs = _garmentCuttingInRepository.Find(query)
                 .Select(o => new { o.RONo, o.Article }).Distinct().ToList();
