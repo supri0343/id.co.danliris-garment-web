@@ -17,11 +17,11 @@ namespace Manufactures.Dtos
             UENItemId = garmentPreparingItem.UENItemId;
             Product = new Product(garmentPreparingItem.ProductId.Value, garmentPreparingItem.ProductName, garmentPreparingItem.ProductCode);
             DesignColor = garmentPreparingItem.DesignColor;
-            Quantity = garmentPreparingItem.Quantity;
+            Quantity = (decimal)garmentPreparingItem.Quantity;
             Uom = new Uom(garmentPreparingItem.UomId.Value, garmentPreparingItem.UomUnit);
             FabricType = garmentPreparingItem.FabricType;
-            RemainingQuantity = garmentPreparingItem.RemainingQuantity;
-            BasicPrice = garmentPreparingItem.BasicPrice;
+            RemainingQuantity = (decimal)garmentPreparingItem.RemainingQuantity;
+            BasicPrice = (decimal)garmentPreparingItem.BasicPrice;
             GarmentPreparingId = garmentPreparingItem.GarmentPreparingId;
         }
 
@@ -34,11 +34,11 @@ namespace Manufactures.Dtos
         public int UENItemId { get; set; }
         public Product Product { get; set; }
         public string DesignColor { get; set; }
-        public double Quantity { get; set; }
+        public decimal Quantity { get; set; }
         public Uom Uom { get; set; }
         public string FabricType { get; set; }
-        public double RemainingQuantity { get; set; }
-        public double BasicPrice { get; set; }
+        public decimal RemainingQuantity { get; set; }
+        public decimal BasicPrice { get; set; }
         public Guid GarmentPreparingId { get; set; }
     }
 }
