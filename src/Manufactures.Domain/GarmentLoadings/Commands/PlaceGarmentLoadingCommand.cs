@@ -17,7 +17,7 @@ namespace Manufactures.Domain.GarmentLoadings.Commands
         public UnitDepartment Unit { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }
-        public string Comodity { get; set; }
+        public GarmentComodity Comodity { get; set; }
         public DateTimeOffset LoadingDate { get; set; }
 
         public List<GarmentLoadingItemValueObject> Items { get; set; }
@@ -32,6 +32,7 @@ namespace Manufactures.Domain.GarmentLoadings.Commands
             RuleFor(r => r.SewingDOId).NotNull();
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.LoadingDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
+            RuleFor(r => r.Comodity).NotNull();
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleForEach(r => r.Items).SetValidator(new GarmentLoadingItemValueObjectValidator());
         }
@@ -43,9 +44,14 @@ namespace Manufactures.Domain.GarmentLoadings.Commands
         {
             RuleFor(r => r.Quantity)
                 .GreaterThan(0)
-                .WithMessage("'Jumlah' harus lebih dari '0'.");
-                //.When(w => w.IsSave);
+                .WithMessage("'Jumlah' harus lebih dari '0'.")
+                .When(w => w.IsSave);
 
+            RuleFor(r => r.Quantity)
+                .LessThanOrEqualTo(r => r.SewingDORemainingQuantity)
+                .OverridePropertyName("Quantity")
+                .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.SewingDORemainingQuantity}'.")
+                .When(w => w.IsSave == true);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Manufactures.Domain.GarmentLoadings.ValueObjects
 {
     public class GarmentLoadingItemValueObject : ValueObject
     {
+        public Guid Id { get; set; }
         public Guid LoadingId { get;  set; }
         public Guid SewingDOItemId { get;  set; }
         public Product Product { get;  set; }
@@ -18,6 +19,8 @@ namespace Manufactures.Domain.GarmentLoadings.ValueObjects
         public string Color { get;  set; }
         public double RemainingQuantity { get;  set; }
         public double BasicPrice { get; set; }
+        public double SewingDORemainingQuantity { get; set; }
+        public bool IsSave { get; set; }
 
         public GarmentLoadingItemValueObject()
         {

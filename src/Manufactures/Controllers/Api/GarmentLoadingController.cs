@@ -42,7 +42,8 @@ namespace Manufactures.Controllers.Api
                     loadingItem.ProductCode,
                     loadingItem.ProductName,
                     loadingItem.Quantity,
-                    loadingItem.RemainingQuantity
+                    loadingItem.RemainingQuantity,
+                    loadingItem.Color
                 }).ToList();
 
                 return new GarmentLoadingListDto(loading)
@@ -50,6 +51,7 @@ namespace Manufactures.Controllers.Api
                     Products = items.Select(i => i.ProductName).ToList(),
                     TotalLoadingQuantity = items.Sum(i => i.Quantity),
                     TotalRemainingQuantity= items.Sum(i => i.RemainingQuantity),
+                    Colors=items.Select(i=>i.Color).Distinct().ToList()
                 };
             }).ToList();
 

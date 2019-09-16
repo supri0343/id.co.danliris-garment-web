@@ -17,7 +17,7 @@ namespace Manufactures.Dtos
             Article = garmentLoading.Article;
             Unit = new UnitDepartment(garmentLoading.UnitId.Value, garmentLoading.UnitCode, garmentLoading.UnitName);
             UnitFrom = new UnitDepartment(garmentLoading.UnitFromId.Value, garmentLoading.UnitFromCode, garmentLoading.UnitFromName);
-            Comodity = garmentLoading.Comodity;
+            Comodity = new GarmentComodity (garmentLoading.ComodityId.Value, garmentLoading.ComodityCode, garmentLoading.ComodityName);
             LoadingDate = garmentLoading.LoadingDate;
         }
 
@@ -29,12 +29,13 @@ namespace Manufactures.Dtos
         public UnitDepartment Unit { get; internal set; }
         public string RONo { get; internal set; }
         public string Article { get; internal set; }
-        public string Comodity { get; internal set; }
+        public GarmentComodity Comodity { get; internal set; }
         public DateTimeOffset LoadingDate { get; internal set; }
 
         public double TotalRemainingQuantity { get; set; }
         public double TotalLoadingQuantity { get; set; }
 
         public List<string> Products { get; set; }
+        public List<string> Colors { get; set; }
     }
 }
