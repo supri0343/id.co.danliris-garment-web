@@ -86,6 +86,15 @@ namespace Manufactures.Domain.GarmentSewingDOs
             BasicPrice = readModel.BasicPrice;
         }
 
+        public void setRemainingQuantity(double newRemainingQuantity)
+        {
+            if (newRemainingQuantity != RemainingQuantity)
+            {
+                RemainingQuantity = newRemainingQuantity;
+                ReadModel.RemainingQuantity = newRemainingQuantity;
+            }
+        }
+
         public void Modify()
         {
             MarkModified();

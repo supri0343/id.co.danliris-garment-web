@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20190627041255_CuttingIn.cs" />
     <Compile Remove="Migrations\20190627061508_CuttingTypeMax.cs" />
+    <Compile Remove="Migrations\20190910065535_Initial_Loading.cs" />
+    <Compile Remove="Migrations\20190910065535_Initial_Loading.Designer.cs" />
   </ItemGroup>
 
   <!--<ItemGroup>

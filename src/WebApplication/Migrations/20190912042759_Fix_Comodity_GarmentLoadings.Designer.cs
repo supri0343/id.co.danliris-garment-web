@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20190912042759_Fix_Comodity_GarmentLoadings")]
+    partial class Fix_Comodity_GarmentLoadings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,7 +134,7 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<Guid>("CutInItemId");
 
-                    b.Property<int>("CuttingInQuantity");
+                    b.Property<double>("CuttingInQuantity");
 
                     b.Property<int>("CuttingInUomId");
 

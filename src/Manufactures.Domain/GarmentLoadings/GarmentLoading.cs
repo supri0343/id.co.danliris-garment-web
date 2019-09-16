@@ -22,13 +22,15 @@ namespace Manufactures.Domain.GarmentLoadings
         public string UnitName { get; internal set; }
         public string RONo { get; internal set; }
         public string Article { get; internal set; }
-        public string Comodity { get; internal set; }
+        public GarmentComodityId ComodityId { get; internal set; }
+        public string ComodityCode { get; internal set; }
+        public string ComodityName { get; internal set; }
         public DateTimeOffset LoadingDate { get; internal set; }
 
-        public GarmentLoading(Guid identity, string loadingNo, Guid sewingDOId, string sewingDONo, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, string comodity, DateTimeOffset loadingDate) : base(identity)
+        public GarmentLoading(Guid identity, string loadingNo, Guid sewingDOId, string sewingDONo, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset loadingDate, GarmentComodityId comodityId, string comodityCode, string comodityName) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
-            Validator.ThrowIfNull(() => sewingDOId);
+            //Validator.ThrowIfNull(() => sewingDOId);
 
             //MarkTransient();
             LoadingNo = loadingNo;
@@ -43,8 +45,10 @@ namespace Manufactures.Domain.GarmentLoadings
             UnitId = unitId;
             UnitCode = unitCode;
             UnitName = unitName;
-            Comodity = comodity;
+            ComodityId = comodityId;
             LoadingDate = loadingDate;
+            ComodityCode = comodityCode;
+            ComodityName = comodityName;
 
             ReadModel = new GarmentLoadingReadModel(Identity)
             {
@@ -60,7 +64,9 @@ namespace Manufactures.Domain.GarmentLoadings
                 UnitFromCode = UnitFromCode,
                 UnitFromName = UnitFromName,
                 UnitFromId = UnitFromId.Value,
-                Comodity=Comodity
+                ComodityId=ComodityId.Value,
+                ComodityCode=ComodityCode,
+                ComodityName=ComodityName
             };
 
             ReadModel.AddDomainEvent(new OnGarmentLoadingPlaced(Identity));
@@ -79,6 +85,9 @@ namespace Manufactures.Domain.GarmentLoadings
             UnitFromCode = readModel.UnitFromCode;
             UnitFromName = readModel.UnitFromName;
             UnitFromId = new UnitDepartmentId(readModel.UnitFromId);
+            ComodityId = new GarmentComodityId(readModel.ComodityId);
+            ComodityName = readModel.ComodityName;
+            ComodityCode = readModel.ComodityCode;
         }
 
         public void Modify()

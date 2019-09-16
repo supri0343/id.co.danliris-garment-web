@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20190910065959_Initial_Loading")]
+    partial class Initial_Loading
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,7 +134,7 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<Guid>("CutInItemId");
 
-                    b.Property<int>("CuttingInQuantity");
+                    b.Property<double>("CuttingInQuantity");
 
                     b.Property<int>("CuttingInUomId");
 
@@ -682,12 +684,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("Article")
                         .HasMaxLength(50);
 
-                    b.Property<string>("ComodityCode")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("ComodityId");
-
-                    b.Property<string>("ComodityName")
+                    b.Property<string>("Comodity")
                         .HasMaxLength(500);
 
                     b.Property<string>("CreatedBy")
@@ -907,8 +904,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("ProductName")
                         .HasMaxLength(100);
 
-                    b.Property<double>("Quantity");
-
                     b.Property<double>("RemainingQuantity");
 
                     b.Property<byte[]>("RowVersion")
@@ -977,10 +972,10 @@ namespace DanLiris.Admin.Web.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<DateTimeOffset>("SewingDODate");
-
                     b.Property<string>("SewingDONo")
                         .HasMaxLength(25);
+
+                    b.Property<DateTimeOffset>("SewingOutDate");
 
                     b.Property<string>("UnitCode")
                         .HasMaxLength(25);

@@ -34,6 +34,15 @@ namespace Manufactures.Domain.GarmentLoadings
             }
         }
 
+        public void SetRemainingQuantity(double RemainingQuantity)
+        {
+            if (this.RemainingQuantity != RemainingQuantity)
+            {
+                this.RemainingQuantity = RemainingQuantity;
+                ReadModel.RemainingQuantity = RemainingQuantity;
+            }
+        }
+
         public GarmentLoadingItem(Guid identity, Guid loadingId, Guid sewingDOItemId, SizeId sizeId, string sizeName, ProductId productId, string productCode, string productName, string designColor, double quantity, double remainingQuantity, double basicPrice, UomId uomId, string uomUnit, string color) : base(identity)
         {
             LoadingId = loadingId;
