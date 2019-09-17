@@ -37,12 +37,11 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
 
             _garmentLoadingItemRepository.Find(o => o.LoadingId == loading.Identity).ForEach(async loadingItem =>
             {
-
-                loadingItem.Modify();
-
+                var itemToBeDeleted = request.Items.Where(o => o.Id == loadingItem.Identity && o.IsSave==false).SingleOrDefault();
+                
                 var item = request.Items.Where(o => o.Id == loadingItem.Identity).Single();
 
-                var diffSewingDOQuantity = loadingItem.Quantity - item.Quantity;
+                var diffSewingDOQuantity = itemToBeDeleted==null ? Math.Round(loadingItem.Quantity - item.Quantity, 2) : Math.Round(itemToBeDeleted.Quantity,2);
 
                 if (sewingDOItemToBeUpdated.ContainsKey(loadingItem.SewingDOItemId))
                 {
@@ -53,13 +52,23 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
                     sewingDOItemToBeUpdated.Add(loadingItem.SewingDOItemId, diffSewingDOQuantity);
                 }
 
+                loadingItem.SetQuantity(item.Quantity);
+                loadingItem.SetRemainingQuantity(item.RemainingQuantity);
+
+                loadingItem.Modify();
+
+                if (itemToBeDeleted != null)
+                {
+                    loadingItem.Remove();
+                }
+
                 await _garmentLoadingItemRepository.Update(loadingItem);
             });
 
             foreach (var sewingDOItem in sewingDOItemToBeUpdated)
             {
                 var garmentSewingDOItem = _garmentSewingDOItemRepository.Query.Where(x => x.Identity == sewingDOItem.Key).Select(s => new GarmentSewingDOItem(s)).Single();
-                garmentSewingDOItem.setRemainingQuantity(garmentSewingDOItem.RemainingQuantity + sewingDOItem.Value);
+                garmentSewingDOItem.setRemainingQuantity(Math.Round(garmentSewingDOItem.RemainingQuantity + sewingDOItem.Value, 2));
                 garmentSewingDOItem.Modify();
 
                 await _garmentSewingDOItemRepository.Update(garmentSewingDOItem);
