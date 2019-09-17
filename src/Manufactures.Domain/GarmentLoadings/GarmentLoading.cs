@@ -88,6 +88,7 @@ namespace Manufactures.Domain.GarmentLoadings
             ComodityId = new GarmentComodityId(readModel.ComodityId);
             ComodityName = readModel.ComodityName;
             ComodityCode = readModel.ComodityCode;
+            LoadingDate = readModel.LoadingDate;
         }
 
         public void Modify()

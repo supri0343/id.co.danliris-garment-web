@@ -19,9 +19,11 @@ namespace Manufactures.Dtos
             Color = garmentLoadingItem.Color;
             RemainingQuantity = garmentLoadingItem.RemainingQuantity;
             BasicPrice = garmentLoadingItem.BasicPrice;
+            SewingDOItemId = garmentLoadingItem.SewingDOItemId;
         }
 
         public Guid Id { get; set; }
+        public Guid SewingDOItemId { get; set; }
 
         public Product Product { get; set; }
         public string DesignColor { get; set; }
