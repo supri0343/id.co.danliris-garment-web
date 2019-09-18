@@ -2,6 +2,7 @@
 using Infrastructure.External.DanLirisClient.Microservice.Cache;
 using Manufactures.Domain.GarmentLoadings.Commands;
 using Manufactures.Domain.GarmentLoadings.Repositories;
+using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Manufactures.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +22,13 @@ namespace Manufactures.Controllers.Api
         private readonly IMemoryCacheManager _cacheManager;
         private readonly IGarmentLoadingRepository _garmentLoadingRepository;
         private readonly IGarmentLoadingItemRepository _garmentLoadingItemRepository;
+        private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
 
         public GarmentLoadingController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentLoadingRepository = Storage.GetRepository<IGarmentLoadingRepository>();
             _garmentLoadingItemRepository = Storage.GetRepository<IGarmentLoadingItemRepository>();
+            _garmentSewingDOItemRepository = Storage.GetRepository<IGarmentSewingDOItemRepository>();
         }
 
         [HttpGet]
