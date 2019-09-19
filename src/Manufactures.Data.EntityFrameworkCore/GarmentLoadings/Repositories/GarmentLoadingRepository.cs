@@ -27,7 +27,6 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentLoadings.Repositories
                 "RONo",
                 "UnitCode",
                 "UnitName",
-                "Color",
                 "SewingDONo",
                 "UnitFromCode",
                 "UnitFromName",
