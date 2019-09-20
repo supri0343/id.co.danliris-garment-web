@@ -30,6 +30,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentLoadings.Repositories
                 "SewingDONo",
                 "UnitFromCode",
                 "UnitFromName",
+                "Items.Color",
+                "Items.ProductName"
             };
             data = QueryHelper<GarmentLoadingReadModel>.Search(data, SearchAttributes, keyword);
 
