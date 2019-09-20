@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentLoadings.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Manufactures.Domain.GarmentLoadings.Commands
@@ -29,11 +30,13 @@ namespace Manufactures.Domain.GarmentLoadings.Commands
         {
             RuleFor(r => r.Unit).NotNull();
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
-            RuleFor(r => r.SewingDOId).NotNull();
+            RuleFor(r => r.SewingDONo).NotNull().WithMessage("Nomor DO Tidak Boleh Kosong");
             RuleFor(r => r.RONo).NotNull();
-            RuleFor(r => r.LoadingDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
+            RuleFor(r => r.LoadingDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Loading Tidak Boleh Kosong");
             RuleFor(r => r.Comodity).NotNull();
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
+            RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
+            RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
             RuleForEach(r => r.Items).SetValidator(new GarmentLoadingItemValueObjectValidator());
         }
     }
