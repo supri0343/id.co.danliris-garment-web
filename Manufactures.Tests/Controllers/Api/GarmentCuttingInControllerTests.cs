@@ -75,25 +75,29 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new List<GarmentCuttingInReadModel>().AsQueryable());
 
+            Guid cuttingInGuid = Guid.NewGuid();
             _mockGarmentCuttingInRepository
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingInReadModel>>()))
                 .Returns(new List<GarmentCuttingIn>()
                 {
-                    new GarmentCuttingIn(Guid.NewGuid(), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0)
+                    new GarmentCuttingIn(cuttingInGuid, null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0)
                 });
 
+            Guid cuttingInItemGuid = Guid.NewGuid();
+            GarmentCuttingInItem garmentCuttingInItem = new GarmentCuttingInItem(cuttingInItemGuid, cuttingInGuid, Guid.NewGuid(), 1, null);
             _mockGarmentCuttingInItemRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentCuttingInItemReadModel>()
                 {
-                    new GarmentCuttingInItemReadModel(Guid.NewGuid())
+                    garmentCuttingInItem.GetReadModel()
                 }.AsQueryable());
 
+            GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(Guid.NewGuid(), cuttingInItemGuid, Guid.NewGuid(), new ProductId(1), null, null, null, null, 1, new UomId(1), null, 1, new UomId(1), null, 1, 1);
             _mockGarmentCuttingInDetailRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentCuttingInDetailReadModel>()
                 {
-                    new GarmentCuttingInDetailReadModel(Guid.NewGuid())
+                    garmentCuttingInDetail.GetReadModel()
                 }.AsQueryable());
 
             // Act
