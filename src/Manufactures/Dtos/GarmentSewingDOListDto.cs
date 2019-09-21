@@ -20,6 +20,7 @@ namespace Manufactures.Dtos
             Comodity = new GarmentComodity(garmentSewingDO.ComodityId.Value, garmentSewingDO.ComodityCode, garmentSewingDO.ComodityName);
             SewingDODate = garmentSewingDO.SewingDODate;
 
+            Items = new List<GarmentSewingDOItemDto>();
         }
 
         public Guid Id { get; set; }
@@ -33,5 +34,7 @@ namespace Manufactures.Dtos
         public DateTimeOffset SewingDODate { get; set; }
         public double TotalQuantity { get; set; }
         public List<string> Products { get; set; }
+
+        public List<GarmentSewingDOItemDto> Items { get; set; }
     }
 }
