@@ -102,7 +102,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                         new SizeId(detail.Size.Id),
                         detail.Size.Size,
                         detail.Color,
-                        detail.CuttingOutQuantity,
+                        0,
                         detail.CuttingOutQuantity,
                         new UomId(detail.CuttingOutUom.Id),
                         detail.CuttingOutUom.Unit,
@@ -189,8 +189,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
             var now = DateTime.Now;
             var year = now.ToString("yy");
             var month = now.ToString("MM");
-            var day = now.ToString("dd");
-            var prefix = $"DS{year}{month}{day}";
+            var prefix = $"DS{year}{month}";
 
             var lastSewingDONo = _garmentSewingDORepository.Query.Where(w => w.SewingDONo.StartsWith(prefix))
                 .OrderByDescending(o => o.SewingDONo)

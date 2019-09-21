@@ -19,6 +19,8 @@ namespace Manufactures.Dtos
             Article = garmentCuttingOut.Article;
             Unit = new UnitDepartment(garmentCuttingOut.UnitId.Value, garmentCuttingOut.UnitCode, garmentCuttingOut.UnitName);
             Comodity = new GarmentComodity(garmentCuttingOut.ComodityId.Value, garmentCuttingOut.ComodityCode, garmentCuttingOut.ComodityName);
+
+            Items = new List<GarmentCuttingOutItemDto>();
         }
 
         public Guid Id { get; set; }
@@ -35,5 +37,6 @@ namespace Manufactures.Dtos
         public double TotalRemainingQuantity { get; set; }
         public double TotalCuttingOutQuantity { get; set; }
         public List<string> Products { get; set; }
+        public List<GarmentCuttingOutItemDto> Items { get; set; }
     }
 }

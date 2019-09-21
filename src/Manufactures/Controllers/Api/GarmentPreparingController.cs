@@ -98,6 +98,7 @@ namespace Manufactures.Controllers.Api
                 var i = 0;
                 foreach(var data in ListTemp)
                 {
+                    i = 0;
                     foreach(var item in garmentPreparingDtoList)
                     {
                         if(data.Id == item.Id)

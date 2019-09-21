@@ -172,7 +172,7 @@ namespace Manufactures.Controllers.Api
                 Parallel.ForEach(itemDto.Items, detailDto =>
                 {
                     var garmentCuttingInDetails = garmentCuttingInDetailDto.Where(x => x.CutInItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
-                    detailDto.Details = garmentCuttingInDetailDto;
+                    detailDto.Details = garmentCuttingInDetails;
                 });
             });
 
