@@ -20,16 +20,18 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Repositories
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
             data = QueryHelper<GarmentCuttingInReadModel>.Filter(data, FilterDictionary);
 
-            List<string> SearchAttributes = new List<string>
+            if (!string.IsNullOrWhiteSpace(keyword))
             {
-                "CutInNo",
-                "CuttingType",
-                "Article",
-                "RONo",
-                "UnitCode",
-                "UnitName",
-            };
-            data = QueryHelper<GarmentCuttingInReadModel>.Search(data, SearchAttributes, keyword);
+                data = from d in data
+                       where d.CutInNo.Contains(keyword)
+                       || d.CuttingType.Contains(keyword)
+                       || d.Article.Contains(keyword)
+                       || d.RONo.Contains(keyword)
+                       || d.UnitCode.Contains(keyword)
+                       || d.UnitName.Contains(keyword)
+                       || d.Items.Any(item => item.UENNo.Contains(keyword) || item.Details.Any(detail => detail.ProductCode.Contains(keyword) || detail.ProductName.Contains(keyword)))
+                       select d;
+            }
 
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             data = OrderDictionary.Count == 0 ? data.OrderByDescending(o => o.ModifiedDate) : QueryHelper<GarmentCuttingInReadModel>.Order(data, OrderDictionary);

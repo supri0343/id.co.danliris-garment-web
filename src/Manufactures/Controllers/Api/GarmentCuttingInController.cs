@@ -41,25 +41,31 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentCuttingInRepository.Read(page, size, order, keyword, filter);
             var count = query.Count();
-            List<GarmentCuttingInListDto> garmentCuttingInListDtos = _garmentCuttingInRepository.Find(query).Select(cutIn =>
-            {
-                var items = _garmentCuttingInItemRepository.Query.Where(o => o.CutInId == cutIn.Identity).Select(cutInItem => new
-                {
-                    cutInItem.UENNo,
-                    details = _garmentCuttingInDetailRepository.Query.Where(o => o.CutInItemId == cutInItem.Identity).Select(cutInDetail => new
-                    {
-                        cutInDetail.CuttingInQuantity,
-                        cutInDetail.ProductCode
-                    })
-                }).ToList();
 
-                return new GarmentCuttingInListDto(cutIn)
-                {
-                    UENNos = items.Select(i => i.UENNo).ToList(),
-                    Products = items.SelectMany(i => i.details.Select(d => d.ProductCode)).ToList(),
-                    TotalCuttingInQuantity = items.Sum(i => i.details.Sum(d => d.CuttingInQuantity))
-                };
-            }).ToList();
+            List<GarmentCuttingInListDto> garmentCuttingInListDtos = _garmentCuttingInRepository
+                .Find(query)
+                .Select(cutIn => new GarmentCuttingInListDto(cutIn))
+                .ToList();
+
+            var dtoIds = garmentCuttingInListDtos.Select(s => s.Id).ToList();
+            var items = _garmentCuttingInItemRepository.Query
+                .Where(o => dtoIds.Contains(o.CutInId))
+                .Select(s => new { s.Identity, s.CutInId, s.UENNo })
+                .ToList();
+
+            var itemIds = items.Select(s => s.Identity).ToList();
+            var details = _garmentCuttingInDetailRepository.Query
+                .Where(o => itemIds.Contains(o.CutInItemId))
+                .Select(s => new { s.Identity, s.CutInItemId, s.ProductCode, s.CuttingInQuantity })
+                .ToList();
+
+            Parallel.ForEach(garmentCuttingInListDtos, dto =>
+            {
+                var currentItems = items.Where(w => w.CutInId == dto.Id);
+                dto.UENNos = currentItems.Select(i => i.UENNo).ToList();
+                dto.Products = currentItems.SelectMany(i => details.Where(w => w.CutInItemId == i.Identity).Select(d => d.ProductCode)).ToList();
+                dto.TotalCuttingInQuantity = currentItems.Sum(i => details.Where(w => w.CutInItemId == i.Identity).Sum(d => d.CuttingInQuantity));
+            });
 
             await Task.Yield();
             return Ok(garmentCuttingInListDtos, info: new
