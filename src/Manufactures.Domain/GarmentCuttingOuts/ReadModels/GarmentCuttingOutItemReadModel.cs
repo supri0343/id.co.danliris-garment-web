@@ -20,6 +20,10 @@ namespace Manufactures.Domain.GarmentCuttingOuts.ReadModels
         public string ProductName { get; internal set; }
         public string DesignColor { get; internal set; }
         public double TotalCuttingOut { get; internal set; }
+        public long EPOId { get; internal set; }
+        public long EPOItemId { get; internal set; }
+        public string POSerialNumber { get; internal set; }
+
 
         public virtual ICollection<GarmentCuttingOutDetailReadModel> GarmentCuttingOutDetail { get; internal set; }
         public virtual GarmentCuttingOutReadModel GarmentCuttingOutIdentity { get; internal set; }

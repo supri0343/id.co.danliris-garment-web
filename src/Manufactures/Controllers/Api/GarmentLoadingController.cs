@@ -51,7 +51,7 @@ namespace Manufactures.Controllers.Api
 
                 return new GarmentLoadingListDto(loading)
                 {
-                    Products = items.Select(i => i.ProductName).ToList(),
+                    Products = items.Select(i => i.ProductName).Distinct().ToList(),
                     TotalLoadingQuantity =Math.Round( items.Sum(i => i.Quantity),2),
                     TotalRemainingQuantity= Math.Round(items.Sum(i => i.RemainingQuantity),2),
                     Colors=items.Where(i=>i.Color!=null).Select(i=>i.Color).Distinct().ToList()
