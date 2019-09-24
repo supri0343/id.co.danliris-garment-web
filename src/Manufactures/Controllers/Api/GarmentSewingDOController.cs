@@ -34,30 +34,125 @@ namespace Manufactures.Controllers.Api
         {
             VerifyUser();
 
-            var query = _garmentSewingDORepository.Read(page, size, order, keyword, filter);
+            var query = _garmentSewingDORepository.Read(page, size, order, "", filter);
             var count = query.Count();
-            List<GarmentSewingDOListDto> garmentSewingDOListDtos = _garmentSewingDORepository.Find(query).Select(sewingDO =>
-            {
-                var items = _garmentSewingDOItemRepository.Query.Where(o => o.SewingDOId == sewingDO.Identity).Select(sewingDOItem => new
-                {
-                    sewingDOItem.ProductCode,
-                    sewingDOItem.Quantity,
-                }).ToList();
 
-                return new GarmentSewingDOListDto(sewingDO)
-                {
-                    Products = items.Select(i => i.ProductCode).ToList(),
-                    TotalQuantity = items.Sum(i => i.Quantity),
-                };
-            }).ToList();
+            var garmentSewingDODto = _garmentSewingDORepository.Find(query).Select(o => new GarmentSewingDOListDto(o)).ToArray();
+            var garmentSewingDOItemDto = _garmentSewingDOItemRepository.Find(_garmentSewingDOItemRepository.Query).Select(o => new GarmentSewingDOItemDto(o)).ToList();
+            var garmentSewingDOItemDtoArray = _garmentSewingDOItemRepository.Find(_garmentSewingDOItemRepository.Query).Select(o => new GarmentSewingDOItemDto(o)).ToArray();
 
-            await Task.Yield();
-            return Ok(garmentSewingDOListDtos, info: new
+            Parallel.ForEach(garmentSewingDODto, itemDto =>
             {
-                page,
-                size,
-                count
+                var garmentSewingDOItems = garmentSewingDOItemDto.Where(x => x.SewingDOId == itemDto.Id).ToList();
+
+                itemDto.Items = garmentSewingDOItems;
+
+                itemDto.Items = itemDto.Items.OrderBy(x => x.Id).ToList();
+
+                itemDto.Products = itemDto.Items.Select(i => i.Product.Code).ToList();
+                itemDto.TotalQuantity = itemDto.Items.Sum(i => i.Quantity);
             });
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                garmentSewingDOItemDtoArray = garmentSewingDOItemDto.Where(x => x.Product.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToArray();
+                List<GarmentSewingDOListDto> ListTemp = new List<GarmentSewingDOListDto>();
+                foreach (var a in garmentSewingDOItemDtoArray)
+                {
+                    var temp = garmentSewingDODto.Where(x => x.Id.Equals(a.SewingDOId)).ToArray();
+                    foreach (var b in temp)
+                    {
+                        ListTemp.Add(b);
+                    }
+                }
+                
+                var garmentSewingDODtoList = garmentSewingDODto.Where(x => x.SewingDONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    || x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    || x.Unit.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    ).ToList();
+
+                var i = 0;
+                foreach (var data in ListTemp)
+                {
+                    i = 0;
+                    foreach (var item in garmentSewingDODtoList)
+                    {
+                        if (data.Id == item.Id)
+                        {
+                            i++;
+                        }
+                    }
+                    if (i == 0)
+                    {
+                        garmentSewingDODtoList.Add(data);
+                    }
+                }
+                var garmentSewingDODtoListArray = garmentSewingDODtoList.ToArray();
+                if (order != "{}")
+                {
+                    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                    garmentSewingDODtoListArray = QueryHelper<GarmentSewingDOListDto>.Order(garmentSewingDODtoList.AsQueryable(), OrderDictionary).ToArray();
+                }
+                else
+                {
+                    garmentSewingDODtoListArray = garmentSewingDODtoList.OrderByDescending(x => x.LastModifiedDate).ToArray();
+                }
+
+                garmentSewingDODtoListArray = garmentSewingDODtoListArray.Take(size).Skip((page - 1) * size).ToArray();
+
+                await Task.Yield();
+                return Ok(garmentSewingDODtoListArray, info: new
+                {
+                    page,
+                    size,
+                    count = count
+                });
+            }
+            else
+            {
+                if (order != "{}")
+                {
+                    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                    garmentSewingDODto = QueryHelper<GarmentSewingDOListDto>.Order(garmentSewingDODto.AsQueryable(), OrderDictionary).ToArray();
+                }
+                else
+                {
+                    garmentSewingDODto = garmentSewingDODto.OrderByDescending(x => x.LastModifiedDate).ToArray();
+                }
+
+                garmentSewingDODto = garmentSewingDODto.Take(size).Skip((page - 1) * size).ToArray();
+
+                await Task.Yield();
+                return Ok(garmentSewingDODto, info: new
+                {
+                    page,
+                    size,
+                    count = count
+                });
+            }
+            //List<GarmentSewingDOListDto> garmentSewingDOListDtos = _garmentSewingDORepository.Find(query).Select(sewingDO =>
+            //{
+            //    var items = _garmentSewingDOItemRepository.Query.Where(o => o.SewingDOId == sewingDO.Identity).Select(sewingDOItem => new
+            //    {
+            //        sewingDOItem.ProductCode,
+            //        sewingDOItem.Quantity,
+            //    }).ToList();
+
+            //    return new GarmentSewingDOListDto(sewingDO)
+            //    {
+            //        Products = items.Select(i => i.ProductCode).ToList(),
+            //        TotalQuantity = items.Sum(i => i.Quantity),
+            //    };
+            //}).ToList();
+
+            //await Task.Yield();
+            //return Ok(garmentSewingDOListDtos, info: new
+            //{
+            //    page,
+            //    size,
+            //    count
+            //});
         }
 
         [HttpGet("{id}")]
@@ -68,6 +163,23 @@ namespace Manufactures.Controllers.Api
             VerifyUser();
 
             GarmentSewingDODto garmentSewingDO = _garmentSewingDORepository.Find(o => o.Identity == guid).Select(sewingDO => new GarmentSewingDODto(sewingDO)
+            {
+                Items = _garmentSewingDOItemRepository.Find(o => o.SewingDOId == sewingDO.Identity).Select(sewingDOItem => new GarmentSewingDOItemDto(sewingDOItem)).ToList()
+            }
+            ).FirstOrDefault();
+
+            await Task.Yield();
+            return Ok(garmentSewingDO);
+        }
+
+        [HttpGet("byCutOutId/{id}")]
+        public async Task<IActionResult> GetByCutOutId(string id)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            GarmentSewingDODto garmentSewingDO = _garmentSewingDORepository.Find(o => o.CuttingOutId == guid).Select(sewingDO => new GarmentSewingDODto(sewingDO)
             {
                 Items = _garmentSewingDOItemRepository.Find(o => o.SewingDOId == sewingDO.Identity).Select(sewingDOItem => new GarmentSewingDOItemDto(sewingDOItem)).ToList()
             }

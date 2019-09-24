@@ -46,7 +46,7 @@ namespace Manufactures.Domain.GarmentCuttingOuts.Commands
     {
         public GarmentCuttingOutItemValueObjectValidator()
         {
-            RuleFor(r => r.Details).NotEmpty().OverridePropertyName("Detail").When(w => w.IsSave == true);
+            RuleFor(r => r.Details).NotEmpty().WithMessage("Detail Tidak Boleh Kosong").OverridePropertyName("DetailsCount").When(w => w.IsSave == true);
 
             RuleFor(r => r.TotalCuttingOutQuantity)
                .LessThanOrEqualTo(r => r.TotalCuttingOut)

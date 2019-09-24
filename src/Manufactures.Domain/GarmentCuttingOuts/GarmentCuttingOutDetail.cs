@@ -114,11 +114,11 @@ namespace Manufactures.Domain.GarmentCuttingOuts
             RemainingQuantity = readModel.RemainingQuantity;
             CuttingOutQuantity = readModel.CuttingOutQuantity;
             CuttingOutUomId = new UomId(readModel.CuttingOutUomId);
-            CuttingOutUomUnit = CuttingOutUomUnit;
-            BasicPrice = BasicPrice;
-            IndirectPrice = IndirectPrice;
-            OTL1 = OTL1;
-            OTL2 = OTL2;
+            CuttingOutUomUnit = readModel.CuttingOutUomUnit;
+            BasicPrice = readModel.BasicPrice;
+            IndirectPrice = readModel.IndirectPrice;
+            OTL1 = readModel.OTL1;
+            OTL2 = readModel.OTL2;
         }
 
         public void Modify()
