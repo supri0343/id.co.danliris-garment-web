@@ -63,7 +63,7 @@ namespace Manufactures.Controllers.Api
             {
                 var currentItems = items.Where(w => w.CutInId == dto.Id);
                 dto.UENNos = currentItems.Select(i => i.UENNo).ToList();
-                dto.Products = currentItems.SelectMany(i => details.Where(w => w.CutInItemId == i.Identity).Select(d => d.ProductCode)).ToList();
+                dto.Products = currentItems.SelectMany(i => details.Where(w => w.CutInItemId == i.Identity).Select(d => d.ProductCode)).Distinct().ToList();
                 dto.TotalCuttingInQuantity = currentItems.Sum(i => details.Where(w => w.CutInItemId == i.Identity).Sum(d => d.CuttingInQuantity));
             });
 
