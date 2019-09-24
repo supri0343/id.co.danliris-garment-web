@@ -20,6 +20,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingOuts.Configs
                .HasMaxLength(100);
             builder.Property(a => a.DesignColor)
                .HasMaxLength(100);
+            builder.Property(a => a.POSerialNumber)
+               .HasMaxLength(100);
 
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();

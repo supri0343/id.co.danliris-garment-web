@@ -24,6 +24,7 @@ namespace Manufactures.Domain.GarmentCuttingOuts.ReadModels
         public double IndirectPrice { get; internal set; }
         public double OTL1 { get; internal set; }
         public double OTL2 { get; internal set; }
+        public string Remark { get; internal set; }
 
         public virtual GarmentCuttingOutItemReadModel GarmentCuttingOutItemIdentity { get; internal set; }
 
