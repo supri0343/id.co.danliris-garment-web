@@ -276,10 +276,13 @@ namespace Manufactures.Controllers.Api
         public async Task<IActionResult> GetLoaderByRO(string keyword, string filter = "{}")
         {
             var query = _garmentPreparingRepository.Read(null, null, filter);
-            query = query.Where(o => o.RONo.Contains(keyword));
 
-            var rOs = _garmentPreparingRepository.Find(query)
-                .Select(o => new { o.RONo, o.Article }).Distinct().ToList();
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                query = query.Where(o => o.RONo.Contains(keyword));
+            }
+
+            var rOs = query.Select(o => new { o.RONo, o.Article }).Distinct().ToList();
 
             await Task.Yield();
 
