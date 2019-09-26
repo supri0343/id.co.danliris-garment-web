@@ -1,0 +1,74 @@
+﻿using Infrastructure.Domain.Commands;
+using System;
+using System.Collections.Generic;
+using Manufactures.Domain.Shared.ValueObjects;
+using System.Text;
+using Manufactures.Domain.GarmentSubconCuttingOuts.ValueObjects;
+using FluentValidation;
+using System.Linq;
+
+namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
+{
+    public class PlaceGarmentSubconCuttingOutCommand : ICommand<GarmentSubconCuttingOut>
+    {
+        public string CutOutNo { get; set; }
+        public string CuttingOutType { get; set; }
+
+        public UnitDepartment UnitFrom { get; set; }
+        public DateTimeOffset? CuttingOutDate { get; set; }
+        public string RONo { get; set; }
+        public string Article { get; set; }
+        public UnitDepartment Unit { get; set; }
+        public GarmentComodity Comodity { get; set; }
+        public List<GarmentSubconCuttingOutItemValueObject> Items { get; set; }
+    }
+
+    public class PlaceGarmentCuttingOutCommandValidator : AbstractValidator<PlaceGarmentSubconCuttingOutCommand>
+    {
+        public PlaceGarmentCuttingOutCommandValidator()
+        {
+            RuleFor(r => r.UnitFrom).NotNull();
+            RuleFor(r => r.UnitFrom.Id).NotEmpty().OverridePropertyName("UnitFrom").When(w => w.Unit != null);
+
+            RuleFor(r => r.Unit).NotNull();
+            RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
+
+            RuleFor(r => r.RONo).NotNull();
+            RuleFor(r => r.CuttingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
+            RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
+            RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
+            RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
+            RuleForEach(r => r.Items).SetValidator(new GarmentSubconCuttingOutItemValueObjectValidator());
+        }
+    }
+
+    class GarmentSubconCuttingOutItemValueObjectValidator : AbstractValidator<GarmentSubconCuttingOutItemValueObject>
+    {
+        public GarmentSubconCuttingOutItemValueObjectValidator()
+        {
+            RuleFor(r => r.Details).NotEmpty().OverridePropertyName("Detail").When(w => w.IsSave == true);
+
+            RuleFor(r => r.TotalCuttingOutQuantity)
+               .LessThanOrEqualTo(r => r.TotalCuttingOut)
+               .WithMessage(x => $"'Jumlah Potong' tidak boleh lebih dari '{x.TotalCuttingOut}'.").When(w => w.IsSave == true);
+
+            RuleForEach(r => r.Details).SetValidator(new GarmentSubconCuttingOutDetailValueObjectValidator()).When(w => w.IsSave == true);
+        }
+    }
+
+    class GarmentSubconCuttingOutDetailValueObjectValidator : AbstractValidator<GarmentSubconCuttingOutDetailValueObject>
+    {
+        public GarmentSubconCuttingOutDetailValueObjectValidator()
+        {
+
+            RuleFor(r => r.Size).NotNull();
+            RuleFor(r => r.Size.Id).NotEmpty().OverridePropertyName("Size").When(w => w.Size != null);
+
+            RuleFor(r => r.CuttingOutQuantity)
+                .GreaterThan(0)
+                .WithMessage("'Jumlah Potong' harus lebih dari '0'.");
+
+
+        }
+    }
+}
