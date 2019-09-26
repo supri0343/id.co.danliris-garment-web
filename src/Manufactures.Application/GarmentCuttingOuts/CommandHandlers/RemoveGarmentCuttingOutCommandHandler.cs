@@ -51,11 +51,11 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                 {
                     if (cuttingInDetailToBeUpdated.ContainsKey(cutOutItem.CuttingInDetailId))
                     {
-                        cuttingInDetailToBeUpdated[cutOutItem.CuttingInDetailId] += cutOutDetail.RemainingQuantity;
+                        cuttingInDetailToBeUpdated[cutOutItem.CuttingInDetailId] += cutOutDetail.CuttingOutQuantity;
                     }
                     else
                     {
-                        cuttingInDetailToBeUpdated.Add(cutOutItem.CuttingInDetailId, cutOutDetail.RemainingQuantity);
+                        cuttingInDetailToBeUpdated.Add(cutOutItem.CuttingInDetailId, cutOutDetail.CuttingOutQuantity);
                     }
 
                     cutOutDetail.Remove();

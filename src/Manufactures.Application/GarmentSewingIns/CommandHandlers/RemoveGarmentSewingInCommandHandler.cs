@@ -1,5 +1,6 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
+using Manufactures.Domain.GarmentLoadings.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
 using Manufactures.Domain.GarmentSewingIns.Commands;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
@@ -17,12 +18,16 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
     {
         private readonly IGarmentSewingInRepository _garmentSewingInRepository;
         private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
+        private readonly IGarmentLoadingRepository _garmentLoadingRepository;
+        private readonly IGarmentLoadingItemRepository _garmentLoadingItemRepository;
         private readonly IStorage _storage;
 
         public RemoveGarmentSewingInCommandHandler(IStorage storage)
         {
             _garmentSewingInRepository = storage.GetRepository<IGarmentSewingInRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
+            _garmentLoadingRepository = storage.GetRepository<IGarmentLoadingRepository>();
+            _garmentLoadingItemRepository = storage.GetRepository<IGarmentLoadingItemRepository>();
             _storage = storage;
         }
 
@@ -38,6 +43,14 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
             foreach (var item in garmentSewingInItems)
             {
                 item.Remove();
+
+                var garmentLoadingItem = _garmentLoadingItemRepository.Find(o => o.Identity == item.LoadingItemId).Single();
+
+                garmentLoadingItem.SetRemainingQuantity(garmentLoadingItem.RemainingQuantity + item.Quantity);
+
+                garmentLoadingItem.Modify();
+                await _garmentLoadingItemRepository.Update(garmentLoadingItem);
+
                 await _garmentSewingInItemRepository.Update(item);
             }
 
