@@ -32,16 +32,18 @@ namespace Manufactures.Domain.GarmentSewingIns.Commands
             RuleFor(r => r.UnitFrom.Id).NotEmpty().OverridePropertyName("UnitFrom").When(w => w.Unit != null);
 
             RuleFor(r => r.Unit).NotNull();
-            RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
+            RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null).WithMessage("Unit Sewing In Tidak Boleh Kosong");
+
+            RuleFor(r => r.LoadingNo).NotNull().WithMessage("No Loading Tidak Boleh Kosong");
+
 
             RuleFor(r => r.Comodity).NotNull();
             RuleFor(r => r.Comodity.Id).NotEmpty().OverridePropertyName("Comodity").When(w => w.Comodity != null);
 
             RuleFor(r => r.RONo).NotNull();
-            RuleFor(r => r.SewingInDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
-            RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
+            RuleFor(r => r.SewingInDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sewing In Tidak Boleh Kosong");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
-            //RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
+            RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
             RuleForEach(r => r.Items).SetValidator(new GarmentSewingInItemValueObjectValidator());
         }
     }
@@ -50,6 +52,12 @@ namespace Manufactures.Domain.GarmentSewingIns.Commands
     {
         public GarmentSewingInItemValueObjectValidator()
         {
+            RuleFor(r => r.Quantity)
+                .GreaterThan(0)
+                .WithMessage("Jumlah harus lebih besar dari 0")
+                .When(w => w.IsSave == true);
+
+            RuleFor(r => r.Quantity).LessThanOrEqualTo(r => r.RemainingQuantity).WithMessage(r => $"Quantity tidak boleh Lebih Besar dari {r.RemainingQuantity}").When(w => w.IsSave == true);
         }
     }
 }

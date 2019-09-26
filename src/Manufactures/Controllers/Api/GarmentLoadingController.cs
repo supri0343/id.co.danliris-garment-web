@@ -1,4 +1,5 @@
 ﻿using Barebone.Controllers;
+using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Infrastructure.External.DanLirisClient.Microservice.Cache;
 using Manufactures.Domain.GarmentLoadings.Commands;
 using Manufactures.Domain.GarmentLoadings.Repositories;
@@ -6,6 +7,7 @@ using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Manufactures.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -127,6 +129,39 @@ namespace Manufactures.Controllers.Api
             var order = await Mediator.Send(command);
 
             return Ok(order.Identity);
+        }
+
+        [HttpGet("complete")]
+        public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentLoadingRepository.Read(page, size, order, keyword, filter);
+            var count = query.Count();
+
+            var garmentLoadingDto = _garmentLoadingRepository.Find(query).Select(o => new GarmentLoadingDto(o)).ToArray();
+            var garmentLoadingItemDto = _garmentLoadingItemRepository.Find(_garmentLoadingItemRepository.Query).Select(o => new GarmentLoadingItemDto(o)).ToList();
+
+            Parallel.ForEach(garmentLoadingDto, itemDto =>
+            {
+                var garmentLoadingItems = garmentLoadingItemDto.Where(x => x.LoadingId == itemDto.Id).OrderBy(x => x.Id).ToList();
+
+                itemDto.Items = garmentLoadingItems;
+            });
+
+            if (order != "{}")
+            {
+                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                garmentLoadingDto = QueryHelper<GarmentLoadingDto>.Order(garmentLoadingDto.AsQueryable(), OrderDictionary).ToArray();
+            }
+
+            await Task.Yield();
+            return Ok(garmentLoadingDto, info: new
+            {
+                page,
+                size,
+                count
+            });
         }
     }
 }
