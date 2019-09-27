@@ -173,7 +173,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
             var year = now.ToString("yy");
             var month = now.ToString("MM");
 
-            var prefix = $"CR{year}{month}";
+            var prefix = $"CR{request.UnitFrom.Code}{year}{month}";
 
             var lastCutOutNo = _garmentCuttingOutRepository.Query.Where(w => w.CutOutNo.StartsWith(prefix))
                 .OrderByDescending(o => o.CutOutNo)

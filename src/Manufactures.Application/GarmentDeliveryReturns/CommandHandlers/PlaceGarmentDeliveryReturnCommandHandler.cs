@@ -88,7 +88,7 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
             var month = now.ToString("MM");
             var day = now.ToString("dd");
 
-            var prefix = $"DR{year}{month}{day}";
+            var prefix = $"DR{request.Unit.Code}{year}{month}{day}";
 
             var lastDRNo = _garmentDeliveryReturnRepository.Query.Where(w => w.DRNo.StartsWith(prefix)).OrderByDescending(o => o.DRNo).Select(s => int.Parse(s.DRNo.Replace(prefix, ""))).FirstOrDefault();
             var drNo = $"{prefix}{(lastDRNo + 1).ToString("d4")}";
