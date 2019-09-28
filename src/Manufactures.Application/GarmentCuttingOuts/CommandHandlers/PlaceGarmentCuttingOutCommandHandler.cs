@@ -91,7 +91,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                     item.Product.Code,
                     item.Product.Name,
                     item.DesignColor,
-                    item.TotalCuttingOut
+                    item.TotalCuttingOutQuantity
                 );
 
                 foreach (var detail in item.Details)
@@ -189,7 +189,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
             var now = DateTime.Now;
             var year = now.ToString("yy");
             var month = now.ToString("MM");
-            var prefix = $"DS{year}{month}";
+            var prefix = $"DS{request.Unit.Code}{year}{month}";
 
             var lastSewingDONo = _garmentSewingDORepository.Query.Where(w => w.SewingDONo.StartsWith(prefix))
                 .OrderByDescending(o => o.SewingDONo)
