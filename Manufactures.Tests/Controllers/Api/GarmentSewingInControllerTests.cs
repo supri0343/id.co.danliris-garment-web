@@ -75,6 +75,13 @@ namespace Manufactures.Tests.Controllers.Api
                 });
 
             _mockGarmentSewingInItemRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingInItemReadModel>>()))
+                .Returns(new List<GarmentSewingInItem>()
+                {
+                    new GarmentSewingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1), null, 0, new UomId(1), null, null, 0)
+                });
+
+            _mockGarmentSewingInItemRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSewingInItemReadModel>()
                 {
