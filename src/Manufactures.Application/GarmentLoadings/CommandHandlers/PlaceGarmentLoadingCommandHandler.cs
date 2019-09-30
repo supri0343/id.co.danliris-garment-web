@@ -112,8 +112,9 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
             var year = now.ToString("yy");
             var month = now.ToString("MM");
             var day = now.ToString("dd");
+            var unitcode = request.Unit.Code;
 
-            var prefix = $"LD{year}{month}{day}";
+            var prefix = $"LD{unitcode}{year}{month}";
 
             var lastLoadingNo = _garmentLoadingRepository.Query.Where(w => w.LoadingNo.StartsWith(prefix))
                 .OrderByDescending(o => o.LoadingNo)
