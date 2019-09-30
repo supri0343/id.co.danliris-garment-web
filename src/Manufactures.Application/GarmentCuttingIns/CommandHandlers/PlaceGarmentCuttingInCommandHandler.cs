@@ -159,7 +159,7 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
             var year = now.ToString("yy");
             var month = now.ToString("MM");
 
-            var prefix = $"DC{year}{month}";
+            var prefix = $"DC{request.Unit.Code.Trim()}{year}{month}";
 
             var lastCutInNo = _garmentCuttingInRepository.Query.Where(w => w.CutInNo.StartsWith(prefix))
                 .OrderByDescending(o => o.CutInNo)
