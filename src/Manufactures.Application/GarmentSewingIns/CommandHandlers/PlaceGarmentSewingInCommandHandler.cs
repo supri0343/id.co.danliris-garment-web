@@ -71,7 +71,7 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
                     new UomId(item.Uom.Id),
                     item.Uom.Unit,
                     item.Color,
-                    item.RemainingQuantity
+                    item.Quantity
                 );
 
                 var garmentLoadingItem = _garmentLoadingItemRepository.Find(o => o.Identity == item.LoadingItemId).Single();
@@ -96,7 +96,7 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
             var now = DateTime.Now;
             var year = now.ToString("yy");
             var month = now.ToString("MM");
-            var prefix = $"DS{year}{month}";
+            var prefix = $"DS{request.Unit.Code}{year}{month}";
 
             var lastSewingInNo = _garmentSewingInRepository.Query.Where(w => w.SewingInNo.StartsWith(prefix))
                 .OrderByDescending(o => o.SewingInNo)

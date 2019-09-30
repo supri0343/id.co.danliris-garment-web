@@ -22,13 +22,11 @@ namespace Manufactures.Controllers.Api
     {
         private readonly IGarmentDeliveryReturnRepository _garmentDeliveryReturnRepository;
         private readonly IGarmentDeliveryReturnItemRepository _garmentDeliveryReturnItemRepository;
-        private readonly IMemoryCacheManager _cacheManager;
 
-        public GarmentDeliveryReturnController(IServiceProvider serviceProvider, IMemoryCacheManager cacheManager) : base(serviceProvider)
+        public GarmentDeliveryReturnController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentDeliveryReturnRepository = Storage.GetRepository<IGarmentDeliveryReturnRepository>();
             _garmentDeliveryReturnItemRepository = Storage.GetRepository<IGarmentDeliveryReturnItemRepository>();
-            _cacheManager = cacheManager;
         }
 
         [HttpGet]
