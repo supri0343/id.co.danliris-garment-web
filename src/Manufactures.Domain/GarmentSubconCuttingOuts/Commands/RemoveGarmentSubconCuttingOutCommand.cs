@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
 {
-    class RemoveGarmentSubconCuttingOutCommand : ICommand<GarmentSubconCuttingOut>
+    public class RemoveGarmentSubconCuttingOutCommand : ICommand<GarmentSubconCuttingOut>
     {
         public RemoveGarmentSubconCuttingOutCommand(Guid id)
         {
