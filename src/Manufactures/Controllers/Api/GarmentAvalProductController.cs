@@ -27,15 +27,13 @@ namespace Manufactures.Controllers.Api
         private readonly IGarmentAvalProductItemRepository _garmentAvalProductItemRepository;
         private readonly IGarmentPreparingRepository _garmentPreparingRepository;
         private readonly IGarmentPreparingItemRepository _garmentPreparingItemRepository;
-        private readonly IMemoryCacheManager _cacheManager;
 
-        public GarmentAvalProductController(IServiceProvider serviceProvider, IMemoryCacheManager cacheManager) : base(serviceProvider)
+        public GarmentAvalProductController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentAvalProductRepository = Storage.GetRepository<IGarmentAvalProductRepository>();
             _garmentAvalProductItemRepository = Storage.GetRepository<IGarmentAvalProductItemRepository>();
             _garmentPreparingRepository = Storage.GetRepository<IGarmentPreparingRepository>();
             _garmentPreparingItemRepository = Storage.GetRepository<IGarmentPreparingItemRepository>();
-            _cacheManager = cacheManager;
         }
 
         [HttpGet]

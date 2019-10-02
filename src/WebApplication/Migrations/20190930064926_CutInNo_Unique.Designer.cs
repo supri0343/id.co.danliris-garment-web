@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20190930064926_CutInNo_Unique")]
+    partial class CutInNo_Unique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -380,10 +382,17 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("DesignColor")
                         .HasMaxLength(100);
 
+                    b.Property<long>("EPOId");
+
+                    b.Property<long>("EPOItemId");
+
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<string>("POSerialNumber")
+                        .HasMaxLength(100);
 
                     b.Property<string>("ProductCode")
                         .HasMaxLength(25);
@@ -443,17 +452,10 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset?>("DeletedDate");
 
-                    b.Property<long>("EPOId");
-
-                    b.Property<long>("EPOItemId");
-
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<string>("POSerialNumber")
-                        .HasMaxLength(100);
 
                     b.Property<string>("RONo")
                         .HasMaxLength(25);

@@ -76,7 +76,7 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
                 dbItem.setProductName(item.Product.Name);
                 dbItem.setDesignColor(item.DesignColor);
                 dbItem.setRONo(item.RONo);
-                dbItem.setQuantity(item.Quantity);
+                
                 dbItem.setUomId(new UomId(item.Uom.Id));
                 dbItem.setUomUnit(item.Uom.Unit);
 
@@ -87,6 +87,7 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
                     garmentPreparingItem.SetModified();
                     await _garmentPreparingItemRepository.Update(garmentPreparingItem);
                 }
+                dbItem.setQuantity(item.Quantity);
 
                 dbItem.SetModified();
                 await _garmentDeliveryReturnItemRepository.Update(dbItem);

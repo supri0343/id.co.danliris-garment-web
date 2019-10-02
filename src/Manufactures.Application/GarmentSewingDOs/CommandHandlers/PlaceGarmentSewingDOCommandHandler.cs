@@ -87,8 +87,7 @@ namespace Manufactures.Application.GarmentSewingDOs.CommandHandlers
             var now = DateTime.Now;
             var year = now.ToString("yy");
             var month = now.ToString("MM");
-            var day = now.ToString("dd");
-            var prefix = $"DS{year}{month}{day}";
+            var prefix = $"DS{request.Unit.Code}{year}{month}";
 
             var lastSewingDONo = _garmentSewingDORepository.Query.Where(w => w.SewingDONo.StartsWith(prefix))
                 .OrderByDescending(o => o.SewingDONo)

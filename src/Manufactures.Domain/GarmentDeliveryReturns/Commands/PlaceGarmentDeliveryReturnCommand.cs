@@ -42,7 +42,8 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.Commands
         {
             RuleFor(r => r.Quantity)
                 .GreaterThan(0)
-                .WithMessage("Jumlah harus lebih besar dari 0");
+                .WithMessage("Jumlah harus lebih besar dari 0")
+                .When(w => w.IsSave == true);
             
             RuleFor(r => r.Quantity).LessThanOrEqualTo(r => r.QuantityUENItem).WithMessage(r => $"Jumlah tidak boleh Lebih Besar dari {r.QuantityUENItem}").When(w => w.Product.Name != "FABRIC" && w.IsSave == true);
             RuleFor(r => r.Quantity).LessThanOrEqualTo(r => r.RemainingQuantityPreparingItem).WithMessage(r => $"Jumlah tidak boleh Lebih Besar dari {r.RemainingQuantityPreparingItem}").When(w => w.Product.Name == "FABRIC" && w.IsSave == true);
