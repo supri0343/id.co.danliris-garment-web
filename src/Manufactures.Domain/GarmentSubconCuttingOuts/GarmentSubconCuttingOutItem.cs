@@ -20,11 +20,8 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
         public double TotalCuttingOut { get; private set; }
         public double TotalCuttingOutQuantity { get; private set; }
 
-        public long EPOId { get; private set; }
-        public long EPOItemId { get; private set; }
-        public string POSerialNumber { get; private set; }
 
-        public GarmentSubconCuttingOutItem(Guid identity, Guid cuttingInId, Guid cuttingInDetailId, Guid cutOutId, ProductId productId, string productCode, string productName, string designColor, double totalCuttingOut, long epoId, long epoItemId, string poSerialNumber) : base(identity)
+        public GarmentSubconCuttingOutItem(Guid identity, Guid cuttingInId, Guid cuttingInDetailId, Guid cutOutId, ProductId productId, string productCode, string productName, string designColor, double totalCuttingOut) : base(identity)
         {
             //MarkTransient();
 
@@ -37,9 +34,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             ProductName = productName;
             DesignColor = designColor;
             TotalCuttingOut = totalCuttingOut;
-            EPOId = epoId;
-            EPOItemId = epoItemId;
-            POSerialNumber = poSerialNumber;
+            
 
             ReadModel = new GarmentCuttingOutItemReadModel(identity)
             {
@@ -51,9 +46,6 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
                 ProductName = ProductName,
                 DesignColor = DesignColor,
                 TotalCuttingOut = TotalCuttingOut,
-                EPOId = EPOId,
-                EPOItemId = EPOItemId,
-                POSerialNumber = POSerialNumber
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconCuttingOutPlaced(Identity));
@@ -69,9 +61,6 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             ProductName = readModel.ProductName;
             DesignColor = readModel.DesignColor;
             TotalCuttingOut = readModel.TotalCuttingOut;
-            EPOId = readModel.EPOId;
-            EPOItemId = readModel.EPOItemId;
-            POSerialNumber = readModel.POSerialNumber;
         }
 
         public void Modify()

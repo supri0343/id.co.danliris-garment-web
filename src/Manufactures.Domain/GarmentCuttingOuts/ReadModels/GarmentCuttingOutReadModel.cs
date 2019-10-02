@@ -26,6 +26,9 @@ namespace Manufactures.Domain.GarmentCuttingOuts.ReadModels
         public string ComodityCode { get; internal set; }
         public string ComodityName { get; internal set; }
         public DateTimeOffset CuttingOutDate { get; internal set; }
+        public long EPOId { get; internal set; }
+        public long EPOItemId { get; internal set; }
+        public string POSerialNumber { get; internal set; }
 
         public virtual List<GarmentCuttingOutItemReadModel> GarmentCuttingOutItem { get; internal set; }
     }

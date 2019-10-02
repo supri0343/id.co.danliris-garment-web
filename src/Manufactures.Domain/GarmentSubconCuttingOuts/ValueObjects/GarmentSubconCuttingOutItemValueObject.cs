@@ -21,9 +21,6 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.ValueObjects
         public double TotalRemainingQuantityCuttingInItem { get; set; }
         public double TotalCuttingOutQuantity { get; set; }
 
-        public long EPOId { get; set; }
-        public long EPOItemId { get; set; }
-        public string POSerialNumber { get; set; }
 
         public GarmentSubconCuttingOutItemValueObject()
         {

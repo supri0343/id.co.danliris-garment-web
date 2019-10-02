@@ -27,8 +27,11 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
         public string ComodityCode { get; private set; }
         public string ComodityName { get; private set; }
 
+        public long EPOId { get; private set; }
+        public long EPOItemId { get; private set; }
+        public string POSerialNumber { get; private set; }
 
-        public GarmentSubconCuttingOut(Guid identity, string cutOutNo, string cuttingOutType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, DateTimeOffset cuttingOutDate, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName) : base(identity)
+        public GarmentSubconCuttingOut(Guid identity, string cutOutNo, string cuttingOutType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, DateTimeOffset cuttingOutDate, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName, long epoId, long epoItemId, string poSerialNumber) : base(identity)
         {
             Validator.ThrowIfNull(() => unitFromId);
             Validator.ThrowIfNull(() => unitId);
@@ -51,6 +54,9 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             ComodityId = comodityId;
             ComodityCode = comodityCode;
             ComodityName = comodityName;
+            EPOId = epoId;
+            EPOItemId = epoItemId;
+            POSerialNumber = poSerialNumber;
 
             ReadModel = new GarmentCuttingOutReadModel(Identity)
             {
@@ -68,6 +74,10 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
                 ComodityId = ComodityId.Value,
                 ComodityCode = ComodityCode,
                 ComodityName = ComodityName,
+                EPOId = EPOId,
+                EPOItemId = EPOItemId,
+                POSerialNumber = POSerialNumber
+
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconCuttingOutPlaced(Identity));
@@ -89,6 +99,9 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             ComodityId = new GarmentComodityId(readModel.ComodityId);
             ComodityCode = ReadModel.ComodityCode;
             ComodityName = ReadModel.ComodityName;
+            EPOId = readModel.EPOId;
+            EPOItemId = readModel.EPOItemId;
+            POSerialNumber = readModel.POSerialNumber;
         }
 
         public void Modify()
