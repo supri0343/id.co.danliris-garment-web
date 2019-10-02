@@ -55,7 +55,10 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                 request.Unit.Name,
                 new GarmentComodityId(request.Comodity.Id),
                 request.Comodity.Code,
-                request.Comodity.Name
+                request.Comodity.Name,
+                request.EPOId,
+                request.EPOItemId,
+                request.POSerialNumber
             );
 
             Dictionary<Guid, double> cuttingInDetailToBeUpdated = new Dictionary<Guid, double>();
@@ -71,10 +74,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                     item.Product.Code,
                     item.Product.Name,
                     item.DesignColor,
-                    item.TotalCuttingOut,
-                    item.EPOId,
-                    item.EPOItemId,
-                    item.POSerialNumber
+                    item.TotalCuttingOut
                 );
 
                 foreach (var detail in item.Details)

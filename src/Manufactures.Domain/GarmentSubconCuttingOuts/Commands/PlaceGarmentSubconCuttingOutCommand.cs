@@ -20,6 +20,10 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
         public string Article { get; set; }
         public UnitDepartment Unit { get; set; }
         public GarmentComodity Comodity { get; set; }
+
+        public long EPOId { get; set; }
+        public long EPOItemId { get; set; }
+        public string POSerialNumber { get; set; }
         public List<GarmentSubconCuttingOutItemValueObject> Items { get; set; }
     }
 

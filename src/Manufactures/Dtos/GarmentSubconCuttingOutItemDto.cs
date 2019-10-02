@@ -18,11 +18,8 @@ namespace Manufactures.Dtos
             DesignColor = garmentCuttingOutItem.DesignColor;
             TotalCuttingOut = garmentCuttingOutItem.TotalCuttingOut;
             TotalCuttingOutQuantity = garmentCuttingOutItem.TotalCuttingOutQuantity;
-            EPOId = garmentCuttingOutItem.EPOId;
-            EPOItemId = garmentCuttingOutItem.EPOItemId;
-            POSerialNumber = garmentCuttingOutItem.POSerialNumber;
 
-            Details = new List<GarmentCuttingOutDetailDto>();
+            Details = new List<GarmentSubconCuttingOutDetailDto>();
         }
 
         public Guid Id { get; set; }
@@ -34,9 +31,7 @@ namespace Manufactures.Dtos
         public double TotalCuttingOut { get; set; }
         public double TotalCuttingOutQuantity { get; set; }
 
-        public long EPOId { get; set; }
-        public long EPOItemId { get; set; }
-        public string POSerialNumber { get; set; }
-        public List<GarmentCuttingOutDetailDto> Details { get; set; }
+        
+        public List<GarmentSubconCuttingOutDetailDto> Details { get; set; }
     }
 }
