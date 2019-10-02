@@ -20,6 +20,10 @@ namespace Manufactures.Dtos
             Unit = new UnitDepartment(garmentCuttingOut.UnitId.Value, garmentCuttingOut.UnitCode, garmentCuttingOut.UnitName);
             Comodity = new GarmentComodity(garmentCuttingOut.ComodityId.Value, garmentCuttingOut.ComodityCode, garmentCuttingOut.ComodityName);
 
+            EPOId = garmentCuttingOut.EPOId;
+            EPOItemId = garmentCuttingOut.EPOItemId;
+            POSerialNumber = garmentCuttingOut.POSerialNumber;
+
             Items = new List<GarmentSubconCuttingOutItemDto>();
         }
 
@@ -33,6 +37,9 @@ namespace Manufactures.Dtos
         public string Article { get; set; }
         public UnitDepartment Unit { get; set; }
         public GarmentComodity Comodity { get; set; }
+        public long EPOId { get; set; }
+        public long EPOItemId { get; set; }
+        public string POSerialNumber { get; set; }
         public List<GarmentSubconCuttingOutItemDto> Items { get; set; }
     }
 }
