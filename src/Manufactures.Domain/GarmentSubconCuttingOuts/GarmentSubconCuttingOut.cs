@@ -20,9 +20,6 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
         public DateTimeOffset CuttingOutDate { get; private set; }
         public string RONo { get; private set; }
         public string Article { get; private set; }
-        public UnitDepartmentId UnitId { get; private set; }
-        public string UnitCode { get; private set; }
-        public string UnitName { get; private set; }
         public GarmentComodityId ComodityId { get; private set; }
         public string ComodityCode { get; private set; }
         public string ComodityName { get; private set; }
@@ -31,10 +28,9 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
         public long EPOItemId { get; private set; }
         public string POSerialNumber { get; private set; }
 
-        public GarmentSubconCuttingOut(Guid identity, string cutOutNo, string cuttingOutType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, DateTimeOffset cuttingOutDate, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName, long epoId, long epoItemId, string poSerialNumber) : base(identity)
+        public GarmentSubconCuttingOut(Guid identity, string cutOutNo, string cuttingOutType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, DateTimeOffset cuttingOutDate, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, long epoId, long epoItemId, string poSerialNumber) : base(identity)
         {
             Validator.ThrowIfNull(() => unitFromId);
-            Validator.ThrowIfNull(() => unitId);
             Validator.ThrowIfNull(() => rONo);
 
             //MarkTransient();
@@ -48,9 +44,6 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             CuttingOutDate = cuttingOutDate;
             RONo = rONo;
             Article = article;
-            UnitId = unitId;
-            UnitCode = unitCode;
-            UnitName = unitName;
             ComodityId = comodityId;
             ComodityCode = comodityCode;
             ComodityName = comodityName;
@@ -68,9 +61,6 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
                 CuttingOutDate = CuttingOutDate,
                 RONo = RONo,
                 Article = Article,
-                UnitId = UnitId.Value,
-                UnitCode = UnitCode,
-                UnitName = UnitName,
                 ComodityId = ComodityId.Value,
                 ComodityCode = ComodityCode,
                 ComodityName = ComodityName,
@@ -93,9 +83,6 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             CuttingOutDate = readModel.CuttingOutDate;
             RONo = readModel.RONo;
             Article = readModel.Article;
-            UnitId = new UnitDepartmentId(readModel.UnitId);
-            UnitCode = readModel.UnitCode;
-            UnitName = readModel.UnitName;
             ComodityId = new GarmentComodityId(readModel.ComodityId);
             ComodityCode = ReadModel.ComodityCode;
             ComodityName = ReadModel.ComodityName;

@@ -17,7 +17,6 @@ namespace Manufactures.Dtos
             CuttingOutDate = garmentCuttingOut.CuttingOutDate;
             RONo = garmentCuttingOut.RONo;
             Article = garmentCuttingOut.Article;
-            Unit = new UnitDepartment(garmentCuttingOut.UnitId.Value, garmentCuttingOut.UnitCode, garmentCuttingOut.UnitName);
             Comodity = new GarmentComodity(garmentCuttingOut.ComodityId.Value, garmentCuttingOut.ComodityCode, garmentCuttingOut.ComodityName);
 
             EPOId = garmentCuttingOut.EPOId;
