@@ -34,8 +34,6 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
             RuleFor(r => r.UnitFrom).NotNull();
             RuleFor(r => r.UnitFrom.Id).NotEmpty().OverridePropertyName("UnitFrom").When(w => w.Unit != null);
 
-            RuleFor(r => r.Unit).NotNull();
-            RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
 
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.CuttingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
