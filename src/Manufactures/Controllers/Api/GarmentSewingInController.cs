@@ -113,15 +113,15 @@ namespace Manufactures.Controllers.Api
             }
             else
             {
-                if (order != "{}")
-                {
-                    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                    garmentSewingInDto = QueryHelper<GarmentSewingInListDto>.Order(garmentSewingInDto.AsQueryable(), OrderDictionary).ToArray();
-                }
-                else
-                {
-                    garmentSewingInDto = garmentSewingInDto.OrderByDescending(x => x.LastModifiedDate).ToArray();
-                }
+                //if (order != "{}")
+                //{
+                //    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                //    garmentSewingInDto = QueryHelper<GarmentSewingInListDto>.Order(garmentSewingInDto.AsQueryable(), OrderDictionary).ToArray();
+                //}
+                //else
+                //{
+                //    garmentSewingInDto = garmentSewingInDto.OrderByDescending(x => x.LastModifiedDate).ToArray();
+                //}
 
                 garmentSewingInDto = garmentSewingInDto.Take(size).Skip((page - 1) * size).ToArray();
 
