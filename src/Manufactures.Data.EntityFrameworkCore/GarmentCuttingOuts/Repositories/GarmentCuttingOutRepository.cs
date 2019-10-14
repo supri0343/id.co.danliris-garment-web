@@ -15,7 +15,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingOuts.Repositories
     {
         public IQueryable<GarmentCuttingOutReadModel> Read(int page, int size, string order, string keyword, string filter)
         {
-            var data = Query;
+            var data = Query.Where(d => d.CuttingOutType != "SUBKON"); ;
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
             data = QueryHelper<GarmentCuttingOutReadModel>.Filter(data, FilterDictionary);

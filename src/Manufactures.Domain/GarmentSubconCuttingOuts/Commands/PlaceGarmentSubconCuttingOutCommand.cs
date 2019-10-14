@@ -24,6 +24,8 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
         public long EPOId { get; set; }
         public long EPOItemId { get; set; }
         public string POSerialNumber { get; set; }
+        public double PlanPORemainingQuantity { get; set; }
+        public double TotalQty { get; set; }
         public List<GarmentSubconCuttingOutItemValueObject> Items { get; set; }
     }
 
@@ -33,10 +35,14 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
         {
             RuleFor(r => r.UnitFrom).NotNull();
             RuleFor(r => r.UnitFrom.Id).NotEmpty().OverridePropertyName("UnitFrom").When(w => w.Unit != null);
-
-
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.CuttingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
+
+            RuleFor(r => r.TotalQty)
+               .LessThanOrEqualTo(r => r.PlanPORemainingQuantity)
+               .WithMessage(x => $"'Total Jumlah Potong' tidak boleh lebih dari '{x.PlanPORemainingQuantity}'.");
+
+
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
             RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
@@ -48,7 +54,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
     {
         public GarmentSubconCuttingOutItemValueObjectValidator()
         {
-            RuleFor(r => r.Details).NotEmpty().OverridePropertyName("Detail").When(w => w.IsSave == true);
+            RuleFor(r => r.Details).NotEmpty().WithMessage("Detail Tidak Boleh Kosong").OverridePropertyName("DetailsCount").When(w => w.IsSave == true);
 
             RuleFor(r => r.TotalCuttingOutQuantity)
                .LessThanOrEqualTo(r => r.TotalCuttingOut)

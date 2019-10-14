@@ -74,7 +74,7 @@ namespace Manufactures.Domain.GarmentCuttingOuts.Commands
 
             RuleFor(r => r.Size).NotNull();
             RuleFor(r => r.Size.Id).NotEmpty().OverridePropertyName("Size").When(w => w.Size != null);
-
+            RuleFor(r => r.Color).NotNull().WithMessage("'Warna' harus diisi.");
             RuleFor(r => r.CuttingOutQuantity)
                 .GreaterThan(0)
                 .WithMessage("'Jumlah Potong' harus lebih dari '0'.");
