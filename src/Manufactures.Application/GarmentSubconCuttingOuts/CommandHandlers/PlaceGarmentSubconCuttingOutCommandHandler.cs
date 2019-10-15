@@ -71,7 +71,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                     item.Product.Code,
                     item.Product.Name,
                     item.DesignColor,
-                    item.TotalCuttingOut
+                    item.TotalCuttingOutQuantity
                 );
 
                 foreach (var detail in item.Details)
@@ -130,8 +130,9 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
             var now = DateTime.Now;
             var year = now.ToString("yy");
             var month = now.ToString("MM");
+            var unitcode = request.UnitFrom.Code;
 
-            var prefix = $"CR{year}{month}";
+            var prefix = $"CS{unitcode}{year}{month}";
 
             var lastCutOutNo = _garmentCuttingOutRepository.Query.Where(w => w.CutOutNo.StartsWith(prefix))
                 .OrderByDescending(o => o.CutOutNo)

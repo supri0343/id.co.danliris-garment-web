@@ -27,6 +27,8 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
         public long EPOId { get; private set; }
         public long EPOItemId { get; private set; }
         public string POSerialNumber { get; private set; }
+        public double PlanPORemainingQuantity { get; private set; }
+        public double TotalQty { get; private set; }
 
         public GarmentSubconCuttingOut(Guid identity, string cutOutNo, string cuttingOutType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, DateTimeOffset cuttingOutDate, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, long epoId, long epoItemId, string poSerialNumber) : base(identity)
         {
