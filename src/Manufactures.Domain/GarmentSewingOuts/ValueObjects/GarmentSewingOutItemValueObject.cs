@@ -15,10 +15,10 @@ namespace Manufactures.Domain.GarmentSewingOuts.ValueObjects
         public string DesignColor { get;  set; }
         public SizeValueObject Size { get;  set; }
         public double Quantity { get;  set; }
-        public int UomId { get;  set; }
-        public string UomUnit { get;  set; }
+        public Uom Uom { get;  set; }
         public string Color { get;  set; }
         public List<GarmentSewingOutDetailValueObject> Details { get; set; }
+        public bool IsSave { get; set; }
         public GarmentSewingOutItemValueObject()
         {
         }
