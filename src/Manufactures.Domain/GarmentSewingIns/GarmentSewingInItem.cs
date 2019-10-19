@@ -24,6 +24,15 @@ namespace Manufactures.Domain.GarmentSewingIns
         public string Color { get; private set; }
         public double RemainingQuantity { get; private set; }
 
+        public void SetRemainingQuantity(double RemainingQuantity)
+        {
+            if (this.RemainingQuantity != RemainingQuantity)
+            {
+                this.RemainingQuantity = RemainingQuantity;
+                ReadModel.RemainingQuantity = RemainingQuantity;
+            }
+        }
+
         public GarmentSewingInItem(Guid identity, Guid sewingInId, Guid loadingItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity) : base(identity)
         {
             Identity = identity;
