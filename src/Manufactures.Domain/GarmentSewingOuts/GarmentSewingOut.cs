@@ -1,105 +1,119 @@
 ﻿using Infrastructure.Domain;
+using Manufactures.Domain.Events;
 using Manufactures.Domain.GarmentSewingOuts.ReadModels;
 using Manufactures.Domain.Shared.ValueObjects;
+using Moonlay;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Manufactures.Domain.GarmentSewingOuts
 {
-    public class GarmentSewingOut //: AggregateRoot<GarmentSewingOut, GarmentSewingOutReadModel>
+    public class GarmentSewingOut : AggregateRoot<GarmentSewingOut, GarmentSewingOutReadModel>
     {
-        //public string SewingOutNo { get; private set; }
-        //public BuyerId BuyerId { get; private set; }
-        //public string BuyerCode { get; private set; }
-        //public string BuyerName { get; private set; }
-        //public UnitDepartmentId UnitId { get; private set; }
-        //public string UnitCode { get; private set; }
-        //public string UnitName { get; private set; }
-        //public string SewingTo { get; private set; }
-        //public UnitDepartmentId UnitToId { get; private set; }
-        //public string UnitToCode { get; private set; }
-        //public string UnitToName { get; private set; }
-        //public string RONo { get; private set; }
-        //public string Article { get; private set; }
-        //public GarmentComodityId ComodityId { get; private set; }
-        //public string ComodityCode { get; private set; }
-        //public string ComodityName { get; private set; }
-        //public DateTimeOffset SewingOutDate { get; private set; }
-        //public bool IsDifferentSize { get; private set; }
+        public string SewingOutNo { get; private set; }
+        public BuyerId BuyerId { get; private set; }
+        public string BuyerCode { get; private set; }
+        public string BuyerName { get; private set; }
+        public UnitDepartmentId UnitId { get; private set; }
+        public string UnitCode { get; private set; }
+        public string UnitName { get; private set; }
+        public string SewingTo { get; private set; }
+        public UnitDepartmentId UnitToId { get; private set; }
+        public string UnitToCode { get; private set; }
+        public string UnitToName { get; private set; }
+        public string RONo { get; private set; }
+        public string Article { get; private set; }
+        public GarmentComodityId ComodityId { get; private set; }
+        public string ComodityCode { get; private set; }
+        public string ComodityName { get; private set; }
+        public DateTimeOffset SewingOutDate { get; private set; }
+        public bool IsDifferentSize { get; private set; }
 
 
-        //public GarmentSewingOut(Guid identity, string cutOutNo, string cuttingOutType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, DateTimeOffset cuttingOutDate, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName) : base(identity)
-        //{
-        //    Validator.ThrowIfNull(() => unitFromId);
-        //    Validator.ThrowIfNull(() => unitId);
-        //    Validator.ThrowIfNull(() => rONo);
+        public GarmentSewingOut(Guid identity, string sewingOutNo, BuyerId buyerId, string buyerCode, string buyerName, UnitDepartmentId unitToId, string unitToCode, string unitToName, string sewingTo, DateTimeOffset sewingOutDate, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName, bool isDifferentSize) : base(identity)
+        {
+            Validator.ThrowIfNull(() => unitId);
+            Validator.ThrowIfNull(() => unitToId);
+            Validator.ThrowIfNull(() => rONo);
 
-        //    //MarkTransient();
+            //MarkTransient();
 
-        //    Identity = identity;
-        //    CutOutNo = cutOutNo;
-        //    CuttingOutType = cuttingOutType;
-        //    UnitFromId = unitFromId;
-        //    UnitFromCode = unitFromCode;
-        //    UnitFromName = unitFromName;
-        //    CuttingOutDate = cuttingOutDate;
-        //    RONo = rONo;
-        //    Article = article;
-        //    UnitId = unitId;
-        //    UnitCode = unitCode;
-        //    UnitName = unitName;
-        //    ComodityId = comodityId;
-        //    ComodityCode = comodityCode;
-        //    ComodityName = comodityName;
+            Identity = identity;
+            SewingOutNo = sewingOutNo;
+            SewingTo = sewingTo;
+            UnitToId = unitToId;
+            UnitToCode = unitToCode;
+            UnitToName = unitToName;
+            SewingOutDate = sewingOutDate;
+            RONo = rONo;
+            Article = article;
+            UnitId = unitId;
+            UnitCode = unitCode;
+            UnitName = unitName;
+            ComodityId = comodityId;
+            ComodityCode = comodityCode;
+            ComodityName = comodityName;
+            BuyerCode = buyerCode;
+            BuyerId = buyerId;
+            BuyerName = buyerName;
+            IsDifferentSize = isDifferentSize;
 
-        //    ReadModel = new GarmentCuttingOutReadModel(Identity)
-        //    {
-        //        CutOutNo = CutOutNo,
-        //        CuttingOutType = CuttingOutType,
-        //        UnitFromId = UnitFromId.Value,
-        //        UnitFromCode = UnitFromCode,
-        //        UnitFromName = UnitFromName,
-        //        CuttingOutDate = CuttingOutDate,
-        //        RONo = RONo,
-        //        Article = Article,
-        //        UnitId = UnitId.Value,
-        //        UnitCode = UnitCode,
-        //        UnitName = UnitName,
-        //        ComodityId = ComodityId.Value,
-        //        ComodityCode = ComodityCode,
-        //        ComodityName = ComodityName,
-        //    };
+            ReadModel = new GarmentSewingOutReadModel(Identity)
+            {
+                SewingOutNo = SewingOutNo,
+                SewingTo = SewingTo,
+                UnitToId = UnitToId.Value,
+                UnitToCode = UnitToCode,
+                UnitToName = UnitToName,
+                SewingOutDate = SewingOutDate,
+                RONo = RONo,
+                Article = Article,
+                UnitId = UnitId.Value,
+                UnitCode = UnitCode,
+                UnitName = UnitName,
+                ComodityId = ComodityId.Value,
+                ComodityCode = ComodityCode,
+                ComodityName = ComodityName,
+                BuyerCode = BuyerCode,
+                BuyerId = BuyerId.Value,
+                BuyerName = BuyerName,
+                IsDifferentSize=IsDifferentSize
+        };
 
-        //    ReadModel.AddDomainEvent(new OnGarmentCuttingOutPlaced(Identity));
-        //}
+            ReadModel.AddDomainEvent(new OnGarmentSewingOutPlaced(Identity));
+        }
 
-        //public GarmentCuttingOut(GarmentCuttingOutReadModel readModel) : base(readModel)
-        //{
-        //    CutOutNo = readModel.CutOutNo;
-        //    CuttingOutType = readModel.CuttingOutType;
-        //    UnitFromId = new UnitDepartmentId(readModel.UnitFromId);
-        //    UnitFromCode = readModel.UnitFromCode;
-        //    UnitFromName = readModel.UnitFromName;
-        //    CuttingOutDate = readModel.CuttingOutDate;
-        //    RONo = readModel.RONo;
-        //    Article = readModel.Article;
-        //    UnitId = new UnitDepartmentId(readModel.UnitId);
-        //    UnitCode = readModel.UnitCode;
-        //    UnitName = readModel.UnitName;
-        //    ComodityId = new GarmentComodityId(readModel.ComodityId);
-        //    ComodityCode = ReadModel.ComodityCode;
-        //    ComodityName = ReadModel.ComodityName;
-        //}
+        public GarmentSewingOut(GarmentSewingOutReadModel readModel) : base(readModel)
+        {
+            SewingOutNo = readModel.SewingOutNo;
+            SewingTo = readModel.SewingTo;
+            UnitToId = new UnitDepartmentId(readModel.UnitToId);
+            UnitToCode = readModel.UnitToCode;
+            UnitToName = readModel.UnitToName;
+            SewingOutDate = readModel.SewingOutDate;
+            RONo = readModel.RONo;
+            Article = readModel.Article;
+            UnitId = new UnitDepartmentId(readModel.UnitId);
+            UnitCode = readModel.UnitCode;
+            UnitName = readModel.UnitName;
+            ComodityId = new GarmentComodityId(readModel.ComodityId);
+            ComodityCode = readModel.ComodityCode;
+            ComodityName = readModel.ComodityName;
+            BuyerCode = readModel.BuyerCode;
+            BuyerId = new BuyerId(readModel.BuyerId);
+            BuyerName = readModel.BuyerName;
+            IsDifferentSize = readModel.IsDifferentSize;
+        }
 
-        //public void Modify()
-        //{
-        //    MarkModified();
-        //}
+        public void Modify()
+        {
+            MarkModified();
+        }
 
-        //protected override GarmentSewingOut GetEntity()
-        //{
-        //    return this;
-        //}
+        protected override GarmentSewingOut GetEntity()
+        {
+            return this;
+        }
     }
 }
