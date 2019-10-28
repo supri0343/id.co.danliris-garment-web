@@ -206,5 +206,38 @@ namespace Manufactures.Controllers.Api
 
             return Ok(order.Identity);
         }
+
+        [HttpGet("complete")]
+        public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentSewingInRepository.Read(page, size, order, keyword, filter);
+            var count = query.Count();
+
+            var garmentSewingInDto = _garmentSewingInRepository.Find(query).Select(o => new GarmentSewingInDto(o)).ToArray();
+            var garmentSewingInItemDto = _garmentSewingInItemRepository.Find(_garmentSewingInItemRepository.Query).Select(o => new GarmentSewingInItemDto(o)).ToList();
+            
+            Parallel.ForEach(garmentSewingInDto, itemDto =>
+            {
+                var garmentSewingInItems = garmentSewingInItemDto.Where(x => x.SewingInId == itemDto.Id).OrderBy(x => x.Id).ToList();
+
+                itemDto.Items = garmentSewingInItems;
+            });
+
+            if (order != "{}")
+            {
+                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                garmentSewingInDto = QueryHelper<GarmentSewingInDto>.Order(garmentSewingInDto.AsQueryable(), OrderDictionary).ToArray();
+            }
+
+            await Task.Yield();
+            return Ok(garmentSewingInDto, info: new
+            {
+                page,
+                size,
+                count
+            });
+        }
     }
 }
