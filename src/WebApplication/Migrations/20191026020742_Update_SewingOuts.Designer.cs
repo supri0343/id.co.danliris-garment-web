@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20191026020742_Update_SewingOuts")]
+    partial class Update_SewingOuts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1239,8 +1241,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<double>("Quantity");
 
-                    b.Property<double>("RemainingQuantity");
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
@@ -1306,6 +1306,8 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<bool>("IsDifferentSize");
+
+                    b.Property<bool>("IsUsed");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
