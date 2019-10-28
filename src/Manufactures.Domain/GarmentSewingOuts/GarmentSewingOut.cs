@@ -78,8 +78,8 @@ namespace Manufactures.Domain.GarmentSewingOuts
                 BuyerCode = BuyerCode,
                 BuyerId = BuyerId.Value,
                 BuyerName = BuyerName,
-                IsDifferentSize=IsDifferentSize
-        };
+                IsDifferentSize=IsDifferentSize,
+            };
 
             ReadModel.AddDomainEvent(new OnGarmentSewingOutPlaced(Identity));
         }

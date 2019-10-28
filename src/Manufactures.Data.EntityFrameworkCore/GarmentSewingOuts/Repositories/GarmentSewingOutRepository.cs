@@ -27,8 +27,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Repositories
                 "UnitToCode",
                 "RONo",
                 "Article",
-                "Items.ProductCode",
-                "Items.Color"
+                "GarmentSewingOutItem.ProductCode",
+                "GarmentSewingOutItem.Color"
             };
 
             data = QueryHelper<GarmentSewingOutReadModel>.Search(data, SearchAttributes, keyword);

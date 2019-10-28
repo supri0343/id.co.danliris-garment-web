@@ -23,8 +23,9 @@ namespace Manufactures.Domain.GarmentSewingOuts
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
         public string Color { get; private set; }
+        public double RemainingQuantity { get; private set; }
 
-        public GarmentSewingOutItem(Guid identity, Guid sewingOutId, Guid sewingInId, Guid sewingInItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId,string sizeName, double quantity, UomId uomId, string uomUnit, string color) : base(identity)
+        public GarmentSewingOutItem(Guid identity, Guid sewingOutId, Guid sewingInId, Guid sewingInItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId,string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity) : base(identity)
         {
             //MarkTransient();
 
@@ -41,6 +42,7 @@ namespace Manufactures.Domain.GarmentSewingOuts
             Quantity = quantity;
             UomId = uomId;
             Color = color;
+            RemainingQuantity = remainingQuantity;
 
             ReadModel = new GarmentSewingOutItemReadModel(identity)
             {
@@ -56,7 +58,8 @@ namespace Manufactures.Domain.GarmentSewingOuts
                 Quantity = Quantity,
                 UomId = UomId.Value,
                 Color = Color,
-        };
+                RemainingQuantity= remainingQuantity
+            };
 
             ReadModel.AddDomainEvent(new OnGarmentSewingOutPlaced(Identity));
         }
@@ -75,6 +78,25 @@ namespace Manufactures.Domain.GarmentSewingOuts
             Quantity = readModel.Quantity;
             UomId = new UomId( readModel.UomId);
             Color = readModel.Color;
+            RemainingQuantity = readModel.RemainingQuantity;
+        }
+
+        public void SetQuantity(double Quantity)
+        {
+            if (this.Quantity != Quantity)
+            {
+                this.Quantity = Quantity;
+                ReadModel.Quantity = Quantity;
+            }
+        }
+
+        public void SetRemainingQuantity(double RemainingQuantity)
+        {
+            if (this.RemainingQuantity != RemainingQuantity)
+            {
+                this.RemainingQuantity = RemainingQuantity;
+                ReadModel.RemainingQuantity = RemainingQuantity;
+            }
         }
 
         public void Modify()

@@ -8,6 +8,7 @@ namespace Manufactures.Domain.GarmentSewingOuts.ValueObjects
 {
     public class GarmentSewingOutItemValueObject : ValueObject
     {
+        public Guid Id { get; set; }
         public Guid SewingOutId { get;  set; }
         public Guid SewingInId { get;  set; }
         public Guid SewingInItemId { get;  set; }
@@ -19,6 +20,10 @@ namespace Manufactures.Domain.GarmentSewingOuts.ValueObjects
         public string Color { get;  set; }
         public List<GarmentSewingOutDetailValueObject> Details { get; set; }
         public bool IsSave { get; set; }
+        public bool IsDifferentSize { get; set; }
+        public double SewingInQuantity { get; set; }
+        public double TotalQuantity { get; set; }
+        public double RemainingQuantity { get; set; }
         public GarmentSewingOutItemValueObject()
         {
         }

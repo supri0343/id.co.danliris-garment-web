@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentSewingOuts.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Manufactures.Domain.GarmentSewingOuts.Commands
@@ -20,6 +21,7 @@ namespace Manufactures.Domain.GarmentSewingOuts.Commands
         public GarmentComodity Comodity { get;  set; }
         public DateTimeOffset SewingOutDate { get;  set; }
         public bool IsDifferentSize { get;  set; }
+        public bool IsUsed { get; set; }
         public List<GarmentSewingOutItemValueObject> Items { get; set; }
         public bool IsSave { get; set; }
     }
@@ -30,10 +32,14 @@ namespace Manufactures.Domain.GarmentSewingOuts.Commands
         {
             RuleFor(r => r.Unit).NotNull();
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
+            RuleFor(r => r.UnitTo).NotNull().WithMessage("Unit Tujuan Tidak Boleh Kosong");
+            RuleFor(r => r.UnitTo.Id).NotEmpty().WithMessage("Unit Tujuan Tidak Boleh Kosong").OverridePropertyName("UnitTo").When(w => w.UnitTo != null);
 
             RuleFor(r => r.RONo).NotNull();
-            RuleFor(r => r.SewingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
+            RuleFor(r => r.SewingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sewing Out Tidak Boleh Kosong");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
+            RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
+            RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
             RuleForEach(r => r.Items).SetValidator(new GarmentSewingOutItemValueObjectValidator());
         }
     }
@@ -42,8 +48,20 @@ namespace Manufactures.Domain.GarmentSewingOuts.Commands
     {
         public GarmentSewingOutItemValueObjectValidator()
         {
-            RuleFor(r => r.Details).NotEmpty().OverridePropertyName("Detail");
-            RuleForEach(r => r.Details).SetValidator(new GarmentSewingOutDetailValueObjectValidator());
+            RuleFor(r => r.Quantity)
+                .GreaterThan(0)
+                .WithMessage("'Jumlah' harus lebih dari '0'.").When(r => r.IsSave == true);
+            RuleFor(r => r.Quantity)
+               .LessThanOrEqualTo(r => r.SewingInQuantity)
+               .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.SewingInQuantity}'.").When(w => w.IsDifferentSize == false && w.IsSave == true);
+
+            RuleFor(r => r.TotalQuantity)
+               .LessThanOrEqualTo(r => r.SewingInQuantity)
+               .WithMessage(x => $"'Jumlah Total Detail' tidak boleh lebih dari '{x.SewingInQuantity}'.").When(w => w.IsDifferentSize == true && w.IsSave == true);
+
+            RuleFor(r => r.Details).NotEmpty().OverridePropertyName("Detail").When(r=>r.IsDifferentSize==true && r.IsSave == true);
+            RuleForEach(r => r.Details).SetValidator(new GarmentSewingOutDetailValueObjectValidator()).When(r => r.IsDifferentSize == true && r.IsSave == true);
+            
         }
     }
 
@@ -56,7 +74,7 @@ namespace Manufactures.Domain.GarmentSewingOuts.Commands
             RuleFor(r => r.Size.Id).NotEmpty().OverridePropertyName("Size").When(w => w.Size != null);
             RuleFor(r => r.Quantity)
                 .GreaterThan(0)
-                .WithMessage("'Jumlah Potong' harus lebih dari '0'.");
+                .WithMessage("'Jumlah' harus lebih dari '0'.");
 
         }
     }
