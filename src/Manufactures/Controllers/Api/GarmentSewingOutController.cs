@@ -60,7 +60,7 @@ namespace Manufactures.Controllers.Api
             Parallel.ForEach(garmentSewingOutListDtos, dto =>
             {
                 var currentItems = items.Where(w => w.SewingOutId == dto.Id);
-                dto.Colors = currentItems.Select(i => i.Color).Distinct().ToList();
+                dto.Colors = currentItems.Where(i => i.Color != null).Select(i => i.Color).Distinct().ToList();
                 dto.Products = currentItems.Select(i =>  i.ProductCode).Distinct().ToList();
                 dto.TotalQuantity = currentItems.Sum(i => i.Quantity);
                 dto.TotalRemainingQuantity = currentItems.Sum(i => i.RemainingQuantity);

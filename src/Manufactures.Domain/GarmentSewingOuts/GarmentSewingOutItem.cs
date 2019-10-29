@@ -41,6 +41,7 @@ namespace Manufactures.Domain.GarmentSewingOuts
             SizeName = sizeName;
             Quantity = quantity;
             UomId = uomId;
+            UomUnit = uomUnit;
             Color = color;
             RemainingQuantity = remainingQuantity;
 
@@ -57,6 +58,7 @@ namespace Manufactures.Domain.GarmentSewingOuts
                 SizeName = SizeName,
                 Quantity = Quantity,
                 UomId = UomId.Value,
+                UomUnit=UomUnit,
                 Color = Color,
                 RemainingQuantity= remainingQuantity
             };
@@ -77,6 +79,7 @@ namespace Manufactures.Domain.GarmentSewingOuts
             SizeName = readModel.SizeName;
             Quantity = readModel.Quantity;
             UomId = new UomId( readModel.UomId);
+            UomUnit = readModel.UomUnit;
             Color = readModel.Color;
             RemainingQuantity = readModel.RemainingQuantity;
         }
