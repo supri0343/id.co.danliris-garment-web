@@ -42,7 +42,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             {
                 var item = request.Items.Where(o => o.Id == sewOutItem.Identity).Single();
 
-                var diffSewInQuantity = sewOutItem.Quantity - item.Quantity;
+                var diffSewInQuantity = sewOutItem.Quantity - (request.IsDifferentSize ? item.TotalQuantity : item.Quantity);
 
                 if (sewInItemToBeUpdated.ContainsKey(sewOutItem.SewingInItemId))
                 {
@@ -53,26 +53,93 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                     sewInItemToBeUpdated.Add(sewOutItem.SewingInItemId, diffSewInQuantity);
                 }
 
-                sewOutItem.SetQuantity(item.Quantity);
-                sewOutItem.SetRemainingQuantity(item.RemainingQuantity);
-
-                if (request.IsDifferentSize)
+                if (!item.IsSave)
                 {
-                    _garmentSewingOutDetailRepository.Find(o => o.SewingOutItemId == sewOutItem.Identity).ForEach(async sewOutDetail =>
+                    item.Quantity = 0;
+
+                    if (request.IsDifferentSize)
                     {
-                        var detail = item.Details.Where(o => o.Id == sewOutDetail.Identity).Single();
+                        _garmentSewingOutDetailRepository.Find(o => o.SewingOutItemId == sewOutItem.Identity).ForEach(async sewOutDetail =>
+                        {
+                            sewOutDetail.Remove();
+                            await _garmentSewingOutDetailRepository.Update(sewOutDetail);
+                        });
+                    }
 
-                        sewOutDetail.SetQuantity(detail.Quantity);
-                        sewOutDetail.SetSizeId(new SizeId(detail.Size.Id));
-                        sewOutDetail.SetSizeName(detail.Size.Size);
+                    sewOutItem.Remove();
 
-                        sewOutDetail.Modify();
-                        await _garmentSewingOutDetailRepository.Update(sewOutDetail);
-                    });
                 }
-                
+                else
+                {
+                    
 
-                sewOutItem.Modify();
+                    if (request.IsDifferentSize)
+                    {
+                        _garmentSewingOutDetailRepository.Find(o => o.SewingOutItemId == sewOutItem.Identity).ForEach(async sewOutDetail =>
+                        {
+                            if (sewOutDetail.Identity != Guid.Empty)
+                            {
+                                var detail = item.Details.Where(o => o.Id == sewOutDetail.Identity).SingleOrDefault();
+
+                                if (detail != null)
+                                {
+                                    sewOutDetail.SetQuantity(detail.Quantity);
+                                    sewOutDetail.SetSizeId(new SizeId(detail.Size.Id));
+                                    sewOutDetail.SetSizeName(detail.Size.Size);
+
+                                    sewOutDetail.Modify();
+                                    
+                                }
+                                else
+                                {
+                                    sewOutDetail.Remove();
+                                }
+                                await _garmentSewingOutDetailRepository.Update(sewOutDetail);
+                            }
+                            else
+                            {
+                                GarmentSewingOutDetail garmentSewingOutDetail = new GarmentSewingOutDetail(
+                                Guid.NewGuid(),
+                                sewOutItem.Identity,
+                                sewOutDetail.SizeId,
+                                sewOutDetail.SizeName,
+                                sewOutDetail.Quantity,
+                                sewOutDetail.UomId,
+                                sewOutDetail.UomUnit
+                            );
+                                await _garmentSewingOutDetailRepository.Update(garmentSewingOutDetail);
+                            }
+                            
+                        });
+
+                        foreach(var detail in item.Details)
+                        {
+                            if (detail.Id == Guid.Empty)
+                            {
+                                GarmentSewingOutDetail garmentSewingOutDetail = new GarmentSewingOutDetail(
+                                    Guid.NewGuid(),
+                                    sewOutItem.Identity,
+                                    new SizeId(detail.Size.Id),
+                                    detail.Size.Size,
+                                    detail.Quantity,
+                                    new UomId(detail.Uom.Id),
+                                    detail.Uom.Unit
+                                );
+                                await _garmentSewingOutDetailRepository.Update(garmentSewingOutDetail);
+                            }
+                        }
+                        sewOutItem.SetQuantity(item.TotalQuantity);
+                    }
+                    else
+                    {
+                        sewOutItem.SetQuantity(item.Quantity);
+                    }
+
+                    sewOutItem.SetRemainingQuantity(item.RemainingQuantity);
+                    sewOutItem.Modify();
+                }
+
+
                 await _garmentSewingOutItemRepository.Update(sewOutItem);
             });
 
