@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <Folder Include="GarmentCuttingOuts\Repositories\" />
+    <Folder Include="GarmentFinishingIns\Commands\" />
+    <Folder Include="GarmentFinishingIns\ValueObjects\" />
   </ItemGroup>
 
 </Project>
