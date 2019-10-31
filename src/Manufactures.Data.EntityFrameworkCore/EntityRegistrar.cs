@@ -6,6 +6,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentAvalProducts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentCuttingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentDeliveryReturns.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentFinishingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentLoadings.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingDOs.Configs;
@@ -53,6 +54,9 @@ namespace Manufactures.Data.EntityFrameworkCore
             modelBuilder.ApplyConfiguration(new GarmentSewingOutConfig());
             modelBuilder.ApplyConfiguration(new GarmentSewingOutItemConfig());
             modelBuilder.ApplyConfiguration(new GarmentSewingOutDetailConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentFinishingInConfig());
+            modelBuilder.ApplyConfiguration(new GarmentFinishingInItemConfig());
         }
     }
 }
