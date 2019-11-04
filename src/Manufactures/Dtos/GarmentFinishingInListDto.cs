@@ -1,0 +1,37 @@
+﻿using Manufactures.Domain.GarmentFinishingIns;
+using Manufactures.Domain.Shared.ValueObjects;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Manufactures.Dtos
+{
+    public class GarmentFinishingInListDto : BaseDto
+    {
+        public GarmentFinishingInListDto(GarmentFinishingIn garmentFinishingIn)
+        {
+            Id = garmentFinishingIn.Identity;
+            FinishingInNo = garmentFinishingIn.FinishingInNo;
+            RONo = garmentFinishingIn.RONo;
+            Article = garmentFinishingIn.Article;
+            Unit = new UnitDepartment(garmentFinishingIn.UnitId.Value, garmentFinishingIn.UnitCode, garmentFinishingIn.UnitName);
+            UnitFrom = new UnitDepartment(garmentFinishingIn.UnitFromId.Value, garmentFinishingIn.UnitFromCode, garmentFinishingIn.UnitFromName);
+            FinishingInDate = garmentFinishingIn.FinishingInDate;
+            FinishingInType = garmentFinishingIn.FinishingInType;
+        }
+
+        public Guid Id { get; internal set; }
+        public string FinishingInNo { get; internal set; }
+        public string FinishingInType { get; internal set; }
+        public UnitDepartment UnitFrom { get; internal set; }
+        public UnitDepartment Unit { get; internal set; }
+        public string RONo { get; internal set; }
+        public string Article { get; internal set; }
+        public DateTimeOffset FinishingInDate { get; internal set; }
+
+        public double TotalRemainingQuantity { get; set; }
+        public double TotalFinishingInQuantity { get; set; }
+
+        public List<string> Products { get; set; }
+    }
+}
