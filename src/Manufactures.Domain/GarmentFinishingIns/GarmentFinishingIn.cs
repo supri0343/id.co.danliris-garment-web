@@ -16,8 +16,6 @@ namespace Manufactures.Domain.GarmentFinishingIns
         public UnitDepartmentId UnitId { get; internal set; }
         public string UnitCode { get; internal set; }
         public string UnitName { get; internal set; }
-        public Guid SewingOutId { get; internal set; }
-        public string SewingOutNo { get; internal set; }
         public UnitDepartmentId UnitFromId { get; internal set; }
         public string UnitFromCode { get; internal set; }
         public string UnitFromName { get; internal set; }
@@ -28,17 +26,14 @@ namespace Manufactures.Domain.GarmentFinishingIns
         public string ComodityName { get; internal set; }
         public DateTimeOffset FinishingInDate { get; internal set; }
 
-        public GarmentFinishingIn(Guid identity, string finishingInNo, Guid sewingOutId, string sewingOutNo, string finishingInType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset finishingInDate, GarmentComodityId comodityId, string comodityCode, string comodityName) : base(identity)
+        public GarmentFinishingIn(Guid identity, string finishingInNo, string finishingInType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset finishingInDate, GarmentComodityId comodityId, string comodityCode, string comodityName) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
-            Validator.ThrowIfNull(() => sewingOutId);
 
             //MarkTransient();
             FinishingInNo = finishingInNo;
             Identity = identity;
             FinishingInType = finishingInType;
-            SewingOutId = sewingOutId;
-            SewingOutNo = sewingOutNo;
             UnitFromCode = unitFromCode;
             UnitFromName = unitFromName;
             UnitFromId = unitFromId;
@@ -62,8 +57,6 @@ namespace Manufactures.Domain.GarmentFinishingIns
                 UnitId = UnitId.Value,
                 UnitCode = UnitCode,
                 UnitName = UnitName,
-                SewingOutId = SewingOutId,
-                SewingOutNo = SewingOutNo,
                 UnitFromCode = UnitFromCode,
                 UnitFromName = UnitFromName,
                 UnitFromId = UnitFromId.Value,
@@ -84,8 +77,6 @@ namespace Manufactures.Domain.GarmentFinishingIns
             UnitId = new UnitDepartmentId(readModel.UnitId);
             UnitCode = readModel.UnitCode;
             UnitName = readModel.UnitName;
-            SewingOutId = readModel.SewingOutId;
-            SewingOutNo = readModel.SewingOutNo;
             UnitFromCode = readModel.UnitFromCode;
             UnitFromName = readModel.UnitFromName;
             UnitFromId = new UnitDepartmentId(readModel.UnitFromId);

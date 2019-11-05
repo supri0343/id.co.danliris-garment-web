@@ -37,8 +37,6 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
             GarmentFinishingIn garmentFinishingIn = new GarmentFinishingIn(
                 Guid.NewGuid(),
                 GenerateFinishingInNo(request),
-                request.SewingOutId,
-                request.SewingOutNo,
                 request.FinishingInType,
                 new UnitDepartmentId(request.UnitFrom.Id),
                 request.UnitFrom.Code,

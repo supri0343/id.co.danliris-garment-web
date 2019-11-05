@@ -14,8 +14,6 @@ namespace Manufactures.Domain.GarmentFinishingIns.Commands
         public string FinishingInNo { get;  set; }
         public string FinishingInType { get;  set; }
         public UnitDepartment Unit { get;  set; }
-        public Guid SewingOutId { get;  set; }
-        public string SewingOutNo { get;  set; }
         public UnitDepartment UnitFrom { get;  set; }
         public string Article { get;  set; }
         public string RONo { get;  set; }
@@ -32,7 +30,6 @@ namespace Manufactures.Domain.GarmentFinishingIns.Commands
         {
             RuleFor(r => r.Unit).NotNull();
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
-            RuleFor(r => r.SewingOutNo).NotNull().WithMessage("Nomor Sewing Out Tidak Boleh Kosong");
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.FinishingInDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal FinishingIn Tidak Boleh Kosong");
             RuleFor(r => r.Comodity).NotNull();

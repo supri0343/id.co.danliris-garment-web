@@ -12,8 +12,6 @@ namespace Manufactures.Dtos
         {
             Id = garmentFinishingIn.Identity;
             FinishingInNo = garmentFinishingIn.FinishingInNo;
-            SewingOutId = garmentFinishingIn.SewingOutId;
-            SewingOutNo = garmentFinishingIn.SewingOutNo;
             RONo = garmentFinishingIn.RONo;
             Article = garmentFinishingIn.Article;
             Unit = new UnitDepartment(garmentFinishingIn.UnitId.Value, garmentFinishingIn.UnitCode, garmentFinishingIn.UnitName);
@@ -29,8 +27,6 @@ namespace Manufactures.Dtos
         public string FinishingInNo { get; internal set; }
         public string FinishingInType { get; internal set; }
 
-        public Guid SewingOutId { get; internal set; }
-        public string SewingOutNo { get; internal set; }
         public UnitDepartment UnitFrom { get; internal set; }
         public UnitDepartment Unit { get; internal set; }
         public string RONo { get; internal set; }
