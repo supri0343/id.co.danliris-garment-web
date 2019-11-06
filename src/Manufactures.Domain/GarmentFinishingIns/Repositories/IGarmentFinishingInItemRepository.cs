@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Manufactures.Domain.GarmentFinishingIns.Repositories
 {
-    interface IGarmentFinishingInItemRepository : IAggregateRepository<GarmentFinishingInItem, GarmentFinishingInItemReadModel>
+    public interface IGarmentFinishingInItemRepository : IAggregateRepository<GarmentFinishingInItem, GarmentFinishingInItemReadModel>
     {
     }
 }

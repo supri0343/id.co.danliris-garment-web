@@ -14,7 +14,6 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentFinishingIns.Configs
             builder.ToTable("GarmentFinishingIns");
             builder.HasKey(e => e.Identity);
 
-            builder.Property(a => a.SewingOutNo).HasMaxLength(25);
             builder.Property(a => a.FinishingInNo).HasMaxLength(25);
             builder.Property(a => a.UnitFromCode).HasMaxLength(25);
             builder.Property(a => a.UnitFromName).HasMaxLength(100);

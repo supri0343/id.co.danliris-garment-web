@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Manufactures.Domain.Events
 {
-    public class OnGarmentLoadingPlaced : IGarmentCuttingInEvent
+    public class OnGarmentLoadingPlaced : IGarmentLoadingEvent
     {
         public OnGarmentLoadingPlaced(Guid identity)
         {
