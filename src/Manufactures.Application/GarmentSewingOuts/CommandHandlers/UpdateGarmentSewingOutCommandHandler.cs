@@ -129,13 +129,14 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                             }
                         }
                         sewOutItem.SetQuantity(item.TotalQuantity);
+                        sewOutItem.SetRemainingQuantity(item.TotalQuantity);
                     }
                     else
                     {
                         sewOutItem.SetQuantity(item.Quantity);
+                        sewOutItem.SetRemainingQuantity(item.Quantity);
                     }
 
-                    sewOutItem.SetRemainingQuantity(item.RemainingQuantity);
                     sewOutItem.Modify();
                 }
 
