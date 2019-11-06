@@ -29,6 +29,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentDeliveryReturns.Config
             builder.Property(a => a.StorageName)
                .HasMaxLength(100);
 
+            builder.HasIndex(i => i.DRNo).IsUnique().HasFilter("[Deleted]=(0)");
+
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();
         }

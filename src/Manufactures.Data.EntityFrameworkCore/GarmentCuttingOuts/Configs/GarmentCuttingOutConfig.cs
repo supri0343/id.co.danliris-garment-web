@@ -24,6 +24,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingOuts.Configs
             builder.Property(a => a.POSerialNumber)
                .HasMaxLength(100);
 
+            builder.HasIndex(i => i.CutOutNo).IsUnique().HasFilter("[Deleted]=(0)");
+
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();
         }

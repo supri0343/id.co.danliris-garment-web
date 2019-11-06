@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20191106043252_Garment_ComodityPrices")]
+    partial class Garment_ComodityPrices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -534,10 +536,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.HasKey("Identity");
 
-                    b.HasIndex("CutOutNo")
-                        .IsUnique()
-                        .HasFilter("[Deleted]=(0)");
-
                     b.ToTable("GarmentCuttingOuts");
                 });
 
@@ -673,10 +671,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(100);
 
                     b.HasKey("Identity");
-
-                    b.HasIndex("DRNo")
-                        .IsUnique()
-                        .HasFilter("[Deleted]=(0)");
 
                     b.ToTable("GarmentDeliveryReturns");
                 });
@@ -814,10 +808,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(100);
 
                     b.HasKey("Identity");
-
-                    b.HasIndex("FinishingInNo")
-                        .IsUnique()
-                        .HasFilter("[Deleted]=(0)");
 
                     b.ToTable("GarmentFinishingIns");
                 });
@@ -958,10 +948,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(100);
 
                     b.HasKey("Identity");
-
-                    b.HasIndex("LoadingNo")
-                        .IsUnique()
-                        .HasFilter("[Deleted]=(0)");
 
                     b.ToTable("GarmentLoadings");
                 });
@@ -1220,10 +1206,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.HasKey("Identity");
 
-                    b.HasIndex("SewingDONo")
-                        .IsUnique()
-                        .HasFilter("[Deleted]=(0)");
-
                     b.ToTable("GarmentSewingDOs");
                 });
 
@@ -1360,10 +1342,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(100);
 
                     b.HasKey("Identity");
-
-                    b.HasIndex("SewingInNo")
-                        .IsUnique()
-                        .HasFilter("[Deleted]=(0)");
 
                     b.ToTable("GarmentSewingIns");
                 });
@@ -1559,10 +1537,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(100);
 
                     b.HasKey("Identity");
-
-                    b.HasIndex("SewingOutNo")
-                        .IsUnique()
-                        .HasFilter("[Deleted]=(0)");
 
                     b.ToTable("GarmentSewingOuts");
                 });

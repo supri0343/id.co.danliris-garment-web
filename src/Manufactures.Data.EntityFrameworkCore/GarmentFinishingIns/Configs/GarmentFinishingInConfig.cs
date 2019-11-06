@@ -24,6 +24,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentFinishingIns.Configs
             builder.Property(a => a.ComodityCode).HasMaxLength(25);
             builder.Property(a => a.ComodityName).HasMaxLength(100);
 
+            builder.HasIndex(i => i.FinishingInNo).IsUnique().HasFilter("[Deleted]=(0)");
+
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();
         }

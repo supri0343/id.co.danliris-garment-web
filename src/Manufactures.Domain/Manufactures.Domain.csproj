@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="GarmentComodityPrices\Commands\" />
+    <Folder Include="GarmentComodityPrices\Repositories\" />
+    <Folder Include="GarmentComodityPrices\ValueObjects\" />
     <Folder Include="GarmentCuttingOuts\Repositories\" />
   </ItemGroup>
 
