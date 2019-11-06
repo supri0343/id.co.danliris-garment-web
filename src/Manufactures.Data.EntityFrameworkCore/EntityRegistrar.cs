@@ -3,6 +3,7 @@
 
 using ExtCore.Data.EntityFramework;
 using Manufactures.Data.EntityFrameworkCore.GarmentAvalProducts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentComodityPrices.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentCuttingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentDeliveryReturns.Config;
@@ -57,6 +58,8 @@ namespace Manufactures.Data.EntityFrameworkCore
 
             modelBuilder.ApplyConfiguration(new GarmentFinishingInConfig());
             modelBuilder.ApplyConfiguration(new GarmentFinishingInItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentComodityPriceConfig());
         }
     }
 }

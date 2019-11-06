@@ -25,6 +25,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentLoadings.Configs
             builder.Property(p => p.UnitFromCode).HasMaxLength(25);
             builder.Property(p => p.UnitFromName).HasMaxLength(100);
 
+            builder.HasIndex(i => i.LoadingNo).IsUnique().HasFilter("[Deleted]=(0)");
+
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();
         }

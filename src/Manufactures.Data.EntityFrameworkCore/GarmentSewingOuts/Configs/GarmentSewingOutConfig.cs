@@ -27,6 +27,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Configs
             builder.Property(a => a.ComodityName).HasMaxLength(100);
             builder.Property(a => a.SewingTo).HasMaxLength(100);
 
+            builder.HasIndex(i => i.SewingOutNo).IsUnique().HasFilter("[Deleted]=(0)");
+
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();
         }
