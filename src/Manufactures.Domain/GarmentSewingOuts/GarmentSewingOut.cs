@@ -105,7 +105,14 @@ namespace Manufactures.Domain.GarmentSewingOuts
             BuyerName = readModel.BuyerName;
             IsDifferentSize = readModel.IsDifferentSize;
         }
-
+        public void SetDate(DateTimeOffset SewingOutDate)
+        {
+            if (this.SewingOutDate != SewingOutDate)
+            {
+                this.SewingOutDate = SewingOutDate;
+                ReadModel.SewingOutDate = SewingOutDate;
+            }
+        }
         public void Modify()
         {
             MarkModified();

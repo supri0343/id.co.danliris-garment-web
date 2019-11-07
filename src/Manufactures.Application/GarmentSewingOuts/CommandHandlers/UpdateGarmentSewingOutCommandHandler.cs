@@ -42,7 +42,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             {
                 var item = request.Items.Where(o => o.Id == sewOutItem.Identity).Single();
 
-                var diffSewInQuantity = sewOutItem.Quantity - (request.IsDifferentSize ? item.TotalQuantity : item.Quantity);
+                var diffSewInQuantity = item.IsSave ? (sewOutItem.Quantity - (request.IsDifferentSize ? item.TotalQuantity : item.Quantity ) ): sewOutItem.Quantity;
 
                 if (sewInItemToBeUpdated.ContainsKey(sewOutItem.SewingInItemId))
                 {
@@ -140,7 +140,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                     sewOutItem.Modify();
                 }
 
-
+                
                 await _garmentSewingOutItemRepository.Update(sewOutItem);
             });
 
@@ -152,6 +152,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 await _garmentSewingInItemRepository.Update(garmentSewInItem);
             }
 
+            sewOut.SetDate(request.SewingOutDate);
             sewOut.Modify();
             await _garmentSewingOutRepository.Update(sewOut);
 

@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentSewingOuts.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Manufactures.Domain.GarmentSewingOuts.Commands
@@ -42,6 +43,7 @@ namespace Manufactures.Domain.GarmentSewingOuts.Commands
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.SewingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
+            RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
             RuleForEach(r => r.Items).SetValidator(new GarmentSewingOutItemValueObjectValidator());
         }
     }
