@@ -35,6 +35,8 @@ namespace Manufactures.Domain.GarmentSewingOuts.Commands
             RuleFor(r => r.UnitTo).NotNull().WithMessage("Unit Tujuan Tidak Boleh Kosong");
             RuleFor(r => r.UnitTo.Id).NotEmpty().WithMessage("Unit Tujuan Tidak Boleh Kosong").OverridePropertyName("UnitTo").When(w => w.UnitTo != null);
 
+            RuleFor(r => r.UnitTo.Code).NotEqual(r=>r.Unit.Code).WithMessage("Unit Tujuan dan Unit Tidak Boleh Sama").OverridePropertyName("UnitTo").When(a=> a.SewingTo=="SEWING" && a.Unit!=null && a.UnitTo!=null);
+
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.SewingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sewing Out Tidak Boleh Kosong");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
