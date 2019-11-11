@@ -23,6 +23,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentFinishingIns.Repositories
             List<string> SearchAttributes = new List<string>
             {
                 "FinishingInNo",
+                "FinishingInType",
                 "Article",
                 "RONo",
                 "UnitCode",
