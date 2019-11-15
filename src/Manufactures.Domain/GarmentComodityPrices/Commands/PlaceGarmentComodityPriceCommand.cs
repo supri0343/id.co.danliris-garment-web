@@ -25,18 +25,23 @@ namespace Manufactures.Domain.GarmentComodityPrices.Commands
 
             RuleFor(r => r.Date).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
-            RuleForEach(r => r.Items).SetValidator(new GarmentComodityPriceItemValueObjectValidator());
+            RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
+            RuleForEach(r => r.Items).SetValidator(r => new GarmentComodityPriceItemValueObjectValidator(r));
         }
     }
 
-    class GarmentComodityPriceItemValueObjectValidator : AbstractValidator<GarmentComodityPriceItemValueObject>
+    public class GarmentComodityPriceItemValueObjectValidator : AbstractValidator<GarmentComodityPriceItemValueObject>
     {
-        public GarmentComodityPriceItemValueObjectValidator()
+        public GarmentComodityPriceItemValueObjectValidator(PlaceGarmentComodityPriceCommand placeGarmentComodityPriceCommand)
         {
             RuleFor(r => r.Comodity).NotEmpty().OverridePropertyName("Comodity");
+            RuleFor(r => r.Comodity).Must((comodity) =>
+            {
+                return placeGarmentComodityPriceCommand.Items.FindAll(a => a.Comodity.Id == comodity.Id).Count < 2;
+            }).WithMessage("Komoditi sudah di input").When(c => c.Comodity != null);
             RuleFor(r => r.Price)
                  .GreaterThan(0)
-                 .WithMessage("'Harga' harus lebih dari '0'.");
+                 .WithMessage("'Tarif' harus lebih dari '0'.");
         }
     }
 }

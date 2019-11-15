@@ -14,6 +14,7 @@ namespace Manufactures.Domain.GarmentComodityPrices.ValueObjects
         public UnitDepartment Unit { get;  set; }
         public GarmentComodity Comodity { get;  set; }
         public decimal Price { get;  set; }
+        public decimal NewPrice { get; set; }
 
         public GarmentComodityPriceItemValueObject()
         {

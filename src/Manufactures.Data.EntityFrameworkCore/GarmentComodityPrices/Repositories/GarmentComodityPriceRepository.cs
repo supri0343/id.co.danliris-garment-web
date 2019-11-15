@@ -15,7 +15,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentComodityPrices.Repositori
     {
         public IQueryable<GarmentComodityPriceReadModel> Read(int page, int size, string order, string keyword, string filter)
         {
-            var data = Query;
+            var data = Query.Where(a=>a.IsValid==true);
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
             data = QueryHelper<GarmentComodityPriceReadModel>.Filter(data, FilterDictionary);

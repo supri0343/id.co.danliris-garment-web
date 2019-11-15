@@ -45,8 +45,11 @@ namespace Manufactures.Domain.GarmentComodityPrices
                 UnitCode = UnitCode,
                 UnitName = UnitName,
                 Date = Date,
-
-            };
+                ComodityId = ComodityId.Value,
+                ComodityCode = ComodityCode,
+                ComodityName = ComodityName,
+                Price = Price
+        };
 
             ReadModel.AddDomainEvent(new OnGarmentComodityPricePlaced(Identity));
         }
@@ -62,6 +65,33 @@ namespace Manufactures.Domain.GarmentComodityPrices
             ComodityCode = readModel.ComodityCode;
             ComodityName = readModel.ComodityName;
             Price = readModel.Price;
+        }
+
+        public void setPrice(decimal Price)
+        {
+            if (this.Price != Price)
+            {
+                this.Price = Price;
+                ReadModel.Price = Price;
+            }
+        }
+
+        public void setDate(DateTimeOffset Date)
+        {
+            if (this.Date != Date)
+            {
+                this.Date = Date;
+                ReadModel.Date = Date;
+            }
+        }
+
+        public void setValid(bool IsValid)
+        {
+            if (this.IsValid != IsValid)
+            {
+                this.IsValid = IsValid;
+                ReadModel.IsValid = IsValid;
+            }
         }
 
         public void Modify()
