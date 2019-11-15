@@ -64,5 +64,22 @@ namespace Manufactures.Controllers.Api
                 throw e;
             }
         }
+
+        [HttpPut("edit")]
+        public async Task<IActionResult> Put([FromBody] UpdateGarmentComodityPriceCommand command)
+        {
+            try
+            {
+                VerifyUser();
+
+                var order = await Mediator.Send(command);
+
+                return Ok(order);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }
