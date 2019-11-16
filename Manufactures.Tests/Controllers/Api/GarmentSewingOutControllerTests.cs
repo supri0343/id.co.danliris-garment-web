@@ -1,4 +1,5 @@
 ﻿using Barebone.Tests;
+using Manufactures.Application.GarmentSewingOuts.Queries.GetGarmentSewingOutsByRONo;
 using Manufactures.Controllers.Api;
 using Manufactures.Domain.GarmentSewingIns.ReadModels;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
@@ -196,6 +197,23 @@ namespace Manufactures.Tests.Controllers.Api
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task GetByRONo_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSewingOutController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetGarmentSewingOutsByRONoQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentSewingOutsByRONoViewModel(new List<GarmentSewingOutByRONoDto>()));
+
+            // Act
+            var result = await unitUnderTest.GetLoaderByRO(It.IsAny<string>(), It.IsAny<string>());
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));

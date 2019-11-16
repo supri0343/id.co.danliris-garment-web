@@ -1,7 +1,9 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Application.GarmentSewingOuts.Queries.GetGarmentSewingOutsByRONo;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentSewingOuts.Commands;
+using Manufactures.Domain.GarmentSewingOuts.ReadModels;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
 using Manufactures.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -181,6 +183,16 @@ namespace Manufactures.Controllers.Api
                 size,
                 count
             });
+        }
+
+        [HttpGet("loader-by-ro")]
+        public async Task<IActionResult> GetLoaderByRO(string keyword, string filter = "{}")
+        {
+            VerifyUser();
+
+            var result = await Mediator.Send(new GetGarmentSewingOutsByRONoQuery(keyword, filter));
+
+            return Ok(result.data);
         }
     }
 }
