@@ -203,11 +203,11 @@ namespace Manufactures.Controllers.Api
 
             var result = await Mediator.Send(new GetGarmentSewingOutsDynamicQuery(page, size, order, search, select, keyword, filter));
 
-            return Ok(result.count, info: new
+            return Ok(result.data, info: new
             {
                 page,
                 size,
-                result.data
+                result.count
             });
         }
     }
