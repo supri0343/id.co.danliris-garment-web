@@ -47,7 +47,7 @@ namespace Manufactures.Domain.GarmentAvalComponents.Commands
         {
             RuleFor(r => r.Product).NotNull();
 
-            RuleFor(r => r.Quantity).LessThanOrEqualTo(r => r.SourceQuantity).When(_ => placeGarmentAvalComponentCommand.AvalComponentType == "SEWING");
+            RuleFor(r => r.Quantity).LessThanOrEqualTo(r => r.SourceQuantity);
         }
     }
 }
