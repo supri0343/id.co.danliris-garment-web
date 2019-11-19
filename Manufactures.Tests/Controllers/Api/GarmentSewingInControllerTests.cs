@@ -71,14 +71,14 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingInReadModel>>()))
                 .Returns(new List<GarmentSewingIn>()
                 {
-                    new GarmentSewingIn(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new GarmentComodityId(1), null, null, DateTimeOffset.Now)
+                    new GarmentSewingIn(Guid.NewGuid(),null, null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new GarmentComodityId(1), null, null, DateTimeOffset.Now)
                 });
 
             _mockGarmentSewingInItemRepository
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingInItemReadModel>>()))
                 .Returns(new List<GarmentSewingInItem>()
                 {
-                    new GarmentSewingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1), null, 0, new UomId(1), null, null, 0)
+                    new GarmentSewingInItem(Guid.NewGuid(),Guid.Empty,Guid.Empty, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1), null, 0, new UomId(1), null, null, 0)
                 });
 
             _mockGarmentSewingInItemRepository
@@ -105,14 +105,14 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingInReadModel, bool>>>()))
                 .Returns(new List<GarmentSewingIn>()
                 {
-                    new GarmentSewingIn(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new GarmentComodityId(1), null, null, DateTimeOffset.Now)
+                    new GarmentSewingIn(Guid.NewGuid(), null,null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new GarmentComodityId(1), null, null, DateTimeOffset.Now)
                 });
 
             _mockGarmentSewingInItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingInItemReadModel, bool>>>()))
                 .Returns(new List<GarmentSewingInItem>()
                 {
-                    new GarmentSewingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1), null, 0, new UomId(1), null, null, 0)
+                    new GarmentSewingInItem(Guid.NewGuid(),Guid.Empty,Guid.Empty, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1), null, 0, new UomId(1), null, null, 0)
                 });
 
             // Act
@@ -130,7 +130,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentSewingInCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSewingIn(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new GarmentComodityId(1), null, null, DateTimeOffset.Now));
+                .ReturnsAsync(new GarmentSewingIn(Guid.NewGuid(),null, null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new GarmentComodityId(1), null, null, DateTimeOffset.Now));
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentSewingInCommand>());
@@ -147,7 +147,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentSewingInCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSewingIn(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new GarmentComodityId(1), null, null, DateTimeOffset.Now));
+                .ReturnsAsync(new GarmentSewingIn(Guid.NewGuid(),null, null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new GarmentComodityId(1), null, null, DateTimeOffset.Now));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
