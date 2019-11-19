@@ -12,6 +12,7 @@ namespace Manufactures.Dtos
         {
             Id = garmentSewingIn.Identity;
             SewingInNo = garmentSewingIn.SewingInNo;
+            SewingFrom = garmentSewingIn.SewingFrom;
             LoadingId = garmentSewingIn.LoadingId;
             LoadingNo = garmentSewingIn.LoadingNo;
             UnitFrom = new UnitDepartment(garmentSewingIn.UnitFromId.Value, garmentSewingIn.UnitFromCode, garmentSewingIn.UnitFromName);
@@ -26,6 +27,7 @@ namespace Manufactures.Dtos
 
         public Guid Id { get; set; }
         public string SewingInNo { get; set; }
+        public string SewingFrom { get; set; }
         public Guid LoadingId { get; set; }
         public string LoadingNo { get; set; }
         public UnitDepartment UnitFrom { get; set; }

@@ -4,153 +4,22 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20191118042743_Update_GarmentSewingIns_from_Sewing")]
+    partial class Update_GarmentSewingIns_from_Sewing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentAvalComponents.ReadModels.GarmentAvalComponentItemReadModel", b =>
-                {
-                    b.Property<Guid>("Identity")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid>("AvalComponentId");
-
-                    b.Property<string>("Color")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<Guid>("CuttingInDetailId");
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("DesignColor")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<decimal>("Price");
-
-                    b.Property<string>("ProductCode")
-                        .HasMaxLength(25);
-
-                    b.Property<long>("ProductId");
-
-                    b.Property<string>("ProductName")
-                        .HasMaxLength(100);
-
-                    b.Property<double>("Quantity");
-
-                    b.Property<double>("RemainingQuantity");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<Guid>("SewingOutDetailId");
-
-                    b.Property<Guid>("SewingOutItemId");
-
-                    b.Property<long>("SizeId");
-
-                    b.Property<string>("SizeName")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Identity");
-
-                    b.HasIndex("AvalComponentId");
-
-                    b.ToTable("GarmentAvalComponentItems");
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentAvalComponents.ReadModels.GarmentAvalComponentReadModel", b =>
-                {
-                    b.Property<Guid>("Identity")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Article")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("AvalComponentNo")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("AvalComponentType")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("ComodityCode")
-                        .HasMaxLength(25);
-
-                    b.Property<long>("ComodityId");
-
-                    b.Property<string>("ComodityName")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<DateTimeOffset>("Date");
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<string>("RONo")
-                        .HasMaxLength(25);
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<string>("UnitCode")
-                        .HasMaxLength(25);
-
-                    b.Property<long>("UnitId");
-
-                    b.Property<string>("UnitName")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Identity");
-
-                    b.HasIndex("AvalComponentNo")
-                        .IsUnique()
-                        .HasFilter("[Deleted]=(0)");
-
-                    b.ToTable("GarmentAvalComponents");
-                });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel", b =>
                 {
@@ -1705,14 +1574,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasFilter("[Deleted]=(0)");
 
                     b.ToTable("GarmentSewingOuts");
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentAvalComponents.ReadModels.GarmentAvalComponentItemReadModel", b =>
-                {
-                    b.HasOne("Manufactures.Domain.GarmentAvalComponents.ReadModels.GarmentAvalComponentReadModel", "GarmentAvalComponent")
-                        .WithMany("Items")
-                        .HasForeignKey("AvalComponentId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel", b =>

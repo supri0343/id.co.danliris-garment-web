@@ -39,6 +39,7 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
             GarmentSewingIn garmentSewingIn = new GarmentSewingIn(
                 Guid.NewGuid(),
                 GenerateSewingInNo(request),
+                request.SewingFrom,
                 request.LoadingId,
                 request.LoadingNo,
                 new UnitDepartmentId(request.UnitFrom.Id),
@@ -60,6 +61,8 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
                 GarmentSewingInItem garmentSewingInItem = new GarmentSewingInItem(
                     Guid.NewGuid(),
                     garmentSewingIn.Identity,
+                    item.SewingOutItemId,
+                    item.SewingOutDetailId,
                     item.LoadingItemId,
                     new ProductId(item.Product.Id),
                     item.Product.Code,
