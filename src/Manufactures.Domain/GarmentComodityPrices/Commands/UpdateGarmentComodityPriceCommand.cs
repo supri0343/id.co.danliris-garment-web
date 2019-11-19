@@ -42,8 +42,11 @@ namespace Manufactures.Domain.GarmentComodityPrices.Commands
         {
             RuleFor(r => r.Date).Must((date) =>
             {
-                return updateGarmentComodityPriceCommand.Date < date;
-            }).WithMessage("Tanggal Update tidak boleh kurang dari tanggal update terakhir").OverridePropertyName("Comodity");
+                var today = DateTimeOffset.Now;
+                return updateGarmentComodityPriceCommand.Date.AddHours(7).Date==today.Date? true : updateGarmentComodityPriceCommand.Date.AddHours(7).Date > date.Date;
+            }).When(r=>r.Price!=r.NewPrice)
+            .WithMessage("Tanggal Update tidak boleh kurang dari atau sama dengan tanggal update terakhir")
+            .OverridePropertyName("Comodity");
 
             RuleFor(r => r.Price)
                  .GreaterThan(0)
