@@ -29,7 +29,7 @@ namespace Manufactures.Application.GarmentAvalComponents.CommandHandlers
             _storage = storage;
 
             _garmentAvalComponentRepository = storage.GetRepository<IGarmentAvalComponentRepository>();
-            //_garmentAvalComponentItemRepository = storage.GetRepository<IGarmentAvalComponentItemRepository>();
+            _garmentAvalComponentItemRepository = storage.GetRepository<IGarmentAvalComponentItemRepository>();
 
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _garmentSewingOutItemRepository = storage.GetRepository<IGarmentSewingOutItemRepository>();
