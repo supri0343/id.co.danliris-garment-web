@@ -10,6 +10,8 @@ namespace Manufactures.Domain.GarmentSewingIns.ValueObjects
     {
         public Guid Id { get; set; }
         public Guid SewingInId { get; set; }
+        public Guid SewingOutItemId { get; set; }
+        public Guid SewingOutDetailId { get; set; }
         public Guid LoadingItemId { get; set; }
         public Product Product { get; set; }
         public string DesignColor { get; set; }

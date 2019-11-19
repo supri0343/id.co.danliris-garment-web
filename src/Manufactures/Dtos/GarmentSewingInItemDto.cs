@@ -12,6 +12,8 @@ namespace Manufactures.Dtos
         {
             Id = garmentSewingInItem.Identity;
             SewingInId = garmentSewingInItem.SewingInId;
+            SewingOutItemId = garmentSewingInItem.SewingOutItemId;
+            SewingOutDetailId = garmentSewingInItem.SewingOutDetailId;
             LoadingItemId = garmentSewingInItem.LoadingItemId;
             Product = new Product(garmentSewingInItem.ProductId.Value, garmentSewingInItem.ProductCode, garmentSewingInItem.ProductName);
             DesignColor = garmentSewingInItem.DesignColor;
@@ -23,14 +25,16 @@ namespace Manufactures.Dtos
         }
 
         public Guid Id { get; set; }
-        public Guid SewingInId { get; internal set; }
-        public Guid LoadingItemId { get; internal set; }
-        public Product Product { get; internal set; }
-        public string DesignColor { get; internal set; }
-        public SizeValueObject Size { get; internal set; }
-        public double Quantity { get; internal set; }
-        public Uom Uom { get; internal set; }
-        public string Color { get; internal set; }
-        public double RemainingQuantity { get; internal set; }
+        public Guid SewingInId { get; set; }
+        public Guid SewingOutItemId { get; set; }
+        public Guid SewingOutDetailId { get; set; }
+        public Guid LoadingItemId { get; set; }
+        public Product Product { get; set; }
+        public string DesignColor { get; set; }
+        public SizeValueObject Size { get; set; }
+        public double Quantity { get; set; }
+        public Uom Uom { get; set; }
+        public string Color { get; set; }
+        public double RemainingQuantity { get; set; }
     }
 }

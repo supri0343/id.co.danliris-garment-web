@@ -12,6 +12,7 @@ namespace Manufactures.Domain.GarmentSewingIns.Commands
     public class PlaceGarmentSewingInCommand : ICommand<GarmentSewingIn>
     {
         public string SewingInNo { get; set; }
+        public string SewingFrom { get; set; }
         public Guid LoadingId { get; set; }
         public string LoadingNo { get; set; }
         public UnitDepartment UnitFrom { get; set; }
