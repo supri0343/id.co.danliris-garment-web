@@ -30,13 +30,13 @@ namespace Manufactures.Domain.GarmentSewingIns.Commands
         public PlaceGarmentSewingInCommandValidator()
         {
             RuleFor(r => r.UnitFrom).NotNull();
-            RuleFor(r => r.UnitFrom.Id).NotEmpty().OverridePropertyName("UnitFrom").When(w => w.Unit != null);
+            RuleFor(r => r.UnitFrom.Id).NotEmpty().OverridePropertyName("UnitFrom").When(w => w.UnitFrom != null);
 
             RuleFor(r => r.Unit).NotNull();
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null).WithMessage("Unit Sewing In Tidak Boleh Kosong");
 
-            RuleFor(r => r.LoadingNo).NotNull().WithMessage("No Loading Tidak Boleh Kosong");
-
+            RuleFor(r => r.LoadingNo).NotNull().WithMessage("No Loading Tidak Boleh Kosong").When(r=>r.SewingFrom=="CUTTING");
+            //RuleFor(r => r.LoadingId).NotEmpty();
 
             RuleFor(r => r.Comodity).NotNull();
             RuleFor(r => r.Comodity.Id).NotEmpty().OverridePropertyName("Comodity").When(w => w.Comodity != null);
