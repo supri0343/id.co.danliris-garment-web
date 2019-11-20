@@ -1,9 +1,11 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
+using Manufactures.Domain.GarmentLoadings;
 using Manufactures.Domain.GarmentLoadings.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
 using Manufactures.Domain.GarmentSewingIns.Commands;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
+using Manufactures.Domain.GarmentSewingOuts;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
@@ -20,7 +22,6 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
         private readonly IStorage _storage;
         private readonly IGarmentSewingInRepository _garmentSewingInRepository;
         private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
-        private readonly IGarmentLoadingRepository _garmentLoadingRepository;
         private readonly IGarmentLoadingItemRepository _garmentLoadingItemRepository;
         private readonly IGarmentSewingOutItemRepository _garmentSewingOutItemRepository;
 
@@ -29,7 +30,6 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
             _storage = storage;
             _garmentSewingInRepository = storage.GetRepository<IGarmentSewingInRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
-            _garmentLoadingRepository = storage.GetRepository<IGarmentLoadingRepository>();
             _garmentLoadingItemRepository = storage.GetRepository<IGarmentLoadingItemRepository>();
             //_garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _garmentSewingOutItemRepository = storage.GetRepository<IGarmentSewingOutItemRepository>();
@@ -82,7 +82,7 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
 
                 if (request.SewingFrom == "CUTTING")
                 {
-                    var garmentLoadingItem = _garmentLoadingItemRepository.Find(o => o.Identity == item.LoadingItemId).Single();
+                    var garmentLoadingItem = _garmentLoadingItemRepository.Query.Where(o => o.Identity == item.LoadingItemId).Select(s => new GarmentLoadingItem(s)).Single();
 
                     garmentLoadingItem.SetRemainingQuantity(garmentLoadingItem.RemainingQuantity - item.Quantity);
 
@@ -91,7 +91,7 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
                 }
                 else if(request.SewingFrom == "SEWING")
                 {
-                    var garmentSewingOutItem = _garmentSewingOutItemRepository.Find(s => s.Identity == item.SewingOutItemId).Single();
+                    var garmentSewingOutItem = _garmentSewingOutItemRepository.Query.Where(s => s.Identity == item.SewingOutItemId).Select(s => new GarmentSewingOutItem(s)).Single();
 
                     garmentSewingOutItem.SetRemainingQuantity(garmentSewingOutItem.RemainingQuantity - item.Quantity);
 
