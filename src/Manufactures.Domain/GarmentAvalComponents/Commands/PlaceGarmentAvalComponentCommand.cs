@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentAvalComponents.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Manufactures.Domain.GarmentAvalComponents.Commands
 {
@@ -35,7 +36,8 @@ namespace Manufactures.Domain.GarmentAvalComponents.Commands
 
             RuleFor(r => r.Date).NotEmpty();
 
-            RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
+            RuleFor(r => r.Items).NotNull().OverridePropertyName("Item");
+            RuleFor(r => r.Items.Where(w => w.IsSave)).NotEmpty().OverridePropertyName("Item").When(w => w.Items != null);
 
             RuleForEach(r => r.Items).SetValidator(command => new PlaceGarmentAvalComponentItemValidator(command));
         }
