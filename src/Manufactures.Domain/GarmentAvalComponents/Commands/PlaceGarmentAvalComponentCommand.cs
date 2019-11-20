@@ -45,9 +45,9 @@ namespace Manufactures.Domain.GarmentAvalComponents.Commands
     {
         public PlaceGarmentAvalComponentItemValidator(PlaceGarmentAvalComponentCommand placeGarmentAvalComponentCommand)
         {
-            RuleFor(r => r.Product).NotNull();
+            RuleFor(r => r.Product).NotNull().When(w => w.IsSave);
 
-            RuleFor(r => r.Quantity).LessThanOrEqualTo(r => r.SourceQuantity);
+            RuleFor(r => r.Quantity).LessThanOrEqualTo(r => r.SourceQuantity).When(w => w.IsSave);
         }
     }
 }

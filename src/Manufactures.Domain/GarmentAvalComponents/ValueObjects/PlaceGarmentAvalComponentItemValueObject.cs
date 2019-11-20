@@ -17,6 +17,8 @@ namespace Manufactures.Domain.GarmentAvalComponents.ValueObjects
         public double SourceQuantity { get; set; }
         public SizeValueObject Size { get; set; }
 
+        public bool IsSave { get; set; }
+
         protected override IEnumerable<object> GetAtomicValues()
         {
             throw new NotImplementedException();

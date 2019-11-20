@@ -22,7 +22,7 @@ namespace Manufactures.Application.GarmentAvalComponents.CommandHandlers
 
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
         private readonly IGarmentSewingOutItemRepository _garmentSewingOutItemRepository;
-        private readonly IGarmentSewingOutDetailRepository _garmentSewingOutDetailRepository;
+        //private readonly IGarmentSewingOutDetailRepository _garmentSewingOutDetailRepository;
 
         public PlaceGarmentAvalComponentCommandHandler(IStorage storage)
         {
@@ -57,7 +57,7 @@ namespace Manufactures.Application.GarmentAvalComponents.CommandHandlers
                 request.Date.GetValueOrDefault()
             );
 
-            foreach (var item in request.Items)
+            foreach (var item in request.Items.Where(w => w.IsSave))
             {
                 SizeValueObject sizeValueObject = item.Size ?? new SizeValueObject(0, null);
 
