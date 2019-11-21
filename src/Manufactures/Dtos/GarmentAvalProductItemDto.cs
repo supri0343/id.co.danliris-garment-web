@@ -22,6 +22,7 @@ namespace Manufactures.Dtos
             DesignColor = garmentAvalProductItem.DesignColor;
             Quantity = garmentAvalProductItem.Quantity;
             Uom = new Uom(garmentAvalProductItem.UomId.Value, garmentAvalProductItem.UomUnit);
+            BasicPrice = garmentAvalProductItem.BasicPrice;
         }
 
         public Guid Id { get; set; }
@@ -37,5 +38,6 @@ namespace Manufactures.Dtos
         public string DesignColor { get; set; }
         public double Quantity { get; set; }
         public Uom Uom { get; set; }
+        public double BasicPrice { get; set; }
     }
 }
