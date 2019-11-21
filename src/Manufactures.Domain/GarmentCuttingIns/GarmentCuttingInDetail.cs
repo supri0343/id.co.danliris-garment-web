@@ -30,6 +30,7 @@ namespace Manufactures.Domain.GarmentCuttingIns
 
         public double RemainingQuantity { get; private set; }
         public double BasicPrice { get; private set; }
+        public double Price { get; private set; }
 
         public void SetCuttingInQuantity(int CuttingInQuantity)
         {
@@ -58,7 +59,16 @@ namespace Manufactures.Domain.GarmentCuttingIns
             }
         }
 
-        public GarmentCuttingInDetail(Guid identity, Guid cutInItemId, Guid preparingItemId, ProductId productId, string productCode, string productName, string designColor, string fabricType, double preparingQuantity, UomId preparingUomId, string preparingUomUnit, int cuttingInQuantity, UomId cuttingInUomId, string cuttingInUomUnit, double remainingQuantity, double basicPrice) : base(identity)
+        public void SetPrice(double Price)
+        {
+            if (this.Price != Price)
+            {
+                this.Price = Price;
+                ReadModel.Price = Price;
+            }
+        }
+
+        public GarmentCuttingInDetail(Guid identity, Guid cutInItemId, Guid preparingItemId, ProductId productId, string productCode, string productName, string designColor, string fabricType, double preparingQuantity, UomId preparingUomId, string preparingUomUnit, int cuttingInQuantity, UomId cuttingInUomId, string cuttingInUomUnit, double remainingQuantity, double basicPrice, double price) : base(identity)
         {
             //MarkTransient();
 
@@ -77,6 +87,7 @@ namespace Manufactures.Domain.GarmentCuttingIns
             CuttingInUomUnit = cuttingInUomUnit;
             RemainingQuantity = remainingQuantity;
             BasicPrice = basicPrice;
+            Price = price;
 
             ReadModel = new GarmentCuttingInDetailReadModel(Identity)
             {
@@ -95,6 +106,7 @@ namespace Manufactures.Domain.GarmentCuttingIns
                 CuttingInUomUnit = CuttingInUomUnit,
                 RemainingQuantity = RemainingQuantity,
                 BasicPrice = BasicPrice,
+                Price=Price
             };
 
             ReadModel.AddDomainEvent(new OnGarmentCuttingInPlaced(Identity));
@@ -117,6 +129,7 @@ namespace Manufactures.Domain.GarmentCuttingIns
             CuttingInUomUnit = readModel.CuttingInUomUnit;
             RemainingQuantity = readModel.RemainingQuantity;
             BasicPrice = readModel.BasicPrice;
+            Price = readModel.Price;
         }
 
         public void Modify()

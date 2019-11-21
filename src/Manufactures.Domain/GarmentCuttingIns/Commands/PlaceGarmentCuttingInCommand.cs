@@ -18,6 +18,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.Commands
         public DateTimeOffset? CuttingInDate { get; set; }
         public double FC { get; set; }
         public List<GarmentCuttingInItemValueObject> Items { get; set; }
+        public double Price { get; set; }
     }
 
     public class PlaceGarmentCuttingInCommandValidator : AbstractValidator<PlaceGarmentCuttingInCommand>
@@ -30,6 +31,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.Commands
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.CuttingInDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.FC).GreaterThan(0);
+            RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleForEach(r => r.Items).SetValidator(new GarmentCuttingInItemValueObjectValidator());
         }
