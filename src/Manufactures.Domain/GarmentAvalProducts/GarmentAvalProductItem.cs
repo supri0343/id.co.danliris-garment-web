@@ -21,8 +21,9 @@ namespace Manufactures.Domain.GarmentAvalProducts
         public double Quantity { get; private set; }
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
+        public double BasicPrice { get; private set; }
 
-        public GarmentAvalProductItem(Guid identity, Guid apId, GarmentPreparingId preparingId, GarmentPreparingItemId preparingItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit) : base(identity)
+        public GarmentAvalProductItem(Guid identity, Guid apId, GarmentPreparingId preparingId, GarmentPreparingItemId preparingItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, double basicPrice) : base(identity)
         {
             this.MarkTransient();
 
@@ -37,6 +38,7 @@ namespace Manufactures.Domain.GarmentAvalProducts
             Quantity = quantity;
             UomId = uomId;
             UomUnit = uomUnit;
+            BasicPrice = basicPrice;
 
             ReadModel = new GarmentAvalProductItemReadModel(Identity)
             {
@@ -49,7 +51,8 @@ namespace Manufactures.Domain.GarmentAvalProducts
                 DesignColor = DesignColor,
                 Quantity = Quantity,
                 UomId = UomId.Value,
-                UomUnit = UomUnit
+                UomUnit = UomUnit,
+                BasicPrice=BasicPrice
             };
             ReadModel.AddDomainEvent(new OnGarmentAvalProductPlaced(this.Identity));
         }
@@ -66,6 +69,7 @@ namespace Manufactures.Domain.GarmentAvalProducts
             Quantity = ReadModel.Quantity;
             UomId = new UomId(ReadModel.UomId);
             UomUnit = ReadModel.UomUnit;
+            BasicPrice = ReadModel.BasicPrice;
         }
 
         public void setPreparingId(GarmentPreparingId newPreparingId)
