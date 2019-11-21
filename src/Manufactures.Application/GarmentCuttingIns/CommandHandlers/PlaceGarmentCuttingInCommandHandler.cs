@@ -86,7 +86,8 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
                             new UomId(detail.CuttingInUom.Id),
                             detail.CuttingInUom.Unit,
                             detail.RemainingQuantity,
-                            detail.BasicPrice
+                            detail.BasicPrice,
+                            detail.Price
                         );
 
                         if (preparingItemToBeUpdated.ContainsKey(detail.PreparingItemId))

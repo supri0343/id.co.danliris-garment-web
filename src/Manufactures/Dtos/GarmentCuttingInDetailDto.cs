@@ -22,6 +22,7 @@ namespace Manufactures.Dtos
             CuttingInUom = new Uom(garmentCuttingInDetail.CuttingInUomId.Value, garmentCuttingInDetail.CuttingInUomUnit);
             RemainingQuantity = garmentCuttingInDetail.RemainingQuantity;
             BasicPrice = garmentCuttingInDetail.BasicPrice;
+            Price = garmentCuttingInDetail.Price;
         }
 
         public Guid Id { get; set; }
@@ -41,5 +42,6 @@ namespace Manufactures.Dtos
 
         public double RemainingQuantity { get; set; }
         public double BasicPrice { get; set; }
+        public double Price { get; set; }
     }
 }

@@ -86,7 +86,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentAvalProductItemReadModel>>()))
                 .Returns(new List<GarmentAvalProductItem>()
                 {
-                    new GarmentAvalProductItem(Guid.NewGuid(), Guid.NewGuid(), new GarmentPreparingId("1"), new GarmentPreparingItemId("1"), new Domain.GarmentAvalProducts.ValueObjects.ProductId(1), null, null, null, 0, new Domain.GarmentAvalProducts.ValueObjects.UomId(1), null)
+                    new GarmentAvalProductItem(Guid.NewGuid(), Guid.NewGuid(), new GarmentPreparingId("1"), new GarmentPreparingItemId("1"), new Domain.GarmentAvalProducts.ValueObjects.ProductId(1), null, null, null, 0, new Domain.GarmentAvalProducts.ValueObjects.UomId(1), null,10)
                 });
 
             _mockGarmentAvalProductItemRepository
@@ -120,7 +120,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentAvalProductItemReadModel, bool>>>()))
                 .Returns(new List<GarmentAvalProductItem>()
                 {
-                    new GarmentAvalProductItem(Guid.NewGuid(), Guid.NewGuid(), new GarmentPreparingId("1"), new GarmentPreparingItemId("1"), new Domain.GarmentAvalProducts.ValueObjects.ProductId(1), null, null, null, 0, new Domain.GarmentAvalProducts.ValueObjects.UomId(1), null)
+                    new GarmentAvalProductItem(Guid.NewGuid(), Guid.NewGuid(), new GarmentPreparingId("1"), new GarmentPreparingItemId("1"), new Domain.GarmentAvalProducts.ValueObjects.ProductId(1), null, null, null, 0, new Domain.GarmentAvalProducts.ValueObjects.UomId(1), null,10)
                 });
 
             // Act
