@@ -16,9 +16,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.ValueObjects
         public string Color { get; set; }
         public double RemainingQuantity { get; set; }
         public double BasicPrice { get; set; }
-        public double IndirectPrice { get; set; }
-        public double OTL1 { get; set; }
-        public double OTL2 { get; set; }
+        public double Price { get; set; }
         public string Remark { get; set; }
 
         public GarmentSubconCuttingOutDetailValueObject()

@@ -86,10 +86,8 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                         detail.CuttingOutQuantity,
                         new UomId(detail.CuttingOutUom.Id),
                         detail.CuttingOutUom.Unit,
-                        detail.OTL1,
-                        detail.OTL2,
                         detail.BasicPrice,
-                        detail.IndirectPrice,
+                        detail.Price,
                         detail.Remark
                     );
 
