@@ -74,7 +74,8 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
                         item.BasicPrice,
                         new UomId(item.Uom.Id),
                         item.Uom.Unit,
-                        item.Color
+                        item.Color,
+                        item.Price
                     );
 
                     if (sewingDOItemToBeUpdated.ContainsKey(item.SewingDOItemId))

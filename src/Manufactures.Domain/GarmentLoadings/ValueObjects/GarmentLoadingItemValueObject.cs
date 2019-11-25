@@ -21,6 +21,7 @@ namespace Manufactures.Domain.GarmentLoadings.ValueObjects
         public double BasicPrice { get; set; }
         public double SewingDORemainingQuantity { get; set; }
         public bool IsSave { get; set; }
+        public double Price { get; set; }
 
         public GarmentLoadingItemValueObject()
         {

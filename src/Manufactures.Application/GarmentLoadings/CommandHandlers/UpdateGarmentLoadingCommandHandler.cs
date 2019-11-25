@@ -52,6 +52,7 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
                     sewingDOItemToBeUpdated.Add(loadingItem.SewingDOItemId, diffSewingDOQuantity);
                 }
 
+                loadingItem.SetPrice(item.Price);
                 loadingItem.SetQuantity(item.Quantity);
                 loadingItem.SetRemainingQuantity(item.RemainingQuantity);
 
