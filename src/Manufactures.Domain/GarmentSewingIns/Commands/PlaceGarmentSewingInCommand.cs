@@ -21,6 +21,7 @@ namespace Manufactures.Domain.GarmentSewingIns.Commands
         public string Article { get; set; }
         public GarmentComodity Comodity { get; set; }
         public DateTimeOffset? SewingInDate { get; set; }
+        public double Price { get; set; }
 
         public List<GarmentSewingInItemValueObject> Items { get; set; }
     }
@@ -40,6 +41,8 @@ namespace Manufactures.Domain.GarmentSewingIns.Commands
 
             RuleFor(r => r.Comodity).NotNull();
             RuleFor(r => r.Comodity.Id).NotEmpty().OverridePropertyName("Comodity").When(w => w.Comodity != null);
+
+            RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
 
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.SewingInDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sewing In Tidak Boleh Kosong");

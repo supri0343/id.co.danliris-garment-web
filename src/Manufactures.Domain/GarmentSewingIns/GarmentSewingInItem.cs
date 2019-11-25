@@ -25,6 +25,8 @@ namespace Manufactures.Domain.GarmentSewingIns
         public string UomUnit { get; private set; }
         public string Color { get; private set; }
         public double RemainingQuantity { get; private set; }
+        public double BasicPrice { get; private set; }
+        public double Price { get; private set; }
 
         public void SetRemainingQuantity(double RemainingQuantity)
         {
@@ -35,7 +37,7 @@ namespace Manufactures.Domain.GarmentSewingIns
             }
         }
 
-        public GarmentSewingInItem(Guid identity, Guid sewingInId, Guid sewingOutItemId, Guid sewingOutDetailId , Guid loadingItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity) : base(identity)
+        public GarmentSewingInItem(Guid identity, Guid sewingInId, Guid sewingOutItemId, Guid sewingOutDetailId , Guid loadingItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity, double basicPrice, double price) : base(identity)
         {
             Identity = identity;
             SewingInId = sewingInId;
@@ -53,6 +55,7 @@ namespace Manufactures.Domain.GarmentSewingIns
             UomUnit = uomUnit;
             Color = color;
             RemainingQuantity = remainingQuantity;
+            BasicPrice = basicPrice;
 
             ReadModel = new GarmentSewingInItemReadModel(identity)
             {
@@ -70,7 +73,9 @@ namespace Manufactures.Domain.GarmentSewingIns
                 UomId = UomId.Value,
                 UomUnit = UomUnit,
                 Color = Color,
-                RemainingQuantity = RemainingQuantity
+                RemainingQuantity = RemainingQuantity,
+                BasicPrice=BasicPrice,
+                Price=Price
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSewingInPlaced(Identity));
@@ -93,6 +98,8 @@ namespace Manufactures.Domain.GarmentSewingIns
             UomUnit = readModel.UomUnit;
             Color = readModel.Color;
             RemainingQuantity = readModel.RemainingQuantity;
+            BasicPrice = readModel.BasicPrice;
+            Price = Price;
         }
 
         public void Modify()
