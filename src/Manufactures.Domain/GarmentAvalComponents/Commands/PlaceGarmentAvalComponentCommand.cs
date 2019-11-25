@@ -49,6 +49,7 @@ namespace Manufactures.Domain.GarmentAvalComponents.Commands
         {
             RuleFor(r => r.Product).NotNull().When(w => w.IsSave);
 
+            RuleFor(r => r.Quantity).GreaterThan(0).When(w => w.IsSave);
             RuleFor(r => r.Quantity).LessThanOrEqualTo(r => r.SourceQuantity).When(w => w.IsSave);
         }
     }
