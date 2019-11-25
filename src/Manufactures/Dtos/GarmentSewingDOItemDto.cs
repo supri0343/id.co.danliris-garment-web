@@ -22,6 +22,7 @@ namespace Manufactures.Dtos
             Color = garmentSewingDOItem.Color;
             RemainingQuantity = garmentSewingDOItem.RemainingQuantity;
             BasicPrice = garmentSewingDOItem.BasicPrice;
+            Price = garmentSewingDOItem.Price;
 
 
         }
@@ -38,5 +39,6 @@ namespace Manufactures.Dtos
         public string Color { get; set; }
         public double RemainingQuantity { get; set; }
         public double BasicPrice { get; set; }
+        public double Price { get; set; }
     }
 }

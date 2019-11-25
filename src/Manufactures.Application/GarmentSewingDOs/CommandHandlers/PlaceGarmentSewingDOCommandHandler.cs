@@ -70,7 +70,8 @@ namespace Manufactures.Application.GarmentSewingDOs.CommandHandlers
                     item.Uom.Unit,
                     item.Color,
                     item.RemainingQuantity,
-                    item.BasicPrice
+                    item.BasicPrice,
+                    item.Price
                 );
                 await _garmentSewingDOItemRepository.Update(garmentSewingDOItem);
             }
