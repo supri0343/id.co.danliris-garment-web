@@ -71,7 +71,9 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
                     item.RemainingQuantity,
                     new UomId(item.Uom.Id),
                     item.Uom.Unit,
-                    item.Color
+                    item.Color,
+                    item.BasicPrice,
+                    item.Price
                 );
 
                 if (sewingOutItemToBeUpdated.ContainsKey(item.SewingOutItemId))
