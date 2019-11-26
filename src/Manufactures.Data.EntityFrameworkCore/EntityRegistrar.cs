@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using ExtCore.Data.EntityFramework;
+using Manufactures.Data.EntityFrameworkCore.GarmentAvalComponents.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentAvalProducts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentComodityPrices.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Configs;
@@ -13,11 +14,6 @@ using Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingDOs.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Configs;
-using Manufactures.Domain.GarmentAvalProducts.ReadModels;
-using Manufactures.Domain.GarmentCuttingIns.ReadModels;
-using Manufactures.Domain.GarmentCuttingOuts.ReadModels;
-using Manufactures.Domain.GarmentDeliveryReturns.ReadModels;
-using Manufactures.Domain.GarmentPreparings.ReadModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Manufactures.Data.EntityFrameworkCore
@@ -60,6 +56,9 @@ namespace Manufactures.Data.EntityFrameworkCore
             modelBuilder.ApplyConfiguration(new GarmentFinishingInItemConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentComodityPriceConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentAvalComponentConfig());
+            modelBuilder.ApplyConfiguration(new GarmentAvalComponentItemConfig());
         }
     }
 }

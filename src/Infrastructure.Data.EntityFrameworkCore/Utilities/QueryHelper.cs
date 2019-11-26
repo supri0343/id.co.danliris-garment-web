@@ -69,5 +69,16 @@ namespace Infrastructure.Data.EntityFrameworkCore.Utilities
             }
             return query;
         }
+
+        public static IQueryable Select(IQueryable<TModel> query, string selectString)
+        {
+            if (selectString != null)
+            {
+                var selectedQuery = query.Select(selectString);
+                return selectedQuery;
+            }
+
+            return query;
+        }
     }
 }

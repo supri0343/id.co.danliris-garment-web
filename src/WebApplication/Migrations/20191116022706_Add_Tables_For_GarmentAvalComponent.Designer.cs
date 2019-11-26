@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20191116022706_Add_Tables_For_GarmentAvalComponent")]
+    partial class Add_Tables_For_GarmentAvalComponent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,8 +160,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("APId");
-
-                    b.Property<double>("BasicPrice");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -355,8 +355,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("PreparingUomUnit")
                         .HasMaxLength(10);
 
-                    b.Property<double>("Price");
-
                     b.Property<string>("ProductCode")
                         .HasMaxLength(25);
 
@@ -513,12 +511,16 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset?>("DeletedDate");
 
+                    b.Property<double>("IndirectPrice");
+
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
 
-                    b.Property<double>("Price");
+                    b.Property<double>("OTL1");
+
+                    b.Property<double>("OTL2");
 
                     b.Property<double>("RemainingQuantity");
 
@@ -988,8 +990,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
 
-                    b.Property<double>("Price");
-
                     b.Property<string>("ProductCode")
                         .HasMaxLength(50);
 
@@ -1254,8 +1254,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
 
-                    b.Property<double>("Price");
-
                     b.Property<string>("ProductCode")
                         .HasMaxLength(25);
 
@@ -1369,8 +1367,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<Guid>("Identity")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<double>("BasicPrice");
-
                     b.Property<string>("Color")
                         .HasMaxLength(100);
 
@@ -1397,8 +1393,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
 
-                    b.Property<double>("Price");
-
                     b.Property<string>("ProductCode")
                         .HasMaxLength(25);
 
@@ -1416,10 +1410,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<Guid>("SewingInId");
-
-                    b.Property<Guid>("SewingOutDetailId");
-
-                    b.Property<Guid>("SewingOutItemId");
 
                     b.Property<int>("SizeId");
 
@@ -1482,9 +1472,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<string>("SewingFrom")
-                        .HasMaxLength(25);
 
                     b.Property<DateTimeOffset>("SewingInDate");
 
@@ -1569,8 +1556,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<Guid>("Identity")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<double>("BasicPrice");
-
                     b.Property<string>("Color");
 
                     b.Property<string>("CreatedBy")
@@ -1593,8 +1578,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(32);
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<double>("Price");
 
                     b.Property<string>("ProductCode")
                         .HasMaxLength(25);
