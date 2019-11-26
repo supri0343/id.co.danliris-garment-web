@@ -24,6 +24,8 @@ namespace Manufactures.Domain.GarmentSewingOuts.ValueObjects
         public double SewingInQuantity { get; set; }
         public double TotalQuantity { get; set; }
         public double RemainingQuantity { get; set; }
+        public double BasicPrice { get; set; }
+        public double Price { get; set; }
         public GarmentSewingOutItemValueObject()
         {
         }

@@ -10,20 +10,22 @@ namespace Manufactures.Domain.GarmentFinishingIns
 {
     public class GarmentFinishingInItem : AggregateRoot<GarmentFinishingInItem, GarmentFinishingInItemReadModel>
     {
-        public Guid FinishingInId { get; internal set; }
-        public Guid SewingOutItemId { get; internal set; }
-        public Guid SewingOutDetailId { get; internal set; }
-        public ProductId ProductId { get; internal set; }
-        public string ProductCode { get; internal set; }
-        public string ProductName { get; internal set; }
-        public string DesignColor { get; internal set; }
-        public SizeId SizeId { get; internal set; }
-        public string SizeName { get; internal set; }
-        public double Quantity { get; internal set; }
-        public UomId UomId { get; internal set; }
-        public string UomUnit { get; internal set; }
-        public string Color { get; internal set; }
-        public double RemainingQuantity { get; internal set; }
+        public Guid FinishingInId { get; private set; }
+        public Guid SewingOutItemId { get; private set; }
+        public Guid SewingOutDetailId { get; private set; }
+        public ProductId ProductId { get; private set; }
+        public string ProductCode { get; private set; }
+        public string ProductName { get; private set; }
+        public string DesignColor { get; private set; }
+        public SizeId SizeId { get; private set; }
+        public string SizeName { get; private set; }
+        public double Quantity { get; private set; }
+        public UomId UomId { get; private set; }
+        public string UomUnit { get; private set; }
+        public string Color { get; private set; }
+        public double RemainingQuantity { get; private set; }
+        public double BasicPrice { get; private set; }
+        public double Price { get; private set; }
 
         public void SetRemainingQuantity(double RemainingQuantity)
         {
@@ -34,7 +36,7 @@ namespace Manufactures.Domain.GarmentFinishingIns
             }
         }
 
-        public GarmentFinishingInItem(Guid identity, Guid finishingInId, Guid sewingOutItemId, Guid sewingOutDetailId, SizeId sizeId, string sizeName, ProductId productId, string productCode, string productName, string designColor, double quantity, double remainingQuantity, UomId uomId, string uomUnit, string color) : base(identity)
+        public GarmentFinishingInItem(Guid identity, Guid finishingInId, Guid sewingOutItemId, Guid sewingOutDetailId, SizeId sizeId, string sizeName, ProductId productId, string productCode, string productName, string designColor, double quantity, double remainingQuantity, UomId uomId, string uomUnit, string color, double basicPrice, double price) : base(identity)
         {
             FinishingInId = finishingInId;
             SewingOutItemId = sewingOutItemId;
@@ -50,6 +52,8 @@ namespace Manufactures.Domain.GarmentFinishingIns
             UomUnit = uomUnit;
             Color = color;
             RemainingQuantity = remainingQuantity;
+            BasicPrice = basicPrice;
+            Price = price;
 
             ReadModel = new GarmentFinishingInItemReadModel(Identity)
             {
@@ -67,6 +71,8 @@ namespace Manufactures.Domain.GarmentFinishingIns
                 UomUnit = UomUnit,
                 Color = Color,
                 RemainingQuantity = RemainingQuantity,
+                BasicPrice=BasicPrice,
+                Price=Price
             };
 
             ReadModel.AddDomainEvent(new OnGarmentFinishingInPlaced(Identity));
@@ -88,6 +94,8 @@ namespace Manufactures.Domain.GarmentFinishingIns
             UomUnit = readModel.UomUnit;
             Color = readModel.Color;
             RemainingQuantity = readModel.RemainingQuantity;
+            BasicPrice = readModel.BasicPrice;
+            Price = readModel.Price;
         }
 
         public void Modify()

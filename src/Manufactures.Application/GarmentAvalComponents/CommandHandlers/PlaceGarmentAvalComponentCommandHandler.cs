@@ -76,7 +76,8 @@ namespace Manufactures.Application.GarmentAvalComponents.CommandHandlers
                     item.Quantity,
                     new SizeId(sizeValueObject.Id),
                     sizeValueObject.Size,
-                    0
+                    item.Price,
+                    item.BasicPrice
                 );
 
                 await _garmentAvalComponentItemRepository.Update(garmentAvalComponentItem);

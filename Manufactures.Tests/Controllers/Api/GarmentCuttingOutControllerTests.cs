@@ -114,7 +114,7 @@ namespace Manufactures.Tests.Controllers.Api
                     new GarmentCuttingOutItem(cuttingOutItemGuid, cuttingOutGuid, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, 1)
                 });
 
-            GarmentCuttingOutDetail garmentCuttingOutDetail = new GarmentCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), null, null, 1, 1, new UomId(1), null, 1, 1, 1, 1);
+            GarmentCuttingOutDetail garmentCuttingOutDetail = new GarmentCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), null, null, 1, 1, new UomId(1), null, 1, 1);
             _mockGarmentCuttingOutDetailRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentCuttingOutDetailReadModel>()
@@ -126,7 +126,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutDetailReadModel>>()))
                 .Returns(new List<GarmentCuttingOutDetail>()
                 {
-                    new GarmentCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), null, null, 1, 1, new UomId(1), null, 1, 1, 1, 1)
+                    new GarmentCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), null, null, 1, 1, new UomId(1), null, 1, 1)
                 });
 
             // Act
@@ -162,7 +162,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutDetailReadModel, bool>>>()))
                 .Returns(new List<GarmentCuttingOutDetail>()
                 {
-                    new GarmentCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), null, null, 1, 1, new UomId(1), null, 1, 1, 1, 1)
+                    new GarmentCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), null, null, 1, 1, new UomId(1), null, 1, 1)
                 });
 
             // Act
@@ -234,7 +234,7 @@ namespace Manufactures.Tests.Controllers.Api
                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingDOItemReadModel, bool>>>()))
                .Returns(new List<GarmentSewingDOItem>()
                {
-                    new GarmentSewingDOItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1), null, 0, new UomId(1), null, null, 0, 0)
+                    new GarmentSewingDOItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1), null, 0, new UomId(1), null, null, 0, 0,0)
                });
 
             _MockMediator

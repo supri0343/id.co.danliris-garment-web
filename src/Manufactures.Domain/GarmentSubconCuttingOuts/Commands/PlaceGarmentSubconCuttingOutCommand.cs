@@ -26,6 +26,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
         public string POSerialNumber { get; set; }
         public double PlanPORemainingQuantity { get; set; }
         public double TotalQty { get; set; }
+        public double Price { get; set; }
         public List<GarmentSubconCuttingOutItemValueObject> Items { get; set; }
     }
 
@@ -42,6 +43,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
                .LessThanOrEqualTo(r => r.PlanPORemainingQuantity)
                .WithMessage(x => $"'Total Jumlah Potong' tidak boleh lebih dari '{x.PlanPORemainingQuantity}'.");
 
+            RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
 
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");

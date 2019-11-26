@@ -105,7 +105,7 @@ namespace Manufactures.Tests.Controllers.Api
                     new GarmentSubconCuttingOutItem(cuttingOutItemGuid, cuttingOutGuid, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null,1)
                 });
 
-            GarmentSubconCuttingOutDetail garmentCuttingOutDetail = new GarmentSubconCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), null, null, 1, 1, new UomId(1), null, 1, 1, 1, 1,null);
+            GarmentSubconCuttingOutDetail garmentCuttingOutDetail = new GarmentSubconCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), null, null, 1, 1, new UomId(1), null, 1,  1,null);
             _mockSubconCuttingOutDetailRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentCuttingOutDetailReadModel>()
@@ -117,7 +117,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutDetailReadModel>>()))
                 .Returns(new List<GarmentSubconCuttingOutDetail>()
                 {
-                    new GarmentSubconCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), null, null, 1, 1, new UomId(1), null, 1, 1, 1, 1,null)
+                    new GarmentSubconCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), null, null, 1, 1, new UomId(1), null, 1, 1,null)
                 });
 
             // Act
@@ -151,7 +151,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutDetailReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconCuttingOutDetail>()
                 {
-                    new GarmentSubconCuttingOutDetail(Guid.NewGuid(),Guid.NewGuid(), new SizeId(1), null, null, 0, 0, new UomId(1), null, 0, 0, 0, 0, null)
+                    new GarmentSubconCuttingOutDetail(Guid.NewGuid(),Guid.NewGuid(), new SizeId(1), null, null, 0, 0, new UomId(1), null, 0, 0, null)
                 });
             var result = await unitUnderTest.Get(Guid.NewGuid().ToString());
 

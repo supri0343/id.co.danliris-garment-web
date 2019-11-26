@@ -106,10 +106,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                         detail.CuttingOutQuantity,
                         new UomId(detail.CuttingOutUom.Id),
                         detail.CuttingOutUom.Unit,
-                        detail.OTL1,
-                        detail.OTL2,
                         detail.BasicPrice,
-                        detail.IndirectPrice
+                        detail.Price
                     );
 
                     if (cuttingInDetailToBeUpdated.ContainsKey(item.CuttingInDetailId))
@@ -139,7 +137,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                         detail.CuttingOutUom.Unit,
                         detail.Color,
                         detail.CuttingOutQuantity,
-                        detail.BasicPrice
+                        detail.BasicPrice,
+                        detail.Price
                     );
 
                     await _garmentSewingDOItemRepository.Update(garmentSewingDOItem);

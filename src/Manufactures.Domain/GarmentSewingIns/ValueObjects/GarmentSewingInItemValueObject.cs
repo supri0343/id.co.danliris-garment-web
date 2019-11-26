@@ -21,6 +21,8 @@ namespace Manufactures.Domain.GarmentSewingIns.ValueObjects
         public string Color { get; set; }
         public double RemainingQuantity { get; set; }
         public bool IsSave { get; set; }
+        public double BasicPrice { get; set; }
+        public double Price { get; set; }
 
         public GarmentSewingInItemValueObject()
         {

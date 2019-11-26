@@ -18,6 +18,8 @@ namespace Manufactures.Domain.GarmentAvalComponents.ValueObjects
         public SizeValueObject Size { get; set; }
 
         public bool IsSave { get; set; }
+        public decimal Price { get; set; }
+        public decimal BasicPrice { get; set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

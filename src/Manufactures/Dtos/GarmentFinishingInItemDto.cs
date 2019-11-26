@@ -20,6 +20,8 @@ namespace Manufactures.Dtos
             RemainingQuantity = garmentFinishingInItem.RemainingQuantity;
             SewingOutItemId = garmentFinishingInItem.SewingOutItemId;
             FinishingInId = garmentFinishingInItem.FinishingInId;
+            BasicPrice = garmentFinishingInItem.BasicPrice;
+            Price = garmentFinishingInItem.Price;
         }
 
         public Guid Id { get; set; }
@@ -33,5 +35,7 @@ namespace Manufactures.Dtos
         public string Color { get; set; }
         public double RemainingQuantity { get; set; }
         public Guid FinishingInId { get; set; }
+        public double BasicPrice { get; set; }
+        public double Price { get; set; }
     }
 }

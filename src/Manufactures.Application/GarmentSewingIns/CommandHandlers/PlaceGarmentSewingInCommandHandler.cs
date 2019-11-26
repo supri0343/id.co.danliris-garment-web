@@ -77,7 +77,9 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
                     new UomId(item.Uom.Id),
                     item.Uom.Unit,
                     item.Color,
-                    item.Quantity
+                    item.Quantity,
+                    item.BasicPrice,
+                    item.Price
                 );
 
                 if (request.SewingFrom == "CUTTING")

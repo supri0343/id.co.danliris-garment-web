@@ -11,20 +11,20 @@ namespace Manufactures.Domain.GarmentFinishingIns
 {
     public class GarmentFinishingIn : AggregateRoot<GarmentFinishingIn, GarmentFinishingInReadModel>
     {
-        public string FinishingInNo { get; internal set; }
-        public string FinishingInType { get; internal set; }
-        public UnitDepartmentId UnitId { get; internal set; }
-        public string UnitCode { get; internal set; }
-        public string UnitName { get; internal set; }
-        public UnitDepartmentId UnitFromId { get; internal set; }
-        public string UnitFromCode { get; internal set; }
-        public string UnitFromName { get; internal set; }
-        public string Article { get; internal set; }
-        public string RONo { get; internal set; }
-        public GarmentComodityId ComodityId { get; internal set; }
-        public string ComodityCode { get; internal set; }
-        public string ComodityName { get; internal set; }
-        public DateTimeOffset FinishingInDate { get; internal set; }
+        public string FinishingInNo { get; private set; }
+        public string FinishingInType { get; private set; }
+        public UnitDepartmentId UnitId { get; private set; }
+        public string UnitCode { get; private set; }
+        public string UnitName { get; private set; }
+        public UnitDepartmentId UnitFromId { get; private set; }
+        public string UnitFromCode { get; private set; }
+        public string UnitFromName { get; private set; }
+        public string Article { get; private set; }
+        public string RONo { get; private set; }
+        public GarmentComodityId ComodityId { get; private set; }
+        public string ComodityCode { get; private set; }
+        public string ComodityName { get; private set; }
+        public DateTimeOffset FinishingInDate { get; private set; }
 
         public GarmentFinishingIn(Guid identity, string finishingInNo, string finishingInType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset finishingInDate, GarmentComodityId comodityId, string comodityCode, string comodityName) : base(identity)
         {

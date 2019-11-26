@@ -25,8 +25,9 @@ namespace Manufactures.Domain.GarmentSewingDOs
         public string Color { get; private set; }
         public double RemainingQuantity { get; private set; }
         public double BasicPrice { get; private set; }
+        public double Price { get; private set; }
 
-        public GarmentSewingDOItem(Guid identity, Guid sewingDOId, Guid cuttingOutDetailId, Guid cuttingOutItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity, double basicPrice) : base(identity)
+        public GarmentSewingDOItem(Guid identity, Guid sewingDOId, Guid cuttingOutDetailId, Guid cuttingOutItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity, double basicPrice, double price) : base(identity)
         {
             Identity = identity;
             SewingDOId = sewingDOId;
@@ -44,6 +45,7 @@ namespace Manufactures.Domain.GarmentSewingDOs
             Color = color;
             RemainingQuantity = remainingQuantity;
             BasicPrice = basicPrice;
+            Price = price;
 
             ReadModel = new GarmentSewingDOItemReadModel(identity)
             {
@@ -61,7 +63,8 @@ namespace Manufactures.Domain.GarmentSewingDOs
                 UomUnit = UomUnit,
                 Color = Color,
                 RemainingQuantity = RemainingQuantity,
-                BasicPrice = BasicPrice
+                BasicPrice = BasicPrice,
+                Price=price
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSewingDOPlaced(Identity));
@@ -84,6 +87,7 @@ namespace Manufactures.Domain.GarmentSewingDOs
             Color = readModel.Color;
             RemainingQuantity = readModel.RemainingQuantity;
             BasicPrice = readModel.BasicPrice;
+            Price = readModel.Price;
         }
 
         public void setRemainingQuantity(double newRemainingQuantity)

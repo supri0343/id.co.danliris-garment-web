@@ -34,7 +34,7 @@ namespace Manufactures.Domain.GarmentSewingIns
             SewingInNo = sewingInNo;
             SewingFrom = sewingFrom;
             LoadingId = loadingId;
-            LoadingNo = LoadingNo;
+            LoadingNo = loadingNo;
             UnitFromId = unitFromId;
             UnitFromCode = unitFromCode;
             UnitFromName = unitFromName;
