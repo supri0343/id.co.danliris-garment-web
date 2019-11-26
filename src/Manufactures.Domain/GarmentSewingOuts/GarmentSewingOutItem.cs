@@ -24,8 +24,10 @@ namespace Manufactures.Domain.GarmentSewingOuts
         public string UomUnit { get; private set; }
         public string Color { get; private set; }
         public double RemainingQuantity { get; private set; }
+        public double BasicPrice { get; private set; }
+        public double Price { get; private set; }
 
-        public GarmentSewingOutItem(Guid identity, Guid sewingOutId, Guid sewingInId, Guid sewingInItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId,string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity) : base(identity)
+        public GarmentSewingOutItem(Guid identity, Guid sewingOutId, Guid sewingInId, Guid sewingInItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId,string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity, double basicPrice, double price) : base(identity)
         {
             //MarkTransient();
 
@@ -44,6 +46,8 @@ namespace Manufactures.Domain.GarmentSewingOuts
             UomUnit = uomUnit;
             Color = color;
             RemainingQuantity = remainingQuantity;
+            BasicPrice = basicPrice;
+            Price = price;
 
             ReadModel = new GarmentSewingOutItemReadModel(identity)
             {
@@ -60,7 +64,9 @@ namespace Manufactures.Domain.GarmentSewingOuts
                 UomId = UomId.Value,
                 UomUnit=UomUnit,
                 Color = Color,
-                RemainingQuantity= remainingQuantity
+                RemainingQuantity= remainingQuantity,
+                BasicPrice=basicPrice,
+                Price=price
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSewingOutPlaced(Identity));
@@ -82,6 +88,17 @@ namespace Manufactures.Domain.GarmentSewingOuts
             UomUnit = readModel.UomUnit;
             Color = readModel.Color;
             RemainingQuantity = readModel.RemainingQuantity;
+            BasicPrice = readModel.BasicPrice;
+            Price = readModel.Price;
+        }
+
+        public void SetPrice(double Price)
+        {
+            if (this.Price != Price)
+            {
+                this.Price = Price;
+                ReadModel.Price = Price;
+            }
         }
 
         public void SetQuantity(double Quantity)

@@ -78,7 +78,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingInItemReadModel>>()))
                 .Returns(new List<GarmentSewingInItem>()
                 {
-                    new GarmentSewingInItem(Guid.NewGuid(),Guid.Empty,Guid.Empty, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1), null, 0, new UomId(1), null, null, 0)
+                    new GarmentSewingInItem(Guid.NewGuid(),Guid.Empty,Guid.Empty, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1), null, 0, new UomId(1), null, null, 0,1,1)
                 });
 
             _mockGarmentSewingInItemRepository
@@ -112,7 +112,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingInItemReadModel, bool>>>()))
                 .Returns(new List<GarmentSewingInItem>()
                 {
-                    new GarmentSewingInItem(Guid.NewGuid(),Guid.Empty,Guid.Empty, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1), null, 0, new UomId(1), null, null, 0)
+                    new GarmentSewingInItem(Guid.NewGuid(),Guid.Empty,Guid.Empty, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1), null, 0, new UomId(1), null, null, 0,1,1)
                 });
 
             // Act

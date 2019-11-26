@@ -88,7 +88,7 @@ namespace Manufactures.Tests.Controllers.Api
             Guid sewingInItemGuid = Guid.NewGuid();
             Guid sewingInGuid = Guid.NewGuid();
             Guid sewingOutItemGuid = Guid.NewGuid();
-            GarmentSewingOutItem garmentSewingOutItem = new GarmentSewingOutItem(sewingOutItemGuid, sewingOutGuid, sewingInGuid, sewingInItemGuid, new ProductId(1), null, null, null, new SizeId(1), null, 1, new UomId(1), null, null, 1);
+            GarmentSewingOutItem garmentSewingOutItem = new GarmentSewingOutItem(sewingOutItemGuid, sewingOutGuid, sewingInGuid, sewingInItemGuid, new ProductId(1), null, null, null, new SizeId(1), null, 1, new UomId(1), null, null, 1,1,1);
             _mockGarmentSewingOutItemRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSewingOutItemReadModel>()
@@ -131,7 +131,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingOutItemReadModel, bool>>>()))
                 .Returns(new List<GarmentSewingOutItem>()
                 {
-                    new GarmentSewingOutItem(sewingOutItemGuid, sewingOutGuid, sewingInGuid, sewingInItemGuid, new ProductId(1), null, null, null, new SizeId(1), null, 1, new UomId(1), null, null, 1)
+                    new GarmentSewingOutItem(sewingOutItemGuid, sewingOutGuid, sewingInGuid, sewingInItemGuid, new ProductId(1), null, null, null, new SizeId(1), null, 1, new UomId(1), null, null, 1,1,1)
                 });
 
             _mockGarmentSewingOutDetailRepository

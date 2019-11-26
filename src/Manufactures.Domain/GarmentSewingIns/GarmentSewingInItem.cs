@@ -56,6 +56,7 @@ namespace Manufactures.Domain.GarmentSewingIns
             Color = color;
             RemainingQuantity = remainingQuantity;
             BasicPrice = basicPrice;
+            Price = price;
 
             ReadModel = new GarmentSewingInItemReadModel(identity)
             {
@@ -99,7 +100,7 @@ namespace Manufactures.Domain.GarmentSewingIns
             Color = readModel.Color;
             RemainingQuantity = readModel.RemainingQuantity;
             BasicPrice = readModel.BasicPrice;
-            Price = Price;
+            Price = readModel.Price;
         }
 
         public void Modify()

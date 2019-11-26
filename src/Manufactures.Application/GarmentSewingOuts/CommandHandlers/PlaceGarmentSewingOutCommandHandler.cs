@@ -79,7 +79,9 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                         new UomId(item.Uom.Id),
                         item.Uom.Unit,
                         item.Color,
-                        request.IsDifferentSize ? item.TotalQuantity : item.Quantity
+                        request.IsDifferentSize ? item.TotalQuantity : item.Quantity,
+                        item.BasicPrice,
+                        item.Price
                     );
                     if (request.IsDifferentSize)
                     {
