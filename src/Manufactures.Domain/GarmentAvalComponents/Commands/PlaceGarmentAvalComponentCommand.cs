@@ -16,6 +16,7 @@ namespace Manufactures.Domain.GarmentAvalComponents.Commands
         public string Article { get; set; }
         public GarmentComodity Comodity { get; set; }
         public DateTimeOffset? Date { get; set; }
+        public decimal Price { get; set; }
 
         public List<PlaceGarmentAvalComponentItemValueObject> Items { get; set; }
     }
@@ -30,6 +31,8 @@ namespace Manufactures.Domain.GarmentAvalComponents.Commands
 
             RuleFor(r => r.AvalComponentType).NotNull();
             RuleFor(r => r.RONo).NotNull();
+
+            RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
 
             RuleFor(r => r.Comodity).NotNull().When(w => w.AvalComponentType == "SEWING");
             RuleFor(r => r.Comodity.Id).NotEmpty().OverridePropertyName("Comodity").When(w => w.AvalComponentType == "SEWING" && w.Comodity != null);
