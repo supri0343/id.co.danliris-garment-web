@@ -14,6 +14,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingDOs.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubconCuttingOuts.Configs;
 using Microsoft.EntityFrameworkCore;
 
 namespace Manufactures.Data.EntityFrameworkCore
@@ -59,6 +60,8 @@ namespace Manufactures.Data.EntityFrameworkCore
 
             modelBuilder.ApplyConfiguration(new GarmentAvalComponentConfig());
             modelBuilder.ApplyConfiguration(new GarmentAvalComponentItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentSubconCuttingConfig());
         }
     }
 }

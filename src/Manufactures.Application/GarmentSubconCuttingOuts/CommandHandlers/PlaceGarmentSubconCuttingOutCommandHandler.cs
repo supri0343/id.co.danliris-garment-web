@@ -22,7 +22,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
         private readonly IGarmentSubconCuttingOutItemRepository _garmentCuttingOutItemRepository;
         private readonly IGarmentSubconCuttingOutDetailRepository _garmentCuttingOutDetailRepository;
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
-        //private readonly IGarmentSewingDORepository _garmentSewingDORepository;
+        private readonly IGarmentSubconCuttingRepository _garmentSubconCuttingRepository;
         //private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
 
         public PlaceGarmentSubconCuttingOutCommandHandler(IStorage storage)
@@ -32,7 +32,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
             _garmentCuttingOutItemRepository = storage.GetRepository<IGarmentSubconCuttingOutItemRepository>();
             _garmentCuttingOutDetailRepository = storage.GetRepository<IGarmentSubconCuttingOutDetailRepository>();
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
-            //_garmentSewingDORepository = storage.GetRepository<IGarmentSewingDORepository>();
+            _garmentSubconCuttingRepository = storage.GetRepository<IGarmentSubconCuttingRepository>();
             //_garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
         }
 
@@ -59,6 +59,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
             );
 
             Dictionary<Guid, double> cuttingInDetailToBeUpdated = new Dictionary<Guid, double>();
+            Dictionary<string, double> cuttingSubconToBeUpdated = new Dictionary<string, double>();
 
             foreach (var item in request.Items)
             {
@@ -91,6 +92,15 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                         detail.Remark
                     );
 
+                    if (cuttingSubconToBeUpdated.ContainsKey(request.RONo + ","  + detail.Size.Id.ToString() + ","+detail.Size.Size))
+                    {
+                        cuttingSubconToBeUpdated[request.RONo + "," + detail.Size.Id.ToString() + "," + detail.Size.Size] += detail.CuttingOutQuantity;
+                    }
+                    else
+                    {
+                        cuttingSubconToBeUpdated.Add(request.RONo + "," + detail.Size.Id.ToString() + "," + detail.Size.Size, detail.CuttingOutQuantity);
+                    }
+
                     if (cuttingInDetailToBeUpdated.ContainsKey(item.CuttingInDetailId))
                     {
                         cuttingInDetailToBeUpdated[item.CuttingInDetailId] += detail.CuttingOutQuantity;
@@ -114,6 +124,32 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                 garmentCuttingInDetail.Modify();
 
                 await _garmentCuttingInDetailRepository.Update(garmentCuttingInDetail);
+            }
+
+            foreach(var subconCutting in cuttingSubconToBeUpdated)
+            {
+                var RONo = subconCutting.Key.Split(",")[0];
+                var SizeId= subconCutting.Key.Split(",")[1];
+                var SizeName = subconCutting.Key.Split(",")[2];
+
+                GarmentSubconCutting garmentSubconCutting = _garmentSubconCuttingRepository.Query.Where(a => a.RONo == RONo && a.SizeId == Convert.ToInt32(SizeId)).Select(a => new GarmentSubconCutting(a)).FirstOrDefault();
+                if (garmentSubconCutting == null)
+                {
+                    garmentSubconCutting = new GarmentSubconCutting(
+                        Guid.NewGuid(),
+                        request.RONo,
+                        new SizeId( Convert.ToInt32(SizeId)),
+                        SizeName,
+                        subconCutting.Value
+                    );
+                    await _garmentSubconCuttingRepository.Update(garmentSubconCutting);
+                }
+                else
+                {
+                    garmentSubconCutting.SetQuantity(garmentSubconCutting.Quantity + subconCutting.Value);
+                    garmentSubconCutting.Modify();
+                    await _garmentSubconCuttingRepository.Update(garmentSubconCutting);
+                }
             }
 
             await _garmentCuttingOutRepository.Update(garmentCuttingOut);
@@ -140,6 +176,8 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
 
             return CutOutNo;
         }
+
+        
 
     }
 }
