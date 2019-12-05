@@ -14,6 +14,14 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
         public SizeId SizeId { get; private set; }
         public string SizeName { get; private set; }
         public double Quantity { get; private set; }
+        public ProductId ProductId { get; private set; }
+        public string ProductCode { get; private set; }
+        public string ProductName { get; private set; }
+        public GarmentComodityId ComodityId { get; private set; }
+        public string ComodityCode { get; private set; }
+        public string ComodityName { get; private set; }
+        public string DesignColor { get; private set; }
+        public string Remark { get; private set; }
 
         public void SetQuantity(double Quantity)
         {
@@ -24,19 +32,35 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             }
         }
 
-        public GarmentSubconCutting(Guid identity, string roNo, SizeId sizeId, string sizeName, double quantity) : base(identity)
+        public GarmentSubconCutting(Guid identity, string roNo, SizeId sizeId, string sizeName, double quantity, ProductId productId, string productCode,string productName, GarmentComodityId comodityId, string comodityCode, string comodityName, string designColor, string remark) : base(identity)
         {
             RONo = roNo;
             SizeId = sizeId;
             SizeName = sizeName;
             Quantity = quantity;
+            ProductId = productId;
+            ProductCode = productCode;
+            ProductName = productName;
+            ComodityId = comodityId;
+            ComodityName = comodityName;
+            ComodityCode = comodityCode;
+            DesignColor = designColor;
+            Remark = remark;
 
             ReadModel = new GarmentSubconCuttingReadModel(Identity)
             {
                 RONo=RONo,
                 SizeId = SizeId.Value,
                 SizeName = SizeName,
-                Quantity = Quantity
+                Quantity = Quantity,
+                ProductId=ProductId.Value,
+                ProductCode=ProductCode,
+                ProductName=ProductName,
+                ComodityId=ComodityId.Value,
+                ComodityName=comodityName,
+                ComodityCode=comodityCode,
+                DesignColor=designColor,
+                Remark=remark
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconCuttingPlaced(Identity));
@@ -48,6 +72,14 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             SizeId = new SizeId(readModel.SizeId);
             SizeName = readModel.SizeName;
             Quantity = readModel.Quantity;
+            ProductId = new ProductId(readModel.ProductId);
+            ProductCode = readModel.ProductCode;
+            ProductName = readModel.ProductName;
+            ComodityId = new GarmentComodityId(readModel.ComodityId);
+            ComodityName = readModel.ComodityName;
+            ComodityCode = readModel.ComodityCode;
+            DesignColor = readModel.DesignColor;
+            Remark = readModel.Remark;
         }
 
         public void Modify()

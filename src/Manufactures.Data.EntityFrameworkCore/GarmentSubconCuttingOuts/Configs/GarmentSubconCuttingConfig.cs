@@ -19,6 +19,18 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubconCuttingOuts.Configs
             builder.Property(a => a.RONo)
                .HasMaxLength(50);
 
+            builder.Property(a => a.ProductCode)
+               .HasMaxLength(25);
+            builder.Property(a => a.ProductName)
+               .HasMaxLength(100);
+            builder.Property(a => a.DesignColor)
+               .HasMaxLength(100);
+
+            builder.Property(a => a.ComodityCode)
+                .HasMaxLength(25);
+            builder.Property(a => a.ComodityName)
+                .HasMaxLength(100);
+
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();
         }

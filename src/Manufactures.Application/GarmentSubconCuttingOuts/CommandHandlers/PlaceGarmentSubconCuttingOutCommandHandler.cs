@@ -92,13 +92,18 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                         detail.Remark
                     );
 
-                    if (cuttingSubconToBeUpdated.ContainsKey(request.RONo + ","  + detail.Size.Id.ToString() + ","+detail.Size.Size))
+                    string key = request.RONo + "," + detail.Size.Id.ToString() + "," + detail.Size.Size + "," 
+                        + item.Product.Id.ToString() + "," + item.Product.Code + "," + item.Product.Name + "," 
+                        + request.Comodity.Id.ToString() + "," + request.Comodity.Code + "," +request.Comodity.Name + "," 
+                        + item.DesignColor + "," + detail.Remark;
+
+                    if (cuttingSubconToBeUpdated.ContainsKey(key))
                     {
-                        cuttingSubconToBeUpdated[request.RONo + "," + detail.Size.Id.ToString() + "," + detail.Size.Size] += detail.CuttingOutQuantity;
+                        cuttingSubconToBeUpdated[key] += detail.CuttingOutQuantity;
                     }
                     else
                     {
-                        cuttingSubconToBeUpdated.Add(request.RONo + "," + detail.Size.Id.ToString() + "," + detail.Size.Size, detail.CuttingOutQuantity);
+                        cuttingSubconToBeUpdated.Add(key, detail.CuttingOutQuantity);
                     }
 
                     if (cuttingInDetailToBeUpdated.ContainsKey(item.CuttingInDetailId))
@@ -131,6 +136,14 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                 var RONo = subconCutting.Key.Split(",")[0];
                 var SizeId= subconCutting.Key.Split(",")[1];
                 var SizeName = subconCutting.Key.Split(",")[2];
+                var ProductId= subconCutting.Key.Split(",")[3];
+                var ProductCode = subconCutting.Key.Split(",")[4];
+                var ProductName= subconCutting.Key.Split(",")[5];
+                var ComodityId =subconCutting.Key.Split(",")[6];
+                var ComodityCode= subconCutting.Key.Split(",")[7];
+                var ComodityName= subconCutting.Key.Split(",")[8];
+                var designColor= subconCutting.Key.Split(",")[9];
+                var remark= subconCutting.Key.Split(",")[10];
 
                 GarmentSubconCutting garmentSubconCutting = _garmentSubconCuttingRepository.Query.Where(a => a.RONo == RONo && a.SizeId == Convert.ToInt32(SizeId)).Select(a => new GarmentSubconCutting(a)).FirstOrDefault();
                 if (garmentSubconCutting == null)
@@ -140,7 +153,15 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                         request.RONo,
                         new SizeId( Convert.ToInt32(SizeId)),
                         SizeName,
-                        subconCutting.Value
+                        subconCutting.Value,
+                        new ProductId(Convert.ToInt32(ProductId)),
+                        ProductCode,
+                        ProductName,
+                        new GarmentComodityId(Convert.ToInt32(ComodityId)),
+                        ComodityCode,
+                        ComodityName,
+                        designColor,
+                        remark
                     );
                     await _garmentSubconCuttingRepository.Update(garmentSubconCutting);
                 }
