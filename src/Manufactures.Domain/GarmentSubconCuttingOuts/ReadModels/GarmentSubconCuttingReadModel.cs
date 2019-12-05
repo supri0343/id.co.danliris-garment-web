@@ -15,5 +15,14 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.ReadModels
         public int SizeId { get; internal set; }
         public double Quantity { get; internal set; }
 
+        public int ProductId { get; internal set; }
+        public string ProductCode { get; internal set; }
+        public string ProductName { get; internal set; }
+        public string DesignColor { get; internal set; }
+        public string Remark { get; internal set; }
+        public int ComodityId { get; internal set; }
+        public string ComodityCode { get; internal set; }
+        public string ComodityName { get; internal set; }
+
     }
 }

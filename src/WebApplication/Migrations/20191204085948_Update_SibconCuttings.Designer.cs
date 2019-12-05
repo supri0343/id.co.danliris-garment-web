@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20191204085948_Update_SibconCuttings")]
+    partial class Update_SibconCuttings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1730,13 +1732,11 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<Guid>("Identity")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ComodityCode")
-                        .HasMaxLength(25);
+                    b.Property<string>("ComodityCode");
 
                     b.Property<int>("ComodityId");
 
-                    b.Property<string>("ComodityName")
-                        .HasMaxLength(100);
+                    b.Property<string>("ComodityName");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -1751,21 +1751,18 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset?>("DeletedDate");
 
-                    b.Property<string>("DesignColor")
-                        .HasMaxLength(100);
+                    b.Property<string>("DesignColor");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
 
-                    b.Property<string>("ProductCode")
-                        .HasMaxLength(25);
+                    b.Property<string>("ProductCode");
 
                     b.Property<int>("ProductId");
 
-                    b.Property<string>("ProductName")
-                        .HasMaxLength(100);
+                    b.Property<string>("ProductName");
 
                     b.Property<double>("Quantity");
 
