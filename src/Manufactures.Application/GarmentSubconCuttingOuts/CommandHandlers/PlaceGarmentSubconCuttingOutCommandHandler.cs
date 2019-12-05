@@ -145,7 +145,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                 var designColor= subconCutting.Key.Split(",")[9];
                 var remark= subconCutting.Key.Split(",")[10];
 
-                GarmentSubconCutting garmentSubconCutting = _garmentSubconCuttingRepository.Query.Where(a => a.RONo == RONo && a.SizeId == Convert.ToInt32(SizeId)).Select(a => new GarmentSubconCutting(a)).FirstOrDefault();
+                GarmentSubconCutting garmentSubconCutting = _garmentSubconCuttingRepository.Query.Where(a => a.RONo == RONo && a.SizeId == Convert.ToInt32(SizeId) && a.ComodityId== Convert.ToInt32(ComodityId)&& a.ProductId== Convert.ToInt32(ProductId) && a.Remark==remark&& a.DesignColor==designColor ).Select(a => new GarmentSubconCutting(a)).FirstOrDefault();
                 if (garmentSubconCutting == null)
                 {
                     garmentSubconCutting = new GarmentSubconCutting(
