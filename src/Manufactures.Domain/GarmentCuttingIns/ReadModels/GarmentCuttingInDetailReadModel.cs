@@ -33,6 +33,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.ReadModels
         public double RemainingQuantity { get; internal set; }
         public double BasicPrice { get; internal set; }
         public double Price { get; internal set; }
+        public double FC { get; internal set; }
 
         public virtual GarmentCuttingInItemReadModel GarmentCuttingInItem { get; internal set; }
     }
