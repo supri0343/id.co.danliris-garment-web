@@ -23,6 +23,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.ReadModels
         public int ComodityId { get; internal set; }
         public string ComodityCode { get; internal set; }
         public string ComodityName { get; internal set; }
+        public double BasicPrice { get; internal set; }
 
     }
 }

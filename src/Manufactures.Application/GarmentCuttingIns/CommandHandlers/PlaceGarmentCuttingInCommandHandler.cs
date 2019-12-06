@@ -87,7 +87,8 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
                             detail.CuttingInUom.Unit,
                             detail.RemainingQuantity,
                             detail.BasicPrice,
-                            detail.Price
+                            detail.Price,
+                            detail.FC
                         );
 
                         if (preparingItemToBeUpdated.ContainsKey(detail.PreparingItemId))
