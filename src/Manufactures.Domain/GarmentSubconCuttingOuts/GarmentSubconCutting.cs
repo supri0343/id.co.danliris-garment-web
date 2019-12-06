@@ -22,6 +22,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
         public string ComodityName { get; private set; }
         public string DesignColor { get; private set; }
         public string Remark { get; private set; }
+        public double BasicPrice { get; private set; }
 
         public void SetQuantity(double Quantity)
         {
@@ -32,7 +33,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             }
         }
 
-        public GarmentSubconCutting(Guid identity, string roNo, SizeId sizeId, string sizeName, double quantity, ProductId productId, string productCode,string productName, GarmentComodityId comodityId, string comodityCode, string comodityName, string designColor, string remark) : base(identity)
+        public GarmentSubconCutting(Guid identity, string roNo, SizeId sizeId, string sizeName, double quantity, ProductId productId, string productCode,string productName, GarmentComodityId comodityId, string comodityCode, string comodityName, string designColor, string remark,double basicPrice) : base(identity)
         {
             RONo = roNo;
             SizeId = sizeId;
@@ -46,6 +47,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             ComodityCode = comodityCode;
             DesignColor = designColor;
             Remark = remark;
+            BasicPrice = basicPrice;
 
             ReadModel = new GarmentSubconCuttingReadModel(Identity)
             {
@@ -57,10 +59,11 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
                 ProductCode=ProductCode,
                 ProductName=ProductName,
                 ComodityId=ComodityId.Value,
-                ComodityName=comodityName,
-                ComodityCode=comodityCode,
-                DesignColor=designColor,
-                Remark=remark
+                ComodityName=ComodityName,
+                ComodityCode=ComodityCode,
+                DesignColor=DesignColor,
+                Remark=Remark,
+                BasicPrice=BasicPrice
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconCuttingPlaced(Identity));
@@ -80,6 +83,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             ComodityCode = readModel.ComodityCode;
             DesignColor = readModel.DesignColor;
             Remark = readModel.Remark;
+            BasicPrice = readModel.BasicPrice;
         }
 
         public void Modify()

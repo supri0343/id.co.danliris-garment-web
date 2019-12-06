@@ -95,7 +95,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                     string key = request.RONo + "," + detail.Size.Id.ToString() + "," + detail.Size.Size + "," 
                         + item.Product.Id.ToString() + "," + item.Product.Code + "," + item.Product.Name + "," 
                         + request.Comodity.Id.ToString() + "," + request.Comodity.Code + "," +request.Comodity.Name + "," 
-                        + item.DesignColor + "," + detail.Remark;
+                        + item.DesignColor + "," + detail.Remark + "," + detail.BasicPrice;
 
                     if (cuttingSubconToBeUpdated.ContainsKey(key))
                     {
@@ -144,8 +144,9 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                 var ComodityName= subconCutting.Key.Split(",")[8];
                 var designColor= subconCutting.Key.Split(",")[9];
                 var remark= subconCutting.Key.Split(",")[10];
+                var basicPrice = subconCutting.Key.Split(",")[11];
 
-                GarmentSubconCutting garmentSubconCutting = _garmentSubconCuttingRepository.Query.Where(a => a.RONo == RONo && a.SizeId == Convert.ToInt32(SizeId) && a.ComodityId== Convert.ToInt32(ComodityId)&& a.ProductId== Convert.ToInt32(ProductId) && a.Remark==remark&& a.DesignColor==designColor ).Select(a => new GarmentSubconCutting(a)).FirstOrDefault();
+                GarmentSubconCutting garmentSubconCutting = _garmentSubconCuttingRepository.Query.Where(a => a.RONo == RONo && a.SizeId == Convert.ToInt32(SizeId) && a.ComodityId== Convert.ToInt32(ComodityId)&& a.ProductId== Convert.ToInt32(ProductId) && a.Remark==remark&& a.DesignColor==designColor&& a.BasicPrice== Convert.ToDouble(basicPrice)).Select(a => new GarmentSubconCutting(a)).FirstOrDefault();
                 if (garmentSubconCutting == null)
                 {
                     garmentSubconCutting = new GarmentSubconCutting(
@@ -161,7 +162,8 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                         ComodityCode,
                         ComodityName,
                         designColor,
-                        remark
+                        remark,
+                        Convert.ToDouble(basicPrice)
                     );
                     await _garmentSubconCuttingRepository.Update(garmentSubconCutting);
                 }

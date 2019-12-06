@@ -47,7 +47,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                     string key = cutOut.RONo + "," + cutOutDetail.SizeId.ToString() + "," + cutOutDetail.SizeName + ","
                         + cutOutItem.ProductId.ToString() + "," + cutOutItem.ProductCode + "," + cutOutItem.ProductName + ","
                         + cutOut.ComodityId.ToString() + "," + cutOut.ComodityCode + "," + cutOut.ComodityName + ","
-                        + cutOutItem.DesignColor + "," + cutOutDetail.Remark;
+                        + cutOutItem.DesignColor + "," + cutOutDetail.Remark + "," + cutOutDetail.BasicPrice;
 
                     if (cuttingSubconToBeUpdated.ContainsKey(key))
                     {
@@ -96,8 +96,9 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                 var ComodityName = subconCutting.Key.Split(",")[8];
                 var designColor = subconCutting.Key.Split(",")[9];
                 var remark = subconCutting.Key.Split(",")[10];
+                var basicPrice = subconCutting.Key.Split(",")[11];
 
-                GarmentSubconCutting garmentSubconCutting = _garmentSubconCuttingRepository.Query.Where(a => a.RONo == RONo && a.SizeId == Convert.ToInt32(SizeId) && a.ComodityId == Convert.ToInt32(ComodityId) && a.ProductId == Convert.ToInt32(ProductId) && a.Remark == remark && a.DesignColor == designColor).Select(a => new GarmentSubconCutting(a)).FirstOrDefault();
+                GarmentSubconCutting garmentSubconCutting = _garmentSubconCuttingRepository.Query.Where(a => a.RONo == RONo && a.SizeId == Convert.ToInt32(SizeId) && a.ComodityId == Convert.ToInt32(ComodityId) && a.ProductId == Convert.ToInt32(ProductId) && a.Remark == remark && a.DesignColor == designColor && a.BasicPrice == Convert.ToDouble(basicPrice)).Select(a => new GarmentSubconCutting(a)).FirstOrDefault();
                 
                 garmentSubconCutting.SetQuantity(garmentSubconCutting.Quantity - subconCutting.Value);
                 garmentSubconCutting.Modify();
