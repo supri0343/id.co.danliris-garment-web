@@ -44,9 +44,9 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
             {
                 _garmentCuttingOutDetailRepository.Find(o => o.CutOutItemId == cutOutItem.Identity).ForEach(async cutOutDetail =>
                 {
-                    string key = cutOut.RONo + "," + cutOutDetail.SizeId.ToString() + "," + cutOutDetail.SizeName + ","
-                        + cutOutItem.ProductId.ToString() + "," + cutOutItem.ProductCode + "," + cutOutItem.ProductName + ","
-                        + cutOut.ComodityId.ToString() + "," + cutOut.ComodityCode + "," + cutOut.ComodityName + ","
+                    string key = cutOut.RONo + "," + cutOutDetail.SizeId.Value.ToString() + "," + cutOutDetail.SizeName + ","
+                        + cutOutItem.ProductId.Value.ToString() + "," + cutOutItem.ProductCode + "," + cutOutItem.ProductName + ","
+                        + cutOut.ComodityId.Value.ToString() + "," + cutOut.ComodityCode + "," + cutOut.ComodityName + ","
                         + cutOutItem.DesignColor + "," + cutOutDetail.Remark + "," + cutOutDetail.BasicPrice;
 
                     if (cuttingSubconToBeUpdated.ContainsKey(key))
