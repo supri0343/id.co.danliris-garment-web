@@ -76,7 +76,7 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
                 garmentPreparingItem.SetModified();
                 await _garmentPreparingItemRepository.Update(garmentPreparingItem);
             }
-
+            cutIn.SetFC(request.FC);
             cutIn.Modify();
             await _garmentCuttingInRepository.Update(cutIn);
 

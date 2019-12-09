@@ -44,10 +44,10 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
             {
                 _garmentCuttingOutDetailRepository.Find(o => o.CutOutItemId == cutOutItem.Identity).ForEach(async cutOutDetail =>
                 {
-                    string key = cutOut.RONo + "," + cutOutDetail.SizeId.Value.ToString() + "," + cutOutDetail.SizeName + ","
-                        + cutOutItem.ProductId.Value.ToString() + "," + cutOutItem.ProductCode + "," + cutOutItem.ProductName + ","
-                        + cutOut.ComodityId.Value.ToString() + "," + cutOut.ComodityCode + "," + cutOut.ComodityName + ","
-                        + cutOutItem.DesignColor + "," + cutOutDetail.Remark + "," + cutOutDetail.BasicPrice;
+                    string key = cutOut.RONo + "~" + cutOutDetail.SizeId.Value.ToString() + "~" + cutOutDetail.SizeName + "~"
+                        + cutOutItem.ProductId.Value.ToString() + "~" + cutOutItem.ProductCode + "~" + cutOutItem.ProductName + "~"
+                        + cutOut.ComodityId.Value.ToString() + "~" + cutOut.ComodityCode + "~" + cutOut.ComodityName + "~"
+                        + cutOutItem.DesignColor + "~" + cutOutDetail.Remark + "~" + cutOutDetail.BasicPrice;
 
                     if (cuttingSubconToBeUpdated.ContainsKey(key))
                     {
@@ -85,18 +85,18 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
 
             foreach (var subconCutting in cuttingSubconToBeUpdated)
             {
-                var RONo = subconCutting.Key.Split(",")[0];
-                var SizeId = subconCutting.Key.Split(",")[1];
-                var SizeName = subconCutting.Key.Split(",")[2];
-                var ProductId = subconCutting.Key.Split(",")[3];
-                var ProductCode = subconCutting.Key.Split(",")[4];
-                var ProductName = subconCutting.Key.Split(",")[5];
-                var ComodityId = subconCutting.Key.Split(",")[6];
-                var ComodityCode = subconCutting.Key.Split(",")[7];
-                var ComodityName = subconCutting.Key.Split(",")[8];
-                var designColor = subconCutting.Key.Split(",")[9];
-                var remark = subconCutting.Key.Split(",")[10];
-                var basicPrice = subconCutting.Key.Split(",")[11];
+                var RONo = subconCutting.Key.Split("~")[0];
+                var SizeId = subconCutting.Key.Split("~")[1];
+                var SizeName = subconCutting.Key.Split("~")[2];
+                var ProductId = subconCutting.Key.Split("~")[3];
+                var ProductCode = subconCutting.Key.Split("~")[4];
+                var ProductName = subconCutting.Key.Split("~")[5];
+                var ComodityId = subconCutting.Key.Split("~")[6];
+                var ComodityCode = subconCutting.Key.Split("~")[7];
+                var ComodityName = subconCutting.Key.Split("~")[8];
+                var designColor = subconCutting.Key.Split("~")[9];
+                var remark = subconCutting.Key.Split("~")[10];
+                var basicPrice = subconCutting.Key.Split("~")[11];
 
                 GarmentSubconCutting garmentSubconCutting = _garmentSubconCuttingRepository.Query.Where(a => a.RONo == RONo && a.SizeId == Convert.ToInt32(SizeId) && a.ComodityId == Convert.ToInt32(ComodityId) && a.ProductId == Convert.ToInt32(ProductId) && a.Remark == remark && a.DesignColor == designColor && a.BasicPrice == Convert.ToDouble(basicPrice)).Select(a => new GarmentSubconCutting(a)).FirstOrDefault();
                 
