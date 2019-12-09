@@ -68,10 +68,20 @@ namespace Manufactures.Domain.GarmentCuttingIns.Commands
                 .When(w => w.IsSave);
 
             RuleFor(r => r.PreparingQuantity)
+                .GreaterThan(0)
+                .WithMessage("'Jumlah Preparing Out' harus lebih dari '0'.")
+                .When(w => w.IsSave);
+
+            RuleFor(r => r.PreparingQuantity)
                 .LessThanOrEqualTo(r => r.PreparingRemainingQuantity)
-                .OverridePropertyName("CuttingInQuantity")
-                .WithMessage(x => $"'Jumlah Potong' tidak boleh lebih dari '{(long)(x.PreparingRemainingQuantity / (x.PreparingQuantity / x.CuttingInQuantity))}'.")
-                .When(w => w.IsSave && w.CuttingInQuantity > 0);
+                .WithMessage(x=>$"'Jumlah Preparing Out' harus lebih dari '{x.PreparingRemainingQuantity}'.")
+                .When(w => w.IsSave);
+
+            //RuleFor(r => r.PreparingQuantity)
+            //    .LessThanOrEqualTo(r => r.PreparingRemainingQuantity)
+            //    .OverridePropertyName("CuttingInQuantity")
+            //    .WithMessage(x => $"'Jumlah Potong' tidak boleh lebih dari '{(long)(x.PreparingRemainingQuantity / (x.PreparingQuantity / x.CuttingInQuantity))}'.")
+            //    .When(w => w.IsSave && w.CuttingInQuantity > 0);
         }
     }
 }
