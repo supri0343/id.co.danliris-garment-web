@@ -101,7 +101,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                         garmentCuttingOutItem.Identity,
                         new SizeId(detail.Size.Id),
                         detail.Size.Size,
-                        detail.Color,
+                        detail.Color.ToUpper(),
                         0,
                         detail.CuttingOutQuantity,
                         new UomId(detail.CuttingOutUom.Id),
@@ -135,7 +135,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                         detail.CuttingOutQuantity,
                         new UomId(detail.CuttingOutUom.Id),
                         detail.CuttingOutUom.Unit,
-                        detail.Color,
+                        detail.Color.ToUpper(),
                         detail.CuttingOutQuantity,
                         detail.BasicPrice,
                         detail.Price
