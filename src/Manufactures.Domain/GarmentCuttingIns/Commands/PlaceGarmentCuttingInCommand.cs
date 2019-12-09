@@ -74,7 +74,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.Commands
 
             RuleFor(r => r.PreparingQuantity)
                 .LessThanOrEqualTo(r => r.PreparingRemainingQuantity)
-                .WithMessage(x=>$"'Jumlah Preparing Out' harus lebih dari '{x.PreparingRemainingQuantity}'.")
+                .WithMessage(x=>$"'Jumlah Preparing Out' tidak boleh lebih dari '{x.PreparingRemainingQuantity}'.")
                 .When(w => w.IsSave);
 
             //RuleFor(r => r.PreparingQuantity)
