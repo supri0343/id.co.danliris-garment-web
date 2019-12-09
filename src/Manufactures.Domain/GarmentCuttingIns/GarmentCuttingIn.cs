@@ -66,6 +66,15 @@ namespace Manufactures.Domain.GarmentCuttingIns
             FC = readModel.FC;
         }
 
+        public void SetFC(double FC)
+        {
+            if (this.FC != FC)
+            {
+                this.FC = FC;
+                ReadModel.FC = FC;
+            }
+        }
+
         public void Modify()
         {
             MarkModified();
