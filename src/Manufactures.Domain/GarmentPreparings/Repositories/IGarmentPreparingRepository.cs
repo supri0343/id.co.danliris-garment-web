@@ -10,5 +10,5 @@ namespace Manufactures.Domain.GarmentPreparings.Repositories
     public interface IGarmentPreparingRepository : IAggregateRepository<GarmentPreparing, GarmentPreparingReadModel>
     {
         IQueryable<GarmentPreparingReadModel> Read(string order, List<string> select, string filter);
-    }
+	}
 }

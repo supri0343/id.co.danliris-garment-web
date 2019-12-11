@@ -21,8 +21,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Repositories
 
             return data;
         }
-
-        protected override GarmentPreparing Map(GarmentPreparingReadModel readModel)
+		protected override GarmentPreparing Map(GarmentPreparingReadModel readModel)
         {
             return new GarmentPreparing(readModel);
         }
