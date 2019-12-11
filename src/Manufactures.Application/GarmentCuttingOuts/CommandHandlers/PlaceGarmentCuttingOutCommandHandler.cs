@@ -1,5 +1,7 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
+using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.GarmentCuttingIns;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentCuttingOuts;
@@ -26,7 +28,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
         private readonly IGarmentSewingDORepository _garmentSewingDORepository;
         private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
-        
+        private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
+
         public PlaceGarmentCuttingOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -36,6 +39,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _garmentSewingDORepository = storage.GetRepository<IGarmentSewingDORepository>();
             _garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
+            _garmentComodityPriceRepository= storage.GetRepository<IGarmentComodityPriceRepository>();
         }
 
         public async Task<GarmentCuttingOut> Handle(PlaceGarmentCuttingOutCommand request, CancellationToken cancellationToken)
@@ -121,6 +125,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
 
                     await _garmentCuttingOutDetailRepository.Update(garmentCuttingOutDetail);
 
+                    GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && a.UnitId == request.Unit.Id && a.ComodityId == request.Comodity.Id).Select(s => new GarmentComodityPrice(s)).Single();
+                    double price = (detail.BasicPrice + ((double)garmentComodityPrice.Price * 25 / 100)) * detail.CuttingOutQuantity;
                     GarmentSewingDOItem garmentSewingDOItem = new GarmentSewingDOItem(
                         Guid.NewGuid(),
                         garmentSewingDO.Identity,
@@ -138,7 +144,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                         detail.Color.ToUpper(),
                         detail.CuttingOutQuantity,
                         detail.BasicPrice,
-                        detail.Price
+                        price
                     );
 
                     await _garmentSewingDOItemRepository.Update(garmentSewingDOItem);
