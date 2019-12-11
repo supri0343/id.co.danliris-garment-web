@@ -1,5 +1,13 @@
 ﻿using Barebone.Tests;
+using FluentAssertions;
+using Manufactures.Application.GarmentAvalComponents.Queries.GetAllGarmentAvalComponents;
+using Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepare;
 using Manufactures.Controllers.Api;
+using Manufactures.Domain.GarmentAvalProducts.Repositories;
+using Manufactures.Domain.GarmentCuttingIns;
+using Manufactures.Domain.GarmentCuttingIns.ReadModels;
+using Manufactures.Domain.GarmentCuttingIns.Repositories;
+using Manufactures.Domain.GarmentDeliveryReturns.Repositories;
 using Manufactures.Domain.GarmentPreparings;
 using Manufactures.Domain.GarmentPreparings.Commands;
 using Manufactures.Domain.GarmentPreparings.ReadModels;
@@ -10,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -18,21 +27,22 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+
 namespace Manufactures.Tests.Controllers.Api
 {
     public class GarmentPreparingControllerTests : BaseControllerUnitTest
     {
         private Mock<IGarmentPreparingRepository> _mockGarmentPreparingRepository;
         private Mock<IGarmentPreparingItemRepository> _mockGarmentPreparingItemRepository;
-
-        public GarmentPreparingControllerTests() : base()
+		
+		public GarmentPreparingControllerTests() : base()
         {
             _mockGarmentPreparingRepository = CreateMock<IGarmentPreparingRepository>();
             _mockGarmentPreparingItemRepository = CreateMock<IGarmentPreparingItemRepository>();
-
             _MockStorage.SetupStorage(_mockGarmentPreparingRepository);
             _MockStorage.SetupStorage(_mockGarmentPreparingItemRepository);
-        }
+
+		}
 
         private GarmentPreparingController CreateGarmentPreparingController()
         {
@@ -185,5 +195,37 @@ namespace Manufactures.Tests.Controllers.Api
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
-    }
+
+		[Fact]
+		public async Task GetMonitoringBehavior()
+		{
+			var unitUnderTest = CreateGarmentPreparingController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetMonitoringPrepareQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new GarmentMonitoringPrepareListViewModel());
+
+			// Act
+			var result = await unitUnderTest.GetMonitoring(1,DateTime.Now,DateTime.Now,1,25,"{}");
+
+			// Assert
+			GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+		}
+
+		[Fact]
+		public async Task GetXLSPrepareBehavior()
+		{
+			var unitUnderTest = CreateGarmentPreparingController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetXlsPrepareQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new MemoryStream());
+
+			// Act
+			var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+
+			// Assert
+			GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+		}
+	}
 }
