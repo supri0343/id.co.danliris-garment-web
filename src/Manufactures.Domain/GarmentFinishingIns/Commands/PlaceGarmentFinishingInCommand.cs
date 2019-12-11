@@ -20,6 +20,7 @@ namespace Manufactures.Domain.GarmentFinishingIns.Commands
         public GarmentComodity Comodity { get;  set; }
         public DateTimeOffset FinishingInDate { get;  set; }
         public List<GarmentFinishingInItemValueObject> Items { get; set; }
+        public double Price { get; set; }
 
 
     }
@@ -33,6 +34,9 @@ namespace Manufactures.Domain.GarmentFinishingIns.Commands
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.FinishingInDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal FinishingIn Tidak Boleh Kosong");
             RuleFor(r => r.Comodity).NotNull();
+
+            RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
+
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
             RuleForEach(r => r.Items).SetValidator(new GarmentFinishingInItemValueObjectValidator());

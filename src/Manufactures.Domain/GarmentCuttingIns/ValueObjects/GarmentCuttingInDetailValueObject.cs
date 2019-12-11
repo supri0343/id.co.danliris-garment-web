@@ -26,6 +26,8 @@ namespace Manufactures.Domain.GarmentCuttingIns.ValueObjects
         public double BasicPrice { get; set; }
 
         public bool IsSave { get; set; }
+        public double Price { get; set; }
+        public double FC { get; set; }
 
         public GarmentCuttingInDetailValueObject()
         {

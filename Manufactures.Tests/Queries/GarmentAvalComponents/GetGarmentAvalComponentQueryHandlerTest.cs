@@ -57,7 +57,7 @@ namespace Manufactures.Tests.Queries.GarmentAvalComponents
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentAvalComponentItemReadModel, bool>>>()))
                 .Returns(new List<GarmentAvalComponentItem>()
                 {
-                    new GarmentAvalComponentItem(Guid.Empty, avalComponentGuid, Guid.Empty, Guid.Empty, Guid.Empty, new ProductId(1), null, null, null, null, 0, 0, new SizeId(1), null, 0)
+                    new GarmentAvalComponentItem(Guid.Empty, avalComponentGuid, Guid.Empty, Guid.Empty, Guid.Empty, new ProductId(1), null, null, null, null, 0, 0, new SizeId(1), null, 0,1)
                 });
 
             // Act

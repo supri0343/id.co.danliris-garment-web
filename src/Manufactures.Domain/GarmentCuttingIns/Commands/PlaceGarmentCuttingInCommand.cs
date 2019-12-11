@@ -18,6 +18,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.Commands
         public DateTimeOffset? CuttingInDate { get; set; }
         public double FC { get; set; }
         public List<GarmentCuttingInItemValueObject> Items { get; set; }
+        public double Price { get; set; }
     }
 
     public class PlaceGarmentCuttingInCommandValidator : AbstractValidator<PlaceGarmentCuttingInCommand>
@@ -30,6 +31,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.Commands
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.CuttingInDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.FC).GreaterThan(0);
+            RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleForEach(r => r.Items).SetValidator(new GarmentCuttingInItemValueObjectValidator());
         }
@@ -66,10 +68,15 @@ namespace Manufactures.Domain.GarmentCuttingIns.Commands
                 .When(w => w.IsSave);
 
             RuleFor(r => r.PreparingQuantity)
+                .GreaterThan(0)
+                .WithMessage("'Jumlah Preparing Out' harus lebih dari '0'.")
+                .When(w => w.IsSave);
+
+            RuleFor(r => r.PreparingQuantity)
                 .LessThanOrEqualTo(r => r.PreparingRemainingQuantity)
-                .OverridePropertyName("CuttingInQuantity")
-                .WithMessage(x => $"'Jumlah Potong' tidak boleh lebih dari '{(long)(x.PreparingRemainingQuantity / (x.PreparingQuantity / x.CuttingInQuantity))}'.")
-                .When(w => w.IsSave && w.CuttingInQuantity > 0);
+                .WithMessage(x=>$"'Jumlah Preparing Out' tidak boleh lebih dari '{x.PreparingRemainingQuantity}'.")
+                .When(w => w.IsSave);
+
         }
     }
 }

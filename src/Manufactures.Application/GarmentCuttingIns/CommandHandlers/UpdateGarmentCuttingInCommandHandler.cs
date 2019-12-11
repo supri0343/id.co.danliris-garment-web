@@ -58,6 +58,8 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
                     cutInDetail.SetCuttingInQuantity(detail.CuttingInQuantity);
                     cutInDetail.SetPreparingQuantity(detail.PreparingQuantity);
                     cutInDetail.SetRemainingQuantity(detail.RemainingQuantity);
+                    cutInDetail.SetPrice(detail.Price);
+                    cutInDetail.SetFC(detail.FC);
 
                     cutInDetail.Modify();
                     await _garmentCuttingInDetailRepository.Update(cutInDetail);
@@ -74,7 +76,7 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
                 garmentPreparingItem.SetModified();
                 await _garmentPreparingItemRepository.Update(garmentPreparingItem);
             }
-
+            cutIn.SetFC(request.FC);
             cutIn.Modify();
             await _garmentCuttingInRepository.Update(cutIn);
 

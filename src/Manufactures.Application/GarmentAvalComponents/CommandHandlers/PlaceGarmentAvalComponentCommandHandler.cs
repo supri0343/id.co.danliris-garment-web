@@ -22,14 +22,14 @@ namespace Manufactures.Application.GarmentAvalComponents.CommandHandlers
 
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
         private readonly IGarmentSewingOutItemRepository _garmentSewingOutItemRepository;
-        private readonly IGarmentSewingOutDetailRepository _garmentSewingOutDetailRepository;
+        //private readonly IGarmentSewingOutDetailRepository _garmentSewingOutDetailRepository;
 
         public PlaceGarmentAvalComponentCommandHandler(IStorage storage)
         {
             _storage = storage;
 
             _garmentAvalComponentRepository = storage.GetRepository<IGarmentAvalComponentRepository>();
-            //_garmentAvalComponentItemRepository = storage.GetRepository<IGarmentAvalComponentItemRepository>();
+            _garmentAvalComponentItemRepository = storage.GetRepository<IGarmentAvalComponentItemRepository>();
 
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _garmentSewingOutItemRepository = storage.GetRepository<IGarmentSewingOutItemRepository>();
@@ -57,7 +57,7 @@ namespace Manufactures.Application.GarmentAvalComponents.CommandHandlers
                 request.Date.GetValueOrDefault()
             );
 
-            foreach (var item in request.Items)
+            foreach (var item in request.Items.Where(w => w.IsSave))
             {
                 SizeValueObject sizeValueObject = item.Size ?? new SizeValueObject(0, null);
 
@@ -76,7 +76,8 @@ namespace Manufactures.Application.GarmentAvalComponents.CommandHandlers
                     item.Quantity,
                     new SizeId(sizeValueObject.Id),
                     sizeValueObject.Size,
-                    0
+                    item.Price,
+                    item.BasicPrice
                 );
 
                 await _garmentAvalComponentItemRepository.Update(garmentAvalComponentItem);

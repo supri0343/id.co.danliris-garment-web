@@ -21,8 +21,9 @@ namespace Manufactures.Domain.GarmentAvalComponents
         public SizeId SizeId { get; internal set; }
         public string SizeName { get; internal set; }
         public decimal Price { get; internal set; }
+        public decimal BasicPrice { get; internal set; }
 
-        public GarmentAvalComponentItem(Guid Identity, Guid avalComponentId, Guid cuttingInDetailId, Guid sewingOutItemId, Guid sewingOutDetailId, ProductId productId, string productCode, string productName, string designColor, string color, double quantity, double remainingQuantity, SizeId sizeId, string sizeName, decimal price) : base(Identity)
+        public GarmentAvalComponentItem(Guid Identity, Guid avalComponentId, Guid cuttingInDetailId, Guid sewingOutItemId, Guid sewingOutDetailId, ProductId productId, string productCode, string productName, string designColor, string color, double quantity, double remainingQuantity, SizeId sizeId, string sizeName, decimal price, decimal basicPrice) : base(Identity)
         {
             AvalComponentId = avalComponentId;
             CuttingInDetailId = cuttingInDetailId;
@@ -38,6 +39,7 @@ namespace Manufactures.Domain.GarmentAvalComponents
             SizeId = sizeId;
             SizeName = sizeName;
             Price = price;
+            BasicPrice = basicPrice;
 
             ReadModel = new GarmentAvalComponentItemReadModel(Identity)
             {
@@ -54,7 +56,8 @@ namespace Manufactures.Domain.GarmentAvalComponents
                 RemainingQuantity = remainingQuantity,
                 SizeId = sizeId.Value,
                 SizeName = sizeName,
-                Price = price
+                Price = price,
+                BasicPrice=basicPrice
             };
         }
 
@@ -74,6 +77,7 @@ namespace Manufactures.Domain.GarmentAvalComponents
             SizeId = new SizeId((int)readModel.SizeId);
             SizeName = readModel.SizeName;
             Price = readModel.Price;
+            BasicPrice = readModel.BasicPrice;
         }
 
         protected override GarmentAvalComponentItem GetEntity()

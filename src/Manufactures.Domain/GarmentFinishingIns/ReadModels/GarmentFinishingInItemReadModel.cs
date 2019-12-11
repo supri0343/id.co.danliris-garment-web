@@ -25,6 +25,8 @@ namespace Manufactures.Domain.GarmentFinishingIns.ReadModels
         public string UomUnit { get; internal set; }
         public string Color { get; internal set; }
         public double RemainingQuantity { get; internal set; }
+        public double BasicPrice { get; internal set; }
+        public double Price { get; internal set; }
 
         public virtual GarmentFinishingInReadModel GarmentFinishingIn { get; internal set; }
 

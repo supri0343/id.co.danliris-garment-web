@@ -22,6 +22,8 @@ namespace Manufactures.Dtos
             Uom = new Uom(garmentSewingInItem.UomId.Value, garmentSewingInItem.UomUnit);
             Color = garmentSewingInItem.Color;
             RemainingQuantity = garmentSewingInItem.RemainingQuantity;
+            BasicPrice = garmentSewingInItem.BasicPrice;
+            Price = garmentSewingInItem.Price;
         }
 
         public Guid Id { get; set; }
@@ -36,5 +38,8 @@ namespace Manufactures.Dtos
         public Uom Uom { get; set; }
         public string Color { get; set; }
         public double RemainingQuantity { get; set; }
+        public double BasicPrice { get; set; }
+        public double Price { get; set; }
+
     }
 }

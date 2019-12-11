@@ -109,7 +109,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentFinishingInItemReadModel, bool>>>()))
                 .Returns(new List<GarmentFinishingInItem>()
                 {
-                    new GarmentFinishingInItem(Guid.NewGuid(), Guid.NewGuid(),Guid.NewGuid(),Guid.NewGuid(),new SizeId(1), null, new ProductId(1), null, null, null, 1,1,new UomId(1),null, null)
+                    new GarmentFinishingInItem(Guid.NewGuid(), Guid.NewGuid(),Guid.NewGuid(),Guid.NewGuid(),new SizeId(1), null, new ProductId(1), null, null, null, 1,1,new UomId(1),null, null,1,1)
                 });
 
             //_mockSewingOutItemRepository

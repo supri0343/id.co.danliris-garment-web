@@ -24,6 +24,7 @@ namespace Manufactures.Domain.GarmentLoadings
         public string Color { get; internal set; }
         public double RemainingQuantity { get; internal set; }
         public double BasicPrice { get; internal set; }
+        public double Price { get; internal set; }
 
         public void SetQuantity(double Quantity)
         {
@@ -43,7 +44,16 @@ namespace Manufactures.Domain.GarmentLoadings
             }
         }
 
-        public GarmentLoadingItem(Guid identity, Guid loadingId, Guid sewingDOItemId, SizeId sizeId, string sizeName, ProductId productId, string productCode, string productName, string designColor, double quantity, double remainingQuantity, double basicPrice, UomId uomId, string uomUnit, string color) : base(identity)
+        public void SetPrice(double Price)
+        {
+            if (this.Price != Price)
+            {
+                this.Price = Price;
+                ReadModel.Price = Price;
+            }
+        }
+
+        public GarmentLoadingItem(Guid identity, Guid loadingId, Guid sewingDOItemId, SizeId sizeId, string sizeName, ProductId productId, string productCode, string productName, string designColor, double quantity, double remainingQuantity, double basicPrice, UomId uomId, string uomUnit, string color, double price) : base(identity)
         {
             LoadingId = loadingId;
             SewingDOItemId = sewingDOItemId;
@@ -59,6 +69,7 @@ namespace Manufactures.Domain.GarmentLoadings
             Color = color;
             RemainingQuantity = remainingQuantity;
             BasicPrice = basicPrice;
+            Price = price;
 
             ReadModel = new GarmentLoadingItemReadModel(Identity)
             {
@@ -75,7 +86,8 @@ namespace Manufactures.Domain.GarmentLoadings
                 UomUnit = UomUnit,
                 Color = Color,
                 RemainingQuantity = RemainingQuantity,
-                BasicPrice = BasicPrice
+                BasicPrice = BasicPrice,
+                Price=Price
             };
 
             ReadModel.AddDomainEvent(new OnGarmentLoadingPlaced(Identity));
@@ -97,6 +109,7 @@ namespace Manufactures.Domain.GarmentLoadings
             Color = readModel.Color;
             RemainingQuantity = readModel.RemainingQuantity;
             BasicPrice = readModel.BasicPrice;
+            Price = readModel.Price;
         }
 
         public void Modify()

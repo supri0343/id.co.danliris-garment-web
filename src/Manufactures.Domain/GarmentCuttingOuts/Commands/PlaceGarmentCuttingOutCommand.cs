@@ -21,6 +21,7 @@ namespace Manufactures.Domain.GarmentCuttingOuts.Commands
         public UnitDepartment Unit { get; set; }
         public GarmentComodity Comodity { get; set; }
         public List<GarmentCuttingOutItemValueObject> Items { get; set; }
+        public double Price { get; set; }
     }
 
     public class PlaceGarmentCuttingOutCommandValidator : AbstractValidator<PlaceGarmentCuttingOutCommand>
@@ -32,6 +33,8 @@ namespace Manufactures.Domain.GarmentCuttingOuts.Commands
 
             RuleFor(r => r.Unit).NotNull();
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
+
+            RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
 
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.CuttingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);

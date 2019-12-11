@@ -19,9 +19,7 @@ namespace Manufactures.Domain.GarmentCuttingOuts
         public string Color { get; private set; }
         public double RemainingQuantity { get; private set; }
         public double BasicPrice { get; private set; }
-        public double IndirectPrice { get; private set; }
-        public double OTL1 { get; private set; }
-        public double OTL2 { get; private set; }
+        public double Price { get; private set; }
        
 
         public void SetCuttingOutQuantity(double CuttingOutQuantity)
@@ -69,7 +67,16 @@ namespace Manufactures.Domain.GarmentCuttingOuts
             }
         }
 
-        public GarmentCuttingOutDetail(Guid identity, Guid cutOutItemId, SizeId sizeId, string sizeName, string color, double remainingQuantity, double cuttingOutQuantity, UomId cuttingOutUomId, string cuttingOutUomUnit, double otl1, double otl2, double basicPrice, double indirectPrice) : base(identity)
+        public void SetPrice(double Price)
+        {
+            if (this.Price != Price)
+            {
+                this.Price = Price;
+                ReadModel.Price = Price;
+            }
+        }
+
+        public GarmentCuttingOutDetail(Guid identity, Guid cutOutItemId, SizeId sizeId, string sizeName, string color, double remainingQuantity, double cuttingOutQuantity, UomId cuttingOutUomId, string cuttingOutUomUnit, double basicPrice, double price) : base(identity)
         {
             //MarkTransient();
 
@@ -82,9 +89,7 @@ namespace Manufactures.Domain.GarmentCuttingOuts
             CuttingOutUomId = cuttingOutUomId;
             CuttingOutUomUnit = cuttingOutUomUnit;
             BasicPrice = basicPrice;
-            IndirectPrice = indirectPrice;
-            OTL1 = otl1;
-            OTL2 = otl2;
+            Price = price;
 
             ReadModel = new GarmentCuttingOutDetailReadModel(Identity)
             {
@@ -97,9 +102,7 @@ namespace Manufactures.Domain.GarmentCuttingOuts
                 CuttingOutUomId = CuttingOutUomId.Value,
                 CuttingOutUomUnit = CuttingOutUomUnit,
                 BasicPrice = BasicPrice,
-                IndirectPrice = IndirectPrice,
-                OTL1 = OTL1,
-                OTL2 = OTL2
+                Price = Price
             };
 
             ReadModel.AddDomainEvent(new OnGarmentCuttingOutPlaced(Identity));
@@ -116,9 +119,7 @@ namespace Manufactures.Domain.GarmentCuttingOuts
             CuttingOutUomId = new UomId(readModel.CuttingOutUomId);
             CuttingOutUomUnit = readModel.CuttingOutUomUnit;
             BasicPrice = readModel.BasicPrice;
-            IndirectPrice = readModel.IndirectPrice;
-            OTL1 = readModel.OTL1;
-            OTL2 = readModel.OTL2;
+            Price = readModel.Price;
         }
 
         public void Modify()

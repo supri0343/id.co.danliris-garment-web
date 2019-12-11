@@ -20,6 +20,7 @@ namespace Manufactures.Domain.GarmentLoadings.Commands
         public string Article { get; set; }
         public GarmentComodity Comodity { get; set; }
         public DateTimeOffset LoadingDate { get; set; }
+        public double Price { get; set; }
 
         public List<GarmentLoadingItemValueObject> Items { get; set; }
     }
@@ -34,6 +35,9 @@ namespace Manufactures.Domain.GarmentLoadings.Commands
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.LoadingDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Loading Tidak Boleh Kosong");
             RuleFor(r => r.Comodity).NotNull();
+
+            RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
+
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
             RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);

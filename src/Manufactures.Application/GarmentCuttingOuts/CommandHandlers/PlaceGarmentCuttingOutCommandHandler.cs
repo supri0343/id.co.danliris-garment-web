@@ -101,15 +101,13 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                         garmentCuttingOutItem.Identity,
                         new SizeId(detail.Size.Id),
                         detail.Size.Size,
-                        detail.Color,
+                        detail.Color.ToUpper(),
                         0,
                         detail.CuttingOutQuantity,
                         new UomId(detail.CuttingOutUom.Id),
                         detail.CuttingOutUom.Unit,
-                        detail.OTL1,
-                        detail.OTL2,
                         detail.BasicPrice,
-                        detail.IndirectPrice
+                        detail.Price
                     );
 
                     if (cuttingInDetailToBeUpdated.ContainsKey(item.CuttingInDetailId))
@@ -137,9 +135,10 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                         detail.CuttingOutQuantity,
                         new UomId(detail.CuttingOutUom.Id),
                         detail.CuttingOutUom.Unit,
-                        detail.Color,
+                        detail.Color.ToUpper(),
                         detail.CuttingOutQuantity,
-                        detail.BasicPrice
+                        detail.BasicPrice,
+                        detail.Price
                     );
 
                     await _garmentSewingDOItemRepository.Update(garmentSewingDOItem);
