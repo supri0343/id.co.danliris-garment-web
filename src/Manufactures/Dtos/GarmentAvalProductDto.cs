@@ -1,5 +1,6 @@
 ﻿using Manufactures.Domain.GarmentAvalProducts;
 using Manufactures.Domain.GarmentAvalProducts.ValueObjects;
+using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 
@@ -22,6 +23,7 @@ namespace Manufactures.Dtos
             RONo = garmentAvalProduct.RONo;
             Article = garmentAvalProduct.Article;
             AvalDate = garmentAvalProduct.AvalDate;
+            Unit = new UnitDepartment(garmentAvalProduct.UnitId.Value, garmentAvalProduct.UnitCode, garmentAvalProduct.UnitName);
         }
 
         public Guid Id { get; set; }
@@ -32,6 +34,7 @@ namespace Manufactures.Dtos
         public string RONo { get; set; }
         public string Article { get; set; }
         public DateTimeOffset? AvalDate { get; set; }
+        public UnitDepartment Unit { get; set; }
         public List<GarmentAvalProductItemDto> Items { get; set; }
     }
 }

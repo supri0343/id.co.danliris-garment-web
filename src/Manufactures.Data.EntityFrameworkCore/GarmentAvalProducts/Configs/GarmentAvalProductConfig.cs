@@ -13,6 +13,9 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentAvalProducts.Configs
             builder.Property(a => a.RONo).HasMaxLength(100);
             builder.Property(a => a.Article).HasMaxLength(100);
 
+            builder.Property(p => p.UnitCode).HasMaxLength(25);
+            builder.Property(p => p.UnitName).HasMaxLength(100);
+
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();
         }

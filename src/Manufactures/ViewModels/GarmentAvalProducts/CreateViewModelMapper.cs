@@ -9,7 +9,7 @@ namespace Manufactures.ViewModels.GarmentAvalProducts
     {
         public GarmentAvalProduct Map(CreateViewModel viewModel)
         {
-            return new GarmentAvalProduct(Guid.NewGuid(), viewModel.RONo, viewModel.Article, viewModel.AvalDate);
+            return new GarmentAvalProduct(Guid.NewGuid(), viewModel.RONo, viewModel.Article, viewModel.AvalDate, new Domain.Shared.ValueObjects.UnitDepartmentId(viewModel.UnitId),viewModel.UnitCode,viewModel.UnitName);
         }
 
         public GarmentAvalProductItem MapItem(GarmentAvalProductItemDto viewModel, Guid headerId)

@@ -40,7 +40,7 @@ namespace Manufactures.Application.GarmentAvalProducts.CommandHandlers
             List<GarmentAvalProductItem> garmentAvalProductItem = new List<GarmentAvalProductItem>();
             if (garmentAvalProduct == null)
             {
-                garmentAvalProduct = new GarmentAvalProduct(Guid.NewGuid(), request.RONo, request.Article, request.AvalDate);
+                garmentAvalProduct = new GarmentAvalProduct(Guid.NewGuid(), request.RONo, request.Article, request.AvalDate, new Domain.Shared.ValueObjects.UnitDepartmentId(request.Unit.Id), request.Unit.Code, request.Unit.Name);
                 request.Items.Select(x => new GarmentAvalProductItem(Guid.NewGuid(), garmentAvalProduct.Identity, x.PreparingId, x.PreparingItemId, new ProductId(x.Product.Id), x.Product.Code, x.Product.Name, x.DesignColor, x.Quantity, new UomId(x.Uom.Id), x.Uom.Unit, x.BasicPrice)).ToList()
                     .ForEach(async x => await _garmentAvalProductItemRepository.Update(x));
             }

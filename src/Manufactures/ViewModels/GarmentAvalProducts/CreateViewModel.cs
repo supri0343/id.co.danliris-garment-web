@@ -21,6 +21,16 @@ namespace Manufactures.ViewModels.GarmentAvalProducts
         [Required]
         public DateTimeOffset? AvalDate { get; set; }
 
+        [Display(Name = "UnitId")]
+        [Required]
+        public int UnitId { get; set; }
+        [Display(Name = "UnitCode")]
+        [Required]
+        public string UnitCode { get; set; }
+        [Display(Name = "UnitName")]
+        [Required]
+        public string UnitName { get; set; }
+
         [Display(Name = "Items")]
         [Required]
         public List<GarmentAvalProductItemValueObject> Items { get; set; }
