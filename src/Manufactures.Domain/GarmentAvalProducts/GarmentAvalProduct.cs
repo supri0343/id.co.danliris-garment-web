@@ -2,6 +2,7 @@
 using Manufactures.Domain.Events;
 using Manufactures.Domain.GarmentAvalProducts.ReadModels;
 using Manufactures.Domain.GarmentAvalProducts.ValueObjects;
+using Manufactures.Domain.Shared.ValueObjects;
 using Moonlay;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,11 @@ namespace Manufactures.Domain.GarmentAvalProducts
         public string RONo { get; private set; }
         public string Article { get; private set; }
         public DateTimeOffset? AvalDate { get; private set; }
+        public UnitDepartmentId UnitId { get; private set; }
+        public string UnitCode { get; private set; }
+        public string UnitName { get; private set; }
 
-        public GarmentAvalProduct(Guid identity, string roNo, string article, DateTimeOffset? avalDate) : base(identity)
+        public GarmentAvalProduct(Guid identity, string roNo, string article, DateTimeOffset? avalDate, UnitDepartmentId unitId, string unitCode, string unitName) : base(identity)
         {
             this.MarkTransient();
 
@@ -23,11 +27,18 @@ namespace Manufactures.Domain.GarmentAvalProducts
             RONo = roNo;
             Article = article;
             AvalDate = avalDate;
+            UnitId = unitId;
+            UnitName = unitName;
+            UnitCode = unitCode;
+
             ReadModel = new GarmentAvalProductReadModel(Identity)
             {
                 RONo = RONo,
                 Article = Article,
-                AvalDate = AvalDate
+                AvalDate = AvalDate,
+                UnitId=UnitId.Value,
+                UnitCode= UnitCode,
+                UnitName=UnitName
             };
             ReadModel.AddDomainEvent(new OnGarmentAvalProductPlaced(this.Identity));
         }
@@ -37,6 +48,9 @@ namespace Manufactures.Domain.GarmentAvalProducts
             RONo = readModel.RONo;
             Article = readModel.Article;
             AvalDate = readModel.AvalDate;
+            UnitId = new UnitDepartmentId(readModel.UnitId);
+            UnitCode = readModel.UnitCode;
+            UnitName = readModel.UnitName;
         }
 
         public void SetRONo(string newRONo)
