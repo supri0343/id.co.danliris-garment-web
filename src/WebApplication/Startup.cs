@@ -80,12 +80,29 @@ namespace DanLiris.Admin.Web
             
         }
 
+		public void RegisterSalesDataSettings()
+		{
+			if (!configuration.GetSection("DanLirisSettings").Exists())
+			{
+				SalesDataSettings.Endpoint = configuration.GetValue<string>("SalesDataEndpoint") ?? configuration["SalesDataEndpoint"];
+				SalesDataSettings.TokenEndpoint = configuration.GetValue<string>("TokenEndpoint") ?? configuration["TokenEndpoint"];
+				SalesDataSettings.Username = configuration.GetValue<string>("Username") ?? configuration["Username"];
+				SalesDataSettings.Password = configuration.GetValue<string>("Password") ?? configuration["Password"];
+			}
+			else
+			{
+				SalesDataSettings.Endpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("SalesDataEndpoint");
+				SalesDataSettings.TokenEndpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("TokenEndpoint");
+				SalesDataSettings.Username = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Username");
+				SalesDataSettings.Password = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Password");
+			}
 
-        public void ConfigureServices(IServiceCollection services)
+		}
+		public void ConfigureServices(IServiceCollection services)
         {
             RegisterMasterDataSettings();
             RegisterPurchasingDataSettings();
-
+			RegisterSalesDataSettings();
             services.AddScoped<IIdentityService, IdentityService>();
 
             services.AddSingleton<IMemoryCacheManager, MemoryCacheManager>()

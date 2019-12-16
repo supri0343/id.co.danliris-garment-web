@@ -15,6 +15,7 @@ using Manufactures.Domain.GarmentSewingDOs;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Newtonsoft.Json;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Application.GarmentCuttingOuts.Queries;
 
 namespace Manufactures.Controllers.Api
 {
@@ -275,6 +276,48 @@ namespace Manufactures.Controllers.Api
             }
         }
 
-       
-    }
+		[HttpGet("monitoring")]
+		public async Task<IActionResult> GetMonitoring(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+		{
+			VerifyUser();
+			GetMonitoringCuttingQuery query = new GetMonitoringCuttingQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+			var viewModel = await Mediator.Send(query);
+
+			return Ok(viewModel.garmentMonitorings, info: new
+			{
+				page,
+				size,
+				viewModel.count
+			});
+		}
+		[HttpGet("download")]
+		public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+		{
+			try
+			{
+				VerifyUser();
+				GetXlsCuttingQuery query = new GetXlsCuttingQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+				byte[] xlsInBytes;
+
+				var xls = await Mediator.Send(query);
+
+				string filename = "Laporan Cutting";
+
+				if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+				if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+				filename += ".xlsx";
+
+				xlsInBytes = xls.ToArray();
+				var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+				return file;
+			}
+			catch (Exception e)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+			}
+		}
+
+
+	}
 }

@@ -85,16 +85,16 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 			
 		}
 
-		private GetXlsPrepareQueryHandler CreateGetXlsPrepareQueryHandler()
+		private GetMonitoringPrepareQueryHandler CreateGetMonitoringPrepareQueryHandler()
 		{
-			return new GetXlsPrepareQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
+			return new GetMonitoringPrepareQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
 
 		[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior()
 		{
 			// Arrange
-			GetXlsPrepareQueryHandler unitUnderTest = CreateGetXlsPrepareQueryHandler();
+			GetMonitoringPrepareQueryHandler unitUnderTest = CreateGetMonitoringPrepareQueryHandler();
 			CancellationToken cancellationToken = CancellationToken.None;
 
 			Guid guidPrepare = Guid.NewGuid();
@@ -106,7 +106,7 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 			Guid guidAvalProductItem = Guid.NewGuid();
 			Guid guidDeliveryReturn = Guid.NewGuid();
 			Guid guidDeliveryReturnItem = Guid.NewGuid();
-			GetXlsPrepareQuery getXlsPrepareQuery = new GetXlsPrepareQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now, "token");
+			GetMonitoringPrepareQuery getXlsPrepareQuery = new GetMonitoringPrepareQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now, "token");
 
 			_mockGarmentPreparingItemRepository
 				.Setup(s => s.Query)
@@ -153,7 +153,7 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentAvalProductReadModel>
 				{
-					new GarmentAvalProduct(guidAvalProduct,"","",DateTimeOffset.Now).GetReadModel()
+					new GarmentAvalProduct(guidAvalProduct,"","",DateTimeOffset.Now,new UnitDepartmentId (1),"","").GetReadModel()
 				}.AsQueryable());
 			_mockGarmentDeliveryReturnItemRepository
 				.Setup(s => s.Query)
