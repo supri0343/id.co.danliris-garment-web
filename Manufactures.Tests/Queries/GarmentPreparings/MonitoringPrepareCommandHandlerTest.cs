@@ -153,7 +153,7 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentAvalProductReadModel>
 				{
-					new GarmentAvalProduct(guidAvalProduct,"","",DateTimeOffset.Now).GetReadModel()
+					new GarmentAvalProduct(guidAvalProduct,"","",DateTimeOffset.Now, new UnitDepartmentId(1), null, null).GetReadModel()
 				}.AsQueryable());
 			_mockGarmentDeliveryReturnItemRepository
 				.Setup(s => s.Query)
