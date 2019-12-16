@@ -117,7 +117,7 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
             var now = DateTime.Now;
             var year = now.ToString("yy");
             var month = now.ToString("MM");
-            var prefix = $"DS{request.Unit.Code}{year}{month}";
+            var prefix = $"SI{request.Unit.Code}{year}{month}";
 
             var lastSewingInNo = _garmentSewingInRepository.Query.Where(w => w.SewingInNo.StartsWith(prefix))
                 .OrderByDescending(o => o.SewingInNo)
