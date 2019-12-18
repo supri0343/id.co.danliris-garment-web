@@ -1,4 +1,6 @@
 ﻿using Barebone.Tests;
+using FluentAssertions;
+using Manufactures.Application.GarmentLoadings.Queries;
 using Manufactures.Controllers.Api;
 using Manufactures.Domain.GarmentLoadings;
 using Manufactures.Domain.GarmentLoadings.Commands;
@@ -12,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -175,66 +178,99 @@ namespace Manufactures.Tests.Controllers.Api
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
 
-        //[Fact]
-        //public async Task GetLoaderByRO_StateUnderTest_ExpectedBehavior()
-        //{
-        //    // Arrange
-        //    var unitUnderTest = CreateGarmentLoadingController();
+		//[Fact]
+		//public async Task GetLoaderByRO_StateUnderTest_ExpectedBehavior()
+		//{
+		//    // Arrange
+		//    var unitUnderTest = CreateGarmentLoadingController();
 
-        //    _mockLoadingRepository
-        //        .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-        //        .Returns(new List<GarmentLoadingReadModel>().AsQueryable());
+		//    _mockLoadingRepository
+		//        .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+		//        .Returns(new List<GarmentLoadingReadModel>().AsQueryable());
 
-        //    _mockLoadingRepository
-        //        .Setup(s => s.Find(It.IsAny<IQueryable<GarmentLoadingReadModel>>()))
-        //        .Returns(new List<GarmentLoading>()
-        //        {
-        //            new GarmentLoading(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null)
-        //        });
+		//    _mockLoadingRepository
+		//        .Setup(s => s.Find(It.IsAny<IQueryable<GarmentLoadingReadModel>>()))
+		//        .Returns(new List<GarmentLoading>()
+		//        {
+		//            new GarmentLoading(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null)
+		//        });
 
-        //    // Act
-        //    var result = await unitUnderTest.GetLoaderByRO(It.IsAny<string>());
+		//    // Act
+		//    var result = await unitUnderTest.GetLoaderByRO(It.IsAny<string>());
 
-        //    // Assert
-        //    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        //}
+		//    // Assert
+		//    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+		//}
 
-        //[Fact]
-        //public async Task GetComplete_StateUnderTest_ExpectedBehavior()
-        //{
-        //    // Arrange
-        //    var unitUnderTest = CreateGarmentLoadingController();
+		//[Fact]
+		//public async Task GetComplete_StateUnderTest_ExpectedBehavior()
+		//{
+		//    // Arrange
+		//    var unitUnderTest = CreateGarmentLoadingController();
 
-        //    _mockLoadingRepository
-        //        .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-        //        .Returns(new List<GarmentLoadingReadModel>().AsQueryable());
+		//    _mockLoadingRepository
+		//        .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+		//        .Returns(new List<GarmentLoadingReadModel>().AsQueryable());
 
-        //    _mockLoadingRepository
-        //        .Setup(s => s.Find(It.IsAny<IQueryable<GarmentLoadingReadModel>>()))
-        //        .Returns(new List<GarmentLoading>()
-        //        {
-        //            new GarmentLoading(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null)
-        //        });
+		//    _mockLoadingRepository
+		//        .Setup(s => s.Find(It.IsAny<IQueryable<GarmentLoadingReadModel>>()))
+		//        .Returns(new List<GarmentLoading>()
+		//        {
+		//            new GarmentLoading(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null)
+		//        });
 
-        //    _mockLoadingItemRepository
-        //        .Setup(s => s.Query)
-        //        .Returns(new List<GarmentLoadingItemReadModel>()
-        //        {
-        //            new GarmentLoadingItemReadModel(Guid.NewGuid())
-        //        }.AsQueryable());
+		//    _mockLoadingItemRepository
+		//        .Setup(s => s.Query)
+		//        .Returns(new List<GarmentLoadingItemReadModel>()
+		//        {
+		//            new GarmentLoadingItemReadModel(Guid.NewGuid())
+		//        }.AsQueryable());
 
-        //    _mockLoadingItemRepository
-        //        .Setup(s => s.Find(It.IsAny<IQueryable<GarmentLoadingItemReadModel>>()))
-        //        .Returns(new List<GarmentLoadingItem>()
-        //        {
-        //            new GarmentLoadingItem(Guid.NewGuid(), Guid.NewGuid(),Guid.NewGuid(),new SizeId(1), null, new ProductId(1), null, null, null, 1,1,10,new UomId(1),null, null)
-        //        });
+		//    _mockLoadingItemRepository
+		//        .Setup(s => s.Find(It.IsAny<IQueryable<GarmentLoadingItemReadModel>>()))
+		//        .Returns(new List<GarmentLoadingItem>()
+		//        {
+		//            new GarmentLoadingItem(Guid.NewGuid(), Guid.NewGuid(),Guid.NewGuid(),new SizeId(1), null, new ProductId(1), null, null, null, 1,1,10,new UomId(1),null, null)
+		//        });
 
-        //    // Act
-        //    var result = await unitUnderTest.GetComplete();
+		//    // Act
+		//    var result = await unitUnderTest.GetComplete();
 
-        //    // Assert
-        //    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        //}
-    }
+		//    // Assert
+		//    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+		//}
+
+		[Fact]
+		public async Task GetMonitoringBehavior()
+		{
+			var unitUnderTest = CreateGarmentLoadingController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetMonitoringLoadingQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new GarmentMonitoringLoadingListViewModel());
+
+			// Act
+			var result = await unitUnderTest.GetMonitoring(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+
+			// Assert
+			GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+		}
+
+		[Fact]
+		public async Task GetXLSBehavior()
+		{
+			var unitUnderTest = CreateGarmentLoadingController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetXlsLoadingQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new MemoryStream());
+
+			// Act
+			var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+
+			// Assert
+			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+
+		}
+	}
 }
