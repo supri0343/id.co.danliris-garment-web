@@ -23,6 +23,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Manufactures.Domain.GarmentSewingDOs;
+using Manufactures.Application.GarmentCuttingOuts.Queries;
+using System.IO;
+using FluentAssertions;
 
 namespace Manufactures.Tests.Controllers.Api
 {
@@ -247,5 +250,37 @@ namespace Manufactures.Tests.Controllers.Api
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
-    }
+
+		[Fact]
+		public async Task GetMonitoringBehavior()
+		{
+			var unitUnderTest = CreateGarmentCuttingOutController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetMonitoringCuttingQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new GarmentMonitoringCuttingListViewModel());
+
+			// Act
+			var result = await unitUnderTest.GetMonitoring(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+
+			// Assert
+			GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+		}
+
+		[Fact]
+		public async Task GetXLSBehavior()
+		{
+			var unitUnderTest = CreateGarmentCuttingOutController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetXlsCuttingQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new MemoryStream());
+
+			// Act
+			var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+
+			// Assert
+			GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+		}
+	}
 }
