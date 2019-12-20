@@ -19,7 +19,7 @@ namespace Manufactures.Dtos
             Comodity = new GarmentComodity(garmentFinishingIn.ComodityId.Value, garmentFinishingIn.ComodityCode, garmentFinishingIn.ComodityName);
             FinishingInDate = garmentFinishingIn.FinishingInDate;
             FinishingInType = garmentFinishingIn.FinishingInType;
-
+            Comodity = new GarmentComodity(garmentFinishingIn.ComodityId.Value, garmentFinishingIn.ComodityCode, garmentFinishingIn.ComodityName);
             Items = new List<GarmentFinishingInItemDto>();
         }
 
