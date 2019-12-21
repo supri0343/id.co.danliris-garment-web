@@ -18,6 +18,7 @@ namespace Manufactures.Dtos
             UnitFrom = new UnitDepartment(garmentFinishingIn.UnitFromId.Value, garmentFinishingIn.UnitFromCode, garmentFinishingIn.UnitFromName);
             FinishingInDate = garmentFinishingIn.FinishingInDate;
             FinishingInType = garmentFinishingIn.FinishingInType;
+            Comodity = new GarmentComodity(garmentFinishingIn.ComodityId.Value, garmentFinishingIn.ComodityCode, garmentFinishingIn.ComodityName);
         }
 
         public Guid Id { get; internal set; }
@@ -28,6 +29,7 @@ namespace Manufactures.Dtos
         public string RONo { get; internal set; }
         public string Article { get; internal set; }
         public DateTimeOffset FinishingInDate { get; internal set; }
+        public GarmentComodity Comodity { get; internal set; }
 
         public double TotalRemainingQuantity { get; set; }
         public double TotalFinishingInQuantity { get; set; }
