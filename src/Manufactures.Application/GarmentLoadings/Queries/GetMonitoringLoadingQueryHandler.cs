@@ -30,12 +30,9 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 			_storage = storage;
 			garmentCuttingOutRepository = storage.GetRepository<IGarmentCuttingOutRepository>();
 			garmentCuttingOutItemRepository = storage.GetRepository<IGarmentCuttingOutItemRepository>();
-
 			garmentLoadingRepository = storage.GetRepository<IGarmentLoadingRepository>();
 			garmentLoadingItemRepository = storage.GetRepository<IGarmentLoadingItemRepository>();
 			_http = serviceProvider.GetService<IHttpClientService>();
-
-
 		}
 		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
 		{
@@ -106,11 +103,11 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 			var QueryCuttingOut = from a in garmentCuttingOutRepository.Query
 								  join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
 								  where a.UnitId == request.unit && a.CuttingOutDate <= dateTo
-								  select new monitoringView { loadingQtyPcs = 0,uomUnit="PCS",remainQty = 0, stock = a.CuttingOutDate < dateFrom ? b.TotalCuttingOut : 0, cuttingQtyPcs = b.TotalCuttingOut, roJob = a.RONo, article = a.Article,  qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault()};
+								  select new monitoringView { loadingQtyPcs = 0,uomUnit="PCS",remainQty = 0, stock = a.CuttingOutDate < dateFrom ? b.TotalCuttingOut : 0, cuttingQtyPcs = b.TotalCuttingOut, roJob = a.RONo, article = a.Article,  qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 			var QueryLoading = from a in garmentLoadingRepository.Query
 								  join b in garmentLoadingItemRepository.Query on a.Identity equals b.LoadingId
 								  where a.UnitId == request.unit && a.LoadingDate <= dateTo
-								  select new monitoringView { loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, cuttingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom ? - b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault() };
+								  select new monitoringView { loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, cuttingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom ? - b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 			var queryNow = QueryCuttingOut.Union(QueryLoading);
 			var querySum = queryNow.ToList().GroupBy(x => new { x.qtyOrder, x.roJob, x.article,x.uomUnit,x.style }, (key, group) => new
 			{
