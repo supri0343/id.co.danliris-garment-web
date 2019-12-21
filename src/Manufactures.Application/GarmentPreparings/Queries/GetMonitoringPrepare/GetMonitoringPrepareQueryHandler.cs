@@ -62,13 +62,11 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 				var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-unit-expenditure-notes/ro-asal/{item}";
 				var httpResponse = _http.GetAsync(garmentUnitExpenditureNoteUri, token).Result;
 
-
 				if (httpResponse.IsSuccessStatusCode)
 				{
 					var a = await httpResponse.Content.ReadAsStringAsync();
 					Dictionary<string, object> keyValues = JsonConvert.DeserializeObject<Dictionary<string, object>>(a);
 					var b = keyValues.GetValueOrDefault("data");
-
 
 					var expenditure = JsonConvert.DeserializeObject<ExpenditureROViewModel>(keyValues.GetValueOrDefault("data").ToString());
 					ExpenditureROViewModel expenditureROViewModel = new ExpenditureROViewModel
@@ -134,12 +132,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 											   join e in garmentPreparingItemRepository.Query on d.Id equals e.GarmentPreparingId
 											   join c in dataExpenditure.data on e.UENItemId equals c.DetailExpenditureId
 											   select new monitoringView { buyerCode = "", uomUnit = "", stock = d.Processdate < dateFrom ? e.Quantity : 0, mainFabricExpenditure = 0, nonMainFabricExpenditure = 0, remark = e.DesignColor, roJob = d.RO, receipt = (d.Processdate >= dateFrom ? e.Quantity : 0), productCode = e.ProductCode, article = d.Articles, roAsal = c.ROAsal, remainQty = e.RemainingQuantity });
-			//var QueryCuttingDONonMainNow = from a in garmentCuttingInRepository.Query
-			//							   join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
-			//							   join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
-			//							   where a.CuttingType == "Non Main Fabric"   && a.UnitId == request.unit && a.CuttingInDate <= dateTo
-			//							   select new monitoringView { expenditure = 0, aval = 0, buyerCode = "", uomUnit = "", stock = a.CuttingInDate < dateFrom ? -c.PreparingQuantity : 0, mainFabricExpenditure = 0, nonMainFabricExpenditure = (a.CuttingInDate >= dateFrom ? c.PreparingQuantity : 0), remark = c.DesignColor, roJob = a.RONo, receipt = 0, productCode = c.ProductCode, article = a.Article, roAsal = (from a in QueryMutationPrepareItemsROASAL where a.prepareId == b.PreparingId select a.roasal).FirstOrDefault(), remainQty = 0 };
-
+			
 			var QueryAval = from a in garmentAvalProductRepository.Query
 							join b in garmentAvalProductItemRepository.Query on a.Identity equals b.APId
 							join c in garmentPreparingItemRepository.Query on Guid.Parse(b.PreparingItemId) equals c.Identity
@@ -168,7 +161,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 				receipt = group.Sum(s => s.receipt),
 				Aval = group.Sum(s => s.aval),
 				drQty = group.Sum(s => s.expenditure)
-			});
+			}).OrderBy(s=>s.ROJob);
 
 
 			GarmentMonitoringPrepareListViewModel garmentMonitoringPrepareListViewModel = new GarmentMonitoringPrepareListViewModel();

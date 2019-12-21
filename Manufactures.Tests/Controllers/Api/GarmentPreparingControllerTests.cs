@@ -225,7 +225,7 @@ namespace Manufactures.Tests.Controllers.Api
 			var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
 
 			// Assert
-			GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
 		}
 	}
 }

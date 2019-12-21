@@ -1,6 +1,8 @@
 ﻿using Barebone.Tests;
+using FluentAssertions;
 using Manufactures.Application.GarmentSewingOuts.Queries.GetGarmentSewingOutsByRONo;
 using Manufactures.Application.GarmentSewingOuts.Queries.GetGarmentSewingOutsDynamic;
+using Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing;
 using Manufactures.Controllers.Api;
 using Manufactures.Domain.GarmentSewingIns.ReadModels;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
@@ -14,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -236,5 +239,36 @@ namespace Manufactures.Tests.Controllers.Api
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
-    }
+		[Fact]
+		public async Task GetMonitoringBehavior()
+		{
+			var unitUnderTest = CreateGarmentSewingOutController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetMonitoringSewingQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new GarmentMonitoringSewingListViewModel());
+
+			// Act
+			var result = await unitUnderTest.GetMonitoring(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+
+			// Assert
+			GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+		}
+
+		[Fact]
+		public async Task GetXLSBehavior()
+		{
+			var unitUnderTest = CreateGarmentSewingOutController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetXlsSewingQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new MemoryStream());
+
+			// Act
+			var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+
+			// Assert
+			GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+		}
+	}
 }
