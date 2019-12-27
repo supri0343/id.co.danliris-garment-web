@@ -68,7 +68,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 
 		public async Task<MemoryStream> Handle(GetXlsCuttingQuery request, CancellationToken cancellationToken)
 		{
-			me dateFrom = request.dateFrom.ToUniversalTime().AddHours(7);
+			DateTime dateFrom = request.dateFrom.ToUniversalTime().AddHours(7);
 			DateTime dateTo = request.dateTo.ToUniversalTime().AddHours(7);
 
 
