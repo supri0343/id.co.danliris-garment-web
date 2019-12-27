@@ -1,5 +1,6 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Application.GarmentFinishingOuts.Queries;
 using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentFinishingOuts.Commands;
 using Manufactures.Domain.GarmentFinishingOuts.Repositories;
@@ -182,5 +183,47 @@ namespace Manufactures.Controllers.Api
                 count
             });
         }
-    }
+
+		[HttpGet("monitoring")]
+		public async Task<IActionResult> GetMonitoring(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+		{
+			VerifyUser();
+			GetMonitoringFinishingQuery query = new GetMonitoringFinishingQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+			var viewModel = await Mediator.Send(query);
+
+			return Ok(viewModel.garmentMonitorings, info: new
+			{
+				page,
+				size,
+				viewModel.count
+			});
+		}
+		//[HttpGet("download")]
+		//public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+		//{
+		//	try
+		//	{
+		//		VerifyUser();
+		//		GetXlsFinishingQuery query = new GetXlsFinishingQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+		//		byte[] xlsInBytes;
+
+		//		var xls = await Mediator.Send(query);
+
+		//		string filename = "Laporan Prepare";
+
+		//		if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+		//		if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+		//		filename += ".xlsx";
+
+		//		xlsInBytes = xls.ToArray();
+		//		var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+		//		return file;
+		//	}
+		//	catch (Exception e)
+		//	{
+		//		return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+		//	}
+		//}
+	}
 }

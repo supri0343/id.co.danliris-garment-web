@@ -86,8 +86,8 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 
 		public async Task<MemoryStream> Handle(GetXlsSewingQuery request, CancellationToken cancellationToken)
 		{
-			DateTime dateFrom = request.dateFrom.ToUniversalTime();
-			DateTime dateTo = request.dateTo.AddDays(1).ToUniversalTime();
+			me dateFrom = request.dateFrom.ToUniversalTime().AddHours(7);
+			DateTime dateTo = request.dateTo.ToUniversalTime().AddHours(7);
 
 
 			var QueryRoSewingOut = (from a in garmentSewingOutRepository.Query

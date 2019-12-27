@@ -106,11 +106,11 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 		public async Task<GarmentMonitoringPrepareListViewModel> Handle(GetMonitoringPrepareQuery request, CancellationToken cancellationToken)
 		{
 
-			DateTime dateFrom = request.dateFrom.ToUniversalTime();
-			DateTime dateTo = request.dateTo.AddDays(1).ToUniversalTime();
+			DateTime dateFrom = request.dateFrom.ToUniversalTime().AddHours(7);
+			DateTime dateTo = request.dateTo.ToUniversalTime().AddHours(7);
 			var QueryMutationPrepareNow = from a in garmentPreparingRepository.Query
 										  join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
-										  where  a.UnitId == request.unit && a.ProcessDate <= dateTo
+										  where  a.UnitId == request.unit && a.ProcessDate <= dateTo 
 										  select new { RO = a.RONo, Articles = a.Article, Id = a.Identity, DetailExpend = b.UENItemId, Processdate = a.ProcessDate };
 			List<int> detailExpendId = new List<int>();
 			foreach (var item in QueryMutationPrepareNow.Distinct())
@@ -118,9 +118,15 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 				detailExpendId.Add(item.DetailExpend);
 			}
 			ExpenditureROResult dataExpenditure = await GetExpenditureById(detailExpendId, request.token);
+			//var aass = (
+			//									   from b in garmentPreparingItemRepository.Query 
+			//									   join c in dataExpenditure.data on b.UENItemId equals c.DetailExpenditureId
+			//									   select new { prepareitemid = b.Identity,  QtyPrepare = b.Quantity });
+
 			var QueryMutationPrepareItemsROASAL = (from a in QueryMutationPrepareNow
 												   join b in garmentPreparingItemRepository.Query on a.Id equals b.GarmentPreparingId
 												   join c in dataExpenditure.data on b.UENItemId equals c.DetailExpenditureId
+												   where b.UENItemId == a.DetailExpend
 												   select new { prepareitemid = b.Identity, prepareId = b.GarmentPreparingId, comodityDesc = b.DesignColor, ROs = a.RO, QtyPrepare = b.Quantity, ProductCodes = b.ProductCode, article = a.Articles, roasal = c.ROAsal, remaingningQty = b.RemainingQuantity });
 			var QueryCuttingDONow = from a in garmentCuttingInRepository.Query
 									join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
@@ -131,7 +137,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 			var QueryMutationPrepareItemNow = (from d in QueryMutationPrepareNow
 											   join e in garmentPreparingItemRepository.Query on d.Id equals e.GarmentPreparingId
 											   join c in dataExpenditure.data on e.UENItemId equals c.DetailExpenditureId
-											   select new monitoringView { buyerCode = "", uomUnit = "", stock = d.Processdate < dateFrom ? e.Quantity : 0, mainFabricExpenditure = 0, nonMainFabricExpenditure = 0, remark = e.DesignColor, roJob = d.RO, receipt = (d.Processdate >= dateFrom ? e.Quantity : 0), productCode = e.ProductCode, article = d.Articles, roAsal = c.ROAsal, remainQty = e.RemainingQuantity });
+											   where e.UENItemId == d.DetailExpend
+											   select new monitoringView { buyerCode = "", uomUnit = "", stock = d.Processdate < dateFrom ? e.Quantity : 0, mainFabricExpenditure = 0, nonMainFabricExpenditure = 0, remark = e.DesignColor, roJob = d.RO, receipt = (d.Processdate >= dateFrom ? e.Quantity : 0), productCode = e.ProductCode, article = d.Articles, roAsal = c.ROAsal, remainQty = e.RemainingQuantity }).Distinct();
 			
 			var QueryAval = from a in garmentAvalProductRepository.Query
 							join b in garmentAvalProductItemRepository.Query on a.Identity equals b.APId
