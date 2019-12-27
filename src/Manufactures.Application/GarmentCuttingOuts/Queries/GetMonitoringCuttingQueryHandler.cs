@@ -65,8 +65,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 
 		public async Task<GarmentMonitoringCuttingListViewModel> Handle(GetMonitoringCuttingQuery request, CancellationToken cancellationToken)
 		{
-			DateTime dateFrom = request.dateFrom.ToUniversalTime();
-			DateTime dateTo = request.dateTo.AddDays(1).ToUniversalTime();
+			DateTime dateFrom = request.dateFrom.ToUniversalTime().AddHours(7);
+			DateTime dateTo = request.dateTo.ToUniversalTime().AddHours(7);
 
 
 			var QueryRoCuttingOut = (from a in garmentCuttingOutRepository.Query

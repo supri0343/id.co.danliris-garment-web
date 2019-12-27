@@ -87,8 +87,8 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 
 		public async Task<MemoryStream> Handle(GetXlsLoadingQuery request, CancellationToken cancellationToken)
 		{
-			DateTime dateFrom = request.dateFrom.ToUniversalTime();
-			DateTime dateTo = request.dateTo.AddDays(1).ToUniversalTime();
+			DateTime dateFrom = request.dateFrom.ToUniversalTime().AddHours(7);
+			DateTime dateTo = request.dateTo.ToUniversalTime().AddHours(7);
 
 
 			var QueryRoCuttingOut = (from a in garmentCuttingOutRepository.Query
