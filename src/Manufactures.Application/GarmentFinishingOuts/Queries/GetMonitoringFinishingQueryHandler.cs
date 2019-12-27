@@ -83,12 +83,12 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 
 		public async Task<GarmentMonitoringFinishingListViewModel> Handle(GetMonitoringFinishingQuery request, CancellationToken cancellationToken)
 		{
-			DateTime dateFrom = request.dateFrom.ToUniversalTime();
-			DateTime dateTo = request.dateTo.AddDays(1).ToUniversalTime();
+			DateTime dateFrom = request.dateFrom.ToUniversalTime().AddHours(7);
+			DateTime dateTo = request.dateTo.AddDays(1).ToUniversalTime().AddHours(7);
 
 
 			var QueryRoFinishing = (from a in garmentFinishingOutRepository.Query
-									join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingInId
+									join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 									where a.UnitId == request.unit && a.FinishingOutDate <= dateTo
 									select a.RONo).Distinct();
 			var QueryRoSewingOut = (from a in garmentSewingOutRepository.Query
@@ -104,23 +104,45 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 			CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(_ro, request.token);
 			GarmentMonitoringFinishingListViewModel listViewModel = new GarmentMonitoringFinishingListViewModel();
 			List<GarmentMonitoringFinishingDto> monitoringDtos = new List<GarmentMonitoringFinishingDto>();
-			//foreach (var item in querySum)
-			//{
-			//	GarmentMonitoringSewingDto dto = new GarmentMonitoringSewingDto
-			//	{
-			//		roJob = item.RoJob,
-			//		article = item.Article,
-			//		uomUnit = item.UomUnit,
-			//		qtyOrder = item.QtyOrder,
-			//		sewingOutQtyPcs = item.SewingQtyPcs,
-			//		loadingQtyPcs = item.Loading,
-			//		stock = item.Stock,
-			//		style = item.Style,
-			//		remainQty = item.Stock + item.Loading - item.SewingQtyPcs
-			//	};
-			//	monitoringDtos.Add(dto);
-			//}
-			//listViewModel.garmentMonitorings = monitoringDtos;
+			var QueryFinishing = from a in garmentFinishingOutRepository.Query
+								join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
+								where a.UnitId == request.unit && a.FinishingOutDate <= dateTo
+								select new monitoringView { finishingQtyPcs = a.FinishingOutDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.FinishingOutDate < dateFrom ?- b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+
+			var QuerySewingOut = from a in garmentSewingOutRepository.Query
+									join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
+									where a.UnitId == request.unit && a.SewingOutDate <= dateTo
+								  select new monitoringView { finishingQtyPcs = 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity :0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate  < dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+
+			var queryNow = QuerySewingOut.Union(QueryFinishing);
+			var querySum = queryNow.ToList().GroupBy(x => new { x.qtyOrder, x.roJob, x.article, x.uomUnit, x.style }, (key, group) => new
+			{
+				QtyOrder = key.qtyOrder,
+				RoJob = key.roJob,
+				Style = key.style,
+				Stock = group.Sum(s => s.stock),
+				UomUnit = key.uomUnit,
+				Article = key.article,
+				SewingQtyPcs = group.Sum(s => s.sewingQtyPcs),
+				Finishing = group.Sum(s => s.finishingQtyPcs)
+			}).OrderBy(s => s.RoJob);
+			foreach (var item in querySum)
+			{
+				GarmentMonitoringFinishingDto dto = new GarmentMonitoringFinishingDto
+				{
+					roJob = item.RoJob,
+					article = item.Article,
+					uomUnit = item.UomUnit,
+					qtyOrder = item.QtyOrder,
+					sewingOutQtyPcs = item.SewingQtyPcs,
+					finishingOutQtyPcs = item.Finishing,
+					stock = item.Stock,
+					style = item.Style,
+					remainQty = item.Stock + item.SewingQtyPcs  - item.Finishing
+				};
+				monitoringDtos.Add(dto);
+			}
+			listViewModel.garmentMonitorings = monitoringDtos;
 			return listViewModel;
 		}
 	}

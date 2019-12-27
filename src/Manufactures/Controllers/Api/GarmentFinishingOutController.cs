@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -198,32 +199,32 @@ namespace Manufactures.Controllers.Api
 				viewModel.count
 			});
 		}
-		//[HttpGet("download")]
-		//public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
-		//{
-		//	try
-		//	{
-		//		VerifyUser();
-		//		GetXlsFinishingQuery query = new GetXlsFinishingQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
-		//		byte[] xlsInBytes;
+		[HttpGet("download")]
+		public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+		{
+			try
+			{
+				VerifyUser();
+				GetXlsFinishingQuery query = new GetXlsFinishingQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+				byte[] xlsInBytes;
 
-		//		var xls = await Mediator.Send(query);
+				var xls = await Mediator.Send(query);
 
-		//		string filename = "Laporan Prepare";
+				string filename = "Laporan Finishing";
 
-		//		if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+				if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
 
-		//		if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
-		//		filename += ".xlsx";
+				if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+				filename += ".xlsx";
 
-		//		xlsInBytes = xls.ToArray();
-		//		var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
-		//		return file;
-		//	}
-		//	catch (Exception e)
-		//	{
-		//		return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
-		//	}
-		//}
+				xlsInBytes = xls.ToArray();
+				var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+				return file;
+			}
+			catch (Exception e)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+			}
+		}
 	}
 }
