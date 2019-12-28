@@ -81,8 +81,8 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 
 		public async Task<GarmentMonitoringLoadingListViewModel> Handle(GetMonitoringLoadingQuery request, CancellationToken cancellationToken)
 		{
-			DateTime dateFrom = request.dateFrom.ToUniversalTime().AddHours(7);
-			DateTime dateTo = request.dateTo.ToUniversalTime().AddHours(7);
+			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
+			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
 
 			var QueryRoCuttingOut = (from a in garmentCuttingOutRepository.Query
 									 join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
