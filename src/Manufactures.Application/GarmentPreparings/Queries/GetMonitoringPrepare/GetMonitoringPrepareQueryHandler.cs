@@ -106,8 +106,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 		public async Task<GarmentMonitoringPrepareListViewModel> Handle(GetMonitoringPrepareQuery request, CancellationToken cancellationToken)
 		{
 
-			DateTime dateFrom = request.dateFrom.ToUniversalTime().AddHours(7);
-			DateTime dateTo = request.dateTo.ToUniversalTime().AddHours(7);
+			DateTimeOffset dateFrom = request.dateFrom.ToOffset(new TimeSpan(7,0,0));
+			DateTimeOffset dateTo = request.dateTo.ToOffset(new TimeSpan(7, 0, 0));
 			var QueryMutationPrepareNow = from a in garmentPreparingRepository.Query
 										  join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
 										  where  a.UnitId == request.unit && a.ProcessDate <= dateTo 
@@ -195,6 +195,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 				monitoringPrepareDtos.Add(garmentMonitoringPrepareDto);
 			}
 			garmentMonitoringPrepareListViewModel.garmentMonitorings = monitoringPrepareDtos;
+
 			return garmentMonitoringPrepareListViewModel;
 		}
 	}
