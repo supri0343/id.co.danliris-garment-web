@@ -12,10 +12,10 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 		public string order { get; private set; }
 		public string token { get; private set; }
 		public int unit { get; private set; }
-		public DateTime dateFrom { get; private set; }
-		public DateTime dateTo { get; private set; }
+		public DateTimeOffset dateFrom { get; private set; }
+		public DateTimeOffset dateTo { get; private set; }
 
-		public GetMonitoringPrepareQuery(int page, int size, string order, int unit, DateTime dateFrom, DateTime dateTo,string token)
+		public GetMonitoringPrepareQuery(int page, int size, string order, int unit, DateTimeOffset dateFrom, DateTimeOffset  dateTo,string token)
 		{
 			this.page = page;
 			this.size = size;
