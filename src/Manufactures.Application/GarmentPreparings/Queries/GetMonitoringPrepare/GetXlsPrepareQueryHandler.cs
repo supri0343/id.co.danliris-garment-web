@@ -105,8 +105,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 		}
 		public async Task<MemoryStream> Handle(GetXlsPrepareQuery request, CancellationToken cancellationToken)
 		{
-			DateTime dateFrom = request.dateFrom.ToUniversalTime().AddHours(7);
-			DateTime dateTo = request.dateTo.ToUniversalTime().AddHours(7);
+			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
+			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
 			var QueryMutationPrepareNow = from a in garmentPreparingRepository.Query
 										  join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
 										  where a.UnitId == request.unit && a.ProcessDate <= dateTo
