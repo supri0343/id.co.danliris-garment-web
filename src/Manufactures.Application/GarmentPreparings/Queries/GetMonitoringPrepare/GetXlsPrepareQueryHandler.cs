@@ -138,13 +138,13 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 							join c in garmentPreparingItemRepository.Query on Guid.Parse(b.PreparingItemId) equals c.Identity
 							join d in garmentPreparingRepository.Query on c.GarmentPreparingId equals d.Identity
 							where a.AvalDate <= dateTo && d.UnitId == request.unit
-							select new monitoringView { expenditure = 0, aval = b.Quantity, buyerCode = "", uomUnit = "", stock = a.AvalDate < dateFrom ? -b.Quantity : 0, mainFabricExpenditure = 0, nonMainFabricExpenditure = 0, remark = b.DesignColor, roJob = a.RONo, receipt = 0, productCode = b.ProductCode, article = a.Article, roAsal = (from aa in QueryMutationPrepareItemsROASAL where aa.prepareitemid == Guid.Parse(b.PreparingItemId) select aa.roasal).FirstOrDefault(), remainQty = 0 };
+							select new monitoringView { expenditure = 0, aval = a.AvalDate >= dateFrom ? b.Quantity : 0, buyerCode = "", uomUnit = "", stock = a.AvalDate < dateFrom ? -b.Quantity : 0, mainFabricExpenditure = 0, nonMainFabricExpenditure = 0, remark = b.DesignColor, roJob = a.RONo, receipt = 0, productCode = b.ProductCode, article = a.Article, roAsal = (from aa in QueryMutationPrepareItemsROASAL where aa.prepareitemid == Guid.Parse(b.PreparingItemId) select aa.roasal).FirstOrDefault(), remainQty = 0 };
 			var asss = dateTo;
 			var QueryDeliveryReturn = from a in garmentDeliveryReturnRepository.Query
 									  join b in garmentDeliveryReturnItemRepository.Query on a.Identity equals b.DRId
 									  join c in garmentPreparingItemRepository.Query on b.PreparingItemId equals Convert.ToString(c.Identity)
 									  where a.ReturnDate <= dateTo && a.UnitId == request.unit
-									  select new monitoringView { expenditure = b.Quantity, aval = 0, buyerCode = "", uomUnit = "", stock = a.ReturnDate < dateFrom ? -b.Quantity : 0, mainFabricExpenditure = 0, nonMainFabricExpenditure = 0, remark = b.DesignColor, roJob = a.RONo, receipt = 0, productCode = b.ProductCode, article = a.Article, roAsal = (from aa in QueryMutationPrepareItemsROASAL where aa.prepareitemid == Guid.Parse(b.PreparingItemId) select aa.roasal).FirstOrDefault(), remainQty = 0 };
+									  select new monitoringView { expenditure = a.ReturnDate >= dateFrom ? b.Quantity : 0, aval = 0, buyerCode = "", uomUnit = "", stock = a.ReturnDate < dateFrom ? -b.Quantity : 0, mainFabricExpenditure = 0, nonMainFabricExpenditure = 0, remark = b.DesignColor, roJob = a.RONo, receipt = 0, productCode = b.ProductCode, article = a.Article, roAsal = (from aa in QueryMutationPrepareItemsROASAL where aa.prepareitemid == Guid.Parse(b.PreparingItemId) select aa.roasal).FirstOrDefault(), remainQty = 0 };
 
 			var queryNow = QueryMutationPrepareItemNow.Union(QueryCuttingDONow).Union(QueryAval).Union(QueryDeliveryReturn).AsEnumerable();
 
@@ -161,7 +161,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 				receipt = group.Sum(s => s.receipt),
 				Aval = group.Sum(s => s.aval),
 				drQty = group.Sum(s => s.expenditure)
-			});
+			}).OrderBy(s => s.ROJob); 
 
 
 			GarmentMonitoringPrepareListViewModel garmentMonitoringPrepareListViewModel = new GarmentMonitoringPrepareListViewModel();
