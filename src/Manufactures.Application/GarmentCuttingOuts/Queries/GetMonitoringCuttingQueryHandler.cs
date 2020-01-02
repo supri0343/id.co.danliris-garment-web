@@ -150,8 +150,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 					expenditure=item.Expenditure,
 					stock=item.Stock,
 					remainQty=item.Stock + item.CuttingQtyPcs - item.Expenditure,
-					fc=item.Fc,
-					cuttingQtyMeter= item.Fc * item.CuttingQtyPcs
+					fc=Math.Round(item.Fc,2),
+					cuttingQtyMeter= Math.Round(item.Fc * item.CuttingQtyPcs,2)
 
 				};
 				monitoringCuttingDtos.Add(cuttingDto);
