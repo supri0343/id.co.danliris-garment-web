@@ -206,7 +206,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 			if (garmentMonitoringPrepareListViewModel.garmentMonitorings.Count > 0)
 			{
 				foreach (var report in garmentMonitoringPrepareListViewModel.garmentMonitorings)
-					reportDataTable.Rows.Add(report.roJob,report.article,report.productCode,report.uomUnit,report.roAsal,report.remainQty,report.stock,report.receipt,report.mainFabricExpenditure,report.nonMainFabricExpenditure,report.expenditure,report.aval,report.remainQty);
+					reportDataTable.Rows.Add(report.roJob,report.article,report.productCode,report.uomUnit,report.roAsal,report.remark,report.stock,report.receipt,report.mainFabricExpenditure,report.nonMainFabricExpenditure,report.expenditure,report.aval,report.remainQty);
 
 			}
 				using (var package = new ExcelPackage())
