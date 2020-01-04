@@ -93,7 +93,7 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 
 			var QueryRoCuttingOut = (from a in garmentCuttingOutRepository.Query
 									 join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
-									 where a.UnitId == request.unit && a.CuttingOutDate <= dateTo
+									 where a.UnitFromId == request.unit && a.CuttingOutDate <= dateTo
 									 select a.RONo).Distinct();
 			var QueryRoLoading = (from a in garmentLoadingRepository.Query
 								  join b in garmentLoadingItemRepository.Query on a.Identity equals b.LoadingId
