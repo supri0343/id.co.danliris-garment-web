@@ -8,6 +8,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentComodityPrices.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentCuttingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentDeliveryReturns.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentFinishedGoodStocks.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentFinishingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentFinishingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentLoadings.Configs;
@@ -67,6 +68,10 @@ namespace Manufactures.Data.EntityFrameworkCore
             modelBuilder.ApplyConfiguration(new GarmentFinishingOutConfig());
             modelBuilder.ApplyConfiguration(new GarmentFinishingOutItemConfig());
             modelBuilder.ApplyConfiguration(new GarmentFinishingOutDetailConfig());
+
+
+            modelBuilder.ApplyConfiguration(new GarmentFinishedGoodStockConfig());
+            modelBuilder.ApplyConfiguration(new GarmentFinishedGoodStockHistoryConfig());
         }
     }
 }
