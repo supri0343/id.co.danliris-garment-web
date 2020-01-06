@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepare
+namespace Manufactures.Application.GarmentFinishingOuts.Queries
 {
-	public class GetMonitoringPrepareQuery : IQuery<GarmentMonitoringPrepareListViewModel>
+	public class GetMonitoringFinishingQuery : IQuery<GarmentMonitoringFinishingListViewModel>
 	{
 		public int page { get; private set; }
 		public int size { get; private set; }
@@ -15,7 +15,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 		public DateTime dateFrom { get; private set; }
 		public DateTime dateTo { get; private set; }
 
-		public GetMonitoringPrepareQuery(int page, int size, string order, int unit, DateTime dateFrom, DateTime  dateTo,string token)
+		public GetMonitoringFinishingQuery(int page, int size, string order, int unit, DateTime dateFrom, DateTime dateTo, string token)
 		{
 			this.page = page;
 			this.size = size;

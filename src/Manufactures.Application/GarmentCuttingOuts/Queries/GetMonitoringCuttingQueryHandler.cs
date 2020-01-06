@@ -65,9 +65,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 
 		public async Task<GarmentMonitoringCuttingListViewModel> Handle(GetMonitoringCuttingQuery request, CancellationToken cancellationToken)
 		{
-			DateTime dateFrom = request.dateFrom.ToUniversalTime();
-			DateTime dateTo = request.dateTo.AddDays(1).ToUniversalTime();
-
+			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
+			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
 
 			var QueryRoCuttingOut = (from a in garmentCuttingOutRepository.Query
 						   join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
@@ -111,8 +110,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 
 			var QueryCuttingOut = from a in garmentCuttingOutRepository.Query
 								   join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
-								   where a.UnitId == request.unit && a.CuttingOutDate <= dateTo
-								   select new monitoringView { fc = 0, cuttingQtyMeter = 0, remainQty = 0, stock = a.CuttingOutDate < dateFrom ? -b.TotalCuttingOut : 0, cuttingQtyPcs = b.TotalCuttingOut, roJob = a.RONo, article = a.Article, productCode = b.ProductCode, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(), hours = (from cost in costCalculation.data where cost.ro == a.RONo select cost.hours).FirstOrDefault(), expenditure = 0 };
+								   where a.UnitFromId == request.unit && a.CuttingOutDate <= dateTo
+								   select new monitoringView { fc = 0, cuttingQtyMeter = 0, remainQty = 0, stock = a.CuttingOutDate < dateFrom ? -b.TotalCuttingOut : 0, cuttingQtyPcs = 0, roJob = a.RONo, article = a.Article, productCode = b.ProductCode, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(), hours = (from cost in costCalculation.data where cost.ro == a.RONo select cost.hours).FirstOrDefault(), expenditure = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut: 0 };
 
 			var QueryAvalComp = from a in garmentAvalComponentRepository.Query
 								 join b in garmentAvalComponentItemRepository.Query on a.Identity equals b.AvalComponentId
@@ -151,8 +150,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 					expenditure=item.Expenditure,
 					stock=item.Stock,
 					remainQty=item.Stock + item.CuttingQtyPcs - item.Expenditure,
-					fc=item.Fc,
-					cuttingQtyMeter= item.Fc * item.CuttingQtyPcs
+					fc=Math.Round(item.Fc,2),
+					cuttingQtyMeter= Math.Round(item.Fc * item.CuttingQtyPcs,2)
 
 				};
 				monitoringCuttingDtos.Add(cuttingDto);
