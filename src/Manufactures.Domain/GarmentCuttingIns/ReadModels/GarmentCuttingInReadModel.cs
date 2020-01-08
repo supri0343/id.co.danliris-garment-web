@@ -12,6 +12,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.ReadModels
 
         public string CutInNo { get; internal set; }
         public string CuttingType { get; internal set; }
+        public string CuttingFrom { get; internal set; }
         public string RONo { get; internal set; }
         public string Article { get; internal set; }
         public int UnitId { get; internal set; }

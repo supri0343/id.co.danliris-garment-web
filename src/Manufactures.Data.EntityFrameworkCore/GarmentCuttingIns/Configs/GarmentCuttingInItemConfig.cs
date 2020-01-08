@@ -12,6 +12,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Configs
             builder.HasKey(e => e.Identity);
 
             builder.Property(p => p.UENNo).HasMaxLength(100);
+            builder.Property(p => p.SewingOutNo).HasMaxLength(50);
 
             builder.HasOne(w => w.GarmentCuttingIn)
                 .WithMany(h => h.Items)

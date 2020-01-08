@@ -1,5 +1,7 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
+using Manufactures.Domain.GarmentCuttingIns;
+using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentSewingOuts;
@@ -22,6 +24,9 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
         private readonly IGarmentSewingOutItemRepository _garmentSewingOutItemRepository;
         private readonly IGarmentSewingOutDetailRepository _garmentSewingOutDetailRepository;
         private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
+        private readonly IGarmentCuttingInRepository _garmentCuttingInRepository;
+        private readonly IGarmentCuttingInItemRepository _garmentCuttingInItemRepository;
+        private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
 
         public PlaceGarmentSewingOutCommandHandler(IStorage storage)
         {
@@ -30,15 +35,21 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             _garmentSewingOutItemRepository = storage.GetRepository<IGarmentSewingOutItemRepository>();
             _garmentSewingOutDetailRepository = storage.GetRepository<IGarmentSewingOutDetailRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
+            _garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
+            _garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
+            _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
         }
 
         public async Task<GarmentSewingOut> Handle(PlaceGarmentSewingOutCommand request, CancellationToken cancellationToken)
         {
             request.Items = request.Items.Where(item => item.IsSave == true).ToList();
 
+            Guid sewingOutId = Guid.NewGuid();
+            string sewingOutNo = GenerateSewOutNo(request);
+
             GarmentSewingOut garmentSewingOut = new GarmentSewingOut(
-                Guid.NewGuid(),
-                GenerateSewOutNo(request),
+                sewingOutId,
+                sewingOutNo,
                 new BuyerId(request.Buyer.Id),
                 request.Buyer.Code,
                 request.Buyer.Name,
@@ -142,6 +153,116 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
 
 
             await _garmentSewingOutRepository.Update(garmentSewingOut);
+
+            #region CreateCuttingIn
+
+            if (request.SewingTo == "CUTTING")
+            {
+                var now = DateTime.Now;
+                var year = now.ToString("yy");
+                var month = now.ToString("MM");
+
+                var prefix = $"DC{request.UnitTo.Code.Trim()}{year}{month}";
+
+                var lastCutInNo = _garmentCuttingInRepository.Query.Where(w => w.CutInNo.StartsWith(prefix))
+                    .OrderByDescending(o => o.CutInNo)
+                    .Select(s => int.Parse(s.CutInNo.Replace(prefix, "")))
+                    .FirstOrDefault();
+                var CutInNo = $"{prefix}{(lastCutInNo + 1).ToString("D4")}";
+
+                GarmentCuttingIn garmentCuttingIn = new GarmentCuttingIn(
+                    Guid.NewGuid(),
+                    CutInNo,
+                    null,
+                    "SEWING",
+                    request.RONo,
+                    request.Article,
+                    new UnitDepartmentId(request.UnitTo.Id),
+                    request.UnitTo.Code,
+                    request.UnitTo.Name,
+                    request.SewingOutDate,
+                    0
+                    );
+
+                foreach (var item in request.Items)
+                {
+                    if (item.IsSave)
+                    {
+                        GarmentCuttingInItem garmentCuttingInItem = new GarmentCuttingInItem(
+                            Guid.NewGuid(),
+                            garmentCuttingIn.Identity,
+                            Guid.Empty,
+                            0,
+                            null,
+                            sewingOutId,
+                            sewingOutNo
+                            );
+
+                        if (request.IsDifferentSize)
+                        {
+                            foreach (var detail in item.Details)
+                            {
+                                GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(
+                                    Guid.NewGuid(),
+                                    garmentCuttingInItem.Identity,
+                                    Guid.Empty,
+                                    item.Id,
+                                    detail.Id,
+                                    new ProductId(item.Product.Id),
+                                    item.Product.Code,
+                                    item.Product.Name,
+                                    item.DesignColor,
+                                    null,
+                                    0,
+                                    new UomId(0),
+                                    null,
+                                    Convert.ToInt32(detail.Quantity),
+                                    new UomId(detail.Uom.Id),
+                                    detail.Uom.Unit,
+                                    detail.Quantity,
+                                    0,
+                                    0,
+                                    0
+                                    );
+
+                                await _garmentCuttingInDetailRepository.Update(garmentCuttingInDetail);
+                            }
+                        }
+                        else
+                        {
+                            GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(
+                                    Guid.NewGuid(),
+                                    garmentCuttingInItem.Identity,
+                                    Guid.Empty,
+                                    item.Id,
+                                    Guid.Empty,
+                                    new ProductId(item.Product.Id),
+                                    item.Product.Code,
+                                    item.Product.Name,
+                                    item.DesignColor,
+                                    null,
+                                    0,
+                                    new UomId(0),
+                                    null,
+                                    Convert.ToInt32(item.Quantity),
+                                    new UomId(item.Uom.Id),
+                                    item.Uom.Unit,
+                                    item.Quantity,
+                                    0,
+                                    0,
+                                    0
+                                    );
+                            await _garmentCuttingInDetailRepository.Update(garmentCuttingInDetail);
+                        }
+
+                        await _garmentCuttingInItemRepository.Update(garmentCuttingInItem);
+                    }
+                }
+
+                await _garmentCuttingInRepository.Update(garmentCuttingIn);
+            }
+
+            #endregion
 
             _storage.Save();
 

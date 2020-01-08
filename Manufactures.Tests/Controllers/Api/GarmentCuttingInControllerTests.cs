@@ -80,11 +80,11 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingInReadModel>>()))
                 .Returns(new List<GarmentCuttingIn>()
                 {
-                    new GarmentCuttingIn(cuttingInGuid, null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0)
+                    new GarmentCuttingIn(cuttingInGuid, null, null, "RONo", null,null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0)
                 });
 
             Guid cuttingInItemGuid = Guid.NewGuid();
-            GarmentCuttingInItem garmentCuttingInItem = new GarmentCuttingInItem(cuttingInItemGuid, cuttingInGuid, Guid.NewGuid(), 1, null);
+            GarmentCuttingInItem garmentCuttingInItem = new GarmentCuttingInItem(cuttingInItemGuid, cuttingInGuid, Guid.NewGuid(), 1, null, Guid.Empty,null);
             _mockGarmentCuttingInItemRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentCuttingInItemReadModel>()
@@ -92,7 +92,7 @@ namespace Manufactures.Tests.Controllers.Api
                     garmentCuttingInItem.GetReadModel()
                 }.AsQueryable());
 
-            GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(Guid.NewGuid(), cuttingInItemGuid, Guid.NewGuid(), new ProductId(1), null, null, null, null, 1, new UomId(1), null, 1, new UomId(1), null, 1, 1,1,1);
+            GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(Guid.NewGuid(), cuttingInItemGuid, Guid.NewGuid(), Guid.Empty, Guid.Empty,new ProductId(1), null, null, null, null, 1, new UomId(1), null, 1, new UomId(1), null, 1, 1,1,1);
             _mockGarmentCuttingInDetailRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentCuttingInDetailReadModel>()
@@ -117,21 +117,21 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingInReadModel, bool>>>()))
                 .Returns(new List<GarmentCuttingIn>()
                 {
-                    new GarmentCuttingIn(Guid.NewGuid(), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0)
+                    new GarmentCuttingIn(Guid.NewGuid(), null, null, "RONo",null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0)
                 });
 
             _mockGarmentCuttingInItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingInItemReadModel, bool>>>()))
                 .Returns(new List<GarmentCuttingInItem>()
                 {
-                    new GarmentCuttingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), 0, null)
+                    new GarmentCuttingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), 0, null,Guid.Empty,"")
                 });
 
             _mockGarmentCuttingInDetailRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingInDetailReadModel, bool>>>()))
                 .Returns(new List<GarmentCuttingInDetail>()
                 {
-                    new GarmentCuttingInDetail(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, null, 0, new UomId(1), null, 0, new UomId(1), null, 0, 0,1,1)
+                    new GarmentCuttingInDetail(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),Guid.Empty,Guid.Empty, new ProductId(1), null, null, null, null, 0, new UomId(1), null, 0, new UomId(1), null, 0, 0,1,1)
                 });
 
             _mockGarmentPreparingItemRepository
@@ -153,7 +153,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentCuttingInCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentCuttingIn(Guid.NewGuid(), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0));
+                .ReturnsAsync(new GarmentCuttingIn(Guid.NewGuid(), null, null, "RONo", null,null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0));
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentCuttingInCommand>());
@@ -170,7 +170,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentCuttingInCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentCuttingIn(Guid.NewGuid(), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0));
+                .ReturnsAsync(new GarmentCuttingIn(Guid.NewGuid(), null, null, "RONo",null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0));
 
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentCuttingInCommand());
@@ -187,7 +187,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentCuttingInCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentCuttingIn(Guid.NewGuid(), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0));
+                .ReturnsAsync(new GarmentCuttingIn(Guid.NewGuid(), null, null, "RONo",null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
@@ -210,7 +210,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingInReadModel>>()))
                 .Returns(new List<GarmentCuttingIn>()
                 {
-                    new GarmentCuttingIn(Guid.NewGuid(), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0)
+                    new GarmentCuttingIn(Guid.NewGuid(), null, null, "RONo",null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0)
                 });
 
             // Act
@@ -234,7 +234,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingInReadModel>>()))
                 .Returns(new List<GarmentCuttingIn>()
                 {
-                    new GarmentCuttingIn(Guid.NewGuid(), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0)
+                    new GarmentCuttingIn(Guid.NewGuid(), null, null, "RONo",null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, 0)
                 });
 
             _mockGarmentCuttingInItemRepository
@@ -248,7 +248,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingInItemReadModel>>()))
                 .Returns(new List<GarmentCuttingInItem>()
                 {
-                    new GarmentCuttingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), 0, null)
+                    new GarmentCuttingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), 0, null,Guid.Empty,"")
                 });
 
             _mockGarmentCuttingInDetailRepository
@@ -262,7 +262,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingInDetailReadModel>>()))
                 .Returns(new List<GarmentCuttingInDetail>()
                 {
-                    new GarmentCuttingInDetail(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, null, 0, new UomId(1), null, 0, new UomId(1), null, 0, 0,1,1)
+                    new GarmentCuttingInDetail(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),Guid.Empty,Guid.Empty, new ProductId(1), null, null, null, null, 0, new UomId(1), null, 0, new UomId(1), null, 0, 0,1,1)
                 });
 
             // Act

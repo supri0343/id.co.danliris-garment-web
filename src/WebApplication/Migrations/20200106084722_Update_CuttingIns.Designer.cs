@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20200106084722_Update_CuttingIns")]
+    partial class Update_CuttingIns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -383,10 +385,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<Guid>("SewingOutDetailId");
-
-                    b.Property<Guid>("SewingOutItemId");
-
                     b.HasKey("Identity");
 
                     b.HasIndex("CutInItemId");
@@ -427,8 +425,7 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<Guid>("SewingOutId");
 
-                    b.Property<string>("SewingOutNo")
-                        .HasMaxLength(50);
+                    b.Property<string>("SewingOutNo");
 
                     b.Property<int>("UENId");
 
@@ -459,8 +456,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("CutInNo")
                         .HasMaxLength(25);
 
-                    b.Property<string>("CuttingFrom")
-                        .HasMaxLength(25);
+                    b.Property<string>("CuttingFrom");
 
                     b.Property<DateTimeOffset>("CuttingInDate");
 

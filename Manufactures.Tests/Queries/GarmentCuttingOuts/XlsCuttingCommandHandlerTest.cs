@@ -102,21 +102,21 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentCuttingInItemReadModel>
 				{
-					new GarmentCuttingInItem(guidCuttingInItem,guidCuttingIn,guidPrepare,1,"").GetReadModel()
+					new GarmentCuttingInItem(guidCuttingInItem,guidCuttingIn,guidPrepare,1,"",Guid.Empty,"").GetReadModel()
 				}.AsQueryable());
 
 			_mockGarmentCuttingInRepository
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentCuttingInReadModel>
 				{
-					new GarmentCuttingIn(guidCuttingIn,"","Main Fabric","ro","",new UnitDepartmentId(1),"","",DateTimeOffset.Now,4.5).GetReadModel()
+					new GarmentCuttingIn(guidCuttingIn,"","Main Fabric","","ro","",new UnitDepartmentId(1),"","",DateTimeOffset.Now,4.5).GetReadModel()
 				}.AsQueryable());
 
 			_mockGarmentCuttingInDetailRepository
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentCuttingInDetailReadModel>
 				{
-					new GarmentCuttingInDetail(guidCuttingInDetail,guidCuttingInItem,guidPrepareItem,new Domain.Shared.ValueObjects.ProductId(1),"","","","",9,new Domain.Shared.ValueObjects.UomId(1),"",4,new Domain.Shared.ValueObjects.UomId(1),"",1,100,100,5.5).GetReadModel()
+					new GarmentCuttingInDetail(guidCuttingInDetail,guidCuttingInItem,guidPrepareItem,Guid.Empty,Guid.Empty,new Domain.Shared.ValueObjects.ProductId(1),"","","","",9,new Domain.Shared.ValueObjects.UomId(1),"",4,new Domain.Shared.ValueObjects.UomId(1),"",1,100,100,5.5).GetReadModel()
 				}.AsQueryable());
 
 			_mockGarmentAvalComponentItemRepository

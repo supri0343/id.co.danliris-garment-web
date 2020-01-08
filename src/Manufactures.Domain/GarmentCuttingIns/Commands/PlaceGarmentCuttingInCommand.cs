@@ -18,6 +18,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.Commands
         public DateTimeOffset? CuttingInDate { get; set; }
         public double FC { get; set; }
         public List<GarmentCuttingInItemValueObject> Items { get; set; }
+        public string CuttingFrom { get; set; }
         public double Price { get; set; }
     }
 

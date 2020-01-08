@@ -18,12 +18,14 @@ namespace Manufactures.Dtos
             Unit = new UnitDepartment(garmentCuttingIn.UnitId.Value, garmentCuttingIn.UnitCode, garmentCuttingIn.UnitName);
             CuttingInDate = garmentCuttingIn.CuttingInDate;
             FC = garmentCuttingIn.FC;
+            CuttingFrom = garmentCuttingIn.CuttingFrom;
         }
 
         public Guid Id { get; set; }
 
         public string CutInNo { get; set; }
         public string CuttingType { get; set; }
+        public string CuttingFrom { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }
         public UnitDepartment Unit { get; set; }

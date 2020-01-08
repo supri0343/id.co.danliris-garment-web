@@ -13,8 +13,10 @@ namespace Manufactures.Domain.GarmentCuttingIns
         public Guid PreparingId { get; private set; }
         public int UENId { get; private set; }
         public string UENNo { get; private set; }
+        public Guid SewingOutId { get; private set; }
+        public string SewingOutNo { get; private set; }
 
-        public GarmentCuttingInItem(Guid identity, Guid cutInId, Guid preparingId, int uENId, string uENNo) : base(identity)
+        public GarmentCuttingInItem(Guid identity, Guid cutInId, Guid preparingId, int uENId, string uENNo, Guid sewingOutId, string sewingOutNo) : base(identity)
         {
             //MarkTransient();
 
@@ -23,6 +25,8 @@ namespace Manufactures.Domain.GarmentCuttingIns
             PreparingId = preparingId;
             UENId = uENId;
             UENNo = uENNo;
+            SewingOutId = sewingOutId;
+            SewingOutNo = sewingOutNo;
 
             ReadModel = new GarmentCuttingInItemReadModel(identity)
             {
@@ -30,6 +34,8 @@ namespace Manufactures.Domain.GarmentCuttingIns
                 PreparingId = PreparingId,
                 UENId = UENId,
                 UENNo = UENNo,
+                SewingOutId= SewingOutId,
+                SewingOutNo= SewingOutNo
             };
 
             ReadModel.AddDomainEvent(new OnGarmentCuttingInPlaced(Identity));
@@ -41,6 +47,8 @@ namespace Manufactures.Domain.GarmentCuttingIns
             PreparingId = readModel.PreparingId;
             UENId = readModel.UENId;
             UENNo = readModel.UENNo;
+            SewingOutId = readModel.SewingOutId;
+            SewingOutNo = readModel.SewingOutNo;
         }
 
         public void Modify()

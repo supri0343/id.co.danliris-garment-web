@@ -253,7 +253,24 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                                     );
                     count++;
                     await _garmentFinishedGoodStockRepository.Update(finishedGood);
-                    finGoodStocks.Add(finishedGood);
+
+                    var stock = finGoodStocks.Where(a => a.RONo == request.RONo &&
+                             a.Article == request.Article &&
+                             a.BasicPrice == finishedGood.BasicPrice &&
+                             a.UnitId == new UnitDepartmentId(request.Unit.Id) &&
+                             a.SizeId == finishedGood.SizeId &&
+                             a.ComodityId == new GarmentComodityId(request.Comodity.Id) &&
+                             a.UomId == finishedGood.UomId).SingleOrDefault();
+                    if (stock == null)
+                    {
+                        finGoodStocks.Add(finishedGood);
+                    }
+                    else
+                    {
+                        finGoodStocks.Remove(stock);
+                        finGoodStocks.Add(finishedGood);
+                    }
+                    //finGoodStocks.Add(finishedGood);
                 }
                 else
                 {

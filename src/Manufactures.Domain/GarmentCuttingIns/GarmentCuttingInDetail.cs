@@ -13,6 +13,9 @@ namespace Manufactures.Domain.GarmentCuttingIns
         public Guid CutInItemId { get; private set; }
         public Guid PreparingItemId { get; private set; }
 
+        public Guid SewingOutItemId { get; internal set; }
+        public Guid SewingOutDetailId { get; internal set; }
+
         public ProductId ProductId { get; private set; }
         public string ProductCode { get; private set; }
         public string ProductName { get; private set; }
@@ -78,12 +81,14 @@ namespace Manufactures.Domain.GarmentCuttingIns
             }
         }
 
-        public GarmentCuttingInDetail(Guid identity, Guid cutInItemId, Guid preparingItemId, ProductId productId, string productCode, string productName, string designColor, string fabricType, double preparingQuantity, UomId preparingUomId, string preparingUomUnit, int cuttingInQuantity, UomId cuttingInUomId, string cuttingInUomUnit, double remainingQuantity, double basicPrice, double price,double fc) : base(identity)
+        public GarmentCuttingInDetail(Guid identity, Guid cutInItemId, Guid preparingItemId, Guid sewingOutItemId, Guid sewingOutDetailId, ProductId productId, string productCode, string productName, string designColor, string fabricType, double preparingQuantity, UomId preparingUomId, string preparingUomUnit, int cuttingInQuantity, UomId cuttingInUomId, string cuttingInUomUnit, double remainingQuantity, double basicPrice, double price,double fc) : base(identity)
         {
             //MarkTransient();
 
             CutInItemId = cutInItemId;
             PreparingItemId = preparingItemId;
+            SewingOutItemId = sewingOutItemId;
+            SewingOutDetailId = sewingOutDetailId;
             ProductId = productId;
             ProductCode = productCode;
             ProductName = productName;
@@ -104,6 +109,8 @@ namespace Manufactures.Domain.GarmentCuttingIns
             {
                 CutInItemId = CutInItemId,
                 PreparingItemId = PreparingItemId,
+                SewingOutItemId = SewingOutItemId,
+                SewingOutDetailId = SewingOutDetailId,
                 ProductId = ProductId.Value,
                 ProductCode = ProductCode,
                 ProductName = ProductName,
@@ -128,6 +135,8 @@ namespace Manufactures.Domain.GarmentCuttingIns
         {
             CutInItemId = readModel.CutInItemId;
             PreparingItemId = readModel.PreparingItemId;
+            SewingOutItemId = readModel.SewingOutItemId;
+            SewingOutDetailId = readModel.SewingOutDetailId;
             ProductId = new ProductId(readModel.ProductId);
             ProductCode = readModel.ProductCode;
             ProductName = readModel.ProductName;

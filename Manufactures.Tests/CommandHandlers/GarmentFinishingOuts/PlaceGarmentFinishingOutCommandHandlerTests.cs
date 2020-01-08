@@ -1,6 +1,12 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentFinishingOuts.CommandHandlers;
+using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.GarmentComodityPrices.ReadModels;
+using Manufactures.Domain.GarmentComodityPrices.Repositories;
+using Manufactures.Domain.GarmentFinishedGoodStocks;
+using Manufactures.Domain.GarmentFinishedGoodStocks.ReadModels;
+using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
 using Manufactures.Domain.GarmentFinishingIns;
 using Manufactures.Domain.GarmentFinishingIns.ReadModels;
 using Manufactures.Domain.GarmentFinishingIns.Repositories;
@@ -27,6 +33,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentFinishingOuts
         private readonly Mock<IGarmentFinishingOutItemRepository> _mockFinishingOutItemRepository;
         private readonly Mock<IGarmentFinishingOutDetailRepository> _mockFinishingOutDetailRepository;
         private readonly Mock<IGarmentFinishingInItemRepository> _mockFinishingInItemRepository;
+        private readonly Mock<IGarmentFinishedGoodStockRepository> _mockFinishedGoodStockRepository;
+        private readonly Mock<IGarmentFinishedGoodStockHistoryRepository> _mockFinishedGoodStockHistoryRepository;
+        private readonly Mock<IGarmentComodityPriceRepository> _mockComodityPriceRepository;
 
         public PlaceGarmentFinishingOutCommandHandlerTests()
         {
@@ -34,11 +43,17 @@ namespace Manufactures.Tests.CommandHandlers.GarmentFinishingOuts
             _mockFinishingOutItemRepository = CreateMock<IGarmentFinishingOutItemRepository>();
             _mockFinishingOutDetailRepository = CreateMock<IGarmentFinishingOutDetailRepository>();
             _mockFinishingInItemRepository = CreateMock<IGarmentFinishingInItemRepository>();
+            _mockFinishedGoodStockRepository = CreateMock<IGarmentFinishedGoodStockRepository>();
+            _mockFinishedGoodStockHistoryRepository = CreateMock<IGarmentFinishedGoodStockHistoryRepository>();
+            _mockComodityPriceRepository = CreateMock<IGarmentComodityPriceRepository>();
 
             _MockStorage.SetupStorage(_mockFinishingOutRepository);
             _MockStorage.SetupStorage(_mockFinishingOutItemRepository);
             _MockStorage.SetupStorage(_mockFinishingOutDetailRepository);
             _MockStorage.SetupStorage(_mockFinishingInItemRepository);
+            _MockStorage.SetupStorage(_mockFinishedGoodStockRepository);
+            _MockStorage.SetupStorage(_mockFinishedGoodStockHistoryRepository);
+            _MockStorage.SetupStorage(_mockComodityPriceRepository);
         }
         private PlaceGarmentFinishingOutCommandHandler CreatePlaceGarmentFinishingOutCommandHandler()
         {
@@ -99,6 +114,29 @@ namespace Manufactures.Tests.CommandHandlers.GarmentFinishingOuts
                     new GarmentFinishingInItemReadModel(finishingInItemGuid)
                 }.AsQueryable());
 
+            _mockFinishedGoodStockRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentFinishedGoodStockReadModel>().AsQueryable());
+
+            GarmentComodityPrice garmentComodity = new GarmentComodityPrice(
+                Guid.NewGuid(),
+                true,
+                DateTimeOffset.Now,
+                new UnitDepartmentId(placeGarmentFinishingOutCommand.Unit.Id),
+                placeGarmentFinishingOutCommand.Unit.Code,
+                placeGarmentFinishingOutCommand.Unit.Name,
+                new GarmentComodityId( placeGarmentFinishingOutCommand.Comodity.Id),
+                placeGarmentFinishingOutCommand.Comodity.Code,
+                placeGarmentFinishingOutCommand.Comodity.Name,
+                1000
+                );
+            _mockComodityPriceRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentComodityPriceReadModel>
+                {
+                    garmentComodity.GetReadModel()
+                }.AsQueryable());
+
             _mockFinishingOutRepository
                 .Setup(s => s.Update(It.IsAny<GarmentFinishingOut>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentFinishingOut>()));
@@ -111,6 +149,15 @@ namespace Manufactures.Tests.CommandHandlers.GarmentFinishingOuts
             _mockFinishingInItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentFinishingInItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentFinishingInItem>()));
+
+            _mockFinishedGoodStockRepository
+                .Setup(s => s.Update(It.IsAny<GarmentFinishedGoodStock>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentFinishedGoodStock>()));
+
+            _mockFinishedGoodStockHistoryRepository
+                .Setup(s => s.Update(It.IsAny<GarmentFinishedGoodStockHistory>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentFinishedGoodStockHistory>()));
+
 
             _MockStorage
                 .Setup(x => x.Save())
