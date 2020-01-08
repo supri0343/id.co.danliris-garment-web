@@ -13,6 +13,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.Commands
         public Guid Identity { get; private set; }
         public string CutInNo { get; set; }
         public string CuttingType { get; set; }
+        public string CuttingFrom { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }
         public UnitDepartment Unit { get; set; }
