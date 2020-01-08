@@ -11,6 +11,8 @@ namespace Manufactures.Domain.GarmentSewingIns
     public class GarmentSewingInItem : AggregateRoot<GarmentSewingInItem, GarmentSewingInItemReadModel>
     {
         public Guid SewingInId { get; private set; }
+        public Guid SewingOutItemId { get; private set; }
+        public Guid SewingOutDetailId { get; private set; }
         public Guid LoadingItemId { get; private set; }
         public ProductId ProductId { get; private set; }
         public string ProductCode { get; private set; }
@@ -23,6 +25,8 @@ namespace Manufactures.Domain.GarmentSewingIns
         public string UomUnit { get; private set; }
         public string Color { get; private set; }
         public double RemainingQuantity { get; private set; }
+        public double BasicPrice { get; private set; }
+        public double Price { get; private set; }
 
         public void SetRemainingQuantity(double RemainingQuantity)
         {
@@ -33,10 +37,12 @@ namespace Manufactures.Domain.GarmentSewingIns
             }
         }
 
-        public GarmentSewingInItem(Guid identity, Guid sewingInId, Guid loadingItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity) : base(identity)
+        public GarmentSewingInItem(Guid identity, Guid sewingInId, Guid sewingOutItemId, Guid sewingOutDetailId , Guid loadingItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity, double basicPrice, double price) : base(identity)
         {
             Identity = identity;
             SewingInId = sewingInId;
+            SewingOutItemId = sewingOutItemId;
+            SewingOutDetailId = sewingOutDetailId;
             LoadingItemId = loadingItemId;
             ProductId = productId;
             ProductCode = productCode;
@@ -49,10 +55,14 @@ namespace Manufactures.Domain.GarmentSewingIns
             UomUnit = uomUnit;
             Color = color;
             RemainingQuantity = remainingQuantity;
+            BasicPrice = basicPrice;
+            Price = price;
 
             ReadModel = new GarmentSewingInItemReadModel(identity)
             {
                 SewingInId = SewingInId,
+                SewingOutItemId= SewingOutItemId,
+                SewingOutDetailId= SewingOutDetailId,
                 LoadingItemId = LoadingItemId,
                 ProductId = ProductId.Value,
                 ProductCode = ProductCode,
@@ -64,7 +74,9 @@ namespace Manufactures.Domain.GarmentSewingIns
                 UomId = UomId.Value,
                 UomUnit = UomUnit,
                 Color = Color,
-                RemainingQuantity = RemainingQuantity
+                RemainingQuantity = RemainingQuantity,
+                BasicPrice=BasicPrice,
+                Price=Price
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSewingInPlaced(Identity));
@@ -73,6 +85,8 @@ namespace Manufactures.Domain.GarmentSewingIns
         public GarmentSewingInItem(GarmentSewingInItemReadModel readModel) : base(readModel)
         {
             SewingInId = readModel.SewingInId;
+            SewingOutItemId = readModel.SewingOutItemId;
+            SewingOutDetailId = readModel.SewingOutDetailId;
             LoadingItemId = readModel.LoadingItemId;
             ProductId = new ProductId(readModel.ProductId);
             ProductCode = readModel.ProductCode;
@@ -85,6 +99,8 @@ namespace Manufactures.Domain.GarmentSewingIns
             UomUnit = readModel.UomUnit;
             Color = readModel.Color;
             RemainingQuantity = readModel.RemainingQuantity;
+            BasicPrice = readModel.BasicPrice;
+            Price = readModel.Price;
         }
 
         public void Modify()

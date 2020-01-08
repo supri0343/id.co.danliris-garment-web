@@ -12,6 +12,7 @@ namespace Manufactures.Domain.GarmentSewingIns
     public class GarmentSewingIn : AggregateRoot<GarmentSewingIn, GarmentSewingInReadModel>
     {
         public string SewingInNo { get; private set; }
+        public string SewingFrom { get; private set; }
         public Guid LoadingId { get; private set; }
         public string LoadingNo { get; private set; }
         public UnitDepartmentId UnitFromId { get; private set; }
@@ -27,12 +28,13 @@ namespace Manufactures.Domain.GarmentSewingIns
         public string ComodityName { get; private set; }
         public DateTimeOffset SewingInDate { get; private set; }
 
-        public GarmentSewingIn(Guid identity, string sewingInNo, Guid loadingId, string loadingNo, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, UnitDepartmentId unitId, string unitCode, string unitName, string roNo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, DateTimeOffset sewingInDate) : base(identity)
+        public GarmentSewingIn(Guid identity, string sewingInNo, string sewingFrom, Guid loadingId, string loadingNo, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, UnitDepartmentId unitId, string unitCode, string unitName, string roNo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, DateTimeOffset sewingInDate) : base(identity)
         {
             Identity = identity;
             SewingInNo = sewingInNo;
+            SewingFrom = sewingFrom;
             LoadingId = loadingId;
-            LoadingNo = LoadingNo;
+            LoadingNo = loadingNo;
             UnitFromId = unitFromId;
             UnitFromCode = unitFromCode;
             UnitFromName = unitFromName;
@@ -49,6 +51,7 @@ namespace Manufactures.Domain.GarmentSewingIns
             ReadModel = new GarmentSewingInReadModel(Identity)
             {
                 SewingInNo = SewingInNo,
+                SewingFrom=SewingFrom,
                 LoadingId = LoadingId,
                 LoadingNo = LoadingNo,
                 UnitFromId = UnitFromId.Value,
@@ -70,6 +73,7 @@ namespace Manufactures.Domain.GarmentSewingIns
         public GarmentSewingIn(GarmentSewingInReadModel readModel) : base(readModel)
         {
             SewingInNo = readModel.SewingInNo;
+            SewingFrom = readModel.SewingFrom;
             LoadingId = readModel.LoadingId;
             LoadingNo = readModel.LoadingNo;
             UnitFromId = new UnitDepartmentId(readModel.UnitFromId);

@@ -24,6 +24,8 @@ namespace Manufactures.Domain.GarmentAvalProducts.ValueObjects
         public string DesignColor { get; set; }
         public double Quantity { get; set; }
         public Uom Uom { get; set; }
+        public double BasicPrice { get; set; }
+        public double PreparingQuantity { get; set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

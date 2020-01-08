@@ -8,12 +8,15 @@ using Manufactures.Data.EntityFrameworkCore.GarmentComodityPrices.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentCuttingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentDeliveryReturns.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentFinishedGoodStocks.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentFinishingIns.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentFinishingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentLoadings.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingDOs.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubconCuttingOuts.Configs;
 using Microsoft.EntityFrameworkCore;
 
 namespace Manufactures.Data.EntityFrameworkCore
@@ -59,6 +62,16 @@ namespace Manufactures.Data.EntityFrameworkCore
 
             modelBuilder.ApplyConfiguration(new GarmentAvalComponentConfig());
             modelBuilder.ApplyConfiguration(new GarmentAvalComponentItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentSubconCuttingConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentFinishingOutConfig());
+            modelBuilder.ApplyConfiguration(new GarmentFinishingOutItemConfig());
+            modelBuilder.ApplyConfiguration(new GarmentFinishingOutDetailConfig());
+
+
+            modelBuilder.ApplyConfiguration(new GarmentFinishedGoodStockConfig());
+            modelBuilder.ApplyConfiguration(new GarmentFinishedGoodStockHistoryConfig());
         }
     }
 }

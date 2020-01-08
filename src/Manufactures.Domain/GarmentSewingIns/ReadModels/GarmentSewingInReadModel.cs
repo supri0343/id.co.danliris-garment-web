@@ -13,6 +13,7 @@ namespace Manufactures.Domain.GarmentSewingIns.ReadModels
         }
 
         public string SewingInNo { get; internal set; }
+        public string SewingFrom { get; internal set; }
         public Guid LoadingId { get; internal set; }
         public string LoadingNo { get; internal set; }
         public int UnitFromId { get; internal set; }

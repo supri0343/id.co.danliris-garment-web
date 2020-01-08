@@ -14,6 +14,8 @@ namespace Manufactures.Domain.GarmentSewingIns.ReadModels
         }
 
         public Guid SewingInId { get; internal set; }
+        public Guid SewingOutItemId { get; internal set; }
+        public Guid SewingOutDetailId { get; internal set; }
         public Guid LoadingItemId { get; internal set; }
         public int ProductId { get; internal set; }
         public string ProductCode { get; internal set; }
@@ -26,6 +28,8 @@ namespace Manufactures.Domain.GarmentSewingIns.ReadModels
         public string UomUnit { get; internal set; }
         public string Color { get; internal set; }
         public double RemainingQuantity { get; internal set; }
+        public double BasicPrice { get; internal set; }
+        public double Price { get; internal set; }
 
         public virtual GarmentSewingInReadModel GarmentSewingInIdentity { get; internal set; }
     }

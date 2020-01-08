@@ -19,7 +19,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
         public string Color { get; private set; }
         public double RemainingQuantity { get; private set; }
         public double BasicPrice { get; private set; }
-        public double IndirectPrice { get; private set; }
+        public double Price { get; private set; }
         public double OTL1 { get; private set; }
         public double OTL2 { get; private set; }
         public string Remark { get; private set; }
@@ -70,7 +70,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             }
         }
 
-        public GarmentSubconCuttingOutDetail(Guid identity, Guid cutOutItemId, SizeId sizeId, string sizeName, string color, double remainingQuantity, double cuttingOutQuantity, UomId cuttingOutUomId, string cuttingOutUomUnit, double otl1, double otl2, double basicPrice, double indirectPrice, string remark) : base(identity)
+        public GarmentSubconCuttingOutDetail(Guid identity, Guid cutOutItemId, SizeId sizeId, string sizeName, string color, double remainingQuantity, double cuttingOutQuantity, UomId cuttingOutUomId, string cuttingOutUomUnit, double basicPrice, double price, string remark) : base(identity)
         {
             //MarkTransient();
 
@@ -83,9 +83,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             CuttingOutUomId = cuttingOutUomId;
             CuttingOutUomUnit = cuttingOutUomUnit;
             BasicPrice = basicPrice;
-            IndirectPrice = indirectPrice;
-            OTL1 = otl1;
-            OTL2 = otl2;
+            Price = price;
             Remark = remark;
 
             ReadModel = new GarmentCuttingOutDetailReadModel(Identity)
@@ -99,9 +97,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
                 CuttingOutUomId = CuttingOutUomId.Value,
                 CuttingOutUomUnit = CuttingOutUomUnit,
                 BasicPrice = BasicPrice,
-                IndirectPrice = IndirectPrice,
-                OTL1 = OTL1,
-                OTL2 = OTL2,
+                Price = Price,
                 Remark=Remark
             };
 
@@ -119,9 +115,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             CuttingOutUomId = new UomId(readModel.CuttingOutUomId);
             CuttingOutUomUnit = readModel.CuttingOutUomUnit;
             BasicPrice = readModel.BasicPrice;
-            IndirectPrice = readModel.IndirectPrice;
-            OTL1 = readModel.OTL1;
-            OTL2 = readModel.OTL2;
+            Price = readModel.Price;
             Remark = readModel.Remark;
         }
 

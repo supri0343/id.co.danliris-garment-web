@@ -18,9 +18,7 @@ namespace Manufactures.Dtos
             Color = garmentCuttingOutDetail.Color;
             RemainingQuantity = garmentCuttingOutDetail.RemainingQuantity;
             BasicPrice = garmentCuttingOutDetail.BasicPrice;
-            IndirectPrice = garmentCuttingOutDetail.IndirectPrice;
-            OTL1 = garmentCuttingOutDetail.OTL1;
-            OTL2 = garmentCuttingOutDetail.OTL2;
+            Price = garmentCuttingOutDetail.Price;
             Remark = garmentCuttingOutDetail.Remark;
         }
 
@@ -32,9 +30,7 @@ namespace Manufactures.Dtos
         public string Color { get; set; }
         public double RemainingQuantity { get; set; }
         public double BasicPrice { get; set; }
-        public double IndirectPrice { get; set; }
-        public double OTL1 { get; set; }
-        public double OTL2 { get; set; }
+        public double Price { get; set; }
         public string Remark { get; set; }
     }
 }

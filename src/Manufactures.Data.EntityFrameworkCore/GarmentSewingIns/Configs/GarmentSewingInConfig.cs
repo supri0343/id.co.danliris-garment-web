@@ -12,6 +12,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSewingIns.Configs
             builder.HasKey(e => e.Identity);
 
             builder.Property(a => a.SewingInNo).HasMaxLength(25);
+            builder.Property(a => a.SewingFrom).HasMaxLength(25);
             builder.Property(a => a.UnitFromCode).HasMaxLength(25);
             builder.Property(a => a.UnitFromName).HasMaxLength(100);
             builder.Property(a => a.UnitCode).HasMaxLength(25);

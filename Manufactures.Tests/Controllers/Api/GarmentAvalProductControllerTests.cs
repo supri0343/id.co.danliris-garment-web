@@ -79,14 +79,14 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentAvalProductReadModel>>()))
                 .Returns(new List<GarmentAvalProduct>()
                 {
-                    new GarmentAvalProduct(Guid.NewGuid(), null, null, DateTimeOffset.Now)
+                    new GarmentAvalProduct(Guid.NewGuid(), null, null, DateTimeOffset.Now, new UnitDepartmentId(1), null, null)
                 });
 
             _mockGarmentAvalProductItemRepository
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentAvalProductItemReadModel>>()))
                 .Returns(new List<GarmentAvalProductItem>()
                 {
-                    new GarmentAvalProductItem(Guid.NewGuid(), Guid.NewGuid(), new GarmentPreparingId("1"), new GarmentPreparingItemId("1"), new Domain.GarmentAvalProducts.ValueObjects.ProductId(1), null, null, null, 0, new Domain.GarmentAvalProducts.ValueObjects.UomId(1), null)
+                    new GarmentAvalProductItem(Guid.NewGuid(), Guid.NewGuid(), new GarmentPreparingId("1"), new GarmentPreparingItemId("1"), new Domain.GarmentAvalProducts.ValueObjects.ProductId(1), null, null, null, 0, new Domain.GarmentAvalProducts.ValueObjects.UomId(1), null,10)
                 });
 
             _mockGarmentAvalProductItemRepository
@@ -113,14 +113,14 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentAvalProductReadModel, bool>>>()))
                 .Returns(new List<GarmentAvalProduct>()
                 {
-                    new GarmentAvalProduct(Guid.NewGuid(), null, null, DateTimeOffset.Now)
+                    new GarmentAvalProduct(Guid.NewGuid(), null, null, DateTimeOffset.Now, new UnitDepartmentId(1), null, null)
                 });
 
             _mockGarmentAvalProductItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentAvalProductItemReadModel, bool>>>()))
                 .Returns(new List<GarmentAvalProductItem>()
                 {
-                    new GarmentAvalProductItem(Guid.NewGuid(), Guid.NewGuid(), new GarmentPreparingId("1"), new GarmentPreparingItemId("1"), new Domain.GarmentAvalProducts.ValueObjects.ProductId(1), null, null, null, 0, new Domain.GarmentAvalProducts.ValueObjects.UomId(1), null)
+                    new GarmentAvalProductItem(Guid.NewGuid(), Guid.NewGuid(), new GarmentPreparingId("1"), new GarmentPreparingItemId("1"), new Domain.GarmentAvalProducts.ValueObjects.ProductId(1), null, null, null, 0, new Domain.GarmentAvalProducts.ValueObjects.UomId(1), null,10)
                 });
 
             // Act
@@ -138,7 +138,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentAvalProductCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentAvalProduct(Guid.NewGuid(), null, null, DateTimeOffset.Now));
+                .ReturnsAsync(new GarmentAvalProduct(Guid.NewGuid(), null, null, DateTimeOffset.Now, new UnitDepartmentId(1), null, null));
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentAvalProductCommand>());
@@ -155,7 +155,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentAvalProductCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentAvalProduct(Guid.NewGuid(), null, null, DateTimeOffset.Now));
+                .ReturnsAsync(new GarmentAvalProduct(Guid.NewGuid(), null, null, DateTimeOffset.Now, new UnitDepartmentId(1), null, null));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());

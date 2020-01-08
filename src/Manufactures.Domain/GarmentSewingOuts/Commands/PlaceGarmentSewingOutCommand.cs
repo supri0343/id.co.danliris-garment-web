@@ -24,6 +24,8 @@ namespace Manufactures.Domain.GarmentSewingOuts.Commands
         public bool IsUsed { get; set; }
         public List<GarmentSewingOutItemValueObject> Items { get; set; }
         public bool IsSave { get; set; }
+        public double Price { get; set; }
+
     }
 
     public class PlaceGarmentSewingOutCommandValidator : AbstractValidator<PlaceGarmentSewingOutCommand>
@@ -36,6 +38,7 @@ namespace Manufactures.Domain.GarmentSewingOuts.Commands
             RuleFor(r => r.UnitTo.Id).NotEmpty().WithMessage("Unit Tujuan Tidak Boleh Kosong").OverridePropertyName("UnitTo").When(w => w.UnitTo != null);
 
             RuleFor(r => r.UnitTo.Code).NotEqual(r=>r.Unit.Code).WithMessage("Unit Tujuan dan Unit Tidak Boleh Sama").OverridePropertyName("UnitTo").When(a=> a.SewingTo=="SEWING" && a.Unit!=null && a.UnitTo!=null);
+            RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
 
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.SewingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sewing Out Tidak Boleh Kosong");

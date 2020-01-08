@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Infrastructure.External.DanLirisClient.Microservice.Cache;
 using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
+using Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepare;
 using Manufactures.Domain.GarmentPreparings.Commands;
 using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Dtos;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -269,8 +271,7 @@ namespace Manufactures.Controllers.Api
 
             return Ok(order.Identity);
         }
-
-        [HttpGet("loader/ro")]
+		[HttpGet("loader/ro")]
         public async Task<IActionResult> GetLoaderByRO(string keyword, string filter = "{}")
         {
             var query = _garmentPreparingRepository.Read(null, null, filter);
@@ -286,5 +287,46 @@ namespace Manufactures.Controllers.Api
 
             return Ok(rOs);
         }
-    }
+		[HttpGet("monitoring")]
+		public async Task<IActionResult> GetMonitoring(int unit, DateTime dateFrom, DateTime dateTo,int page = 1, int size = 25, string Order = "{}")
+		{
+			VerifyUser();
+			GetMonitoringPrepareQuery query = new GetMonitoringPrepareQuery(page,size, Order, unit,dateFrom,dateTo,WorkContext.Token);
+			var viewModel = await Mediator.Send(query);
+
+			return Ok(viewModel.garmentMonitorings , info: new
+			{
+				page,
+				size,
+				viewModel.count
+			});
+		}
+		[HttpGet("download")]
+		public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+		{
+			try
+			{
+				VerifyUser();
+				GetXlsPrepareQuery query = new GetXlsPrepareQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+				byte[] xlsInBytes;
+
+				var xls = await Mediator.Send(query);
+
+				string filename = "Laporan Prepare";
+
+				if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+				if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+				filename += ".xlsx";
+
+				xlsInBytes = xls.ToArray();
+				var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+				return file;
+			}
+			catch (Exception e)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+			}
+		}
+	}
 }

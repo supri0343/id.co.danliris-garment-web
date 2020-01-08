@@ -1,7 +1,11 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Application.GarmentSewingOuts.Queries.GetGarmentSewingOutsByRONo;
+using Manufactures.Application.GarmentSewingOuts.Queries.GetGarmentSewingOutsDynamic;
+using Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentSewingOuts.Commands;
+using Manufactures.Domain.GarmentSewingOuts.ReadModels;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
 using Manufactures.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +14,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -182,5 +187,72 @@ namespace Manufactures.Controllers.Api
                 count
             });
         }
-    }
+
+        [HttpGet("loader-by-ro")]
+        public async Task<IActionResult> GetLoaderByRO(string keyword, string filter = "{}")
+        {
+            VerifyUser();
+
+            var result = await Mediator.Send(new GetGarmentSewingOutsByRONoQuery(keyword, filter));
+
+            return Ok(result.data);
+        }
+
+        [HttpGet("dynamic")]
+        public async Task<IActionResult> GetDynamic(int page = 1, int size = 25, string order = "{}", string search = "[]", string select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var result = await Mediator.Send(new GetGarmentSewingOutsDynamicQuery(page, size, order, search, select, keyword, filter));
+
+            return Ok(result.data, info: new
+            {
+                page,
+                size,
+                result.count
+            });
+        }
+
+		[HttpGet("monitoring")]
+		public async Task<IActionResult> GetMonitoring(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+		{
+			VerifyUser();
+			GetMonitoringSewingQuery query = new GetMonitoringSewingQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+			var viewModel = await Mediator.Send(query);
+
+			return Ok(viewModel.garmentMonitorings, info: new
+			{
+				page,
+				size,
+				viewModel.count
+			});
+		}
+		[HttpGet("download")]
+		public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+		{
+			try
+			{
+				VerifyUser();
+				GetXlsSewingQuery query = new GetXlsSewingQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+				byte[] xlsInBytes;
+
+				var xls = await Mediator.Send(query);
+
+				string filename = "Laporan Sewing";
+
+				if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+				if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+				filename += ".xlsx";
+
+				xlsInBytes = xls.ToArray();
+				var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+				return file;
+			}
+			catch (Exception e)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+			}
+		}
+	}
 }

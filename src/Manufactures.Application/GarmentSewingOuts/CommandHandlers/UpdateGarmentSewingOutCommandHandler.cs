@@ -137,6 +137,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                         sewOutItem.SetRemainingQuantity(item.Quantity);
                     }
 
+                    sewOutItem.SetPrice(item.Price);
                     sewOutItem.Modify();
                 }
 

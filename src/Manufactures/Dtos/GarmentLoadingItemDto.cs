@@ -21,6 +21,7 @@ namespace Manufactures.Dtos
             BasicPrice = garmentLoadingItem.BasicPrice;
             SewingDOItemId = garmentLoadingItem.SewingDOItemId;
             LoadingId = garmentLoadingItem.LoadingId;
+            Price = garmentLoadingItem.Price;
         }
 
         public Guid Id { get; set; }
@@ -35,5 +36,6 @@ namespace Manufactures.Dtos
         public double RemainingQuantity { get; set; }
         public double BasicPrice { get; set; }
         public Guid LoadingId { get; set; }
+        public double Price { get; set; }
     }
 }

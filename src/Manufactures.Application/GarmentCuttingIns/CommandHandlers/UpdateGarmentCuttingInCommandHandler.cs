@@ -35,7 +35,7 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
         {
             var cutIn = _garmentCuttingInRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentCuttingIn(o)).Single();
 
-            Dictionary<Guid, double> preparingItemToBeUpdated = new Dictionary<Guid, double>();
+            Dictionary<Guid, decimal> preparingItemToBeUpdated = new Dictionary<Guid, decimal>();
 
             _garmentCuttingInItemRepository.Find(o => o.CutInId == cutIn.Identity).ForEach(async cutInItem =>
             {
@@ -44,7 +44,7 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
                 {
                     var detail = item.Details.Where(o => o.Id == cutInDetail.Identity).Single();
 
-                    var diffPreparingQuantity = cutInDetail.PreparingQuantity - detail.PreparingQuantity;
+                    decimal diffPreparingQuantity = (decimal)cutInDetail.PreparingQuantity - (decimal)detail.PreparingQuantity;
 
                     if (preparingItemToBeUpdated.ContainsKey(cutInDetail.PreparingItemId))
                     {
@@ -58,6 +58,8 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
                     cutInDetail.SetCuttingInQuantity(detail.CuttingInQuantity);
                     cutInDetail.SetPreparingQuantity(detail.PreparingQuantity);
                     cutInDetail.SetRemainingQuantity(detail.RemainingQuantity);
+                    cutInDetail.SetPrice(detail.Price);
+                    cutInDetail.SetFC(detail.FC);
 
                     cutInDetail.Modify();
                     await _garmentCuttingInDetailRepository.Update(cutInDetail);
@@ -70,11 +72,11 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
             foreach (var preparingItem in preparingItemToBeUpdated)
             {
                 var garmentPreparingItem = _garmentPreparingItemRepository.Query.Where(x => x.Identity == preparingItem.Key).Select(s => new GarmentPreparingItem(s)).Single();
-                garmentPreparingItem.setRemainingQuantity(garmentPreparingItem.RemainingQuantity + preparingItem.Value);
+                garmentPreparingItem.setRemainingQuantity(Convert.ToDouble((decimal)garmentPreparingItem.RemainingQuantity + preparingItem.Value));
                 garmentPreparingItem.SetModified();
                 await _garmentPreparingItemRepository.Update(garmentPreparingItem);
             }
-
+            cutIn.SetFC(request.FC);
             cutIn.Modify();
             await _garmentCuttingInRepository.Update(cutIn);
 
