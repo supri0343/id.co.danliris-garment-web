@@ -76,7 +76,7 @@ namespace Manufactures.Tests.Queries.GarmentLoadings
 			Guid guidCuttingOut = Guid.NewGuid();
 			Guid guidCuttingOutItem = Guid.NewGuid();
 			Guid guidCuttingOutDetail = Guid.NewGuid();
-			GetMonitoringLoadingQuery getMonitoring = new GetMonitoringLoadingQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now, "token");
+			GetMonitoringLoadingQuery getMonitoring = new GetMonitoringLoadingQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "token");
 
 			_mockGarmentLoadingItemRepository
 				.Setup(s => s.Query)
