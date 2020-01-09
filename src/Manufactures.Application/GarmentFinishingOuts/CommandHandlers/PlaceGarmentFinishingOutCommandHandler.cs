@@ -122,36 +122,20 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
 
                             await _garmentFinishingOutDetailRepository.Update(garmentFinishingOutDetail);
 
-                            string finStock = detail.Size.Id + "~" + detail.Size.Size + "~" + detail.Uom.Id + "~"+ detail.Uom.Unit +"~" + item.BasicPrice;
-
-                            //GarmentFinishedGoodStock finStock = new GarmentFinishedGoodStock(
-                            //    Guid.Empty,
-                            //    "",
-                            //    request.RONo,
-                            //    request.Article,
-                            //    new UnitDepartmentId(request.Unit.Id),
-                            //    request.Unit.Code,
-                            //    request.Unit.Name,
-                            //    new GarmentComodityId(request.Comodity.Id),
-                            //    request.Comodity.Code,
-                            //    request.Comodity.Name,
-                            //    new SizeId(detail.Size.Id),
-                            //    detail.Size.Size,
-                            //    new UomId(detail.Uom.Id),
-                            //    detail.Uom.Unit,
-                            //    0,
-                            //    item.BasicPrice,
-                            //    0
-                            //    );
-
-                            if (finGood.ContainsKey(finStock))
+                            if (request.FinishingTo == "GUDANG JADI")
                             {
-                                finGood[finStock] += detail.Quantity;
+                                string finStock = detail.Size.Id + "~" + detail.Size.Size + "~" + detail.Uom.Id + "~" + detail.Uom.Unit + "~" + item.BasicPrice;
+
+                                if (finGood.ContainsKey(finStock))
+                                {
+                                    finGood[finStock] += detail.Quantity;
+                                }
+                                else
+                                {
+                                    finGood.Add(finStock, detail.Quantity);
+                                }
                             }
-                            else
-                            {
-                                finGood.Add(finStock, detail.Quantity);
-                            }
+                               
                         }
                     }
                     else
@@ -165,36 +149,20 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                             finishingInItemToBeUpdated.Add(item.FinishingInItemId, item.Quantity);
                         }
 
-                        string finStock = item.Size.Id + "~" + item.Size.Size + "~" + item.Uom.Id + "~" + item.Uom.Unit + "~" + item.BasicPrice;
-
-                        //GarmentFinishedGoodStock finStock = new GarmentFinishedGoodStock(
-                        //        Guid.Empty,
-                        //        "",
-                        //        request.RONo,
-                        //        request.Article,
-                        //        new UnitDepartmentId(request.Unit.Id),
-                        //        request.Unit.Code,
-                        //        request.Unit.Name,
-                        //        new GarmentComodityId(request.Comodity.Id),
-                        //        request.Comodity.Code,
-                        //        request.Comodity.Name,
-                        //        new SizeId(item.Size.Id),
-                        //        item.Size.Size,
-                        //        new UomId(item.Uom.Id),
-                        //        item.Uom.Unit,
-                        //        0,
-                        //        item.BasicPrice,
-                        //        0
-                        //        );
-
-                        if (finGood.ContainsKey(finStock))
+                        if (request.FinishingTo == "GUDANG JADI")
                         {
-                            finGood[finStock] += item.Quantity;
+                            string finStock = item.Size.Id + "~" + item.Size.Size + "~" + item.Uom.Id + "~" + item.Uom.Unit + "~" + item.BasicPrice;
+
+                            if (finGood.ContainsKey(finStock))
+                            {
+                                finGood[finStock] += item.Quantity;
+                            }
+                            else
+                            {
+                                finGood.Add(finStock, item.Quantity);
+                            }
                         }
-                        else
-                        {
-                            finGood.Add(finStock, item.Quantity);
-                        }
+                        
                     }
                     await _garmentFinishingOutItemRepository.Update(garmentFinishingOutItem);
                 }
@@ -209,135 +177,147 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                 await _garmentFinishingInItemRepository.Update(garmentFinishingInItem);
             }
 
-            int count = 1;
-            List<GarmentFinishedGoodStock> finGoodStocks = new List<GarmentFinishedGoodStock>();
-            foreach(var finGoodStock in finGood)
+            if(request.FinishingTo=="GUDANG JADI")
             {
-                SizeId sizeId = new SizeId(Convert.ToInt32(finGoodStock.Key.Split("~")[0]));
-                string sizeName = finGoodStock.Key.Split("~")[1];
-                UomId uomId = new UomId(Convert.ToInt32(finGoodStock.Key.Split("~")[2]));
-                string uomUnit= finGoodStock.Key.Split("~")[3];
-                double basicPrice = Convert.ToDouble(finGoodStock.Key.Split("~")[4]);
-                var garmentFinishedGoodExist= _garmentFinishedGoodStockRepository.Query.Where(
-                    a=> a.RONo== request.RONo &&
-                        a.Article==request.Article &&
-                        a.BasicPrice== basicPrice &&
-                        a.UnitId==request.Unit.Id &&
-                        new SizeId(a.SizeId)== sizeId &&
-                        a.ComodityId== request.Comodity.Id &&
-                        new UomId(a.UomId)== uomId
-                    ).Select(s => new GarmentFinishedGoodStock(s)).SingleOrDefault();
-
-                double qty = garmentFinishedGoodExist == null ? finGoodStock.Value : (finGoodStock.Value + garmentFinishedGoodExist.Quantity);
-
-                double price = (basicPrice + (double)garmentComodityPrice.Price) * qty; 
-                
-                if (garmentFinishedGoodExist == null)
+                int count = 1;
+                List<GarmentFinishedGoodStock> finGoodStocks = new List<GarmentFinishedGoodStock>();
+                foreach (var finGoodStock in finGood)
                 {
-                    var now = DateTime.Now;
-                    var year = now.ToString("yy");
-                    var month = now.ToString("MM");
-                    var prefix = $"ST{request.Unit.Code.Trim()}{year}{month}";
+                    SizeId sizeId = new SizeId(Convert.ToInt32(finGoodStock.Key.Split("~")[0]));
+                    string sizeName = finGoodStock.Key.Split("~")[1];
+                    UomId uomId = new UomId(Convert.ToInt32(finGoodStock.Key.Split("~")[2]));
+                    string uomUnit = finGoodStock.Key.Split("~")[3];
+                    double basicPrice = Convert.ToDouble(finGoodStock.Key.Split("~")[4]);
+                    var garmentFinishedGoodExist = _garmentFinishedGoodStockRepository.Query.Where(
+                        a => a.RONo == request.RONo &&
+                            a.Article == request.Article &&
+                            a.BasicPrice == basicPrice &&
+                            a.UnitId == request.Unit.Id &&
+                            new SizeId(a.SizeId) == sizeId &&
+                            a.ComodityId == request.Comodity.Id &&
+                            new UomId(a.UomId) == uomId
+                        ).Select(s => new GarmentFinishedGoodStock(s)).SingleOrDefault();
 
-                    var lastFnGoodNo = _garmentFinishedGoodStockRepository.Query.Where(w => w.FinishedGoodStockNo.StartsWith(prefix))
-                    .OrderByDescending(o => o.FinishedGoodStockNo)
-                    .Select(s => int.Parse(s.FinishedGoodStockNo.Replace(prefix, "")))
-                    .FirstOrDefault();
-                    var FinGoodNo = $"{prefix}{(lastFnGoodNo + count).ToString("D4")}";
-                    //string finGoodNo = GenerateFinGoodNo(finGoodStock.Key);
-                    
-                    //int no = int.Parse(finGoodNo.Replace(prefixNo, ""));
-                    //finGoodNo = $"{prefixNo}{(no + count).ToString("D4")}";
-                    GarmentFinishedGoodStock finishedGood = new GarmentFinishedGoodStock(
-                                    Guid.NewGuid(),
-                                    FinGoodNo,
-                                    request.RONo,
-                                    request.Article,
-                                    new UnitDepartmentId(request.Unit.Id),
-                                    request.Unit.Code,
-                                    request.Unit.Name,
-                                    new GarmentComodityId(request.Comodity.Id),
-                                    request.Comodity.Code,
-                                    request.Comodity.Name,
-                                    sizeId,
-                                    sizeName,
-                                    uomId,
-                                    uomUnit,
-                                    qty,
-                                    basicPrice,
-                                    price
-                                    );
-                    count++;
-                    await _garmentFinishedGoodStockRepository.Update(finishedGood);
+                    double qty = garmentFinishedGoodExist == null ? finGoodStock.Value : (finGoodStock.Value + garmentFinishedGoodExist.Quantity);
 
-                    //var stock = finGoodStocks.Where(a => a.RONo == request.RONo &&
-                    //         a.Article == request.Article &&
-                    //         a.BasicPrice == finishedGood.BasicPrice &&
-                    //         a.UnitId == new UnitDepartmentId(request.Unit.Id) &&
-                    //         a.SizeId == finishedGood.SizeId &&
-                    //         a.ComodityId == new GarmentComodityId(request.Comodity.Id) &&
-                    //         a.UomId == finishedGood.UomId).SingleOrDefault();
-                    //if (stock == null)
-                    //{
-                    //    finGoodStocks.Add(finishedGood);
-                    //}
-                    //else
-                    //{
-                    //    finGoodStocks.Remove(stock);
-                        finGoodStocks.Add(finishedGood);
-                    //}
-                    //finGoodStocks.Add(finishedGood);
-                }
-                else
-                {
-                    garmentFinishedGoodExist.SetQuantity(qty);
-                    garmentFinishedGoodExist.SetPrice(price);
-                    garmentFinishedGoodExist.Modify();
+                    double price = (basicPrice + (double)garmentComodityPrice.Price) * qty;
 
-                    await _garmentFinishedGoodStockRepository.Update(garmentFinishedGoodExist);
-                    var stock = finGoodStocks.Where(a => a.RONo == request.RONo &&
-                             a.Article == request.Article &&
-                             a.BasicPrice == garmentFinishedGoodExist.BasicPrice &&
-                             a.UnitId == new UnitDepartmentId(request.Unit.Id) &&
-                             a.SizeId == garmentFinishedGoodExist.SizeId &&
-                             a.ComodityId == new GarmentComodityId(request.Comodity.Id) &&
-                             a.UomId == garmentFinishedGoodExist.UomId).SingleOrDefault();
-                    //if (stock == null)
-                    //{
-                    //    finGoodStocks.Add(garmentFinishedGoodExist);
-                    //}
-                    //else
-                    //{
-                    //    finGoodStocks.Remove(stock);
-                        finGoodStocks.Add(garmentFinishedGoodExist);
-                    //}
-                }
-                
-            }
-
-            foreach (var item in request.Items)
-            {
-                if (item.IsSave)
-                {
-                    if (request.IsDifferentSize)
+                    if (garmentFinishedGoodExist == null)
                     {
-                        foreach(var detail in item.Details)
+                        var now = DateTime.Now;
+                        var year = now.ToString("yy");
+                        var month = now.ToString("MM");
+                        var prefix = $"ST{request.Unit.Code.Trim()}{year}{month}";
+
+                        var lastFnGoodNo = _garmentFinishedGoodStockRepository.Query.Where(w => w.FinishedGoodStockNo.StartsWith(prefix))
+                        .OrderByDescending(o => o.FinishedGoodStockNo)
+                        .Select(s => int.Parse(s.FinishedGoodStockNo.Replace(prefix, "")))
+                        .FirstOrDefault();
+                        var FinGoodNo = $"{prefix}{(lastFnGoodNo + count).ToString("D4")}";
+                        GarmentFinishedGoodStock finishedGood = new GarmentFinishedGoodStock(
+                                        Guid.NewGuid(),
+                                        FinGoodNo,
+                                        request.RONo,
+                                        request.Article,
+                                        new UnitDepartmentId(request.Unit.Id),
+                                        request.Unit.Code,
+                                        request.Unit.Name,
+                                        new GarmentComodityId(request.Comodity.Id),
+                                        request.Comodity.Code,
+                                        request.Comodity.Name,
+                                        sizeId,
+                                        sizeName,
+                                        uomId,
+                                        uomUnit,
+                                        qty,
+                                        basicPrice,
+                                        price
+                                        );
+                        count++;
+                        await _garmentFinishedGoodStockRepository.Update(finishedGood);
+                        finGoodStocks.Add(finishedGood);
+                    }
+                    else
+                    {
+                        garmentFinishedGoodExist.SetQuantity(qty);
+                        garmentFinishedGoodExist.SetPrice(price);
+                        garmentFinishedGoodExist.Modify();
+
+                        await _garmentFinishedGoodStockRepository.Update(garmentFinishedGoodExist);
+                        var stock = finGoodStocks.Where(a => a.RONo == request.RONo &&
+                                 a.Article == request.Article &&
+                                 a.BasicPrice == garmentFinishedGoodExist.BasicPrice &&
+                                 a.UnitId == new UnitDepartmentId(request.Unit.Id) &&
+                                 a.SizeId == garmentFinishedGoodExist.SizeId &&
+                                 a.ComodityId == new GarmentComodityId(request.Comodity.Id) &&
+                                 a.UomId == garmentFinishedGoodExist.UomId).SingleOrDefault();
+                        finGoodStocks.Add(garmentFinishedGoodExist);
+                    }
+
+                }
+
+                foreach (var item in request.Items)
+                {
+                    if (item.IsSave)
+                    {
+                        if (request.IsDifferentSize)
+                        {
+                            foreach (var detail in item.Details)
+                            {
+                                var stock = finGoodStocks.Where(a => a.RONo == request.RONo &&
+                                 a.Article == request.Article &&
+                                 a.BasicPrice == item.BasicPrice &&
+                                 a.UnitId == new UnitDepartmentId(request.Unit.Id) &&
+                                 a.SizeId == new SizeId(detail.Size.Id) &&
+                                 a.ComodityId == new GarmentComodityId(request.Comodity.Id) &&
+                                 a.UomId == new UomId(detail.Uom.Id)).Single();
+
+                                double price = (stock.BasicPrice + (double)garmentComodityPrice.Price) * detail.Quantity;
+
+                                GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = new GarmentFinishedGoodStockHistory(
+                                        Guid.NewGuid(),
+                                        stock.Identity,
+                                        item.Id,
+                                        detail.Id,
+                                        Guid.Empty,
+                                        Guid.Empty,
+                                        "IN",
+                                        stock.RONo,
+                                        stock.Article,
+                                        stock.UnitId,
+                                        stock.UnitCode,
+                                        stock.UnitName,
+                                        stock.ComodityId,
+                                        stock.ComodityCode,
+                                        stock.ComodityName,
+                                        stock.SizeId,
+                                        stock.SizeName,
+                                        stock.UomId,
+                                        stock.UomUnit,
+                                        detail.Quantity,
+                                        stock.BasicPrice,
+                                        price
+                                    );
+                                await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
+                            }
+                        }
+                        else
                         {
                             var stock = finGoodStocks.Where(a => a.RONo == request.RONo &&
                              a.Article == request.Article &&
                              a.BasicPrice == item.BasicPrice &&
                              a.UnitId == new UnitDepartmentId(request.Unit.Id) &&
-                             a.SizeId == new SizeId(detail.Size.Id) &&
+                             a.SizeId == new SizeId(item.Size.Id) &&
                              a.ComodityId == new GarmentComodityId(request.Comodity.Id) &&
-                             a.UomId == new UomId(detail.Uom.Id)).Single();
+                             a.UomId == new UomId(item.Uom.Id)).Single();
 
-                            double price= (stock.BasicPrice + (double)garmentComodityPrice.Price) * detail.Quantity;
+                            double price = (stock.BasicPrice + (double)garmentComodityPrice.Price) * item.Quantity;
 
                             GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = new GarmentFinishedGoodStockHistory(
                                     Guid.NewGuid(),
                                     stock.Identity,
                                     item.Id,
-                                    detail.Id,
+                                    item.Id,
                                     Guid.Empty,
                                     Guid.Empty,
                                     "IN",
@@ -353,55 +333,17 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                                     stock.SizeName,
                                     stock.UomId,
                                     stock.UomUnit,
-                                    detail.Quantity,
+                                    item.Quantity,
                                     stock.BasicPrice,
                                     price
                                 );
                             await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
                         }
                     }
-                    else
-                    {
-                        var stock = finGoodStocks.Where(a => a.RONo == request.RONo &&
-                         a.Article == request.Article &&
-                         a.BasicPrice == item.BasicPrice &&
-                         a.UnitId == new UnitDepartmentId(request.Unit.Id) &&
-                         a.SizeId == new SizeId(item.Size.Id) &&
-                         a.ComodityId == new GarmentComodityId(request.Comodity.Id) &&
-                         a.UomId == new UomId(item.Uom.Id)).Single();
 
-                        double price = (stock.BasicPrice + (double)garmentComodityPrice.Price) * item.Quantity;
-
-                        GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = new GarmentFinishedGoodStockHistory(
-                                Guid.NewGuid(),
-                                stock.Identity,
-                                item.Id,
-                                item.Id,
-                                Guid.Empty,
-                                Guid.Empty,
-                                "IN",
-                                stock.RONo,
-                                stock.Article,
-                                stock.UnitId,
-                                stock.UnitCode,
-                                stock.UnitName,
-                                stock.ComodityId,
-                                stock.ComodityCode,
-                                stock.ComodityName,
-                                stock.SizeId,
-                                stock.SizeName,
-                                stock.UomId,
-                                stock.UomUnit,
-                                item.Quantity,
-                                stock.BasicPrice,
-                                price
-                            );
-                        await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
-                    }
                 }
-                
             }
-
+            
             await _garmentFinishingOutRepository.Update(garmentFinishingOut);
 
             _storage.Save();
