@@ -27,14 +27,14 @@ namespace Manufactures.Domain.GarmentFinishingOuts
         public double BasicPrice { get; private set; }
         public double Price { get; private set; }
 
-        public GarmentFinishingOutItem(Guid identity, Guid sewingOutId, Guid sewingInId, Guid sewingInItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity, double basicPrice, double price) : base(identity)
+        public GarmentFinishingOutItem(Guid identity, Guid finishingOutId, Guid finishingInId, Guid finishingInItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity, double basicPrice, double price) : base(identity)
         {
             //MarkTransient();
 
             Identity = identity;
-            FinishingOutId = sewingOutId;
-            FinishingInId = sewingInId;
-            FinishingInItemId = sewingInItemId;
+            FinishingOutId = finishingOutId;
+            FinishingInId = finishingInId;
+            FinishingInItemId = finishingInItemId;
             ProductId = productId;
             ProductCode = productCode;
             ProductName = productName;

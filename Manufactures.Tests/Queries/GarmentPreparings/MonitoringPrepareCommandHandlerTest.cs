@@ -106,7 +106,7 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 			Guid guidAvalProductItem = Guid.NewGuid();
 			Guid guidDeliveryReturn = Guid.NewGuid();
 			Guid guidDeliveryReturnItem = Guid.NewGuid();
-			GetMonitoringPrepareQuery getXlsPrepareQuery = new GetMonitoringPrepareQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now, "token");
+			GetMonitoringPrepareQuery getXlsPrepareQuery = new GetMonitoringPrepareQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "token");
 
 			_mockGarmentPreparingItemRepository
 				.Setup(s => s.Query)
