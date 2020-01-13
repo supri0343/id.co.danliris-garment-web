@@ -1,5 +1,7 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
+using Manufactures.Domain.GarmentFinishingOuts;
+using Manufactures.Domain.GarmentFinishingOuts.Repositories;
 using Manufactures.Domain.GarmentLoadings;
 using Manufactures.Domain.GarmentLoadings.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
@@ -24,6 +26,7 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
         private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
         private readonly IGarmentLoadingItemRepository _garmentLoadingItemRepository;
         private readonly IGarmentSewingOutItemRepository _garmentSewingOutItemRepository;
+        private readonly IGarmentFinishingOutItemRepository _garmentFinishingOutItemRepository;
 
         public PlaceGarmentSewingInCommandHandler(IStorage storage)
         {
@@ -33,6 +36,7 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
             _garmentLoadingItemRepository = storage.GetRepository<IGarmentLoadingItemRepository>();
             //_garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _garmentSewingOutItemRepository = storage.GetRepository<IGarmentSewingOutItemRepository>();
+            _garmentFinishingOutItemRepository = storage.GetRepository<IGarmentFinishingOutItemRepository>();
         }
 
         public async Task<GarmentSewingIn> Handle(PlaceGarmentSewingInCommand request, CancellationToken cancellationToken)
@@ -67,6 +71,8 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
                     item.SewingOutItemId,
                     item.SewingOutDetailId,
                     item.LoadingItemId,
+                    item.FinishingOutItemId,
+                    item.FinishingOutDetailId,
                     new ProductId(item.Product.Id),
                     item.Product.Code,
                     item.Product.Name,
@@ -100,7 +106,15 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
                     garmentSewingOutItem.Modify();
                     await _garmentSewingOutItemRepository.Update(garmentSewingOutItem);
                 }
-                
+                else if (request.SewingFrom == "FINISHING")
+                {
+                    var garmentFinishingOutItem = _garmentFinishingOutItemRepository.Query.Where(s => s.Identity == item.FinishingOutItemId).Select(s => new GarmentFinishingOutItem(s)).Single();
+
+                    garmentFinishingOutItem.SetRemainingQuantity(garmentFinishingOutItem.RemainingQuantity - item.Quantity);
+
+                    garmentFinishingOutItem.Modify();
+                    await _garmentFinishingOutItemRepository.Update(garmentFinishingOutItem);
+                }
 
                 await _garmentSewingInItemRepository.Update(garmentSewingInItem);
             }

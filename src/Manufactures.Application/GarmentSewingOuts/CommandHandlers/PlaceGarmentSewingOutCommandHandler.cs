@@ -1,5 +1,7 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
+using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.GarmentCuttingIns;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
@@ -27,6 +29,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
         private readonly IGarmentCuttingInRepository _garmentCuttingInRepository;
         private readonly IGarmentCuttingInItemRepository _garmentCuttingInItemRepository;
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
+        private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
 
         public PlaceGarmentSewingOutCommandHandler(IStorage storage)
         {
@@ -38,6 +41,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             _garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
             _garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
+            _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
         }
 
         public async Task<GarmentSewingOut> Handle(PlaceGarmentSewingOutCommand request, CancellationToken cancellationToken)
@@ -47,6 +51,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             Guid sewingOutId = Guid.NewGuid();
             string sewingOutNo = GenerateSewOutNo(request);
 
+            
             GarmentSewingOut garmentSewingOut = new GarmentSewingOut(
                 sewingOutId,
                 sewingOutNo,
@@ -94,6 +99,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                         item.BasicPrice,
                         item.Price
                     );
+                    item.Id = garmentSewingOutItem.Identity;
                     if (request.IsDifferentSize)
                     {
                         foreach (var detail in item.Details)
@@ -107,7 +113,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                                 new UomId(detail.Uom.Id),
                                 detail.Uom.Unit
                             );
-
+                            detail.Id = garmentSewingOutDetail.Identity;
                             if (sewingInItemToBeUpdated.ContainsKey(item.SewingInItemId))
                             {
                                 sewingInItemToBeUpdated[item.SewingInItemId] += detail.Quantity;
@@ -158,6 +164,8 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
 
             if (request.SewingTo == "CUTTING")
             {
+                GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && a.UnitId == request.Unit.Id && a.ComodityId == request.Comodity.Id).Select(s => new GarmentComodityPrice(s)).Single();
+
                 var now = DateTime.Now;
                 var year = now.ToString("yy");
                 var month = now.ToString("MM");
@@ -220,8 +228,8 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                                     new UomId(detail.Uom.Id),
                                     detail.Uom.Unit,
                                     detail.Quantity,
-                                    0,
-                                    0,
+                                    item.BasicPrice,
+                                    (item.BasicPrice + ((double)garmentComodityPrice.Price*25/100))*detail.Quantity ,
                                     0
                                     );
 
@@ -248,8 +256,8 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                                     new UomId(item.Uom.Id),
                                     item.Uom.Unit,
                                     item.Quantity,
-                                    0,
-                                    0,
+                                    item.BasicPrice,
+                                    (item.BasicPrice + ((double)garmentComodityPrice.Price * 25 / 100)) * item.Quantity,
                                     0
                                     );
                             await _garmentCuttingInDetailRepository.Update(garmentCuttingInDetail);
