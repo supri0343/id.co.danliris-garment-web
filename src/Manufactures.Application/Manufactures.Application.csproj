@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Manufactures.Data.EntityFrameworkCore\Manufactures.Data.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="GarmentScrapClassifications\Queries\" />
+  </ItemGroup>
+
 </Project>
