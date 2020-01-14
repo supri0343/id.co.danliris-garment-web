@@ -219,7 +219,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                                     new ProductId(item.Product.Id),
                                     item.Product.Code,
                                     item.Product.Name,
-                                    item.DesignColor,
+                                    item.Color,
                                     null,
                                     0,
                                     new UomId(0),
