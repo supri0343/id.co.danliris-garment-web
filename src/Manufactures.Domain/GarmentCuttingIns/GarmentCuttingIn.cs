@@ -79,6 +79,15 @@ namespace Manufactures.Domain.GarmentCuttingIns
             }
         }
 
+        public void SetDate(DateTimeOffset CuttingInDate)
+        {
+            if (this.CuttingInDate != CuttingInDate)
+            {
+                this.CuttingInDate = CuttingInDate;
+                ReadModel.CuttingInDate = CuttingInDate;
+            }
+        }
+
         public void Modify()
         {
             MarkModified();

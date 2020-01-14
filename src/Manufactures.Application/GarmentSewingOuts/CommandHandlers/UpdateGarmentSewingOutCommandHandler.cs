@@ -60,7 +60,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                     cutInItem.Modify();
                     await _garmentCuttingInItemRepository.Update(cutInItem);
                 });
-
+                cutIn.SetDate(request.SewingOutDate);
                 cutIn.Modify();
                 await _garmentCuttingInRepository.Update(cutIn);
             }
@@ -190,7 +190,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                                     new ProductId(item.Product.Id),
                                     item.Product.Code,
                                     item.Product.Name,
-                                    item.DesignColor,
+                                    item.Color,
                                     null,
                                     0,
                                     new UomId(0),
@@ -268,6 +268,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                             cuttingInDetail.SetCuttingInQuantity(Convert.ToInt32(sewOutItem.Quantity));
                             cuttingInDetail.SetPrice((item.BasicPrice + ((double)garmentComodityPrice.Price * 25 / 100)) * sewOutItem.Quantity);
                             cuttingInDetail.SetRemainingQuantity(Convert.ToInt32(sewOutItem.Quantity));
+                            
                             cuttingInDetail.Modify();
                             await _garmentCuttingInDetailRepository.Update(cuttingInDetail);
                         }
