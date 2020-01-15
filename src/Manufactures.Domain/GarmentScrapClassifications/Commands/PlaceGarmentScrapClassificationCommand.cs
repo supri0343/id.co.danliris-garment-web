@@ -12,8 +12,8 @@ namespace Manufactures.Domain.GarmentScrapClassifications.Commands
 		{
 			public PlaceGarmentScrapClassificationCommandValidator()
 			{
-				RuleFor(r => r.Code).NotNull().WithMessage("Kode Jenis Barang Aval sudah ada");
-				RuleFor(r => r.Name).NotNull().WithMessage("Nama Jenis Barang Aval sudah ada");
+				RuleFor(r => r.Code).NotNull().WithMessage("Kode Jenis Barang Aval harus diisi");
+				RuleFor(r => r.Name).NotNull().WithMessage("Nama Jenis Barang Aval harus diisi");
 				
 			}
 		}

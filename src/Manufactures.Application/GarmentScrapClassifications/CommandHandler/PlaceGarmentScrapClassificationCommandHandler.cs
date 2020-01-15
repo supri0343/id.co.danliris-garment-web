@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Manufactures.Application.GarmentScrapClassifications.CommandHandler
 {
-	class PlaceGarmentScrapClassificationCommandHandler : ICommandHandler<PlaceGarmentScrapClassificationCommand, GarmentScrapClassification>
+	public class PlaceGarmentScrapClassificationCommandHandler : ICommandHandler<PlaceGarmentScrapClassificationCommand, GarmentScrapClassification>
 	{
 		private readonly IStorage _storage;
 
