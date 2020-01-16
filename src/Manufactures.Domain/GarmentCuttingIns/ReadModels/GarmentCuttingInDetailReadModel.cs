@@ -38,6 +38,8 @@ namespace Manufactures.Domain.GarmentCuttingIns.ReadModels
         public double Price { get; internal set; }
         public double FC { get; internal set; }
 
+        public string Color { get; internal set; }
+
         public virtual GarmentCuttingInItemReadModel GarmentCuttingInItem { get; internal set; }
     }
 }
