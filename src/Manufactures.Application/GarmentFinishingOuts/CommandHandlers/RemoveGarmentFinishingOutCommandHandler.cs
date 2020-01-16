@@ -66,7 +66,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                             finishingInItemToBeUpdated.Add(finishOutItem.FinishingInItemId, finishOutDetail.Quantity);
                         }
 
-                        if(finishOut.FinishingTo=="GUDANG LAIN")
+                        if(finishOut.FinishingTo=="GUDANG JADI")
                         {
                             var garmentFinishedGoodExist = _garmentFinishedGoodStockRepository.Query.Where(
                             a => a.RONo == finishOut.RONo &&
@@ -108,7 +108,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                         finishingInItemToBeUpdated.Add(finishOutItem.FinishingInItemId, finishOutItem.Quantity);
                     }
 
-                    if (finishOut.FinishingTo == "GUDANG LAIN")
+                    if (finishOut.FinishingTo == "GUDANG JADI")
                     {
                         var garmentFinishedGoodExist = _garmentFinishedGoodStockRepository.Query.Where(
                             a => a.RONo == finishOut.RONo &&
@@ -149,7 +149,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                 garmentSewInItem.Modify();
                 await _garmentFinishingInItemRepository.Update(garmentSewInItem);
             }
-            if (finishOut.FinishingTo == "GUDANG LAIN")
+            if (finishOut.FinishingTo == "GUDANG JADI")
             {
                 foreach (var finGoodStock in finGood)
                 {
@@ -158,7 +158,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                         ).Select(s => new GarmentFinishedGoodStock(s)).Single();
 
                     garmentFinishedGoodExist.SetQuantity(garmentFinishedGoodExist.Quantity - finGoodStock.Value);
-                    garmentFinishedGoodExist.SetPrice((garmentFinishedGoodExist.BasicPrice + (double)garmentComodityPrice.Price) * garmentFinishedGoodExist.Quantity);
+                    garmentFinishedGoodExist.SetPrice((garmentFinishedGoodExist.BasicPrice + (double)garmentComodityPrice.Price) * (garmentFinishedGoodExist.Quantity - finGoodStock.Value));
                     garmentFinishedGoodExist.Modify();
 
                     await _garmentFinishedGoodStockRepository.Update(garmentFinishedGoodExist);
