@@ -96,6 +96,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                         item.BasicPrice,
                         item.Price
                     );
+                    item.Id = garmentFinishingOutItemId;
                     if (request.IsDifferentSize)
                     {
                         foreach (var detail in item.Details)
@@ -110,7 +111,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                                 new UomId(detail.Uom.Id),
                                 detail.Uom.Unit
                             );
-
+                            detail.Id = garmentFinishingOutDetailId;
                             if (finishingInItemToBeUpdated.ContainsKey(item.FinishingInItemId))
                             {
                                 finishingInItemToBeUpdated[item.FinishingInItemId] += detail.Quantity;

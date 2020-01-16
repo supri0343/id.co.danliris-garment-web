@@ -219,7 +219,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                                     new ProductId(item.Product.Id),
                                     item.Product.Code,
                                     item.Product.Name,
-                                    item.Color,
+                                    item.DesignColor,
                                     null,
                                     0,
                                     new UomId(0),
@@ -230,7 +230,8 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                                     detail.Quantity,
                                     item.BasicPrice,
                                     (item.BasicPrice + ((double)garmentComodityPrice.Price*25/100))*detail.Quantity ,
-                                    0
+                                    0,
+                                    item.Color
                                     );
 
                                 await _garmentCuttingInDetailRepository.Update(garmentCuttingInDetail);
@@ -258,7 +259,8 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                                     item.Quantity,
                                     item.BasicPrice,
                                     (item.BasicPrice + ((double)garmentComodityPrice.Price * 25 / 100)) * item.Quantity,
-                                    0
+                                    0,
+                                    item.Color
                                     );
                             await _garmentCuttingInDetailRepository.Update(garmentCuttingInDetail);
                         }
