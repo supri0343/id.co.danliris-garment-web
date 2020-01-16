@@ -13,10 +13,11 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Configs
 
             builder.Property(p => p.ProductCode).HasMaxLength(25);
             builder.Property(p => p.ProductName).HasMaxLength(100);
-            builder.Property(p => p.DesignColor).HasMaxLength(25);
+            builder.Property(p => p.DesignColor).HasMaxLength(50);
             builder.Property(p => p.FabricType).HasMaxLength(25);
             builder.Property(p => p.PreparingUomUnit).HasMaxLength(10);
             builder.Property(p => p.CuttingInUomUnit).HasMaxLength(10);
+            builder.Property(p => p.Color).HasMaxLength(50);
 
             builder.HasOne(w => w.GarmentCuttingInItem)
                 .WithMany(h => h.Details)
