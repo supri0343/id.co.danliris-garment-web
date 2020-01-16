@@ -112,13 +112,15 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                     }
                     else
                     {
-                        GarmentCuttingInDetail cuttingInDetail = _garmentCuttingInDetailRepository.Query.Where(a => a.SewingOutItemId == sewOutItem.Identity).Select(a => new GarmentCuttingInDetail(a)).Single();
-                        GarmentCuttingInItem cuttingInItem = _garmentCuttingInItemRepository.Query.Where(a => a.Identity == cuttingInDetail.CutInItemId).Select(a => new GarmentCuttingInItem(a)).Single();
-                        cuttingInDetail.Remove();
-                        await _garmentCuttingInDetailRepository.Update(cuttingInDetail);
-                        cuttingInItem.Remove();
-                        await _garmentCuttingInItemRepository.Update(cuttingInItem);
-
+                        if (sewOut.SewingTo == "CUTTING")
+                        {
+                            GarmentCuttingInDetail cuttingInDetail = _garmentCuttingInDetailRepository.Query.Where(a => a.SewingOutItemId == sewOutItem.Identity).Select(a => new GarmentCuttingInDetail(a)).Single();
+                            GarmentCuttingInItem cuttingInItem = _garmentCuttingInItemRepository.Query.Where(a => a.Identity == cuttingInDetail.CutInItemId).Select(a => new GarmentCuttingInItem(a)).Single();
+                            cuttingInDetail.Remove();
+                            await _garmentCuttingInDetailRepository.Update(cuttingInDetail);
+                            cuttingInItem.Remove();
+                            await _garmentCuttingInItemRepository.Update(cuttingInItem);
+                        }
                     }
 
                     sewOutItem.Remove();
@@ -180,7 +182,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
 
                                 if (sewOut.SewingTo == "CUTTING")
                                 {
-                                    Guid cuttingInItemId = _garmentCuttingInDetailRepository.Query.Where(a => a.SewingOutDetailId == item.Details.First().Id).Select(a => new GarmentCuttingInDetail(a)).First().CutInItemId;
+                                    Guid cuttingInItemId = _garmentCuttingInDetailRepository.Query.Where(a => a.SewingOutItemId == sewOutItem.Identity).Select(a => new GarmentCuttingInDetail(a)).First().CutInItemId;
                                     GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(
                                     Guid.NewGuid(),
                                     cuttingInItemId,
@@ -190,7 +192,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                                     new ProductId(item.Product.Id),
                                     item.Product.Code,
                                     item.Product.Name,
-                                    item.Color,
+                                    item.DesignColor,
                                     null,
                                     0,
                                     new UomId(0),
@@ -201,7 +203,8 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                                     garmentSewingOutDetail.Quantity,
                                     item.BasicPrice,
                                     (item.BasicPrice + ((double)garmentComodityPrice.Price * 25 / 100)) * garmentSewingOutDetail.Quantity,
-                                    0
+                                    0,
+                                    item.Color
                                     );
 
                                     await _garmentCuttingInDetailRepository.Update(garmentCuttingInDetail);
@@ -227,7 +230,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
 
                                 if (sewOut.SewingTo == "CUTTING")
                                 {
-                                    Guid cuttingInItemId = _garmentCuttingInDetailRepository.Query.Where(a => a.SewingOutDetailId == item.Details.First().Id).Select(a => new GarmentCuttingInDetail(a)).First().CutInItemId;
+                                    Guid cuttingInItemId = _garmentCuttingInDetailRepository.Query.Where(a => a.SewingOutItemId == sewOutItem.Identity).Select(a => new GarmentCuttingInDetail(a)).First().CutInItemId;
                                     GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(
                                     Guid.NewGuid(),
                                     cuttingInItemId,
@@ -248,7 +251,8 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                                     garmentSewingOutDetail.Quantity,
                                     item.BasicPrice,
                                     (item.BasicPrice + ((double)garmentComodityPrice.Price * 25 / 100)) * garmentSewingOutDetail.Quantity,
-                                    0
+                                    0,
+                                    item.Color
                                     );
 
                                     await _garmentCuttingInDetailRepository.Update(garmentCuttingInDetail);
