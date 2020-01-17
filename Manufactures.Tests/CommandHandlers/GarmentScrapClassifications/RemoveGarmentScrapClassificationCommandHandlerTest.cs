@@ -39,7 +39,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentScrapClassifications
 
 			Guid identity = Guid.NewGuid();
 
-			RemoveGarmentScrapClassificationCommand removeGarmentAvalComponentCommand = new RemoveGarmentScrapClassificationCommand(avalComponentGuid);
+			RemoveGarmentScrapClassificationCommand removeGarmentAvalComponentCommand = new RemoveGarmentScrapClassificationCommand(identity);
 
 			_mockGarmentScrapClassificationRepository
 				.Setup(s => s.Query)

@@ -35,11 +35,8 @@ namespace Manufactures.Application.GarmentScrapClassifications.CommandHandler
 			gscrapClassification.setDescription(request.Description);
 			gscrapClassification.Modify();
 			await _garmentScrapClassificationRepository.Update(gscrapClassification);
-		
 			_storage.Save();
 			return gscrapClassification;
-
-			
 		}
 
 	}

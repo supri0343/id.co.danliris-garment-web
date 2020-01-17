@@ -25,7 +25,6 @@ namespace Manufactures.Domain.GarmentFinishingOuts.ReadModels
         public string ComodityName { get; internal set; }
         public DateTimeOffset FinishingOutDate { get; internal set; }
         public bool IsDifferentSize { get; internal set; }
-
         public virtual List<GarmentFinishingOutItemReadModel> GarmentFinishingOutItem { get; internal set; }
 
     }
