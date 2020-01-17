@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20200111035817_addScrapClassification")]
+    partial class addScrapClassification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,9 +325,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<double>("BasicPrice");
 
-                    b.Property<string>("Color")
-                        .HasMaxLength(50);
-
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(32);
@@ -349,7 +348,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(50);
+                        .HasMaxLength(25);
 
                     b.Property<double>("FC");
 
@@ -1816,10 +1815,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("DesignColor")
                         .HasMaxLength(100);
-
-                    b.Property<Guid>("FinishingOutDetailId");
-
-                    b.Property<Guid>("FinishingOutItemId");
 
                     b.Property<Guid>("LoadingItemId");
 
