@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Manufactures.Domain.GarmentScrapTransactions.ReadModels
 {
-	class GarmentScrapTransactionItemReadModel : ReadModelBase
+	public class GarmentScrapTransactionItemReadModel : ReadModelBase
 	{
 		public GarmentScrapTransactionItemReadModel(Guid identity) : base(identity)
 		{

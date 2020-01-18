@@ -18,6 +18,6 @@ namespace Manufactures.Domain.GarmentScrapTransactions.ReadModels
 		public string ScrapSourceName { get; internal set; }
 		public Guid ScrapDestinationId { get; internal set; }
 		public string ScrapDestinationName { get; internal set; }
-		//public virtual List<GarmentScrapTransactionItemReadModel> GarmentScrapTransactionItem { get; internal set; }
+		public virtual List<GarmentScrapTransactionItemReadModel> GarmentScrapTransactionItem { get; internal set; }
 	}
 }

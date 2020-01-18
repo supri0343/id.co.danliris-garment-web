@@ -14,6 +14,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentFinishingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentLoadings.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentScrapClassifications.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentScrapTransactions.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingDOs.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Configs;
@@ -76,6 +77,11 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 
 			modelBuilder.ApplyConfiguration(new GarmentScrapClassificationConfig());
+			modelBuilder.ApplyConfiguration(new GarmentScrapTransactionConfig());
+			modelBuilder.ApplyConfiguration(new GarmentScrapTransactionItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentScrapDestinationConfig());
+			modelBuilder.ApplyConfiguration(new GarmentScrapSourceConfig());
+			modelBuilder.ApplyConfiguration(new GarmentScrapStockConfig());
 		}
     }
 }
