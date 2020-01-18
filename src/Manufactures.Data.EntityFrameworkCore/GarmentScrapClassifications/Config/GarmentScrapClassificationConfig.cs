@@ -24,5 +24,6 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentScrapClassifications.Conf
 			builder.ApplyAuditTrail();
 			builder.ApplySoftDelete();
 		}
+
 	}
 }
