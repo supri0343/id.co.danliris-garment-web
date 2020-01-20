@@ -278,7 +278,7 @@ namespace Manufactures.Controllers.Api
 
             if (!string.IsNullOrWhiteSpace(keyword))
             {
-                query = query.Where(o => o.RONo.Contains(keyword));
+                query = query.Where(o => o.RONo.Contains(keyword) && o.GarmentPreparingItem.Any(a=>a.RemainingQuantity > 0));
             }
 
             var rOs = query.Select(o => new { o.RONo, o.Article }).Distinct().ToList();
