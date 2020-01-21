@@ -65,15 +65,17 @@ namespace Manufactures.Tests.CommandHandlers.GarmentFinishingOuts
             // Arrange
             Guid finishingInItemGuid = Guid.NewGuid();
             Guid finishingOutGuid = Guid.NewGuid();
+            Guid finishingOutItemGuid = Guid.NewGuid();
+            Guid finishingOutDetailGuid = Guid.NewGuid();
             RemoveGarmentFinishingOutCommandHandler unitUnderTest = CreateRemoveGarmentFinishingOutCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
             RemoveGarmentFinishingOutCommand RemoveGarmentFinishingOutCommand = new RemoveGarmentFinishingOutCommand(finishingOutGuid);
 
             GarmentFinishingOut garmentFinishingOut = new GarmentFinishingOut(
                 finishingOutGuid,
-                "no", new UnitDepartmentId(1),"uCode","Uname","Gudang Jadi", DateTimeOffset.Now, "ro", "article",
+                "no", new UnitDepartmentId(1),"uCode","Uname","GUDANG JADI", DateTimeOffset.Now, "ro", "article",
                  new UnitDepartmentId(1), "uCode", "Uname", new GarmentComodityId(1),"cCode", "cName",false );
-
+        
             _mockFinishingOutRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentFinishingOutReadModel>()
@@ -84,7 +86,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentFinishingOuts
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentFinishingOutItemReadModel, bool>>>()))
                 .Returns(new List<GarmentFinishingOutItem>()
                 {
-                    new GarmentFinishingOutItem(Guid.Empty, finishingOutGuid, Guid.Empty,finishingInItemGuid,new ProductId(1),null,null,null,new SizeId(1), null, 1, new UomId(1), null,null, 1,1,1)
+                    new GarmentFinishingOutItem(finishingOutItemGuid, finishingOutGuid, Guid.Empty,finishingInItemGuid,new ProductId(1),null,null,null,new SizeId(1), null, 1, new UomId(1), null,null, 1,1,1)
                 });
             //_mockFinishingOutDetailRepository
             //    .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentFinishingOutDetailReadModel, bool>>>()))
@@ -110,6 +112,18 @@ namespace Manufactures.Tests.CommandHandlers.GarmentFinishingOuts
                 .Returns(new List<GarmentFinishedGoodStockReadModel>
                 {
                     garmentFinishedGoodStock.GetReadModel()
+                }.AsQueryable());
+
+            GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = new GarmentFinishedGoodStockHistory(Guid.NewGuid(), garmentFinishedGoodStock.Identity,
+               finishingOutItemGuid,Guid.Empty, Guid.Empty, Guid.Empty, null, "ro", "article", garmentFinishingOut.UnitId, garmentFinishingOut.UnitCode, garmentFinishingOut.UnitName,
+               garmentFinishingOut.ComodityId, garmentFinishingOut.ComodityCode, garmentFinishingOut.ComodityName,
+               new SizeId(1), null, new UomId(1), null, 1, 1, 1);
+
+            _mockFinishedGoodStockHistoryRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentFinishedGoodStockHistoryReadModel>
+                {
+                    garmentFinishedGoodStockHistory.GetReadModel()
                 }.AsQueryable());
 
             GarmentComodityPrice garmentComodity = new GarmentComodityPrice(
