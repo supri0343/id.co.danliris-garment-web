@@ -1,6 +1,7 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentSewingIns.CommandHandlers;
+using Manufactures.Domain.GarmentFinishingOuts.Repositories;
 using Manufactures.Domain.GarmentLoadings;
 using Manufactures.Domain.GarmentLoadings.ReadModels;
 using Manufactures.Domain.GarmentLoadings.Repositories;
@@ -31,6 +32,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSewingIns
         private readonly Mock<IGarmentSewingInItemRepository> _mockSewingInItemRepository;
         private readonly Mock<IGarmentLoadingItemRepository> _mockLoadingItemRepository;
         private readonly Mock<IGarmentSewingOutItemRepository> _mockSewingOutItemRepository;
+        private readonly Mock<IGarmentFinishingOutItemRepository> _mockFinishingOutItemRepository;
 
         public PlaceGarmentSewingInCommandHandlerTests()
         {
@@ -38,11 +40,13 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSewingIns
             _mockSewingInItemRepository = CreateMock<IGarmentSewingInItemRepository>();
             _mockLoadingItemRepository = CreateMock<IGarmentLoadingItemRepository>();
             _mockSewingOutItemRepository = CreateMock<IGarmentSewingOutItemRepository>();
+            _mockFinishingOutItemRepository = CreateMock<IGarmentFinishingOutItemRepository>();
 
             _MockStorage.SetupStorage(_mockSewingInRepository);
             _MockStorage.SetupStorage(_mockSewingInItemRepository);
             _MockStorage.SetupStorage(_mockLoadingItemRepository);
             _MockStorage.SetupStorage(_mockSewingOutItemRepository);
+            _MockStorage.SetupStorage(_mockFinishingOutItemRepository);
         }
 
         private PlaceGarmentSewingInCommandHandler CreatePlaceGarmentSewingInCommandHandler()
