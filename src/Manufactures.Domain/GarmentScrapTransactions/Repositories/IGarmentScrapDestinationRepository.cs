@@ -7,8 +7,8 @@ using System.Text;
 
 namespace Manufactures.Domain.GarmentScrapTransactions.Repositories
 {
-	public interface IGarmentScrapSourceRepository : IAggregateRepository<GarmentScrapSource, GarmentScrapSourceReadModel>
+	public interface IGarmentScrapDestinationRepository : IAggregateRepository<GarmentScrapDestination, GarmentScrapDestinationReadModel>
 	{
-		IQueryable<GarmentScrapSourceReadModel> Read(int page, int size, string order, string keyword, string filter);
+		IQueryable<GarmentScrapDestinationReadModel> Read(int page, int size, string order, string keyword, string filter);
 	}
 }

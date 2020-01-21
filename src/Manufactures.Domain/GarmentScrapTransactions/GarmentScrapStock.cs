@@ -55,5 +55,18 @@ namespace Manufactures.Domain.GarmentScrapTransactions
 			UomId = readModel.UomId;
 			UomUnit = readModel.UomUnit;
 		}
+
+		public void SetQuantity(double Quantity)
+		{
+			if (this.Quantity != Quantity)
+			{
+				this.Quantity = Quantity;
+				ReadModel.Quantity = Quantity;
+			}
+		}
+		public void Modify()
+		{
+			MarkModified();
+		}
 	}
 }

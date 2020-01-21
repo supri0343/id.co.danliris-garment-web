@@ -40,9 +40,9 @@ namespace Manufactures.Domain.GarmentScrapTransactions.Commands
 	{
 		public GarmentScrapTransactionItemValueObjectValidator()
 		{
-			RuleFor(r => r.Quantity)
-				.GreaterThan(0)
-				.WithMessage("'Jumlah' harus lebih dari '0'.");
+			//RuleFor(r => r.Quantity)
+			//	.GreaterThan(0)
+			//	.WithMessage("'Jumlah' harus lebih dari '0'.");
 			
 		}
 	}

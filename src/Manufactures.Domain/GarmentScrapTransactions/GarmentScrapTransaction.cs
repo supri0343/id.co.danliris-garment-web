@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Manufactures.Domain.GarmentScrapTransactions
 {
-	class GarmentScrapTransaction : AggregateRoot<GarmentScrapTransaction, GarmentScrapTransactionReadModel>
+	public class GarmentScrapTransaction : AggregateRoot<GarmentScrapTransaction, GarmentScrapTransactionReadModel>
 	{
 
 		public string TransactionNo { get; private set; }
