@@ -230,7 +230,7 @@ namespace Manufactures.Tests.Controllers.Api
                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingDOReadModel, bool>>>()))
                .Returns(new List<GarmentSewingDO>()
                {
-                    new GarmentSewingDO(Guid.NewGuid(), null, Guid.NewGuid(), new UnitDepartmentId(1), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new GarmentComodityId(1), null, null, DateTimeOffset.Now)
+                    new GarmentSewingDO(Guid.NewGuid(), null, cuttingOutGuid, new UnitDepartmentId(1), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new GarmentComodityId(1), null, null, DateTimeOffset.Now)
                });
 
             _mockGarmentSewingDOItemRepository

@@ -49,7 +49,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
             Dictionary<Guid, double> finishingInItemToBeUpdated = new Dictionary<Guid, double>();
             Dictionary<GarmentFinishedGoodStock, double> finGood = new Dictionary<GarmentFinishedGoodStock, double>();
 
-            GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && new UnitDepartmentId(a.UnitId) == finishOut.UnitId && new GarmentComodityId( a.ComodityId) == finishOut.ComodityId).Select(s => new GarmentComodityPrice(s)).Single();
+            GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && new UnitDepartmentId(a.UnitId) == finishOut.UnitToId && new GarmentComodityId( a.ComodityId) == finishOut.ComodityId).Select(s => new GarmentComodityPrice(s)).Single();
 
             _garmentFinishingOutItemRepository.Find(o => o.FinishingOutId == finishOut.Identity).ForEach(async finishOutItem =>
             {
@@ -72,7 +72,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                             a => a.RONo == finishOut.RONo &&
                                 a.Article == finishOut.Article &&
                                 a.BasicPrice == finishOutItem.BasicPrice &&
-                                new UnitDepartmentId(a.UnitId) == finishOut.UnitId &&
+                                new UnitDepartmentId(a.UnitId) == finishOut.UnitToId &&
                                 new SizeId(a.SizeId) == finishOutDetail.SizeId &&
                                 new GarmentComodityId(a.ComodityId) == finishOut.ComodityId &&
                                 new UomId(a.UomId) == finishOutDetail.UomId
@@ -114,7 +114,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                             a => a.RONo == finishOut.RONo &&
                                 a.Article == finishOut.Article &&
                                 a.BasicPrice == finishOutItem.BasicPrice &&
-                                new UnitDepartmentId(a.UnitId) == finishOut.UnitId &&
+                                new UnitDepartmentId(a.UnitId) == finishOut.UnitToId &&
                                 new SizeId(a.SizeId) == finishOutItem.SizeId &&
                                 new GarmentComodityId(a.ComodityId) == finishOut.ComodityId &&
                                 new UomId(a.UomId) == finishOutItem.UomId

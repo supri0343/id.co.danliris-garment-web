@@ -78,7 +78,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubconCuttingOuts
                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutDetailReadModel, bool>>>()))
                .Returns(new List<GarmentSubconCuttingOutDetail>()
                {
-                    new GarmentSubconCuttingOutDetail(Guid.Empty, Guid.Empty, new SizeId(1), null, null, 0, 0, new UomId(1), null, 0,0,null)
+                    new GarmentSubconCuttingOutDetail(Guid.Empty, Guid.Empty, new SizeId(1), null, null, 0, 0, new UomId(1), null, 0,0,"asa")
                });
 
             _mockCuttingInDetailRepository
@@ -87,6 +87,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubconCuttingOuts
                 {
                     new GarmentCuttingInDetailReadModel(cuttingInDetailGuid)
                 }.AsQueryable());
+
 
             _mockSubconCuttingRepository
                 .Setup(s => s.Query)

@@ -31,6 +31,7 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentComodityPriceRepository.Read(page, size, order, keyword, filter);
             var count = query.Count();
+            query = query.Skip((page - 1) * size).Take(size);
 
             List<GarmentComodityPriceDto> garmentComodityPriceListDtos = _garmentComodityPriceRepository
                 .Find(query)

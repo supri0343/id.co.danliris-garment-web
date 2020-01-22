@@ -18,6 +18,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 using Manufactures.Domain.GarmentSewingIns.ReadModels;
 using Manufactures.Domain.GarmentSewingIns;
 using FluentAssertions;
+using Manufactures.Domain.GarmentCuttingIns.Repositories;
 
 namespace Manufactures.Tests.CommandHandlers.GarmentSewingOuts
 {
@@ -27,6 +28,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSewingOuts
         private readonly Mock<IGarmentSewingOutItemRepository> _mockSewingOutItemRepository;
         private readonly Mock<IGarmentSewingOutDetailRepository> _mockSewingOutDetailRepository;
         private readonly Mock<IGarmentSewingInItemRepository> _mockSewingInItemRepository;
+        private readonly Mock<IGarmentCuttingInRepository> _mockCuttingInRepository;
+        private readonly Mock<IGarmentCuttingInItemRepository> _mockCuttingInItemRepository;
+        private readonly Mock<IGarmentCuttingInDetailRepository> _mockCuttingInDetailRepository;
 
         public RemoveGarmentSewingOutCommandHandlerTests()
         {
@@ -34,11 +38,17 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSewingOuts
             _mockSewingOutItemRepository = CreateMock<IGarmentSewingOutItemRepository>();
             _mockSewingOutDetailRepository = CreateMock<IGarmentSewingOutDetailRepository>();
             _mockSewingInItemRepository = CreateMock<IGarmentSewingInItemRepository>();
+            _mockCuttingInRepository = CreateMock<IGarmentCuttingInRepository>();
+            _mockCuttingInItemRepository = CreateMock<IGarmentCuttingInItemRepository>();
+            _mockCuttingInDetailRepository = CreateMock<IGarmentCuttingInDetailRepository>();
 
             _MockStorage.SetupStorage(_mockSewingOutRepository);
             _MockStorage.SetupStorage(_mockSewingOutItemRepository);
             _MockStorage.SetupStorage(_mockSewingOutDetailRepository);
             _MockStorage.SetupStorage(_mockSewingInItemRepository);
+            _MockStorage.SetupStorage(_mockCuttingInRepository);
+            _MockStorage.SetupStorage(_mockCuttingInItemRepository);
+            _MockStorage.SetupStorage(_mockCuttingInDetailRepository);
         }
         private RemoveGarmentSewingOutCommandHandler CreateRemoveGarmentSewingOutCommandHandler()
         {

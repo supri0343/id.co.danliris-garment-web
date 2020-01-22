@@ -1,6 +1,10 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentSewingOuts.CommandHandlers;
+using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.GarmentComodityPrices.ReadModels;
+using Manufactures.Domain.GarmentComodityPrices.Repositories;
+using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
 using Manufactures.Domain.GarmentSewingIns.ReadModels;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
@@ -28,6 +32,10 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSewingOuts
         private readonly Mock<IGarmentSewingOutItemRepository> _mockSewingOutItemRepository;
         private readonly Mock<IGarmentSewingOutDetailRepository> _mockSewingOutDetailRepository;
         private readonly Mock<IGarmentSewingInItemRepository> _mockSewingInItemRepository;
+        private readonly Mock<IGarmentCuttingInRepository> _mockCuttingInRepository;
+        private readonly Mock<IGarmentCuttingInItemRepository> _mockCuttingInItemRepository;
+        private readonly Mock<IGarmentCuttingInDetailRepository> _mockCuttingInDetailRepository;
+        private readonly Mock<IGarmentComodityPriceRepository> _mockComodityPriceRepository;
 
         public UpdateGarmentSewingOutCommandHandlerTests()
         {
@@ -35,11 +43,18 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSewingOuts
             _mockSewingOutItemRepository = CreateMock<IGarmentSewingOutItemRepository>();
             _mockSewingOutDetailRepository = CreateMock<IGarmentSewingOutDetailRepository>();
             _mockSewingInItemRepository = CreateMock<IGarmentSewingInItemRepository>();
+            _mockCuttingInRepository = CreateMock<IGarmentCuttingInRepository>();
+            _mockCuttingInItemRepository = CreateMock<IGarmentCuttingInItemRepository>();
+            _mockCuttingInDetailRepository = CreateMock<IGarmentCuttingInDetailRepository>();
+            _mockComodityPriceRepository = CreateMock<IGarmentComodityPriceRepository>();
 
             _MockStorage.SetupStorage(_mockSewingOutRepository);
             _MockStorage.SetupStorage(_mockSewingOutItemRepository);
             _MockStorage.SetupStorage(_mockSewingOutDetailRepository);
             _MockStorage.SetupStorage(_mockSewingInItemRepository);
+            _MockStorage.SetupStorage(_mockCuttingInRepository);
+            _MockStorage.SetupStorage(_mockCuttingInItemRepository);
+            _MockStorage.SetupStorage(_mockCuttingInDetailRepository);
         }
         private UpdateGarmentSewingOutCommandHandler CreateUpdateGarmentSewingOutCommandHandler()
         {
@@ -112,6 +127,25 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSewingOuts
                 {
                     new GarmentSewingOutDetail(Guid.Empty, Guid.Empty,new SizeId(1), null, 1, new UomId(1),null )
                 });
+
+            GarmentComodityPrice garmentComodity = new GarmentComodityPrice(
+                Guid.NewGuid(),
+                true,
+                DateTimeOffset.Now,
+                new UnitDepartmentId(UpdateGarmentSewingOutCommand.Unit.Id),
+                UpdateGarmentSewingOutCommand.Unit.Code,
+                UpdateGarmentSewingOutCommand.Unit.Name,
+                new GarmentComodityId(UpdateGarmentSewingOutCommand.Comodity.Id),
+                UpdateGarmentSewingOutCommand.Comodity.Code,
+                UpdateGarmentSewingOutCommand.Comodity.Name,
+                1000
+                );
+            _mockComodityPriceRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentComodityPriceReadModel>
+                {
+                    garmentComodity.GetReadModel()
+                }.AsQueryable());
 
             _mockSewingInItemRepository
                 .Setup(s => s.Query)

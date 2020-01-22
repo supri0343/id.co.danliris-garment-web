@@ -32,7 +32,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentComodityPrices.Repositori
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             data = OrderDictionary.Count == 0 ? data.OrderByDescending(o => o.ModifiedDate) : QueryHelper<GarmentComodityPriceReadModel>.Order(data, OrderDictionary);
 
-            data = data.Skip((page - 1) * size).Take(size);
+           // data = data.Skip((page - 1) * size).Take(size);
 
             return data;
         }
