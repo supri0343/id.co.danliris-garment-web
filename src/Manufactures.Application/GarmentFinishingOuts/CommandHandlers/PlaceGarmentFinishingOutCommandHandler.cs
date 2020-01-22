@@ -47,7 +47,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
         {
             request.Items = request.Items.Where(item => item.IsSave == true).ToList();
 
-            GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && a.UnitId == request.Unit.Id && a.ComodityId == request.Comodity.Id).Select(s => new GarmentComodityPrice(s)).Single();
+            GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && a.UnitId == request.UnitTo.Id && a.ComodityId == request.Comodity.Id).Select(s => new GarmentComodityPrice(s)).Single();
             Guid garmentFinishingOutId = Guid.NewGuid();
             GarmentFinishingOut garmentFinishingOut = new GarmentFinishingOut(
                 garmentFinishingOutId,
@@ -193,7 +193,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                         a => a.RONo == request.RONo &&
                             a.Article == request.Article &&
                             a.BasicPrice == basicPrice &&
-                            a.UnitId == request.Unit.Id &&
+                            a.UnitId == request.UnitTo.Id &&
                             new SizeId(a.SizeId) == sizeId &&
                             a.ComodityId == request.Comodity.Id &&
                             new UomId(a.UomId) == uomId
@@ -208,7 +208,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                         var now = DateTime.Now;
                         var year = now.ToString("yy");
                         var month = now.ToString("MM");
-                        var prefix = $"ST{request.Unit.Code.Trim()}{year}{month}";
+                        var prefix = $"ST{request.UnitTo.Code.Trim()}{year}{month}";
 
                         var lastFnGoodNo = _garmentFinishedGoodStockRepository.Query.Where(w => w.FinishedGoodStockNo.StartsWith(prefix))
                         .OrderByDescending(o => o.FinishedGoodStockNo)
@@ -248,7 +248,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                         var stock = finGoodStocks.Where(a => a.RONo == request.RONo &&
                                  a.Article == request.Article &&
                                  a.BasicPrice == garmentFinishedGoodExist.BasicPrice &&
-                                 a.UnitId == new UnitDepartmentId(request.Unit.Id) &&
+                                 a.UnitId == new UnitDepartmentId(request.UnitTo.Id) &&
                                  a.SizeId == garmentFinishedGoodExist.SizeId &&
                                  a.ComodityId == new GarmentComodityId(request.Comodity.Id) &&
                                  a.UomId == garmentFinishedGoodExist.UomId).SingleOrDefault();
@@ -268,7 +268,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                                 var stock = finGoodStocks.Where(a => a.RONo == request.RONo &&
                                  a.Article == request.Article &&
                                  a.BasicPrice == item.BasicPrice &&
-                                 a.UnitId == new UnitDepartmentId(request.Unit.Id) &&
+                                 a.UnitId == new UnitDepartmentId(request.UnitTo.Id) &&
                                  a.SizeId == new SizeId(detail.Size.Id) &&
                                  a.ComodityId == new GarmentComodityId(request.Comodity.Id) &&
                                  a.UomId == new UomId(detail.Uom.Id)).Single();
@@ -307,7 +307,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                             var stock = finGoodStocks.Where(a => a.RONo == request.RONo &&
                              a.Article == request.Article &&
                              a.BasicPrice == item.BasicPrice &&
-                             a.UnitId == new UnitDepartmentId(request.Unit.Id) &&
+                             a.UnitId == new UnitDepartmentId(request.UnitTo.Id) &&
                              a.SizeId == new SizeId(item.Size.Id) &&
                              a.ComodityId == new GarmentComodityId(request.Comodity.Id) &&
                              a.UomId == new UomId(item.Uom.Id)).Single();
