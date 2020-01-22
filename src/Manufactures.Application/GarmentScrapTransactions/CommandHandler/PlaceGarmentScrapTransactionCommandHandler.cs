@@ -47,7 +47,7 @@ namespace Manufactures.Application.GarmentScrapTransactions.CommandHandler
 				request.ScrapDestinationId,
 				request.ScrapDestinationName
 			);
-			
+			await _garmentScrapTransactionRepository.Update(transaction);
 			foreach (var item in request.Items)
 			{
 				if (item.Quantity > 0)
@@ -85,7 +85,7 @@ namespace Manufactures.Application.GarmentScrapTransactions.CommandHandler
 						);
 						await _garmentScrapStockRepository.Update(garmentScrapStock);
 					}
-					await _garmentScrapTransactionRepository.Update(transaction);
+					
 					await _garmentScrapTransactionItemRepository.Update(garmentScrapTransactionItem);
 					_storage.Save();
 				}

@@ -64,6 +64,7 @@ namespace Manufactures.Domain.GarmentScrapTransactions
 				ReadModel.Quantity = Quantity;
 			}
 		}
+		
 		public void Modify()
 		{
 			MarkModified();

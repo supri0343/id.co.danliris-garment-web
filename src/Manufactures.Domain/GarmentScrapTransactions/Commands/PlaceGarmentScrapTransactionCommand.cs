@@ -26,7 +26,7 @@ namespace Manufactures.Domain.GarmentScrapTransactions.Commands
 		public PlaceGarmentScrapTransactionCommandValidator()
 		{
 			
-			RuleFor(r => r.TransactionDate).NotNull().WithMessage("Tanggal harus diisi");
+			RuleFor(r => r.TransactionDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal harus diisi");
 			RuleFor(r => r.ScrapSourceName).NotEmpty().WithMessage("Asal Barang harus diisi");
 			RuleFor(r => r.ScrapDestinationName).NotEmpty().WithMessage("Tujuan Barang harus diisi");
 			RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");

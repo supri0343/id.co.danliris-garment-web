@@ -59,6 +59,22 @@ namespace Manufactures.Domain.GarmentScrapTransactions
 		{
 			return this;
 		}
+		public void SetQuantity(double Quantity)
+		{
+			if (this.Quantity != Quantity)
+			{
+				this.Quantity = Quantity;
+				ReadModel.Quantity = Quantity;
+			}
+		}
+		public void SetDescription(string Description)
+		{
+			if (this.Description != Description)
+			{
+				this.Description = Description;
+				ReadModel.Description = Description;
+			}
+		}
 		public void Modify()
 		{
 			MarkModified();

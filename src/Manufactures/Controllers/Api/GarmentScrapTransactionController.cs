@@ -17,10 +17,12 @@ namespace Manufactures.Controllers.Api
 	public class GarmentScrapTransactionController : Barebone.Controllers.ControllerApiBase
 	{
 		private readonly IGarmentScrapTransactionRepository _garmentScrapTransactionRepository;
+		private readonly IGarmentScrapTransactionItemRepository _garmentScrapTransactionItemRepository;
 
 		public GarmentScrapTransactionController(IServiceProvider serviceProvider) : base(serviceProvider)
 		{
 			_garmentScrapTransactionRepository = Storage.GetRepository<IGarmentScrapTransactionRepository>();
+			_garmentScrapTransactionItemRepository = Storage.GetRepository<IGarmentScrapTransactionItemRepository>();
 
 		}
 
@@ -51,8 +53,13 @@ namespace Manufactures.Controllers.Api
 			Guid guid = Guid.Parse(id);
 			VerifyUser();
 
-			GarmentScrapTransactionDto listDto = _garmentScrapTransactionRepository.Find(o => o.Identity == guid).Select(data => new GarmentScrapTransactionDto(data)).FirstOrDefault();
+			GarmentScrapTransactionDto listDto = _garmentScrapTransactionRepository.Find(o => o.Identity == guid).Select(data => new GarmentScrapTransactionDto(data)
+			{
+				Items = _garmentScrapTransactionItemRepository.Find(o => o.ScrapTransactionId == data.Identity).Select(dataItem => new GarmentScrapTransactionItemDto(dataItem)
+							).ToList()
 
+			}).FirstOrDefault();
+			 
 			await Task.Yield();
 			return Ok(listDto);
 		}

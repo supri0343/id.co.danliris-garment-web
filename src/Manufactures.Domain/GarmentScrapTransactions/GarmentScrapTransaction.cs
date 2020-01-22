@@ -56,5 +56,17 @@ namespace Manufactures.Domain.GarmentScrapTransactions
 			ScrapSourceId = readModel.ScrapSourceId;
 			ScrapSourceName = readModel.ScrapSourceName;
 		}
+		public void SetTransactionDate(DateTimeOffset TransactionDate)
+		{
+			if (this.TransactionDate != TransactionDate)
+			{
+				this.TransactionDate = TransactionDate;
+				ReadModel.TransactionDate = TransactionDate;
+			}
+		}
+		public void Modify()
+		{
+			MarkModified();
+		}
 	}
 }

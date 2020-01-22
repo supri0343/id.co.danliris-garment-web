@@ -21,7 +21,7 @@ namespace Manufactures.Domain.GarmentScrapClassifications.Commands
 				{
 					var a=_garmentScrapClassificationRepository.Find(s => s.Code == c);
 					return a == null || a.Count <1 ;
-				}).WithMessage("Kode Jenis Barang sudah di inputada").When(s=>s.Code != null);
+				}).WithMessage("Kode Jenis Barang sudah di input").When(s=>s.Code != null);
 				RuleFor(r => r.Code).NotNull().WithMessage("Kode Jenis Barang Aval harus diisi");
 				RuleFor(r => r.Name).Must((c) =>
 				{
