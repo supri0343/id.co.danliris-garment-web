@@ -15,6 +15,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentFinishingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentLoadings.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentScrapClassifications.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentScrapTransactions.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingDOs.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Configs;
@@ -23,63 +24,68 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Manufactures.Data.EntityFrameworkCore
 {
-    public class EntityRegistrar : IEntityRegistrar
-    {
-        public void RegisterEntities(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfiguration(new GarmentPreparingConfig());
-            modelBuilder.ApplyConfiguration(new GarmentPreparingItemConfig());
+	public class EntityRegistrar : IEntityRegistrar
+	{
+		public void RegisterEntities(ModelBuilder modelBuilder)
+		{
+			modelBuilder.ApplyConfiguration(new GarmentPreparingConfig());
+			modelBuilder.ApplyConfiguration(new GarmentPreparingItemConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentAvalProductConfig());
-            modelBuilder.ApplyConfiguration(new GarmentAvalProductItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentAvalProductConfig());
+			modelBuilder.ApplyConfiguration(new GarmentAvalProductItemConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentCuttingInConfig());
-            modelBuilder.ApplyConfiguration(new GarmentCuttingInItemConfig());
-            modelBuilder.ApplyConfiguration(new GarmentCuttingInDetailConfig());
+			modelBuilder.ApplyConfiguration(new GarmentCuttingInConfig());
+			modelBuilder.ApplyConfiguration(new GarmentCuttingInItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentCuttingInDetailConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentDeliveryReturnConfig());
-            modelBuilder.ApplyConfiguration(new GarmentDeliveryReturnItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentDeliveryReturnConfig());
+			modelBuilder.ApplyConfiguration(new GarmentDeliveryReturnItemConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentCuttingOutConfig());
-            modelBuilder.ApplyConfiguration(new GarmentCuttingOutItemConfig());
-            modelBuilder.ApplyConfiguration(new GarmentCuttingOutDetailConfig());
+			modelBuilder.ApplyConfiguration(new GarmentCuttingOutConfig());
+			modelBuilder.ApplyConfiguration(new GarmentCuttingOutItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentCuttingOutDetailConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentSewingDOConfig());
-            modelBuilder.ApplyConfiguration(new GarmentSewingDOItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSewingDOConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSewingDOItemConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentLoadingConfig());
-            modelBuilder.ApplyConfiguration(new GarmentLoadingItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentLoadingConfig());
+			modelBuilder.ApplyConfiguration(new GarmentLoadingItemConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentSewingInConfig());
-            modelBuilder.ApplyConfiguration(new GarmentSewingInItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSewingInConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSewingInItemConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentSewingOutConfig());
-            modelBuilder.ApplyConfiguration(new GarmentSewingOutItemConfig());
-            modelBuilder.ApplyConfiguration(new GarmentSewingOutDetailConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSewingOutConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSewingOutItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSewingOutDetailConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentFinishingInConfig());
-            modelBuilder.ApplyConfiguration(new GarmentFinishingInItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentFinishingInConfig());
+			modelBuilder.ApplyConfiguration(new GarmentFinishingInItemConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentComodityPriceConfig());
+			modelBuilder.ApplyConfiguration(new GarmentComodityPriceConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentAvalComponentConfig());
-            modelBuilder.ApplyConfiguration(new GarmentAvalComponentItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentAvalComponentConfig());
+			modelBuilder.ApplyConfiguration(new GarmentAvalComponentItemConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentSubconCuttingConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentFinishingOutConfig());
-            modelBuilder.ApplyConfiguration(new GarmentFinishingOutItemConfig());
-            modelBuilder.ApplyConfiguration(new GarmentFinishingOutDetailConfig());
+			modelBuilder.ApplyConfiguration(new GarmentFinishingOutConfig());
+			modelBuilder.ApplyConfiguration(new GarmentFinishingOutItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentFinishingOutDetailConfig());
 
 
-            modelBuilder.ApplyConfiguration(new GarmentFinishedGoodStockConfig());
-            modelBuilder.ApplyConfiguration(new GarmentFinishedGoodStockHistoryConfig());
+			modelBuilder.ApplyConfiguration(new GarmentFinishedGoodStockConfig());
+			modelBuilder.ApplyConfiguration(new GarmentFinishedGoodStockHistoryConfig());
 
 
 			modelBuilder.ApplyConfiguration(new GarmentScrapClassificationConfig());
+			modelBuilder.ApplyConfiguration(new GarmentScrapTransactionConfig());
+			modelBuilder.ApplyConfiguration(new GarmentScrapTransactionItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentScrapDestinationConfig());
+			modelBuilder.ApplyConfiguration(new GarmentScrapSourceConfig());
+			modelBuilder.ApplyConfiguration(new GarmentScrapStockConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentAdjustmentConfig());
-            modelBuilder.ApplyConfiguration(new GarmentAdjustmentItemConfig());
-        }
-    }
+			modelBuilder.ApplyConfiguration(new GarmentAdjustmentConfig());
+			modelBuilder.ApplyConfiguration(new GarmentAdjustmentItemConfig());
+		}
+	}
 }
