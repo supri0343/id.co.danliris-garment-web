@@ -79,7 +79,8 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubconCuttingOuts
                             {
                                 CuttingOutUom = new Uom(2, "PCS"),
                                 CuttingOutQuantity=1,
-                                Size= new SizeValueObject(1,"Size")
+                                Size= new SizeValueObject(1,"Size"),
+                                Remark="asad"
                             }
                         }
                     }
