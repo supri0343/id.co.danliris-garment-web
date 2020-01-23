@@ -51,7 +51,8 @@ namespace Manufactures.Controllers.Api
             VerifyUser();
 
             var query = _garmentCuttingOutRepository.Read(page, size, order, "", filter);
-            var count = query.Count();
+            var total = query.Count();
+            query = query.Skip((page - 1) * size).Take(size);
 
             var garmentCuttingOutDto = _garmentCuttingOutRepository.Find(query).Select(o => new GarmentCuttingOutListDto(o)).ToArray();
             var garmentCuttingOutItemDto = _garmentCuttingOutItemRepository.Find(_garmentCuttingOutItemRepository.Query).Select(o => new GarmentCuttingOutItemDto(o)).ToList();
@@ -127,14 +128,14 @@ namespace Manufactures.Controllers.Api
                     garmentCuttingOutDtoListArray = garmentCuttingOutDtoList.OrderByDescending(x => x.LastModifiedDate).ToArray();
                 }
 
-                garmentCuttingOutDtoListArray = garmentCuttingOutDtoListArray.Take(size).Skip((page - 1) * size).ToArray();
+                //garmentCuttingOutDtoListArray = garmentCuttingOutDtoListArray.Take(size).Skip((page - 1) * size).ToArray();
 
                 await Task.Yield();
                 return Ok(garmentCuttingOutDtoListArray, info: new
                 {
                     page,
                     size,
-                    count = count
+                    total
                 });
             }
             else
@@ -149,14 +150,14 @@ namespace Manufactures.Controllers.Api
                     garmentCuttingOutDto = garmentCuttingOutDto.OrderByDescending(x => x.LastModifiedDate).ToArray();
                 }
 
-                garmentCuttingOutDto = garmentCuttingOutDto.Take(size).Skip((page - 1) * size).ToArray();
+                //garmentCuttingOutDto = garmentCuttingOutDto.Take(size).Skip((page - 1) * size).ToArray();
 
                 await Task.Yield();
                 return Ok(garmentCuttingOutDto, info: new
                 {
                     page,
                     size,
-                    count = count
+                    total
                 });
             }
 

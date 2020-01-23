@@ -33,7 +33,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentAdjustments.Repositories
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             data = OrderDictionary.Count == 0 ? data.OrderByDescending(o => o.ModifiedDate) : QueryHelper<GarmentAdjustmentReadModel>.Order(data, OrderDictionary);
 
-            data = data.Skip((page - 1) * size).Take(size);
+            //data = data.Skip((page - 1) * size).Take(size);
 
             return data;
         }

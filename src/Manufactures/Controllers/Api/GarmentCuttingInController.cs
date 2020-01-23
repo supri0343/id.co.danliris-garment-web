@@ -40,7 +40,9 @@ namespace Manufactures.Controllers.Api
             VerifyUser();
 
             var query = _garmentCuttingInRepository.Read(page, size, order, keyword, filter);
-            var count = query.Count();
+            var total = query.Count();
+
+            query = query.Skip((page - 1) * size).Take(size);
 
             List<GarmentCuttingInListDto> garmentCuttingInListDtos = _garmentCuttingInRepository
                 .Find(query)
@@ -72,7 +74,7 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                count
+                total
             });
         }
 

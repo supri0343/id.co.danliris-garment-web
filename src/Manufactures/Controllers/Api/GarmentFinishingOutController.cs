@@ -40,7 +40,8 @@ namespace Manufactures.Controllers.Api
             VerifyUser();
 
             var query = _garmentFinishingOutRepository.Read(page, size, order, keyword, filter);
-            var count = query.Count();
+            var total = query.Count();
+            query = query.Skip((page - 1) * size).Take(size);
 
             List<GarmentFinishingOutListDto> garmentFinishingOutListDtos = _garmentFinishingOutRepository
                 .Find(query)
@@ -73,7 +74,7 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                count
+                total
             });
         }
 
