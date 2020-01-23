@@ -71,7 +71,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentFinishingOuts
             {
                 RONo = "RONo",
                 Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                UnitTo = new UnitDepartment(2, "UnitCode2", "UnitName2"),
+                UnitTo = new UnitDepartment(1, "UnitCode2", "UnitName2"),
                 Article = "Article",
                 IsDifferentSize = true,
                 FinishingTo = "GUDANG JADI",
@@ -181,7 +181,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentFinishingOuts
             {
                 RONo = "RONo",
                 Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                UnitTo = new UnitDepartment(2, "UnitCode2", "UnitName2"),
+                UnitTo = new UnitDepartment(1, "UnitCode2", "UnitName2"),
                 Article = "Article",
                 IsDifferentSize = false,
                 FinishingTo = "GUDANG JADI",
@@ -281,7 +281,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentFinishingOuts
             {
                 RONo = "RONo",
                 Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                UnitTo = new UnitDepartment(2, "UnitCode2", "UnitName2"),
+                UnitTo = new UnitDepartment(1, "UnitCode2", "UnitName2"),
                 Article = "Article",
                 IsDifferentSize = true,
                 FinishingTo = "FINISHING",
