@@ -1,6 +1,7 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentScrapClassifications.CommandHandler;
+using Manufactures.Domain.GarmentScrapClassifications;
 using Manufactures.Domain.GarmentScrapClassifications.Commands;
 using Manufactures.Domain.GarmentScrapClassifications.ReadModels;
 using Manufactures.Domain.GarmentScrapClassifications.Repositories;
@@ -37,6 +38,17 @@ namespace Manufactures.Tests.CommandHandlers.GarmentScrapClassifications
 			Guid identity = Guid.NewGuid();
 			UpdateGarmentScrapClassificationCommandHandler unitUnderTest = CreateUpdateGarmentScrapClassificationCommandHandler();
 			CancellationToken cancellationToken = CancellationToken.None;
+			RemoveGarmentScrapClassificationCommand removeGarmentAvalComponentCommand = new RemoveGarmentScrapClassificationCommand(identity);
+			_mockGarmentScrapClassificationRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentScrapClassificationReadModel>
+				{
+					new GarmentScrapClassification(identity,"code","name","description").GetReadModel()
+				}.AsQueryable());
+
+			_mockGarmentScrapClassificationRepository
+			  .Setup(s => s.Update(It.IsAny<GarmentScrapClassification>()))
+			  .Returns(Task.FromResult(It.IsAny<GarmentScrapClassification>()));
 			UpdateGarmentScrapClassificationCommand updateGarmentScrapClassificationCommand = new UpdateGarmentScrapClassificationCommand()
 			{
 				Code = "codes",
@@ -44,13 +56,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentScrapClassifications
 				Description="desss"
 			};
 			updateGarmentScrapClassificationCommand.SetIdentity(identity);
-
-			_mockGarmentScrapClassificationRepository
-				.Setup(s => s.Query)
-				.Returns(new List<GarmentScrapClassificationReadModel>()
-				{
-					new GarmentScrapClassificationReadModel(identity)
-				}.AsQueryable());
 
 			_MockStorage
 				.Setup(x => x.Save())

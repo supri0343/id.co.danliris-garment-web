@@ -25,7 +25,7 @@ namespace Manufactures.Application.GarmentScrapClassifications.CommandHandler
 
 		public async Task<GarmentScrapClassification> Handle(RemoveGarmentScrapClassificationCommand request, CancellationToken cancellationToken)
 		{
-			var gscrapClassification = _garmentScrapClassificationRepository.Find(o => o.Identity == request.Identity).FirstOrDefault();
+			var gscrapClassification = _garmentScrapClassificationRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentScrapClassification(o)).Single();
 
 			if (gscrapClassification == null)
 				throw Validator.ErrorValidation(("Identity", "Invalid Id: " + request.Identity));
