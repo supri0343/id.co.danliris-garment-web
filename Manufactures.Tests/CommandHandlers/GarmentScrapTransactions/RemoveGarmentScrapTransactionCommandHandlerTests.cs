@@ -1,31 +1,31 @@
 ﻿using Barebone.Tests;
-using FluentAssertions;
 using Manufactures.Application.GarmentScrapTransactions.CommandHandler;
-using Manufactures.Domain.GarmentAvalProducts.ValueObjects;
-using Manufactures.Domain.GarmentScrapTransactions;
-using Manufactures.Domain.GarmentScrapTransactions.Commands;
-using Manufactures.Domain.GarmentScrapTransactions.ReadModels;
 using Manufactures.Domain.GarmentScrapTransactions.Repositories;
-using Manufactures.Domain.GarmentScrapTransactions.ValueObjects;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Manufactures.Domain.GarmentScrapTransactions.Commands;
+using Manufactures.Domain.GarmentScrapTransactions.ReadModels;
+using System.Linq;
+using Manufactures.Domain.GarmentScrapTransactions;
+using System.Linq.Expressions;
+using FluentAssertions;
+using Manufactures.Domain.GarmentScrapTransactions.ValueObjects;
 
 namespace Manufactures.Tests.CommandHandlers.GarmentScrapTransactions
 {
-	public class PlaceGarmentScrapTransactionCommandHandlerTests : BaseCommandUnitTest
+	public class RemoveGarmentScrapTransactionCommandHandlerTests : BaseCommandUnitTest
 	{
 		private readonly Mock<IGarmentScrapTransactionRepository> _mockScrapTransactionRepository;
 		private readonly Mock<IGarmentScrapTransactionItemRepository> _mockScrapTransactionItemRepository;
 		private readonly Mock<IGarmentScrapStockRepository> _mockScrapStockRepository;
 
-		public PlaceGarmentScrapTransactionCommandHandlerTests()
-		{
+		public RemoveGarmentScrapTransactionCommandHandlerTests()
+	{
 			_mockScrapTransactionRepository = CreateMock<IGarmentScrapTransactionRepository>();
 			_mockScrapTransactionItemRepository = CreateMock<IGarmentScrapTransactionItemRepository>();
 			_mockScrapStockRepository = CreateMock<IGarmentScrapStockRepository>();
@@ -35,11 +35,10 @@ namespace Manufactures.Tests.CommandHandlers.GarmentScrapTransactions
 			_MockStorage.SetupStorage(_mockScrapStockRepository);
 		}
 
-		private PlaceGarmentScrapTransactionCommandHandler CreatePlaceGarmentScrapTransactionCommandHandler()
-		{
-			return new PlaceGarmentScrapTransactionCommandHandler(_MockStorage.Object);
+		private RemoveGarmentScrapTransactionCommandHandler CreateRemoveGarmentScrapTransactionCommandHandler()
+	{
+			return new RemoveGarmentScrapTransactionCommandHandler(_MockStorage.Object);
 		}
-
 		[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior()
 		{
@@ -48,8 +47,10 @@ namespace Manufactures.Tests.CommandHandlers.GarmentScrapTransactions
 			Guid scrapsourceid = Guid.NewGuid();
 			Guid scrapclassificationid = Guid.NewGuid();
 			Guid scrapIdentity = Guid.NewGuid();
-			PlaceGarmentScrapTransactionCommandHandler unitUnderTest = CreatePlaceGarmentScrapTransactionCommandHandler();
+			RemoveGarmentScrapTransactionCommandHandler unitUnderTest = CreateRemoveGarmentScrapTransactionCommandHandler();
 			CancellationToken cancellationToken = CancellationToken.None;
+			RemoveGarmentScrapTransactionCommand RemoveGarmentScrapTransactionCommand = new RemoveGarmentScrapTransactionCommand(scrapIdentity);
+
 			_mockScrapStockRepository
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentScrapStockReadModel>
@@ -57,48 +58,38 @@ namespace Manufactures.Tests.CommandHandlers.GarmentScrapTransactions
 					new GarmentScrapStock(new Guid(),scrapdestinationId,"destination",scrapclassificationid,"name",100,1,"KG").GetReadModel()
 				}.AsQueryable());
 
-			PlaceGarmentScrapTransactionCommand placeGarmentScrapTransactionCommand = new PlaceGarmentScrapTransactionCommand()
-			{
-				TransactionType="IN",
-				TransactionDate= DateTimeOffset.Now,
-				ScrapDestinationId= scrapdestinationId,
-				ScrapDestinationName="destination",
-				ScrapSourceId= scrapsourceid,
-				ScrapSourceName="source",
-				TransactionNo="",
-				Items = new List<GarmentScrapTransactionItemValueObject>
+			_mockScrapTransactionRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentScrapTransactionReadModel>
 				{
-					new GarmentScrapTransactionItemValueObject
-					{
-						 ScrapClassificationId= scrapclassificationid,
-						 ScrapClassificationName="name",
-						 Quantity=100,
-						 UomId=1,
-						 UomUnit="KG",
-						 Description="desc"
-					}
-				},
+					new GarmentScrapTransaction(scrapIdentity,"","",DateTimeOffset.Now,scrapsourceid,"",scrapdestinationId,"").GetReadModel()
+				}.AsQueryable());
 
-			};
+			_mockScrapTransactionItemRepository
+			  .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentScrapTransactionItemReadModel, bool>>>()))
+			  .Returns(new List<GarmentScrapTransactionItem>()
+			  {
+					new GarmentScrapTransactionItem(new Guid(),scrapIdentity,scrapclassificationid,"",100,1,"KG","")
+			  });
+
 
 			_mockScrapTransactionRepository
-			   .Setup(s => s.Query)
-			   .Returns(new List<GarmentScrapTransactionReadModel>().AsQueryable());
-			_mockScrapTransactionRepository
-			   .Setup(s => s.Update(It.IsAny<GarmentScrapTransaction>()))
-			   .Returns(Task.FromResult(It.IsAny<GarmentScrapTransaction>()));
+			  .Setup(s => s.Update(It.IsAny<GarmentScrapTransaction>()))
+			  .Returns(Task.FromResult(It.IsAny<GarmentScrapTransaction>()));
+
 			_mockScrapTransactionItemRepository
 				.Setup(s => s.Update(It.IsAny<GarmentScrapTransactionItem>()))
 				.Returns(Task.FromResult(It.IsAny<GarmentScrapTransactionItem>()));
+
 			_mockScrapStockRepository
-				.Setup(s => s.Update(It.IsAny<GarmentScrapStock>()))
-				.Returns(Task.FromResult(It.IsAny<GarmentScrapStock>()));
+			  .Setup(s => s.Update(It.IsAny<GarmentScrapStock>()))
+			  .Returns(Task.FromResult(It.IsAny<GarmentScrapStock>()));
+
 			_MockStorage
 				.Setup(x => x.Save())
 				.Verifiable();
-
 			// Act
-			var result = await unitUnderTest.Handle(placeGarmentScrapTransactionCommand, cancellationToken);
+			var result = await unitUnderTest.Handle(RemoveGarmentScrapTransactionCommand, cancellationToken);
 
 			// Assert
 			result.Should().NotBeNull();

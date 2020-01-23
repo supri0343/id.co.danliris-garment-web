@@ -18,8 +18,8 @@ namespace Manufactures.Application.GarmentScrapTransactions.CommandHandler
 		private readonly IStorage _storage;
 		private readonly IGarmentScrapTransactionRepository _garmentScrapTransactionRepository;
 		private readonly IGarmentScrapTransactionItemRepository _garmentScrapTransactionItemRepository;
-		private readonly IGarmentScrapSourceRepository _garmentScrapSourceRepository;
-		private readonly IGarmentScrapDestinationRepository _garmentScrapDestinationRepository;
+		//private readonly IGarmentScrapSourceRepository _garmentScrapSourceRepository;
+		//private readonly IGarmentScrapDestinationRepository _garmentScrapDestinationRepository;
 		private readonly IGarmentScrapStockRepository _garmentScrapStockRepository;
 
 		public PlaceGarmentScrapTransactionCommandHandler(IStorage storage)
@@ -27,8 +27,8 @@ namespace Manufactures.Application.GarmentScrapTransactions.CommandHandler
 			_storage = storage;
 			_garmentScrapTransactionRepository = storage.GetRepository<IGarmentScrapTransactionRepository>();
 			_garmentScrapTransactionItemRepository = storage.GetRepository<IGarmentScrapTransactionItemRepository>();
-			_garmentScrapSourceRepository = storage.GetRepository<IGarmentScrapSourceRepository>();
-			_garmentScrapDestinationRepository = storage.GetRepository<IGarmentScrapDestinationRepository>();
+			//_garmentScrapSourceRepository = storage.GetRepository<IGarmentScrapSourceRepository>();
+			//_garmentScrapDestinationRepository = storage.GetRepository<IGarmentScrapDestinationRepository>();
 			_garmentScrapStockRepository = storage.GetRepository<IGarmentScrapStockRepository>();
 			 
 		}

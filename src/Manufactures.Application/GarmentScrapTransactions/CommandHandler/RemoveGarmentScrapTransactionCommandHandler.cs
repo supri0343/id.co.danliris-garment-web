@@ -17,8 +17,6 @@ namespace Manufactures.Application.GarmentScrapTransactions.CommandHandler
 		private readonly IStorage _storage;
 		private readonly IGarmentScrapTransactionRepository _garmentScrapTransactionRepository;
 		private readonly IGarmentScrapTransactionItemRepository _garmentScrapTransactionItemRepository;
-		private readonly IGarmentScrapSourceRepository _garmentScrapSourceRepository;
-		private readonly IGarmentScrapDestinationRepository _garmentScrapDestinationRepository;
 		private readonly IGarmentScrapStockRepository _garmentScrapStockRepository;
 
 		public RemoveGarmentScrapTransactionCommandHandler(IStorage storage)
@@ -26,23 +24,22 @@ namespace Manufactures.Application.GarmentScrapTransactions.CommandHandler
 			_storage = storage;
 			_garmentScrapTransactionRepository = storage.GetRepository<IGarmentScrapTransactionRepository>();
 			_garmentScrapTransactionItemRepository = storage.GetRepository<IGarmentScrapTransactionItemRepository>();
-			_garmentScrapSourceRepository = storage.GetRepository<IGarmentScrapSourceRepository>();
-			_garmentScrapDestinationRepository = storage.GetRepository<IGarmentScrapDestinationRepository>();
 			_garmentScrapStockRepository = storage.GetRepository<IGarmentScrapStockRepository>();
 
 		}
 
 		public async Task<GarmentScrapTransaction> Handle(RemoveGarmentScrapTransactionCommand request, CancellationToken cancellationToken)
 		{
-			var scrapTransaction = _garmentScrapTransactionRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentScrapTransaction(o)).Single();
+			var scrapTransaction = _garmentScrapTransactionRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentScrapTransaction(o)).FirstOrDefault();
 			_garmentScrapTransactionItemRepository.Find(o => o.ScrapTransactionId == scrapTransaction.Identity).ForEach(async item =>
 			{
 				var gStock= _garmentScrapStockRepository.Query.Where(s => s.ScrapDestinationId == scrapTransaction.ScrapDestinationId && s.ScrapClassificationId == item.ScrapClassificationId).Select(i => new GarmentScrapStock(i)).FirstOrDefault();
-				gStock.SetQuantity( gStock.Quantity - item.Quantity);
-				item.Remove();
-				await _garmentScrapTransactionItemRepository.Update(item);
+				gStock.SetQuantity(gStock.Quantity - item.Quantity);
 				gStock.Modify();
 				await _garmentScrapStockRepository.Update(gStock);
+				item.Remove();
+				await _garmentScrapTransactionItemRepository.Update(item);
+				
 			});
 			scrapTransaction.Remove();
 			await _garmentScrapTransactionRepository.Update(scrapTransaction);
