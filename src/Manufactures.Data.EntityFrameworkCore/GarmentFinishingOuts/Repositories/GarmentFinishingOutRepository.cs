@@ -37,7 +37,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentFinishingOuts.Repositorie
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             data = OrderDictionary.Count == 0 ? data.OrderByDescending(o => o.ModifiedDate) : QueryHelper<GarmentFinishingOutReadModel>.Order(data, OrderDictionary);
 
-            data = data.Skip((page - 1) * size).Take(size);
+            //data = data.Skip((page - 1) * size).Take(size);
 
             return data;
         }

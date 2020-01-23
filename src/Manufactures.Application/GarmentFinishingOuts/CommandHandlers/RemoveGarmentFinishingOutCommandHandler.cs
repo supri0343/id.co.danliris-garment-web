@@ -157,8 +157,10 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                         a => a.Identity == finGoodStock.Key.Identity
                         ).Select(s => new GarmentFinishedGoodStock(s)).Single();
 
-                    garmentFinishedGoodExist.SetQuantity(garmentFinishedGoodExist.Quantity - finGoodStock.Value);
-                    garmentFinishedGoodExist.SetPrice((garmentFinishedGoodExist.BasicPrice + (double)garmentComodityPrice.Price) * (garmentFinishedGoodExist.Quantity - finGoodStock.Value));
+                    var qty = garmentFinishedGoodExist.Quantity - finGoodStock.Value;
+
+                    garmentFinishedGoodExist.SetQuantity(qty);
+                    garmentFinishedGoodExist.SetPrice((garmentFinishedGoodExist.BasicPrice + (double)garmentComodityPrice.Price) * (qty));
                     garmentFinishedGoodExist.Modify();
 
                     await _garmentFinishedGoodStockRepository.Update(garmentFinishedGoodExist);

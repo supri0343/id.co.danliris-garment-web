@@ -41,7 +41,8 @@ namespace Manufactures.Controllers.Api
             VerifyUser();
 
             var query = _garmentLoadingRepository.Read(page, size, order, keyword, filter);
-            var count = query.Count();
+            var total = query.Count();
+            query = query.Skip((page - 1) * size).Take(size);
             List<GarmentLoadingListDto> garmentCuttingInListDtos = _garmentLoadingRepository.Find(query).Select(loading =>
             {
                 var items = _garmentLoadingItemRepository.Query.Where(o => o.LoadingId == loading.Identity).Select(loadingItem => new
@@ -67,7 +68,7 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                count
+                total
             });
         }
 
