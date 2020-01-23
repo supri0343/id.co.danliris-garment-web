@@ -99,7 +99,7 @@ namespace Manufactures.Application.GarmentScrapTransactions.CommandHandler
 			var year = now.ToString("yy");
 			var month = now.ToString("MM");
 
-			var prefix = $"GV-BUM";
+			var prefix = $"GV-BUM{year}";
 
 			var lastNo = _garmentScrapTransactionRepository.Query.Where(w => w.TransactionNo.StartsWith(prefix))
 				.OrderByDescending(o => o.TransactionNo)
