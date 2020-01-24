@@ -53,15 +53,15 @@ namespace Manufactures.Controllers.Api
 			Guid guid = Guid.Parse(id);
 			VerifyUser();
 
-			GarmentScrapTransactionDto listDto = _garmentScrapTransactionRepository.Find(o => o.Identity == guid).Select(data => new GarmentScrapTransactionDto(data)
+			GarmentScrapTransactionDto garmentScrapTransactionDto = _garmentScrapTransactionRepository.Find(o => o.Identity == guid).Select(ScrapTransaction => new GarmentScrapTransactionDto(ScrapTransaction)
 			{
-				Items = _garmentScrapTransactionItemRepository.Find(o => o.ScrapTransactionId == data.Identity).Select(dataItem => new GarmentScrapTransactionItemDto(dataItem)
-							).ToList()
+				Items = _garmentScrapTransactionItemRepository.Find(o => o.ScrapTransactionId == ScrapTransaction.Identity).Select(ScrapTransactionItem => new GarmentScrapTransactionItemDto(ScrapTransactionItem)
+				).ToList()
+			}
+			).FirstOrDefault();
 
-			}).FirstOrDefault();
-			 
 			await Task.Yield();
-			return Ok(listDto);
+			return Ok(garmentScrapTransactionDto);
 		}
 
 		[HttpPost]
