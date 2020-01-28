@@ -33,30 +33,27 @@ namespace Manufactures.Application.GarmentScrapTransactions.CommandHandler
 			var scrapTransaction = _garmentScrapTransactionRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentScrapTransaction(o)).Single();
 			_garmentScrapTransactionItemRepository.Find(o => o.ScrapTransactionId == scrapTransaction.Identity).ForEach(async item =>
 			{
-				var gStock = _garmentScrapStockRepository.Query.Where(s => s.ScrapDestinationId == scrapTransaction.ScrapDestinationId && s.ScrapClassificationId == item.ScrapClassificationId).Select(i => new GarmentScrapStock(i)).FirstOrDefault();
-				foreach (var data in request.Items)
+				var gStock = _garmentScrapStockRepository.Query.Where(s => s.ScrapDestinationId == scrapTransaction.ScrapDestinationId && s.ScrapClassificationId == item.ScrapClassificationId).Select(i => new GarmentScrapStock(i)).Single();
+				var items = request.Items.Where(o => o.Id == item.Identity).Single();
+				item.SetQuantity(items.Quantity);
+				item.SetDescription(items.Description);
+				item.Modify();
+				await _garmentScrapTransactionItemRepository.Update(item);
+				gStock.Modify();
+				await _garmentScrapStockRepository.Update(gStock);
+				if (scrapTransaction.TransactionType == "IN")
 				{
-					if(scrapTransaction.TransactionType == "IN")
-					{
-						gStock.SetQuantity(gStock.Quantity - item.Quantity + data.Quantity);
-						item.SetQuantity(data.Quantity);
-						item.SetDescription(data.Description);
-						item.Modify();
-						await _garmentScrapTransactionItemRepository.Update(item);
-						gStock.Modify();
-						await _garmentScrapStockRepository.Update(gStock);
-					}
-					else
-					{
-						gStock.SetQuantity(gStock.Quantity + item.Quantity - data.Quantity);
-						item.SetQuantity(data.Quantity);
-						item.SetDescription(data.Description);
-						item.Modify();
-						await _garmentScrapTransactionItemRepository.Update(item);
-						gStock.Modify();
-						await _garmentScrapStockRepository.Update(gStock);
-					}
-					
+					gStock.SetQuantity(gStock.Quantity - item.Quantity + items.Quantity);
+					await _garmentScrapTransactionItemRepository.Update(item);
+					gStock.Modify();
+					await _garmentScrapStockRepository.Update(gStock);
+				}
+				else
+				{
+					gStock.SetQuantity(gStock.Quantity + item.Quantity - items.Quantity);
+					await _garmentScrapTransactionItemRepository.Update(item);
+					gStock.Modify();
+					await _garmentScrapStockRepository.Update(gStock);
 				}
 			});
 			scrapTransaction.SetTransactionDate(request.TransactionDate);
