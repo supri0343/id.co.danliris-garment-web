@@ -36,7 +36,28 @@ namespace Manufactures.Controllers.Api
 
 			List<GarmentScrapTransactionDto> listDtos = _garmentScrapTransactionRepository
 				.Find(query)
-				.Select(data => new GarmentScrapTransactionDto(data))
+				.Select(data => new GarmentScrapTransactionDto(data)).Where(s => s.TransactionType == "IN")
+				.ToList();
+
+			await Task.Yield();
+			return Ok(listDtos, info: new
+			{
+				page,
+				size,
+				count
+			});
+		}
+		[HttpGet("out")]
+		public async Task<IActionResult> GetOut(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+		{
+			VerifyUser();
+
+			var query = _garmentScrapTransactionRepository.Read(page, size, order, keyword, filter);
+			var count = query.Count();
+
+			List<GarmentScrapTransactionDto> listDtos = _garmentScrapTransactionRepository
+				.Find(query)
+				.Select(data => new GarmentScrapTransactionDto(data)).Where(s=>s.TransactionType== "OUT")
 				.ToList();
 
 			await Task.Yield();
@@ -73,7 +94,6 @@ namespace Manufactures.Controllers.Api
 
 			return Ok(data.Identity);
 		}
-
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(string id)
 		{

@@ -36,13 +36,27 @@ namespace Manufactures.Application.GarmentScrapTransactions.CommandHandler
 				var gStock = _garmentScrapStockRepository.Query.Where(s => s.ScrapDestinationId == scrapTransaction.ScrapDestinationId && s.ScrapClassificationId == item.ScrapClassificationId).Select(i => new GarmentScrapStock(i)).FirstOrDefault();
 				foreach (var data in request.Items)
 				{
-					gStock.SetQuantity(gStock.Quantity - item.Quantity + data.Quantity);
-					item.SetQuantity(data.Quantity);
-					item.SetDescription(data.Description);
-					item.Modify();
-					await _garmentScrapTransactionItemRepository.Update(item);
-					gStock.Modify();
-					await _garmentScrapStockRepository.Update(gStock);
+					if(scrapTransaction.TransactionType == "IN")
+					{
+						gStock.SetQuantity(gStock.Quantity - item.Quantity + data.Quantity);
+						item.SetQuantity(data.Quantity);
+						item.SetDescription(data.Description);
+						item.Modify();
+						await _garmentScrapTransactionItemRepository.Update(item);
+						gStock.Modify();
+						await _garmentScrapStockRepository.Update(gStock);
+					}
+					else
+					{
+						gStock.SetQuantity(gStock.Quantity + item.Quantity - data.Quantity);
+						item.SetQuantity(data.Quantity);
+						item.SetDescription(data.Description);
+						item.Modify();
+						await _garmentScrapTransactionItemRepository.Update(item);
+						gStock.Modify();
+						await _garmentScrapStockRepository.Update(gStock);
+					}
+					
 				}
 			});
 			scrapTransaction.SetTransactionDate(request.TransactionDate);

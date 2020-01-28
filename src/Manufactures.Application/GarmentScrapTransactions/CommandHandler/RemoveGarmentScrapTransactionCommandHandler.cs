@@ -33,12 +33,24 @@ namespace Manufactures.Application.GarmentScrapTransactions.CommandHandler
 			var scrapTransaction = _garmentScrapTransactionRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentScrapTransaction(o)).FirstOrDefault();
 			_garmentScrapTransactionItemRepository.Find(o => o.ScrapTransactionId == scrapTransaction.Identity).ForEach(async item =>
 			{
-				var gStock= _garmentScrapStockRepository.Query.Where(s => s.ScrapDestinationId == scrapTransaction.ScrapDestinationId && s.ScrapClassificationId == item.ScrapClassificationId).Select(i => new GarmentScrapStock(i)).FirstOrDefault();
-				gStock.SetQuantity(gStock.Quantity - item.Quantity);
-				gStock.Modify();
-				await _garmentScrapStockRepository.Update(gStock);
-				item.Remove();
-				await _garmentScrapTransactionItemRepository.Update(item);
+				if(scrapTransaction .TransactionType == "IN")
+				{
+					var gStock = _garmentScrapStockRepository.Query.Where(s => s.ScrapDestinationId == scrapTransaction.ScrapDestinationId && s.ScrapClassificationId == item.ScrapClassificationId).Select(i => new GarmentScrapStock(i)).FirstOrDefault();
+					gStock.SetQuantity(gStock.Quantity - item.Quantity);
+					gStock.Modify();
+					await _garmentScrapStockRepository.Update(gStock);
+					item.Remove();
+					await _garmentScrapTransactionItemRepository.Update(item);
+				}else
+				{
+					var gStock = _garmentScrapStockRepository.Query.Where(s => s.ScrapDestinationId == scrapTransaction.ScrapDestinationId && s.ScrapClassificationId == item.ScrapClassificationId).Select(i => new GarmentScrapStock(i)).FirstOrDefault();
+					gStock.SetQuantity(gStock.Quantity + item.Quantity);
+					gStock.Modify();
+					await _garmentScrapStockRepository.Update(gStock);
+					item.Remove();
+					await _garmentScrapTransactionItemRepository.Update(item);
+				}
+				
 				
 			});
 			scrapTransaction.Remove();

@@ -22,8 +22,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentScrapTransactions.Reposit
 
 			List<string> SearchAttributes = new List<string>
 			{
-				"ScrapDestinationName",
-				"ScrapClassificationName"
+				"ScrapDestinationName"
 			};
 
 			data = QueryHelper<GarmentScrapStockReadModel>.Search(data, SearchAttributes, keyword);
