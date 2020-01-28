@@ -39,19 +39,18 @@ namespace Manufactures.Application.GarmentScrapTransactions.CommandHandler
 					gStock.SetQuantity(gStock.Quantity - item.Quantity);
 					gStock.Modify();
 					await _garmentScrapStockRepository.Update(gStock);
-					item.Remove();
-					await _garmentScrapTransactionItemRepository.Update(item);
+					
 				}else
 				{
 					var gStock = _garmentScrapStockRepository.Query.Where(s => s.ScrapDestinationId == scrapTransaction.ScrapDestinationId && s.ScrapClassificationId == item.ScrapClassificationId).Select(i => new GarmentScrapStock(i)).FirstOrDefault();
 					gStock.SetQuantity(gStock.Quantity + item.Quantity);
 					gStock.Modify();
 					await _garmentScrapStockRepository.Update(gStock);
-					item.Remove();
-					await _garmentScrapTransactionItemRepository.Update(item);
+					
 				}
-				
-				
+				item.Remove();
+				await _garmentScrapTransactionItemRepository.Update(item);
+
 			});
 			scrapTransaction.Remove();
 			await _garmentScrapTransactionRepository.Update(scrapTransaction);
