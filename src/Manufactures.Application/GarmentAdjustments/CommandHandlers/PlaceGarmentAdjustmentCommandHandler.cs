@@ -59,6 +59,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
                         Guid.NewGuid(),
                         garmentAdjustment.Identity,
                         item.SewingDOItemId,
+                        item.SewingInItemId,
                         new SizeId(item.Size.Id),
                         item.Size.Size,
                         new ProductId(item.Product.Id),
@@ -111,6 +112,14 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
             var unitcode = request.Unit.Code;
 
             var prefix = $"ADJ{unitcode}{year}{month}";
+            if (request.AdjustmentType == "LOADING")
+            {
+                prefix = $"ADJL{unitcode}{year}{month}";
+            }
+            else if(request.AdjustmentType == "SEWING")
+            {
+                prefix = $"ADJS{unitcode}{year}{month}";
+            }
 
             var lastAdjustmentNo = _garmentAdjustmentRepository.Query.Where(w => w.AdjustmentNo.StartsWith(prefix))
                 .OrderByDescending(o => o.AdjustmentNo)

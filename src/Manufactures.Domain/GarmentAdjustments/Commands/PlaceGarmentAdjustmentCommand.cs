@@ -52,9 +52,9 @@ namespace Manufactures.Domain.GarmentAdjustments.Commands
                 .When(w => w.IsSave);
 
             RuleFor(r => r.Quantity)
-                .LessThanOrEqualTo(r => r.SewingDORemainingQuantity)
+                .LessThanOrEqualTo(r => r.RemainingQuantity)
                 .OverridePropertyName("Quantity")
-                .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.SewingDORemainingQuantity}'.")
+                .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.RemainingQuantity}'.")
                 .When(w => w.IsSave == true);
         }
     }

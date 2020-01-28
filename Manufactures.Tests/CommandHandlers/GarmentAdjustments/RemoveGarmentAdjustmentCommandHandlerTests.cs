@@ -50,6 +50,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAdjustments
             // Arrange
             Guid loadingGuid = Guid.NewGuid();
             Guid sewingDOItemGuid = Guid.NewGuid();
+            Guid sewingInItemGuid = Guid.NewGuid();
             Guid sewingDOGuid = Guid.NewGuid();
             RemoveGarmentAdjustmentCommandHandler unitUnderTest = CreateRemoveGarmentAdjustmentCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
@@ -65,7 +66,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAdjustments
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentAdjustmentItemReadModel, bool>>>()))
                 .Returns(new List<GarmentAdjustmentItem>()
                 {
-                    new GarmentAdjustmentItem(Guid.Empty, Guid.Empty,sewingDOItemGuid,new SizeId(1), null, new ProductId(1), null, null, null, 1,10,new UomId(1),null, null,1)
+                    new GarmentAdjustmentItem(Guid.Empty, Guid.Empty,sewingDOItemGuid,sewingInItemGuid,new SizeId(1), null, new ProductId(1), null, null, null, 1,10,new UomId(1),null, null,1)
                 });
 
 
