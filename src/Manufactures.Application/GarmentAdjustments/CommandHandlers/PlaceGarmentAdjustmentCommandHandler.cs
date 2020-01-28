@@ -5,6 +5,8 @@ using Manufactures.Domain.GarmentAdjustments.Commands;
 using Manufactures.Domain.GarmentAdjustments.Repositories;
 using Manufactures.Domain.GarmentSewingDOs;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
+using Manufactures.Domain.GarmentSewingIns;
+using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -21,6 +23,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
         private readonly IGarmentAdjustmentRepository _garmentAdjustmentRepository;
         private readonly IGarmentAdjustmentItemRepository _garmentAdjustmentItemRepository;
         private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
+        private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
 
         public PlaceGarmentAdjustmentCommandHandler(IStorage storage)
         {
@@ -28,6 +31,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
             _garmentAdjustmentRepository = storage.GetRepository<IGarmentAdjustmentRepository>();
             _garmentAdjustmentItemRepository = storage.GetRepository<IGarmentAdjustmentItemRepository>();
             _garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
+            _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
         }
 
         public async Task<GarmentAdjustment> Handle(PlaceGarmentAdjustmentCommand request, CancellationToken cancellationToken)
@@ -50,6 +54,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
             );
 
             Dictionary<Guid, double> sewingDOItemToBeUpdated = new Dictionary<Guid, double>();
+            Dictionary<Guid, double> sewingInItemToBeUpdated = new Dictionary<Guid, double>();
 
             foreach (var item in request.Items)
             {
@@ -74,26 +79,53 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
                         item.Price
                     );
 
-                    if (sewingDOItemToBeUpdated.ContainsKey(item.SewingDOItemId))
+                    if (request.AdjustmentType == "LOADING")
                     {
-                        sewingDOItemToBeUpdated[item.SewingDOItemId] += item.Quantity;
+                        if (sewingDOItemToBeUpdated.ContainsKey(item.SewingDOItemId))
+                        {
+                            sewingDOItemToBeUpdated[item.SewingDOItemId] += item.Quantity;
+                        }
+                        else
+                        {
+                            sewingDOItemToBeUpdated.Add(item.SewingDOItemId, item.Quantity);
+                        }
                     }
-                    else
+                    else if(request.AdjustmentType == "SEWING")
                     {
-                        sewingDOItemToBeUpdated.Add(item.SewingDOItemId, item.Quantity);
+                        if (sewingInItemToBeUpdated.ContainsKey(item.SewingInItemId))
+                        {
+                            sewingInItemToBeUpdated[item.SewingInItemId] += item.Quantity;
+                        }
+                        else
+                        {
+                            sewingInItemToBeUpdated.Add(item.SewingInItemId, item.Quantity);
+                        }
                     }
-
                     await _garmentAdjustmentItemRepository.Update(garmentAdjustmentItem);
                 }
             }
 
-            foreach (var sewingDOItem in sewingDOItemToBeUpdated)
+            if (request.AdjustmentType == "LOADING")
             {
-                var garmentSewingDOItem = _garmentSewingDOItemRepository.Query.Where(x => x.Identity == sewingDOItem.Key).Select(s => new GarmentSewingDOItem(s)).Single();
-                garmentSewingDOItem.setRemainingQuantity(garmentSewingDOItem.RemainingQuantity - sewingDOItem.Value);
-                garmentSewingDOItem.Modify();
+                foreach (var sewingDOItem in sewingDOItemToBeUpdated)
+                {
+                    var garmentSewingDOItem = _garmentSewingDOItemRepository.Query.Where(x => x.Identity == sewingDOItem.Key).Select(s => new GarmentSewingDOItem(s)).Single();
+                    garmentSewingDOItem.setRemainingQuantity(garmentSewingDOItem.RemainingQuantity - sewingDOItem.Value);
+                    garmentSewingDOItem.Modify();
 
-                await _garmentSewingDOItemRepository.Update(garmentSewingDOItem);
+                    await _garmentSewingDOItemRepository.Update(garmentSewingDOItem);
+                }
+            }
+            else if (request.AdjustmentType == "SEWING")
+            {
+                foreach (var sewingInItem in sewingInItemToBeUpdated)
+                {
+                    var garmentSewingInItem = _garmentSewingInItemRepository.Query.Where(x => x.Identity == sewingInItem.Key).Select(s => new GarmentSewingInItem(s)).Single();
+                    garmentSewingInItem.SetRemainingQuantity(garmentSewingInItem.RemainingQuantity - sewingInItem.Value);
+                    garmentSewingInItem.Modify();
+
+                    await _garmentSewingInItemRepository.Update(garmentSewingInItem);
+                }
             }
 
             await _garmentAdjustmentRepository.Update(garmentAdjustment);
