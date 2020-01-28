@@ -14,11 +14,11 @@ namespace Manufactures.Controllers.Api
 	[ApiController]
 	[Authorize]
 	[Route("scrap-stocks")]
-	public class GarmentSrcapStockController : ControllerApiBase
+	public class GarmentScrapStockController : ControllerApiBase
 	{
 		private readonly IGarmentScrapStockRepository _garmentScrapStockRepository;
 	
-		public GarmentSrcapStockController(IServiceProvider serviceProvider) : base(serviceProvider)
+		public GarmentScrapStockController(IServiceProvider serviceProvider) : base(serviceProvider)
 		{
 			_garmentScrapStockRepository = Storage.GetRepository<IGarmentScrapStockRepository>();
 		}
