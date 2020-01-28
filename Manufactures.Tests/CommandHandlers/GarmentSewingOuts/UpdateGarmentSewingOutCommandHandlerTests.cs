@@ -55,7 +55,8 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSewingOuts
             _MockStorage.SetupStorage(_mockCuttingInRepository);
             _MockStorage.SetupStorage(_mockCuttingInItemRepository);
             _MockStorage.SetupStorage(_mockCuttingInDetailRepository);
-        }
+			_MockStorage.SetupStorage(_mockComodityPriceRepository);
+		}
         private UpdateGarmentSewingOutCommandHandler CreateUpdateGarmentSewingOutCommandHandler()
         {
             return new UpdateGarmentSewingOutCommandHandler(_MockStorage.Object);

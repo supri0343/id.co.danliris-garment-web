@@ -70,12 +70,37 @@ namespace Manufactures.Tests.Controllers.Api
 				.Setup(s => s.Find(It.IsAny<IQueryable<GarmentScrapTransactionReadModel>>()))
 				.Returns(new List<GarmentScrapTransaction>()
 				{
-					new GarmentScrapTransaction(new Guid(),"","",DateTimeOffset.Now,new Guid(),"",new Guid(),"")
+					new GarmentScrapTransaction(new Guid(),"","IN",DateTimeOffset.Now,new Guid(),"",new Guid(),"")
 				});
 
 
 			// Act
 			var result = await unitUnderTest.Get();
+
+			// Assert
+			Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+		}
+		[Fact]
+		public async Task Get_StateUnderTest_ExpectedBehavior_Out()
+		{
+			// Arrange
+			var unitUnderTest = CreateGarmentScrapTransactionController();
+
+			_mockGarmentScrapTransactionRepository
+				.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+				.Returns(new List<GarmentScrapTransactionReadModel>().AsQueryable());
+
+
+			_mockGarmentScrapTransactionRepository
+				.Setup(s => s.Find(It.IsAny<IQueryable<GarmentScrapTransactionReadModel>>()))
+				.Returns(new List<GarmentScrapTransaction>()
+				{
+					new GarmentScrapTransaction(new Guid(),"","OUT",DateTimeOffset.Now,new Guid(),"",new Guid(),"")
+				});
+
+
+			// Act
+			var result = await unitUnderTest.GetOut();
 
 			// Assert
 			Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
