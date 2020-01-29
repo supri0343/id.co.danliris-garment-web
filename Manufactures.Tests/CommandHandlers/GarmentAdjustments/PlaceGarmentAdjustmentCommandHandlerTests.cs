@@ -67,7 +67,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAdjustments
                         SewingDOItemId=sewingDOItemGuid,
                         Size=new SizeValueObject(1, "Size"),
                         Quantity=1,
-                        SewingDORemainingQuantity=2,
+                        RemainingQuantity=2,
                         Product= new Product(1, "ProdCode", "ProdName"),
                         Uom=new Uom(1, "Uom"),
                     }
