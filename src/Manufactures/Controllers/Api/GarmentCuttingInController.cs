@@ -40,7 +40,9 @@ namespace Manufactures.Controllers.Api
             VerifyUser();
 
             var query = _garmentCuttingInRepository.Read(page, size, order, keyword, filter);
-            var count = query.Count();
+            var total = query.Count();
+
+            query = query.Skip((page - 1) * size).Take(size);
 
             List<GarmentCuttingInListDto> garmentCuttingInListDtos = _garmentCuttingInRepository
                 .Find(query)
@@ -72,7 +74,7 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                count
+                total
             });
         }
 
@@ -147,7 +149,7 @@ namespace Manufactures.Controllers.Api
         public async Task<IActionResult> GetLoaderByRO(string keyword, string filter = "{}")
         {
             var query = _garmentCuttingInRepository.Read(1, int.MaxValue, "{}", "", filter);
-            query = query.Where(o => o.RONo.Contains(keyword));
+            query = query.Where(o => o.RONo.Contains(keyword) && o.Items.Any(a=>a.Details.Any(b=>b.RemainingQuantity>0)));
 
             var rOs = _garmentCuttingInRepository.Find(query)
                 .Select(o => new { o.RONo, o.Article }).Distinct().ToList();

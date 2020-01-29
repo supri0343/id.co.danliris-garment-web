@@ -40,6 +40,7 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
                 Guid.NewGuid(),
                 GenerateCutInNo(request),
                 request.CuttingType,
+                request.CuttingFrom,
                 request.RONo,
                 request.Article,
                 new UnitDepartmentId(request.Unit.Id),
@@ -58,7 +59,9 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
                     garmentCuttingIn.Identity,
                     item.PreparingId,
                     item.UENId,
-                    item.UENNo
+                    item.UENNo,
+                    item.SewingOutId,
+                    item.SewingOutNo
                 );
 
                 //var garmentPreparing = _garmentPreparingRepository.Query.Where(x => x.Identity == item.PreparingId).Select(s => new GarmentPreparing(s)).Single();
@@ -74,6 +77,8 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
                             Guid.NewGuid(),
                             garmentCuttingInItem.Identity,
                             detail.PreparingItemId,
+                            Guid.Empty,
+                            Guid.Empty,
                             new ProductId(detail.Product.Id),
                             detail.Product.Code,
                             detail.Product.Name,
@@ -88,7 +93,8 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
                             detail.RemainingQuantity,
                             detail.BasicPrice,
                             detail.Price,
-                            detail.FC
+                            detail.FC,
+                            null
                         );
 
                         if (preparingItemToBeUpdated.ContainsKey(detail.PreparingItemId))

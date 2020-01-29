@@ -37,7 +37,7 @@ namespace Manufactures.Domain.GarmentComodityPrices.Commands
             RuleFor(r => r.Comodity).NotEmpty().OverridePropertyName("Comodity");
             RuleFor(r => r.Comodity).Must((comodity) =>
             {
-                return placeGarmentComodityPriceCommand.Items.FindAll(a => a.Comodity.Id == comodity.Id).Count < 2;
+                return placeGarmentComodityPriceCommand.Items.FindAll(a => a.Comodity!=null && a.Comodity.Id == comodity.Id).Count < 2;
             }).WithMessage("Komoditi sudah di input").When(c => c.Comodity != null);
             RuleFor(r => r.Price)
                  .GreaterThan(0)

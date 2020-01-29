@@ -35,7 +35,8 @@ namespace Manufactures.Controllers.Api
             VerifyUser();
 
             var query = _garmentSewingDORepository.Read(page, size, order, "", filter);
-            var count = query.Count();
+            var total = query.Count();
+            query = query.Skip((page - 1) * size).Take(size);
 
             var garmentSewingDODto = _garmentSewingDORepository.Find(query).Select(o => new GarmentSewingDOListDto(o)).ToArray();
             var garmentSewingDOItemDto = _garmentSewingDOItemRepository.Find(_garmentSewingDOItemRepository.Query).Select(o => new GarmentSewingDOItemDto(o)).ToList();
@@ -99,14 +100,14 @@ namespace Manufactures.Controllers.Api
                     garmentSewingDODtoListArray = garmentSewingDODtoList.OrderByDescending(x => x.LastModifiedDate).ToArray();
                 }
 
-                garmentSewingDODtoListArray = garmentSewingDODtoListArray.Take(size).Skip((page - 1) * size).ToArray();
+                //garmentSewingDODtoListArray = garmentSewingDODtoListArray.Take(size).Skip((page - 1) * size).ToArray();
 
                 await Task.Yield();
                 return Ok(garmentSewingDODtoListArray, info: new
                 {
                     page,
                     size,
-                    count = count
+                    total
                 });
             }
             else
@@ -121,14 +122,14 @@ namespace Manufactures.Controllers.Api
                     garmentSewingDODto = garmentSewingDODto.OrderByDescending(x => x.LastModifiedDate).ToArray();
                 }
 
-                garmentSewingDODto = garmentSewingDODto.Take(size).Skip((page - 1) * size).ToArray();
+                //garmentSewingDODto = garmentSewingDODto.Take(size).Skip((page - 1) * size).ToArray();
 
                 await Task.Yield();
                 return Ok(garmentSewingDODto, info: new
                 {
                     page,
                     size,
-                    count = count
+                    total
                 });
             }
             //List<GarmentSewingDOListDto> garmentSewingDOListDtos = _garmentSewingDORepository.Find(query).Select(sewingDO =>

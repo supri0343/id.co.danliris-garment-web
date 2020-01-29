@@ -24,6 +24,7 @@ namespace Manufactures.Dtos
             BasicPrice = garmentCuttingInDetail.BasicPrice;
             Price = garmentCuttingInDetail.Price;
             FC = garmentCuttingInDetail.FC;
+            Color = garmentCuttingInDetail.Color;
         }
 
         public Guid Id { get; set; }
@@ -45,5 +46,6 @@ namespace Manufactures.Dtos
         public double BasicPrice { get; set; }
         public double Price { get; set; }
         public double FC { get; set; }
+        public string Color { get; set; }
     }
 }

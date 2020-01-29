@@ -11,6 +11,7 @@ namespace Manufactures.Domain.GarmentCuttingIns
     {
         public string CutInNo { get; private set; }
         public string CuttingType { get; private set; }
+        public string CuttingFrom { get; private set; }
         public string RONo { get; private set; }
         public string Article { get; private set; }
         public UnitDepartmentId UnitId { get; private set; }
@@ -19,7 +20,7 @@ namespace Manufactures.Domain.GarmentCuttingIns
         public DateTimeOffset CuttingInDate { get; private set; }
         public double FC { get; private set; }
 
-        public GarmentCuttingIn(Guid identity, string cutInNo, string cuttingType, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset cuttingInDate, double fC) : base(identity)
+        public GarmentCuttingIn(Guid identity, string cutInNo, string cuttingType, string cuttingFrom, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset cuttingInDate, double fC) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
             Validator.ThrowIfNull(() => rONo);
@@ -29,6 +30,7 @@ namespace Manufactures.Domain.GarmentCuttingIns
             Identity = identity;
             CutInNo = cutInNo;
             CuttingType = cuttingType;
+            CuttingFrom = cuttingFrom;
             RONo = rONo;
             Article = article;
             UnitId = unitId;
@@ -41,6 +43,7 @@ namespace Manufactures.Domain.GarmentCuttingIns
             {
                 CutInNo = CutInNo,
                 CuttingType = CuttingType,
+                CuttingFrom= CuttingFrom,
                 RONo = RONo,
                 Article = Article,
                 UnitId = UnitId.Value,
@@ -57,6 +60,7 @@ namespace Manufactures.Domain.GarmentCuttingIns
         {
             CutInNo = readModel.CutInNo;
             CuttingType = readModel.CuttingType;
+            CuttingFrom = readModel.CuttingFrom;
             RONo = readModel.RONo;
             Article = readModel.Article;
             UnitId = new UnitDepartmentId(readModel.UnitId);
@@ -72,6 +76,15 @@ namespace Manufactures.Domain.GarmentCuttingIns
             {
                 this.FC = FC;
                 ReadModel.FC = FC;
+            }
+        }
+
+        public void SetDate(DateTimeOffset CuttingInDate)
+        {
+            if (this.CuttingInDate != CuttingInDate)
+            {
+                this.CuttingInDate = CuttingInDate;
+                ReadModel.CuttingInDate = CuttingInDate;
             }
         }
 

@@ -41,28 +41,25 @@ namespace Manufactures.Tests.CommandHandlers.GarmentComodityPrices
             Guid preparingItemGuid = Guid.NewGuid();
             PlaceGarmentComodityPriceCommandHandler unitUnderTest = CreatePlaceGarmentComodityPriceCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
-            PlaceGarmentComodityPriceCommand placeGarmentCuttingInCommand = new PlaceGarmentComodityPriceCommand()
-            {
-                Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                Date = DateTimeOffset.Now,
-                Items = new List<GarmentComodityPriceItemValueObject>
-                {
-                    new GarmentComodityPriceItemValueObject
-                    {
-                        Comodity=new GarmentComodity(1, "comoCode", "ComoName"),
-                        Unit=new UnitDepartment(1, "UnitCode", "UnitName"),
-                        Date=DateTimeOffset.Now,
-                        Price=1000
+			PlaceGarmentComodityPriceCommand placeGarmentCuttingInCommand = new PlaceGarmentComodityPriceCommand()
+			{
+				Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
+				Date = DateTimeOffset.Now,
+				Items = new List<GarmentComodityPriceItemValueObject>
+				{
+					new GarmentComodityPriceItemValueObject
+					{
+						Comodity=new GarmentComodity(1, "comoCode", "ComoName"),
+						Unit=new UnitDepartment(1, "UnitCode", "UnitName"),
+						Date=DateTimeOffset.Now,
+						Price=1000,
+						NewPrice=0,
+						IsValid=true
 
                     }
                 },
 
             };
-
-            _mockComodityPriceRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentComodityPriceReadModel>().AsQueryable());
-
 
             _mockComodityPriceRepository
                 .Setup(s => s.Update(It.IsAny<GarmentComodityPrice>()))

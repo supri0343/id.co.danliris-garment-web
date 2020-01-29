@@ -77,7 +77,7 @@ namespace Manufactures.Tests.Queries.GarmentSewingOuts
 			Guid guidSewingOut = Guid.NewGuid();
 			Guid guidSewingOutItem = Guid.NewGuid(); 
 
-			GetMonitoringSewingQuery getMonitoring = new GetMonitoringSewingQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now, "token");
+			GetMonitoringSewingQuery getMonitoring = new GetMonitoringSewingQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "token");
 
 			_mockGarmentLoadingItemRepository
 				.Setup(s => s.Query)

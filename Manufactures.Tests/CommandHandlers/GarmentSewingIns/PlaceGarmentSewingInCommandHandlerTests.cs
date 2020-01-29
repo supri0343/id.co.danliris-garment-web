@@ -1,6 +1,9 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentSewingIns.CommandHandlers;
+using Manufactures.Domain.GarmentFinishingOuts;
+using Manufactures.Domain.GarmentFinishingOuts.ReadModels;
+using Manufactures.Domain.GarmentFinishingOuts.Repositories;
 using Manufactures.Domain.GarmentLoadings;
 using Manufactures.Domain.GarmentLoadings.ReadModels;
 using Manufactures.Domain.GarmentLoadings.Repositories;
@@ -31,6 +34,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSewingIns
         private readonly Mock<IGarmentSewingInItemRepository> _mockSewingInItemRepository;
         private readonly Mock<IGarmentLoadingItemRepository> _mockLoadingItemRepository;
         private readonly Mock<IGarmentSewingOutItemRepository> _mockSewingOutItemRepository;
+        private readonly Mock<IGarmentFinishingOutItemRepository> _mockFinishingOutItemRepository;
 
         public PlaceGarmentSewingInCommandHandlerTests()
         {
@@ -38,11 +42,13 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSewingIns
             _mockSewingInItemRepository = CreateMock<IGarmentSewingInItemRepository>();
             _mockLoadingItemRepository = CreateMock<IGarmentLoadingItemRepository>();
             _mockSewingOutItemRepository = CreateMock<IGarmentSewingOutItemRepository>();
+            _mockFinishingOutItemRepository = CreateMock<IGarmentFinishingOutItemRepository>();
 
             _MockStorage.SetupStorage(_mockSewingInRepository);
             _MockStorage.SetupStorage(_mockSewingInItemRepository);
             _MockStorage.SetupStorage(_mockLoadingItemRepository);
             _MockStorage.SetupStorage(_mockSewingOutItemRepository);
+            _MockStorage.SetupStorage(_mockFinishingOutItemRepository);
         }
 
         private PlaceGarmentSewingInCommandHandler CreatePlaceGarmentSewingInCommandHandler()
@@ -179,6 +185,77 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSewingIns
             _mockSewingOutItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentSewingOutItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentSewingOutItem>()));
+
+
+            _MockStorage
+                .Setup(x => x.Save())
+                .Verifiable();
+
+            // Act
+            var result = await unitUnderTest.Handle(placeGarmentSewingInCommand, cancellationToken);
+
+            // Assert
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task Handle_StateUnderTest_ExpectedBehavior_FINISHING()
+        {
+            // Arrange
+            Guid loadingItemGuid = Guid.NewGuid();
+            Guid finishingOutItemGuid = Guid.NewGuid();
+            PlaceGarmentSewingInCommandHandler unitUnderTest = CreatePlaceGarmentSewingInCommandHandler();
+            CancellationToken cancellationToken = CancellationToken.None;
+            PlaceGarmentSewingInCommand placeGarmentSewingInCommand = new PlaceGarmentSewingInCommand()
+            {
+
+                RONo = "RONo",
+                Article = "Article",
+                SewingFrom = "FINISHING",
+                UnitFrom = new UnitDepartment(1, "UnitCode", "UnitName"),
+                Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
+
+                SewingInDate = DateTimeOffset.Now,
+                Comodity = new GarmentComodity(1, "ComodityCode", "ComodityName"),
+                Items = new List<GarmentSewingInItemValueObject>
+                {
+                    new GarmentSewingInItemValueObject
+                    {
+                        FinishingOutItemId=finishingOutItemGuid,
+                        SewingOutDetailId=Guid.NewGuid(),
+                        Uom = new Uom(1, "UomUnit"),
+                        Product = new Product(1, "ProductCode", "ProductName"),
+                        Size = new SizeValueObject(1,"SizeName"),
+                        DesignColor = "DesignColor",
+                        Color = "Color",
+                        Quantity = 1,
+                        RemainingQuantity = 1,
+                        IsSave=true
+                    }
+                },
+
+            };
+
+            _mockSewingInRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSewingInReadModel>().AsQueryable());
+            _mockFinishingOutItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentFinishingOutItemReadModel>
+                {
+                    new GarmentFinishingOutItemReadModel(finishingOutItemGuid)
+                }.AsQueryable());
+
+
+            _mockSewingInRepository
+                .Setup(s => s.Update(It.IsAny<GarmentSewingIn>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentSewingIn>()));
+            _mockSewingInItemRepository
+                .Setup(s => s.Update(It.IsAny<GarmentSewingInItem>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentSewingInItem>()));
+            _mockFinishingOutItemRepository
+                .Setup(s => s.Update(It.IsAny<GarmentFinishingOutItem>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentFinishingOutItem>()));
 
 
             _MockStorage

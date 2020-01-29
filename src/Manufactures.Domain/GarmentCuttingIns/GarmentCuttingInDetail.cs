@@ -13,6 +13,9 @@ namespace Manufactures.Domain.GarmentCuttingIns
         public Guid CutInItemId { get; private set; }
         public Guid PreparingItemId { get; private set; }
 
+        public Guid SewingOutItemId { get; internal set; }
+        public Guid SewingOutDetailId { get; internal set; }
+
         public ProductId ProductId { get; private set; }
         public string ProductCode { get; private set; }
         public string ProductName { get; private set; }
@@ -32,6 +35,7 @@ namespace Manufactures.Domain.GarmentCuttingIns
         public double BasicPrice { get; private set; }
         public double Price { get; private set; }
         public double FC { get; private set; }
+        public string Color { get; private set; }
 
         public void SetCuttingInQuantity(int CuttingInQuantity)
         {
@@ -78,12 +82,14 @@ namespace Manufactures.Domain.GarmentCuttingIns
             }
         }
 
-        public GarmentCuttingInDetail(Guid identity, Guid cutInItemId, Guid preparingItemId, ProductId productId, string productCode, string productName, string designColor, string fabricType, double preparingQuantity, UomId preparingUomId, string preparingUomUnit, int cuttingInQuantity, UomId cuttingInUomId, string cuttingInUomUnit, double remainingQuantity, double basicPrice, double price,double fc) : base(identity)
+        public GarmentCuttingInDetail(Guid identity, Guid cutInItemId, Guid preparingItemId, Guid sewingOutItemId, Guid sewingOutDetailId, ProductId productId, string productCode, string productName, string designColor, string fabricType, double preparingQuantity, UomId preparingUomId, string preparingUomUnit, int cuttingInQuantity, UomId cuttingInUomId, string cuttingInUomUnit, double remainingQuantity, double basicPrice, double price,double fc, string color) : base(identity)
         {
             //MarkTransient();
 
             CutInItemId = cutInItemId;
             PreparingItemId = preparingItemId;
+            SewingOutItemId = sewingOutItemId;
+            SewingOutDetailId = sewingOutDetailId;
             ProductId = productId;
             ProductCode = productCode;
             ProductName = productName;
@@ -99,11 +105,14 @@ namespace Manufactures.Domain.GarmentCuttingIns
             BasicPrice = basicPrice;
             Price = price;
             FC = fc;
+            Color = color;
 
             ReadModel = new GarmentCuttingInDetailReadModel(Identity)
             {
                 CutInItemId = CutInItemId,
                 PreparingItemId = PreparingItemId,
+                SewingOutItemId = SewingOutItemId,
+                SewingOutDetailId = SewingOutDetailId,
                 ProductId = ProductId.Value,
                 ProductCode = ProductCode,
                 ProductName = ProductName,
@@ -118,7 +127,8 @@ namespace Manufactures.Domain.GarmentCuttingIns
                 RemainingQuantity = RemainingQuantity,
                 BasicPrice = BasicPrice,
                 Price=Price,
-                FC=FC
+                FC=FC,
+                Color= Color
             };
 
             ReadModel.AddDomainEvent(new OnGarmentCuttingInPlaced(Identity));
@@ -128,6 +138,8 @@ namespace Manufactures.Domain.GarmentCuttingIns
         {
             CutInItemId = readModel.CutInItemId;
             PreparingItemId = readModel.PreparingItemId;
+            SewingOutItemId = readModel.SewingOutItemId;
+            SewingOutDetailId = readModel.SewingOutDetailId;
             ProductId = new ProductId(readModel.ProductId);
             ProductCode = readModel.ProductCode;
             ProductName = readModel.ProductName;
@@ -143,6 +155,7 @@ namespace Manufactures.Domain.GarmentCuttingIns
             BasicPrice = readModel.BasicPrice;
             Price = readModel.Price;
             FC = readModel.FC;
+            Color = readModel.Color;
         }
 
         public void Modify()
