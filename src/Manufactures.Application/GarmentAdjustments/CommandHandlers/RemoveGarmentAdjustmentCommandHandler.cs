@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentAdjustments;
 using Manufactures.Domain.GarmentAdjustments.Commands;
 using Manufactures.Domain.GarmentAdjustments.Repositories;
+using Manufactures.Domain.GarmentFinishingIns;
+using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentSewingDOs;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
@@ -23,6 +25,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
         private readonly IGarmentAdjustmentItemRepository _garmentAdjustmentItemRepository;
         private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
         private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
+        private readonly IGarmentFinishingInItemRepository _garmentFinishingInItemRepository;
 
         public RemoveGarmentAdjustmentCommandHandler(IStorage storage)
         {
@@ -31,6 +34,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
             _garmentAdjustmentItemRepository = storage.GetRepository<IGarmentAdjustmentItemRepository>();
             _garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
+            _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
         }
 
         public async Task<GarmentAdjustment> Handle(RemoveGarmentAdjustmentCommand request, CancellationToken cancellationToken)
@@ -39,6 +43,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
 
             Dictionary<Guid, double> sewingDOItemToBeUpdated = new Dictionary<Guid, double>();
             Dictionary<Guid, double> sewingInItemToBeUpdated = new Dictionary<Guid, double>();
+            Dictionary<Guid, double> finishingInItemToBeUpdated = new Dictionary<Guid, double>();
 
             _garmentAdjustmentItemRepository.Find(o => o.AdjustmentId == adjustment.Identity).ForEach(async adjustmentItem =>
             {
@@ -62,6 +67,17 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
                     else
                     {
                         sewingInItemToBeUpdated.Add(adjustmentItem.SewingInItemId, adjustmentItem.Quantity);
+                    }
+                }
+                else if (adjustment.AdjustmentType == "FINISHING")
+                {
+                    if (finishingInItemToBeUpdated.ContainsKey(adjustmentItem.FinishingInItemId))
+                    {
+                        finishingInItemToBeUpdated[adjustmentItem.FinishingInItemId] += adjustmentItem.Quantity;
+                    }
+                    else
+                    {
+                        finishingInItemToBeUpdated.Add(adjustmentItem.FinishingInItemId, adjustmentItem.Quantity);
                     }
                 }
 
@@ -92,7 +108,17 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
                     await _garmentSewingInItemRepository.Update(garmentSewingInItem);
                 }
             }
+            else if (adjustment.AdjustmentType == "FINISHING")
+            {
+                foreach (var finishingInItem in finishingInItemToBeUpdated)
+                {
+                    var garmentFinishingInItem = _garmentFinishingInItemRepository.Query.Where(x => x.Identity == finishingInItem.Key).Select(s => new GarmentFinishingInItem(s)).Single();
+                    garmentFinishingInItem.SetRemainingQuantity(garmentFinishingInItem.RemainingQuantity + finishingInItem.Value);
+                    garmentFinishingInItem.Modify();
 
+                    await _garmentFinishingInItemRepository.Update(garmentFinishingInItem);
+                }
+            }
 
             adjustment.Remove();
             await _garmentAdjustmentRepository.Update(adjustment);

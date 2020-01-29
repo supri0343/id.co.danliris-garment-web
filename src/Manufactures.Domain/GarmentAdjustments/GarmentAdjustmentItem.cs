@@ -13,6 +13,7 @@ namespace Manufactures.Domain.GarmentAdjustments
         public Guid AdjustmentId { get; internal set; }
         public Guid SewingDOItemId { get; internal set; }
         public Guid SewingInItemId { get; internal set; }
+        public Guid FinishingInItemId { get; internal set; }
         public ProductId ProductId { get; internal set; }
         public string ProductCode { get; internal set; }
         public string ProductName { get; internal set; }
@@ -44,11 +45,12 @@ namespace Manufactures.Domain.GarmentAdjustments
             }
         }
 
-        public GarmentAdjustmentItem(Guid identity, Guid loadingId, Guid sewingDOItemId, Guid sewingInItemId, SizeId sizeId, string sizeName, ProductId productId, string productCode, string productName, string designColor, double quantity, double basicPrice, UomId uomId, string uomUnit, string color, double price) : base(identity)
+        public GarmentAdjustmentItem(Guid identity, Guid loadingId, Guid sewingDOItemId, Guid sewingInItemId, Guid finishingInItemId, SizeId sizeId, string sizeName, ProductId productId, string productCode, string productName, string designColor, double quantity, double basicPrice, UomId uomId, string uomUnit, string color, double price) : base(identity)
         {
             AdjustmentId = loadingId;
             SewingDOItemId = sewingDOItemId;
             SewingInItemId = sewingInItemId;
+            FinishingInItemId = finishingInItemId;
             ProductId = productId;
             ProductCode = productCode;
             ProductName = productCode;
@@ -67,6 +69,7 @@ namespace Manufactures.Domain.GarmentAdjustments
                 AdjustmentId = loadingId,
                 SewingDOItemId = SewingDOItemId,
                 SewingInItemId= SewingInItemId,
+                FinishingInItemId= FinishingInItemId,
                 ProductId = ProductId.Value,
                 ProductCode = ProductCode,
                 ProductName = ProductName,
@@ -89,6 +92,7 @@ namespace Manufactures.Domain.GarmentAdjustments
             AdjustmentId = readModel.AdjustmentId;
             SewingDOItemId = readModel.SewingDOItemId;
             SewingInItemId = readModel.SewingInItemId;
+            FinishingInItemId = readModel.FinishingInItemId;
             ProductId = new ProductId(readModel.ProductId);
             ProductCode = readModel.ProductCode;
             ProductName = readModel.ProductCode;
