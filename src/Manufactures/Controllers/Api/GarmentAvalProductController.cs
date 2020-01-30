@@ -137,13 +137,13 @@ namespace Manufactures.Controllers.Api
             {
                 VerifyUser();
 
-                var garmentAvalProductValidation = _garmentAvalProductRepository.Find(o => o.RONo == command.RONo && o.Article == command.Article && o.AvalDate == command.AvalDate).Select(o => new GarmentAvalProductDto(o)).FirstOrDefault();
-                if (garmentAvalProductValidation != null)
-                    return BadRequest(new
-                    {
-                        code = HttpStatusCode.BadRequest,
-                        error = "Data sudah ada"
-                    });
+                //var garmentAvalProductValidation = _garmentAvalProductRepository.Find(o => o.RONo == command.RONo && o.Article == command.Article && o.AvalDate == command.AvalDate).Select(o => new GarmentAvalProductDto(o)).FirstOrDefault();
+                //if (garmentAvalProductValidation != null)
+                //    return BadRequest(new
+                //    {
+                //        code = HttpStatusCode.BadRequest,
+                //        error = "Data sudah ada"
+                //    });
 
                 var order = await Mediator.Send(command);
 
