@@ -16,7 +16,6 @@ namespace Manufactures.Domain.GarmentScrapTransactions.ValueObjects
 		public string Description { get;  set; }
 		public double RemainingQuantity { get; set; }
 		public string TransactionType { get; set; }
-		public bool IsEdit { get; set; }
 		public Guid Id { get; set; }
 		public GarmentScrapTransactionItemValueObject()
 		{

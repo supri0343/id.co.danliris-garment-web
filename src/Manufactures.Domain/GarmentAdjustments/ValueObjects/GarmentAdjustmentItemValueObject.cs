@@ -11,7 +11,6 @@ namespace Manufactures.Domain.GarmentAdjustments.ValueObjects
         public Guid AdjustmentId { get;  set; }
         public Guid SewingDOItemId { get;  set; }
         public Guid SewingInItemId { get; set; }
-        public Guid FinishingInItemId { get; set; }
         public Product Product { get; set; }
         public string DesignColor { get; set; }
         public SizeValueObject Size { get; set; }

@@ -26,9 +26,6 @@ namespace Manufactures.Domain.GarmentFinishingIns.ReadModels
         public string ComodityName { get; internal set; }
         public DateTimeOffset FinishingInDate { get; internal set; }
 
-        public long DOId { get; internal set; }
-        public string DONo { get; internal set; }
-
         public virtual List<GarmentFinishingInItemReadModel> Items { get; internal set; }
 
     }

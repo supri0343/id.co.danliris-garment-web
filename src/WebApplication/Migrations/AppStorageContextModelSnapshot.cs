@@ -1233,11 +1233,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset>("CreatedDate");
 
-                    b.Property<long>("DOId");
-
-                    b.Property<string>("DONo")
-                        .HasMaxLength(25);
-
                     b.Property<bool?>("Deleted");
 
                     b.Property<string>("DeletedBy")

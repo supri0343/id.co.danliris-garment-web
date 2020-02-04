@@ -6,9 +6,6 @@ using Manufactures.Domain.GarmentAdjustments.Commands;
 using Manufactures.Domain.GarmentAdjustments.ReadModels;
 using Manufactures.Domain.GarmentAdjustments.Repositories;
 using Manufactures.Domain.GarmentAdjustments.ValueObjects;
-using Manufactures.Domain.GarmentFinishingIns;
-using Manufactures.Domain.GarmentFinishingIns.ReadModels;
-using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentSewingDOs;
 using Manufactures.Domain.GarmentSewingDOs.ReadModels;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
@@ -33,7 +30,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAdjustments
         private readonly Mock<IGarmentAdjustmentItemRepository> _mockAdjustmentItemRepository;
         private readonly Mock<IGarmentSewingDOItemRepository> _mockSewingDOItemRepository;
         private readonly Mock<IGarmentSewingInItemRepository> _mockSewingInItemRepository;
-        private readonly Mock<IGarmentFinishingInItemRepository> _mockFinishingInItemRepository;
 
         public PlaceGarmentAdjustmentCommandHandlerTests()
         {
@@ -41,13 +37,11 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAdjustments
             _mockAdjustmentItemRepository = CreateMock<IGarmentAdjustmentItemRepository>();
             _mockSewingDOItemRepository = CreateMock<IGarmentSewingDOItemRepository>();
             _mockSewingInItemRepository = CreateMock<IGarmentSewingInItemRepository>();
-            _mockFinishingInItemRepository = CreateMock<IGarmentFinishingInItemRepository>();
 
             _MockStorage.SetupStorage(_mockAdjustmentRepository);
             _MockStorage.SetupStorage(_mockAdjustmentItemRepository);
             _MockStorage.SetupStorage(_mockSewingDOItemRepository);
             _MockStorage.SetupStorage(_mockSewingInItemRepository);
-            _MockStorage.SetupStorage(_mockFinishingInItemRepository);
         }
 
         private PlaceGarmentAdjustmentCommandHandler CreatePlaceGarmentAdjustmentCommandHandler()
@@ -169,69 +163,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAdjustments
             _mockSewingInItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentSewingInItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentSewingInItem>()));
-
-            _MockStorage
-                .Setup(x => x.Save())
-                .Verifiable();
-
-            // Act
-            var result = await unitUnderTest.Handle(placeGarmentAdjustmentCommand, cancellationToken);
-
-            // Assert
-            result.Should().NotBeNull();
-        }
-
-        [Fact]
-        public async Task Handle_StateUnderTest_ExpectedBehavior_FINISHING()
-        {
-            // Arrange
-            Guid finishingInItemGuid = Guid.NewGuid();
-            Guid sewingDOGuid = Guid.NewGuid();
-            PlaceGarmentAdjustmentCommandHandler unitUnderTest = CreatePlaceGarmentAdjustmentCommandHandler();
-            CancellationToken cancellationToken = CancellationToken.None;
-            PlaceGarmentAdjustmentCommand placeGarmentAdjustmentCommand = new PlaceGarmentAdjustmentCommand()
-            {
-                RONo = "RONo",
-                Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                AdjustmentType = "FINISHING",
-                AdjustmentDate = DateTimeOffset.Now,
-                Article = "Article",
-                Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
-                Items = new List<GarmentAdjustmentItemValueObject>
-                {
-                    new GarmentAdjustmentItemValueObject
-                    {
-                        IsSave=true,
-                        FinishingInItemId=finishingInItemGuid,
-                        Size=new SizeValueObject(1, "Size"),
-                        Quantity=1,
-                        RemainingQuantity=2,
-                        Product= new Product(1, "ProdCode", "ProdName"),
-                        Uom=new Uom(1, "Uom"),
-                    }
-                },
-
-            };
-
-            _mockAdjustmentRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentAdjustmentReadModel>().AsQueryable());
-            _mockFinishingInItemRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentFinishingInItemReadModel>
-                {
-                    new GarmentFinishingInItemReadModel(finishingInItemGuid)
-                }.AsQueryable());
-
-            _mockAdjustmentRepository
-                .Setup(s => s.Update(It.IsAny<GarmentAdjustment>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentAdjustment>()));
-            _mockAdjustmentItemRepository
-                .Setup(s => s.Update(It.IsAny<GarmentAdjustmentItem>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentAdjustmentItem>()));
-            _mockFinishingInItemRepository
-                .Setup(s => s.Update(It.IsAny<GarmentFinishingInItem>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentFinishingInItem>()));
 
             _MockStorage
                 .Setup(x => x.Save())

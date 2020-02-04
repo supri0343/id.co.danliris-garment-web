@@ -39,36 +39,5 @@ namespace Manufactures.Domain.GarmentScrapTransactions
 			Name = readModel.Name;
 			Description = readModel.Description;
 		}
-
-        public void Modify()
-        {
-            MarkModified();
-        }
-
-        public void setCode(string code)
-        {
-            if (this.Code != code)
-            {
-                this.Code = code;
-                ReadModel.Code = code;
-            }
-        }
-
-        public void setName(string name)
-        {
-            if (this.Name != name)
-            {
-                this.Name = name;
-                ReadModel.Name = name;
-            }
-        }
-        public void setDescription(string desc)
-        {
-            if (this.Description != desc)
-            {
-                this.Description = desc;
-                ReadModel.Description = desc;
-            }
-        }
-    }
+	}
 }
