@@ -40,7 +40,7 @@ namespace Manufactures.Domain.GarmentScrapTransactions.Commands
 			{
 				RuleFor(r => r.Quantity)
 					.GreaterThan(0)
-					.WithMessage("'Jumlah' harus lebih dari '0'.");
+					.WithMessage("'Jumlah' harus lebih dari '0'.").When(s => s.IsEdit == false || s.TransactionType != "OUT");
 
 				RuleFor(r => r.Quantity)
 					.LessThanOrEqualTo(r => r.RemainingQuantity)
