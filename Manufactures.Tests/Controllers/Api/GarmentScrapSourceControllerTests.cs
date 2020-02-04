@@ -1,5 +1,6 @@
 ﻿using Barebone.Tests;
 using Manufactures.Controllers.Api;
+using Manufactures.Domain.GarmentScrapSources.Commands;
 using Manufactures.Domain.GarmentScrapTransactions;
 using Manufactures.Domain.GarmentScrapTransactions.ReadModels;
 using Manufactures.Domain.GarmentScrapTransactions.Repositories;
@@ -9,9 +10,11 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -74,5 +77,76 @@ namespace Manufactures.Tests.Controllers.Api
 			// Assert
 			Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
 		}
-	}
+
+        [Fact]
+        public async Task GetSingle_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentScrapSourceController();
+            Guid identity = Guid.NewGuid();
+            _mockGarmentScrapSourceRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentScrapSourceReadModel, bool>>>()))
+                .Returns(new List<GarmentScrapSource>()
+                {
+                    new GarmentScrapSource(identity,"code","name","description")
+                });
+
+            // Act
+            var result = await unitUnderTest.Get(identity.ToString());
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Post_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentScrapSourceController();
+            Guid identity = Guid.NewGuid();
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentScrapSourceCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentScrapSource(identity, "code", "name", "description"));
+
+            // Act
+            var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentScrapSourceCommand>());
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Put_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentScrapSourceController();
+            Guid identity = Guid.NewGuid();
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<UpdateGarmentScrapSourceCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentScrapSource(identity, "code", "name", "description"));
+
+            // Act
+            var result = await unitUnderTest.Put(identity.ToString(), new UpdateGarmentScrapSourceCommand());
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Delete_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentScrapSourceController();
+            Guid identity = Guid.NewGuid();
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<RemoveGarmentScrapSourceCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentScrapSource(identity, "code", "name", "description"));
+
+            // Act
+            var result = await unitUnderTest.Delete(identity.ToString());
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+    }
 }
