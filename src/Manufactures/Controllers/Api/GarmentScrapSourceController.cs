@@ -1,4 +1,5 @@
-﻿using Manufactures.Domain.GarmentScrapTransactions.Repositories;
+﻿using Manufactures.Domain.GarmentScrapSources.Commands;
+using Manufactures.Domain.GarmentScrapTransactions.Repositories;
 using Manufactures.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,5 +45,56 @@ namespace Manufactures.Controllers.Api
 				count
 			});
 		}
-	}
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            Guid guid = Guid.Parse(id);
+            VerifyUser();
+
+            GarmentScrapSourceDto listDto = _garmentScrapSourceRepository.Find(o => o.Identity == guid).Select(data => new GarmentScrapSourceDto(data)).FirstOrDefault();
+
+            await Task.Yield();
+            return Ok(listDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] PlaceGarmentScrapSourceCommand command)
+        {
+            VerifyUser();
+
+            var data = await Mediator.Send(command);
+
+            return Ok(data.Identity);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            RemoveGarmentScrapSourceCommand command = new RemoveGarmentScrapSourceCommand(guid);
+            var data = await Mediator.Send(command);
+
+            return Ok(data.Identity);
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(string id, [FromBody] UpdateGarmentScrapSourceCommand command)
+        {
+            Guid guid = Guid.Parse(id);
+
+            command.SetIdentity(guid);
+
+            VerifyUser();
+
+            var order = await Mediator.Send(command);
+
+            return Ok(order.Identity);
+        }
+
+    }
 }
