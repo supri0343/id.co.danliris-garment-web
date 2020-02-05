@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Manufactures.Domain.GarmentScrapTransactions.ReadModels
+namespace Manufactures.Domain.GarmentScrapDestinations.ReadModels
 {
 	public class GarmentScrapDestinationReadModel : ReadModelBase
 	{

@@ -1,13 +1,12 @@
 ﻿using Infrastructure.Domain;
 using Manufactures.Domain.Events;
+using Manufactures.Domain.GarmentScrapDestinations.ReadModels;
 using Manufactures.Domain.GarmentScrapTransactions.ReadModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Manufactures.Domain.GarmentScrapTransactions
+namespace Manufactures.Domain.GarmentScrapDestinations
 {
-	public class GarmentScrapDestination : AggregateRoot<GarmentScrapDestination, GarmentScrapDestinationReadModel>
+    public class GarmentScrapDestination : AggregateRoot<GarmentScrapDestination, GarmentScrapDestinationReadModel>
 	{
 		
 		public string Code { get; private set; }
@@ -39,5 +38,36 @@ namespace Manufactures.Domain.GarmentScrapTransactions
 			Name = readModel.Name;
 			Description = readModel.Description;
 		}
-	}
+
+        public void Modify()
+        {
+            MarkModified();
+        }
+
+        public void setCode(string code)
+        {
+            if (this.Code != code)
+            {
+                this.Code = code;
+                ReadModel.Code = code;
+            }
+        }
+
+        public void setName(string name)
+        {
+            if (this.Name != name)
+            {
+                this.Name = name;
+                ReadModel.Name = name;
+            }
+        }
+        public void setDescription(string desc)
+        {
+            if (this.Description != desc)
+            {
+                this.Description = desc;
+                ReadModel.Description = desc;
+            }
+        }
+    }
 }

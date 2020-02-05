@@ -21,7 +21,6 @@ namespace Manufactures.Controllers.Api
 		public GarmentScrapSourceController(IServiceProvider serviceProvider) : base(serviceProvider)
 		{
 			_garmentScrapSourceRepository = Storage.GetRepository<IGarmentScrapSourceRepository>();
-
 		}
 
 		[HttpGet]

@@ -1,5 +1,8 @@
 ﻿using Infrastructure.Data.EntityFrameworkCore;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Domain.GarmentScrapDestinations;
+using Manufactures.Domain.GarmentScrapDestinations.ReadModels;
+using Manufactures.Domain.GarmentScrapDestinations.Repositories;
 using Manufactures.Domain.GarmentScrapTransactions;
 using Manufactures.Domain.GarmentScrapTransactions.ReadModels;
 using Manufactures.Domain.GarmentScrapTransactions.Repositories;

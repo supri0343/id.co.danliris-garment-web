@@ -1,4 +1,5 @@
-﻿using Manufactures.Domain.GarmentScrapTransactions.ReadModels;
+﻿using Manufactures.Domain.GarmentScrapDestinations.ReadModels;
+using Manufactures.Domain.GarmentScrapTransactions.ReadModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
