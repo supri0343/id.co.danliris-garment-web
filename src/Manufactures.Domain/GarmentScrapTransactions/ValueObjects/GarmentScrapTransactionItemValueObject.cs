@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Manufactures.Domain.GarmentScrapTransactions.ValueObjects
+namespace Manufactures.Domain.GarmentScrapSources.ValueObjects
 {
 	public class GarmentScrapTransactionItemValueObject : ValueObject
 	{

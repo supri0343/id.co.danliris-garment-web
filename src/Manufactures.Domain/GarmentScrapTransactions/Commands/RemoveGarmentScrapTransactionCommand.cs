@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Manufactures.Domain.GarmentScrapTransactions.Commands
+namespace Manufactures.Domain.GarmentScrapSources.Commands
 {
 	public class RemoveGarmentScrapTransactionCommand : ICommand<GarmentScrapTransaction>
 	{

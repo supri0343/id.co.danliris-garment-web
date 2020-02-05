@@ -1,5 +1,5 @@
 ﻿using Barebone.Controllers;
-using Manufactures.Domain.GarmentScrapTransactions.Repositories;
+using Manufactures.Domain.GarmentScrapSources.Repositories;
 using Manufactures.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

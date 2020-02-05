@@ -1,8 +1,8 @@
 ﻿using ExtCore.Data.Abstractions;
 using FluentValidation;
 using Infrastructure.Domain.Commands;
-using Manufactures.Domain.GarmentScrapTransactions;
-using Manufactures.Domain.GarmentScrapTransactions.Repositories;
+using Manufactures.Domain.GarmentScrapSources;
+using Manufactures.Domain.GarmentScrapSources.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;

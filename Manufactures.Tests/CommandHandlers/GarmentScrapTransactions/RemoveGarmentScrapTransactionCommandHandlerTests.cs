@@ -1,6 +1,6 @@
 ﻿using Barebone.Tests;
 using Manufactures.Application.GarmentScrapTransactions.CommandHandler;
-using Manufactures.Domain.GarmentScrapTransactions.Repositories;
+using Manufactures.Domain.GarmentScrapSources.Repositories;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -8,13 +8,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-using Manufactures.Domain.GarmentScrapTransactions.Commands;
-using Manufactures.Domain.GarmentScrapTransactions.ReadModels;
+using Manufactures.Domain.GarmentScrapSources.Commands;
+using Manufactures.Domain.GarmentScrapSources.ReadModels;
 using System.Linq;
-using Manufactures.Domain.GarmentScrapTransactions;
+using Manufactures.Domain.GarmentScrapSources;
 using System.Linq.Expressions;
 using FluentAssertions;
-using Manufactures.Domain.GarmentScrapTransactions.ValueObjects;
+using Manufactures.Domain.GarmentScrapSources.ValueObjects;
 
 namespace Manufactures.Tests.CommandHandlers.GarmentScrapTransactions
 {

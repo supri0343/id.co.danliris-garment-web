@@ -1,8 +1,8 @@
 ﻿using Barebone.Tests;
 using Manufactures.Controllers.Api;
-using Manufactures.Domain.GarmentScrapTransactions;
-using Manufactures.Domain.GarmentScrapTransactions.ReadModels;
-using Manufactures.Domain.GarmentScrapTransactions.Repositories;
+using Manufactures.Domain.GarmentScrapSources;
+using Manufactures.Domain.GarmentScrapSources.ReadModels;
+using Manufactures.Domain.GarmentScrapSources.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

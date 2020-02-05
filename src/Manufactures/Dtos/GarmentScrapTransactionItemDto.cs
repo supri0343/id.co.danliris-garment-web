@@ -1,4 +1,4 @@
-﻿using Manufactures.Domain.GarmentScrapTransactions;
+﻿using Manufactures.Domain.GarmentScrapSources;
 using System;
 using System.Collections.Generic;
 using System.Text;

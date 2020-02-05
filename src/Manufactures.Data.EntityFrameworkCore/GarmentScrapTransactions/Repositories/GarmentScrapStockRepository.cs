@@ -1,8 +1,8 @@
 ﻿using Infrastructure.Data.EntityFrameworkCore;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
-using Manufactures.Domain.GarmentScrapTransactions;
-using Manufactures.Domain.GarmentScrapTransactions.ReadModels;
-using Manufactures.Domain.GarmentScrapTransactions.Repositories;
+using Manufactures.Domain.GarmentScrapSources;
+using Manufactures.Domain.GarmentScrapSources.ReadModels;
+using Manufactures.Domain.GarmentScrapSources.Repositories;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

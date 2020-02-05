@@ -1,11 +1,11 @@
 ﻿using Infrastructure.Domain;
 using Manufactures.Domain.Events;
-using Manufactures.Domain.GarmentScrapTransactions.ReadModels;
+using Manufactures.Domain.GarmentScrapSources.ReadModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Manufactures.Domain.GarmentScrapTransactions
+namespace Manufactures.Domain.GarmentScrapSources
 {
 	public class GarmentScrapTransaction : AggregateRoot<GarmentScrapTransaction, GarmentScrapTransactionReadModel>
 	{

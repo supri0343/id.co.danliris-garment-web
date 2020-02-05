@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Domain;
 using Manufactures.Domain.Events;
 using Manufactures.Domain.GarmentScrapDestinations.ReadModels;
-using Manufactures.Domain.GarmentScrapTransactions.ReadModels;
+using Manufactures.Domain.GarmentScrapSources.ReadModels;
 using System;
 
 namespace Manufactures.Domain.GarmentScrapDestinations

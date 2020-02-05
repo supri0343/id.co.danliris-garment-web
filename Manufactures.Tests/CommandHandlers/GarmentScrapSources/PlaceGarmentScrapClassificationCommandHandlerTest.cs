@@ -2,8 +2,8 @@
 using FluentAssertions;
 using Manufactures.Application.GarmentScrapSources.CommandHandler;
 using Manufactures.Domain.GarmentScrapSources.Commands;
-using Manufactures.Domain.GarmentScrapTransactions;
-using Manufactures.Domain.GarmentScrapTransactions.Repositories;
+using Manufactures.Domain.GarmentScrapSources;
+using Manufactures.Domain.GarmentScrapSources.Repositories;
 using Moq;
 using System;
 using System.Collections.Generic;

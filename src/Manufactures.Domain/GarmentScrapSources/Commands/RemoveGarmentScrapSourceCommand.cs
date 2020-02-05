@@ -1,8 +1,5 @@
 ﻿using Infrastructure.Domain.Commands;
-using Manufactures.Domain.GarmentScrapTransactions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Manufactures.Domain.GarmentScrapSources.Commands
 {

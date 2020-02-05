@@ -1,5 +1,5 @@
-﻿using Manufactures.Domain.GarmentScrapTransactions.Commands;
-using Manufactures.Domain.GarmentScrapTransactions.Repositories;
+﻿using Manufactures.Domain.GarmentScrapSources.Commands;
+using Manufactures.Domain.GarmentScrapSources.Repositories;
 using Manufactures.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

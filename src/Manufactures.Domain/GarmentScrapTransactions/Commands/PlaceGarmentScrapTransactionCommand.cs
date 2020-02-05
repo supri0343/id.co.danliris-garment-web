@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 using Infrastructure.Domain.Commands;
-using Manufactures.Domain.GarmentScrapTransactions.ValueObjects;
+using Manufactures.Domain.GarmentScrapSources.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Manufactures.Domain.GarmentScrapTransactions.Commands
+namespace Manufactures.Domain.GarmentScrapSources.Commands
 {
 	public class PlaceGarmentScrapTransactionCommand : ICommand<GarmentScrapTransaction>
 	{

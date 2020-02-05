@@ -2,8 +2,8 @@
 using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentScrapSources;
 using Manufactures.Domain.GarmentScrapSources.Commands;
-using Manufactures.Domain.GarmentScrapTransactions;
-using Manufactures.Domain.GarmentScrapTransactions.Repositories;
+using Manufactures.Domain.GarmentScrapSources;
+using Manufactures.Domain.GarmentScrapSources.Repositories;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

@@ -2,11 +2,11 @@
 using FluentAssertions;
 using Manufactures.Application.GarmentScrapTransactions.CommandHandler;
 using Manufactures.Domain.GarmentAvalProducts.ValueObjects;
-using Manufactures.Domain.GarmentScrapTransactions;
-using Manufactures.Domain.GarmentScrapTransactions.Commands;
-using Manufactures.Domain.GarmentScrapTransactions.ReadModels;
-using Manufactures.Domain.GarmentScrapTransactions.Repositories;
-using Manufactures.Domain.GarmentScrapTransactions.ValueObjects;
+using Manufactures.Domain.GarmentScrapSources;
+using Manufactures.Domain.GarmentScrapSources.Commands;
+using Manufactures.Domain.GarmentScrapSources.ReadModels;
+using Manufactures.Domain.GarmentScrapSources.Repositories;
+using Manufactures.Domain.GarmentScrapSources.ValueObjects;
 using Moq;
 using System;
 using System.Collections.Generic;

@@ -1,11 +1,11 @@
 ﻿using Infrastructure.Domain.Repositories;
-using Manufactures.Domain.GarmentScrapTransactions.ReadModels;
+using Manufactures.Domain.GarmentScrapSources.ReadModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Manufactures.Domain.GarmentScrapTransactions.Repositories
+namespace Manufactures.Domain.GarmentScrapSources.Repositories
 {
 	public interface IGarmentScrapTransactionItemRepository : IAggregateRepository<GarmentScrapTransactionItem, GarmentScrapTransactionItemReadModel>
 	{
