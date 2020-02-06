@@ -28,8 +28,9 @@ namespace Manufactures.Domain.GarmentScrapTransactions.Commands
 		{
 			
 			RuleFor(r => r.TransactionDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal harus diisi");
-			
-			RuleFor(r => r.ScrapSourceName).NotEmpty().WithMessage("Asal Barang harus diisi").When(s=>s.TransactionType == "IN");
+            RuleFor(r => r.TransactionDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Tidak Lebih dari Hari Ini");
+
+            RuleFor(r => r.ScrapSourceName).NotEmpty().WithMessage("Asal Barang harus diisi").When(s=>s.TransactionType == "IN");
 			RuleFor(r => r.ScrapDestinationName).NotEmpty().WithMessage("Tujuan Barang harus diisi").When(s=>s.TransactionType =="IN");
 			RuleFor(r => r.ScrapDestinationName).NotEmpty().WithMessage("Asal Barang harus diisi").When(s => s.TransactionType == "OUT");
 			RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");

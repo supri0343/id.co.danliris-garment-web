@@ -30,7 +30,8 @@ namespace Manufactures.Domain.GarmentScrapTransactions.Commands
 			{
 				IGarmentScrapTransactionRepository _GarmentScrapTransactionRepository = storage.GetRepository<IGarmentScrapTransactionRepository>();
 				RuleFor(r => r.TransactionDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Transaksi harus diisi");
-				RuleForEach(r => r.Items).SetValidator(new GarmentScrapTransactionItemValueObjectValidator());
+                RuleFor(r => r.TransactionDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Tidak Lebih dari Hari Ini");
+                RuleForEach(r => r.Items).SetValidator(new GarmentScrapTransactionItemValueObjectValidator());
 			}
 		}
 

@@ -25,8 +25,10 @@ namespace Manufactures.Domain.GarmentFinishingIns
         public string ComodityCode { get; private set; }
         public string ComodityName { get; private set; }
         public DateTimeOffset FinishingInDate { get; private set; }
+        public long DOId { get; private set; }
+        public string DONo { get; private set; }
 
-        public GarmentFinishingIn(Guid identity, string finishingInNo, string finishingInType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset finishingInDate, GarmentComodityId comodityId, string comodityCode, string comodityName) : base(identity)
+        public GarmentFinishingIn(Guid identity, string finishingInNo, string finishingInType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset finishingInDate, GarmentComodityId comodityId, string comodityCode, string comodityName, long doId, string doNo) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
 
@@ -46,6 +48,8 @@ namespace Manufactures.Domain.GarmentFinishingIns
             FinishingInDate = finishingInDate;
             ComodityCode = comodityCode;
             ComodityName = comodityName;
+            DOId = doId;
+            DONo = doNo;
 
             ReadModel = new GarmentFinishingInReadModel(Identity)
             {
@@ -63,7 +67,8 @@ namespace Manufactures.Domain.GarmentFinishingIns
                 ComodityId = ComodityId.Value,
                 ComodityCode = ComodityCode,
                 ComodityName = ComodityName,
-
+                DOId= DOId,
+                DONo= DONo
             };
 
             ReadModel.AddDomainEvent(new OnGarmentFinishingInPlaced(Identity));
@@ -85,6 +90,8 @@ namespace Manufactures.Domain.GarmentFinishingIns
             ComodityCode = readModel.ComodityCode;
             FinishingInDate = readModel.FinishingInDate;
             FinishingInType = readModel.FinishingInType;
+            DOId = readModel.DOId;
+            DONo = readModel.DONo;
         }
 
         public void Modify()

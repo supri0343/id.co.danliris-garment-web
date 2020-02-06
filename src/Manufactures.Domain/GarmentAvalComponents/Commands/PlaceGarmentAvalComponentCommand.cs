@@ -39,6 +39,7 @@ namespace Manufactures.Domain.GarmentAvalComponents.Commands
 
             RuleFor(r => r.Date).NotEmpty();
 
+            RuleFor(r => r.Date).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.Items).NotNull().OverridePropertyName("Item");
             RuleFor(r => r.Items.Where(w => w.IsSave)).NotEmpty().OverridePropertyName("Item").When(w => w.Items != null);
 

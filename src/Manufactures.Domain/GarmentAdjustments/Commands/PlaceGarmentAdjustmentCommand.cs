@@ -31,6 +31,7 @@ namespace Manufactures.Domain.GarmentAdjustments.Commands
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.AdjustmentDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Adjustment Tidak Boleh Kosong");
+            RuleFor(r => r.AdjustmentDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Adjustment Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.Comodity).NotNull();
 
             RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
