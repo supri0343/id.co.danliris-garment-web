@@ -22,18 +22,18 @@ namespace Manufactures.Domain.GarmentScrapDestinations.Commands
             public UpdateGarmentScrapDestinationCommandValidator(IStorage storage)
             {
                 IGarmentScrapDestinationRepository _garmentScrapDestinationRepository = storage.GetRepository<IGarmentScrapDestinationRepository>();
-                //RuleFor(r => r.Code).Must((c) =>
-                //{
-                //	var a = _garmentScrapDestinationRepository.Find(s => s.Code == c);
-                //	return a == null || a.Count < 1;
-                //}).WithMessage("Kode Jenis Barang sudah ada").When(s => s.Code != null);
-                RuleFor(r => r.Code).NotNull().WithMessage("Kode Jenis Barang Aval harus diisi");
-                //RuleFor(r => r.Name).Must((c) =>
-                //{
-                //	var a = _garmentScrapDestinationRepository.Find(s => s.Name == c);
-                //	return a == null || a.Count < 1;
-                //}).WithMessage("Nama Jenis Barang sudah ada").When(s => s.Name != null);
-                RuleFor(r => r.Name).NotNull().WithMessage("Nama Jenis Barang Aval harus diisi");
+                RuleFor(r => r.Code).Must((c) =>
+                {
+                    var a = _garmentScrapDestinationRepository.Find(s => s.Code == c);
+                    return a == null || a.Count < 1;
+                }).WithMessage("Kode Tujuan Barang sudah ada").When(s => s.Code != null);
+                RuleFor(r => r.Code).NotNull().WithMessage("Kode Tujuan Barang Aval harus diisi");
+                RuleFor(r => r.Name).Must((c) =>
+                {
+                    var a = _garmentScrapDestinationRepository.Find(s => s.Name == c);
+                    return a == null || a.Count < 1;
+                }).WithMessage("Nama Tujuan Barang sudah ada").When(s => s.Name != null);
+                RuleFor(r => r.Name).NotNull().WithMessage("Nama Tujuan Barang Aval harus diisi");
 
             }
         }
