@@ -93,7 +93,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 									select a.RONo).Distinct();
 			var QueryRoSewingOut = (from a in garmentSewingOutRepository.Query
 									join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
-									where a.UnitId == request.unit && a.SewingOutDate <= dateTo
+									where a.UnitToId == request.unit && a.SewingOutDate <= dateTo && a.SewingTo == "FINISHING"
 									select a.RONo).Distinct();
 			var QueryRo = QueryRoSewingOut.Union(QueryRoFinishing).Distinct();
 			List<string> _ro = new List<string>();
@@ -111,7 +111,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 
 			var QuerySewingOut = from a in garmentSewingOutRepository.Query
 									join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
-									where a.UnitId == request.unit && a.SewingOutDate <= dateTo
+									where a.UnitToId == request.unit && a.SewingOutDate <= dateTo && a.SewingTo =="FINISHING"
 								  select new monitoringView { finishingQtyPcs = 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity :0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate  < dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 
 			var queryNow = QuerySewingOut.Union(QueryFinishing);
