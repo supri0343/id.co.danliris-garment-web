@@ -49,7 +49,9 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
                 request.FinishingInDate,
                 new GarmentComodityId(request.Comodity.Id),
                 request.Comodity.Code,
-                request.Comodity.Name
+                request.Comodity.Name,
+                request.DOId,
+                request.DONo
             );
 
             Dictionary<Guid, double> sewingOutItemToBeUpdated = new Dictionary<Guid, double>();

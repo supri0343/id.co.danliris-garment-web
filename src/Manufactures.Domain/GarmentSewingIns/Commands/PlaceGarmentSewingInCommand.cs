@@ -46,6 +46,7 @@ namespace Manufactures.Domain.GarmentSewingIns.Commands
 
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.SewingInDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sewing In Tidak Boleh Kosong");
+            RuleFor(r => r.SewingInDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Sewing In Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
             RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
             RuleForEach(r => r.Items).SetValidator(new GarmentSewingInItemValueObjectValidator());

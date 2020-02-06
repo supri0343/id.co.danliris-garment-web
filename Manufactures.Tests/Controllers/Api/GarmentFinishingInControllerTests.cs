@@ -75,7 +75,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentFinishingInReadModel>>()))
                 .Returns(new List<GarmentFinishingIn>()
                 {
-                    new GarmentFinishingIn(Guid.NewGuid(), null,null , new UnitDepartmentId(1), null, null, "RONo",null,new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null)
+                    new GarmentFinishingIn(Guid.NewGuid(), null,null , new UnitDepartmentId(1), null, null, "RONo",null,new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null, 0,null)
                 });
 
             _mockFinishingInItemRepository
@@ -102,7 +102,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentFinishingInReadModel, bool>>>()))
                 .Returns(new List<GarmentFinishingIn>()
                 {
-                    new GarmentFinishingIn(Guid.NewGuid(), null,null , new UnitDepartmentId(1), null, null, "RONo",null,new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null)
+                    new GarmentFinishingIn(Guid.NewGuid(), null,null , new UnitDepartmentId(1), null, null, "RONo",null,new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null, 0,null)
                 });
 
             _mockFinishingInItemRepository
@@ -131,7 +131,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentFinishingInCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentFinishingIn(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null));
+                .ReturnsAsync(new GarmentFinishingIn(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null, 0, null));
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentFinishingInCommand>());
@@ -148,7 +148,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentFinishingInCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentFinishingIn(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null));
+                .ReturnsAsync(new GarmentFinishingIn(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null, 0, null));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());

@@ -34,6 +34,7 @@ namespace Manufactures.Domain.GarmentLoadings.Commands
             RuleFor(r => r.SewingDONo).NotNull().WithMessage("Nomor DO Tidak Boleh Kosong");
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.LoadingDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Loading Tidak Boleh Kosong");
+            RuleFor(r => r.LoadingDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Loading Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.Comodity).NotNull();
 
             RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");

@@ -28,6 +28,7 @@ namespace Manufactures.Domain.GarmentAvalProducts.Commands
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
             RuleFor(r => r.RONo).NotEmpty().WithMessage("Nomor RO Tidak Boleh Kosong");
             RuleFor(r => r.AvalDate).NotNull().WithMessage("Tanggal Aval Tidak Boleh Kosong");
+            RuleFor(r => r.AvalDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Aval Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong");
         }
     }

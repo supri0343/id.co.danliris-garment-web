@@ -38,6 +38,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
             RuleFor(r => r.UnitFrom.Id).NotEmpty().OverridePropertyName("UnitFrom").When(w => w.Unit != null);
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.CuttingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
+            RuleFor(r => r.CuttingOutDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Tidak Boleh Lebih dari Hari Ini");
 
             RuleFor(r => r.TotalQty)
                .LessThanOrEqualTo(r => r.PlanPORemainingQuantity)
