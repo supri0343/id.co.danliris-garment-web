@@ -72,11 +72,12 @@ namespace Manufactures.Tests.CommandHandlers.GarmentPreparings
             UpdateGarmentPreparingCommand.SetId(preparingGuid);
 
             _mockPreparingRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentPreparingReadModel>()
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingReadModel, bool>>>()))
+                .Returns(new List<GarmentPreparing>()
                 {
-                    new GarmentPreparingReadModel(preparingGuid)
-                }.AsQueryable());
+                    new GarmentPreparing(preparingGuid, 1, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, null, null, true)
+                });
+
             _mockPreparingItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingItemReadModel, bool>>>()))
                 .Returns(new List<GarmentPreparingItem>()
@@ -87,6 +88,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentPreparings
             _mockPreparingRepository
                 .Setup(s => s.Update(It.IsAny<GarmentPreparing>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentPreparing>()));
+
             _mockPreparingItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentPreparingItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentPreparingItem>()));
@@ -97,6 +99,28 @@ namespace Manufactures.Tests.CommandHandlers.GarmentPreparings
 
             // Act
             var result = await unitUnderTest.Handle(UpdateGarmentPreparingCommand, cancellationToken);
+
+            // Assert
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task Handle_PreparingNotFound_Error()
+        {
+            // Arrange
+            Guid preparingGuid = Guid.NewGuid();
+            UpdateGarmentPreparingCommandHandler unitUnderTest = CreateUpdateGarmentPreparingCommandHandler();
+            CancellationToken cancellationToken = CancellationToken.None;
+            UpdateGarmentPreparingCommand UpdateGarmentPreparingCommand = new UpdateGarmentPreparingCommand();
+
+            UpdateGarmentPreparingCommand.SetId(preparingGuid);
+
+            _mockPreparingRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingReadModel, bool>>>()))
+                .Returns(new List<GarmentPreparing>());
+
+            // Act
+            var result = await Assert.ThrowsAnyAsync<Exception>(async () => await unitUnderTest.Handle(UpdateGarmentPreparingCommand, cancellationToken));
 
             // Assert
             result.Should().NotBeNull();

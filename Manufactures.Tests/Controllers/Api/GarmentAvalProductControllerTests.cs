@@ -153,6 +153,13 @@ namespace Manufactures.Tests.Controllers.Api
             // Arrange
             var unitUnderTest = CreateGarmentAvalProductController();
 
+            _mockGarmentAvalProductRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentAvalProductReadModel, bool>>>()))
+                .Returns(new List<GarmentAvalProduct>()
+                {
+                    new GarmentAvalProduct(Guid.NewGuid(), null, null, DateTimeOffset.Now, new UnitDepartmentId(1), null, null)
+                });
+
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentAvalProductCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GarmentAvalProduct(Guid.NewGuid(), null, null, DateTimeOffset.Now, new UnitDepartmentId(1), null, null));

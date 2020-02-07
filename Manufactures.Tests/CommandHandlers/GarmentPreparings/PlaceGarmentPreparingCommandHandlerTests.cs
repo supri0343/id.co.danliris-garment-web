@@ -71,13 +71,13 @@ namespace Manufactures.Tests.CommandHandlers.GarmentPreparings
             };
 
             _mockPreparingRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentPreparingReadModel>().AsQueryable());
-
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingReadModel, bool>>>()))
+                .Returns(new List<GarmentPreparing>());
 
             _mockPreparingRepository
                 .Setup(s => s.Update(It.IsAny<GarmentPreparing>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentPreparing>()));
+
             _mockPreparingItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentPreparingItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentPreparingItem>()));
