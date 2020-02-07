@@ -128,12 +128,19 @@ namespace Manufactures.Tests.Controllers.Api
             // Arrange
             var unitUnderTest = CreateGarmentDeliveryReturnController();
 
+            _mockGarmentDeliveryReturnRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentDeliveryReturnReadModel, bool>>>()))
+                .Returns(new List<GarmentDeliveryReturn>());
+
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentDeliveryReturnCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GarmentDeliveryReturn(Guid.NewGuid(), null, "RONo", null, 0, null, 0, null, DateTimeOffset.Now, null, new UnitDepartmentId(1), null, null, new StorageId(1), null, null, false));
 
+            PlaceGarmentDeliveryReturnCommand command = new PlaceGarmentDeliveryReturnCommand();
+            command.Items = new List<GarmentDeliveryReturnItemValueObject>();
+
             // Act
-            var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentDeliveryReturnCommand>());
+            var result = await unitUnderTest.Post(command);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
@@ -149,8 +156,11 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentDeliveryReturnCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GarmentDeliveryReturn(Guid.NewGuid(), null, "RONo", null, 0, null, 0, null, DateTimeOffset.Now, null, new UnitDepartmentId(1), null, null, new StorageId(1), null, null, false));
 
+            UpdateGarmentDeliveryReturnCommand command = new UpdateGarmentDeliveryReturnCommand();
+            command.Items = new List<GarmentDeliveryReturnItemValueObject>();
+
             // Act
-            var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentDeliveryReturnCommand());
+            var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), command);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
@@ -161,6 +171,13 @@ namespace Manufactures.Tests.Controllers.Api
         {
             // Arrange
             var unitUnderTest = CreateGarmentDeliveryReturnController();
+
+            _mockGarmentDeliveryReturnItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentDeliveryReturnItemReadModel, bool>>>()))
+                .Returns(new List<GarmentDeliveryReturnItem>()
+                {
+                    new GarmentDeliveryReturnItem(Guid.NewGuid(), Guid.NewGuid(), 0, 0, null, new ProductId(1), null, null, null, "RONo", 0, new UomId(1), null)
+                });
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentDeliveryReturnCommand>(), It.IsAny<CancellationToken>()))
