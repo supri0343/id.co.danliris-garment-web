@@ -219,19 +219,12 @@ namespace Manufactures.Tests.Controllers.Api
 
             Guid cuttingOutGuid = Guid.NewGuid();
 
-            //_mockGarmentSewingDORepository
-            //    .Setup(s => s.Query)
-            //    .Returns(new List<GarmentSewingDOReadModel>()
-            //    {
-            //        new GarmentSewingDOReadModel(Guid.NewGuid())
-            //    }.AsQueryable());
-
             _mockGarmentSewingDORepository
-               .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingDOReadModel, bool>>>()))
-               .Returns(new List<GarmentSewingDO>()
-               {
-                    new GarmentSewingDO(Guid.NewGuid(), null, cuttingOutGuid, new UnitDepartmentId(1), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new GarmentComodityId(1), null, null, DateTimeOffset.Now)
-               });
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSewingDOReadModel>()
+                {
+                    new GarmentSewingDO(Guid.NewGuid(), null, cuttingOutGuid, new UnitDepartmentId(1), null, null, new UnitDepartmentId(1), null, null, null, null, new GarmentComodityId(1), null, null, DateTimeOffset.Now).GetReadModel()
+                }.AsQueryable());
 
             _mockGarmentSewingDOItemRepository
                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingDOItemReadModel, bool>>>()))
@@ -245,7 +238,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .ReturnsAsync(new GarmentCuttingOut(cuttingOutGuid, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", null, new UnitDepartmentId(1), null, null, new GarmentComodityId(1), null, null));
 
             // Act
-            var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
+            var result = await unitUnderTest.Delete(cuttingOutGuid.ToString());
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
