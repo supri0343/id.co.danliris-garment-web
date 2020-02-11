@@ -58,10 +58,10 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 					};
 					costCalViewModels.Add(expenditureROViewModel);
 				}
-				else
-				{
-					await GetDataCostCal(ro, token);
-				}
+				//else
+				//{
+				//	await GetDataCostCal(ro, token);
+				//}
 			}
 			costCalculationGarmentDataProductionReport.data = costCalViewModels;
 			return costCalculationGarmentDataProductionReport;
