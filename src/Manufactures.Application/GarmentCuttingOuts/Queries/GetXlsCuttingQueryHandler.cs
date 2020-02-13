@@ -33,40 +33,35 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 		private readonly IGarmentAvalComponentRepository garmentAvalComponentRepository;
 		private readonly IGarmentAvalComponentItemRepository garmentAvalComponentItemRepository;
 
-		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
-		{
-			List<CostCalViewModel> costCalViewModels = new List<CostCalViewModel>();
-			CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();
-			foreach (var item in ro)
-			{
-				var garmentUnitExpenditureNoteUri = SalesDataSettings.Endpoint + $"cost-calculation-garments/data/{item}";
-				var httpResponse = _http.GetAsync(garmentUnitExpenditureNoteUri, token).Result;
+        public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
+        {
+            CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();
 
-				if (httpResponse.IsSuccessStatusCode)
-				{
-					var a = await httpResponse.Content.ReadAsStringAsync();
-					Dictionary<string, object> keyValues = JsonConvert.DeserializeObject<Dictionary<string, object>>(a);
-					var data = JsonConvert.DeserializeObject<CostCalViewModel>(keyValues.GetValueOrDefault("data").ToString());
-					CostCalViewModel expenditureROViewModel = new CostCalViewModel
-					{
-						ro = data.ro,
-						buyerCode = data.buyerCode,
-						hours = data.hours,
-						qtyOrder = data.qtyOrder,
-						comodityName = data.comodityName
-					};
-					costCalViewModels.Add(expenditureROViewModel);
-				}
-				else
-				{
-					await GetDataCostCal(ro, token);
-				}
-			}
-			costCalculationGarmentDataProductionReport.data = costCalViewModels;
-			return costCalculationGarmentDataProductionReport;
-		}
+            var listRO = string.Join(",", ro.Distinct());
+            var garmentUnitExpenditureNoteUri = SalesDataSettings.Endpoint + $"cost-calculation-garments/data/{listRO}";
+            var httpResponse = await _http.GetAsync(garmentUnitExpenditureNoteUri, token);
 
-		public async Task<MemoryStream> Handle(GetXlsCuttingQuery request, CancellationToken cancellationToken)
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var contentString = await httpResponse.Content.ReadAsStringAsync();
+                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+                var dataString = content.GetValueOrDefault("data").ToString();
+                var listData = JsonConvert.DeserializeObject<List<CostCalViewModel>>(dataString);
+
+                foreach (var item in ro)
+                {
+                    var expenditureROViewModel = listData.SingleOrDefault(s => s.ro == item);
+                    if (expenditureROViewModel != null)
+                    {
+                        costCalculationGarmentDataProductionReport.data.Add(expenditureROViewModel);
+                    }
+                }
+            }
+
+            return costCalculationGarmentDataProductionReport;
+        }
+
+        public async Task<MemoryStream> Handle(GetXlsCuttingQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
