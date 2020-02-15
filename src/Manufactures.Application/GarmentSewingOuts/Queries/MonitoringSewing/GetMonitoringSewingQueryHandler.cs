@@ -36,39 +36,35 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 			_http = serviceProvider.GetService<IHttpClientService>();
 		}
 
-		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
-		{
-			List<CostCalViewModel> costCalViewModels = new List<CostCalViewModel>();
-			CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();
-			foreach (var item in ro)
-			{
-				var garmentUnitExpenditureNoteUri = SalesDataSettings.Endpoint + $"cost-calculation-garments/data/{item}";
-				var httpResponse = _http.GetAsync(garmentUnitExpenditureNoteUri, token).Result;
+        public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
+        {
+            CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();
 
-				if (httpResponse.IsSuccessStatusCode)
-				{
-					var a = await httpResponse.Content.ReadAsStringAsync();
-					Dictionary<string, object> keyValues = JsonConvert.DeserializeObject<Dictionary<string, object>>(a);
-					var data = JsonConvert.DeserializeObject<CostCalViewModel>(keyValues.GetValueOrDefault("data").ToString());
-					CostCalViewModel expenditureROViewModel = new CostCalViewModel
-					{
-						ro = data.ro,
-						buyerCode = data.buyerCode,
-						hours = data.hours,
-						qtyOrder = data.qtyOrder,
-						comodityName = data.comodityName
-					};
-					costCalViewModels.Add(expenditureROViewModel);
-				}
-				else
-				{
-					await GetDataCostCal(ro, token);
-				}
-			}
-			costCalculationGarmentDataProductionReport.data = costCalViewModels;
-			return costCalculationGarmentDataProductionReport;
-		}
-		class monitoringView
+            var listRO = string.Join(",", ro.Distinct());
+            var garmentUnitExpenditureNoteUri = SalesDataSettings.Endpoint + $"cost-calculation-garments/data/{listRO}";
+            var httpResponse = await _http.GetAsync(garmentUnitExpenditureNoteUri, token);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var contentString = await httpResponse.Content.ReadAsStringAsync();
+                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+                var dataString = content.GetValueOrDefault("data").ToString();
+                var listData = JsonConvert.DeserializeObject<List<CostCalViewModel>>(dataString);
+
+                foreach (var item in ro)
+                {
+                    var expenditureROViewModel = listData.SingleOrDefault(s => s.ro == item);
+                    if (expenditureROViewModel != null)
+                    {
+                        costCalculationGarmentDataProductionReport.data.Add(expenditureROViewModel);
+                    }
+                }
+            }
+
+            return costCalculationGarmentDataProductionReport;
+        }
+
+        class monitoringView
 		{
 			public string roJob { get; internal set; }
 			public string article { get; internal set; }
