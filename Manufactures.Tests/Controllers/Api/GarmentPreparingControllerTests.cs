@@ -137,19 +137,19 @@ namespace Manufactures.Tests.Controllers.Api
             // Arrange
             var unitUnderTest = CreateGarmentPreparingController();
 
-            //_mockGarmentPreparingRepository
-            //    .Setup(s => s.Find(It.IsAny<IQueryable<GarmentPreparingReadModel>>()))
-            //    .Returns(new List<GarmentPreparing>()
-            //    {
-            //        new GarmentPreparing(Guid.NewGuid(), 0, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, null, null, false)
-            //    });
+            PlaceGarmentPreparingCommand command = new PlaceGarmentPreparingCommand();
+            command.UENId = 1;
+
+            _mockGarmentPreparingRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingReadModel, bool>>>()))
+                .Returns(new List<GarmentPreparing>());
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentPreparingCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GarmentPreparing(Guid.NewGuid(), 0, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", null, false));
 
             // Act
-            var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentPreparingCommand>());
+            var result = await unitUnderTest.Post(command);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
@@ -160,6 +160,13 @@ namespace Manufactures.Tests.Controllers.Api
         {
             // Arrange
             var unitUnderTest = CreateGarmentPreparingController();
+
+            _mockGarmentPreparingRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingReadModel, bool>>>()))
+                .Returns(new List<GarmentPreparing>()
+                {
+                    new GarmentPreparing(Guid.NewGuid(), 0, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, null, null, false)
+                });
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentPreparingCommand>(), It.IsAny<CancellationToken>()))
@@ -181,13 +188,6 @@ namespace Manufactures.Tests.Controllers.Api
             _mockGarmentPreparingRepository
                 .Setup(s => s.Read(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<string>()))
                 .Returns(new List<GarmentPreparingReadModel>().AsQueryable());
-
-            _mockGarmentPreparingRepository
-                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentPreparingReadModel>>()))
-                .Returns(new List<GarmentPreparing>()
-                {
-                    new GarmentPreparing(Guid.NewGuid(), 0, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", null, false)
-        });
 
             // Act
             var result = await unitUnderTest.GetLoaderByRO(It.IsAny<string>());

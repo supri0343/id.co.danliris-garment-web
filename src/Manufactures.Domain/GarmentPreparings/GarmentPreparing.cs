@@ -66,7 +66,7 @@ namespace Manufactures.Domain.GarmentPreparings
 
         public void setUENId(int newUENId)
         {
-            Validator.ThrowIfNull(() => newUENId);
+            //Validator.ThrowIfNull(() => newUENId);
 
             if (newUENId != UENId)
             {
