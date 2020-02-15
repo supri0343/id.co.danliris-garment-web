@@ -16,6 +16,7 @@ using Infrastructure.External.DanLirisClient.Microservice;
 using System.IO;
 using System.Data;
 using OfficeOpenXml;
+using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.HOrderDataProductionReport;
 
 namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 {
@@ -39,13 +40,43 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 			_http = serviceProvider.GetService<IHttpClientService>();
 		}
 
+        async Task<HOrderDataProductionReport> GetDataHOrder(List<string> ro, string token)
+        {
+            HOrderDataProductionReport hOrderDataProductionReport = new HOrderDataProductionReport();
+
+            var listRO = string.Join(",", ro.Distinct());
+            var costCalculationUri = SalesDataSettings.Endpoint + $"local-merchandiser/horders/data-production-report-by-no/{listRO}";
+            var httpResponse = await _http.GetAsync(costCalculationUri, token);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var contentString = await httpResponse.Content.ReadAsStringAsync();
+                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+                var dataString = content.GetValueOrDefault("data").ToString();
+                var listData = JsonConvert.DeserializeObject<List<HOrderViewModel>>(dataString);
+
+                foreach (var item in ro)
+                {
+                    var data = listData.SingleOrDefault(s => s.No == item);
+                    if (data != null)
+                    {
+                        hOrderDataProductionReport.data.Add(data);
+                    }
+                }
+            }
+
+            return hOrderDataProductionReport;
+        }
+
         public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
         {
             CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();
 
             var listRO = string.Join(",", ro.Distinct());
-            var garmentUnitExpenditureNoteUri = SalesDataSettings.Endpoint + $"cost-calculation-garments/data/{listRO}";
-            var httpResponse = await _http.GetAsync(garmentUnitExpenditureNoteUri, token);
+            var costCalculationUri = SalesDataSettings.Endpoint + $"cost-calculation-garments/data/{listRO}";
+            var httpResponse = await _http.GetAsync(costCalculationUri, token);
+
+            var freeRO = new List<string>();
 
             if (httpResponse.IsSuccessStatusCode)
             {
@@ -56,12 +87,50 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 
                 foreach (var item in ro)
                 {
-                    var expenditureROViewModel = listData.SingleOrDefault(s => s.ro == item);
-                    if (expenditureROViewModel != null)
+                    var data = listData.SingleOrDefault(s => s.ro == item);
+                    if (data != null)
                     {
-                        costCalculationGarmentDataProductionReport.data.Add(expenditureROViewModel);
+                        costCalculationGarmentDataProductionReport.data.Add(data);
+                    }
+                    else
+                    {
+                        freeRO.Add(item);
                     }
                 }
+            }
+
+            HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(freeRO, token);
+
+            Dictionary<string, string> comodities = new Dictionary<string, string>();
+            if (hOrderDataProductionReport.data.Count > 0)
+            {
+                var comodityCodes = hOrderDataProductionReport.data.Select(s => s.Kode).Distinct().ToList();
+                var filter = "{\"(" + string.Join(" || ", comodityCodes.Select(s => "Code==" + "\\\"" + s + "\\\"")) + ")\" : \"true\"}";
+
+                var masterGarmentComodityUri = MasterDataSettings.Endpoint + $"master/garment-comodities?filter=" + filter;
+                var garmentComodityResponse = _http.GetAsync(masterGarmentComodityUri).Result;
+                var garmentComodityResult = new GarmentComodityResult();
+                if (garmentComodityResponse.IsSuccessStatusCode)
+                {
+                    garmentComodityResult = JsonConvert.DeserializeObject<GarmentComodityResult>(garmentComodityResponse.Content.ReadAsStringAsync().Result);
+                    //comodities = garmentComodityResult.data.ToDictionary(d => d.Code, d => d.Name);
+                    foreach (var comodity in garmentComodityResult.data)
+                    {
+                        comodities[comodity.Code] = comodity.Name;
+                    }
+                }
+            }
+
+            foreach (var hOrder in hOrderDataProductionReport.data)
+            {
+                costCalculationGarmentDataProductionReport.data.Add(new CostCalViewModel
+                {
+                    ro = hOrder.No,
+                    buyerCode = hOrder.Codeby,
+                    comodityName = comodities.GetValueOrDefault(hOrder.Kode),
+                    hours = (double)hOrder.Sh_Cut,
+                    qtyOrder = (double)hOrder.Qty
+                });
             }
 
             return costCalculationGarmentDataProductionReport;
