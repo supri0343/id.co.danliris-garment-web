@@ -71,7 +71,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentAdjustmentReadModel>>()))
                 .Returns(new List<GarmentAdjustment>()
                 {
-                    new GarmentAdjustment(Guid.NewGuid(), null ,null, null,null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null)
+                    new GarmentAdjustment(Guid.NewGuid(), null ,null, null,null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null, null)
                 });
 
             _mockAdjustmentItemRepository
@@ -98,7 +98,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentAdjustmentReadModel, bool>>>()))
                 .Returns(new List<GarmentAdjustment>()
                 {
-                    new GarmentAdjustment(Guid.NewGuid(), null ,null, null,null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null)
+                    new GarmentAdjustment(Guid.NewGuid(), null ,null, null,null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null, null)
                 });
 
             _mockAdjustmentItemRepository
@@ -127,7 +127,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentAdjustmentCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentAdjustment(Guid.NewGuid(), null, null, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null));
+                .ReturnsAsync(new GarmentAdjustment(Guid.NewGuid(), null, null, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null, null));
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentAdjustmentCommand>());
@@ -146,7 +146,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentAdjustmentCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentAdjustment(Guid.NewGuid(), null, null, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null));
+                .ReturnsAsync(new GarmentAdjustment(Guid.NewGuid(), null, null, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null, null));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
