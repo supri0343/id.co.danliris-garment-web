@@ -18,6 +18,7 @@ namespace Manufactures.Dtos
             Unit = new UnitDepartment(garmentAdjustment.UnitId.Value, garmentAdjustment.UnitCode, garmentAdjustment.UnitName);
             Comodity = new GarmentComodity(garmentAdjustment.ComodityId.Value, garmentAdjustment.ComodityCode, garmentAdjustment.ComodityName);
             AdjustmentDate = garmentAdjustment.AdjustmentDate;
+            AdjustmentDesc = garmentAdjustment.AdjustmentDesc;
 
             Items = new List<GarmentAdjustmentItemDto>();
         }
@@ -30,6 +31,7 @@ namespace Manufactures.Dtos
         public string Article { get; internal set; }
         public GarmentComodity Comodity { get; internal set; }
         public DateTimeOffset AdjustmentDate { get; internal set; }
+        public string AdjustmentDesc { get; internal set; }
 
         public virtual List<GarmentAdjustmentItemDto> Items { get; internal set; }
     }

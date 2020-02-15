@@ -22,8 +22,9 @@ namespace Manufactures.Domain.GarmentAdjustments
         public string UnitCode { get; internal set; }
         public string UnitName { get; internal set; }
         public DateTimeOffset AdjustmentDate { get; internal set; }
+        public string AdjustmentDesc { get; internal set; }
 
-        public GarmentAdjustment(Guid identity, string adjustmentNo, string adjustmentType, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset adjustmentDate, GarmentComodityId comodityId, string comodityCode, string comodityName) : base(identity)
+        public GarmentAdjustment(Guid identity, string adjustmentNo, string adjustmentType, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset adjustmentDate, GarmentComodityId comodityId, string comodityCode, string comodityName, string adjustmentDesc) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
             //MarkTransient();
@@ -40,6 +41,7 @@ namespace Manufactures.Domain.GarmentAdjustments
             ComodityCode = comodityCode;
             ComodityName = comodityName;
             AdjustmentDate = adjustmentDate;
+            AdjustmentDesc = adjustmentDesc;
 
             ReadModel = new GarmentAdjustmentReadModel(Identity)
             {
@@ -53,7 +55,8 @@ namespace Manufactures.Domain.GarmentAdjustments
                 UnitName = UnitName,
                 ComodityId = ComodityId.Value,
                 ComodityCode = ComodityCode,
-                ComodityName = ComodityName
+                ComodityName = ComodityName,
+                AdjustmentDesc= AdjustmentDesc
             };
 
             ReadModel.AddDomainEvent(new OnGarmentAdjustmentPlaced(Identity));
@@ -72,6 +75,7 @@ namespace Manufactures.Domain.GarmentAdjustments
             ComodityName = readModel.ComodityName;
             ComodityCode = readModel.ComodityCode;
             AdjustmentDate = readModel.AdjustmentDate;
+            AdjustmentDesc = readModel.AdjustmentDesc;
         }
 
         public void Modify()

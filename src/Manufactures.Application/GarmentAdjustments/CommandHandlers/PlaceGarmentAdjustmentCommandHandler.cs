@@ -54,7 +54,8 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
                 request.AdjustmentDate,
                 new GarmentComodityId(request.Comodity.Id),
                 request.Comodity.Code,
-                request.Comodity.Name
+                request.Comodity.Name,
+                request.AdjustmentDesc
             );
 
             Dictionary<Guid, double> sewingDOItemToBeUpdated = new Dictionary<Guid, double>();

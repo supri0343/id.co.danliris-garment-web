@@ -24,6 +24,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentAdjustments.Configs
             builder.Property(p => p.ComodityCode).HasMaxLength(100);
             builder.Property(p => p.UnitCode).HasMaxLength(25);
             builder.Property(p => p.UnitName).HasMaxLength(100);
+            builder.Property(p => p.AdjustmentDesc).HasMaxLength(255);
 
             builder.HasIndex(i => i.AdjustmentNo).IsUnique().HasFilter("[Deleted]=(0)");
 
