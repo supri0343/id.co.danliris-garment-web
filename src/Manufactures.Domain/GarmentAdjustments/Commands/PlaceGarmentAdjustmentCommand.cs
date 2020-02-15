@@ -19,6 +19,7 @@ namespace Manufactures.Domain.GarmentAdjustments.Commands
         public GarmentComodity Comodity { get; set; }
         public DateTimeOffset AdjustmentDate { get; set; }
         public double Price { get; set; }
+        public string AdjustmentDesc { get; set; }
 
         public List<GarmentAdjustmentItemValueObject> Items { get; set; }
     }
