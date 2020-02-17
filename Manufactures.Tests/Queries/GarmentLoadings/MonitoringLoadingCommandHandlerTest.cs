@@ -49,15 +49,17 @@ namespace Manufactures.Tests.Queries.GarmentLoadings
 			serviceProviderMock = new Mock<IServiceProvider>();
 			_mockhttpService = CreateMock<IHttpClientService>();
 
-			CostCalViewModel costCalViewModel = new CostCalViewModel
-			{
-				ro = "ro",
-				comodityName = "",
-				buyerCode = "",
-				hours = 10
-			};
-			_mockhttpService.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()))
-				.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModel) + "}") });
+            List<CostCalViewModel> costCalViewModels = new List<CostCalViewModel> {
+                new CostCalViewModel
+                {
+                    ro="ro",
+                    comodityName="",
+                    buyerCode="",
+                    hours=10
+                }
+            };
+            _mockhttpService.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()))
+				.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
 			serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
 		}
 		private GetMonitoringLoadingQueryHandler CreateGetmonitoringLoadingQueryHandler()
