@@ -13,6 +13,7 @@ namespace Manufactures.Domain.GarmentAvalComponents.ValueObjects
         public Guid SewingOutDetailId { get; set; }
         public Product Product { get; set; }
         public string DesignColor { get; set; }
+        public string Color { get; set; }
         public double Quantity { get; set; }
         public double SourceQuantity { get; set; }
         public SizeValueObject Size { get; set; }
