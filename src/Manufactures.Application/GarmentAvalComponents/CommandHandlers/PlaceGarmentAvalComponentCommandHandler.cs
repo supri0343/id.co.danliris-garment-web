@@ -71,7 +71,7 @@ namespace Manufactures.Application.GarmentAvalComponents.CommandHandlers
                     item.Product.Code,
                     item.Product.Name,
                     item.DesignColor,
-                    null,
+                    item.Color,
                     item.Quantity,
                     item.Quantity,
                     new SizeId(sizeValueObject.Id),
