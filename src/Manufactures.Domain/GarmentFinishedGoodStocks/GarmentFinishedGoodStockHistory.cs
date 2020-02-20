@@ -17,7 +17,9 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
         public Guid FinishingOutDetailId { get; private set; }
         public Guid ExpenditureGoodId { get; private set; }
         public Guid ExpenditureGoodItemId { get; private set; }
-        public string StockType { get; private set; }
+		public Guid AdjustmentId { get; private set; }
+		public Guid AdjustmentItemId { get; private set; }
+		public string StockType { get; private set; }
         public UnitDepartmentId UnitId { get; private set; }
         public string UnitCode { get; private set; }
         public string UnitName { get; private set; }
@@ -34,7 +36,7 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
         public double BasicPrice { get; private set; }
         public double Price { get; private set; }
 
-        public GarmentFinishedGoodStockHistory(Guid identity, Guid finishedGoodStockId, Guid finishingOutItemId,Guid finishingOutDetailId, Guid expenditureGoodId, Guid expenditureGoodItemId, string stockType, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName, SizeId sizeId, string sizeName, UomId uomId, string uomUnit, double quantity, double basicPrice, double price) : base(identity)
+        public GarmentFinishedGoodStockHistory(Guid identity, Guid finishedGoodStockId, Guid finishingOutItemId,Guid finishingOutDetailId, Guid expenditureGoodId, Guid expenditureGoodItemId,Guid adjustmentId,Guid adjustmentItemId, string stockType, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName, SizeId sizeId, string sizeName, UomId uomId, string uomUnit, double quantity, double basicPrice, double price) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
             Validator.ThrowIfNull(() => rONo);
@@ -47,6 +49,8 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
             FinishingOutDetailId = finishingOutDetailId;
             ExpenditureGoodId = expenditureGoodId;
             ExpenditureGoodItemId = expenditureGoodItemId;
+			AdjustmentId = adjustmentId;
+			AdjustmentItemId = adjustmentItemId;
             StockType = stockType;
             RONo = rONo;
             Article = article;

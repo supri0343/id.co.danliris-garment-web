@@ -227,5 +227,42 @@ namespace Manufactures.Controllers.Api
 				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
 			}
 		}
+
+		[HttpGet("color")]
+		public async Task<IActionResult> GetColor(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+		{
+			VerifyUser();
+
+			var query = _garmentFinishingOutRepository.ReadColor(page, size, order, keyword, filter);
+			var total = query.Count();
+			query = query.Skip((page - 1) * size).Take(size);
+
+			List<GarmentFinishingOutListDto> garmentFinishingOutListDtos = _garmentFinishingOutRepository
+				.Find(query)
+				.Select(SewOut => new GarmentFinishingOutListDto(SewOut))
+				.ToList();
+
+			var dtoIds = garmentFinishingOutListDtos.Select(s => s.Id).ToList();
+			var items = _garmentFinishingOutItemRepository.Query
+				.Where(o => dtoIds.Contains(o.FinishingOutId))
+				.Select(s => new { s.Identity, s.FinishingOutId, s.ProductCode, s.Color, s.Quantity, s.RemainingQuantity })
+				.ToList();
+
+			var itemIds = items.Select(s => s.Identity).ToList();
+			 
+			List<object> color = new List<object>();
+			foreach (var item in items)
+			{
+				color.Add(new { item.Color });
+			}
+			await Task.Yield();
+			return Ok(color.Distinct(), info: new
+			{
+				page,
+				size,
+				color.Count
+			});
+		}
+
 	}
 }

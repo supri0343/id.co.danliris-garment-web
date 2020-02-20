@@ -21,6 +21,7 @@ namespace Manufactures.Dtos
             SewingDOItemId = garmentAdjustmentItem.SewingDOItemId;
             AdjustmentId = garmentAdjustmentItem.AdjustmentId;
             Price = garmentAdjustmentItem.Price;
+			FinishedGoodStockId = garmentAdjustmentItem.FinishedGoodStockId;
         }
 
         public Guid Id { get; set; }
@@ -34,6 +35,7 @@ namespace Manufactures.Dtos
         public string Color { get; set; }
         public double BasicPrice { get; set; }
         public Guid AdjustmentId { get; set; }
-        public double Price { get; set; }
+		public Guid FinishedGoodStockId { get; set; }
+		public double Price { get; set; }
     }
 }
