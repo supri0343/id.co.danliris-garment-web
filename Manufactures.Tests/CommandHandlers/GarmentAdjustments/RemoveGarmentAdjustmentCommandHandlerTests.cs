@@ -13,6 +13,7 @@ using Manufactures.Domain.GarmentAdjustments.Commands;
 using Manufactures.Domain.GarmentAdjustments.ReadModels;
 using Manufactures.Domain.GarmentAdjustments.Repositories;
 using Manufactures.Domain.GarmentAdjustments.ValueObjects;
+using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
 using Manufactures.Domain.GarmentFinishingIns;
 using Manufactures.Domain.GarmentFinishingIns.ReadModels;
 using Manufactures.Domain.GarmentFinishingIns.Repositories;
@@ -35,21 +36,27 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAdjustments
         private readonly Mock<IGarmentSewingDOItemRepository> _mockSewingDOItemRepository;
         private readonly Mock<IGarmentSewingInItemRepository> _mockSewingInItemRepository;
         private readonly Mock<IGarmentFinishingInItemRepository> _mockFinishingInItemRepository;
+		private readonly Mock<IGarmentFinishedGoodStockRepository> _mockFinishedGoodStockRepository;
+		private readonly Mock<IGarmentFinishedGoodStockHistoryRepository> _mockFinishedGoodStockHistoryRepository;
 
-        public RemoveGarmentAdjustmentCommandHandlerTests()
+		public RemoveGarmentAdjustmentCommandHandlerTests()
         {
             _mockAdjustmentRepository = CreateMock<IGarmentAdjustmentRepository>();
             _mockAdjustmentItemRepository = CreateMock<IGarmentAdjustmentItemRepository>();
             _mockSewingDOItemRepository = CreateMock<IGarmentSewingDOItemRepository>();
             _mockSewingInItemRepository = CreateMock<IGarmentSewingInItemRepository>();
             _mockFinishingInItemRepository = CreateMock<IGarmentFinishingInItemRepository>();
+			_mockFinishedGoodStockRepository = CreateMock<IGarmentFinishedGoodStockRepository>();
+			_mockFinishedGoodStockHistoryRepository = CreateMock<IGarmentFinishedGoodStockHistoryRepository>();
 
-            _MockStorage.SetupStorage(_mockAdjustmentRepository);
-            _MockStorage.SetupStorage(_mockAdjustmentItemRepository);
-            _MockStorage.SetupStorage(_mockSewingDOItemRepository);
-            _MockStorage.SetupStorage(_mockSewingInItemRepository);
-            _MockStorage.SetupStorage(_mockFinishingInItemRepository);
-        }
+			_MockStorage.SetupStorage(_mockAdjustmentRepository);
+			_MockStorage.SetupStorage(_mockAdjustmentItemRepository);
+			_MockStorage.SetupStorage(_mockSewingDOItemRepository);
+			_MockStorage.SetupStorage(_mockSewingInItemRepository);
+			_MockStorage.SetupStorage(_mockFinishingInItemRepository);
+			_MockStorage.SetupStorage(_mockFinishedGoodStockRepository);
+			_MockStorage.SetupStorage(_mockFinishedGoodStockHistoryRepository);
+		}
 
         private RemoveGarmentAdjustmentCommandHandler CreateRemoveGarmentAdjustmentCommandHandler()
         {
