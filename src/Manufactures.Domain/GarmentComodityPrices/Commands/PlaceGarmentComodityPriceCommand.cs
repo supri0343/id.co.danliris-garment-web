@@ -24,7 +24,6 @@ namespace Manufactures.Domain.GarmentComodityPrices.Commands
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
 
             RuleFor(r => r.Date).NotNull().GreaterThan(DateTimeOffset.MinValue);
-            RuleFor(r => r.Date).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
             RuleForEach(r => r.Items).SetValidator(r => new GarmentComodityPriceItemValueObjectValidator(r));
