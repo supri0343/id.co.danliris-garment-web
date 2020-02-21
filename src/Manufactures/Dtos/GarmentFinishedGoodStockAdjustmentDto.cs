@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Manufactures.Dtos
-{
+{ 
 	class GarmentFinishedGoodStockAdjustmentDto : BaseDto
 	{
 		public GarmentFinishedGoodStockAdjustmentDto(GarmentFinishedGoodStock transaction)
@@ -47,4 +47,5 @@ namespace Manufactures.Dtos
 		public double Price { get; private set; }
 		
 	}
+ 
 }

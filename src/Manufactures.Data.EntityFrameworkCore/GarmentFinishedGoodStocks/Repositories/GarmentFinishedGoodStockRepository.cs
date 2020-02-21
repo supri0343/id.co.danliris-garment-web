@@ -13,28 +13,31 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentFinishedGoodStocks.Reposi
 {
     public class GarmentFinishedGoodStockRepository : AggregateRepostory<GarmentFinishedGoodStock, GarmentFinishedGoodStockReadModel>, IGarmentFinishedGoodStockRepository
     {
-		public IQueryable<GarmentFinishedGoodStockReadModel> Read(int page, int size, string order, string keyword, string filter)
-		{
-			var data = Query;
+        public IQueryable<GarmentFinishedGoodStockReadModel> Read(int page, int size, string order, string keyword, string filter)
+        {
+            var data = Query;
 
-			Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
-			data = QueryHelper<GarmentFinishedGoodStockReadModel>.Filter(data, FilterDictionary);
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            data = QueryHelper<GarmentFinishedGoodStockReadModel>.Filter(data, FilterDictionary);
 
-			List<string> SearchAttributes = new List<string>
-			{
-				"RONo","UnitCode"
-			};
+            List<string> SearchAttributes = new List<string>
+            {
+                "FinishedGoodStockNo",
+                "Article",
+                "RONo",
+                "UnitCode",
+                "UnitName",
+            };
+            data = QueryHelper<GarmentFinishedGoodStockReadModel>.Search(data, SearchAttributes, keyword);
 
-			data = QueryHelper<GarmentFinishedGoodStockReadModel>.Search(data, SearchAttributes, keyword);
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            data = OrderDictionary.Count == 0 ? data.OrderByDescending(o => o.ModifiedDate) : QueryHelper<GarmentFinishedGoodStockReadModel>.Order(data, OrderDictionary);
 
-			Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-			data = OrderDictionary.Count == 0 ? data.OrderByDescending(o => o.ModifiedDate) : QueryHelper<GarmentFinishedGoodStockReadModel>.Order(data, OrderDictionary);
+            //data = data.Skip((page - 1) * size).Take(size);
 
-			data = data.Skip((page - 1) * size).Take(size);
-
-			return data;
-		}
-		protected override GarmentFinishedGoodStock Map(GarmentFinishedGoodStockReadModel readModel)
+            return data;
+        }
+        protected override GarmentFinishedGoodStock Map(GarmentFinishedGoodStockReadModel readModel)
         {
             return new GarmentFinishedGoodStock(readModel);
         }

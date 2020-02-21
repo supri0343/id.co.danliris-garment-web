@@ -17,6 +17,8 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.ValueObjects
         public string Description { get;  set; }
         public double BasicPrice { get;  set; }
         public double Price { get;  set; }
+        public bool isSave { get; set; }
+        public double StockQuantity { get; set; }
 
         public GarmentExpenditureGoodItemValueObject()
         {

@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Manufactures.Data.EntityFrameworkCore.GarmentExpenditureGoods.Repositories
 {
-    class GarmentExpenditureGoodRepository : AggregateRepostory<GarmentExpenditureGood, GarmentExpenditureGoodReadModel>, IGarmentExpenditureGoodRepository
+    public class GarmentExpenditureGoodRepository : AggregateRepostory<GarmentExpenditureGood, GarmentExpenditureGoodReadModel>, IGarmentExpenditureGoodRepository
     {
         public IQueryable<GarmentExpenditureGoodReadModel> Read(int page, int size, string order, string keyword, string filter)
         {
