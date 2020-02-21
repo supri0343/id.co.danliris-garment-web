@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Manufactures.Dtos
 {
-	class GarmentFinishedGoodStockDto : BaseDto
+	class GarmentFinishedGoodStockAdjustmentDto : BaseDto
 	{
-		public GarmentFinishedGoodStockDto(GarmentFinishedGoodStock transaction)
+		public GarmentFinishedGoodStockAdjustmentDto(GarmentFinishedGoodStock transaction)
 		{
 			Id  = transaction.Identity;
 			FinishedGoodStockNo = transaction.FinishedGoodStockNo;

@@ -32,10 +32,10 @@ namespace Manufactures.Controllers.Api
 			var query = _garmentFinishedGoodStockRepository.Read(page, size, order, keyword, filter);
 			var count = query.Count();
 
-			List<GarmentFinishedGoodStockDto> listDtos = _garmentFinishedGoodStockRepository
+			List<GarmentFinishedGoodStockAdjustmentDto> listDtos = _garmentFinishedGoodStockRepository
 							.Find(query)
 							.Where(data => data.Quantity >0)
-							.Select(data => new GarmentFinishedGoodStockDto(data))
+							.Select(data => new GarmentFinishedGoodStockAdjustmentDto(data))
 							.ToList();
 
 			await Task.Yield();
@@ -52,11 +52,11 @@ namespace Manufactures.Controllers.Api
 			VerifyUser();
 			var query = _garmentFinishedGoodStockRepository.Read(page, size, order, keyword, filter);
 			var count = query.Count();
-			var garmentFinishedGoodStockDto = _garmentFinishedGoodStockRepository.Find(query).Select(o => new GarmentFinishedGoodStockDto(o)).Where(o=> o.Quantity >0).ToArray();
+			var garmentFinishedGoodStockDto = _garmentFinishedGoodStockRepository.Find(query).Select(o => new GarmentFinishedGoodStockAdjustmentDto(o)).Where(o=> o.Quantity >0).ToArray();
 			if (order != "{}")
 			{
 				Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-				garmentFinishedGoodStockDto = QueryHelper<GarmentFinishedGoodStockDto>.Order(garmentFinishedGoodStockDto.AsQueryable(), OrderDictionary).ToArray();
+				garmentFinishedGoodStockDto = QueryHelper<GarmentFinishedGoodStockAdjustmentDto>.Order(garmentFinishedGoodStockDto.AsQueryable(), OrderDictionary).ToArray();
 			}
 			await Task.Yield();
 			return Ok(garmentFinishedGoodStockDto, info: new
@@ -74,7 +74,7 @@ namespace Manufactures.Controllers.Api
 
 			VerifyUser();
 
-			GarmentFinishedGoodStockDto garmentFinishingInDto = _garmentFinishedGoodStockRepository.Find(o => o.Identity == guid).Select(loading => new GarmentFinishedGoodStockDto(loading)).FirstOrDefault();
+			GarmentFinishedGoodStockAdjustmentDto garmentFinishingInDto = _garmentFinishedGoodStockRepository.Find(o => o.Identity == guid).Select(loading => new GarmentFinishedGoodStockAdjustmentDto(loading)).FirstOrDefault();
 
 			await Task.Yield();
 			return Ok(garmentFinishingInDto);
