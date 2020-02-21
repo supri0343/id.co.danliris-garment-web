@@ -70,7 +70,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAdjustments
 
             GarmentAdjustment garmentAdjustment = new GarmentAdjustment(
                 adjustmentGuid,null,"LOADING","roNo",null,new UnitDepartmentId(1), null, null, DateTimeOffset.Now,
-                new GarmentComodityId(1), null, null);
+                new GarmentComodityId(1), null, null, null);
 
             _mockAdjustmentRepository
                 .Setup(s => s.Query)
@@ -129,7 +129,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAdjustments
 
             GarmentAdjustment garmentAdjustment = new GarmentAdjustment(
                 adjustmentGuid, null, "SEWING", "roNo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now,
-                new GarmentComodityId(1), null, null);
+                new GarmentComodityId(1), null, null, null);
 
             _mockAdjustmentRepository
                 .Setup(s => s.Query)
@@ -188,7 +188,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAdjustments
 
             GarmentAdjustment garmentAdjustment = new GarmentAdjustment(
                 adjustmentGuid, null, "FINISHING", "roNo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now,
-                new GarmentComodityId(1), null, null);
+                new GarmentComodityId(1), null, null, null);
 
             _mockAdjustmentRepository
                 .Setup(s => s.Query)

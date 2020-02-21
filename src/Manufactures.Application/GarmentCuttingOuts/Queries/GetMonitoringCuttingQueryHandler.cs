@@ -14,7 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.CostCalculationGarmentDataProductionReport;
-
+using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.HOrderDataProductionReport;
 
 namespace Manufactures.Application.GarmentCuttingOuts.Queries
 {
@@ -30,40 +30,103 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 		private readonly IGarmentAvalComponentRepository garmentAvalComponentRepository;
 		private readonly IGarmentAvalComponentItemRepository garmentAvalComponentItemRepository;
 
-		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
-		{
-			List<CostCalViewModel> costCalViewModels = new List<CostCalViewModel>();
-			CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();
-			foreach (var item in ro )
-			{
-				var garmentUnitExpenditureNoteUri = SalesDataSettings.Endpoint + $"cost-calculation-garments/data/{item}";
-				var httpResponse = _http.GetAsync(garmentUnitExpenditureNoteUri, token).Result;
+        async Task<HOrderDataProductionReport> GetDataHOrder(List<string> ro, string token)
+        {
+            HOrderDataProductionReport hOrderDataProductionReport = new HOrderDataProductionReport();
 
-				if (httpResponse.IsSuccessStatusCode)
-				{
-					var a = await httpResponse.Content.ReadAsStringAsync();
-					Dictionary<string, object> keyValues = JsonConvert.DeserializeObject<Dictionary<string, object>>(a);				 
-					var data = JsonConvert.DeserializeObject<CostCalViewModel>(keyValues.GetValueOrDefault("data").ToString());
-					CostCalViewModel expenditureROViewModel = new CostCalViewModel
-					{
-						ro = data.ro,
-						buyerCode = data.buyerCode,
-						hours=data.hours,
-						qtyOrder=data.qtyOrder,
-						comodityName=data.comodityName
-					};
-					costCalViewModels.Add(expenditureROViewModel);
-				}
-				else
-				{
-					await GetDataCostCal(ro, token);
-				}
-			}
-			costCalculationGarmentDataProductionReport.data = costCalViewModels;
-			return costCalculationGarmentDataProductionReport;
-		}
+            var listRO = string.Join(",", ro.Distinct());
+            var costCalculationUri = SalesDataSettings.Endpoint + $"local-merchandiser/horders/data-production-report-by-no/{listRO}";
+            var httpResponse = await _http.GetAsync(costCalculationUri, token);
 
-		public async Task<GarmentMonitoringCuttingListViewModel> Handle(GetMonitoringCuttingQuery request, CancellationToken cancellationToken)
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var contentString = await httpResponse.Content.ReadAsStringAsync();
+                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+                var dataString = content.GetValueOrDefault("data").ToString();
+                var listData = JsonConvert.DeserializeObject<List<HOrderViewModel>>(dataString);
+
+                foreach (var item in ro)
+                {
+                    var data = listData.SingleOrDefault(s => s.No == item);
+                    if (data != null)
+                    {
+                        hOrderDataProductionReport.data.Add(data);
+                    }
+                }
+            }
+
+            return hOrderDataProductionReport;
+        }
+
+        public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
+        {
+            CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();
+
+            var listRO = string.Join(",", ro.Distinct());
+            var costCalculationUri = SalesDataSettings.Endpoint + $"cost-calculation-garments/data/{listRO}";
+            var httpResponse = await _http.GetAsync(costCalculationUri, token);
+
+            var freeRO = new List<string>();
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var contentString = await httpResponse.Content.ReadAsStringAsync();
+                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+                var dataString = content.GetValueOrDefault("data").ToString();
+                var listData = JsonConvert.DeserializeObject<List<CostCalViewModel>>(dataString);
+
+                foreach (var item in ro)
+                {
+                    var data = listData.SingleOrDefault(s => s.ro == item);
+                    if (data != null)
+                    {
+                        costCalculationGarmentDataProductionReport.data.Add(data);
+                    }
+                    else
+                    {
+                        freeRO.Add(item);
+                    }
+                }
+            }
+
+            HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(freeRO, token);
+
+            Dictionary<string, string> comodities = new Dictionary<string, string>();
+            if (hOrderDataProductionReport.data.Count > 0)
+            {
+                var comodityCodes = hOrderDataProductionReport.data.Select(s => s.Kode).Distinct().ToList();
+                var filter = "{\"(" + string.Join(" || ", comodityCodes.Select(s => "Code==" + "\\\"" + s + "\\\"")) + ")\" : \"true\"}";
+
+                var masterGarmentComodityUri = MasterDataSettings.Endpoint + $"master/garment-comodities?filter=" + filter;
+                var garmentComodityResponse = _http.GetAsync(masterGarmentComodityUri).Result;
+                var garmentComodityResult = new GarmentComodityResult();
+                if (garmentComodityResponse.IsSuccessStatusCode)
+                {
+                    garmentComodityResult = JsonConvert.DeserializeObject<GarmentComodityResult>(garmentComodityResponse.Content.ReadAsStringAsync().Result);
+                    //comodities = garmentComodityResult.data.ToDictionary(d => d.Code, d => d.Name);
+                    foreach (var comodity in garmentComodityResult.data)
+                    {
+                        comodities[comodity.Code] = comodity.Name;
+                    }
+                }
+            }
+
+            foreach (var hOrder in hOrderDataProductionReport.data)
+            {
+                costCalculationGarmentDataProductionReport.data.Add(new CostCalViewModel
+                {
+                    ro = hOrder.No,
+                    buyerCode = hOrder.Codeby,
+                    comodityName = comodities.GetValueOrDefault(hOrder.Kode),
+                    hours = (double)hOrder.Sh_Cut,
+                    qtyOrder = (double)hOrder.Qty
+                });
+            }
+
+            return costCalculationGarmentDataProductionReport;
+        }
+
+        public async Task<GarmentMonitoringCuttingListViewModel> Handle(GetMonitoringCuttingQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
