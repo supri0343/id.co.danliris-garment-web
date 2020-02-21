@@ -51,13 +51,18 @@ namespace Manufactures.Domain.GarmentAdjustments.Commands
             RuleFor(r => r.Quantity)
                 .GreaterThan(0)
                 .WithMessage("'Jumlah' harus lebih dari '0'.")
-                .When(w => w.IsSave);
+                .When(w => w.IsSave && w.AdjustmentType  !="BARANG JADI" );
 
             RuleFor(r => r.Quantity)
                 .LessThanOrEqualTo(r => r.RemainingQuantity)
                 .OverridePropertyName("Quantity")
                 .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.RemainingQuantity}'.")
                 .When(w => w.IsSave == true);
-        }
+
+			RuleFor(r => r.Color)
+			   .NotNull()
+			   .WithMessage("Keterangan Barang Harus Disi")
+			   .When(w => w.IsSave && w.AdjustmentType == "BARANG JADI");
+		}
     }
 }

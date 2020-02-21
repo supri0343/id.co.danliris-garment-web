@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentAdjustments;
 using Manufactures.Domain.GarmentAdjustments.Commands;
 using Manufactures.Domain.GarmentAdjustments.Repositories;
+using Manufactures.Domain.GarmentFinishedGoodStocks;
+using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
 using Manufactures.Domain.GarmentFinishingIns;
 using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentSewingDOs;
@@ -26,8 +28,10 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
         private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
         private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
         private readonly IGarmentFinishingInItemRepository _garmentFinishingInItemRepository;
+		private readonly IGarmentFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
+		private readonly IGarmentFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
 
-        public RemoveGarmentAdjustmentCommandHandler(IStorage storage)
+		public RemoveGarmentAdjustmentCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentAdjustmentRepository = storage.GetRepository<IGarmentAdjustmentRepository>();
@@ -35,7 +39,9 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
             _garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
             _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
-        }
+			_garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentFinishedGoodStockRepository>();
+			_garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentFinishedGoodStockHistoryRepository>();
+		}
 
         public async Task<GarmentAdjustment> Handle(RemoveGarmentAdjustmentCommand request, CancellationToken cancellationToken)
         {
@@ -44,8 +50,10 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
             Dictionary<Guid, double> sewingDOItemToBeUpdated = new Dictionary<Guid, double>();
             Dictionary<Guid, double> sewingInItemToBeUpdated = new Dictionary<Guid, double>();
             Dictionary<Guid, double> finishingInItemToBeUpdated = new Dictionary<Guid, double>();
+			Dictionary<Guid, double> finishedGoodItemToBeUpdated = new Dictionary<Guid, double>();
+			List<GarmentFinishedGoodStock> finGoodStocks = new List<GarmentFinishedGoodStock>();
 
-            _garmentAdjustmentItemRepository.Find(o => o.AdjustmentId == adjustment.Identity).ForEach(async adjustmentItem =>
+			_garmentAdjustmentItemRepository.Find(o => o.AdjustmentId == adjustment.Identity).ForEach(async adjustmentItem =>
             {
                 if (adjustment.AdjustmentType == "LOADING")
                 {
@@ -79,52 +87,78 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
                     {
                         finishingInItemToBeUpdated.Add(adjustmentItem.FinishingInItemId, adjustmentItem.Quantity);
                     }
-                }
+                }else
+				{
+					if (finishedGoodItemToBeUpdated.ContainsKey(adjustmentItem.FinishedGoodStockId))
+					{
+						finishedGoodItemToBeUpdated[adjustmentItem.FinishedGoodStockId] += adjustmentItem.Quantity;
+					}
+					else
+					{
+
+						finishedGoodItemToBeUpdated.Add(adjustmentItem.FinishedGoodStockId, adjustmentItem.Quantity);
+					}
+				}
 
                 adjustmentItem.Remove();
 
                 await _garmentAdjustmentItemRepository.Update(adjustmentItem);
             });
 
-            if (adjustment.AdjustmentType == "LOADING")
-            {
-                foreach (var sewingDOItem in sewingDOItemToBeUpdated)
-                {
-                    var garmentSewingDOItem = _garmentSewingDOItemRepository.Query.Where(x => x.Identity == sewingDOItem.Key).Select(s => new GarmentSewingDOItem(s)).Single();
-                    garmentSewingDOItem.setRemainingQuantity(garmentSewingDOItem.RemainingQuantity + sewingDOItem.Value);
-                    garmentSewingDOItem.Modify();
+			if (adjustment.AdjustmentType == "LOADING")
+			{
+				foreach (var sewingDOItem in sewingDOItemToBeUpdated)
+				{
+					var garmentSewingDOItem = _garmentSewingDOItemRepository.Query.Where(x => x.Identity == sewingDOItem.Key).Select(s => new GarmentSewingDOItem(s)).Single();
+					garmentSewingDOItem.setRemainingQuantity(garmentSewingDOItem.RemainingQuantity + sewingDOItem.Value);
+					garmentSewingDOItem.Modify();
 
-                    await _garmentSewingDOItemRepository.Update(garmentSewingDOItem);
-                }
-            }
-            else if (adjustment.AdjustmentType == "SEWING")
-            {
-                foreach (var sewingInItem in sewingInItemToBeUpdated)
-                {
-                    var garmentSewingInItem = _garmentSewingInItemRepository.Query.Where(x => x.Identity == sewingInItem.Key).Select(s => new GarmentSewingInItem(s)).Single();
-                    garmentSewingInItem.SetRemainingQuantity(garmentSewingInItem.RemainingQuantity + sewingInItem.Value);
-                    garmentSewingInItem.Modify();
+					await _garmentSewingDOItemRepository.Update(garmentSewingDOItem);
+				}
+			}
+			else if (adjustment.AdjustmentType == "SEWING")
+			{
+				foreach (var sewingInItem in sewingInItemToBeUpdated)
+				{
+					var garmentSewingInItem = _garmentSewingInItemRepository.Query.Where(x => x.Identity == sewingInItem.Key).Select(s => new GarmentSewingInItem(s)).Single();
+					garmentSewingInItem.SetRemainingQuantity(garmentSewingInItem.RemainingQuantity + sewingInItem.Value);
+					garmentSewingInItem.Modify();
 
-                    await _garmentSewingInItemRepository.Update(garmentSewingInItem);
-                }
-            }
-            else if (adjustment.AdjustmentType == "FINISHING")
-            {
-                foreach (var finishingInItem in finishingInItemToBeUpdated)
-                {
-                    var garmentFinishingInItem = _garmentFinishingInItemRepository.Query.Where(x => x.Identity == finishingInItem.Key).Select(s => new GarmentFinishingInItem(s)).Single();
-                    garmentFinishingInItem.SetRemainingQuantity(garmentFinishingInItem.RemainingQuantity + finishingInItem.Value);
-                    garmentFinishingInItem.Modify();
+					await _garmentSewingInItemRepository.Update(garmentSewingInItem);
+				}
+			}
+			else if (adjustment.AdjustmentType == "FINISHING")
+			{
+				foreach (var finishingInItem in finishingInItemToBeUpdated)
+				{
+					var garmentFinishingInItem = _garmentFinishingInItemRepository.Query.Where(x => x.Identity == finishingInItem.Key).Select(s => new GarmentFinishingInItem(s)).Single();
+					garmentFinishingInItem.SetRemainingQuantity(garmentFinishingInItem.RemainingQuantity + finishingInItem.Value);
+					garmentFinishingInItem.Modify();
 
-                    await _garmentFinishingInItemRepository.Update(garmentFinishingInItem);
-                }
-            }
-
-            adjustment.Remove();
+					await _garmentFinishingInItemRepository.Update(garmentFinishingInItem);
+				}
+			}
+			else
+			{
+				foreach (var data in finishedGoodItemToBeUpdated)
+				{
+					var garmentFinishedGoodstock = _garmentFinishedGoodStockRepository.Query.Where(x => x.Identity == data.Key).Select(s => new GarmentFinishedGoodStock(s)).Single();
+					garmentFinishedGoodstock.SetQuantity(garmentFinishedGoodstock.Quantity + data.Value);
+					garmentFinishedGoodstock.Modify();
+					await _garmentFinishedGoodStockRepository.Update(garmentFinishedGoodstock);
+				}
+				var stockHistory = _garmentFinishedGoodStockHistoryRepository.Query.Where(o => o.AdjustmentId == adjustment.Identity).Select(o => new GarmentFinishedGoodStockHistory(o));
+				foreach (var data in stockHistory)
+				{
+					var dataStockHistory = _garmentFinishedGoodStockHistoryRepository.Query.Where(o => o.Identity == data.Identity).Select(o => new GarmentFinishedGoodStockHistory(o)).Single();
+					dataStockHistory.Remove();
+					await _garmentFinishedGoodStockHistoryRepository.Update(dataStockHistory);
+				}
+			}
+			
+			adjustment.Remove();
             await _garmentAdjustmentRepository.Update(adjustment);
-
             _storage.Save();
-
             return adjustment;
         }
     }
