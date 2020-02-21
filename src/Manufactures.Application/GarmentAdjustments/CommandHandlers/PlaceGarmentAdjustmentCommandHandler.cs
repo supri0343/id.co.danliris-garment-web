@@ -48,7 +48,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
         {
             request.Items = request.Items.ToList();
 			Guid AdjustmentId = Guid.NewGuid();
-			Guid AdjutmentItemId = Guid.NewGuid();
+		
 			GarmentAdjustment garmentAdjustment = new GarmentAdjustment(
 				AdjustmentId,
                 GenerateAdjustmentNo(request),
@@ -76,7 +76,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
                 if (item.IsSave)
                 {
 					var stock = _garmentFinishedGoodStockRepository.Query.Where(x => x.Identity == item.FinishedGoodStockId).Select(s => new GarmentFinishedGoodStock(s)).Single();
-
+					Guid AdjutmentItemId = Guid.NewGuid();
 					GarmentAdjustmentItem garmentAdjustmentItem = new GarmentAdjustmentItem(
 						AdjutmentItemId,
 						AdjustmentId,
