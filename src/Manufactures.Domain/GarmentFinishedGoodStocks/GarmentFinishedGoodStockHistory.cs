@@ -75,6 +75,8 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
                 FinishingOutDetailId= FinishingOutDetailId,
                 ExpenditureGoodId= ExpenditureGoodId,
                 ExpenditureGoodItemId= ExpenditureGoodItemId,
+				AdjustmentId=AdjustmentId,
+				AdjustmentItemId=AdjustmentItemId,
                 StockType=StockType,
                 RONo = RONo,
                 Article = Article,
@@ -103,6 +105,8 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
             FinishingOutDetailId = readModel.FinishingOutDetailId;
             ExpenditureGoodId = readModel.ExpenditureGoodId;
             ExpenditureGoodItemId = readModel.ExpenditureGoodItemId;
+			AdjustmentItemId = readModel.AdjustmentItemId;
+			AdjustmentId = readModel.AdjustmentId;
             StockType = readModel.StockType;
             RONo = readModel.RONo;
             Article = readModel.Article;
