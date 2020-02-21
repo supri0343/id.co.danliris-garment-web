@@ -93,6 +93,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                                             Guid.Empty,
                                             garmentExpenditureGood.Identity,
                                             garmentExpenditureGoodItem.Identity,
+                                            Guid.Empty,
+                                            Guid.Empty,
                                             "OUT",
                                             garmentExpenditureGood.RONo,
                                             garmentExpenditureGood.Article,
