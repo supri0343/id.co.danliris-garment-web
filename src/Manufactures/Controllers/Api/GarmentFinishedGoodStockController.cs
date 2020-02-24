@@ -46,7 +46,31 @@ namespace Manufactures.Controllers.Api
 				count
 			});
 		}
-		[HttpGet("complete")]
+
+        [HttpGet("list")]
+        public async Task<IActionResult> GetList(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentFinishedGoodStockRepository.Read(page, size, order, keyword, filter);
+            var count = query.Count();
+
+            List<GarmentFinishedGoodStockDto> listDtos = _garmentFinishedGoodStockRepository
+                            .Find(query)
+                            .Where(data => data.Quantity > 0)
+                            .Select(data => new GarmentFinishedGoodStockDto(data))
+                            .ToList();
+
+            await Task.Yield();
+            return Ok(listDtos, info: new
+            {
+                page,
+                size,
+                count
+            });
+        }
+
+        [HttpGet("complete")]
 		public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
 		{
 			VerifyUser();
