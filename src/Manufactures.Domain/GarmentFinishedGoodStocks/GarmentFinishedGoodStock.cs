@@ -28,9 +28,10 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
         public string UomUnit { get; private set; }
         public double BasicPrice { get; private set; }
         public double Price { get; private set; }
+		public double ComodityPrice { get; private set; }
 
 
-        public GarmentFinishedGoodStock(Guid identity, string finishedGoodStockNo, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName, SizeId sizeId, string sizeName, UomId uomId, string uomUnit, double quantity, double basicPrice, double price) : base(identity)
+		public GarmentFinishedGoodStock(Guid identity, string finishedGoodStockNo, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName, SizeId sizeId, string sizeName, UomId uomId, string uomUnit, double quantity, double basicPrice, double price) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
             Validator.ThrowIfNull(() => rONo);
@@ -54,8 +55,8 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
             UomUnit = uomUnit;
             BasicPrice = basicPrice;
             Price = price;
-
-            ReadModel = new GarmentFinishedGoodStockReadModel(Identity)
+			 
+			ReadModel = new GarmentFinishedGoodStockReadModel(Identity)
             {
                 FinishedGoodStockNo = FinishedGoodStockNo,
                 RONo = RONo,
@@ -72,7 +73,8 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
                 UomId= UomId.Value,
                 UomUnit= UomUnit,
                 BasicPrice= BasicPrice,
-                Price= Price
+                Price= Price 
+				
             };
 
             ReadModel.AddDomainEvent(new OnGarmentFinishedGoodStockPlaced(Identity));
@@ -96,6 +98,7 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
             UomId = new UomId(readModel.UomId);
             BasicPrice = readModel.BasicPrice;
             Price = readModel.Price;
+			
         }
 
         public void SetQuantity(double Quantity)
@@ -106,8 +109,8 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
                 ReadModel.Quantity = Quantity;
             }
         }
-
-        public void SetPrice(double Price)
+		 
+		public void SetPrice(double Price)
         {
             if (this.Price != Price)
             {

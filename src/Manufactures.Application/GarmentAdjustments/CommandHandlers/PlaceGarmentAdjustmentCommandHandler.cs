@@ -103,6 +103,11 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
 					else
 					{
 						var stock = _garmentFinishedGoodStockRepository.Query.Where(x => x.Identity == item.FinishedGoodStockId).Select(s => new GarmentFinishedGoodStock(s)).Single();
+						var a = item.Price / item.Quantity;
+						var b = stock.Quantity - item.Quantity;
+						var c = a * b;
+						stock.SetPrice (c);
+
 						Guid AdjutmentItemId = Guid.NewGuid();
 						GarmentAdjustmentItem garmentAdjustmentItem = new GarmentAdjustmentItem(
 							AdjutmentItemId,
@@ -150,6 +155,8 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
 								item.BasicPrice,
 								item.Price
 							);
+						stock.Modify();
+						await _garmentFinishedGoodStockRepository.Update(stock);
 						await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
 						await _garmentAdjustmentItemRepository.Update(garmentAdjustmentItem);
 					}
@@ -240,7 +247,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
 			}
 			else
 			{
-			
+
 				foreach (var data in finishedGoodItemToBeUpdated)
 				{
 					var garmentFinishedGoodstock = _garmentFinishedGoodStockRepository.Query.Where(x => x.Identity == data.Key).Select(s => new GarmentFinishedGoodStock(s)).Single();
@@ -250,7 +257,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
 				}
 			}
 
-            await _garmentAdjustmentRepository.Update(garmentAdjustment);
+			await _garmentAdjustmentRepository.Update(garmentAdjustment);
 
             _storage.Save();
 
