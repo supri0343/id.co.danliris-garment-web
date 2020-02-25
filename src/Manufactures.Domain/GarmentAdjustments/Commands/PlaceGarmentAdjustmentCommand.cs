@@ -60,7 +60,7 @@ namespace Manufactures.Domain.GarmentAdjustments.Commands
                 .When(w => w.IsSave == true);
 
 			RuleFor(r => r.Color)
-			   .NotNull().OverridePropertyName("Color")
+			   .NotNull()
 			   .WithMessage("Keterangan Barang Harus Disi")
 			   .When(w => w.IsSave && w.AdjustmentType == "BARANG JADI");
 		}
