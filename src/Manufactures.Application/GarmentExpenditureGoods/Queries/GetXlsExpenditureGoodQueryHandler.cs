@@ -182,13 +182,14 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			}).OrderBy(s => s.expendituregoodNo);
 			foreach (var item in querySum)
 			{
+				var dates = item.expenditureDates.AddHours(7);
 				GarmentMonitoringExpenditureGoodDto dto = new GarmentMonitoringExpenditureGoodDto
 				{
 					roNo = item.ros,
 					buyerArticle = item.buyer,
 					expenditureGoodType = item.expendituregoodTypes,
 					expenditureGoodNo = item.expendituregoodNo,
-					expenditureDate = item.expenditureDates,
+					expenditureDate = dates,
 					qty = item.qty,
 					colour = item.color,
 					name = item.names,
