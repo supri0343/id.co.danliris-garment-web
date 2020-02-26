@@ -157,14 +157,14 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(_ro, request.token);
 			GarmentMonitoringExpenditureGoodListViewModel listViewModel = new GarmentMonitoringExpenditureGoodListViewModel();
 			List<GarmentMonitoringExpenditureGoodDto> monitoringDtos = new List<GarmentMonitoringExpenditureGoodDto>();
-			var Query= from a in garmentExpenditureGoodRepository.Query
-								 join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
-								 where a.UnitId == request.unit && a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo
-					   select new monitoringView { buyerArticle = a.BuyerCode +" "+ a.Article, roNo = a.RONo, expenditureDate= a.ExpenditureDate,expenditureGoodNo= a.ExpenditureGoodNo,expenditureGoodType=a.ExpenditureType,invoice= a.Invoice,colour=a.Description,qty= b.Quantity, name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+			var Query = from a in garmentExpenditureGoodRepository.Query
+						join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
+						where a.UnitId == request.unit && a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo
+						select new monitoringView { buyerArticle = a.BuyerCode + " " + a.Article, roNo = a.RONo, expenditureDate = a.ExpenditureDate, expenditureGoodNo = a.ExpenditureGoodNo, expenditureGoodType = a.ExpenditureType, invoice = a.Invoice, colour = b.Description, qty = b.Quantity, name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 
-		
-			 
-			var querySum = Query.ToList().GroupBy(x => new { x.buyerArticle, x.roNo, x.expenditureDate, x.expenditureGoodNo, x.expenditureGoodType,x.invoice,x.colour,x.name }, (key, group) => new
+
+
+			var querySum = Query.ToList().GroupBy(x => new { x.buyerArticle, x.roNo, x.expenditureDate, x.expenditureGoodNo, x.expenditureGoodType, x.invoice, x.colour, x.name }, (key, group) => new
 			{
 				ros = key.roNo,
 				buyer = key.buyerArticle,
@@ -172,25 +172,25 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 				qty = group.Sum(s => s.qty),
 				expendituregoodNo = key.expenditureGoodNo,
 				expendituregoodTypes = key.expenditureGoodType,
-				color= key.colour,
-				names= key.name,
+				color = key.colour,
+				names = key.name,
 				invoices = key.invoice
-			 
+
 			}).OrderBy(s => s.expendituregoodNo);
 			foreach (var item in querySum)
 			{
 				GarmentMonitoringExpenditureGoodDto dto = new GarmentMonitoringExpenditureGoodDto
 				{
-					roNo  = item.ros,
-					buyerArticle = item.buyer ,
+					roNo = item.ros,
+					buyerArticle = item.buyer,
 					expenditureGoodType = item.expendituregoodTypes,
 					expenditureGoodNo = item.expendituregoodNo,
-					expenditureDate= item.expenditureDates,
+					expenditureDate = item.expenditureDates,
 					qty = item.qty,
 					colour = item.color,
 					name = item.names,
 					invoice = item.invoices
-					 
+
 				};
 				monitoringDtos.Add(dto);
 			}
