@@ -1,5 +1,7 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Application.GarmentExpenditureGoods.Queries;
+using Manufactures.Domain.GarmentDeliveryReturns.ValueObjects;
 using Manufactures.Domain.GarmentExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentExpenditureGoods.Repositories;
 using Manufactures.Dtos;
@@ -9,6 +11,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -127,8 +130,21 @@ namespace Manufactures.Controllers.Api
             return Ok(order.Identity);
 
         }
+		[HttpGet("monitoring")]
+		public async Task<IActionResult> GetMonitoring(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+		{
+			VerifyUser();
+			GetMonitoringExpenditureGoodQuery query = new GetMonitoringExpenditureGoodQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+			var viewModel = await Mediator.Send(query);
 
-        [HttpGet("complete")]
+			return Ok(viewModel.garmentMonitorings, info: new
+			{
+				page,
+				size,
+				viewModel.count
+			});
+		}
+		[HttpGet("complete")]
         public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
         {
             VerifyUser();
@@ -160,5 +176,34 @@ namespace Manufactures.Controllers.Api
                 count
             });
         }
-    }
+
+		[HttpGet("download")]
+		public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+		{
+			try
+			{
+				VerifyUser();
+				GetXlsExpenditureGoodQuery query = new GetXlsExpenditureGoodQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+				byte[] xlsInBytes;
+
+				var xls = await Mediator.Send(query);
+
+				string filename = "Laporan Pengiriman Barang Jadi " ;
+
+				if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+				if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+				filename += ".xlsx";
+
+				xlsInBytes = xls.ToArray();
+				var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+				return file;
+			}
+			catch (Exception e)
+			{
+
+				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+			}
+		}
+	}
 }

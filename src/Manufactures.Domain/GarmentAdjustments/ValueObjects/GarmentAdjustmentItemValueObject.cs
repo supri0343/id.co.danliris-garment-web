@@ -23,9 +23,9 @@ namespace Manufactures.Domain.GarmentAdjustments.ValueObjects
         public double Price { get;  set; }
         public double RemainingQuantity { get; set; }
         public bool IsSave { get; set; }
-		public string AdjustmentType { get; set; }
+		public string AdjustmentType { get; set; } 
 
-        public GarmentAdjustmentItemValueObject()
+		public GarmentAdjustmentItemValueObject()
         {
 
         }
