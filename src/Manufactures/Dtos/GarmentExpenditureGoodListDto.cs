@@ -22,6 +22,7 @@ namespace Manufactures.Dtos
             Invoice = garmentExpenditureGood.Invoice;
             ContractNo = garmentExpenditureGood.ContractNo;
             Carton = garmentExpenditureGood.Carton;
+            Description = garmentExpenditureGood.Description;
         }
 
         public Guid Id { get; internal set; }
@@ -36,6 +37,7 @@ namespace Manufactures.Dtos
         public string Invoice { get; internal set; }
         public string ContractNo { get; internal set; }
         public double Carton { get; internal set; }
+        public string Description { get; internal set; }
         public double TotalQuantity { get; set; }
     }
 }

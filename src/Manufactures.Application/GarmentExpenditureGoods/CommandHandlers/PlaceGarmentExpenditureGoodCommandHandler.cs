@@ -79,6 +79,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                         new SizeId(item.Size.Id),
                         item.Size.Size,
                         item.Quantity,
+                        item.ReturQuantity,
                         new UomId(item.Uom.Id),
                         item.Uom.Unit,
                         item.Description,

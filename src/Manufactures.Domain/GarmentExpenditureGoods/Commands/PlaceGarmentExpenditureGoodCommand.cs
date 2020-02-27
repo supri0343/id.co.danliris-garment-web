@@ -37,7 +37,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.Commands
             RuleFor(r => r.ExpenditureDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Tidak Boleh Kosong");
             RuleFor(r => r.ExpenditureDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.Comodity).NotNull();
-
+            RuleFor(r => r.Invoice).NotEmpty().When(w=>w.ExpenditureType=="EXPORT");
             RuleFor(r => r.Carton)
                 .GreaterThanOrEqualTo(0)
                 .WithMessage("'Karton' harus lebih dari atau sama dengan '0'.");

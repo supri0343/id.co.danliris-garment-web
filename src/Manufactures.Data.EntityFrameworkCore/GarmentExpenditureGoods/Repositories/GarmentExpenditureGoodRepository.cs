@@ -23,11 +23,14 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentExpenditureGoods.Reposito
             List<string> SearchAttributes = new List<string>
             {
                 "ExpenditureGoodNo",
-                "ExpenditureGoodType",
+                "ExpenditureType",
                 "Article",
                 "RONo",
                 "UnitCode",
-                "UnitName"
+                "UnitName",
+                "ContractNo",
+                "Invoice",
+                "BuyerName"
             };
             data = QueryHelper<GarmentExpenditureGoodReadModel>.Search(data, SearchAttributes, keyword);
 
