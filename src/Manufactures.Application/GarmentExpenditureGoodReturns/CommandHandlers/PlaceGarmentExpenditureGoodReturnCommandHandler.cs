@@ -100,7 +100,7 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
                                             garmentExpenditureGoodReturnItem.Identity,
                                             Guid.Empty,
                                             Guid.Empty,
-                                            "OUT",
+                                            "RETUR",
                                             garmentExpenditureGoodReturn.RONo,
                                             garmentExpenditureGoodReturn.Article,
                                             garmentExpenditureGoodReturn.UnitId,
