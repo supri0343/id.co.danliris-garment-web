@@ -188,7 +188,7 @@ namespace Manufactures.Controllers.Api
 
 				var xls = await Mediator.Send(query);
 
-				string filename = "Laporan Pengiriman Barang Jadi KONDEKSI " + query;
+				string filename = "Laporan Pengiriman Barang Jadi " ;
 
 				if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
 
