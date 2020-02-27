@@ -76,7 +76,7 @@ namespace Manufactures.Tests.Controllers.Api
                 });
 
             Guid ExpenditureGoodItemGuid = Guid.NewGuid();
-            GarmentExpenditureGoodItem garmentExpenditureGoodItem = new GarmentExpenditureGoodItem(ExpenditureGoodItemGuid, ExpenditureGoodGuid, new Guid(), new SizeId(1), null, 1, new UomId(1), null, null, 1, 1);
+            GarmentExpenditureGoodItem garmentExpenditureGoodItem = new GarmentExpenditureGoodItem(ExpenditureGoodItemGuid, ExpenditureGoodGuid, new Guid(), new SizeId(1), null, 1,0, new UomId(1), null, null, 1, 1);
             _mockGarmentExpenditureGoodItemRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentExpenditureGoodItemReadModel>()
@@ -112,7 +112,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentExpenditureGoodItemReadModel, bool>>>()))
                 .Returns(new List<GarmentExpenditureGoodItem>()
                 {
-                    new GarmentExpenditureGoodItem(ExpenditureGoodItemGuid, ExpenditureGoodGuid, new Guid(), new SizeId(1), null, 1, new UomId(1), null, null, 1, 1)
+                    new GarmentExpenditureGoodItem(ExpenditureGoodItemGuid, ExpenditureGoodGuid, new Guid(), new SizeId(1), null, 1,0, new UomId(1), null, null, 1, 1)
                 });
 
             // Act
