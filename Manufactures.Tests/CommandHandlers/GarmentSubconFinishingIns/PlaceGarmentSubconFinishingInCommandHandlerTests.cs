@@ -1,12 +1,11 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentFinishingIns.CommandHandlers;
+using Manufactures.Domain.GarmentComodityPrices.ReadModels;
+using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.GarmentFinishingIns;
 using Manufactures.Domain.GarmentFinishingIns.ReadModels;
 using Manufactures.Domain.GarmentFinishingIns.Repositories;
-using Manufactures.Domain.GarmentSewingOuts;
-using Manufactures.Domain.GarmentSewingOuts.ReadModels;
-using Manufactures.Domain.GarmentSewingOuts.Repositories;
 using Manufactures.Domain.GarmentSubconCuttingOuts;
 using Manufactures.Domain.GarmentSubconCuttingOuts.ReadModels;
 using Manufactures.Domain.GarmentSubconCuttingOuts.Repositories;
@@ -28,16 +27,19 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubconFinishingIns
         private readonly Mock<IGarmentFinishingInRepository> _mockFinishingInRepository;
         private readonly Mock<IGarmentFinishingInItemRepository> _mockFinishingInItemRepository;
         private readonly Mock<IGarmentSubconCuttingRepository> _mockSubconCuttingRepository;
+        private readonly Mock<IGarmentComodityPriceRepository> _mockIComodityPriceRepository;
 
         public PlaceGarmentSubconFinishingInCommandHandlerTests()
         {
             _mockFinishingInRepository = CreateMock<IGarmentFinishingInRepository>();
             _mockFinishingInItemRepository = CreateMock<IGarmentFinishingInItemRepository>();
             _mockSubconCuttingRepository = CreateMock<IGarmentSubconCuttingRepository>();
+            _mockIComodityPriceRepository = CreateMock<IGarmentComodityPriceRepository>();
 
             _MockStorage.SetupStorage(_mockFinishingInRepository);
             _MockStorage.SetupStorage(_mockFinishingInItemRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingRepository);
+            _MockStorage.SetupStorage(_mockIComodityPriceRepository);
         }
 
         private PlaceGarmentSubconFinishingInCommandHandler CreatePlaceGarmentSubconFinishingInCommandHandler()
@@ -83,6 +85,12 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubconFinishingIns
                 .Returns(new List<GarmentSubconCuttingReadModel>
                 {
                     new GarmentSubconCuttingReadModel(subconCuttingId)
+                }.AsQueryable());
+            _mockIComodityPriceRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentComodityPriceReadModel>
+                {
+                    new GarmentComodityPriceReadModel(Guid.NewGuid())
                 }.AsQueryable());
 
             _mockFinishingInRepository

@@ -19,7 +19,6 @@ namespace Manufactures.Domain.GarmentSubconFinishingIns.ValueObjects
         public Uom Uom { get;  set; }
         public string Color { get;  set; }
         public double BasicPrice { get; set; }
-        public double Price { get; set; }
         public bool IsSave { get; set; }
 
         public GarmentSubconFinishingInItemValueObject()

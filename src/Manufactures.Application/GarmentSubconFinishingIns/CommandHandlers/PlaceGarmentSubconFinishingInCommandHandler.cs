@@ -15,6 +15,7 @@ using Manufactures.Domain.GarmentSewingOuts;
 using Manufactures.Domain.GarmentSubconFinishingIns.Commands;
 using Manufactures.Domain.GarmentSubconCuttingOuts.Repositories;
 using Manufactures.Domain.GarmentSubconCuttingOuts;
+using Manufactures.Domain.GarmentComodityPrices.Repositories;
 
 namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
 {
@@ -24,6 +25,7 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
         private readonly IGarmentFinishingInRepository _garmentFinishingInRepository;
         private readonly IGarmentFinishingInItemRepository _garmentFinishingInItemRepository;
         private readonly IGarmentSubconCuttingRepository _garmentSubconCuttingRepository;
+        private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
 
         public PlaceGarmentSubconFinishingInCommandHandler(IStorage storage)
         {
@@ -31,6 +33,7 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
             _garmentFinishingInRepository = storage.GetRepository<IGarmentFinishingInRepository>();
             _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
             _garmentSubconCuttingRepository = storage.GetRepository<IGarmentSubconCuttingRepository>();
+            _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
         }
 
         public async Task<GarmentFinishingIn> Handle(PlaceGarmentSubconFinishingInCommand request, CancellationToken cancellationToken)
@@ -57,6 +60,13 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
                 request.DONo
             );
 
+            var comodityPrice = _garmentComodityPriceRepository
+                .Query
+                .OrderByDescending(o => o.CreatedDate)
+                .Where(c => c.UnitId == request.Unit.Id && c.ComodityId == request.Comodity.Id)
+                .Select(c => c.Price)
+                .FirstOrDefault();
+
             Dictionary<Guid, double> subconCuttingSumQuantities = new Dictionary<Guid, double>();
 
             foreach (var item in request.Items.Where(i => i.IsSave))
@@ -79,7 +89,7 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
                     item.Uom.Unit,
                     item.Color,
                     item.BasicPrice,
-                    item.Price
+                    (double)(((decimal)item.BasicPrice + comodityPrice * (decimal)0.75) * (decimal)item.Quantity)
                 );
 
                 if (Guid.Empty != item.SubconCuttingId)
