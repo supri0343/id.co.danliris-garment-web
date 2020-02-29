@@ -22,7 +22,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureNotes
+namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoods
 {
     public class PlaceGarmentExpenditureGoodCommandHandlerTests : BaseCommandUnitTest
     {

@@ -115,7 +115,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentFinishingOuts
                 }.AsQueryable());
 
             GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = new GarmentFinishedGoodStockHistory(Guid.NewGuid(), garmentFinishedGoodStock.Identity,
-               finishingOutItemGuid,Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, null, "ro", "article", garmentFinishingOut.UnitId, garmentFinishingOut.UnitCode, garmentFinishingOut.UnitName,
+               finishingOutItemGuid,Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, null, "ro", "article", garmentFinishingOut.UnitId, garmentFinishingOut.UnitCode, garmentFinishingOut.UnitName,
                garmentFinishingOut.ComodityId, garmentFinishingOut.ComodityCode, garmentFinishingOut.ComodityName,
                new SizeId(1), null, new UomId(1), null, 1, 1, 1);
 

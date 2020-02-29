@@ -68,7 +68,7 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
                     exGoodToBeUpdated.Add(expenditureReturnItem.ExpenditureGoodItemId, expenditureReturnItem.Quantity);
                 }
 
-                GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = _garmentFinishedGoodStockHistoryRepository.Query.Where(a => a.ExpenditureGoodItemId == expenditureReturnItem.Identity).Select(a => new GarmentFinishedGoodStockHistory(a)).Single();
+                GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = _garmentFinishedGoodStockHistoryRepository.Query.Where(a => a.ExpenditureGoodReturnItemId == expenditureReturnItem.Identity).Select(a => new GarmentFinishedGoodStockHistory(a)).Single();
                 garmentFinishedGoodStockHistory.Remove();
 
                 expenditureReturnItem.Remove();
