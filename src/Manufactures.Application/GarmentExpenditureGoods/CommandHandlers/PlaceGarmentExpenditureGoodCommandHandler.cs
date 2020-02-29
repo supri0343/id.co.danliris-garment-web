@@ -96,6 +96,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                                             garmentExpenditureGoodItem.Identity,
                                             Guid.Empty,
                                             Guid.Empty,
+                                            Guid.Empty,
+                                            Guid.Empty,
                                             "OUT",
                                             garmentExpenditureGood.RONo,
                                             garmentExpenditureGood.Article,
@@ -154,7 +156,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
             var day = now.ToString("dd");
             var unitcode = request.Unit.Code;
 
-            var pre = request.ExpenditureType == "EXPORT" ? "EGE" : request.ExpenditureType == "SAMPLE" ? "EGS" : "EGL";
+            var pre = request.ExpenditureType == "EXPORT" ? "EGE" : request.ExpenditureType == "SISA" ? "EGS" : "EGL";
 
             var prefix = $"{pre}{unitcode}{year}{month}";
 

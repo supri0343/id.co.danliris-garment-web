@@ -17,7 +17,9 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks.ReadModels
         public Guid ExpenditureGoodItemId { get; internal set; }
 		public Guid AdjustmentId { get; internal set; }
 		public Guid AdjustmentItemId { get; internal set; }
-		public string StockType { get; internal set; }
+        public Guid ExpenditureGoodReturnId { get; internal set; }
+        public Guid ExpenditureGoodReturnItemId { get; internal set; }
+        public string StockType { get; internal set; }
         public int UnitId { get; internal set; }
         public string UnitCode { get; internal set; }
         public string UnitName { get; internal set; }
