@@ -1,6 +1,8 @@
-﻿using FluentValidation;
+﻿using ExtCore.Data.Abstractions;
+using FluentValidation;
 using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentFinishingIns;
+using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentSubconFinishingIns.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
@@ -27,8 +29,10 @@ namespace Manufactures.Domain.GarmentSubconFinishingIns.Commands
 
     public class PlaceGarmentSubconFinishingInCommandValidator : AbstractValidator<PlaceGarmentSubconFinishingInCommand>
     {
-        public PlaceGarmentSubconFinishingInCommandValidator()
+        public PlaceGarmentSubconFinishingInCommandValidator(IStorage storage)
         {
+            IGarmentFinishingInRepository garmentFinishingInRepository = storage.GetRepository<IGarmentFinishingInRepository>();
+
             RuleFor(r => r.Unit).NotNull();
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
             RuleFor(r => r.FinishingInDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal FinishingIn Tidak Boleh Kosong");
@@ -37,6 +41,15 @@ namespace Manufactures.Domain.GarmentSubconFinishingIns.Commands
             RuleFor(r => r.Supplier).NotNull();
             RuleFor(r => r.DONo).NotNull().When(w => w.Supplier != null);
             RuleFor(r => r.RONo).NotNull().When(w => w.DONo != null);
+
+            RuleFor(r => r).Must(m =>
+            {
+                var existingByDONoRONo = garmentFinishingInRepository.Query.Count(f => f.DONo == m.DONo && f.RONo == m.RONo);
+                return existingByDONoRONo == 0;
+            })
+            .WithMessage(m => "No SJ \"" + m.DONo + "\" dan No RO \"" + m.RONo + "\" sudah ada Finishing In Subcon")
+            .OverridePropertyName("RONo")
+            .When(w => w.DONo != null && w.RONo != null);
 
             RuleFor(r => r.Items).NotNull().OverridePropertyName("Item");
             RuleFor(r => r.Items.Where(w => w.IsSave)).NotEmpty().OverridePropertyName("Item").When(w => w.Items != null);
