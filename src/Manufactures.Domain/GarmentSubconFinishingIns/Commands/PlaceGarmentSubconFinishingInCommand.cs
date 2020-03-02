@@ -25,6 +25,7 @@ namespace Manufactures.Domain.GarmentSubconFinishingIns.Commands
         public string DONo { get; set; }
 
         public object Supplier { get; set; }
+        public double? TotalQuantity { get; set; }
     }
 
     public class PlaceGarmentSubconFinishingInCommandValidator : AbstractValidator<PlaceGarmentSubconFinishingInCommand>
@@ -50,6 +51,11 @@ namespace Manufactures.Domain.GarmentSubconFinishingIns.Commands
             .WithMessage(m => "No SJ \"" + m.DONo + "\" dan No RO \"" + m.RONo + "\" sudah ada Finishing In Subcon")
             .OverridePropertyName("RONo")
             .When(w => w.DONo != null && w.RONo != null);
+
+            RuleFor(r => r.TotalQuantity)
+                .NotNull()
+                .Equal(0).WithMessage("Sisa Jumlah SJ harus sama dengan 0")
+                .When(w => w.RONo != null);
 
             RuleFor(r => r.Items).NotNull().OverridePropertyName("Item");
             RuleFor(r => r.Items.Where(w => w.IsSave)).NotEmpty().OverridePropertyName("Item").When(w => w.Items != null);
