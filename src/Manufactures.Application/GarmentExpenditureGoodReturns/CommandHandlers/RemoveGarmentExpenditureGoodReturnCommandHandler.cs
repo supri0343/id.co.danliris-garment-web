@@ -70,9 +70,9 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
 
                 GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = _garmentFinishedGoodStockHistoryRepository.Query.Where(a => a.ExpenditureGoodReturnItemId == expenditureReturnItem.Identity).Select(a => new GarmentFinishedGoodStockHistory(a)).Single();
                 garmentFinishedGoodStockHistory.Remove();
+                await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
 
                 expenditureReturnItem.Remove();
-
                 await _garmentExpenditureGoodReturnItemRepository.Update(expenditureReturnItem);
             });
 
