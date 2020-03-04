@@ -18,7 +18,7 @@ namespace Manufactures.Dtos
             Comodity = new GarmentComodity (finishedGoodStock.ComodityId.Value, finishedGoodStock.ComodityCode, finishedGoodStock.ComodityName);
             Size = new SizeValueObject(finishedGoodStock.SizeId.Value, finishedGoodStock.SizeName);
             Quantity = finishedGoodStock.Quantity;
-            Uom = new Uom( finishedGoodStock.UomId.Value, finishedGoodStock.SizeName) ;
+            Uom = new Uom( finishedGoodStock.UomId.Value, finishedGoodStock.UomUnit) ;
             BasicPrice = finishedGoodStock.BasicPrice;
             Price = finishedGoodStock.Price;
         }
