@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Manufactures.Data.EntityFrameworkCore.GarmentExpenditureGoods.Repositories
 {
-    class GarmentExpenditureGoodRepository : AggregateRepostory<GarmentExpenditureGood, GarmentExpenditureGoodReadModel>, IGarmentExpenditureGoodRepository
+    public class GarmentExpenditureGoodRepository : AggregateRepostory<GarmentExpenditureGood, GarmentExpenditureGoodReadModel>, IGarmentExpenditureGoodRepository
     {
         public IQueryable<GarmentExpenditureGoodReadModel> Read(int page, int size, string order, string keyword, string filter)
         {
@@ -23,11 +23,14 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentExpenditureGoods.Reposito
             List<string> SearchAttributes = new List<string>
             {
                 "ExpenditureGoodNo",
-                "ExpenditureGoodType",
+                "ExpenditureType",
                 "Article",
                 "RONo",
                 "UnitCode",
-                "UnitName"
+                "UnitName",
+                "ContractNo",
+                "Invoice",
+                "BuyerName"
             };
             data = QueryHelper<GarmentExpenditureGoodReadModel>.Search(data, SearchAttributes, keyword);
 

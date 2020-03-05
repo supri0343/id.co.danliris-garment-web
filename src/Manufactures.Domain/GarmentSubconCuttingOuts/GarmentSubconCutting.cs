@@ -14,6 +14,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
         public SizeId SizeId { get; private set; }
         public string SizeName { get; private set; }
         public double Quantity { get; private set; }
+        public double FinishingInQuantity { get; private set; }
         public ProductId ProductId { get; private set; }
         public string ProductCode { get; private set; }
         public string ProductName { get; private set; }
@@ -30,6 +31,15 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             {
                 this.Quantity = Quantity;
                 ReadModel.Quantity = Quantity;
+            }
+        }
+
+        public void SetFinishingInQuantity(double FinishingInQuantity)
+        {
+            if (this.FinishingInQuantity != FinishingInQuantity)
+            {
+                this.FinishingInQuantity = FinishingInQuantity;
+                ReadModel.FinishingInQuantity = FinishingInQuantity;
             }
         }
 
@@ -75,6 +85,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
             SizeId = new SizeId(readModel.SizeId);
             SizeName = readModel.SizeName;
             Quantity = readModel.Quantity;
+            FinishingInQuantity = readModel.FinishingInQuantity;
             ProductId = new ProductId(readModel.ProductId);
             ProductCode = readModel.ProductCode;
             ProductName = readModel.ProductName;

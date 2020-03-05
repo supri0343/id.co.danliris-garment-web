@@ -58,6 +58,11 @@ namespace Manufactures.Domain.GarmentAdjustments.Commands
                 .OverridePropertyName("Quantity")
                 .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.RemainingQuantity}'.")
                 .When(w => w.IsSave == true);
-        }
+
+			RuleFor(r => r.Color)
+			   .NotNull()
+			   .WithMessage("Keterangan Barang Harus Disi")
+			   .When(w => w.IsSave && w.AdjustmentType == "BARANG JADI");
+		}
     }
 }

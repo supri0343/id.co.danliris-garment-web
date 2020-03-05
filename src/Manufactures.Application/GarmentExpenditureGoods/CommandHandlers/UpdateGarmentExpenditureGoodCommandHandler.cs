@@ -29,6 +29,11 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
         public async Task<GarmentExpenditureGood> Handle(UpdateGarmentExpenditureGoodCommand request, CancellationToken cancellationToken)
         {
             var ExpenditureGood = _garmentExpenditureGoodRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentExpenditureGood(o)).Single();
+
+            _garmentExpenditureGoodItemRepository.Find(o => o.ExpenditureGoodId == ExpenditureGood.Identity).ForEach(async expenditureItem =>
+            {
+                await _garmentExpenditureGoodItemRepository.Update(expenditureItem);
+            });
             ExpenditureGood.SetCarton(request.Carton);
             ExpenditureGood.SetExpenditureDate(request.ExpenditureDate);
             ExpenditureGood.SetInvoice(request.Invoice);

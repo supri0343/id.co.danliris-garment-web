@@ -19,7 +19,9 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
         public Guid ExpenditureGoodItemId { get; private set; }
 		public Guid AdjustmentId { get; private set; }
 		public Guid AdjustmentItemId { get; private set; }
-		public string StockType { get; private set; }
+        public Guid ExpenditureGoodReturnId { get; private set; }
+        public Guid ExpenditureGoodReturnItemId { get; private set; }
+        public string StockType { get; private set; }
         public UnitDepartmentId UnitId { get; private set; }
         public string UnitCode { get; private set; }
         public string UnitName { get; private set; }
@@ -36,7 +38,7 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
         public double BasicPrice { get; private set; }
         public double Price { get; private set; }
 
-        public GarmentFinishedGoodStockHistory(Guid identity, Guid finishedGoodStockId, Guid finishingOutItemId,Guid finishingOutDetailId, Guid expenditureGoodId, Guid expenditureGoodItemId,Guid adjustmentId,Guid adjustmentItemId, string stockType, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName, SizeId sizeId, string sizeName, UomId uomId, string uomUnit, double quantity, double basicPrice, double price) : base(identity)
+        public GarmentFinishedGoodStockHistory(Guid identity, Guid finishedGoodStockId, Guid finishingOutItemId,Guid finishingOutDetailId, Guid expenditureGoodId, Guid expenditureGoodItemId,Guid adjustmentId,Guid adjustmentItemId, Guid expenditureGoodReturnId, Guid expenditureGoodReturnItemId, string stockType, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName, SizeId sizeId, string sizeName, UomId uomId, string uomUnit, double quantity, double basicPrice, double price) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
             Validator.ThrowIfNull(() => rONo);
@@ -49,6 +51,8 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
             FinishingOutDetailId = finishingOutDetailId;
             ExpenditureGoodId = expenditureGoodId;
             ExpenditureGoodItemId = expenditureGoodItemId;
+            ExpenditureGoodReturnId = expenditureGoodReturnId;
+            ExpenditureGoodReturnItemId = expenditureGoodReturnItemId;
 			AdjustmentId = adjustmentId;
 			AdjustmentItemId = adjustmentItemId;
             StockType = stockType;
@@ -75,7 +79,9 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
                 FinishingOutDetailId= FinishingOutDetailId,
                 ExpenditureGoodId= ExpenditureGoodId,
                 ExpenditureGoodItemId= ExpenditureGoodItemId,
-				AdjustmentId=AdjustmentId,
+                ExpenditureGoodReturnId= ExpenditureGoodReturnId,
+                ExpenditureGoodReturnItemId= ExpenditureGoodReturnItemId,
+                AdjustmentId =AdjustmentId,
 				AdjustmentItemId=AdjustmentItemId,
                 StockType=StockType,
                 RONo = RONo,
@@ -107,6 +113,8 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
             ExpenditureGoodItemId = readModel.ExpenditureGoodItemId;
 			AdjustmentItemId = readModel.AdjustmentItemId;
 			AdjustmentId = readModel.AdjustmentId;
+            ExpenditureGoodReturnId = readModel.ExpenditureGoodReturnId;
+            ExpenditureGoodReturnItemId = readModel.ExpenditureGoodReturnItemId;
             StockType = readModel.StockType;
             RONo = readModel.RONo;
             Article = readModel.Article;

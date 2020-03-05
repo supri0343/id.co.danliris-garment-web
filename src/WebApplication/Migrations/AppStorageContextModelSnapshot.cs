@@ -984,6 +984,149 @@ namespace DanLiris.Admin.Web.Migrations
                     b.ToTable("GarmentDeliveryReturns");
                 });
 
+            modelBuilder.Entity("Manufactures.Domain.GarmentExpenditureGoodReturns.ReadModels.GarmentExpenditureGoodReturnItemReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("BasicPrice");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500);
+
+                    b.Property<Guid>("ExpenditureGoodId");
+
+                    b.Property<Guid>("ExpenditureGoodItemId");
+
+                    b.Property<Guid>("FinishedGoodStockId");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<double>("Price");
+
+                    b.Property<double>("Quantity");
+
+                    b.Property<Guid>("ReturId");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<int>("SizeId");
+
+                    b.Property<string>("SizeName")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("UomId");
+
+                    b.Property<string>("UomUnit")
+                        .HasMaxLength(10);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("ReturId");
+
+                    b.ToTable("GarmentExpenditureGoodReturnItems");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentExpenditureGoodReturns.ReadModels.GarmentExpenditureGoodReturnReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Article")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("BuyerCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("BuyerId");
+
+                    b.Property<string>("BuyerName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ComodityCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("ComodityId");
+
+                    b.Property<string>("ComodityName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ContractNo");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<string>("Invoice")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<string>("RONo")
+                        .HasMaxLength(25);
+
+                    b.Property<DateTimeOffset>("ReturDate");
+
+                    b.Property<string>("ReturDesc")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("ReturNo")
+                        .HasMaxLength(25);
+
+                    b.Property<string>("ReturType")
+                        .HasMaxLength(25);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("UnitCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("UnitId");
+
+                    b.Property<string>("UnitName")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("ReturNo")
+                        .IsUnique()
+                        .HasFilter("[Deleted]=(0)");
+
+                    b.ToTable("GarmentExpenditureGoodReturns");
+                });
+
             modelBuilder.Entity("Manufactures.Domain.GarmentExpenditureGoods.ReadModels.GarmentExpenditureGoodItemReadModel", b =>
                 {
                     b.Property<Guid>("Identity")
@@ -1018,6 +1161,8 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<double>("Price");
 
                     b.Property<double>("Quantity");
+
+                    b.Property<double>("ReturQuantity");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -1161,6 +1306,10 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<Guid>("ExpenditureGoodId");
 
                     b.Property<Guid>("ExpenditureGoodItemId");
+
+                    b.Property<Guid>("ExpenditureGoodReturnId");
+
+                    b.Property<Guid>("ExpenditureGoodReturnItemId");
 
                     b.Property<Guid>("FinishedGoodStockId");
 
@@ -1346,6 +1495,8 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("SizeName")
                         .HasMaxLength(100);
+
+                    b.Property<Guid>("SubconCuttingId");
 
                     b.Property<int>("UomId");
 
@@ -2704,6 +2855,8 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("DesignColor")
                         .HasMaxLength(100);
 
+                    b.Property<double>("FinishingInQuantity");
+
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
 
@@ -2799,6 +2952,14 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasOne("Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel", "GarmentDeliveryReturnIdentity")
                         .WithMany("GarmentDeliveryReturnItem")
                         .HasForeignKey("DRId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentExpenditureGoodReturns.ReadModels.GarmentExpenditureGoodReturnItemReadModel", b =>
+                {
+                    b.HasOne("Manufactures.Domain.GarmentExpenditureGoodReturns.ReadModels.GarmentExpenditureGoodReturnReadModel", "GarmentExpenditureGoodReturn")
+                        .WithMany("Items")
+                        .HasForeignKey("ReturId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

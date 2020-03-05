@@ -89,6 +89,11 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
                     }
                 }else
 				{
+					var garmentFinishedGoodstock = _garmentFinishedGoodStockRepository.Query.Where(x => x.Identity == adjustmentItem.FinishedGoodStockId).Select(s => new GarmentFinishedGoodStock(s)).Single();
+					garmentFinishedGoodstock.SetPrice((garmentFinishedGoodstock.Price / garmentFinishedGoodstock.Quantity)* (adjustmentItem.Quantity + garmentFinishedGoodstock.Quantity));
+
+					garmentFinishedGoodstock.Modify();
+					await _garmentFinishedGoodStockRepository.Update(garmentFinishedGoodstock);
 					if (finishedGoodItemToBeUpdated.ContainsKey(adjustmentItem.FinishedGoodStockId))
 					{
 						finishedGoodItemToBeUpdated[adjustmentItem.FinishedGoodStockId] += adjustmentItem.Quantity;
@@ -144,6 +149,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
 				{
 					var garmentFinishedGoodstock = _garmentFinishedGoodStockRepository.Query.Where(x => x.Identity == data.Key).Select(s => new GarmentFinishedGoodStock(s)).Single();
 					garmentFinishedGoodstock.SetQuantity(garmentFinishedGoodstock.Quantity + data.Value);
+
 					garmentFinishedGoodstock.Modify();
 					await _garmentFinishedGoodStockRepository.Update(garmentFinishedGoodstock);
 				}

@@ -13,6 +13,7 @@ namespace Manufactures.Domain.GarmentFinishingIns
         public Guid FinishingInId { get; private set; }
         public Guid SewingOutItemId { get; private set; }
         public Guid SewingOutDetailId { get; private set; }
+        public Guid SubconCuttingId { get; private set; }
         public ProductId ProductId { get; private set; }
         public string ProductCode { get; private set; }
         public string ProductName { get; private set; }
@@ -36,11 +37,12 @@ namespace Manufactures.Domain.GarmentFinishingIns
             }
         }
 
-        public GarmentFinishingInItem(Guid identity, Guid finishingInId, Guid sewingOutItemId, Guid sewingOutDetailId, SizeId sizeId, string sizeName, ProductId productId, string productCode, string productName, string designColor, double quantity, double remainingQuantity, UomId uomId, string uomUnit, string color, double basicPrice, double price) : base(identity)
+        public GarmentFinishingInItem(Guid identity, Guid finishingInId, Guid sewingOutItemId, Guid sewingOutDetailId, Guid subconCuttingId, SizeId sizeId, string sizeName, ProductId productId, string productCode, string productName, string designColor, double quantity, double remainingQuantity, UomId uomId, string uomUnit, string color, double basicPrice, double price) : base(identity)
         {
             FinishingInId = finishingInId;
             SewingOutItemId = sewingOutItemId;
             SewingOutDetailId = sewingOutDetailId;
+            SubconCuttingId = subconCuttingId;
             ProductId = productId;
             ProductCode = productCode;
             ProductName = productCode;
@@ -60,6 +62,7 @@ namespace Manufactures.Domain.GarmentFinishingIns
                 FinishingInId = FinishingInId,
                 SewingOutItemId = SewingOutItemId,
                 SewingOutDetailId= SewingOutDetailId,
+                SubconCuttingId = SubconCuttingId,
                 ProductId = ProductId.Value,
                 ProductCode = ProductCode,
                 ProductName = ProductName,
@@ -83,6 +86,7 @@ namespace Manufactures.Domain.GarmentFinishingIns
             FinishingInId = readModel.FinishingInId;
             SewingOutItemId = readModel.SewingOutItemId;
             SewingOutDetailId = readModel.SewingOutDetailId;
+            SubconCuttingId = readModel.SubconCuttingId;
             ProductId = new ProductId(readModel.ProductId);
             ProductCode = readModel.ProductCode;
             ProductName = readModel.ProductCode;

@@ -20,6 +20,8 @@ namespace Manufactures.Dtos
             FinishingInDate = garmentFinishingIn.FinishingInDate;
             FinishingInType = garmentFinishingIn.FinishingInType;
             Comodity = new GarmentComodity(garmentFinishingIn.ComodityId.Value, garmentFinishingIn.ComodityCode, garmentFinishingIn.ComodityName);
+            DOId = garmentFinishingIn.DOId;
+            DONo = garmentFinishingIn.DONo;
             Items = new List<GarmentFinishingInItemDto>();
         }
 
@@ -33,6 +35,8 @@ namespace Manufactures.Dtos
         public string Article { get; internal set; }
         public GarmentComodity Comodity { get; internal set; }
         public DateTimeOffset FinishingInDate { get; internal set; }
+        public long DOId { get; internal set; }
+        public string DONo { get; internal set; }
 
         public virtual List<GarmentFinishingInItemDto> Items { get; internal set; }
     }

@@ -27,6 +27,5 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks.ReadModels
         public double BasicPrice { get; internal set; }
         public double Price { get; internal set; }
 
-
     }
 }

@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentExpenditureGoods.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Manufactures.Domain.GarmentExpenditureGoods.Commands
@@ -36,11 +37,15 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.Commands
             RuleFor(r => r.ExpenditureDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Tidak Boleh Kosong");
             RuleFor(r => r.ExpenditureDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.Comodity).NotNull();
+            RuleFor(r => r.Invoice).NotEmpty().When(w=>w.ExpenditureType=="EXPORT");
+            RuleFor(r => r.Carton)
+                .GreaterThanOrEqualTo(0)
+                .WithMessage("'Karton' harus lebih dari atau sama dengan '0'.");
 
             RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
-
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
+            RuleFor(r => r.Items.Where(s => s.isSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
             RuleForEach(r => r.Items).SetValidator(new GarmentExpenditureGoodItemValueObjectValidator());
         }
     }
@@ -51,7 +56,12 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.Commands
         {
             RuleFor(r => r.Quantity)
                 .GreaterThan(0)
-                .WithMessage("'Jumlah' harus lebih dari '0'.");
+                .WithMessage("'Jumlah' harus lebih dari '0'.")
+                .When(a=>a.isSave);
+
+            RuleFor(r => r.Quantity)
+               .LessThanOrEqualTo(r => r.StockQuantity)
+               .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.StockQuantity}'.").When(w => w.isSave == true);
 
         }
     }
