@@ -38,8 +38,8 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
 
             Dictionary<Guid, double> subconCuttingSumQuantities = new Dictionary<Guid, double>();
 
-            var asd = _garmentFinishingInItemRepository.Find(o => o.FinishingInId == finIn.Identity);
-            asd.ForEach(async item =>
+            var finishingInItems = _garmentFinishingInItemRepository.Find(o => o.FinishingInId == finIn.Identity);
+            finishingInItems.ForEach(async item =>
             {
                 if (Guid.Empty != item.SubconCuttingId)
                 {
@@ -51,7 +51,7 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
                 await _garmentFinishingInItemRepository.Update(item);
             });
 
-            //foreach (var item in asd)
+            //foreach (var item in finishingInItems)
             //{
             //    if (Guid.Empty != item.SubconCuttingId)
             //    {
