@@ -96,8 +96,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 					expenditureRO.Add(expenditureROViewModel);
 				}
 				else
-				{
-					await GetExpenditureById(id, token);
+				{ 
 				}
 			}
 			expenditureROResult.data = expenditureRO;
