@@ -19,6 +19,7 @@ namespace Manufactures.Dtos
             Description = garmentExpenditureGoodItem.Description;
             BasicPrice = garmentExpenditureGoodItem.BasicPrice;
             Price = garmentExpenditureGoodItem.Price;
+            ReturQuantity = garmentExpenditureGoodItem.ReturQuantity;
         }
 
         public Guid Id { get; set; }
@@ -26,6 +27,7 @@ namespace Manufactures.Dtos
         public Guid FinishedGoodStockId { get; set; }
         public SizeValueObject Size { get; set; }
         public double Quantity { get; set; }
+        public double ReturQuantity { get; set; }
         public Uom Uom { get; set; }
         public string Description { get; set; }
         public double BasicPrice { get; set; }

@@ -79,6 +79,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                         new SizeId(item.Size.Id),
                         item.Size.Size,
                         item.Quantity,
+                        item.ReturQuantity,
                         new UomId(item.Uom.Id),
                         item.Uom.Unit,
                         item.Description,
@@ -93,6 +94,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                                             Guid.Empty,
                                             garmentExpenditureGood.Identity,
                                             garmentExpenditureGoodItem.Identity,
+                                            Guid.Empty,
+                                            Guid.Empty,
                                             Guid.Empty,
                                             Guid.Empty,
                                             "OUT",
@@ -153,7 +156,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
             var day = now.ToString("dd");
             var unitcode = request.Unit.Code;
 
-            var pre = request.ExpenditureType == "EXPORT" ? "EGE" : request.ExpenditureType == "SAMPLE" ? "EGS" : "EGL";
+            var pre = request.ExpenditureType == "EXPORT" ? "EGE" : request.ExpenditureType == "SISA" ? "EGS" : "EGL";
 
             var prefix = $"{pre}{unitcode}{year}{month}";
 

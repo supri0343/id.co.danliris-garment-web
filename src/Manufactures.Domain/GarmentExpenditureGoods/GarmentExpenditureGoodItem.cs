@@ -15,19 +15,21 @@ namespace Manufactures.Domain.GarmentExpenditureGoods
         public SizeId SizeId { get; private set; }
         public string SizeName { get; private set; }
         public double Quantity { get; private set; }
+        public double ReturQuantity { get; private set; }
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
         public string Description { get; private set; }
         public double BasicPrice { get; private set; }
         public double Price { get; private set; }
 
-        public GarmentExpenditureGoodItem(Guid identity, Guid expenditureGoodId, Guid finishedGoodStockId, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string description, double basicPrice, double price) : base(identity)
+        public GarmentExpenditureGoodItem(Guid identity, Guid expenditureGoodId, Guid finishedGoodStockId, SizeId sizeId, string sizeName, double quantity, double returQuantity, UomId uomId, string uomUnit, string description, double basicPrice, double price) : base(identity)
         {
             ExpenditureGoodId = expenditureGoodId;
             FinishedGoodStockId = finishedGoodStockId;
             SizeId = sizeId;
             SizeName = sizeName;
             Quantity = quantity;
+            ReturQuantity = returQuantity;
             UomId = uomId;
             UomUnit = uomUnit;
             Description = description;
@@ -41,6 +43,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoods
                 SizeId = SizeId.Value,
                 SizeName = SizeName,
                 Quantity = Quantity,
+                ReturQuantity= ReturQuantity,
                 UomId = UomId.Value,
                 UomUnit = UomUnit,
                 Description = Description,
@@ -58,11 +61,21 @@ namespace Manufactures.Domain.GarmentExpenditureGoods
             SizeId = new SizeId(readModel.SizeId);
             SizeName = readModel.SizeName;
             Quantity = readModel.Quantity;
+            ReturQuantity = readModel.ReturQuantity;
             UomId = new UomId(readModel.UomId);
             UomUnit = readModel.UomUnit;
             Description = readModel.Description;
             BasicPrice = readModel.BasicPrice;
             Price = readModel.Price;
+        }
+
+        public void SetReturQuantity(double ReturQuantity)
+        {
+            if (this.ReturQuantity != ReturQuantity)
+            {
+                this.ReturQuantity = ReturQuantity;
+                ReadModel.ReturQuantity = ReturQuantity;
+            }
         }
 
         public void Modify()

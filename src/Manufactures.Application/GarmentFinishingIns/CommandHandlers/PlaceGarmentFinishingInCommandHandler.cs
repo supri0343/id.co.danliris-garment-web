@@ -63,6 +63,7 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
                     garmentFinishingIn.Identity,
                     item.SewingOutItemId,
                     item.SewingOutDetailId,
+                    Guid.Empty,
                     new SizeId(item.Size.Id),
                     item.Size.Size,
                     new ProductId(item.Product.Id),

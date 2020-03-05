@@ -15,6 +15,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.ReadModels
         public int SizeId { get; internal set; }
         public string SizeName { get; internal set; }
         public double Quantity { get; internal set; }
+        public double ReturQuantity { get; internal set; }
         public int UomId { get; internal set; }
         public string UomUnit { get; internal set; }
         public string Description { get; internal set; }
