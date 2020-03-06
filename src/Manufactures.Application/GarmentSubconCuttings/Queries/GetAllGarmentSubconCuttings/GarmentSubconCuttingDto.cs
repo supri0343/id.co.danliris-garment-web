@@ -19,6 +19,7 @@ namespace Manufactures.Application.GarmentSubconCuttings.Queries.GetAllGarmentSu
             DesignColor = s.DesignColor;
             Remark = s.Remark;
             BasicPrice = s.BasicPrice;
+            FinishingInQuantity = s.FinishingInQuantity;
         }
 
         public Guid Id { get; private set; }
@@ -31,5 +32,6 @@ namespace Manufactures.Application.GarmentSubconCuttings.Queries.GetAllGarmentSu
         public string DesignColor { get; private set; }
         public string Remark { get; private set; }
         public double BasicPrice { get; private set; }
+        public double FinishingInQuantity { get; private set; }
     }
 }

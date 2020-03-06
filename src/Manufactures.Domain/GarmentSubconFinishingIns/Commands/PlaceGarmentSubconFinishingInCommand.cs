@@ -41,16 +41,17 @@ namespace Manufactures.Domain.GarmentSubconFinishingIns.Commands
             RuleFor(r => r.Comodity).NotNull();
             RuleFor(r => r.Supplier).NotNull();
             RuleFor(r => r.DONo).NotNull().When(w => w.Supplier != null);
+            RuleFor(r => r.DOId).NotEmpty().When(w => w.Supplier != null);
             RuleFor(r => r.RONo).NotNull().When(w => w.DONo != null);
 
             RuleFor(r => r).Must(m =>
             {
-                var existingByDONoRONo = garmentFinishingInRepository.Query.Count(f => f.DONo == m.DONo && f.RONo == m.RONo);
+                var existingByDONoRONo = garmentFinishingInRepository.Query.Count(f => f.DOId == m.DOId && f.RONo == m.RONo);
                 return existingByDONoRONo == 0;
             })
-            .WithMessage(m => "No SJ \"" + m.DONo + "\" dan No RO \"" + m.RONo + "\" sudah ada Finishing In Subcon")
+            .WithMessage(m => "SJ dan No RO sudah ada Finishing In Subcon")
             .OverridePropertyName("RONo")
-            .When(w => w.DONo != null && w.RONo != null);
+            .When(w => w.DOId > 0 && w.RONo != null);
 
             RuleFor(r => r.TotalQuantity)
                 .NotNull()
