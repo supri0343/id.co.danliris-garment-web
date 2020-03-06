@@ -6,6 +6,9 @@ using Manufactures.Domain.GarmentAdjustments.Commands;
 using Manufactures.Domain.GarmentAdjustments.ReadModels;
 using Manufactures.Domain.GarmentAdjustments.Repositories;
 using Manufactures.Domain.GarmentAdjustments.ValueObjects;
+using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.GarmentComodityPrices.ReadModels;
+using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.GarmentFinishedGoodStocks;
 using Manufactures.Domain.GarmentFinishedGoodStocks.ReadModels;
 using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
@@ -39,8 +42,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAdjustments
         private readonly Mock<IGarmentFinishingInItemRepository> _mockFinishingInItemRepository;
 		private readonly Mock<IGarmentFinishedGoodStockRepository> _mockFinishedGoodStockRepository;
 		private readonly Mock<IGarmentFinishedGoodStockHistoryRepository> _mockFinishedGoodStockHistoryRepository;
+        private readonly Mock<IGarmentComodityPriceRepository> _mockComodityPriceRepository;
 
-		public PlaceGarmentAdjustmentCommandHandlerTests()
+        public PlaceGarmentAdjustmentCommandHandlerTests()
         {
             _mockAdjustmentRepository = CreateMock<IGarmentAdjustmentRepository>();
             _mockAdjustmentItemRepository = CreateMock<IGarmentAdjustmentItemRepository>();
@@ -49,6 +53,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAdjustments
             _mockFinishingInItemRepository = CreateMock<IGarmentFinishingInItemRepository>();
 			_mockFinishedGoodStockRepository = CreateMock<IGarmentFinishedGoodStockRepository>();
 			_mockFinishedGoodStockHistoryRepository = CreateMock<IGarmentFinishedGoodStockHistoryRepository>();
+            _mockComodityPriceRepository = CreateMock<IGarmentComodityPriceRepository>();
 
             _MockStorage.SetupStorage(_mockAdjustmentRepository);
             _MockStorage.SetupStorage(_mockAdjustmentItemRepository);
@@ -57,6 +62,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAdjustments
             _MockStorage.SetupStorage(_mockFinishingInItemRepository);
 			_MockStorage.SetupStorage(_mockFinishedGoodStockRepository);
 			_MockStorage.SetupStorage(_mockFinishedGoodStockHistoryRepository);
+            _MockStorage.SetupStorage(_mockComodityPriceRepository);
         }
 
         private PlaceGarmentAdjustmentCommandHandler CreatePlaceGarmentAdjustmentCommandHandler()
@@ -295,9 +301,27 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAdjustments
 			_mockAdjustmentRepository
 			   .Setup(s => s.Query)
 			   .Returns(new List<GarmentAdjustmentReadModel>().AsQueryable());
-	
 
-			_mockAdjustmentRepository
+            GarmentComodityPrice garmentComodity = new GarmentComodityPrice(
+                Guid.NewGuid(),
+                true,
+                DateTimeOffset.Now,
+                new UnitDepartmentId(placeGarmentAdjustmentCommand.Unit.Id),
+                placeGarmentAdjustmentCommand.Unit.Code,
+                placeGarmentAdjustmentCommand.Unit.Name,
+                new GarmentComodityId(placeGarmentAdjustmentCommand.Comodity.Id),
+                placeGarmentAdjustmentCommand.Comodity.Code,
+                placeGarmentAdjustmentCommand.Comodity.Name,
+                1000
+                );
+            _mockComodityPriceRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentComodityPriceReadModel>
+                {
+                    garmentComodity.GetReadModel()
+                }.AsQueryable());
+
+            _mockAdjustmentRepository
 				.Setup(s => s.Update(It.IsAny<GarmentAdjustment>()))
 				.Returns(Task.FromResult(It.IsAny<GarmentAdjustment>()));
 			_mockAdjustmentItemRepository
