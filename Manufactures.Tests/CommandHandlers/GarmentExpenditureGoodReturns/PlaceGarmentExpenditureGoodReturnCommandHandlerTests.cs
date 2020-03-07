@@ -20,6 +20,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -101,11 +102,15 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoodReturns
                 {
                     new GarmentFinishedGoodStockReadModel(finStockGuid)
                 }.AsQueryable());
+
+            GarmentExpenditureGoodItem garmentExpenditureGoodItem = new GarmentExpenditureGoodItem(
+                exGoodItemGuid, exGoodGuid, finStockGuid, new SizeId(1), null, 1, 0, new UomId(1), null, null, 1, 1);
+
             _mockExpenditureGoodItemRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentExpenditureGoodItemReadModel>
                 {
-                    new GarmentExpenditureGoodItemReadModel(exGoodItemGuid)
+                    garmentExpenditureGoodItem.GetReadModel()
                 }.AsQueryable());
 
             GarmentComodityPrice garmentComodity = new GarmentComodityPrice(
