@@ -73,7 +73,7 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
             {
                 if (item.isSave)
                 {
-                    var garmentexGoodItem = _garmentExpenditureGoodItemRepository.Query.Where(x => x.SizeId == item.Size.Id && x.UomId == item.Uom.Id && x.ExpenditureGoodId==item.ExpenditureGoodId && x.Quantity > 0).OrderBy(a => a.CreatedDate).ToList();
+                    var garmentexGoodItem = _garmentExpenditureGoodItemRepository.Query.Where(x => x.SizeId == item.Size.Id && x.UomId == item.Uom.Id && x.ExpenditureGoodId==item.ExpenditureGoodId && (x.Quantity- x.ReturQuantity) > 0).OrderBy(a => a.CreatedDate).ToList();
                     double qty = item.Quantity;
                     foreach (var exGood in garmentexGoodItem)
                     {
