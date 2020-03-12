@@ -98,7 +98,7 @@ namespace Manufactures.Controllers.Api
                 var garmentCuttingOutDtoList = garmentCuttingOutDto.Where(x => x.CutOutNo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                     || x.Unit.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                     || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    || x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    || (x.Article != null && x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase))
                                     ).ToList();
 
                 var i = 0;
