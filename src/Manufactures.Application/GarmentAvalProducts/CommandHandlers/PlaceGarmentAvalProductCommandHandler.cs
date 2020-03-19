@@ -33,17 +33,17 @@ namespace Manufactures.Application.GarmentAvalProducts.CommandHandlers
 
         public async Task<GarmentAvalProduct> Handle(PlaceGarmentAvalProductCommand request, CancellationToken cancellationToken)
         {
-            var garmentAvalProduct = _garmentAvalProductRepository.Find(o =>
-                                   o.RONo == request.RONo &&
-                                   o.Article == request.Article &&
-                                   o.AvalDate == request.AvalDate).FirstOrDefault();
-            List<GarmentAvalProductItem> garmentAvalProductItem = new List<GarmentAvalProductItem>();
-            if (garmentAvalProduct == null)
-            {
-                garmentAvalProduct = new GarmentAvalProduct(Guid.NewGuid(), request.RONo, request.Article, request.AvalDate, new Domain.Shared.ValueObjects.UnitDepartmentId(request.Unit.Id), request.Unit.Code, request.Unit.Name);
+            //var garmentAvalProduct = _garmentAvalProductRepository.Find(o =>
+            //                       o.RONo == request.RONo &&
+            //                       o.Article == request.Article &&
+            //                       o.AvalDate == request.AvalDate).FirstOrDefault();
+            //List<GarmentAvalProductItem> garmentAvalProductItem = new List<GarmentAvalProductItem>();
+            //if (garmentAvalProduct == null)
+            //{
+            GarmentAvalProduct garmentAvalProduct = new GarmentAvalProduct(Guid.NewGuid(), request.RONo, request.Article, request.AvalDate, new Domain.Shared.ValueObjects.UnitDepartmentId(request.Unit.Id), request.Unit.Code, request.Unit.Name);
                 request.Items.Select(x => new GarmentAvalProductItem(Guid.NewGuid(), garmentAvalProduct.Identity, x.PreparingId, x.PreparingItemId, new ProductId(x.Product.Id), x.Product.Code, x.Product.Name, x.DesignColor, x.Quantity, new UomId(x.Uom.Id), x.Uom.Unit, x.BasicPrice)).ToList()
                     .ForEach(async x => await _garmentAvalProductItemRepository.Update(x));
-            }
+            //}
 
             foreach(var itemPreparing in request.Items)
             {
