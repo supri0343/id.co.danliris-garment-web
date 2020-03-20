@@ -22,6 +22,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.CostCalculationGarmentDataProductionReport;
+using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.HOrderDataProductionReport;
 
 namespace Manufactures.Tests.Queries.GarmentFinishingOuts
 {
@@ -59,7 +60,8 @@ namespace Manufactures.Tests.Queries.GarmentFinishingOuts
                     hours=10
                 }
             };
-            _mockhttpService.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()))
+		
+			_mockhttpService.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()))
 				.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
 			serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
 		}
