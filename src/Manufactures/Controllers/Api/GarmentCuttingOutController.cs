@@ -50,7 +50,7 @@ namespace Manufactures.Controllers.Api
         {
             VerifyUser();
 
-            var query = _garmentCuttingOutRepository.Read(page, size, order, "", filter);
+            var query = _garmentCuttingOutRepository.Read(page, size, order, "", filter).Where(d => d.CuttingOutType != "SUBKON");
             var total = query.Count();
             query = query.Skip((page - 1) * size).Take(size);
 
@@ -319,6 +319,45 @@ namespace Manufactures.Controllers.Api
 			}
 		}
 
+        [HttpGet("complete")]
+        public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
 
-	}
+            var query = _garmentCuttingOutRepository.Read(page, size, order, keyword, filter);
+            var count = query.Count();
+
+            var garmentCuttingOutDto = _garmentCuttingOutRepository.Find(query).Select(o => new GarmentCuttingOutDto(o)).ToArray();
+            var garmentCuttingOutItemDto = _garmentCuttingOutItemRepository.Find(_garmentCuttingOutItemRepository.Query).Select(o => new GarmentCuttingOutItemDto(o)).ToList();
+            var garmentCuttingOutDetailDto = _garmentCuttingOutDetailRepository.Find(_garmentCuttingOutDetailRepository.Query).Select(o => new GarmentCuttingOutDetailDto(o)).ToList();
+
+            Parallel.ForEach(garmentCuttingOutDto, itemDto =>
+            {
+                var garmentCuttingOutItems = garmentCuttingOutItemDto.Where(x => x.CutOutId == itemDto.Id).OrderBy(x => x.Id).ToList();
+
+                itemDto.Items = garmentCuttingOutItems;
+
+                Parallel.ForEach(itemDto.Items, detailDto =>
+                {
+                    var garmentCuttingInDetails = garmentCuttingOutDetailDto.Where(x => x.CutOutItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
+                    detailDto.Details = garmentCuttingInDetails;
+                });
+            });
+
+            if (order != "{}")
+            {
+                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                garmentCuttingOutDto = QueryHelper<GarmentCuttingOutDto>.Order(garmentCuttingOutDto.AsQueryable(), OrderDictionary).ToArray();
+            }
+
+            await Task.Yield();
+            return Ok(garmentCuttingOutDto, info: new
+            {
+                page,
+                size,
+                count
+            });
+        }
+
+    }
 }
