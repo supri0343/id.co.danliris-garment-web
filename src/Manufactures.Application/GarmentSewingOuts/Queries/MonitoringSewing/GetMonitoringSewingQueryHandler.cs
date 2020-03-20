@@ -96,7 +96,7 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
                 }
             }
 
-            HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(freeRO, token);
+            HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(ro, token);
 
             Dictionary<string, string> comodities = new Dictionary<string, string>();
             if (hOrderDataProductionReport.data.Count > 0)

@@ -89,7 +89,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
                 }
             }
 
-            HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(freeRO, token);
+            HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(ro, token);
 
             Dictionary<string, string> comodities = new Dictionary<string, string>();
             if (hOrderDataProductionReport.data.Count > 0)
