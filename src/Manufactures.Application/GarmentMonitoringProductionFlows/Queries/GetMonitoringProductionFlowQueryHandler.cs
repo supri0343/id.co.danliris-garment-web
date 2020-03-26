@@ -202,8 +202,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 			var QueryFinishingOutisDifSize = from a in garmentFinishingOutRepository.Query
 								 join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 								 join c in garmentFinishingOutDetailRepository.Query on b.Identity equals c.FinishingOutItemId
-											 where a.FinishingTo== "GUDANG JADI" && a.UnitId == request.unit && a.FinishingOutDate <= date
-									select new monitoringView { Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtyFinishing = c.Quantity, Size = b.SizeName };
+								 where a.RONo=="1940001" && a.FinishingTo== "GUDANG JADI" && a.UnitId == request.unit && a.FinishingOutDate <= date
+									select new monitoringView { Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtyFinishing = c.Quantity, Size = c.SizeName };
 			var QueryFinishingOut = from a in garmentFinishingOutRepository.Query
 									join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 									where a.FinishingTo == "GUDANG JADI" && a.UnitId == request.unit && a.FinishingOutDate <= date && a.IsDifferentSize == false
@@ -224,14 +224,27 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 				qtyLoading= group.Sum(s => s.QtyLoading),
 				qtyFinishing= group.Sum(s => s.QtyFinishing),
 				size= key.Size,
-			}).OrderBy(s => s.ro);
-			
+			});
+			var querySumTotal = queryNow.GroupBy(x => new {  x.Ro, x.Article, x.BuyerCode, x.Comodity, x.QtyOrder }, (key, group) => new
+			{
+				ro = key.Ro,
+				article = key.Article,
+				buyer = key.BuyerCode,
+				comodity = key.Comodity,
+				qtyOrder = key.QtyOrder,
+				qtycutting = group.Sum(s => s.QtyCutting),
+				qtySewing = group.Sum(s => s.QtySewing),
+				qtyLoading = group.Sum(s => s.QtyLoading),
+				qtyFinishing = group.Sum(s => s.QtyFinishing),
+				size="TOTAL"
+			});
 
+			var query = querySum.Union(querySumTotal).OrderBy(s => s.ro);
 			GarmentMonitoringProductionFlowListViewModel garmentMonitoringProductionFlow = new GarmentMonitoringProductionFlowListViewModel();
 			List<GarmentMonitoringProductionFlowDto> monitoringDtos = new List<GarmentMonitoringProductionFlowDto>();
 			if (request.ro == null)
 			{
-				foreach (var item in querySum)
+				foreach (var item in query)
 				{
 					GarmentMonitoringProductionFlowDto garmentMonitoringDto = new GarmentMonitoringProductionFlowDto()
 					{
@@ -251,7 +264,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 				}
 			}else
 			{
-				foreach (var item in querySum.Where(s=>s.ro == request.ro))
+				foreach (var item in query)
 				{
 					GarmentMonitoringProductionFlowDto garmentMonitoringDto = new GarmentMonitoringProductionFlowDto()
 					{

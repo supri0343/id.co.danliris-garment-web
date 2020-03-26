@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="GarmentBalanceStockProductions\ValueObjects\" />
     <Folder Include="GarmentCuttingOuts\Repositories\" />
   </ItemGroup>
 
