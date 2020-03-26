@@ -19,6 +19,7 @@ using System.IO;
 using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.HOrderDataProductionReport;
 using System.Data;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 {
@@ -205,8 +206,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 			var QueryFinishingOutisDifSize = from a in garmentFinishingOutRepository.Query
 											 join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 											 join c in garmentFinishingOutDetailRepository.Query on b.Identity equals c.FinishingOutItemId
-											 where a.FinishingTo == "GUDANG JADI" && a.UnitId == request.unit && a.FinishingOutDate <= date
-											 select new monitoringView { Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtyFinishing = c.Quantity, Size = b.SizeName };
+											 where a.RONo == "1940001" && a.FinishingTo == "GUDANG JADI" && a.UnitId == request.unit && a.FinishingOutDate <= date
+											 select new monitoringView { Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtyFinishing = c.Quantity, Size = c.SizeName };
 			var QueryFinishingOut = from a in garmentFinishingOutRepository.Query
 									join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 									where a.FinishingTo == "GUDANG JADI" && a.UnitId == request.unit && a.FinishingOutDate <= date && a.IsDifferentSize == false
@@ -227,14 +228,27 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 				qtyLoading = group.Sum(s => s.QtyLoading),
 				qtyFinishing = group.Sum(s => s.QtyFinishing),
 				size = key.Size,
-			}).OrderBy(s => s.ro);
+			});
+			var querySumTotal = queryNow.GroupBy(x => new { x.Ro, x.Article, x.BuyerCode, x.Comodity, x.QtyOrder }, (key, group) => new
+			{
+				ro = key.Ro,
+				article = key.Article,
+				buyer = key.BuyerCode,
+				comodity = key.Comodity,
+				qtyOrder = key.QtyOrder,
+				qtycutting = group.Sum(s => s.QtyCutting),
+				qtySewing = group.Sum(s => s.QtySewing),
+				qtyLoading = group.Sum(s => s.QtyLoading),
+				qtyFinishing = group.Sum(s => s.QtyFinishing),
+				size = "TOTAL"
+			});
 
-
+			var query = querySum.Union(querySumTotal).OrderBy(s => s.ro);
 			GarmentMonitoringProductionFlowListViewModel garmentMonitoringProductionFlow = new GarmentMonitoringProductionFlowListViewModel();
 			List<GarmentMonitoringProductionFlowDto> monitoringDtos = new List<GarmentMonitoringProductionFlowDto>();
 			if (request.ro == null)
 			{
-				foreach (var item in querySum)
+				foreach (var item in query)
 				{
 					GarmentMonitoringProductionFlowDto garmentMonitoringDto = new GarmentMonitoringProductionFlowDto()
 					{
@@ -255,8 +269,10 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 			}
 			else
 			{
-				foreach (var item in querySum.Where(s => s.ro == request.ro))
+				foreach (var item in query)
 				{
+					
+
 					GarmentMonitoringProductionFlowDto garmentMonitoringDto = new GarmentMonitoringProductionFlowDto()
 					{
 						Article = item.article,
@@ -289,17 +305,59 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Hasil Sewing", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Hasil Finishing", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Dalam Proses", DataType = typeof(double) });
+			
 			if (garmentMonitoringProductionFlow.garmentMonitorings.Count > 0)
-			{
+			{ 
 				foreach (var report in garmentMonitoringProductionFlow.garmentMonitorings)
-					reportDataTable.Rows.Add(report.Ro, report.BuyerCode , report.Article , report.Comodity, report.QtyOrder, report.Size, report.QtyCutting , report.QtyLoading , report.QtySewing ,report.QtyFinishing, report.Wip);
+				{
+					reportDataTable.Rows.Add(report.Ro, report.BuyerCode, report.Article, report.Comodity, report.QtyOrder, report.Size, report.QtyCutting, report.QtyLoading, report.QtySewing, report.QtyFinishing, report.Wip);
 
+				}
 			}
 			using (var package = new ExcelPackage())
 			{
 				var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
 				worksheet.Cells["A1"].LoadFromDataTable(reportDataTable, true);
 				var stream = new MemoryStream();
+				
+
+				var lisa = garmentMonitoringProductionFlow.garmentMonitorings.GroupBy(x =>new  { x.Ro,x.Article,x.BuyerCode,x.Comodity,x.QtyOrder}).
+					Select(x => new
+					{
+						Id = x.Key,
+						Quantity = x.Count(),
+						buyerGroup = x.GroupBy(y => y.BuyerCode)
+								   .Select(y => new
+								   {
+									   Id = y.Key,
+									   buyerGroup = y.Count()
+								   })
+					});
+				int A = 1, B = 0;
+				List<int> listbold = new List<int>();
+				foreach (var item in lisa)
+				{
+					B = A + 1;
+					A += item.Quantity;
+					listbold.Add(item.Quantity);
+					worksheet.Cells["A" + B + ":A" + A + ""].Merge = true;
+					worksheet.Cells["A" + B + ":A" + A + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+					worksheet.Cells["B" + B + ":B" + A + ""].Merge = true;
+					worksheet.Cells["B" + B + ":B" + A + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+					worksheet.Cells["C" + B + ":C" + A + ""].Merge = true;
+					worksheet.Cells["C" + B + ":C" + A + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+					worksheet.Cells["D" + B + ":D" + A + ""].Merge = true;
+					worksheet.Cells["D" + B + ":D" + A + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+					worksheet.Cells["E" + B + ":E" + A + ""].Merge = true;
+					worksheet.Cells["E" + B + ":E" + A + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+					worksheet.Cells["F" + (A)].Style.Font.Bold = true;
+					worksheet.Cells["G" + (A)].Style.Font.Bold = true;
+					worksheet.Cells["H" + (A)].Style.Font.Bold = true;
+					worksheet.Cells["I" + (A)].Style.Font.Bold = true;
+					worksheet.Cells["J" + (A)].Style.Font.Bold = true;
+					worksheet.Cells["K" + (A)].Style.Font.Bold = true;
+				}
+			
 				package.SaveAs(stream);
 
 				return stream;

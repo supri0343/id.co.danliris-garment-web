@@ -224,27 +224,27 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 				qtyLoading= group.Sum(s => s.QtyLoading),
 				qtyFinishing= group.Sum(s => s.QtyFinishing),
 				size= key.Size,
-			}).OrderBy(s => s.ro);
-			var querySumTotal = queryNow.GroupBy(x => new { x.QtyOrder, x.Ro}, (key, group) => new
+			});
+			var querySumTotal = queryNow.GroupBy(x => new {  x.Ro, x.Article, x.BuyerCode, x.Comodity, x.QtyOrder }, (key, group) => new
 			{
 				ro = key.Ro,
-				article = "",
-				buyer = "",
-				comodity ="",
+				article = key.Article,
+				buyer = key.BuyerCode,
+				comodity = key.Comodity,
 				qtyOrder = key.QtyOrder,
 				qtycutting = group.Sum(s => s.QtyCutting),
 				qtySewing = group.Sum(s => s.QtySewing),
 				qtyLoading = group.Sum(s => s.QtyLoading),
 				qtyFinishing = group.Sum(s => s.QtyFinishing),
-				size=""
-			}).OrderBy(s => s.ro);
+				size="TOTAL"
+			});
 
-
+			var query = querySum.Union(querySumTotal).OrderBy(s => s.ro);
 			GarmentMonitoringProductionFlowListViewModel garmentMonitoringProductionFlow = new GarmentMonitoringProductionFlowListViewModel();
 			List<GarmentMonitoringProductionFlowDto> monitoringDtos = new List<GarmentMonitoringProductionFlowDto>();
 			if (request.ro == null)
 			{
-				foreach (var item in querySum.Union(querySumTotal))
+				foreach (var item in query)
 				{
 					GarmentMonitoringProductionFlowDto garmentMonitoringDto = new GarmentMonitoringProductionFlowDto()
 					{
@@ -264,7 +264,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 				}
 			}else
 			{
-				foreach (var item in querySum.Union(querySumTotal).Where(s=>s.ro == request.ro))
+				foreach (var item in query)
 				{
 					GarmentMonitoringProductionFlowDto garmentMonitoringDto = new GarmentMonitoringProductionFlowDto()
 					{
