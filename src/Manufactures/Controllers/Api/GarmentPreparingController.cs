@@ -91,7 +91,7 @@ namespace Manufactures.Controllers.Api
                 var garmentPreparingDtoList = garmentPreparingDto.Where(x => x.UENNo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                     || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                     || x.Unit.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    || x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    || (x.Article != null && x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase))
                                     //|| x.Items.Where(y => y.ProductId.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase))
                                     ).ToList();
 
