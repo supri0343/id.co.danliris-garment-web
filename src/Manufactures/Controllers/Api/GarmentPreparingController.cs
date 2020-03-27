@@ -91,7 +91,7 @@ namespace Manufactures.Controllers.Api
                 var garmentPreparingDtoList = garmentPreparingDto.Where(x => x.UENNo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                     || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                     || x.Unit.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    || x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    || (x.Article != null && x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase))
                                     //|| x.Items.Where(y => y.ProductId.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase))
                                     ).ToList();
 
@@ -122,14 +122,14 @@ namespace Manufactures.Controllers.Api
                     garmentPreparingDtoListArray = garmentPreparingDtoList.OrderByDescending(x => x.LastModifiedDate).ToArray();
                 }
 
-                garmentPreparingDtoListArray = garmentPreparingDtoListArray.Take(size).Skip((page - 1) * size).ToArray();
+                garmentPreparingDtoListArray = garmentPreparingDtoListArray.Skip((page - 1) * size).Take(size).ToArray();
 
                 await Task.Yield();
                 return Ok(garmentPreparingDtoListArray, info: new
                 {
                     page,
                     size,
-                    count = totalRows
+                    total = totalRows
                 });
             } else
             {
@@ -143,14 +143,14 @@ namespace Manufactures.Controllers.Api
                     garmentPreparingDto = garmentPreparingDto.OrderByDescending(x => x.LastModifiedDate).ToArray();
                 }
 
-                garmentPreparingDto = garmentPreparingDto.Take(size).Skip((page - 1) * size).ToArray();
+                garmentPreparingDto = garmentPreparingDto.Skip((page - 1) * size).Take(size).ToArray();
 
                 await Task.Yield();
                 return Ok(garmentPreparingDto, info: new
                 {
                     page,
                     size,
-                    count = totalRows
+                    total = totalRows
                 });
             }
         }
