@@ -24,6 +24,7 @@ namespace Manufactures.Dtos
             Article = garmentAvalProduct.Article;
             AvalDate = garmentAvalProduct.AvalDate;
             Unit = new UnitDepartment(garmentAvalProduct.UnitId.Value, garmentAvalProduct.UnitCode, garmentAvalProduct.UnitName);
+            CreatedBy = garmentAvalProduct.AuditTrail.CreatedBy;
         }
 
         public Guid Id { get; set; }
@@ -35,6 +36,7 @@ namespace Manufactures.Dtos
         public string Article { get; set; }
         public DateTimeOffset? AvalDate { get; set; }
         public UnitDepartment Unit { get; set; }
+        public string CreatedBy { get; set; }
         public List<GarmentAvalProductItemDto> Items { get; set; }
     }
 }

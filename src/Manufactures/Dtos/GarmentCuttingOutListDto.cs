@@ -19,7 +19,7 @@ namespace Manufactures.Dtos
             Article = garmentCuttingOut.Article;
             Unit = new UnitDepartment(garmentCuttingOut.UnitId.Value, garmentCuttingOut.UnitCode, garmentCuttingOut.UnitName);
             Comodity = new GarmentComodity(garmentCuttingOut.ComodityId.Value, garmentCuttingOut.ComodityCode, garmentCuttingOut.ComodityName);
-
+            CreatedBy = garmentCuttingOut.AuditTrail.CreatedBy;
             Items = new List<GarmentCuttingOutItemDto>();
         }
 
