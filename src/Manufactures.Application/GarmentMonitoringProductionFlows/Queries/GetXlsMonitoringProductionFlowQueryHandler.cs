@@ -269,7 +269,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 			}
 			else
 			{
-				foreach (var item in query)
+				foreach (var item in query.Where(s => s.ro == request.ro))
 				{
 					
 
