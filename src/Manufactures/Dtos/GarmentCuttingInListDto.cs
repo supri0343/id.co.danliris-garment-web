@@ -19,6 +19,7 @@ namespace Manufactures.Dtos
             CuttingInDate = garmentCuttingIn.CuttingInDate;
             FC = garmentCuttingIn.FC;
             CuttingFrom = garmentCuttingIn.CuttingFrom;
+            CreatedBy = garmentCuttingIn.AuditTrail.CreatedBy;
         }
 
         public Guid Id { get; set; }
@@ -31,7 +32,7 @@ namespace Manufactures.Dtos
         public UnitDepartment Unit { get; set; }
         public DateTimeOffset CuttingInDate { get; set; }
         public double FC { get; set; }
-
+        public string CreatedBy { get; set; }
         public double TotalCuttingInQuantity { get; set; }
         public List<string> UENNos { get; set; }
         public List<string> Products { get; set; }

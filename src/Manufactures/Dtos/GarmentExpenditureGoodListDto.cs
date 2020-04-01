@@ -23,6 +23,7 @@ namespace Manufactures.Dtos
             ContractNo = garmentExpenditureGood.ContractNo;
             Carton = garmentExpenditureGood.Carton;
             Description = garmentExpenditureGood.Description;
+            CreatedBy = garmentExpenditureGood.AuditTrail.CreatedBy;
         }
 
         public Guid Id { get; internal set; }

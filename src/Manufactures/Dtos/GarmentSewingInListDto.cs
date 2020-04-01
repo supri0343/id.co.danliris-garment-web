@@ -21,7 +21,7 @@ namespace Manufactures.Dtos
             Article = garmentSewingInList.Article;
             Comodity = new GarmentComodity(garmentSewingInList.ComodityId.Value, garmentSewingInList.ComodityCode, garmentSewingInList.ComodityName);
             SewingInDate = garmentSewingInList.SewingInDate;
-
+            CreatedBy = garmentSewingInList.AuditTrail.CreatedBy;
             Items = new List<GarmentSewingInItemDto>();
         }
 
