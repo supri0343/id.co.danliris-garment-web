@@ -14,6 +14,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 		public string roJob { get; internal set; }
 		public string article { get; internal set; }
 		public string productCode { get; internal set; }
+		public string buyerCode { get; internal set; }
 		public double qtyOrder { get; internal set; }
 		public string style { get; internal set; }
 		public double hours { get; internal set; }
@@ -22,7 +23,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 		public double cuttingQtyPcs { get; internal set; }
 		public double fc { get; internal set; }
 		public double expenditure { get; internal set; }
-		public double remainQty { get; internal set; }
+		public double remainQty	{get; internal set;	}
+		public decimal price { get; internal set; }
 		public GarmentMonitoringCuttingDto(GarmentMonitoringCuttingDto garmentMonitoringCuttingDto)
 		{
 			Id = garmentMonitoringCuttingDto.Id;

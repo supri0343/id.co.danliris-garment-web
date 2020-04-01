@@ -141,6 +141,7 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 		{
 			public string roJob { get; internal set; }
 			public string article { get; internal set; }
+			public string buyerCode { get; internal set; }
 			public double qtyOrder { get; internal set; }
 			public double stock { get; internal set; }
 			public string style { get; internal set; }
@@ -148,6 +149,7 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 			public double loadingQtyPcs { get; internal set; }
 			public string uomUnit { get; internal set; }
 			public double remainQty { get; internal set; }
+			public decimal price { get; internal set; }
 		}
 
 		public async Task<GarmentMonitoringLoadingListViewModel> Handle(GetMonitoringLoadingQuery request, CancellationToken cancellationToken)
@@ -173,16 +175,18 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 			var QueryCuttingOut = from a in garmentCuttingOutRepository.Query
 								  join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
 								  where a.UnitId == request.unit && a.CuttingOutDate <= dateTo
-								  select new monitoringView { loadingQtyPcs = 0,uomUnit="PCS",remainQty = 0, stock = a.CuttingOutDate < dateFrom ? b.TotalCuttingOut : 0, cuttingQtyPcs = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0, roJob = a.RONo, article = a.Article,  qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+								  select new monitoringView {price=0, buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), loadingQtyPcs = 0,uomUnit="PCS",remainQty = 0, stock = a.CuttingOutDate < dateFrom ? b.TotalCuttingOut : 0, cuttingQtyPcs = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0, roJob = a.RONo, article = a.Article,  qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 			var QueryLoading = from a in garmentLoadingRepository.Query
 								  join b in garmentLoadingItemRepository.Query on a.Identity equals b.LoadingId
 								  where a.UnitId == request.unit && a.LoadingDate <= dateTo
-								  select new monitoringView { loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, cuttingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom ? - b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+								  select new monitoringView {price=Convert.ToDecimal( b.Price), buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, cuttingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom ? - b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 			var queryNow = QueryCuttingOut.Union(QueryLoading);
-			var querySum = queryNow.ToList().GroupBy(x => new { x.qtyOrder, x.roJob, x.article,x.uomUnit,x.style }, (key, group) => new
+			var querySum = queryNow.ToList().GroupBy(x => new { x.buyerCode,x.qtyOrder, x.roJob, x.article,x.uomUnit,x.style }, (key, group) => new
 			{
 				QtyOrder = key.qtyOrder,
 				RoJob = key.roJob,
+				buyer=key.buyerCode,
+				price=group.Sum(s=>s.price),
 				Style= key.style,
 				Stock = group.Sum(s => s.stock),
 				UomUnit = key.uomUnit,
@@ -198,12 +202,14 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 				{
 					roJob = item.RoJob,
 					article = item.Article,
+					buyerCode=item.buyer,
 					uomUnit=item.UomUnit,
 					qtyOrder = item.QtyOrder,
 					cuttingQtyPcs = item.CuttingQtyPcs,
 					loadingQtyPcs = item.Loading,
 					stock = item.Stock,
 					style=item.Style,
+					price=item.price,
 					remainQty = item.Stock + item.CuttingQtyPcs - item.Loading
 				};
 				monitoringDtos.Add(dto);

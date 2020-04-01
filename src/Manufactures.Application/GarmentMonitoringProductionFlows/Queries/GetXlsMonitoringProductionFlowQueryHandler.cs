@@ -202,7 +202,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 			var QuerySewingOut = from a in garmentSewingOutRepository.Query
 								 join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
 								 where a.SewingTo == "FINISHING" && a.UnitId == request.unit && a.SewingOutDate <= date && a.IsDifferentSize == false
-								 select new monitoringView { Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtySewing = b.Quantity, Size = b.SizeName };
+								 select new monitoringView { Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtySewing = c.Quantity, Size = b.SizeName };
 			var QueryFinishingOutisDifSize = from a in garmentFinishingOutRepository.Query
 											 join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 											 join c in garmentFinishingOutDetailRepository.Query on b.Identity equals c.FinishingOutItemId
@@ -269,7 +269,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 			}
 			else
 			{
-				foreach (var item in query)
+				foreach (var item in query.Where(s => s.ro == request.ro))
 				{
 					
 

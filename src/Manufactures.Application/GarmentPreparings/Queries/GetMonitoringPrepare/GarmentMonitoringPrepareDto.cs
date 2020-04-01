@@ -18,6 +18,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 		public string uomUnit { get; internal set; }
 		public string roAsal { get; internal set; }
 		public string remark { get; internal set; }
+		public decimal price { get; internal set; }
 		public double stock { get; internal set; }
 		public double receipt { get; internal set; }
 		public double mainFabricExpenditure { get; internal set; }
