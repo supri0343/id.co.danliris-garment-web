@@ -292,12 +292,12 @@ namespace Manufactures.Controllers.Api
 			});
 		}
 		[HttpGet("download")]
-		public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+		public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, string type,int page = 1, int size = 25, string Order = "{}")
 		{
 			try
 			{
 				VerifyUser();
-				GetXlsCuttingQuery query = new GetXlsCuttingQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+				GetXlsCuttingQuery query = new GetXlsCuttingQuery(page, size, Order, unit, dateFrom, dateTo, type,WorkContext.Token);
 				byte[] xlsInBytes;
 
 				var xls = await Mediator.Send(query);
