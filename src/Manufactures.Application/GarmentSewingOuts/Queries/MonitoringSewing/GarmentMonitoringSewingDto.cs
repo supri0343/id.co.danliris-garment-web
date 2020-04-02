@@ -6,20 +6,23 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 {
 	public class GarmentMonitoringSewingDto
 	{
-		public GarmentMonitoringSewingDto()
+        
+        public GarmentMonitoringSewingDto()
 		{
 		}
 	
 		public string roJob { get; internal set; }
 		public string article { get; internal set; }
-		public double qtyOrder { get; internal set; }
+        public string buyerCode { get; internal set; }
+        public double qtyOrder { get; internal set; }
 		public double stock { get; internal set; }
 		public double sewingOutQtyPcs { get; internal set; }
 		public double loadingQtyPcs { get; internal set; }
 		public string uomUnit { get; internal set; }
 		public string style { get; internal set; }
 		public double remainQty { get; internal set; }
-		public GarmentMonitoringSewingDto(GarmentMonitoringSewingDto garmentMonitoring)
+        public decimal price { get; internal set; }
+        public GarmentMonitoringSewingDto(GarmentMonitoringSewingDto garmentMonitoring)
 		{
 			 
 			this.roJob = garmentMonitoring.roJob;
@@ -31,6 +34,8 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 			this.uomUnit = garmentMonitoring.uomUnit;
 			this.remainQty = garmentMonitoring.remainQty;
 			this.style = garmentMonitoring.style;
+            this.buyerCode = garmentMonitoring.buyerCode;
+            this.price = garmentMonitoring.price;
 		}
 	}
 }
