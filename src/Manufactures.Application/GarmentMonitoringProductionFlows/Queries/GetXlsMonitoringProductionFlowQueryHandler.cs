@@ -206,7 +206,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 			var QueryFinishingOutisDifSize = from a in garmentFinishingOutRepository.Query
 											 join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 											 join c in garmentFinishingOutDetailRepository.Query on b.Identity equals c.FinishingOutItemId
-											 where a.RONo == "1940001" && a.FinishingTo == "GUDANG JADI" && a.UnitId == request.unit && a.FinishingOutDate <= date
+											 where  a.FinishingTo == "GUDANG JADI" && a.UnitId == request.unit && a.FinishingOutDate <= date
 											 select new monitoringView { Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtyFinishing = c.Quantity, Size = c.SizeName };
 			var QueryFinishingOut = from a in garmentFinishingOutRepository.Query
 									join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
