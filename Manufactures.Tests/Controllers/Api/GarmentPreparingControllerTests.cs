@@ -222,6 +222,7 @@ namespace Manufactures.Tests.Controllers.Api
 				.ReturnsAsync(new MemoryStream());
 
 			// Act
+
 			var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now,"", 1, 25, "{}");
 
 			// Assert

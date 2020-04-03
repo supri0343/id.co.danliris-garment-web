@@ -30,8 +30,9 @@ namespace Manufactures.Domain.GarmentExpenditureGoods
         public string ContractNo { get; private set; }
         public double Carton { get; private set; }
         public string Description { get; private set; }
+        public bool IsReceived { get; private set; }
 
-        public GarmentExpenditureGood(Guid identity, string expenditureGoodNo, string expenditureType, UnitDepartmentId unitId, string unitCode, string unitName, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, BuyerId buyerId, string buyerCode, string buyerName, DateTimeOffset expenditureDate, string invoice, string contractNo, double carton, string description) : base(identity)
+        public GarmentExpenditureGood(Guid identity, string expenditureGoodNo, string expenditureType, UnitDepartmentId unitId, string unitCode, string unitName, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, BuyerId buyerId, string buyerCode, string buyerName, DateTimeOffset expenditureDate, string invoice, string contractNo, double carton, string description, bool isReceived) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
 
@@ -55,6 +56,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoods
             ContractNo = contractNo;
             Carton = carton;
             Description = description;
+            IsReceived = isReceived;
 
             ReadModel = new GarmentExpenditureGoodReadModel(Identity)
             {
@@ -75,7 +77,8 @@ namespace Manufactures.Domain.GarmentExpenditureGoods
                 Invoice = Invoice,
                 ContractNo = ContractNo,
                 Carton= Carton,
-                Description= Description
+                Description= Description,
+                IsReceived= IsReceived
             };
 
             ReadModel.AddDomainEvent(new OnGarmentExpenditureGoodPlaced(Identity));
@@ -101,6 +104,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoods
             ContractNo = readModel.ContractNo;
             Carton = readModel.Carton;
             Description = readModel.Description;
+            IsReceived = readModel.IsReceived;
         }
 
         public void SetCarton(double Carton)
@@ -118,6 +122,15 @@ namespace Manufactures.Domain.GarmentExpenditureGoods
             {
                 this.Invoice = Invoice;
                 ReadModel.Invoice = Invoice;
+            }
+        }
+
+        public void SetIsReceived(bool IsReceived)
+        {
+            if (this.IsReceived != IsReceived)
+            {
+                this.IsReceived = IsReceived;
+                ReadModel.IsReceived = IsReceived;
             }
         }
 

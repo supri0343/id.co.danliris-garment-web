@@ -61,7 +61,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                 request.Invoice,
                 request.ContractNo,
                 request.Carton,
-                request.Description
+                request.Description,
+                request.IsReceived
             );
 
             Dictionary<Guid, double> finStockToBeUpdated = new Dictionary<Guid, double>();
