@@ -24,6 +24,7 @@ namespace Manufactures.Dtos
             Carton = garmentExpenditureGood.Carton;
             Description = garmentExpenditureGood.Description;
             CreatedBy = garmentExpenditureGood.AuditTrail.CreatedBy;
+            IsReceived = garmentExpenditureGood.IsReceived;
         }
 
         public Guid Id { get; internal set; }
@@ -39,6 +40,7 @@ namespace Manufactures.Dtos
         public string ContractNo { get; internal set; }
         public double Carton { get; internal set; }
         public string Description { get; internal set; }
+        public bool IsReceived { get; private set; }
         public double TotalQuantity { get; set; }
     }
 }

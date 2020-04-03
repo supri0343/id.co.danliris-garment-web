@@ -72,7 +72,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentExpenditureGoodReadModel>>()))
                 .Returns(new List<GarmentExpenditureGood>()
                 {
-                    new GarmentExpenditureGood(ExpenditureGoodGuid, null,null,new UnitDepartmentId(1),null,null,"RONo","article",new GarmentComodityId(1),null,null,new BuyerId(1), null, null,DateTimeOffset.Now,  null,null,0,null)
+                    new GarmentExpenditureGood(ExpenditureGoodGuid, null,null,new UnitDepartmentId(1),null,null,"RONo","article",new GarmentComodityId(1),null,null,new BuyerId(1), null, null,DateTimeOffset.Now,  null,null,0,null,false)
                 });
 
             Guid ExpenditureGoodItemGuid = Guid.NewGuid();
@@ -102,7 +102,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentExpenditureGoodReadModel, bool>>>()))
                 .Returns(new List<GarmentExpenditureGood>()
                 {
-                    new GarmentExpenditureGood(ExpenditureGoodGuid, null,null,new UnitDepartmentId(1),null,null,"RONo","article",new GarmentComodityId(1),null,null,new BuyerId(1), null, null,DateTimeOffset.Now,  null,null,0,null)
+                    new GarmentExpenditureGood(ExpenditureGoodGuid, null,null,new UnitDepartmentId(1),null,null,"RONo","article",new GarmentComodityId(1),null,null,new BuyerId(1), null, null,DateTimeOffset.Now,  null,null,0,null,false)
                 });
 
             Guid finishingInItemGuid = Guid.NewGuid();
@@ -130,7 +130,7 @@ namespace Manufactures.Tests.Controllers.Api
             Guid ExpenditureGoodGuid = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentExpenditureGoodCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentExpenditureGood(ExpenditureGoodGuid, null, null, new UnitDepartmentId(1), null, null, "RONo", "article", new GarmentComodityId(1), null, null, new BuyerId(1), null, null, DateTimeOffset.Now, null, null, 0, null));
+                .ReturnsAsync(new GarmentExpenditureGood(ExpenditureGoodGuid, null, null, new UnitDepartmentId(1), null, null, "RONo", "article", new GarmentComodityId(1), null, null, new BuyerId(1), null, null, DateTimeOffset.Now, null, null, 0, null, false));
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentExpenditureGoodCommand>());
@@ -147,7 +147,7 @@ namespace Manufactures.Tests.Controllers.Api
             Guid ExpenditureGoodGuid = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentExpenditureGoodCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentExpenditureGood(ExpenditureGoodGuid, null, null, new UnitDepartmentId(1), null, null, "RONo", "article", new GarmentComodityId(1), null, null, new BuyerId(1), null, null, DateTimeOffset.Now, null, null, 0, null)
+                .ReturnsAsync(new GarmentExpenditureGood(ExpenditureGoodGuid, null, null, new UnitDepartmentId(1), null, null, "RONo", "article", new GarmentComodityId(1), null, null, new BuyerId(1), null, null, DateTimeOffset.Now, null, null, 0, null, false)
                 );
 
             // Act
@@ -165,7 +165,7 @@ namespace Manufactures.Tests.Controllers.Api
             Guid ExpenditureGoodGuid = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentExpenditureGoodCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentExpenditureGood(ExpenditureGoodGuid, null, null, new UnitDepartmentId(1), null, null, "RONo", "article", new GarmentComodityId(1), null, null, new BuyerId(1), null, null, DateTimeOffset.Now, null, null, 0, null)
+                .ReturnsAsync(new GarmentExpenditureGood(ExpenditureGoodGuid, null, null, new UnitDepartmentId(1), null, null, "RONo", "article", new GarmentComodityId(1), null, null, new BuyerId(1), null, null, DateTimeOffset.Now, null, null, 0, null, false)
                 );
 
             // Act
