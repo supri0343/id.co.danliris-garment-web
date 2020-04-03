@@ -102,7 +102,9 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 			Guid guidAvalProductItem = Guid.NewGuid();
 			Guid guidDeliveryReturn = Guid.NewGuid();
 			Guid guidDeliveryReturnItem = Guid.NewGuid();
-			//GetXlsPrepareQuery getXlsPrepareQuery = new GetXlsPrepareQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "token");
+
+			GetXlsPrepareQuery getXlsPrepareQuery = new GetXlsPrepareQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2),"", "token");
+
 
 			_mockGarmentPreparingItemRepository
 				.Setup(s => s.Query)
@@ -165,10 +167,10 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 				}.AsQueryable());
 
 			// Act
-			//var result = await unitUnderTest.Handle(getXlsPrepareQuery, cancellationToken);
+			var result = await unitUnderTest.Handle(getXlsPrepareQuery, cancellationToken);
 
 			// Assert
-			//result.Should().NotBeNull();
+			result.Should().NotBeNull();
 		}
 
 	}

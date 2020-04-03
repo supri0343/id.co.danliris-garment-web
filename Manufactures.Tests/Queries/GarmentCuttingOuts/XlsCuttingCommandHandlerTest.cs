@@ -97,7 +97,9 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
 			Guid guidCuttingOut = Guid.NewGuid();
 			Guid guidCuttingOutItem = Guid.NewGuid();
 			Guid guidCuttingOutDetail = Guid.NewGuid();
-			//GetXlsCuttingQuery getMonitoring = new GetXlsCuttingQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "token");
+
+			GetXlsCuttingQuery getMonitoring = new GetXlsCuttingQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2),"", "token");
+
 
 
 			_mockGarmentCuttingInItemRepository
@@ -148,10 +150,10 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
 				}.AsQueryable());
 
 			// Act
-			//var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
+			var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
 
 			// Assert
-			//result.Should().NotBeNull();
+			result.Should().NotBeNull();
 		}
 	}
 }

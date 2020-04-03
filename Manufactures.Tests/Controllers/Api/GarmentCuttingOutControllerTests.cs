@@ -260,21 +260,20 @@ namespace Manufactures.Tests.Controllers.Api
 			GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
 		}
 
-		//[Fact]
-		//public async Task GetXLSBehavior()
-		//{
-		//	var unitUnderTest = CreateGarmentCuttingOutController();
+        [Fact]
+        public async Task GetXLSBehavior()
+        {
+            var unitUnderTest = CreateGarmentCuttingOutController();
 
-		//	_MockMediator
-		//		.Setup(s => s.Send(It.IsAny<GetXlsCuttingQuery>(), It.IsAny<CancellationToken>()))
-		//		.ReturnsAsync(new MemoryStream());
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsCuttingQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
 
-		//	// Act
-		//	var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now,"", 1, 25, "{}");
 
-		//	// Assert
-		//	Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+        // Assert
+        Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
 
-		//}
-	}
+		}
+}
 }
