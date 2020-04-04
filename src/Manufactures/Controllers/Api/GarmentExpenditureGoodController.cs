@@ -2,10 +2,12 @@
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentExpenditureGoods.Queries;
 using Manufactures.Domain.GarmentDeliveryReturns.ValueObjects;
+using Manufactures.Domain.GarmentExpenditureGoods;
 using Manufactures.Domain.GarmentExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentExpenditureGoods.Repositories;
 using Manufactures.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -112,6 +114,20 @@ namespace Manufactures.Controllers.Api
 
             VerifyUser();
 
+            var order = await Mediator.Send(command);
+
+            return Ok(order.Identity);
+        }
+
+        [HttpPut("update-received/{id}")]
+        public async Task<IActionResult> Patch(string id, [FromBody]bool isReceived)
+        {
+            Guid guid = Guid.Parse(id);
+
+
+            VerifyUser();
+
+            UpdateIsReceivedGarmentExpenditureGoodCommand command = new UpdateIsReceivedGarmentExpenditureGoodCommand(guid, isReceived);
             var order = await Mediator.Send(command);
 
             return Ok(order.Identity);
