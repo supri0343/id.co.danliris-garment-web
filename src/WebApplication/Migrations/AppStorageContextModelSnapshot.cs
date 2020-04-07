@@ -322,8 +322,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("DesignColor")
                         .HasMaxLength(100);
 
-                    b.Property<bool>("IsReceived");
-
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
 
