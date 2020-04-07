@@ -22,8 +22,9 @@ namespace Manufactures.Domain.GarmentAvalProducts
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
         public double BasicPrice { get; private set; }
+        public bool IsReceived { get; private set; }
 
-        public GarmentAvalProductItem(Guid identity, Guid apId, GarmentPreparingId preparingId, GarmentPreparingItemId preparingItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, double basicPrice) : base(identity)
+        public GarmentAvalProductItem(Guid identity, Guid apId, GarmentPreparingId preparingId, GarmentPreparingItemId preparingItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, double basicPrice, bool isReceived) : base(identity)
         {
             this.MarkTransient();
 
@@ -39,6 +40,7 @@ namespace Manufactures.Domain.GarmentAvalProducts
             UomId = uomId;
             UomUnit = uomUnit;
             BasicPrice = basicPrice;
+            IsReceived = isReceived;
 
             ReadModel = new GarmentAvalProductItemReadModel(Identity)
             {
@@ -52,7 +54,8 @@ namespace Manufactures.Domain.GarmentAvalProducts
                 Quantity = Quantity,
                 UomId = UomId.Value,
                 UomUnit = UomUnit,
-                BasicPrice=BasicPrice
+                BasicPrice=BasicPrice,
+                IsReceived=IsReceived
             };
             ReadModel.AddDomainEvent(new OnGarmentAvalProductPlaced(this.Identity));
         }
@@ -70,6 +73,7 @@ namespace Manufactures.Domain.GarmentAvalProducts
             UomId = new UomId(ReadModel.UomId);
             UomUnit = ReadModel.UomUnit;
             BasicPrice = ReadModel.BasicPrice;
+            IsReceived = ReadModel.IsReceived;
         }
 
         public void setPreparingId(GarmentPreparingId newPreparingId)
@@ -168,6 +172,15 @@ namespace Manufactures.Domain.GarmentAvalProducts
             {
                 UomUnit = newUomUnit;
                 ReadModel.UomUnit = newUomUnit;
+            }
+        }
+
+        public void SetIsReceived(bool IsReceived)
+        {
+            if (this.IsReceived != IsReceived)
+            {
+                this.IsReceived = IsReceived;
+                ReadModel.IsReceived = IsReceived;
             }
         }
 
