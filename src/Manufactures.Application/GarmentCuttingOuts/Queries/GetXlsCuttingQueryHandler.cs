@@ -34,103 +34,103 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 		private readonly IGarmentAvalComponentRepository garmentAvalComponentRepository;
 		private readonly IGarmentAvalComponentItemRepository garmentAvalComponentItemRepository;
 
-        async Task<HOrderDataProductionReport> GetDataHOrder(List<string> ro, string token)
-        {
-            HOrderDataProductionReport hOrderDataProductionReport = new HOrderDataProductionReport();
+		async Task<HOrderDataProductionReport> GetDataHOrder(List<string> ro, string token)
+		{
+			HOrderDataProductionReport hOrderDataProductionReport = new HOrderDataProductionReport();
 
-            var listRO = string.Join(",", ro.Distinct());
-            var costCalculationUri = SalesDataSettings.Endpoint + $"local-merchandiser/horders/data-production-report-by-no/{listRO}";
-            var httpResponse = await _http.GetAsync(costCalculationUri, token);
+			var listRO = string.Join(",", ro.Distinct());
+			var costCalculationUri = SalesDataSettings.Endpoint + $"local-merchandiser/horders/data-production-report-by-no/{listRO}";
+			var httpResponse = await _http.GetAsync(costCalculationUri, token);
 
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                var contentString = await httpResponse.Content.ReadAsStringAsync();
-                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
-                var dataString = content.GetValueOrDefault("data").ToString();
-                var listData = JsonConvert.DeserializeObject<List<HOrderViewModel>>(dataString);
+			if (httpResponse.IsSuccessStatusCode)
+			{
+				var contentString = await httpResponse.Content.ReadAsStringAsync();
+				Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+				var dataString = content.GetValueOrDefault("data").ToString();
+				var listData = JsonConvert.DeserializeObject<List<HOrderViewModel>>(dataString);
 
-                foreach (var item in ro)
-                {
-                    var data = listData.SingleOrDefault(s => s.No == item);
-                    if (data != null)
-                    {
-                        hOrderDataProductionReport.data.Add(data);
-                    }
-                }
-            }
+				foreach (var item in ro)
+				{
+					var data = listData.SingleOrDefault(s => s.No == item);
+					if (data != null)
+					{
+						hOrderDataProductionReport.data.Add(data);
+					}
+				}
+			}
 
-            return hOrderDataProductionReport;
-        }
+			return hOrderDataProductionReport;
+		}
 
-        public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
-        {
-            CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();
+		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
+		{
+			CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();
 
-            var listRO = string.Join(",", ro.Distinct());
-            var costCalculationUri = SalesDataSettings.Endpoint + $"cost-calculation-garments/data/{listRO}";
-            var httpResponse = await _http.GetAsync(costCalculationUri, token);
+			var listRO = string.Join(",", ro.Distinct());
+			var costCalculationUri = SalesDataSettings.Endpoint + $"cost-calculation-garments/data/{listRO}";
+			var httpResponse = await _http.GetAsync(costCalculationUri, token);
 
-            var freeRO = new List<string>();
+			var freeRO = new List<string>();
 
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                var contentString = await httpResponse.Content.ReadAsStringAsync();
-                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
-                var dataString = content.GetValueOrDefault("data").ToString();
-                var listData = JsonConvert.DeserializeObject<List<CostCalViewModel>>(dataString);
+			if (httpResponse.IsSuccessStatusCode)
+			{
+				var contentString = await httpResponse.Content.ReadAsStringAsync();
+				Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+				var dataString = content.GetValueOrDefault("data").ToString();
+				var listData = JsonConvert.DeserializeObject<List<CostCalViewModel>>(dataString);
 
-                foreach (var item in ro)
-                {
-                    var data = listData.SingleOrDefault(s => s.ro == item);
-                    if (data != null)
-                    {
-                        costCalculationGarmentDataProductionReport.data.Add(data);
-                    }
-                    else
-                    {
-                        freeRO.Add(item);
-                    }
-                }
-            }
+				foreach (var item in ro)
+				{
+					var data = listData.SingleOrDefault(s => s.ro == item);
+					if (data != null)
+					{
+						costCalculationGarmentDataProductionReport.data.Add(data);
+					}
+					else
+					{
+						freeRO.Add(item);
+					}
+				}
+			}
 
-            HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(freeRO, token);
+			HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(freeRO, token);
 
-            Dictionary<string, string> comodities = new Dictionary<string, string>();
-            if (hOrderDataProductionReport.data.Count > 0)
-            {
-                var comodityCodes = hOrderDataProductionReport.data.Select(s => s.Kode).Distinct().ToList();
-                var filter = "{\"(" + string.Join(" || ", comodityCodes.Select(s => "Code==" + "\\\"" + s + "\\\"")) + ")\" : \"true\"}";
+			Dictionary<string, string> comodities = new Dictionary<string, string>();
+			if (hOrderDataProductionReport.data.Count > 0)
+			{
+				var comodityCodes = hOrderDataProductionReport.data.Select(s => s.Kode).Distinct().ToList();
+				var filter = "{\"(" + string.Join(" || ", comodityCodes.Select(s => "Code==" + "\\\"" + s + "\\\"")) + ")\" : \"true\"}";
 
-                var masterGarmentComodityUri = MasterDataSettings.Endpoint + $"master/garment-comodities?filter=" + filter;
-                var garmentComodityResponse = _http.GetAsync(masterGarmentComodityUri).Result;
-                var garmentComodityResult = new GarmentComodityResult();
-                if (garmentComodityResponse.IsSuccessStatusCode)
-                {
-                    garmentComodityResult = JsonConvert.DeserializeObject<GarmentComodityResult>(garmentComodityResponse.Content.ReadAsStringAsync().Result);
-                    //comodities = garmentComodityResult.data.ToDictionary(d => d.Code, d => d.Name);
-                    foreach (var comodity in garmentComodityResult.data)
-                    {
-                        comodities[comodity.Code] = comodity.Name;
-                    }
-                }
-            }
+				var masterGarmentComodityUri = MasterDataSettings.Endpoint + $"master/garment-comodities?filter=" + filter;
+				var garmentComodityResponse = _http.GetAsync(masterGarmentComodityUri).Result;
+				var garmentComodityResult = new GarmentComodityResult();
+				if (garmentComodityResponse.IsSuccessStatusCode)
+				{
+					garmentComodityResult = JsonConvert.DeserializeObject<GarmentComodityResult>(garmentComodityResponse.Content.ReadAsStringAsync().Result);
+					//comodities = garmentComodityResult.data.ToDictionary(d => d.Code, d => d.Name);
+					foreach (var comodity in garmentComodityResult.data)
+					{
+						comodities[comodity.Code] = comodity.Name;
+					}
+				}
+			}
 
-            foreach (var hOrder in hOrderDataProductionReport.data)
-            {
-                costCalculationGarmentDataProductionReport.data.Add(new CostCalViewModel
-                {
-                    ro = hOrder.No,
-                    buyerCode = hOrder.Codeby,
-                    comodityName = comodities.GetValueOrDefault(hOrder.Kode),
-                    hours = (double)hOrder.Sh_Cut,
-                    qtyOrder = (double)hOrder.Qty
-                });
-            }
+			foreach (var hOrder in hOrderDataProductionReport.data)
+			{
+				costCalculationGarmentDataProductionReport.data.Add(new CostCalViewModel
+				{
+					ro = hOrder.No,
+					buyerCode = hOrder.Codeby,
+					comodityName = comodities.GetValueOrDefault(hOrder.Kode),
+					hours = (double)hOrder.Sh_Cut,
+					qtyOrder = (double)hOrder.Qty
+				});
+			}
 
-            return costCalculationGarmentDataProductionReport;
-        }
+			return costCalculationGarmentDataProductionReport;
+		}
 
-        public async Task<MemoryStream> Handle(GetXlsCuttingQuery request, CancellationToken cancellationToken)
+		public async Task<MemoryStream> Handle(GetXlsCuttingQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
@@ -174,27 +174,29 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 								 join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
 								 join d in Fc on a.RONo equals d.ro
 								 where a.UnitId == request.unit && a.CuttingInDate <= dateTo
-								 select new monitoringView { fc = (d.FC * c.PreparingQuantity), cuttingQtyMeter = 0, remainQty = 0, stock = a.CuttingInDate < dateFrom ? c.CuttingInQuantity : 0, cuttingQtyPcs = a.CuttingInDate >= dateFrom ? c.CuttingInQuantity : 0, roJob = a.RONo, article = a.Article, productCode = c.ProductCode, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(), hours = (from cost in costCalculation.data where cost.ro == a.RONo select cost.hours).FirstOrDefault(), expenditure = 0 };
+								 select new monitoringView { buyerCode= (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), price = Convert.ToDecimal(c.Price), fc = (d.FC * c.PreparingQuantity), cuttingQtyMeter = 0, remainQty = 0, stock = a.CuttingInDate < dateFrom ? c.CuttingInQuantity : 0, cuttingQtyPcs = a.CuttingInDate >= dateFrom ? c.CuttingInQuantity : 0, roJob = a.RONo, article = a.Article, productCode = c.ProductCode, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(), hours = (from cost in costCalculation.data where cost.ro == a.RONo select cost.hours).FirstOrDefault(), expenditure = 0 };
 
 			var QueryCuttingOut = from a in garmentCuttingOutRepository.Query
 								  join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
 								  where a.UnitFromId == request.unit && a.CuttingOutDate <= dateTo
-								  select new monitoringView { fc = 0, cuttingQtyMeter = 0, remainQty = 0, stock = a.CuttingOutDate < dateFrom ? -b.TotalCuttingOut : 0, cuttingQtyPcs = 0, roJob = a.RONo, article = a.Article, productCode = b.ProductCode, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(), hours = (from cost in costCalculation.data where cost.ro == a.RONo select cost.hours).FirstOrDefault(), expenditure = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0 };
+								  select new monitoringView { buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(),price = 0, fc = 0, cuttingQtyMeter = 0, remainQty = 0, stock = a.CuttingOutDate < dateFrom ? -b.TotalCuttingOut : 0, cuttingQtyPcs = 0, roJob = a.RONo, article = a.Article, productCode = b.ProductCode, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(), hours = (from cost in costCalculation.data where cost.ro == a.RONo select cost.hours).FirstOrDefault(), expenditure = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0 };
 
 			var QueryAvalComp = from a in garmentAvalComponentRepository.Query
 								join b in garmentAvalComponentItemRepository.Query on a.Identity equals b.AvalComponentId
 								where a.UnitId == request.unit && a.Date <= dateTo
-								select new monitoringView { fc = 0, cuttingQtyMeter = 0, remainQty = 0, stock = a.Date < dateFrom ? -b.Quantity : 0, cuttingQtyPcs = 0, roJob = a.RONo, article = a.Article, productCode = b.ProductCode, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(), hours = (from cost in costCalculation.data where cost.ro == a.RONo select cost.hours).FirstOrDefault(), expenditure = a.Date >= dateFrom ? b.Quantity : 0 };
+								select new monitoringView { buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(),price = 0, fc = 0, cuttingQtyMeter = 0, remainQty = 0, stock = a.Date < dateFrom ? -b.Quantity : 0, cuttingQtyPcs = 0, roJob = a.RONo, article = a.Article, productCode = b.ProductCode, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(), hours = (from cost in costCalculation.data where cost.ro == a.RONo select cost.hours).FirstOrDefault(), expenditure = a.Date >= dateFrom ? b.Quantity : 0 };
 
 			var queryNow = QueryCuttingIn.Union(QueryCuttingOut).Union(QueryAvalComp);
 
-			var querySum = queryNow.ToList().GroupBy(x => new { x.qtyOrder, x.roJob, x.article, x.productCode, x.style, x.hours }, (key, group) => new
+			var querySum = queryNow.ToList().GroupBy(x => new { x.buyerCode, x.qtyOrder, x.roJob, x.article, x.productCode, x.style, x.hours }, (key, group) => new
 			{
 				QtyOrder = key.qtyOrder,
 				RoJob = key.roJob,
 				Fc = group.Sum(s => s.fc),
 				Stock = group.Sum(s => s.stock),
 				ProductCode = key.productCode,
+				buyer = key.buyerCode,
+				bPrice = group.Sum(s => s.price),
 				Article = key.article,
 				Style = key.style,
 				CuttingQtyPcs = group.Sum(s => s.cuttingQtyPcs),
@@ -219,7 +221,9 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 					stock = item.Stock,
 					remainQty = item.Stock + item.CuttingQtyPcs - item.Expenditure,
 					fc = Math.Round(item.Fc, 2),
-					cuttingQtyMeter = Math.Round(item.Fc * item.CuttingQtyPcs, 2)
+					cuttingQtyMeter = Math.Round(item.Fc * item.CuttingQtyPcs, 2),
+					price = item.bPrice,
+					buyerCode = item.buyer
 
 				};
 				monitoringCuttingDtos.Add(cuttingDto);
@@ -229,11 +233,13 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO JOB", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Article", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kode Barang", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kode Buyer", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Style", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FC", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Hours", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Hasil Potong (M)", DataType = typeof(double) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Harga (M)", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Stock Awal", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Hasil Potong", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Keluar", DataType = typeof(double) });
@@ -241,7 +247,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			if (listViewModel.garmentMonitorings.Count > 0)
 			{
 				foreach (var report in listViewModel.garmentMonitorings)
-					reportDataTable.Rows.Add(report.roJob, report.article, report.productCode, report.qtyOrder, report.style, report.fc, report.hours, report.cuttingQtyMeter, report.stock, report.cuttingQtyPcs, report.expenditure,  report.remainQty);
+					reportDataTable.Rows.Add(report.roJob, report.article, report.productCode, report.buyerCode, report.qtyOrder, report.style, report.fc, report.hours, report.cuttingQtyMeter, report.price, report.stock, report.cuttingQtyPcs, report.expenditure, report.remainQty);
 
 			}
 			using (var package = new ExcelPackage())
@@ -249,6 +255,11 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 				var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
 				worksheet.Cells["A1"].LoadFromDataTable(reportDataTable, true);
 				var stream = new MemoryStream();
+				if (request.type != "bookkeeping")
+				{
+					worksheet.Column(4).Hidden = true;
+					worksheet.Column(10).Hidden = true;
+				}
 				package.SaveAs(stream);
 
 				return stream;
@@ -259,6 +270,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			public string roJob { get; set; }
 			public string article { get; set; }
 			public string productCode { get; set; }
+			public string buyerCode { get; set; }
 			public double qtyOrder { get; set; }
 			public string style { get; set; }
 			public double fc { get; set; }
@@ -268,6 +280,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			public double cuttingQtyPcs { get; set; }
 			public double expenditure { get; set; }
 			public double remainQty { get; set; }
+			public decimal price { get; set; }
 		}
 		public GetXlsCuttingQueryHandler(IStorage storage, IServiceProvider serviceProvider)
 		{
@@ -277,7 +290,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
 			garmentCuttingOutRepository = storage.GetRepository<IGarmentCuttingOutRepository>();
 			garmentCuttingOutItemRepository = storage.GetRepository<IGarmentCuttingOutItemRepository>();
-			
+
 			garmentAvalComponentRepository = storage.GetRepository<IGarmentAvalComponentRepository>();
 			garmentAvalComponentItemRepository = storage.GetRepository<IGarmentAvalComponentItemRepository>();
 			_http = serviceProvider.GetService<IHttpClientService>();

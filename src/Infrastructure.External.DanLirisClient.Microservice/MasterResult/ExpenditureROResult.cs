@@ -18,6 +18,7 @@ namespace Infrastructure.External.DanLirisClient.Microservice.MasterResult
 			public int DetailExpenditureId { get; set; }
 
 			public string ROAsal { get; set; }
+			public string BuyerCode { get; set; }
 		}
 	}
 }

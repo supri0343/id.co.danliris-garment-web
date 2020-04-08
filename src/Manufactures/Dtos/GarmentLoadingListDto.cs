@@ -19,6 +19,7 @@ namespace Manufactures.Dtos
             UnitFrom = new UnitDepartment(garmentLoading.UnitFromId.Value, garmentLoading.UnitFromCode, garmentLoading.UnitFromName);
             Comodity = new GarmentComodity (garmentLoading.ComodityId.Value, garmentLoading.ComodityCode, garmentLoading.ComodityName);
             LoadingDate = garmentLoading.LoadingDate;
+            CreatedBy = garmentLoading.AuditTrail.CreatedBy;
         }
 
         public Guid Id { get; internal set; }
@@ -34,7 +35,6 @@ namespace Manufactures.Dtos
 
         public double TotalRemainingQuantity { get; set; }
         public double TotalLoadingQuantity { get; set; }
-
         public List<string> Products { get; set; }
         public List<string> Colors { get; set; }
     }

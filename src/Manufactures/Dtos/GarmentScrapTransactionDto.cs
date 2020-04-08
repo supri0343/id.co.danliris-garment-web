@@ -17,6 +17,7 @@ namespace Manufactures.Dtos
 			ScrapSourceName = transaction.ScrapSourceName;
 			ScrapDestinationId = transaction.ScrapDestinationId;
 			ScrapDestinationName = transaction.ScrapDestinationName;
+            CreatedBy = transaction.AuditTrail.CreatedBy;
 			
 			Items = new List<GarmentScrapTransactionItemDto>();
 		}

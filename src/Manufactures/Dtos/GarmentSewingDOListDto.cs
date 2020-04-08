@@ -19,7 +19,7 @@ namespace Manufactures.Dtos
             Article = garmentSewingDO.Article;
             Comodity = new GarmentComodity(garmentSewingDO.ComodityId.Value, garmentSewingDO.ComodityCode, garmentSewingDO.ComodityName);
             SewingDODate = garmentSewingDO.SewingDODate;
-
+            CreatedBy = garmentSewingDO.AuditTrail.CreatedBy;
             Items = new List<GarmentSewingDOItemDto>();
         }
 

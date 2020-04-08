@@ -18,7 +18,7 @@ namespace Manufactures.Dtos
             Article = garmentFinishingOutList.Article;
             FinishingOutDate = garmentFinishingOutList.FinishingOutDate;
             FinishingTo = garmentFinishingOutList.FinishingTo;
-
+            CreatedBy = garmentFinishingOutList.AuditTrail.CreatedBy;
             Items = new List<GarmentFinishingOutItemDto>();
         }
 

@@ -26,6 +26,7 @@ namespace Manufactures.Dtos
             RONo = garmentPreparing.RONo;
             Article = garmentPreparing.Article;
             IsCuttingIn = garmentPreparing.IsCuttingIn;
+            CreatedBy = garmentPreparing.AuditTrail.CreatedBy;
 
         }
 
@@ -41,6 +42,7 @@ namespace Manufactures.Dtos
         public string RONo { get; set; }
         public string Article { get; set; }
         public bool IsCuttingIn { get; set; }
+        public string CreatedBy { get; set; }
         public List<GarmentPreparingItemDto> Items { get; set; }
     }
 }

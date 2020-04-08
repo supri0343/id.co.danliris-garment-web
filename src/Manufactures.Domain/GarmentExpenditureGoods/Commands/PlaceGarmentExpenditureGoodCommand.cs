@@ -25,6 +25,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.Commands
         public string Description { get;  set; }
         public List<GarmentExpenditureGoodItemValueObject> Items { get;  set; }
         public double Price { get; set; }
+        public bool IsReceived { get; set; }
     }
 
     public class PlaceGarmentExpenditureGoodCommandValidator : AbstractValidator<PlaceGarmentExpenditureGoodCommand>

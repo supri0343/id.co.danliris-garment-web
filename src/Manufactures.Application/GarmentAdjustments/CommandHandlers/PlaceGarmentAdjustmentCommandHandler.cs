@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentAdjustments;
 using Manufactures.Domain.GarmentAdjustments.Commands;
 using Manufactures.Domain.GarmentAdjustments.Repositories;
+using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.GarmentFinishedGoodStocks;
 using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
 using Manufactures.Domain.GarmentFinishingIns;
@@ -31,8 +33,9 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
         private readonly IGarmentFinishingInItemRepository _garmentFinishingInItemRepository;
 		private readonly IGarmentFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
 		private readonly IGarmentFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
+        private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
 
-		public PlaceGarmentAdjustmentCommandHandler(IStorage storage)
+        public PlaceGarmentAdjustmentCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentAdjustmentRepository = storage.GetRepository<IGarmentAdjustmentRepository>();
@@ -42,7 +45,8 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
             _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
 			_garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentFinishedGoodStockRepository>();
 			_garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentFinishedGoodStockHistoryRepository>();
-		}
+            _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
+        }
 
         public async Task<GarmentAdjustment> Handle(PlaceGarmentAdjustmentCommand request, CancellationToken cancellationToken)
         {
@@ -102,65 +106,30 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
 					}
 					else
 					{
-						var stock = _garmentFinishedGoodStockRepository.Query.Where(x => x.Identity == item.FinishedGoodStockId).Select(s => new GarmentFinishedGoodStock(s)).Single();
-						var a = item.Price / item.Quantity;
-						var b = stock.Quantity - item.Quantity;
-						var c = a * b;
-						stock.SetPrice (c);
+                        var garmentFinishingGoodStock = _garmentFinishedGoodStockRepository.Query.Where(x => x.SizeId == item.Size.Id && x.UomId == item.Uom.Id && x.RONo == request.RONo && x.UnitId == request.Unit.Id && x.Quantity > 0).OrderBy(a => a.CreatedDate).ToList();
+                        double qty = item.Quantity;
+                        foreach (var finishedGood in garmentFinishingGoodStock)
+                        {
+                            if (qty > 0)
+                            {
+                                double remainQty = finishedGood.Quantity - qty;
+                                if (remainQty < 0)
+                                {
+                                    qty -= finishedGood.Quantity;
+                                    finishedGoodItemToBeUpdated.Add(finishedGood.Identity, 0);
+                                }
+                                else if (remainQty == 0)
+                                {
+                                    finishedGoodItemToBeUpdated.Add(finishedGood.Identity, 0); break;
+                                }
+                                else if (remainQty > 0)
+                                {
+                                    finishedGoodItemToBeUpdated.Add(finishedGood.Identity, remainQty); break;
 
-						Guid AdjutmentItemId = Guid.NewGuid();
-						GarmentAdjustmentItem garmentAdjustmentItem = new GarmentAdjustmentItem(
-							AdjutmentItemId,
-							AdjustmentId,
-							item.SewingDOItemId,
-							item.SewingInItemId,
-							item.FinishingInItemId,
-							stock.Identity,
-							new SizeId(item.Size.Id),
-							item.Size.Size,
-							item.Product != null ? new ProductId(item.Product.Id) : new ProductId(0),
-							item.Product != null ? item.Product.Code : null,
-							item.Product != null ? item.Product.Name : null,
-							item.DesignColor,
-							item.Quantity,
-							item.BasicPrice,
-							new UomId(item.Uom.Id),
-							item.Uom.Unit,
-							item.Color,
-							item.Price
-						);
-						GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = new GarmentFinishedGoodStockHistory(
-								Guid.NewGuid(),
-								stock.Identity,
-								Guid.Empty,
-								Guid.Empty,
-								Guid.Empty,
-								Guid.Empty,
-								AdjustmentId,
-								AdjutmentItemId,
-                                Guid.Empty,
-                                Guid.Empty,
-                                "ADJUSTMENT",
-								stock.RONo,
-								stock.Article,
-								stock.UnitId,
-								stock.UnitCode,
-								stock.UnitName,
-								stock.ComodityId,
-								stock.ComodityCode,
-								stock.ComodityName,
-								stock.SizeId,
-								stock.SizeName,
-								stock.UomId,
-								stock.UomUnit,
-								item.Quantity,
-								item.BasicPrice,
-								item.Price
-							);
-						stock.Modify();
-						await _garmentFinishedGoodStockRepository.Update(stock);
-						await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
-						await _garmentAdjustmentItemRepository.Update(garmentAdjustmentItem);
+                                }
+                            }
+                        }
+
 					}
 
                     if (request.AdjustmentType == "LOADING")
@@ -195,21 +164,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
                         {
                             finishingInItemToBeUpdated.Add(item.FinishingInItemId, item.Quantity);
                         }
-                    }else
-					{
-						if (finishedGoodItemToBeUpdated.ContainsKey(item.FinishedGoodStockId))
-						{
-							finishedGoodItemToBeUpdated[item.FinishedGoodStockId] += item.Quantity;
-						}
-						else
-						{
-
-							finishedGoodItemToBeUpdated.Add(item.FinishedGoodStockId, item.Quantity);
-						}
-						 
-						
-
-					}
+                    }
 				
                 }
             }
@@ -249,11 +204,70 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
 			}
 			else
 			{
+                GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && a.UnitId == request.Unit.Id && a.ComodityId == request.Comodity.Id).Select(s => new GarmentComodityPrice(s)).Single();
 
-				foreach (var data in finishedGoodItemToBeUpdated)
+                foreach (var data in finishedGoodItemToBeUpdated)
 				{
 					var garmentFinishedGoodstock = _garmentFinishedGoodStockRepository.Query.Where(x => x.Identity == data.Key).Select(s => new GarmentFinishedGoodStock(s)).Single();
-					garmentFinishedGoodstock.SetQuantity(garmentFinishedGoodstock.Quantity - data.Value);
+                    var item = request.Items.Where(a => new SizeId(a.Size.Id) == garmentFinishedGoodstock.SizeId && new UomId(a.Uom.Id) == garmentFinishedGoodstock.UomId).Single();
+
+                    var qty = garmentFinishedGoodstock.Quantity - data.Value;
+
+                    Guid AdjutmentItemId = Guid.NewGuid();
+                    GarmentAdjustmentItem garmentAdjustmentItem = new GarmentAdjustmentItem(
+                        AdjutmentItemId,
+                        AdjustmentId,
+                        item.SewingDOItemId,
+                        item.SewingInItemId,
+                        item.FinishingInItemId,
+                        garmentFinishedGoodstock.Identity,
+                        new SizeId(item.Size.Id),
+                        item.Size.Size,
+                        item.Product != null ? new ProductId(item.Product.Id) : new ProductId(0),
+                        item.Product != null ? item.Product.Code : null,
+                        item.Product != null ? item.Product.Name : null,
+                        item.DesignColor,
+                        qty,
+                        item.BasicPrice,
+                        new UomId(item.Uom.Id),
+                        item.Uom.Unit,
+                        item.Color,
+                        (garmentFinishedGoodstock.BasicPrice + (double)garmentComodityPrice.Price) * qty
+                    );
+                    GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = new GarmentFinishedGoodStockHistory(
+                            Guid.NewGuid(),
+                            garmentFinishedGoodstock.Identity,
+                            Guid.Empty,
+                            Guid.Empty,
+                            Guid.Empty,
+                            Guid.Empty,
+                            AdjustmentId,
+                            AdjutmentItemId,
+                            Guid.Empty,
+                            Guid.Empty,
+                            "ADJUSTMENT",
+                            garmentFinishedGoodstock.RONo,
+                            garmentFinishedGoodstock.Article,
+                            garmentFinishedGoodstock.UnitId,
+                            garmentFinishedGoodstock.UnitCode,
+                            garmentFinishedGoodstock.UnitName,
+                            garmentFinishedGoodstock.ComodityId,
+                            garmentFinishedGoodstock.ComodityCode,
+                            garmentFinishedGoodstock.ComodityName,
+                            garmentFinishedGoodstock.SizeId,
+                            garmentFinishedGoodstock.SizeName,
+                            garmentFinishedGoodstock.UomId,
+                            garmentFinishedGoodstock.UomUnit,
+                            garmentFinishedGoodstock.Quantity,
+                            garmentFinishedGoodstock.BasicPrice,
+                            garmentFinishedGoodstock.Price
+                        );
+                    await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
+                    await _garmentAdjustmentItemRepository.Update(garmentAdjustmentItem);
+
+
+                    garmentFinishedGoodstock.SetPrice((garmentFinishedGoodstock.BasicPrice + (double)garmentComodityPrice.Price) * (data.Value));
+                    garmentFinishedGoodstock.SetQuantity(data.Value);
 					garmentFinishedGoodstock.Modify();
 					await _garmentFinishedGoodStockRepository.Update(garmentFinishedGoodstock);
 				}

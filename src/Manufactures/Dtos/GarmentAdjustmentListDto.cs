@@ -17,6 +17,7 @@ namespace Manufactures.Dtos
             Unit = new UnitDepartment(garmentAdjustment.UnitId.Value, garmentAdjustment.UnitCode, garmentAdjustment.UnitName);
             Comodity = new GarmentComodity(garmentAdjustment.ComodityId.Value, garmentAdjustment.ComodityCode, garmentAdjustment.ComodityName);
             AdjustmentDate = garmentAdjustment.AdjustmentDate;
+            CreatedBy = garmentAdjustment.AuditTrail.CreatedBy;
         }
 
         public Guid Id { get; internal set; }

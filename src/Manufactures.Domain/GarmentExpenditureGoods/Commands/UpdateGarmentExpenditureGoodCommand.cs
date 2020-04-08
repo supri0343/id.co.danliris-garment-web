@@ -23,6 +23,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.Commands
         public string ContractNo { get; set; }
         public double Carton { get; set; }
         public string Description { get; set; }
+        public bool IsReceived { get; set; }
         public List<GarmentExpenditureGoodItemValueObject> Items { get; set; }
         public void SetIdentity(Guid id)
         {

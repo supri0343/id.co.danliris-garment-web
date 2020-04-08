@@ -61,7 +61,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                 request.Invoice,
                 request.ContractNo,
                 request.Carton,
-                request.Description
+                request.Description,
+                request.IsReceived
             );
 
             Dictionary<Guid, double> finStockToBeUpdated = new Dictionary<Guid, double>();
@@ -70,26 +71,61 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
             {
                 if (item.isSave)
                 {
-                    item.Price = (item.BasicPrice + ((double)garmentComodityPrice.Price * 1)) * item.Quantity;
+                    var garmentFinishingGoodStock = _garmentFinishedGoodStockRepository.Query.Where(x => x.SizeId == item.Size.Id && x.UomId == item.Uom.Id && x.RONo==request.RONo && x.UnitId==request.Unit.Id && x.Quantity>0).OrderBy(a=>a.CreatedDate).ToList();
+                    double qty = item.Quantity;
+                    foreach(var finishedGood in garmentFinishingGoodStock)
+                    {
+                        if (qty > 0)
+                        {
+                            double remainQty = finishedGood.Quantity - qty;
+                            if(remainQty < 0)
+                            {
+                                qty -= finishedGood.Quantity;
+                                finStockToBeUpdated.Add(finishedGood.Identity, 0);
+                            }
+                            else if (remainQty == 0)
+                            {
+                                finStockToBeUpdated.Add(finishedGood.Identity, 0);break;
+                            }
+                            else if(remainQty>0)
+                            {
+                                finStockToBeUpdated.Add(finishedGood.Identity, remainQty); break;
 
-                    GarmentExpenditureGoodItem garmentExpenditureGoodItem = new GarmentExpenditureGoodItem(
-                        Guid.NewGuid(),
-                        garmentExpenditureGood.Identity,
-                        item.FinishedGoodStockId,
-                        new SizeId(item.Size.Id),
-                        item.Size.Size,
-                        item.Quantity,
-                        item.ReturQuantity,
-                        new UomId(item.Uom.Id),
-                        item.Uom.Unit,
-                        item.Description,
-                        item.BasicPrice,
-                        item.Price
-                    );
+                            }
+                        }
+                    }
+                }
+            }
 
-                    GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = new GarmentFinishedGoodStockHistory(
+            foreach (var finStock in finStockToBeUpdated)
+            {
+                var garmentFinishingGoodStockItem = _garmentFinishedGoodStockRepository.Query.Where(x => x.Identity == finStock.Key).Select(s => new GarmentFinishedGoodStock(s)).Single();
+
+                var item = request.Items.Where(a => new SizeId(a.Size.Id) == garmentFinishingGoodStockItem.SizeId && new UomId(a.Uom.Id) == garmentFinishingGoodStockItem.UomId).Single();
+
+                item.Price = (item.BasicPrice + ((double)garmentComodityPrice.Price * 1)) * item.Quantity;
+                var qty = garmentFinishingGoodStockItem.Quantity - finStock.Value;
+
+                GarmentExpenditureGoodItem garmentExpenditureGoodItem = new GarmentExpenditureGoodItem(
+                    Guid.NewGuid(),
+                    garmentExpenditureGood.Identity,
+                    garmentFinishingGoodStockItem.Identity,
+                    new SizeId(item.Size.Id),
+                    item.Size.Size,
+                    qty,
+                    0,
+                    new UomId(item.Uom.Id),
+                    item.Uom.Unit,
+                    item.Description,
+                    garmentFinishingGoodStockItem.BasicPrice,
+                    (garmentFinishingGoodStockItem.BasicPrice + (double)garmentComodityPrice.Price) * qty
+                );
+
+                await _garmentExpenditureGoodItemRepository.Update(garmentExpenditureGoodItem);
+
+                GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = new GarmentFinishedGoodStockHistory(
                                             Guid.NewGuid(),
-                                            item.FinishedGoodStockId,
+                                            garmentFinishingGoodStockItem.Identity,
                                             Guid.Empty,
                                             Guid.Empty,
                                             garmentExpenditureGood.Identity,
@@ -115,30 +151,15 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                                             garmentExpenditureGoodItem.BasicPrice,
                                             garmentExpenditureGoodItem.Price
                                         );
-                    await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
+                await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
 
-                    if (finStockToBeUpdated.ContainsKey(item.FinishedGoodStockId))
-                    {
-                        finStockToBeUpdated[item.FinishedGoodStockId] += item.Quantity;
-                    }
-                    else
-                    {
-                        finStockToBeUpdated.Add(item.FinishedGoodStockId, item.Quantity);
-                    }
-
-                    await _garmentExpenditureGoodItemRepository.Update(garmentExpenditureGoodItem);
-                }
-            }
-
-            foreach (var finStock in finStockToBeUpdated)
-            {
-                var garmentFinishingGoodStockItem = _garmentFinishedGoodStockRepository.Query.Where(x => x.Identity == finStock.Key).Select(s => new GarmentFinishedGoodStock(s)).Single();
-                var qty = garmentFinishingGoodStockItem.Quantity - finStock.Value;
-                garmentFinishingGoodStockItem.SetQuantity(qty);
-                garmentFinishingGoodStockItem.SetPrice((garmentFinishingGoodStockItem.BasicPrice + (double)garmentComodityPrice.Price) * (qty));
+                garmentFinishingGoodStockItem.SetQuantity(finStock.Value);
+                garmentFinishingGoodStockItem.SetPrice((garmentFinishingGoodStockItem.BasicPrice + (double)garmentComodityPrice.Price) * (finStock.Value));
                 garmentFinishingGoodStockItem.Modify();
 
                 await _garmentFinishedGoodStockRepository.Update(garmentFinishingGoodStockItem);
+
+
             }
 
             await _garmentExpenditureGoodRepository.Update(garmentExpenditureGood);
