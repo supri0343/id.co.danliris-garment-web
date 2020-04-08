@@ -21,7 +21,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Config
             builder.Property(o => o.UomUnit)
                .HasMaxLength(100);
             builder.Property(o => o.DesignColor)
-               .HasMaxLength(100);
+               .HasMaxLength(2000);
             builder.Property(o => o.FabricType)
                .HasMaxLength(100);
 
