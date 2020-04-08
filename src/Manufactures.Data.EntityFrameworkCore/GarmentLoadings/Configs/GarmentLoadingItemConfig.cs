@@ -16,8 +16,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentLoadings.Configs
 
             builder.Property(p => p.ProductCode).HasMaxLength(50);
             builder.Property(p => p.ProductName).HasMaxLength(500);
-            builder.Property(p => p.Color).HasMaxLength(50);
-            builder.Property(p => p.DesignColor).HasMaxLength(50);
+            builder.Property(p => p.Color).HasMaxLength(1000);
+            builder.Property(p => p.DesignColor).HasMaxLength(2000);
             builder.Property(p => p.SizeName).HasMaxLength(50);
             builder.Property(p => p.UomUnit).HasMaxLength(50);
 

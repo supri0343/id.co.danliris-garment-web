@@ -13,7 +13,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentAvalComponents.Configs
 
             builder.Property(p => p.ProductCode).HasMaxLength(25);
             builder.Property(p => p.ProductName).HasMaxLength(100);
-            builder.Property(p => p.DesignColor).HasMaxLength(100);
+            builder.Property(p => p.DesignColor).HasMaxLength(2000);
             builder.Property(p => p.Color).HasMaxLength(50);
             builder.Property(p => p.SizeName).HasMaxLength(100);
 

@@ -19,7 +19,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentDeliveryReturns.Config
             builder.Property(a => a.ProductName)
                .HasMaxLength(100);
             builder.Property(a => a.DesignColor)
-               .HasMaxLength(100);
+               .HasMaxLength(2000);
             builder.Property(a => a.RONo)
                .HasMaxLength(100);
             builder.Property(a => a.UomUnit)
