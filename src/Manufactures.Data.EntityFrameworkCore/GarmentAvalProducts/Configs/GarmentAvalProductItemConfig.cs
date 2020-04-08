@@ -16,7 +16,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentAvalProducts.Configs
 
             builder.Property(o => o.ProductCode).HasMaxLength(25);
             builder.Property(o => o.ProductName).HasMaxLength(100);
-            builder.Property(o => o.DesignColor).HasMaxLength(100);
+            builder.Property(o => o.DesignColor).HasMaxLength(2000);
             builder.Property(o => o.UomUnit).HasMaxLength(100);
 
             builder.ApplyAuditTrail();
