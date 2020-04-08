@@ -322,6 +322,8 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("DesignColor")
                         .HasMaxLength(100);
 
+                    b.Property<bool>("IsReceived");
+
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
 
@@ -403,6 +405,63 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasKey("Identity");
 
                     b.ToTable("GarmentAvalProducts");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentBalanceStockProductions.ReadModels.GarmentBalanceStockProductionReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ArticleNo")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ComodityName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<double>("FC");
+
+                    b.Property<double>("Hours");
+
+                    b.Property<Guid>("Id");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<decimal>("OTL");
+
+                    b.Property<DateTimeOffset>("Periode");
+
+                    b.Property<double>("QtyOrder");
+
+                    b.Property<string>("RO")
+                        .HasMaxLength(25);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("Type");
+
+                    b.Property<decimal>("Wage");
+
+                    b.HasKey("Identity");
+
+                    b.ToTable("GarmentBalanceStockProductions");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentComodityPrices.ReadModels.GarmentComodityPriceReadModel", b =>
@@ -1238,6 +1297,8 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("Invoice")
                         .HasMaxLength(50);
+
+                    b.Property<bool>("IsReceived");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);

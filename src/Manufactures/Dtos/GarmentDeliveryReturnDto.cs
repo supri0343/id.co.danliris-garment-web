@@ -31,6 +31,7 @@ namespace Manufactures.Dtos
             Unit = new UnitDepartment(garmentDeliveryReturn.UnitId.Value, garmentDeliveryReturn.UnitName, garmentDeliveryReturn.UnitCode);
             Storage = new Storage(garmentDeliveryReturn.StorageId.Value, garmentDeliveryReturn.StorageName, garmentDeliveryReturn.StorageCode);
             IsUsed = garmentDeliveryReturn.IsUsed;
+            CreatedBy = garmentDeliveryReturn.AuditTrail.CreatedBy;
         }
 
         public Guid Id { get; set; }
@@ -49,6 +50,7 @@ namespace Manufactures.Dtos
         public UnitDepartment Unit { get; set; }
         public Storage Storage { get; set; }
         public bool IsUsed { get; set; }
+        public string CreatedBy { get; set; }
         public List<GarmentDeliveryReturnItemDto> Items { get; set; }
     }
 }

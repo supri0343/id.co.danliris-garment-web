@@ -29,6 +29,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.ReadModels
         public string ContractNo { get; internal set; }
         public double Carton { get; internal set; }
         public string Description { get; internal set; }
+        public bool IsReceived { get; internal set; }
         public virtual List<GarmentExpenditureGoodItemReadModel> Items { get; internal set; }
 
 

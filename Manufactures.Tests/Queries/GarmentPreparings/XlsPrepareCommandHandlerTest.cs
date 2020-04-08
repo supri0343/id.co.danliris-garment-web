@@ -102,7 +102,9 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 			Guid guidAvalProductItem = Guid.NewGuid();
 			Guid guidDeliveryReturn = Guid.NewGuid();
 			Guid guidDeliveryReturnItem = Guid.NewGuid();
-			GetXlsPrepareQuery getXlsPrepareQuery = new GetXlsPrepareQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "token");
+
+			GetXlsPrepareQuery getXlsPrepareQuery = new GetXlsPrepareQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2),"", "token");
+
 
 			_mockGarmentPreparingItemRepository
 				.Setup(s => s.Query)
@@ -143,7 +145,7 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentAvalProductItemReadModel>
 				{
-					new GarmentAvalProductItem(guidAvalProductItem,guidAvalProduct,new GarmentPreparingId(guidPrepare.ToString()),new GarmentPreparingItemId(guidPrepareItem.ToString()),new Domain.GarmentAvalProducts.ValueObjects.ProductId(1),"","","",9,new Domain.GarmentAvalProducts.ValueObjects.UomId(1),"",100).GetReadModel()
+					new GarmentAvalProductItem(guidAvalProductItem,guidAvalProduct,new GarmentPreparingId(guidPrepare.ToString()),new GarmentPreparingItemId(guidPrepareItem.ToString()),new Domain.GarmentAvalProducts.ValueObjects.ProductId(1),"","","",9,new Domain.GarmentAvalProducts.ValueObjects.UomId(1),"",100,false).GetReadModel()
 				}.AsQueryable());
 			_mockGarmentAvalProductRepository
 				.Setup(s => s.Query)

@@ -19,6 +19,7 @@ namespace Manufactures.Dtos
             FinishingInDate = garmentFinishingIn.FinishingInDate;
             FinishingInType = garmentFinishingIn.FinishingInType;
             Comodity = new GarmentComodity(garmentFinishingIn.ComodityId.Value, garmentFinishingIn.ComodityCode, garmentFinishingIn.ComodityName);
+            CreatedBy = garmentFinishingIn.AuditTrail.CreatedBy;
         }
 
         public Guid Id { get; internal set; }

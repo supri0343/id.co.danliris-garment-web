@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentAdjustments;
 using Manufactures.Domain.GarmentAdjustments.Commands;
 using Manufactures.Domain.GarmentAdjustments.Repositories;
+using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.GarmentFinishedGoodStocks;
 using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
 using Manufactures.Domain.GarmentFinishingIns;
@@ -11,6 +13,7 @@ using Manufactures.Domain.GarmentSewingDOs;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
+using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,22 +33,26 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
         private readonly IGarmentFinishingInItemRepository _garmentFinishingInItemRepository;
 		private readonly IGarmentFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
 		private readonly IGarmentFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
+        private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
+    
 
-		public RemoveGarmentAdjustmentCommandHandler(IStorage storage)
-        {
-            _storage = storage;
-            _garmentAdjustmentRepository = storage.GetRepository<IGarmentAdjustmentRepository>();
-            _garmentAdjustmentItemRepository = storage.GetRepository<IGarmentAdjustmentItemRepository>();
-            _garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
-            _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
-            _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
-			_garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentFinishedGoodStockRepository>();
-			_garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentFinishedGoodStockHistoryRepository>();
-		}
+    public RemoveGarmentAdjustmentCommandHandler(IStorage storage)
+    {
+        _storage = storage;
+        _garmentAdjustmentRepository = storage.GetRepository<IGarmentAdjustmentRepository>();
+        _garmentAdjustmentItemRepository = storage.GetRepository<IGarmentAdjustmentItemRepository>();
+        _garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
+        _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
+        _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
+        _garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentFinishedGoodStockRepository>();
+        _garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentFinishedGoodStockHistoryRepository>();
+        _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
+    }
 
         public async Task<GarmentAdjustment> Handle(RemoveGarmentAdjustmentCommand request, CancellationToken cancellationToken)
         {
             var adjustment = _garmentAdjustmentRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentAdjustment(o)).Single();
+            GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && new UnitDepartmentId(a.UnitId) == adjustment.UnitId && new GarmentComodityId(a.ComodityId) == adjustment.ComodityId).Select(s => new GarmentComodityPrice(s)).Single();
 
             Dictionary<Guid, double> sewingDOItemToBeUpdated = new Dictionary<Guid, double>();
             Dictionary<Guid, double> sewingInItemToBeUpdated = new Dictionary<Guid, double>();
@@ -88,12 +95,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
                         finishingInItemToBeUpdated.Add(adjustmentItem.FinishingInItemId, adjustmentItem.Quantity);
                     }
                 }else
-				{
-					var garmentFinishedGoodstock = _garmentFinishedGoodStockRepository.Query.Where(x => x.Identity == adjustmentItem.FinishedGoodStockId).Select(s => new GarmentFinishedGoodStock(s)).Single();
-					garmentFinishedGoodstock.SetPrice((garmentFinishedGoodstock.Price / garmentFinishedGoodstock.Quantity)* (adjustmentItem.Quantity + garmentFinishedGoodstock.Quantity));
-
-					garmentFinishedGoodstock.Modify();
-					await _garmentFinishedGoodStockRepository.Update(garmentFinishedGoodstock);
+                {
 					if (finishedGoodItemToBeUpdated.ContainsKey(adjustmentItem.FinishedGoodStockId))
 					{
 						finishedGoodItemToBeUpdated[adjustmentItem.FinishedGoodStockId] += adjustmentItem.Quantity;
@@ -148,9 +150,11 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
 				foreach (var data in finishedGoodItemToBeUpdated)
 				{
 					var garmentFinishedGoodstock = _garmentFinishedGoodStockRepository.Query.Where(x => x.Identity == data.Key).Select(s => new GarmentFinishedGoodStock(s)).Single();
-					garmentFinishedGoodstock.SetQuantity(garmentFinishedGoodstock.Quantity + data.Value);
+                    var qty = garmentFinishedGoodstock.Quantity + data.Value;
+                    garmentFinishedGoodstock.SetQuantity(qty);
+                    garmentFinishedGoodstock.SetPrice((garmentFinishedGoodstock.BasicPrice + (double)garmentComodityPrice.Price) * (qty));
 
-					garmentFinishedGoodstock.Modify();
+                    garmentFinishedGoodstock.Modify();
 					await _garmentFinishedGoodStockRepository.Update(garmentFinishedGoodstock);
 				}
 				var stockHistory = _garmentFinishedGoodStockHistoryRepository.Query.Where(o => o.AdjustmentId == adjustment.Identity).Select(o => new GarmentFinishedGoodStockHistory(o));

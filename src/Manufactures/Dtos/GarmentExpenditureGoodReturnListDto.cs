@@ -20,6 +20,7 @@ namespace Manufactures.Dtos
             Comodity = new GarmentComodity(garmentExpenditureGoodReturn.ComodityId.Value, garmentExpenditureGoodReturn.ComodityCode, garmentExpenditureGoodReturn.ComodityName);
             Buyer = new Buyer(garmentExpenditureGoodReturn.BuyerId.Value, garmentExpenditureGoodReturn.BuyerCode, garmentExpenditureGoodReturn.BuyerName);
             Invoice = garmentExpenditureGoodReturn.Invoice;
+            CreatedBy = garmentExpenditureGoodReturn.AuditTrail.CreatedBy;
         }
 
         public Guid Id { get; internal set; }

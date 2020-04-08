@@ -37,6 +37,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
             ExpenditureGood.SetCarton(request.Carton);
             ExpenditureGood.SetExpenditureDate(request.ExpenditureDate);
             ExpenditureGood.SetInvoice(request.Invoice);
+            ExpenditureGood.SetIsReceived(request.IsReceived);
             ExpenditureGood.Modify();
             await _garmentExpenditureGoodRepository.Update(ExpenditureGood);
 

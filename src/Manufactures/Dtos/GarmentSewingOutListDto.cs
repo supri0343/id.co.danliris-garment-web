@@ -18,7 +18,7 @@ namespace Manufactures.Dtos
             Article = garmentSewingOutList.Article;
             SewingOutDate = garmentSewingOutList.SewingOutDate;
             SewingTo = garmentSewingOutList.SewingTo;
-
+            CreatedBy = garmentSewingOutList.AuditTrail.CreatedBy;
             Items = new List<GarmentSewingOutItemDto>();
         }
 
