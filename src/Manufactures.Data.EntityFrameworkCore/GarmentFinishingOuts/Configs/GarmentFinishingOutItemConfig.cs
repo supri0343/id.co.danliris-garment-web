@@ -22,7 +22,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentFinishingOuts.Configs
             builder.Property(a => a.ProductName)
                .HasMaxLength(100);
             builder.Property(a => a.DesignColor)
-               .HasMaxLength(100);
+               .HasMaxLength(2000);
 
             builder.Property(a => a.SizeName)
                .HasMaxLength(100);

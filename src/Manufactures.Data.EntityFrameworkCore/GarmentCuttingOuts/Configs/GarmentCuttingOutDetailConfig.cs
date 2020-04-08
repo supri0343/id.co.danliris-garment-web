@@ -18,7 +18,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingOuts.Configs
             builder.Property(a => a.SizeName)
                .HasMaxLength(100);
             builder.Property(a => a.Color)
-               .HasMaxLength(100);
+               .HasMaxLength(1000);
             builder.Property(a => a.CuttingOutUomUnit)
                .HasMaxLength(10);
 
