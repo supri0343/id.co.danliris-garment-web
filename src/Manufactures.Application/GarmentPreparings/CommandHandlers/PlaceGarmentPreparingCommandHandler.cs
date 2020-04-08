@@ -39,7 +39,7 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
             //List<GarmentPreparingItem> garmentPreparingItem = new List<GarmentPreparingItem>();
             //if (garmentPreparing == null)
             //{
-               var garmentPreparing = new GarmentPreparing(Guid.NewGuid(), request.UENId, request.UENNo, new UnitDepartmentId(request.Unit.Id), request.Unit.Code, request.Unit.Name, request.ProcessDate, request.RONo,
+                var garmentPreparing = new GarmentPreparing(Guid.NewGuid(), request.UENId, request.UENNo, new UnitDepartmentId(request.Unit.Id), request.Unit.Code, request.Unit.Name, request.ProcessDate, request.RONo,
                         request.Article, request.IsCuttingIn);
                 request.Items.Select(x => new GarmentPreparingItem(Guid.NewGuid(), x.UENItemId, new ProductId(x.Product.Id), x.Product.Code, x.Product.Name, x.DesignColor, x.Quantity, new UomId(x.Uom.Id), x.Uom.Unit, x.FabricType, x.RemainingQuantity, x.BasicPrice, garmentPreparing.Identity)).ToList()
                     .ForEach(async x => await _garmentPreparingItemRepository.Update(x));

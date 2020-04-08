@@ -45,7 +45,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(50);
+                        .HasMaxLength(2000);
 
                     b.Property<Guid>("FinishedGoodStockId");
 
@@ -190,7 +190,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(100);
+                        .HasMaxLength(2000);
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
@@ -320,9 +320,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(100);
-
-                    b.Property<bool>("IsReceived");
+                        .HasMaxLength(2000);
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
@@ -551,7 +549,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(50);
+                        .HasMaxLength(2000);
 
                     b.Property<double>("FC");
 
@@ -718,7 +716,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<double>("BasicPrice");
 
                     b.Property<string>("Color")
-                        .HasMaxLength(100);
+                        .HasMaxLength(1000);
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -794,7 +792,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(100);
+                        .HasMaxLength(2000);
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
@@ -924,7 +922,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(100);
+                        .HasMaxLength(2000);
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
@@ -1064,7 +1062,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500);
+                        .HasMaxLength(2000);
 
                     b.Property<Guid>("ExpenditureGoodId");
 
@@ -1505,7 +1503,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<double>("BasicPrice");
 
                     b.Property<string>("Color")
-                        .HasMaxLength(100);
+                        .HasMaxLength(1000);
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -1521,7 +1519,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(100);
+                        .HasMaxLength(2000);
 
                     b.Property<Guid>("FinishingInId");
 
@@ -1720,7 +1718,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(100);
+                        .HasMaxLength(2000);
 
                     b.Property<Guid>("FinishingInId");
 
@@ -1852,7 +1850,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<double>("BasicPrice");
 
                     b.Property<string>("Color")
-                        .HasMaxLength(50);
+                        .HasMaxLength(1000);
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -1868,7 +1866,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(50);
+                        .HasMaxLength(2000);
 
                     b.Property<Guid>("LoadingId");
 
@@ -2011,7 +2009,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(100);
+                        .HasMaxLength(2000);
 
                     b.Property<string>("FabricType")
                         .HasMaxLength(100);
@@ -2389,7 +2387,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<double>("BasicPrice");
 
                     b.Property<string>("Color")
-                        .HasMaxLength(100);
+                        .HasMaxLength(1000);
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -2409,7 +2407,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(100);
+                        .HasMaxLength(2000);
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
@@ -2534,7 +2532,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<double>("BasicPrice");
 
                     b.Property<string>("Color")
-                        .HasMaxLength(100);
+                        .HasMaxLength(1000);
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -2550,7 +2548,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(100);
+                        .HasMaxLength(2000);
 
                     b.Property<Guid>("FinishingOutDetailId");
 
@@ -2753,7 +2751,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(100);
+                        .HasMaxLength(2000);
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
@@ -2914,7 +2912,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(100);
+                        .HasMaxLength(2000);
 
                     b.Property<double>("FinishingInQuantity");
 

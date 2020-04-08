@@ -19,10 +19,10 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentFinishingIns.Configs
 
             builder.Property(a => a.ProductCode).HasMaxLength(25);
             builder.Property(a => a.ProductName).HasMaxLength(100);
-            builder.Property(a => a.DesignColor).HasMaxLength(100);
+            builder.Property(a => a.DesignColor).HasMaxLength(2000);
             builder.Property(a => a.SizeName).HasMaxLength(100);
             builder.Property(a => a.UomUnit).HasMaxLength(10);
-            builder.Property(a => a.Color).HasMaxLength(100);
+            builder.Property(a => a.Color).HasMaxLength(1000);
 
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();

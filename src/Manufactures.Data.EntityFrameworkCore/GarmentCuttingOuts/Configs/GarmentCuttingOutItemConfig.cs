@@ -19,7 +19,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingOuts.Configs
             builder.Property(a => a.ProductName)
                .HasMaxLength(100);
             builder.Property(a => a.DesignColor)
-               .HasMaxLength(100);
+               .HasMaxLength(2000);
 
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();

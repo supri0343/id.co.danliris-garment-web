@@ -19,7 +19,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentExpenditureGoodReturns.Co
 
             builder.Property(a => a.SizeName).HasMaxLength(100);
             builder.Property(a => a.UomUnit).HasMaxLength(10);
-            builder.Property(a => a.Description).HasMaxLength(500);
+            builder.Property(a => a.Description).HasMaxLength(2000);
 
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();

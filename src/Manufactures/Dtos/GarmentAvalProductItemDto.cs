@@ -23,7 +23,6 @@ namespace Manufactures.Dtos
             Quantity = garmentAvalProductItem.Quantity;
             Uom = new Uom(garmentAvalProductItem.UomId.Value, garmentAvalProductItem.UomUnit);
             BasicPrice = garmentAvalProductItem.BasicPrice;
-            IsReceived = garmentAvalProductItem.IsReceived;
         }
 
         public Guid Id { get; set; }
@@ -40,6 +39,5 @@ namespace Manufactures.Dtos
         public double Quantity { get; set; }
         public Uom Uom { get; set; }
         public double BasicPrice { get; set; }
-        public bool IsReceived { get; set; }
     }
 }

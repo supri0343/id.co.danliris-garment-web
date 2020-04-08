@@ -26,7 +26,6 @@ namespace Manufactures.Domain.GarmentAvalProducts.ValueObjects
         public Uom Uom { get; set; }
         public double BasicPrice { get; set; }
         public double PreparingQuantity { get; set; }
-        public bool IsReceived { get; set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
