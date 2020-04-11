@@ -275,5 +275,20 @@ namespace Manufactures.Tests.Controllers.Api
         Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
 
 		}
-}
+		[Fact]
+		public async Task GetXLSBookKeepingBehavior()
+		{
+			var unitUnderTest = CreateGarmentCuttingOutController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetXlsCuttingQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new MemoryStream());
+
+			var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "bookkeeping", 1, 25, "{}");
+
+			// Assert
+			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+
+		}
+	}
 }
