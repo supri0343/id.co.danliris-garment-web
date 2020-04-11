@@ -117,5 +117,55 @@ namespace Manufactures.Tests.Queries.GarmentLoadings
 			// Assert
 			result.Should().NotBeNull();
 		}
+		[Fact]
+		public async Task Handle_StateUnderTest_ExpectedBehavior_bookkeeping()
+		{
+			// Arrange
+			GetXlsLoadingQueryHandler unitUnderTest = CreateGetXlsLoadingQueryHandler();
+			CancellationToken cancellationToken = CancellationToken.None;
+
+			Guid guidLoading = Guid.NewGuid();
+			Guid guidLoadingItem = Guid.NewGuid();
+			Guid guidCuttingOut = Guid.NewGuid();
+			Guid guidCuttingOutItem = Guid.NewGuid();
+			Guid guidCuttingOutDetail = Guid.NewGuid();
+
+			GetXlsLoadingQuery getMonitoring = new GetXlsLoadingQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "bookkeeping", "token");
+
+
+			_mockGarmentLoadingItemRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentLoadingItemReadModel>
+				{
+					new GarmentLoadingItem(guidLoadingItem,guidLoading,new Guid(),new SizeId(1),"",new ProductId(1),"","","",0,0,0, new UomId(1),"","",10).GetReadModel()
+				}.AsQueryable());
+
+			_mockGarmentLoadingRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentLoadingReadModel>
+				{
+					new GarmentLoading(guidLoading,"",new Guid(),"",new UnitDepartmentId(1),"","","ro","",new UnitDepartmentId(1),"","",DateTimeOffset.Now,new GarmentComodityId(1),"","").GetReadModel()
+				}.AsQueryable());
+
+
+			_mockGarmentCuttingOutItemRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentCuttingOutItemReadModel>
+				{
+					new GarmentCuttingOutItem(guidCuttingOutItem,new Guid() ,new Guid(),guidCuttingOut,new ProductId(1),"","","",100).GetReadModel()
+				}.AsQueryable());
+			_mockGarmentCuttingOutRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentCuttingOutReadModel>
+				{
+					 new GarmentCuttingOut(guidCuttingOut, "", "",new UnitDepartmentId(1),"","",DateTime.Now,"ro","",new UnitDepartmentId(1),"","",new GarmentComodityId(1),"","").GetReadModel()
+				}.AsQueryable());
+
+			// Act
+			var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
+
+			// Assert
+			result.Should().NotBeNull();
+		}
 	}
 }
