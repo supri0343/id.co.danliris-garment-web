@@ -115,5 +115,53 @@ namespace Manufactures.Tests.Queries.GarmentSewingOuts
 			// Assert
 			result.Should().NotBeNull();
 		}
+		[Fact]
+		public async Task Handle_StateUnderTest_ExpectedBehavior_bookkeeping()
+		{
+			// Arrange
+			GetXlsSewingQueryHandler unitUnderTest = CreateGetXlsSewingQueryHandler();
+			CancellationToken cancellationToken = CancellationToken.None;
+
+			Guid guidLoading = Guid.NewGuid();
+			Guid guidLoadingItem = Guid.NewGuid();
+			Guid guidSewingOut = Guid.NewGuid();
+			Guid guidSewingOutItem = Guid.NewGuid();
+
+			GetXlsSewingQuery getMonitoring = new GetXlsSewingQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "bookkeeping", "token");
+
+			_mockGarmentLoadingItemRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentLoadingItemReadModel>
+				{
+					new GarmentLoadingItem(guidLoadingItem,guidLoading,new Guid(),new SizeId(1),"",new ProductId(1),"","","",0,0,0, new UomId(1),"","",10).GetReadModel()
+				}.AsQueryable());
+
+			_mockGarmentLoadingRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentLoadingReadModel>
+				{
+					new GarmentLoading(guidLoading,"",new Guid(),"",new UnitDepartmentId(1),"","","ro","",new UnitDepartmentId(1),"","",DateTimeOffset.Now,new GarmentComodityId(1),"","").GetReadModel()
+				}.AsQueryable());
+
+			_mockGarmentSewingOutItemRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentSewingOutItemReadModel>
+				{
+					new GarmentSewingOutItem(guidSewingOutItem,guidSewingOut,new Guid(),new Guid(), new ProductId(1),"","","",new SizeId(1),"",0, new UomId(1),"","",10,100,100).GetReadModel()
+				}.AsQueryable());
+
+			_mockGarmentSewingOutRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentSewingOutReadModel>
+				{
+					new GarmentSewingOut(guidSewingOut,"",new BuyerId(1),"","",new UnitDepartmentId(1),"","","",DateTimeOffset.Now,"ro","",new UnitDepartmentId(1),"","",new GarmentComodityId(1),"","",true).GetReadModel()
+				}.AsQueryable());
+
+			// Act
+			var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
+
+			// Assert
+			result.Should().NotBeNull();
+		}
 	}
 }
