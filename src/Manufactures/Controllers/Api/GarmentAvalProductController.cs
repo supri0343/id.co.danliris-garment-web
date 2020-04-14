@@ -174,5 +174,14 @@ namespace Manufactures.Controllers.Api
 
             return Ok(order.Identity);
         }
+
+        [HttpPut("update-received")]
+        public async Task<IActionResult> UpdateIsReceived([FromBody]UpdateIsReceivedGarmentAvalProductCommand command)
+        {
+            VerifyUser();
+            var order = await Mediator.Send(command);
+
+            return Ok();
+        }
     }
 }
