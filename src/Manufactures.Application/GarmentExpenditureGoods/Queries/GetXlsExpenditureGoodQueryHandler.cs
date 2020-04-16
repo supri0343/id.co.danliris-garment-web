@@ -18,6 +18,7 @@ using Manufactures.Domain.GarmentExpenditureGoods.Repositories;
 using System.IO;
 using System.Data;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 {
@@ -41,12 +42,14 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			public string expenditureGoodNo { get; internal set; }
 			public string expenditureGoodType { get; internal set; }
 			public DateTimeOffset expenditureDate { get; internal set; }
+			public string buyer { get; internal set; }
 			public string roNo { get; internal set; }
 			public string buyerArticle { get; internal set; }
 			public string colour { get; internal set; }
 			public string name { get; internal set; }
 			public double qty { get; internal set; }
 			public string invoice { get; internal set; }
+			public decimal price { get; internal set; }
 		}
 		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
 		{
@@ -163,11 +166,11 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			var Query = from a in garmentExpenditureGoodRepository.Query
 						join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
 						where a.UnitId == request.unit && a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo
-						select new monitoringView { buyerArticle = a.BuyerCode + " " + a.Article, roNo = a.RONo, expenditureDate = a.ExpenditureDate, expenditureGoodNo = a.ExpenditureGoodNo, expenditureGoodType = a.ExpenditureType, invoice = a.Invoice, colour = b.Description, qty = b.Quantity, name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+						select new monitoringView { price = Convert.ToDecimal(b.Price), buyer = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), buyerArticle = a.BuyerCode + " " + a.Article, roNo = a.RONo, expenditureDate = a.ExpenditureDate, expenditureGoodNo = a.ExpenditureGoodNo, expenditureGoodType = a.ExpenditureType, invoice = a.Invoice, colour = b.Description, qty = b.Quantity, name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 
 
 
-			var querySum = Query.ToList().GroupBy(x => new { x.buyerArticle, x.roNo, x.expenditureDate, x.expenditureGoodNo, x.expenditureGoodType, x.invoice, x.colour, x.name }, (key, group) => new
+			var querySum = Query.ToList().GroupBy(x => new { x.buyer, x.buyerArticle, x.roNo, x.expenditureDate, x.expenditureGoodNo, x.expenditureGoodType, x.invoice, x.colour, x.name }, (key, group) => new
 			{
 				ros = key.roNo,
 				buyer = key.buyerArticle,
@@ -176,24 +179,27 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 				expendituregoodNo = key.expenditureGoodNo,
 				expendituregoodTypes = key.expenditureGoodType,
 				color = key.colour,
+				price = group.Sum(s => s.price),
+				buyerC = key.buyer,
 				names = key.name,
 				invoices = key.invoice
 
 			}).OrderBy(s => s.expendituregoodNo);
 			foreach (var item in querySum)
 			{
-				var dates = item.expenditureDates.AddHours(7);
 				GarmentMonitoringExpenditureGoodDto dto = new GarmentMonitoringExpenditureGoodDto
 				{
 					roNo = item.ros,
 					buyerArticle = item.buyer,
 					expenditureGoodType = item.expendituregoodTypes,
 					expenditureGoodNo = item.expendituregoodNo,
-					expenditureDate = dates,
+					expenditureDate = item.expenditureDates,
 					qty = item.qty,
 					colour = item.color,
 					name = item.names,
-					invoice = item.invoices
+					invoice = item.invoices,
+					price = item.price,
+					buyerCode = item.buyerC
 
 				};
 				monitoringDtos.Add(dto);
@@ -207,19 +213,25 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BUYER & ARTICLE", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "COLOUR", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NAMA", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "HARGA (PCS)", DataType = typeof(decimal) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "QTY", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "INVOICE", DataType = typeof(string) });
 			if (listViewModel.garmentMonitorings.Count > 0)
 			{
 				foreach (var report in listViewModel.garmentMonitorings)
-					reportDataTable.Rows.Add(report.expenditureGoodNo, report.expenditureGoodType, report.expenditureDate.ToString("dd MMM yyy"), report.roNo, report.buyerArticle, report.colour, report.name, report.qty, report.invoice);
+					reportDataTable.Rows.Add(report.expenditureGoodNo, report.expenditureGoodType, report.expenditureDate.ToString("dd MMM yyy"), report.roNo, report.buyerArticle, report.colour, report.name,report.price, report.qty, report.invoice);
 
 			}
 			using (var package = new ExcelPackage())
 			{
 				var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
 				worksheet.Cells["A1"].LoadFromDataTable(reportDataTable, true);
+				worksheet.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 				var stream = new MemoryStream();
+				if (request.type != "bookkeeping")
+				{
+					worksheet.Column(8).Hidden = true;
+				}
 				package.SaveAs(stream);
 
 				return stream;
