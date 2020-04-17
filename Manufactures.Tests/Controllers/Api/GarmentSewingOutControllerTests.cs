@@ -265,7 +265,23 @@ namespace Manufactures.Tests.Controllers.Api
 				.ReturnsAsync(new MemoryStream());
 
 			// Act
-			var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+			var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "",1, 25, "{}");
+
+			// Assert
+			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+
+		}
+		[Fact]
+		public async Task GetXLSBookkeepingBehavior()
+		{
+			var unitUnderTest = CreateGarmentSewingOutController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetXlsSewingQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new MemoryStream());
+
+			// Act
+			var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "bookkeeping", 1, 25, "{}");
 
 			// Assert
 			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
