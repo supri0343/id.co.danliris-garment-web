@@ -40,6 +40,7 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentFinishingInRepository.Read(page, size, order, keyword, filter);
             var total = query.Count();
+            double totalQty = query.Sum(a => a.Items.Sum(b => b.Quantity));
             query = query.Skip((page - 1) * size).Take(size);
 
             List<GarmentFinishingInListDto> garmentCuttingInListDtos = _garmentFinishingInRepository.Find(query).Select(loading =>
@@ -66,7 +67,8 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                total
+                total,
+                totalQty
             });
         }
 

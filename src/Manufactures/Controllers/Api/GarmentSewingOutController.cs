@@ -44,6 +44,7 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentSewingOutRepository.Read(page, size, order, keyword, filter);
             var total = query.Count();
+            double totalQty = query.Sum(a => a.GarmentSewingOutItem.Sum(b => b.Quantity));
             query = query.Skip((page - 1) * size).Take(size);
 
             List<GarmentSewingOutListDto> garmentSewingOutListDtos = _garmentSewingOutRepository
@@ -77,7 +78,8 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                total
+                total,
+                totalQty
             });
         }
 
