@@ -35,6 +35,7 @@ namespace Manufactures.Controllers.Api
             VerifyUser();
             var query = _garmentDeliveryReturnRepository.Read(order, select, filter);
             int totalRows = query.Count();
+            double totalQty = query.Sum(a => a.GarmentDeliveryReturnItem.Sum(b => b.Quantity));
             var garmentDeliveryReturnDto = _garmentDeliveryReturnRepository.Find(query).Select(o => new GarmentDeliveryReturnDto(o)).OrderByDescending(x => x.LastModifiedDate).ToArray();
             var garmentDeliveryReturnItemDto = _garmentDeliveryReturnItemRepository.Find(_garmentDeliveryReturnItemRepository.Query).Select(o => new GarmentDeliveryReturnItemDto(o)).ToList();
 
@@ -88,7 +89,8 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                count = totalRows
+                count = totalRows,
+                totalQty
             });
         }
 

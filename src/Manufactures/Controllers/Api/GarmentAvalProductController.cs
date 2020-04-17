@@ -42,6 +42,7 @@ namespace Manufactures.Controllers.Api
             VerifyUser();
             var query = _garmentAvalProductRepository.Read(order, select, filter);
             int totalRows = query.Count();
+            double totalQty = query.Sum(a => a.GarmentAvalProductItem.Sum(b => b.Quantity));
             var garmentAvalProductDto = _garmentAvalProductRepository.Find(query).Select(o => new GarmentAvalProductDto(o)).OrderByDescending(x => x.LastModifiedDate).ToArray();
             var garmentAvalProductItemDto = _garmentAvalProductItemRepository.Find(_garmentAvalProductItemRepository.Query).Select(o => new GarmentAvalProductItemDto(o)).ToList();
 
@@ -90,7 +91,8 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                count = totalRows
+                count = totalRows,
+                totalQty
             });
         }
 

@@ -36,6 +36,7 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentSewingDORepository.Read(page, size, order, "", filter);
             var total = query.Count();
+            double totalQty = query.Sum(a => a.GarmentSewingDOItem.Sum(b => b.Quantity));
             query = query.Skip((page - 1) * size).Take(size);
 
             var garmentSewingDODto = _garmentSewingDORepository.Find(query).Select(o => new GarmentSewingDOListDto(o)).ToArray();
@@ -107,7 +108,8 @@ namespace Manufactures.Controllers.Api
                 {
                     page,
                     size,
-                    total
+                    total,
+                    totalQty
                 });
             }
             else
@@ -129,7 +131,8 @@ namespace Manufactures.Controllers.Api
                 {
                     page,
                     size,
-                    total
+                    total,
+                    totalQty
                 });
             }
             //List<GarmentSewingDOListDto> garmentSewingDOListDtos = _garmentSewingDORepository.Find(query).Select(sewingDO =>
