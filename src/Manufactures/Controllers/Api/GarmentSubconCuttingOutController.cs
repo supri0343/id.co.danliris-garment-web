@@ -44,6 +44,7 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentCuttingOutRepository.Read(page, size, order, "", filter);
             var total = query.Count();
+            double totalQty = query.Sum(a => a.GarmentCuttingOutItem.Sum(b => b.GarmentCuttingOutDetail.Sum(c => c.CuttingOutQuantity)));
             query = query.Skip((page - 1) * size).Take(size);
 
             var garmentCuttingOutDto = _garmentCuttingOutRepository.Find(query).Select(o => new GarmentSubconCuttingOutListDto(o)).ToArray();
@@ -126,7 +127,8 @@ namespace Manufactures.Controllers.Api
                 {
                     page,
                     size,
-                    total
+                    total,
+                    totalQty
                 });
             }
             else
@@ -148,7 +150,8 @@ namespace Manufactures.Controllers.Api
                 {
                     page,
                     size,
-                    total
+                    total,
+                    totalQty
                 });
             }
 

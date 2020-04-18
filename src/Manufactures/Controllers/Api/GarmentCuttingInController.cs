@@ -41,6 +41,7 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentCuttingInRepository.Read(page, size, order, keyword, filter);
             var total = query.Count();
+            double totalQty = query.Sum(a => a.Items.Sum(b => b.Details.Sum(c => c.CuttingInQuantity)));
 
             query = query.Skip((page - 1) * size).Take(size);
 
@@ -74,7 +75,8 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                total
+                total,
+                totalQty
             });
         }
 
