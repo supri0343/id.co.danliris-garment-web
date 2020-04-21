@@ -1,5 +1,5 @@
 ﻿using Manufactures.Application.GarmentMonitoringProductionFlows.Queries;
-using Manufactures.Domain.GarmentPreparings.Repositories;
+using Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries;
 using Manufactures.Domain.MonitoringProductionFlow;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -63,6 +63,20 @@ namespace Manufactures.Controllers.Api
 			{
 				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
 			}
+		}
+		[HttpGet("stocks")]
+		public async Task<IActionResult> GetMonitoringProductionStockFlow(int unit, DateTime dateFrom,DateTime dateTo, string ro, int page = 1, int size = 25, string Order = "{}")
+		{
+			VerifyUser();
+			GetMonitoringProductionStockFlowQuery query = new GetMonitoringProductionStockFlowQuery(page, size, Order, unit,ro, dateFrom,dateTo,WorkContext.Token);
+			var viewModel = await Mediator.Send(query);
+
+			return Ok(viewModel.garmentMonitorings, info: new
+			{
+				page,
+				size,
+				viewModel.count
+			});
 		}
 	}
 }
