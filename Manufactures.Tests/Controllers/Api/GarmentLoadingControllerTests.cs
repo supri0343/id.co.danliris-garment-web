@@ -128,6 +128,37 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task GetSingle_PDF_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentLoadingController();
+
+            _mockLoadingRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentLoadingReadModel, bool>>>()))
+                .Returns(new List<GarmentLoading>()
+                {
+                    new GarmentLoading(Guid.NewGuid(), "no" , Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo","art",new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null)
+                });
+
+            _mockLoadingItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentLoadingItemReadModel, bool>>>()))
+                .Returns(new List<GarmentLoadingItem>()
+                {
+                    new GarmentLoadingItem(Guid.NewGuid(), Guid.NewGuid(),Guid.NewGuid(),new SizeId(1), "size", new ProductId(1), null, null, "design", 1,1,10,new UomId(1),null, "color",1)
+                });
+
+            //_mockSewingDOItemRepository
+            //    .Setup(s => s.Query)
+            //    .Returns(new List<GarmentSewingDOItemReadModel>().AsQueryable());
+
+            // Act
+            var result = await unitUnderTest.GetPdf(Guid.NewGuid().ToString(), "buyerCode");
+
+            // Assert
+            Assert.NotNull(result.GetType().GetProperty("FileStream"));
+        }
+
+        [Fact]
         public async Task Post_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
