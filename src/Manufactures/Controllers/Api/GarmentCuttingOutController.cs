@@ -103,7 +103,7 @@ namespace Manufactures.Controllers.Api
                                     || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                     || (x.Article != null && x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase))
                                     ).ToList();
-
+                
                 var i = 0;
                 foreach (var data in ListTemp)
                 {
@@ -132,7 +132,7 @@ namespace Manufactures.Controllers.Api
                 }
 
                 //garmentCuttingOutDtoListArray = garmentCuttingOutDtoListArray.Take(size).Skip((page - 1) * size).ToArray();
-
+                totalQty = garmentCuttingOutDtoListArray.Sum(a => a.Items.Sum(b => b.Details.Sum(c => c.CuttingOutQuantity)));
                 await Task.Yield();
                 return Ok(garmentCuttingOutDtoListArray, info: new
                 {
