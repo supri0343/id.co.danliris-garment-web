@@ -119,7 +119,7 @@ namespace Manufactures.Controllers.Api
                 {
                     garmentCuttingOutDtoListArray = garmentCuttingOutDtoList.OrderByDescending(x => x.LastModifiedDate).ToArray();
                 }
-
+                totalQty = garmentCuttingOutDtoListArray.Sum(a => a.Items.Sum(b => b.Details.Sum(c => c.CuttingOutQuantity)));
                 //garmentCuttingOutDtoListArray = garmentCuttingOutDtoListArray.Take(size).Skip((page - 1) * size).ToArray();
 
                 await Task.Yield();
