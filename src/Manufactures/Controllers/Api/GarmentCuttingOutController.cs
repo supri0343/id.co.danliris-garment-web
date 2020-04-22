@@ -16,6 +16,8 @@ using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Newtonsoft.Json;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentCuttingOuts.Queries;
+using Manufactures.Helpers.PDFTemplates;
+using Manufactures.Domain.GarmentCuttingOuts;
 
 namespace Manufactures.Controllers.Api
 {
@@ -214,6 +216,35 @@ namespace Manufactures.Controllers.Api
 
             await Task.Yield();
             return Ok(garmentCuttingOutDto);
+
+            
+        }
+
+        [HttpGet("{id}/{buyer}")]
+        public async Task<IActionResult> GetPdf(string id, string buyer)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+            GarmentCuttingOutDto garmentCuttingOutDto = _garmentCuttingOutRepository.Find(o => o.Identity == guid).Select(cutOut => new GarmentCuttingOutDto(cutOut)
+            {
+                Items = _garmentCuttingOutItemRepository.Find(o => o.CutOutId == cutOut.Identity).Select(cutOutItem => new GarmentCuttingOutItemDto(cutOutItem)
+                {
+                    Details = _garmentCuttingOutDetailRepository.Find(o => o.CutOutItemId == cutOutItem.Identity).Select(cutOutDetail => new GarmentCuttingOutDetailDto(cutOutDetail)
+                    {
+                        
+                    }).ToList()
+                }).ToList()
+            }
+            ).FirstOrDefault();
+            var stream = GarmentCuttingOutPDFTemplate.Generate(garmentCuttingOutDto, buyer);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentCuttingOutDto.CutOutNo}.pdf"
+            };
         }
 
         [HttpPost]
