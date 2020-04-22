@@ -24,7 +24,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSewingDOs.Repositories
                 "SewingDONo",
                 "Article",
                 "RONo",
-                "UnitCode"
+                "UnitCode",
+                "GarmentSewingDOItem.ProductCode"
             };
 
             data = QueryHelper<GarmentSewingDOReadModel>.Search(data, SearchAttributes, keyword);
