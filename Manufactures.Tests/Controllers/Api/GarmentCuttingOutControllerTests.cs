@@ -176,6 +176,43 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task GetSingle_PDF_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentCuttingOutController();
+
+            Guid cuttingOutGuid = Guid.NewGuid();
+            _mockGarmentCuttingOutRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutReadModel, bool>>>()))
+                .Returns(new List<GarmentCuttingOut>()
+                {
+                    new GarmentCuttingOut(cuttingOutGuid, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", "art", new UnitDepartmentId(1), null, null, new GarmentComodityId(1), null, null)
+                });
+
+            Guid cuttingOutItemGuid = Guid.NewGuid();
+            _mockGarmentCuttingOutItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutItemReadModel, bool>>>()))
+                .Returns(new List<GarmentCuttingOutItem>()
+                {
+                    new GarmentCuttingOutItem(cuttingOutItemGuid, cuttingOutGuid, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, "design", 1)
+                });
+
+            _mockGarmentCuttingOutDetailRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutDetailReadModel, bool>>>()))
+                .Returns(new List<GarmentCuttingOutDetail>()
+                {
+                    new GarmentCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), "size", "color", 1, 1, new UomId(1), "uom", 1, 1)
+                });
+
+            // Act
+            var result = await unitUnderTest.GetPdf(Guid.NewGuid().ToString(), "buyerCode");
+
+            // Assert
+            //Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+            Assert.NotNull(result.GetType().GetProperty("FileStream"));
+        }
+
+        [Fact]
         public async Task Post_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
