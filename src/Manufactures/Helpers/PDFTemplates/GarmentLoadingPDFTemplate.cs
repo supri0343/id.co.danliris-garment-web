@@ -1,6 +1,5 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.draw;
 using Manufactures.Dtos;
 using System;
 using System.Collections.Generic;
@@ -11,9 +10,9 @@ using System.Text;
 
 namespace Manufactures.Helpers.PDFTemplates
 {
-    public class GarmentCuttingOutPDFTemplate
+    public class GarmentLoadingPDFTemplate
     {
-        public static MemoryStream Generate(GarmentCuttingOutDto garmentCuttingOut, string buyer)
+        public static MemoryStream Generate(GarmentLoadingDto loading, string buyer)
         {
             Document document = new Document(PageSize.A5.Rotate(), 10, 10, 10, 10);
             MemoryStream stream = new MemoryStream();
@@ -47,16 +46,16 @@ namespace Manufactures.Helpers.PDFTemplates
             tableHeader.AddCell(cellHeaderContentLeft);
 
             PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentCenter.AddElement(new Paragraph("BON HASIL POTONG", header_font) );
-            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal : " + garmentCuttingOut.CuttingOutDate.ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font) );
-            cellHeaderContentCenter.AddElement(new Paragraph("No. R/O : " + garmentCuttingOut.RONo, normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("LOADING BARANG", header_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal : " + loading.LoadingDate.ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("No. R/O : " + loading.RONo, normal_font));
             tableHeader.AddCell(cellHeaderContentCenter);
 
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
             cellHeaderContentRight.AddElement(new Phrase("FM-00-AD-09-010", normal_font));
             cellHeaderContentRight.AddElement(new Phrase("BUYER  :" + buyer, normal_font));
-            cellHeaderContentRight.AddElement(new Phrase("ART.NO : " + garmentCuttingOut.Article, normal_font));
-            cellHeaderContentRight.AddElement(new Phrase("NO.        : " + garmentCuttingOut.CutOutNo, normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("ART.NO : " + loading.Article, normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("NO.        : " + loading.LoadingNo, normal_font));
 
             tableHeader.AddCell(cellHeaderContentRight);
 
@@ -71,50 +70,49 @@ namespace Manufactures.Helpers.PDFTemplates
             Dictionary<string, double> detailData = new Dictionary<string, double>();
             Dictionary<string, string> remarks = new Dictionary<string, string>();
 
-            foreach (var item in garmentCuttingOut.Items)
+            foreach (var item in loading.Items)
             {
-                foreach(var detail in item.Details)
-                {
-                    if(!sizes.Contains(detail.Size.Size))
-                        sizes.Add(detail.Size.Size);
-                    if (!colors.Contains(detail.Color))
-                        colors.Add(detail.Color);
+                
+                    if (!sizes.Contains(item.Size.Size))
+                        sizes.Add(item.Size.Size);
+                    if (!colors.Contains(item.Color))
+                        colors.Add(item.Color);
 
-                    var key = detail.Size.Size + "~" + detail.Color;
+                    var key = item.Size.Size + "~" + item.Color;
 
                     if (detailData.ContainsKey(key))
                     {
-                        detailData[key] += detail.CuttingOutQuantity;
+                        detailData[key] += item.Quantity;
                     }
                     else
                     {
-                        detailData.Add(key, detail.CuttingOutQuantity);
+                        detailData.Add(key, item.Quantity);
                     }
 
-                    if (remarks.ContainsKey(detail.Color))
+                    if (remarks.ContainsKey(item.Color))
                     {
-                        var dup = remarks.Where(a => a.Value == item.DesignColor && a.Key== detail.Color);
-                        remarks[detail.Color] =  dup==null ? remarks[detail.Color] + ", " + item.DesignColor : remarks[detail.Color];
+                        var dup = remarks.Where(a => a.Value == item.DesignColor && a.Key == item.Color);
+                        remarks[item.Color] = dup == null ? remarks[item.Color] + ", " + item.DesignColor : remarks[item.Color];
                     }
                     else
                     {
-                        remarks.Add(detail.Color, item.DesignColor);
+                        remarks.Add(item.Color, item.DesignColor);
                     }
-                }
+                
             }
 
             sizes.Sort();
 
             #region content
 
-            PdfPTable tableContent = new PdfPTable(4+sizes.Count());
-            List<float> widths = new List<float> ( );
+            PdfPTable tableContent = new PdfPTable(4 + sizes.Count());
+            List<float> widths = new List<float>();
             widths.Add(2f);
             widths.Add(5f);
 
-            foreach(var s in sizes)
+            foreach (var s in sizes)
             {
-                widths.Add( 3f);
+                widths.Add(3f);
             }
 
             widths.Add(4f);
@@ -163,7 +161,7 @@ namespace Manufactures.Helpers.PDFTemplates
                 double total = 0;
                 foreach (var s in sizes)
                 {
-                    if(detailData.ContainsKey(s + "~" + i))
+                    if (detailData.ContainsKey(s + "~" + i))
                     {
                         cellCenter.Phrase = new Phrase(detailData[s + "~" + i].ToString(), normal_font);
                         cellCenter.Rowspan = 1;
@@ -180,7 +178,7 @@ namespace Manufactures.Helpers.PDFTemplates
                 cellCenter.Phrase = new Phrase(total.ToString(), normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
-                
+
                 cellCenter.Phrase = new Phrase(remarks[i].ToString(), normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
@@ -196,9 +194,9 @@ namespace Manufactures.Helpers.PDFTemplates
 
             PdfPTable tableSignature = new PdfPTable(2);
 
-            cellCenterTopNoBorder.Phrase = new Paragraph("Penerima\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Diterima Oleh\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Bag. Cutting\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Diberikan Oleh\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph($"Dicetak : {string.Format("{0:dd MMMM yyyy / HH:mm:ss}", DateTimeOffset.Now, new CultureInfo("id-ID"))}", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);

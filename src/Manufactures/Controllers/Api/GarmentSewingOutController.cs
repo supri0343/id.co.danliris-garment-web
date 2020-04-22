@@ -8,6 +8,7 @@ using Manufactures.Domain.GarmentSewingOuts.Commands;
 using Manufactures.Domain.GarmentSewingOuts.ReadModels;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
 using Manufactures.Dtos;
+using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -257,5 +258,32 @@ namespace Manufactures.Controllers.Api
 				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
 			}
 		}
-	}
+
+        [HttpGet("{id}/{buyer}")]
+        public async Task<IActionResult> GetPdf(string id, string buyer)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+            GarmentSewingOutDto garmentSewingOutDto = _garmentSewingOutRepository.Find(o => o.Identity == guid).Select(sewOut => new GarmentSewingOutDto(sewOut)
+            {
+                Items = _garmentSewingOutItemRepository.Find(o => o.SewingOutId == sewOut.Identity).Select(sewOutItem => new GarmentSewingOutItemDto(sewOutItem)
+                {
+                    Details = _garmentSewingOutDetailRepository.Find(o => o.SewingOutItemId == sewOutItem.Identity).Select(sewOutDetail => new GarmentSewingOutDetailDto(sewOutDetail)
+                    {
+                    }).ToList()
+
+                }).ToList()
+            }
+            ).FirstOrDefault();
+            var stream = GarmentSewingOutPDFTemplate.Generate(garmentSewingOutDto, buyer);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentSewingOutDto.SewingOutNo}.pdf"
+            };
+        }
+    }
 }

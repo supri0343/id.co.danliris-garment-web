@@ -6,6 +6,7 @@ using Manufactures.Domain.GarmentLoadings.Commands;
 using Manufactures.Domain.GarmentLoadings.Repositories;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Manufactures.Dtos;
+using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -210,5 +211,27 @@ namespace Manufactures.Controllers.Api
 				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
 			}
 		}
-	}
+
+        [HttpGet("{id}/{buyer}")]
+        public async Task<IActionResult> GetPdf(string id, string buyer)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+            GarmentLoadingDto garmentLoadingDto = _garmentLoadingRepository.Find(o => o.Identity == guid).Select(loading => new GarmentLoadingDto(loading)
+            {
+                Items = _garmentLoadingItemRepository.Find(o => o.LoadingId == loading.Identity).Select(loadingItem => new GarmentLoadingItemDto(loadingItem)
+                ).ToList()
+            }
+            ).FirstOrDefault();
+            var stream = GarmentLoadingPDFTemplate.Generate(garmentLoadingDto, buyer);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentLoadingDto.LoadingNo}.pdf"
+            };
+        }
+    }
 }
