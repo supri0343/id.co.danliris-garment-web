@@ -47,7 +47,7 @@ namespace Manufactures.Helpers.PDFTemplates
 
             PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };
             cellHeaderContentCenter.AddElement(new Paragraph("LOADING BARANG", header_font));
-            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal : " + loading.LoadingDate.ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal : " + loading.LoadingDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
             cellHeaderContentCenter.AddElement(new Paragraph("No. R/O : " + loading.RONo, normal_font));
             tableHeader.AddCell(cellHeaderContentCenter);
 
@@ -72,33 +72,36 @@ namespace Manufactures.Helpers.PDFTemplates
 
             foreach (var item in loading.Items)
             {
-                
-                    if (!sizes.Contains(item.Size.Size))
-                        sizes.Add(item.Size.Size);
-                    if (!colors.Contains(item.Color))
-                        colors.Add(item.Color);
+                if (!sizes.Contains(item.Size.Size))
+                    sizes.Add(item.Size.Size);
+                if (!colors.Contains(item.Color))
+                    colors.Add(item.Color);
 
-                    var key = item.Size.Size + "~" + item.Color;
+                var key = item.Size.Size + "~" + item.Color;
 
-                    if (detailData.ContainsKey(key))
-                    {
-                        detailData[key] += item.Quantity;
-                    }
-                    else
-                    {
-                        detailData.Add(key, item.Quantity);
-                    }
+                if (detailData.ContainsKey(key))
+                {
+                    detailData[key] += item.Quantity;
+                }
+                else
+                {
+                    detailData.Add(key, item.Quantity);
+                }
 
-                    if (remarks.ContainsKey(item.Color))
+                if (remarks.ContainsKey(item.Color))
+                {
+                    var dup = remarks.Where(a => a.Value == item.DesignColor && a.Key == item.Color).FirstOrDefault();
+                    if (dup.Value == null)
                     {
-                        var dup = remarks.Where(a => a.Value == item.DesignColor && a.Key == item.Color);
-                        remarks[item.Color] = dup == null ? remarks[item.Color] + ", " + item.DesignColor : remarks[item.Color];
+                        var decol = remarks[item.Color].Split(", ").ToList();
+                        remarks[item.Color] = decol.Where(a => a == item.DesignColor).FirstOrDefault() == null ? remarks[item.Color] + ", " + item.DesignColor : remarks[item.Color];
                     }
-                    else
-                    {
-                        remarks.Add(item.Color, item.DesignColor);
-                    }
-                
+                }
+                else
+                {
+                    remarks.Add(item.Color, item.DesignColor);
+                }
+
             }
 
             sizes.Sort();
@@ -198,7 +201,7 @@ namespace Manufactures.Helpers.PDFTemplates
             tableSignature.AddCell(cellCenterTopNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph("Diberikan Oleh\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph($"Dicetak : {string.Format("{0:dd MMMM yyyy / HH:mm:ss}", DateTimeOffset.Now, new CultureInfo("id-ID"))}", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph($"Dicetak : {DateTimeOffset.Now.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy / HH:mm:ss", new CultureInfo("id-ID"))}", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);

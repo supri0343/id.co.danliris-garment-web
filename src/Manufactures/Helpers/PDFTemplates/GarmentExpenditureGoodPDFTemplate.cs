@@ -1,19 +1,17 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.draw;
 using Manufactures.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Manufactures.Helpers.PDFTemplates
 {
-    public class GarmentCuttingOutPDFTemplate
+    public class GarmentExpenditureGoodPDFTemplate
     {
-        public static MemoryStream Generate(GarmentCuttingOutDto garmentCuttingOut, string buyer)
+        public static MemoryStream Generate(GarmentExpenditureGoodDto exGood, string buyer)
         {
             Document document = new Document(PageSize.A5.Rotate(), 10, 10, 10, 10);
             MemoryStream stream = new MemoryStream();
@@ -47,18 +45,27 @@ namespace Manufactures.Helpers.PDFTemplates
             tableHeader.AddCell(cellHeaderContentLeft);
 
             PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentCenter.AddElement(new Paragraph("BON HASIL POTONG", header_font) );
-            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal : " + garmentCuttingOut.CuttingOutDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
-            cellHeaderContentCenter.AddElement(new Paragraph("No. R/O : " + garmentCuttingOut.RONo, normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("BON PENGIRIMAN", header_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal : " + exGood.ExpenditureDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
+            
             tableHeader.AddCell(cellHeaderContentCenter);
 
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
             cellHeaderContentRight.AddElement(new Phrase("FM-00-AD-09-010", normal_font));
             cellHeaderContentRight.AddElement(new Phrase("BUYER  :" + buyer, normal_font));
-            cellHeaderContentRight.AddElement(new Phrase("ART.NO : " + garmentCuttingOut.Article, normal_font));
-            cellHeaderContentRight.AddElement(new Phrase("NO.        : " + garmentCuttingOut.CutOutNo, normal_font));
-
+            cellHeaderContentRight.AddElement(new Phrase("ART.NO : " + exGood.Article, normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("NO.        : " + exGood.ExpenditureGoodNo, normal_font));
             tableHeader.AddCell(cellHeaderContentRight);
+
+
+            PdfPCell cellHeaderContentLeft2 = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            cellHeaderContentLeft2.AddElement(new Phrase("Kepada Yth. Bag.Penjualan, untuk dikirimkan kepada ....", normal_font));
+            cellHeaderContentLeft2.Colspan = 2;
+            tableHeader.AddCell(cellHeaderContentLeft2);
+
+            PdfPCell cellHeaderContentRight2 = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            cellHeaderContentRight2.AddElement(new Phrase("", normal_font));
+            tableHeader.AddCell(cellHeaderContentRight2);
 
             PdfPCell cellHeader = new PdfPCell(tableHeader);
             tableHeader.ExtendLastRow = false;
@@ -71,54 +78,49 @@ namespace Manufactures.Helpers.PDFTemplates
             Dictionary<string, double> detailData = new Dictionary<string, double>();
             Dictionary<string, string> remarks = new Dictionary<string, string>();
 
-            foreach (var item in garmentCuttingOut.Items)
+            foreach (var item in exGood.Items)
             {
-                foreach(var detail in item.Details)
+
+                if (!sizes.Contains(item.Size.Size))
+                    sizes.Add(item.Size.Size);
+                if (!colors.Contains(item.Description))
+                    colors.Add(item.Description);
+
+                var key = item.Size.Size + "~" + item.Description;
+
+                if (detailData.ContainsKey(key))
                 {
-                    if(!sizes.Contains(detail.Size.Size))
-                        sizes.Add(detail.Size.Size);
-                    if (!colors.Contains(detail.Color))
-                        colors.Add(detail.Color);
-
-                    var key = detail.Size.Size + "~" + detail.Color;
-
-                    if (detailData.ContainsKey(key))
-                    {
-                        detailData[key] += detail.CuttingOutQuantity;
-                    }
-                    else
-                    {
-                        detailData.Add(key, detail.CuttingOutQuantity);
-                    }
-
-                    if (remarks.ContainsKey(detail.Color))
-                    {
-                        var dup = remarks.Where(a => a.Value == item.DesignColor && a.Key== detail.Color).FirstOrDefault();
-                        if(dup.Value == null)
-                        {
-                            var decol= remarks[detail.Color].Split(", ").ToList();
-                            remarks[detail.Color] = decol.Where(a=> a == item.DesignColor).FirstOrDefault() == null ? remarks[detail.Color] + ", " + item.DesignColor : remarks[detail.Color];
-                        }
-                    }
-                    else
-                    {
-                        remarks.Add(detail.Color, item.DesignColor);
-                    }
+                    detailData[key] += item.Quantity;
                 }
+                else
+                {
+                    detailData.Add(key, item.Quantity);
+                }
+
+                //if (remarks.ContainsKey(item.Color))
+                //{
+                //    var dup = remarks.Where(a => a.Value == item.Description && a.Key == item.Color);
+                //    remarks[item.Color] = dup == null ? remarks[item.Color] + ", " + item.Description : remarks[item.Color];
+                //}
+                //else
+                //{
+                //    remarks.Add(item.Color, item.Description);
+                //}
+
             }
 
             sizes.Sort();
 
             #region content
 
-            PdfPTable tableContent = new PdfPTable(4+sizes.Count());
-            List<float> widths = new List<float> ( );
+            PdfPTable tableContent = new PdfPTable(4 + sizes.Count());
+            List<float> widths = new List<float>();
             widths.Add(2f);
             widths.Add(5f);
 
-            foreach(var s in sizes)
+            foreach (var s in sizes)
             {
-                widths.Add( 3f);
+                widths.Add(3f);
             }
 
             widths.Add(4f);
@@ -167,7 +169,7 @@ namespace Manufactures.Helpers.PDFTemplates
                 double total = 0;
                 foreach (var s in sizes)
                 {
-                    if(detailData.ContainsKey(s + "~" + i))
+                    if (detailData.ContainsKey(s + "~" + i))
                     {
                         cellCenter.Phrase = new Phrase(detailData[s + "~" + i].ToString(), normal_font);
                         cellCenter.Rowspan = 1;
@@ -184,27 +186,70 @@ namespace Manufactures.Helpers.PDFTemplates
                 cellCenter.Phrase = new Phrase(total.ToString(), normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
-                
-                cellCenter.Phrase = new Phrase(remarks[i].ToString(), normal_font);
+
+                cellCenter.Phrase = new Phrase("", normal_font);//remarks[i].ToString(), normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
             }
 
             PdfPCell cellContent = new PdfPCell(tableContent); // dont remove
             tableContent.ExtendLastRow = false;
-            tableContent.SpacingAfter = 20f;
+            tableContent.SpacingAfter = 15f;
             document.Add(tableContent);
             #endregion
 
             #region TableSignature
 
-            PdfPTable tableSignature = new PdfPTable(2);
+            PdfPTable tableSignature = new PdfPTable(5);
 
-            cellCenterTopNoBorder.Phrase = new Paragraph("Penerima\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Bag. Cutting\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph($"TTL CTNS : {exGood.Carton.ToString()}", normal_font);
+            tableSignature.AddCell(cellCenterTopNoBorder);
+
+            cellCenterTopNoBorder.Phrase = new Paragraph($"No. Inv : {exGood.Invoice}", normal_font);
+            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph($"No. R/O : {exGood.RONo}", normal_font);
+            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph($"{exGood.ContractNo}", normal_font);
+            tableSignature.AddCell(cellCenterTopNoBorder);
+
+
+            cellCenterTopNoBorder.Phrase = new Paragraph("\n\n", normal_font);
+            cellCenterTopNoBorder.Colspan = 5;
+            tableSignature.AddCell(cellCenterTopNoBorder);
+
+
+            cellCenterTopNoBorder.Phrase = new Paragraph("Audit\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            cellCenterTopNoBorder.Colspan = 1;
+            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph("\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Expedisi\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph("\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Bag. Gudang\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            tableSignature.AddCell(cellCenterTopNoBorder);
+
+
             cellCenterTopNoBorder.Phrase = new Paragraph($"Dicetak : {DateTimeOffset.Now.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy / HH:mm:ss", new CultureInfo("id-ID"))}", normal_font);
+            cellCenterTopNoBorder.Colspan = 2;
+            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
+            cellCenterTopNoBorder.Colspan = 1;
+            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
