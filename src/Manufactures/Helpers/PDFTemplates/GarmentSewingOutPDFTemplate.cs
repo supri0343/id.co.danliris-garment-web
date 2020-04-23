@@ -46,7 +46,7 @@ namespace Manufactures.Helpers.PDFTemplates
 
             PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };
             cellHeaderContentCenter.AddElement(new Paragraph("BON HASIL SEWING", header_font));
-            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal : " + sewing.SewingOutDate.ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal : " + sewing.SewingOutDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
             cellHeaderContentCenter.AddElement(new Paragraph("No. R/O : " + sewing.RONo, normal_font));
             tableHeader.AddCell(cellHeaderContentCenter);
 
@@ -93,8 +93,12 @@ namespace Manufactures.Helpers.PDFTemplates
 
                         if (remarks.ContainsKey(item.Color))
                         {
-                            var dup = remarks.Where(a => a.Value == item.DesignColor && a.Key == item.Color);
-                            remarks[item.Color] = dup == null ? remarks[item.Color] + ", " + item.DesignColor : remarks[item.Color];
+                            var dup = remarks.Where(a => a.Value == item.DesignColor && a.Key == item.Color).FirstOrDefault();
+                            if (dup.Value == null)
+                            {
+                                var decol = remarks[item.Color].Split(", ").ToList();
+                                remarks[item.Color] = decol.Where(a => a == item.DesignColor).FirstOrDefault() == null ? remarks[item.Color] + ", " + item.DesignColor : remarks[item.Color];
+                            }
                         }
                         else
                         {
@@ -122,15 +126,19 @@ namespace Manufactures.Helpers.PDFTemplates
 
                     if (remarks.ContainsKey(item.Color))
                     {
-                        var dup = remarks.Where(a => a.Value == item.DesignColor && a.Key == item.Color);
-                        remarks[item.Color] = dup == null ? remarks[item.Color] + ", " + item.DesignColor : remarks[item.Color];
+                        var dup = remarks.Where(a => a.Value == item.DesignColor && a.Key == item.Color).FirstOrDefault();
+                        if (dup.Value == null)
+                        {
+                            var decol = remarks[item.Color].Split(", ").ToList();
+                            remarks[item.Color] = decol.Where(a => a == item.DesignColor).FirstOrDefault() == null ? remarks[item.Color] + ", " + item.DesignColor : remarks[item.Color];
+                        }
                     }
                     else
                     {
                         remarks.Add(item.Color, item.DesignColor);
                     }
                 }
-                
+
             }
 
             sizes.Sort();
@@ -226,11 +234,11 @@ namespace Manufactures.Helpers.PDFTemplates
 
             PdfPTable tableSignature = new PdfPTable(2);
 
-            cellCenterTopNoBorder.Phrase = new Paragraph("Penerima\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Diterima Oleh\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Bag. Cutting\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Diberikan Oleh\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph($"Dicetak : {string.Format("{0:dd MMMM yyyy / HH:mm:ss}", DateTimeOffset.Now, new CultureInfo("id-ID"))}", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph($"Dicetak : {DateTimeOffset.Now.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy / HH:mm:ss", new CultureInfo("id-ID"))}", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);

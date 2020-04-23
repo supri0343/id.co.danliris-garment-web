@@ -6,6 +6,7 @@ using Manufactures.Domain.GarmentExpenditureGoods;
 using Manufactures.Domain.GarmentExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentExpenditureGoods.Repositories;
 using Manufactures.Dtos;
+using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -223,5 +224,28 @@ namespace Manufactures.Controllers.Api
 				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
 			}
 		}
-	}
+
+        [HttpGet("{id}/{buyer}")]
+        public async Task<IActionResult> GetPdf(string id, string buyer)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+            GarmentExpenditureGoodDto garmentExpenditureGoodDto = _garmentExpenditureGoodRepository.Find(o => o.Identity == guid).Select(finishOut => new GarmentExpenditureGoodDto(finishOut)
+            {
+                Items = _garmentExpenditureGoodItemRepository.Find(o => o.ExpenditureGoodId == finishOut.Identity).Select(finishOutItem => new GarmentExpenditureGoodItemDto(finishOutItem)
+                {
+                }).ToList()
+            }
+            ).FirstOrDefault();
+            var stream = GarmentExpenditureGoodPDFTemplate.Generate(garmentExpenditureGoodDto, buyer);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentExpenditureGoodDto.ExpenditureGoodNo}.pdf"
+            };
+        }
+    }
 }
