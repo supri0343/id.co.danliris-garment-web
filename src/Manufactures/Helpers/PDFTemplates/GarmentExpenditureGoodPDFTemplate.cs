@@ -51,7 +51,7 @@ namespace Manufactures.Helpers.PDFTemplates
             tableHeader.AddCell(cellHeaderContentCenter);
 
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentRight.AddElement(new Phrase("FM-00-AD-09-010", normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("FM-00-AD-09-008 B", normal_font));
             cellHeaderContentRight.AddElement(new Phrase("BUYER  :" + buyer, normal_font));
             cellHeaderContentRight.AddElement(new Phrase("ART.NO : " + exGood.Article, normal_font));
             cellHeaderContentRight.AddElement(new Phrase("NO.        : " + exGood.ExpenditureGoodNo, normal_font));
