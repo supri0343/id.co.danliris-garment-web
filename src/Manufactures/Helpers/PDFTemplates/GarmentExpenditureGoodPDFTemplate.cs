@@ -203,12 +203,10 @@ namespace Manufactures.Helpers.PDFTemplates
             PdfPTable tableSignature = new PdfPTable(5);
 
             cellLeftNoBorder.Phrase = new Paragraph($"{exGood.Description}", normal_font);
+            cellLeftNoBorder.Colspan = 3;
             tableSignature.AddCell(cellLeftNoBorder);
             cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
-            tableSignature.AddCell(cellLeftNoBorder);
-            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
-            tableSignature.AddCell(cellLeftNoBorder);
-            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            cellLeftNoBorder.Colspan = 1;
             tableSignature.AddCell(cellLeftNoBorder);
             cellLeftNoBorder.Phrase = new Paragraph($"TTL CTNS : {exGood.Carton.ToString()}", normal_font);
             tableSignature.AddCell(cellLeftNoBorder);
