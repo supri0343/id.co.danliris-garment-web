@@ -174,7 +174,7 @@ namespace Manufactures.Helpers.PDFTemplates
             cellCenter.Colspan = 1;
             cellCenter.Rowspan = 2;
             tableContent.AddCell(cellCenter);
-            cellCenter.Phrase = new Phrase("Keterngan", bold_font);
+            cellCenter.Phrase = new Phrase("Keterangan", bold_font);
             cellCenter.Rowspan = 2;
             tableContent.AddCell(cellCenter);
 

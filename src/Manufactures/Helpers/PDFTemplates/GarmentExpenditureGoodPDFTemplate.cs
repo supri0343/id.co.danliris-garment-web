@@ -142,7 +142,7 @@ namespace Manufactures.Helpers.PDFTemplates
             cellCenter.Colspan = 1;
             cellCenter.Rowspan = 2;
             tableContent.AddCell(cellCenter);
-            cellCenter.Phrase = new Phrase("Keterngan", bold_font);
+            cellCenter.Phrase = new Phrase("Keterangan", bold_font);
             cellCenter.Rowspan = 2;
             tableContent.AddCell(cellCenter);
 
@@ -202,27 +202,27 @@ namespace Manufactures.Helpers.PDFTemplates
 
             PdfPTable tableSignature = new PdfPTable(5);
 
-            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph($"TTL CTNS : {exGood.Carton.ToString()}", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellLeftNoBorder.Phrase = new Paragraph($"{exGood.Description}", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder);
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder);
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder);
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder);
+            cellLeftNoBorder.Phrase = new Paragraph($"TTL CTNS : {exGood.Carton.ToString()}", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder);
 
-            cellCenterTopNoBorder.Phrase = new Paragraph($"No. Inv : {exGood.Invoice}", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph($"No. R/O : {exGood.RONo}", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph($"{exGood.ContractNo}", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellLeftNoBorder.Phrase = new Paragraph($"No. Inv : {exGood.Invoice}", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder);
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder);
+            cellLeftNoBorder.Phrase = new Paragraph($"No. R/O : {exGood.RONo}", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder);
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder);
+            cellLeftNoBorder.Phrase = new Paragraph($"{exGood.ContractNo}", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder);
 
 
             cellCenterTopNoBorder.Phrase = new Paragraph("\n\n", normal_font);
@@ -243,9 +243,9 @@ namespace Manufactures.Helpers.PDFTemplates
             tableSignature.AddCell(cellCenterTopNoBorder);
 
 
-            cellCenterTopNoBorder.Phrase = new Paragraph($"Dicetak : {DateTimeOffset.Now.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy / HH:mm:ss", new CultureInfo("id-ID"))}", normal_font);
-            cellCenterTopNoBorder.Colspan = 2;
-            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellLeftNoBorder.Phrase = new Paragraph($"Dicetak : {DateTimeOffset.Now.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy / HH:mm:ss", new CultureInfo("id-ID"))}", normal_font);
+            cellLeftNoBorder.Colspan = 2;
+            tableSignature.AddCell(cellLeftNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
             cellCenterTopNoBorder.Colspan = 1;
             tableSignature.AddCell(cellCenterTopNoBorder);
