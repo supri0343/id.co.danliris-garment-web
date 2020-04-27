@@ -5,6 +5,7 @@ using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentFinishingOuts.Commands;
 using Manufactures.Domain.GarmentFinishingOuts.Repositories;
 using Manufactures.Dtos;
+using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -266,5 +267,32 @@ namespace Manufactures.Controllers.Api
 			});
 		}
 
-	}
+        [HttpGet("{id}/{buyer}")]
+        public async Task<IActionResult> GetPdf(string id, string buyer)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+            GarmentFinishingOutDto garmentFinishingOutDto = _garmentFinishingOutRepository.Find(o => o.Identity == guid).Select(finishOut => new GarmentFinishingOutDto(finishOut)
+            {
+                Items = _garmentFinishingOutItemRepository.Find(o => o.FinishingOutId == finishOut.Identity).Select(finishOutItem => new GarmentFinishingOutItemDto(finishOutItem)
+                {
+                    Details = _garmentFinishingOutDetailRepository.Find(o => o.FinishingOutItemId == finishOutItem.Identity).Select(finishOutDetail => new GarmentFinishingOutDetailDto(finishOutDetail)
+                    {
+                    }).ToList()
+
+                }).ToList()
+            }
+            ).FirstOrDefault();
+            var stream = GarmentFinishingOutPDFTemplate.Generate(garmentFinishingOutDto, buyer);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentFinishingOutDto.FinishingOutNo}.pdf"
+            };
+        }
+
+    }
 }
