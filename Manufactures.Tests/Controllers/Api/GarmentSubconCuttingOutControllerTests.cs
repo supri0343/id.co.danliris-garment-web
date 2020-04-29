@@ -160,6 +160,43 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task GetSingle_PDF_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSubconCuttingOutController();
+
+            Guid cuttingOutGuid = Guid.NewGuid();
+            _mockSubconCuttingOutRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutReadModel, bool>>>()))
+                .Returns(new List<GarmentSubconCuttingOut>()
+                {
+                    new GarmentSubconCuttingOut(cuttingOutGuid, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", "art", new GarmentComodityId(1),  null, null, 1,1,null)
+                });
+
+            Guid cuttingOutItemGuid = Guid.NewGuid();
+            _mockSubconCuttingOutItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutItemReadModel, bool>>>()))
+                .Returns(new List<GarmentSubconCuttingOutItem>()
+                {
+                    new GarmentSubconCuttingOutItem(cuttingOutItemGuid, cuttingOutGuid, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, "design", 1)
+                });
+
+            _mockSubconCuttingOutDetailRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutDetailReadModel, bool>>>()))
+                .Returns(new List<GarmentSubconCuttingOutDetail>()
+                {
+                    new GarmentSubconCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), "size", "color", 1, 1, new UomId(1), "uom", 1, 1, "aa" )
+                });
+
+            // Act
+            var result = await unitUnderTest.GetPdf(Guid.NewGuid().ToString(), "buyerCode");
+
+            // Assert
+            //Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+            Assert.NotNull(result.GetType().GetProperty("FileStream"));
+        }
+
+        [Fact]
         public async Task Post_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
