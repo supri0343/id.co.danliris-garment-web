@@ -51,7 +51,7 @@ namespace Manufactures.Helpers.PDFTemplates
             tableHeader.AddCell(cellHeaderContentCenter);
 
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentRight.AddElement(new Phrase("FM-00-AD-09-010", normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("FM-00-AD-09-011", normal_font));
             cellHeaderContentRight.AddElement(new Phrase("BUYER  :" + buyer, normal_font));
             cellHeaderContentRight.AddElement(new Phrase("ART.NO : " + finishing.Article, normal_font));
             cellHeaderContentRight.AddElement(new Phrase("NO.        : " + finishing.FinishingOutNo, normal_font));
@@ -174,7 +174,7 @@ namespace Manufactures.Helpers.PDFTemplates
             cellCenter.Colspan = 1;
             cellCenter.Rowspan = 2;
             tableContent.AddCell(cellCenter);
-            cellCenter.Phrase = new Phrase("Keterngan", bold_font);
+            cellCenter.Phrase = new Phrase("Keterangan", bold_font);
             cellCenter.Rowspan = 2;
             tableContent.AddCell(cellCenter);
 

@@ -1,5 +1,6 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.draw;
 using Manufactures.Dtos;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,9 @@ using System.Linq;
 
 namespace Manufactures.Helpers.PDFTemplates
 {
-    public class GarmentSewingOutPDFTemplate
+    public class GarmentSubconCuttingOutPDFTemplate
     {
-        public static MemoryStream Generate(GarmentSewingOutDto sewing, string buyer)
+        public static MemoryStream Generate(GarmentSubconCuttingOutDto garmentSubconCuttingOut, string buyer)
         {
             Document document = new Document(PageSize.A5.Rotate(), 10, 10, 10, 10);
             MemoryStream stream = new MemoryStream();
@@ -45,16 +46,16 @@ namespace Manufactures.Helpers.PDFTemplates
             tableHeader.AddCell(cellHeaderContentLeft);
 
             PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentCenter.AddElement(new Paragraph("BON HASIL SEWING", header_font));
-            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal : " + sewing.SewingOutDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
-            cellHeaderContentCenter.AddElement(new Paragraph("No. R/O : " + sewing.RONo, normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("BON HASIL POTONG", header_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal : " + garmentSubconCuttingOut.CuttingOutDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("No. R/O : " + garmentSubconCuttingOut.RONo, normal_font));
             tableHeader.AddCell(cellHeaderContentCenter);
 
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentRight.AddElement(new Phrase("FM-00-AD-09-011", normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("FM-00-AD-09-010", normal_font));
             cellHeaderContentRight.AddElement(new Phrase("BUYER  :" + buyer, normal_font));
-            cellHeaderContentRight.AddElement(new Phrase("ART.NO : " + sewing.Article, normal_font));
-            cellHeaderContentRight.AddElement(new Phrase("NO.        : " + sewing.SewingOutNo, normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("ART.NO : " + garmentSubconCuttingOut.Article, normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("NO.        : " + garmentSubconCuttingOut.CutOutNo, normal_font));
 
             tableHeader.AddCell(cellHeaderContentRight);
 
@@ -69,76 +70,40 @@ namespace Manufactures.Helpers.PDFTemplates
             Dictionary<string, double> detailData = new Dictionary<string, double>();
             Dictionary<string, string> remarks = new Dictionary<string, string>();
 
-            foreach (var item in sewing.Items)
+            foreach (var item in garmentSubconCuttingOut.Items)
             {
-                if (sewing.IsDifferentSize)
+                foreach (var detail in item.Details)
                 {
-                    foreach (var detail in item.Details)
-                    {
-                        if (!sizes.Contains(detail.Size.Size))
-                            sizes.Add(detail.Size.Size);
-                        if (!colors.Contains(item.Color))
-                            colors.Add(item.Color);
+                    if (!sizes.Contains(detail.Size.Size))
+                        sizes.Add(detail.Size.Size);
+                    if (!colors.Contains(detail.Remark))
+                        colors.Add(detail.Remark);
 
-                        var key = detail.Size.Size + "~" + item.Color;
-
-                        if (detailData.ContainsKey(key))
-                        {
-                            detailData[key] += detail.Quantity;
-                        }
-                        else
-                        {
-                            detailData.Add(key, detail.Quantity);
-                        }
-
-                        if (remarks.ContainsKey(item.Color))
-                        {
-                            var dup = remarks.Where(a => a.Value == item.DesignColor && a.Key == item.Color).FirstOrDefault();
-                            if (dup.Value == null)
-                            {
-                                var decol = remarks[item.Color].Split(", ").ToList();
-                                remarks[item.Color] = decol.Where(a => a == item.DesignColor).FirstOrDefault() == null ? remarks[item.Color] + ", " + item.DesignColor : remarks[item.Color];
-                            }
-                        }
-                        else
-                        {
-                            remarks.Add(item.Color, item.DesignColor);
-                        }
-                    }
-                }
-                else
-                {
-                    if (!sizes.Contains(item.Size.Size))
-                        sizes.Add(item.Size.Size);
-                    if (!colors.Contains(item.Color))
-                        colors.Add(item.Color);
-
-                    var key = item.Size.Size + "~" + item.Color;
+                    var key = detail.Size.Size + "~" + detail.Remark;
 
                     if (detailData.ContainsKey(key))
                     {
-                        detailData[key] += item.Quantity;
+                        detailData[key] += detail.CuttingOutQuantity;
                     }
                     else
                     {
-                        detailData.Add(key, item.Quantity);
+                        detailData.Add(key, detail.CuttingOutQuantity);
                     }
 
-                    if (remarks.ContainsKey(item.Color))
+                    if (remarks.ContainsKey(detail.Remark))
                     {
-                        var dup = remarks.Where(a => a.Value == item.DesignColor && a.Key == item.Color).FirstOrDefault();
+                        var dup = remarks.Where(a => a.Value == item.DesignColor && a.Key == detail.Remark).FirstOrDefault();
                         if (dup.Value == null)
                         {
-                            var decol = remarks[item.Color].Split(", ").ToList();
-                            remarks[item.Color] = decol.Where(a => a == item.DesignColor).FirstOrDefault() == null ? remarks[item.Color] + ", " + item.DesignColor : remarks[item.Color];
+                            var decol = remarks[detail.Remark].Split(", ").ToList();
+                            remarks[detail.Remark] = decol.Where(a => a == item.DesignColor).FirstOrDefault() == null ? remarks[detail.Remark] + ", " + item.DesignColor : remarks[detail.Remark];
                         }
                     }
                     else
                     {
-                        remarks.Add(item.Color, item.DesignColor);
+                        remarks.Add(detail.Remark, item.DesignColor);
                     }
                 }
-
             }
 
             sizes.Sort();
@@ -234,9 +199,9 @@ namespace Manufactures.Helpers.PDFTemplates
 
             PdfPTable tableSignature = new PdfPTable(2);
 
-            cellCenterTopNoBorder.Phrase = new Paragraph("Diterima Oleh\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Penerima\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Diberikan Oleh\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Bag. Cutting\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph($"Dicetak : {DateTimeOffset.Now.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy / HH:mm:ss", new CultureInfo("id-ID"))}", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
