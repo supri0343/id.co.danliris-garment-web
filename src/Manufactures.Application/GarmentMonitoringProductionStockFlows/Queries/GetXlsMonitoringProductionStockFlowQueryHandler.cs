@@ -23,11 +23,15 @@ using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentExpenditureGoods.Repositories;
 using Manufactures.Domain.GarmentExpenditureGoodReturns.Repositories;
+using System.IO;
+using System.Data;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
 
 namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 {
-	public class GarmentMonitoringProductionStockFlowQueryHandler : IQueryHandler<GetMonitoringProductionStockFlowQuery, GarmentMonitoringProductionStockFlowListViewModel>
+	public class GetXlsMonitoringProductionStockFlowQueryHandler : IQueryHandler<GetXlsMonitoringProductionStockFlowQuery, MemoryStream>
 	{
 		protected readonly IHttpClientService _http;
 		private readonly IStorage _storage;
@@ -59,7 +63,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 		private readonly IGarmentExpenditureGoodReturnItemRepository garmentExpenditureGoodReturnItemRepository;
 		private readonly IGarmentSewingDORepository garmentSewingDORepository;
 		private readonly IGarmentSewingDOItemRepository garmentSewingDOItemRepository;
-		public GarmentMonitoringProductionStockFlowQueryHandler(IStorage storage, IServiceProvider serviceProvider)
+
+		public GetXlsMonitoringProductionStockFlowQueryHandler(IStorage storage, IServiceProvider serviceProvider)
 		{
 			_storage = storage;
 			garmentCuttingOutRepository = storage.GetRepository<IGarmentCuttingOutRepository>();
@@ -137,7 +142,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			public double EndBalanceFinishingQty { get; internal set; }
 			public double BeginingBalanceExpenditureGood { get; internal set; }
 			public double FinishingTransferExpenditure { get; internal set; }
-			public double ExpenditureGoodRetur{ get; internal set; }
+			public double ExpenditureGoodRetur { get; internal set; }
 			public double ExportQty { get; internal set; }
 			public double OtherQty { get; internal set; }
 			public double SampleQty { get; internal set; }
@@ -145,8 +150,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			public double ExpenditureGoodAdj { get; internal set; }
 			public double EndBalanceExpenditureGood { get; internal set; }
 
-			}
-			async Task<HOrderDataProductionReport> GetDataHOrder(List<string> ro, string token)
+		}
+		async Task<HOrderDataProductionReport> GetDataHOrder(List<string> ro, string token)
 		{
 			HOrderDataProductionReport hOrderDataProductionReport = new HOrderDataProductionReport();
 
@@ -243,15 +248,14 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			return costCalculationGarmentDataProductionReport;
 		}
 
-
-		public async Task<GarmentMonitoringProductionStockFlowListViewModel> Handle(GetMonitoringProductionStockFlowQuery request, CancellationToken cancellationToken)
+		public async Task<MemoryStream> Handle(GetXlsMonitoringProductionStockFlowQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
 
 			var QueryRo = (from a in garmentCuttingInRepository.Query
 						   join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
-						   where a.UnitId == request.unit && a.CuttingInDate <= dateTo 
+						   where a.UnitId == request.unit && a.CuttingInDate <= dateTo
 						   select a.RONo).Distinct();
 			List<string> _ro = new List<string>();
 			foreach (var item in QueryRo)
@@ -263,7 +267,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			var QueryCuttingOut = (from a in garmentCuttingOutRepository.Query
 								   join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
 								   //join c in garmentCuttingOutDetailRepository.Query on b.Identity equals c.CutOutItemId
-								   where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.UnitFromId == request.unit && a.CuttingOutDate <= dateTo && a.CuttingOutType == "SEWING" && a.UnitId == a.UnitFromId
+								   where   (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&a.UnitFromId == request.unit && a.CuttingOutDate <= dateTo && a.CuttingOutType == "SEWING" && a.UnitId == a.UnitFromId
 								   select new monitoringView { BeginingBalanceLoadingQty = a.CuttingOutDate < dateFrom ? -b.TotalCuttingOut : 0, BeginingBalanceCuttingQty = a.CuttingOutDate < dateFrom ? -b.TotalCuttingOut : 0, Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtyCuttingIn = 0, QtyCuttingOut = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0, QtyCuttingsubkon = 0, QtyCuttingTransfer = 0, AvalCutting = 0, AvalSewing = 0 });
 			var QueryCuttingOutSubkon = (from a in garmentCuttingOutRepository.Query
 										 join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
@@ -304,7 +308,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 								  select new monitoringView { BeginingBalanceLoadingQty = a.AdjustmentDate < dateFrom ? -b.Quantity : 0, Ro = a.RONo, Article = a.Article, Comodity = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(), BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtyCuttingIn = 0, QtyCuttingOut = 0, AvalCutting = 0, AvalSewing = 0, QtyLoading = 0, QtyLoadingAdjs = a.AdjustmentDate >= dateFrom ? b.Quantity : 0 };
 			var QuerySewingIn = (from a in garmentSewingInRepository.Query
 								 join b in garmentSewingInItemRepository.Query on a.Identity equals b.SewingInId
-								 where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.UnitFromId == request.unit && a.SewingInDate <= dateTo
+								 where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&  a.UnitFromId == request.unit && a.SewingInDate <= dateTo
 								 select new monitoringView { BeginingBalanceSewingQty = (a.SewingInDate < dateFrom && a.SewingFrom == "FINISHING") ? -b.Quantity : 0, QtySewingIn = (a.SewingInDate >= dateFrom) ? b.Quantity : 0, Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault() });
 			var QuerySewingOut = (from a in garmentSewingOutRepository.Query
 								  join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
@@ -350,7 +354,6 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 											join b in garmentExpenditureGoodReturnItemRepository.Query on a.Identity equals b.ReturId
 											where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.UnitId == request.unit && a.ReturDate <= dateTo
 											select new monitoringView { BeginingBalanceExpenditureGood = a.ReturDate < dateFrom ? b.Quantity : 0, ExpenditureGoodRetur = a.ReturDate >= dateFrom ? b.Quantity : 0, Ro = a.RONo, Article = a.Article, Comodity = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(), BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault() };
-			
 
 			var queryNow = QueryCuttingIn
 				.Union(QueryCuttingOut)
@@ -383,42 +386,45 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				qtCuttingSubkon = group.Sum(s => s.QtyCuttingsubkon),
 				qtyCuttingTransfer = group.Sum(s => s.QtyCuttingTransfer),
 				qtyCuttingIn = group.Sum(s => s.QtyCuttingIn),
-				begining=group.Sum(s=>s.BeginingBalanceCuttingQty),
-				qtyavalsew=group.Sum(s=>s.AvalSewing),
-				qtyavalcut=group.Sum(s=>s.AvalCutting),
+				begining = group.Sum(s => s.BeginingBalanceCuttingQty),
+				qtyavalsew = group.Sum(s => s.AvalSewing),
+				qtyavalcut = group.Sum(s => s.AvalCutting),
 				beginingloading = group.Sum(s => s.BeginingBalanceLoadingQty),
-				qtyLoadingIn=group.Sum(s=>s.QtyLoadingIn),
-				qtyloading =group.Sum(s=>s.QtyLoading),
-				qtyLoadingAdj=group.Sum(s=>s.QtyLoadingAdjs),
-				beginingSewing=group.Sum(s=>s.BeginingBalanceSewingQty),
-				sewingIn=group.Sum(s=>s.QtySewingIn),
+				qtyLoadingIn = group.Sum(s => s.QtyLoadingIn),
+				qtyloading = group.Sum(s => s.QtyLoading),
+				qtyLoadingAdj = group.Sum(s => s.QtyLoadingAdjs),
+				beginingSewing = group.Sum(s => s.BeginingBalanceSewingQty),
+				sewingIn = group.Sum(s => s.QtySewingIn),
 				sewingintransfer = group.Sum(s => s.QtySewingInTransfer),
 				sewingout = group.Sum(s => s.QtySewingOut),
-				sewingretur= group.Sum(s => s.QtySewingRetur),
+				sewingretur = group.Sum(s => s.QtySewingRetur),
 				wipsewing = group.Sum(s => s.WipSewingOut),
 				wipfinishing = group.Sum(s => s.WipFinishingOut),
-				sewingadj=group.Sum(s=>s.QtySewingAdj),
-				finishingin=group.Sum(s=>s.FinishingInQty),
-				finishingintransfer=group.Sum(s=>s.FinishingInTransferQty),
-				finishingadj=group.Sum(s=>s.FinishingAdjQty),
-				finishingout=group.Sum(s=>s.FinishingOutQty),
-				finishinigretur=group.Sum(s=>s.FinishingReturQty),
-				beginingbalanceFinishing=group.Sum(s=>s.BeginingBalanceFinishingQty),
-				beginingbalancesubcon=group.Sum(s=>s.BeginingBalanceSubconQty),
-				subconIn=group.Sum(s=>s.SubconInQty),
-				subconout=group.Sum(s=>s.SubconOutQty),
-				exportQty=group.Sum(s => s.ExportQty),
-				otherqty= group.Sum(s => s.OtherQty),
-				sampleQty=group.Sum(s=>s.SampleQty),
-				expendAdj=group.Sum(s=>s.ExpenditureGoodAdj),
-				expendRetur=group.Sum(s=>s.ExpenditureGoodRetur),
-				finishinginqty=group.Sum(s=>s.FinishingInQty),
-				beginingBalanceExpenditureGood= group.Sum(s=>s.BeginingBalanceExpenditureGood)
+				sewingadj = group.Sum(s => s.QtySewingAdj),
+				finishingin = group.Sum(s => s.FinishingInQty),
+				finishingintransfer = group.Sum(s => s.FinishingInTransferQty),
+				finishingadj = group.Sum(s => s.FinishingAdjQty),
+				finishingout = group.Sum(s => s.FinishingOutQty),
+				finishinigretur = group.Sum(s => s.FinishingReturQty),
+				beginingbalanceFinishing = group.Sum(s => s.BeginingBalanceFinishingQty),
+				beginingbalancesubcon = group.Sum(s => s.BeginingBalanceSubconQty),
+				subconIn = group.Sum(s => s.SubconInQty),
+				subconout = group.Sum(s => s.SubconOutQty),
+				exportQty = group.Sum(s => s.ExportQty),
+				otherqty = group.Sum(s => s.OtherQty),
+				sampleQty = group.Sum(s => s.SampleQty),
+				expendAdj = group.Sum(s => s.ExpenditureGoodAdj),
+				expendRetur = group.Sum(s => s.ExpenditureGoodRetur),
+				finishinginqty = group.Sum(s => s.FinishingInQty),
+				beginingBalanceExpenditureGood = group.Sum(s => s.BeginingBalanceExpenditureGood)
 
 
 
-			}) ;
+			});
 
+
+
+			//var query = querySum.Union(querySumTotal).OrderBy(s => s.ro);
 			GarmentMonitoringProductionStockFlowListViewModel garmentMonitoringProductionFlow = new GarmentMonitoringProductionStockFlowListViewModel();
 			List<GarmentMonitoringProductionStockFlowDto> monitoringDtos = new List<GarmentMonitoringProductionStockFlowDto>();
 
@@ -476,10 +482,92 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				};
 				monitoringDtos.Add(garmentMonitoringDto);
 			}
-			 
 			garmentMonitoringProductionFlow.garmentMonitorings = monitoringDtos;
+			var reportDataTable = new DataTable();
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No Article", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Komoditi", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jumlah Order", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "CUTTING", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "CUTTING2", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "CUTTING3", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "CUTTING4", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "CUTTING5", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "CUTTING6", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "CUTTING7", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "CUTTING8", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "LOADING", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "LOADING2", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "LOADING3", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "LOADING4", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "LOADING5", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING2", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING3", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING4", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING5", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING6", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING7", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING8", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING9", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING2", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING3", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING4", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING5", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING6", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING7", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING8", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING9", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING10", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING11", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI2", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI3", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI4", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI5", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI6", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI7", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI8", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI9", DataType = typeof(string) });
+			reportDataTable.Rows.Add("", "", "", "",
+				"Saldo Awal WIP Cutting", "Cutting In (WIP Cutting)", "Cutting Out / HP(WIP Loading)", "Cutting Out Transfer", "Cutting Out Subkon", "Aval Komponen dari Cutting", "Aval Komponen dari Sewing", "Saldo Akhir WIP Cutting",
+				"Saldo Awal Loading", "Loading In","Loading Out (WIP Sewing)	", "Adjs Loading", "Saldo Akhir Loading",
+				"Saldo Awal WIP Sewing", "Sewing In (WIP Sewing)", "Sewing Out (WIP Finishing)", "Sewing In Transfer", "Sewing Out Tranfer WIP Sewing", "Sewing Out Transfer WIP Finishing", "Retur ke Cutting", "Adjs Sewing", "Saldo Akhir WIP Sewing",
+				"Saldo Awal WIP Finishing",  "Finishing In (WIP Finishing)", "Saldo Awal WIP Subkon", "Subkon In", "Subkon Out", "Saldo Akhir WIP Subkon", "Finishing Out (WIP BJ)", "Finishing In Transfer", "Adjs Finishing", "Retur ke Sewing", "Saldo Akhir WIP Finishing",
+				"Saldo Awal Barang jadi", "Barang Jadi In/ (WIP BJ)", "Finishing Transfer", "Penerimaan Lain-lain (Retur)", "Pengiriman Export", "Pengiriman Gudang Sisa", "Pengiriman Lain-lain/Sample", "Adjust Barang Jadi", "Saldo Akhir Barang Jadi"
+				);
+			int counter = 2;
 
-			return garmentMonitoringProductionFlow;
+			foreach (var report in garmentMonitoringProductionFlow.garmentMonitorings)
+			{
+				reportDataTable.Rows.Add(report.Ro, report.Article, report.Comodity, report.QtyOrder,
+					report.BeginingBalanceCuttingQty, report.QtyCuttingIn, report.QtyCuttingOut, report.QtyCuttingTransfer, report.QtyCuttingsubkon, report.AvalCutting, report.AvalSewing,	report.EndBalancCuttingeQty,
+					report.BeginingBalanceLoadingQty, report.QtyLoadingIn,report.QtyLoading, report.QtyLoadingAdjs, report.EndBalanceLoadingQty,
+					report.BeginingBalanceSewingQty, report.QtySewingIn, report.QtySewingOut, report.QtySewingInTransfer, report.WipSewingOut, report.WipFinishingOut, report.QtySewingRetur, report.QtySewingAdj, report.EndBalanceSewingQty,
+					report.BeginingBalanceFinishingQty, report.FinishingInQty, report.BeginingBalanceSubconQty, report.SubconInQty, report.SubconOutQty, report.EndBalanceSubconQty, report.FinishingOutQty, report.FinishingInTransferQty, report.FinishingAdjQty, report.FinishingReturQty, report.EndBalanceFinishingQty,
+					report.BeginingBalanceExpenditureGood, report.FinishingInExpenditure, report.FinishingInTransferQty, report.ExpenditureGoodRetur, report.ExportQty, report.OtherQty, report.SampleQty, report.ExpenditureGoodAdj, report.EndBalanceExpenditureGood);
+				counter++;
+			}
+			using (var package = new ExcelPackage())
+			{
+				var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
+				worksheet.Cells["A1"].LoadFromDataTable(reportDataTable, true);
+				worksheet.Cells["E" + 1 + ":L" + 1 + ""].Merge = true;
+				worksheet.Cells["M" + 1 + ":Q" + 1 + ""].Merge = true;
+				worksheet.Cells["R" + 1 + ":Z" + 1 + ""].Merge = true;
+				worksheet.Cells["AA" + 1 + ":AK" + 1 + ""].Merge = true;
+				worksheet.Cells["AL" + 1 + ":AT" + 1 + ""].Merge = true;
+				worksheet.Cells["A" + 1 + ":AT" + 1 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+				worksheet.Cells["A" + 1 + ":AT" + 1 + ""].Style.Font.Bold = true;
+				worksheet.Cells["E" + 3 + ":AT" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["E" + 3 + ":AT" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				var stream = new MemoryStream();
+
+				package.SaveAs(stream);
+
+				return stream;
+			}
 		}
 	}
 }
