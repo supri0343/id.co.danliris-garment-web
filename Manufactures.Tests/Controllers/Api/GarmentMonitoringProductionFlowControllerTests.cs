@@ -1,6 +1,7 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentMonitoringProductionFlows.Queries;
+using Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries;
 using Manufactures.Controllers.Api;
 using Manufactures.Domain.MonitoringProductionFlow;
 using Microsoft.AspNetCore.Http;
@@ -78,6 +79,37 @@ namespace Manufactures.Tests.Controllers.Api
 
 			// Act
 			var result = await unitUnderTest.GetXls(1, DateTime.Now, null, 1, 25, "{}");
+
+			// Assert
+			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+
+		}
+		[Fact]
+		public async Task GetMonitoringStockBehavior()
+		{
+			var unitUnderTest = CreateGarmentMonitoringProductionFlowController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetMonitoringProductionStockFlowQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new GarmentMonitoringProductionStockFlowListViewModel());
+
+			// Act
+			var result = await unitUnderTest.GetMonitoring(1, DateTime.Now, null, 1, 25, "{}");
+
+			// Assert
+			GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+		}
+		[Fact]
+		public async Task GetXLSStockBehavior()
+		{
+			var unitUnderTest = CreateGarmentMonitoringProductionFlowController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetXlsMonitoringProductionStockFlowQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new MemoryStream());
+
+			// Act
+			var result = await unitUnderTest.GetXlsMonitoringProductionStockFlow(1, DateTime.Now,DateTime.Now,"", 1, 25, "{}");
 
 			// Assert
 			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
