@@ -185,32 +185,32 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 			var QueryCuttingOut = (from a in garmentCuttingOutRepository.Query
 								   join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
 								   join c in garmentCuttingOutDetailRepository.Query on b.Identity equals c.CutOutItemId
-								   where a.UnitFromId == request.unit && a.CuttingOutDate <= date
+								   where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.UnitFromId == request.unit && a.CuttingOutDate <= date
 								   select new monitoringView { Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtyCutting = c.CuttingOutQuantity, Size = c.SizeName });
 
 			var QueryLoading = (from a in garmentLoadingRepository.Query
 								join b in garmentLoadingItemRepository.Query on a.Identity equals b.LoadingId
 
-								where a.UnitId == request.unit && a.LoadingDate <= date
+								where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.UnitId == request.unit && a.LoadingDate <= date
 								select new monitoringView { Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtyLoading = b.Quantity, Size = b.SizeName });
 
 			var QuerySewingOutIsDifSize = from a in garmentSewingOutRepository.Query
 										  join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
 										  join c in garmentSewingOutDetailRepository.Query on b.Identity equals c.SewingOutItemId
-										  where a.SewingTo == "FINISHING" && a.UnitId == request.unit && a.SewingOutDate <= date
+										  where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.SewingTo == "FINISHING" && a.UnitId == request.unit && a.SewingOutDate <= date
 										  select new monitoringView { Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtySewing = c.Quantity, Size = c.SizeName };
 			var QuerySewingOut = from a in garmentSewingOutRepository.Query
 								 join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
-								 where a.SewingTo == "FINISHING" && a.UnitId == request.unit && a.SewingOutDate <= date && a.IsDifferentSize == false
+								 where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.SewingTo == "FINISHING" && a.UnitId == request.unit && a.SewingOutDate <= date && a.IsDifferentSize == false
 								 select new monitoringView { Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtySewing = b.Quantity, Size = b.SizeName };
 			var QueryFinishingOutisDifSize = from a in garmentFinishingOutRepository.Query
 											 join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 											 join c in garmentFinishingOutDetailRepository.Query on b.Identity equals c.FinishingOutItemId
-											 where  a.FinishingTo == "GUDANG JADI" && a.UnitId == request.unit && a.FinishingOutDate <= date
+											 where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.FinishingTo == "GUDANG JADI" && a.UnitId == request.unit && a.FinishingOutDate <= date
 											 select new monitoringView { Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtyFinishing = c.Quantity, Size = c.SizeName };
 			var QueryFinishingOut = from a in garmentFinishingOutRepository.Query
 									join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
-									where a.FinishingTo == "GUDANG JADI" && a.UnitId == request.unit && a.FinishingOutDate <= date && a.IsDifferentSize == false
+									where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.FinishingTo == "GUDANG JADI" && a.UnitId == request.unit && a.FinishingOutDate <= date && a.IsDifferentSize == false
 									select new monitoringView { Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), QtyFinishing = b.Quantity, Size = b.SizeName };
 
 
@@ -246,8 +246,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 			var query = querySum.Union(querySumTotal).OrderBy(s => s.ro);
 			GarmentMonitoringProductionFlowListViewModel garmentMonitoringProductionFlow = new GarmentMonitoringProductionFlowListViewModel();
 			List<GarmentMonitoringProductionFlowDto> monitoringDtos = new List<GarmentMonitoringProductionFlowDto>();
-			if (request.ro == null)
-			{
+			
 				foreach (var item in query)
 				{
 					GarmentMonitoringProductionFlowDto garmentMonitoringDto = new GarmentMonitoringProductionFlowDto()
@@ -266,31 +265,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 					};
 					monitoringDtos.Add(garmentMonitoringDto);
 				}
-			}
-			else
-			{
-				foreach (var item in query.Where(s => s.ro == request.ro))
-				{
-					
-
-					GarmentMonitoringProductionFlowDto garmentMonitoringDto = new GarmentMonitoringProductionFlowDto()
-					{
-						Article = item.article,
-						Ro = item.ro,
-						BuyerCode = item.buyer,
-						QtyOrder = item.qtyOrder,
-						QtyCutting = item.qtycutting,
-						QtySewing = item.qtySewing,
-						QtyFinishing = item.qtyFinishing,
-						QtyLoading = item.qtyLoading,
-						Size = item.size,
-						Comodity = item.comodity,
-						Wip = item.qtycutting - item.qtyFinishing
-					};
-					monitoringDtos.Add(garmentMonitoringDto);
-				}
-
-			}
+			
 			garmentMonitoringProductionFlow.garmentMonitorings = monitoringDtos;
 			var reportDataTable = new DataTable();
 
@@ -340,16 +315,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionFlows.Queries
 					B = A + 1;
 					A += item.Quantity;
 					listbold.Add(item.Quantity);
-					worksheet.Cells["A" + B + ":A" + A + ""].Merge = true;
-					worksheet.Cells["A" + B + ":A" + A + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
-					worksheet.Cells["B" + B + ":B" + A + ""].Merge = true;
-					worksheet.Cells["B" + B + ":B" + A + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
-					worksheet.Cells["C" + B + ":C" + A + ""].Merge = true;
-					worksheet.Cells["C" + B + ":C" + A + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
-					worksheet.Cells["D" + B + ":D" + A + ""].Merge = true;
-					worksheet.Cells["D" + B + ":D" + A + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
-					worksheet.Cells["E" + B + ":E" + A + ""].Merge = true;
-					worksheet.Cells["E" + B + ":E" + A + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+					worksheet.Cells["A" + B + ":E" + A + ""].Merge = true;
+					worksheet.Cells["A" + B + ":E" + A + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
 					worksheet.Cells["F" + (A)].Style.Font.Bold = true;
 					worksheet.Cells["G" + (A)].Style.Font.Bold = true;
 					worksheet.Cells["H" + (A)].Style.Font.Bold = true;
