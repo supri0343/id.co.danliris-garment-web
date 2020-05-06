@@ -91,6 +91,17 @@ namespace Manufactures.Domain.GarmentCuttingOuts
             ComodityName = ReadModel.ComodityName;
         }
 
+        public void SetDate(DateTimeOffset cuttingOutDate)
+        {
+            if (cuttingOutDate != CuttingOutDate)
+            {
+                CuttingOutDate = cuttingOutDate;
+                ReadModel.CuttingOutDate = cuttingOutDate;
+
+                MarkModified();
+            }
+        }
+
         public void Modify()
         {
             MarkModified();
