@@ -90,7 +90,16 @@ namespace Manufactures.Domain.GarmentLoadings
             ComodityCode = readModel.ComodityCode;
             LoadingDate = readModel.LoadingDate;
         }
+        public void setDate(DateTimeOffset loadingDate)
+        {
+            if (loadingDate != LoadingDate)
+            {
+                LoadingDate = loadingDate;
+                ReadModel.LoadingDate = loadingDate;
 
+                MarkModified();
+            }
+        }
         public void Modify()
         {
             MarkModified();

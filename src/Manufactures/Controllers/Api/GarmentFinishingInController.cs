@@ -4,6 +4,7 @@ using Infrastructure.External.DanLirisClient.Microservice.Cache;
 using Manufactures.Domain.GarmentFinishingIns.Commands;
 using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
+using Manufactures.Domain.GarmentSubconFinishingIns.Commands;
 using Manufactures.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -165,6 +167,29 @@ namespace Manufactures.Controllers.Api
                 size,
                 count
             });
+        }
+
+        [HttpPut("update-dates")]
+        public async Task<IActionResult> UpdateIsReceived([FromBody]UpdateDatesGarmentFinishingInCommand command)
+        {
+            VerifyUser();
+
+            if (command.Date == null || command.Date == DateTimeOffset.MinValue)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal harus diisi"
+                });
+            else if (command.Date.Date > DateTimeOffset.Now.Date)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal tidak boleh lebih dari hari ini"
+                });
+
+            var order = await Mediator.Send(command);
+
+            return Ok();
         }
     }
 }

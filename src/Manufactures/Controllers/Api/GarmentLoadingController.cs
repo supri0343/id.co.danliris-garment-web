@@ -233,5 +233,28 @@ namespace Manufactures.Controllers.Api
                 FileDownloadName = $"{garmentLoadingDto.LoadingNo}.pdf"
             };
         }
+
+        [HttpPut("update-dates")]
+        public async Task<IActionResult> UpdateIsReceived([FromBody]UpdateDatesGarmentLoadingCommand command)
+        {
+            VerifyUser();
+
+            if (command.Date == null || command.Date == DateTimeOffset.MinValue)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal harus diisi"
+                });
+            else if (command.Date.Date > DateTimeOffset.Now.Date)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal tidak boleh lebih dari hari ini"
+                });
+
+            var order = await Mediator.Send(command);
+
+            return Ok();
+        }
     }
 }

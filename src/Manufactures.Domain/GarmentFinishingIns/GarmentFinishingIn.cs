@@ -94,6 +94,17 @@ namespace Manufactures.Domain.GarmentFinishingIns
             DONo = readModel.DONo;
         }
 
+        public void setDate(DateTimeOffset finishingInDate)
+        {
+            if (finishingInDate != FinishingInDate)
+            {
+                FinishingInDate = finishingInDate;
+                ReadModel.FinishingInDate = finishingInDate;
+
+                MarkModified();
+            }
+        }
+
         public void Modify()
         {
             MarkModified();
