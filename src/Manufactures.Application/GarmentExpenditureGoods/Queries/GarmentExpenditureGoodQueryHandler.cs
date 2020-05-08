@@ -3,8 +3,6 @@ using Infrastructure.Domain.Queries;
 using Infrastructure.External.DanLirisClient.Microservice;
 using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
-using Manufactures.Domain.GarmentFinishingOuts.Repositories;
-using Manufactures.Domain.GarmentSewingOuts.Repositories;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -37,6 +35,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 		{
 			public string expenditureGoodNo { get; internal set; }
 			public string expenditureGoodType { get; internal set; }
+			public string buyerCode { get; internal set; }
 			public DateTimeOffset expenditureDate { get; internal set; }
 			public string roNo { get; internal set; }
 			public string buyerArticle { get; internal set; }
@@ -44,6 +43,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			public string name { get; internal set; }
 			public double qty { get; internal set; }
 			public string invoice { get; internal set; }
+			public decimal price { get; internal set; }
 		}
 		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
 		{
@@ -160,11 +160,11 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			var Query = from a in garmentExpenditureGoodRepository.Query
 						join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
 						where a.UnitId == request.unit && a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo
-						select new monitoringView { buyerArticle = a.BuyerCode + " " + a.Article, roNo = a.RONo, expenditureDate = a.ExpenditureDate, expenditureGoodNo = a.ExpenditureGoodNo, expenditureGoodType = a.ExpenditureType, invoice = a.Invoice, colour = b.Description, qty = b.Quantity, name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+						select new monitoringView { price = Convert.ToDecimal(b.Price), buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), buyerArticle = a.BuyerCode + " " + a.Article, roNo = a.RONo, expenditureDate = a.ExpenditureDate, expenditureGoodNo = a.ExpenditureGoodNo, expenditureGoodType = a.ExpenditureType, invoice = a.Invoice, colour = b.Description, qty = b.Quantity, name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 
 
 
-			var querySum = Query.ToList().GroupBy(x => new { x.buyerArticle, x.roNo, x.expenditureDate, x.expenditureGoodNo, x.expenditureGoodType, x.invoice, x.colour, x.name }, (key, group) => new
+			var querySum = Query.ToList().GroupBy(x => new {x.buyerCode, x.buyerArticle, x.roNo, x.expenditureDate, x.expenditureGoodNo, x.expenditureGoodType, x.invoice, x.colour, x.name }, (key, group) => new
 			{
 				ros = key.roNo,
 				buyer = key.buyerArticle,
@@ -173,6 +173,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 				expendituregoodNo = key.expenditureGoodNo,
 				expendituregoodTypes = key.expenditureGoodType,
 				color = key.colour,
+				price= group.Sum(s=>s.price),
+				buyerC= key.buyerCode,
 				names = key.name,
 				invoices = key.invoice
 
@@ -189,7 +191,9 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 					qty = item.qty,
 					colour = item.color,
 					name = item.names,
-					invoice = item.invoices
+					invoice = item.invoices,
+					price= item.price,
+					buyerCode=item.buyerC
 
 				};
 				monitoringDtos.Add(dto);

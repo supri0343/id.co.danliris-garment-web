@@ -15,10 +15,12 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 		public DateTimeOffset expenditureDate { get; internal set; }
 		public string roNo { get; internal set; }
 		public string buyerArticle { get; internal set; }
+		public string buyerCode { get; internal set; }
 		public string colour { get; internal set; }
 		public string name { get; internal set; }
 		public double qty { get; internal set; }
 		public string invoice { get; internal set; }
+		public decimal price { get; internal set; }
 
 		public GarmentMonitoringExpenditureGoodDto(GarmentMonitoringExpenditureGoodDto garmentMonitoring)
 		{

@@ -17,6 +17,7 @@ using System.IO;
 using System.Data;
 using OfficeOpenXml;
 using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.HOrderDataProductionReport;
+using OfficeOpenXml.Style;
 
 namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 {
@@ -99,7 +100,7 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
                 }
             }
 
-            HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(ro, token);
+            HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(freeRO, token);
 
             Dictionary<string, string> comodities = new Dictionary<string, string>();
             if (hOrderDataProductionReport.data.Count > 0)
@@ -226,16 +227,31 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Keluar", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sisa", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+			int counter = 1;
 			if (listViewModel.garmentMonitorings.Count > 0)
 			{
 				foreach (var report in listViewModel.garmentMonitorings)
-					reportDataTable.Rows.Add(report.roJob, report.article,report.buyerCode, report.qtyOrder, report.style,report.price, report.stock, report.loadingQtyPcs, report.sewingOutQtyPcs, report.remainQty, report.uomUnit);
-
+				{
+					reportDataTable.Rows.Add(report.roJob, report.article, report.buyerCode, report.qtyOrder, report.style, report.price, report.stock, report.loadingQtyPcs, report.sewingOutQtyPcs, report.remainQty, report.uomUnit);
+					counter++;
+				}
 			}
 			using (var package = new ExcelPackage())
 			{
 				var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
 				worksheet.Cells["A1"].LoadFromDataTable(reportDataTable, true);
+				worksheet.Column(4).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["D" + 2 + ":D" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Column(6).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["F" + 2 + ":F" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Column(7).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["G" + 2 + ":G" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["H" + 2 + ":H" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Column(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["I" + 2 + ":I" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Column(10).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["J" + 2 + ":J" + counter + ""].Style.Numberformat.Format = "#,##0.00";
 				var stream = new MemoryStream();
 				if (request.type != "bookkeeping")
 				{
