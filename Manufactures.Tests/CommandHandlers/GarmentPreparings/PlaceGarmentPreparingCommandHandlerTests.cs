@@ -70,9 +70,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentPreparings
                 },
             };
 
-            _mockPreparingRepository
-                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingReadModel, bool>>>()))
-                .Returns(new List<GarmentPreparing>());
+            //_mockPreparingRepository
+            //    .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingReadModel, bool>>>()))
+            //    .Returns(new List<GarmentPreparing>());
 
             _mockPreparingRepository
                 .Setup(s => s.Update(It.IsAny<GarmentPreparing>()))
