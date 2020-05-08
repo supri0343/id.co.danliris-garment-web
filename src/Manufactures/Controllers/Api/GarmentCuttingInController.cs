@@ -202,7 +202,7 @@ namespace Manufactures.Controllers.Api
         }
 
         [HttpPut("update-dates")]
-        public async Task<IActionResult> UpdateIsReceived([FromBody]UpdateDatesGarmentCuttingInCommand command)
+        public async Task<IActionResult> UpdateDates([FromBody]UpdateDatesGarmentCuttingInCommand command)
         {
             VerifyUser();
 
