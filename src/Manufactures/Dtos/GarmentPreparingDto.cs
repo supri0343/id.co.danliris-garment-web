@@ -43,6 +43,7 @@ namespace Manufactures.Dtos
         public string Article { get; set; }
         public bool IsCuttingIn { get; set; }
         public string CreatedBy { get; set; }
+        public decimal TotalQuantity { get; set; }
         public List<GarmentPreparingItemDto> Items { get; set; }
     }
 }

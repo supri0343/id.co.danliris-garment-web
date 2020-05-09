@@ -89,7 +89,16 @@ namespace Manufactures.Domain.GarmentSewingIns
             ComodityName = readModel.ComodityName;
             SewingInDate = readModel.SewingInDate;
         }
+        public void setDate(DateTimeOffset sewingInDate)
+        {
+            if (sewingInDate != SewingInDate)
+            {
+                SewingInDate = sewingInDate;
+                ReadModel.SewingInDate = sewingInDate;
 
+                MarkModified();
+            }
+        }
 
         public void Modify()
         {
