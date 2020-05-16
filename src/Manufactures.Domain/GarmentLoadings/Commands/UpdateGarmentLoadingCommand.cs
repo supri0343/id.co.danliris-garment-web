@@ -37,6 +37,7 @@ namespace Manufactures.Domain.GarmentLoadings.Commands
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
             RuleFor(r => r.SewingDOId).NotNull();
             RuleFor(r => r.RONo).NotNull();
+            RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.LoadingDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.LoadingDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Loading Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");

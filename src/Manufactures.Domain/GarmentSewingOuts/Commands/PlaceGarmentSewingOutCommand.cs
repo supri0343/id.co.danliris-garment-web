@@ -39,7 +39,7 @@ namespace Manufactures.Domain.GarmentSewingOuts.Commands
 
             RuleFor(r => r.UnitTo.Code).NotEqual(r=>r.Unit.Code).WithMessage("Unit Tujuan dan Unit Tidak Boleh Sama").OverridePropertyName("UnitTo").When(a=> a.SewingTo=="SEWING" && a.Unit!=null && a.UnitTo!=null);
             RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
-
+            RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.SewingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sewing Out Tidak Boleh Kosong");
             RuleFor(r => r.SewingOutDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Sewing Out Tidak Boleh Lebih dari Hari Ini");

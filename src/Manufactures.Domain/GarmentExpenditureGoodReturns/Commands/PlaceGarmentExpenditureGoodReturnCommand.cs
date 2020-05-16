@@ -37,7 +37,7 @@ namespace Manufactures.Domain.GarmentReturGoodReturns.Commands
             RuleFor(r => r.ReturDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.Comodity).NotNull();
             RuleFor(r => r.Invoice).NotEmpty();
-
+            RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
