@@ -35,7 +35,7 @@ namespace Manufactures.Domain.GarmentFinishingOuts.Commands
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
             RuleFor(r => r.UnitTo).NotNull().WithMessage("Unit Tujuan Tidak Boleh Kosong");
             RuleFor(r => r.UnitTo.Id).NotEmpty().WithMessage("Unit Tujuan Tidak Boleh Kosong").OverridePropertyName("UnitTo").When(w => w.UnitTo != null);
-
+            RuleFor(r => r.Article).NotNull();
             //RuleFor(r => r.UnitTo.Code).NotEqual(r => r.Unit.Code).WithMessage("Unit Tujuan dan Unit Tidak Boleh Sama").OverridePropertyName("UnitTo").When(a => a.FinishingTo == "SEWING" && a.Unit != null && a.UnitTo != null);
             RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
 

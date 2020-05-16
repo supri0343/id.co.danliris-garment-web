@@ -38,7 +38,7 @@ namespace Manufactures.Domain.GarmentFinishingOuts.Commands
 
             RuleFor(r => r.UnitTo).NotNull();
             RuleFor(r => r.UnitTo.Id).NotEmpty().OverridePropertyName("UnitTo").When(w => w.UnitTo != null);
-
+            RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.FinishingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.FinishingOutDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Finishing Out Tidak Boleh Lebih dari Hari Ini");

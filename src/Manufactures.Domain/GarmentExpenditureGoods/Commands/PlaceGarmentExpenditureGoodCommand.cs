@@ -42,7 +42,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.Commands
             RuleFor(r => r.Carton)
                 .GreaterThanOrEqualTo(0)
                 .WithMessage("'Karton' harus lebih dari atau sama dengan '0'.");
-
+            RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
