@@ -45,7 +45,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
                .WithMessage(x => $"'Total Jumlah Potong' tidak boleh lebih dari '{x.PlanPORemainingQuantity}'.");
 
             RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
-
+            RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
             RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
