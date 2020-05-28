@@ -80,12 +80,12 @@ namespace Manufactures.Controllers.Api
 		}
 
 		[HttpGet("stocksdownload")]
-		public async Task<IActionResult> GetXlsMonitoringProductionStockFlow(int unit, DateTime dateFrom, DateTime dateTo, string ro, int page = 1, int size = 25, string Order = "{}")
+		public async Task<IActionResult> GetXlsMonitoringProductionStockFlow(string type,int unit, DateTime dateFrom, DateTime dateTo, string ro, int page = 1, int size = 25, string Order = "{}")
 		{
 			try
 			{
 				VerifyUser();
-				GetXlsMonitoringProductionStockFlowQuery query = new GetXlsMonitoringProductionStockFlowQuery(page, size, Order, unit, ro, dateFrom, dateTo, WorkContext.Token);
+				GetXlsMonitoringProductionStockFlowQuery query = new GetXlsMonitoringProductionStockFlowQuery(page, size, Order, unit, ro, dateFrom, dateTo,type, WorkContext.Token);
 				byte[] xlsInBytes;
 
 				var xls = await Mediator.Send(query);

@@ -106,6 +106,12 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 		public double ExpenditureGoodAdjPrice { get; internal set; }
 		public double EndBalanceExpenditureGood { get; internal set; }
 		public double EndBalanceExpenditureGoodPrice { get; internal set; }
+		public decimal FareNew { get; internal set; }
+		public decimal CuttingNew { get; internal set; }
+		public decimal LoadingNew { get; internal set; }
+		public decimal SewingNew { get; internal set; }
+		public decimal FinishingNew { get; internal set; }
+		public decimal ExpenditureNew { get; internal set; }
 
 		public GarmentMonitoringProductionStockFlowDto(GarmentMonitoringProductionStockFlowDto flowDto)
 		{
@@ -196,6 +202,12 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			this.BuyerCode = flowDto.BuyerCode;
 			this.Hours = flowDto.Hours;
 			this.Fare = flowDto.Fare;
+			this.FareNew = flowDto.FareNew;
+			this.CuttingNew = flowDto.CuttingNew;
+			this.SewingNew = flowDto.SewingNew;
+			this.LoadingNew = flowDto.LoadingNew;
+			this.FinishingNew = flowDto.FinishingNew;
+			this.ExpenditureNew = flowDto.ExpenditureNew;
 			
 		}
 		
