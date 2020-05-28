@@ -330,7 +330,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 							  join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
 							  join c in garmentCuttingOutDetailRepository.Query on b.Identity equals c.CutOutItemId
 							  where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.UnitFromId == request.unit && a.CuttingOutDate <= dateTo && a.CuttingOutType == "SEWING" && a.UnitId == a.UnitFromId
-							  select new { BasicPrice = (from aa in FC where aa.ro == a.RONo select aa.basicPrice).FirstOrDefault(), Fare = (from aa in garmentComodityPriceRepository.Query where a.UnitId == aa.UnitId && a.ComodityId == aa.ComodityId && aa.IsValid == true select aa.Price).FirstOrDefault(), Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), FC = (from cost in FC where cost.ro == a.RONo select cost.fc).FirstOrDefault(), Hours = (from cost in costCalculation.data where cost.ro == a.RONo select cost.hours).FirstOrDefault() }).Distinct();
+							  select new { BasicPrice = (from aa in FC where aa.ro == a.RONo select aa.basicPrice).FirstOrDefault(), FareNew = (from aa in garmentComodityPriceRepository.Query where a.UnitId == aa.UnitId && a.ComodityId == aa.ComodityId && aa.Date > dateTo select aa.Price).FirstOrDefault(),Fare= (from aa in garmentComodityPriceRepository.Query where a.UnitId == aa.UnitId && a.ComodityId == aa.ComodityId && aa.IsValid == true select aa.Price).FirstOrDefault(), Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), FC = (from cost in FC where cost.ro == a.RONo select cost.fc).FirstOrDefault(), Hours = (from cost in costCalculation.data where cost.ro == a.RONo select cost.hours).FirstOrDefault() }).Distinct();
 
 			var QueryCuttingOut = (from a in garmentCuttingOutRepository.Query
 								   join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
@@ -1581,7 +1581,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 								b.FC,
 								b.QtyOrder,
 								b.BasicPrice,
-								b.Fare,
+								b.Fare,b.FareNew,
 								a.Ro,
 								a.BeginingBalanceCuttingQty,
 								a.BeginingBalanceCuttingPrice,
@@ -1592,23 +1592,20 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 								a.QtyCuttingTransfer,
 								a.PriceCuttingTransfer,
 								a.QtyCuttingsubkon,
-								a.PriceCuttingsubkon
-				 ,
+								a.PriceCuttingsubkon,
 								a.AvalCutting,
 								a.AvalCuttingPrice,
 								a.AvalSewing,
 								a.AvalSewingPrice,
 								a.BeginingBalanceLoadingQty,
-								a.BeginingBalanceLoadingPrice
-				 ,
+								a.BeginingBalanceLoadingPrice,
 								a.QtyLoadingIn,
 								a.PriceLoadingIn,
 								a.QtyLoading,
 								a.PriceLoading,
 								a.QtyLoadingAdjs,
 								a.PriceLoadingAdjs,
-								a.BeginingBalanceSewingQty
-				 ,
+								a.BeginingBalanceSewingQty,
 								a.BeginingBalanceSewingPrice,
 								a.QtySewingIn,
 								a.PriceSewingIn,
@@ -1620,14 +1617,12 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 								a.WipSewingOutPrice,
 								a.WipFinishingOut,
 								a.WipFinishingOutPrice,
-								a.QtySewingRetur
-				 ,
+								a.QtySewingRetur ,
 								a.PriceSewingRetur,
 								a.QtySewingAdj,
 								a.PriceSewingAdj,
 								a.BeginingBalanceFinishingQty,
-								a.BeginingBalanceFinishingPrice
-				 ,
+								a.BeginingBalanceFinishingPrice ,
 								a.FinishingInQty,
 								a.FinishingInPrice,
 								a.BeginingBalanceSubconQty,
@@ -1639,8 +1634,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 								a.FinishingOutQty,
 								a.FinishingOutPrice,
 								a.FinishingInTransferQty,
-								a.FinishingInTransferPrice
-				 ,
+								a.FinishingInTransferPrice ,
 								a.FinishingAdjQty,
 								a.FinishingAdjPrice,
 								a.FinishingReturQty,
@@ -1658,7 +1652,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 								a.ExpenditureGoodAdj,
 								a.ExpenditureGoodAdjPrice
 							})
-				.GroupBy(x => new { x.Fare, x.BasicPrice, x.FC, x.Hours, x.BuyerCode, x.Ro, x.Article, x.Comodity, x.QtyOrder }, (key, group) => new
+				.GroupBy(x => new {x.FareNew, x.Fare, x.BasicPrice, x.FC, x.Hours, x.BuyerCode, x.Ro, x.Article, x.Comodity, x.QtyOrder }, (key, group) => new
 				{
 					ro = key.Ro,
 					article = key.Article,
@@ -1667,6 +1661,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					buyer = key.BuyerCode,
 					fc = key.FC,
 					fare = key.Fare,
+					farenew=key.FareNew,
 					hours = key.Hours,
 					basicprice = key.BasicPrice,
 					qtycutting = group.Sum(s => s.QtyCuttingOut),
@@ -1838,7 +1833,13 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					ExpenditureGoodAdj = item.expendAdj,
 					ExpenditureGoodAdjPrice = item.expendAdjPrice,
 					EndBalanceExpenditureGood = item.beginingBalanceExpenditureGood + item.finishingout + item.subconout + item.expendRetur - item.finishingintransfer - item.exportQty - item.otherqty - item.sampleQty - item.expendAdj,
-					EndBalanceExpenditureGoodPrice = item.beginingBalanceExpenditureGoodPrice + item.finishingoutPrice + item.subconoutPrice + item.expendReturPrice - item.finishingintransferPrice - item.exportPrice - item.otherprice - item.samplePrice - item.expendAdjPrice
+					EndBalanceExpenditureGoodPrice = item.beginingBalanceExpenditureGoodPrice + item.finishingoutPrice + item.subconoutPrice + item.expendReturPrice - item.finishingintransferPrice - item.exportPrice - item.otherprice - item.samplePrice - item.expendAdjPrice,
+					FareNew = item.farenew,
+					CuttingNew= item.farenew * Convert.ToDecimal (item.begining + item.qtyCuttingIn - item.qtycutting - item.qtyCuttingTransfer - item.qtCuttingSubkon - item.qtyavalcut - item.qtyavalsew),
+					LoadingNew= item.farenew * Convert.ToDecimal(item.beginingloading + item.qtyLoadingIn - item.qtyloading - item.qtyLoadingAdj),
+					SewingNew=item.farenew * Convert.ToDecimal(item.beginingSewing + item.sewingIn - item.sewingout + item.sewingintransfer - item.wipsewing - item.wipfinishing - item.sewingretur - item.sewingadj),
+					FinishingNew=item.farenew * Convert.ToDecimal(item.beginingbalanceFinishing + item.finishingin + item.finishingintransfer - item.finishingout - item.finishingadj - item.finishinigretur),
+					ExpenditureNew= item.farenew * Convert.ToDecimal(item.beginingBalanceExpenditureGood + item.finishingout + item.subconout + item.expendRetur - item.finishingintransfer - item.exportQty - item.otherqty - item.sampleQty - item.expendAdj)
 
 
 				};
