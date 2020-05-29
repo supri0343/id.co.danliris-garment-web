@@ -83,7 +83,7 @@ namespace Manufactures.Controllers.Api
             {
                 Items = _garmentExpenditureGoodItemRepository.Find(o => o.ExpenditureGoodId == finishOut.Identity).Select(finishOutItem => new GarmentExpenditureGoodItemDto(finishOutItem)
                 {
-                }).ToList()
+                }).OrderBy(o => o.Size.Size).ToList()
             }
             ).FirstOrDefault();
 

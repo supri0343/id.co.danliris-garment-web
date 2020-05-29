@@ -84,7 +84,7 @@ namespace Manufactures.Controllers.Api
             GarmentFinishingInDto garmentFinishingInDto = _garmentFinishingInRepository.Find(o => o.Identity == guid).Select(loading => new GarmentFinishingInDto(loading)
             {
                 Items = _garmentFinishingInItemRepository.Find(o => o.FinishingInId == loading.Identity).Select(loadingItem => new GarmentFinishingInItemDto(loadingItem)
-                ).ToList()
+                ).OrderBy(o => o.Size.Size).ToList()
             }
             ).FirstOrDefault();
 

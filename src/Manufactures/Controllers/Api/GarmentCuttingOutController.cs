@@ -209,7 +209,7 @@ namespace Manufactures.Controllers.Api
                     Details = _garmentCuttingOutDetailRepository.Find(o => o.CutOutItemId == cutOutItem.Identity).Select(cutOutDetail => new GarmentCuttingOutDetailDto(cutOutDetail)
                     {
                         //PreparingRemainingQuantity = _garmentPreparingItemRepository.Query.Where(o => o.Identity == cutInDetail.PreparingItemId).Select(o => o.RemainingQuantity).FirstOrDefault() + cutInDetail.PreparingQuantity,
-                    }).ToList()
+                    }).OrderBy(o => o.Size.Size).ToList()
                 }).ToList()
             }
             ).FirstOrDefault();

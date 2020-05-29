@@ -94,9 +94,9 @@ namespace Manufactures.Controllers.Api
                 {
                     Details = _garmentFinishingOutDetailRepository.Find(o => o.FinishingOutItemId == finishOutItem.Identity).Select(finishOutDetail => new GarmentFinishingOutDetailDto(finishOutDetail)
                     {
-                    }).ToList()
+                    }).OrderBy(o => o.Size.Size).ToList()
 
-                }).ToList()
+                }).OrderBy(o => o.Size.Size).ToList()
             }
             ).FirstOrDefault();
 

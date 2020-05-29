@@ -73,7 +73,7 @@ namespace Manufactures.Controllers.Api
             GarmentAdjustmentDto garmentAdjustmentDto = _garmentAdjustmentRepository.Find(o => o.Identity == guid).Select(adjustment => new GarmentAdjustmentDto(adjustment)
             {
                 Items = _garmentAdjustmentItemRepository.Find(o => o.AdjustmentId == adjustment.Identity).Select(adjustmentItem => new GarmentAdjustmentItemDto(adjustmentItem)
-                ).ToList()
+                ).OrderBy(o => o.Size.Size).ToList()
             }
             ).FirstOrDefault();
 
