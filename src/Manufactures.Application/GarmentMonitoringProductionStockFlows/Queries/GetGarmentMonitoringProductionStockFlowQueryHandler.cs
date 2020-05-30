@@ -28,7 +28,7 @@ using Manufactures.Domain.GarmentComodityPrices.Repositories;
 
 namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 {
-	public class GarmentMonitoringProductionStockFlowQueryHandler : IQueryHandler<GetMonitoringProductionStockFlowQuery, GarmentMonitoringProductionStockFlowListViewModel>
+	public class GetGarmentMonitoringProductionStockFlowQueryHandler : IQueryHandler<GetMonitoringProductionStockFlowQuery, GarmentMonitoringProductionStockFlowListViewModel>
 	{
 		protected readonly IHttpClientService _http;
 		private readonly IStorage _storage;
@@ -48,10 +48,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 		private readonly IGarmentAdjustmentItemRepository garmentAdjustmentItemRepository;
 		private readonly IGarmentSewingOutRepository garmentSewingOutRepository;
 		private readonly IGarmentSewingOutItemRepository garmentSewingOutItemRepository;
-		private readonly IGarmentSewingOutDetailRepository garmentSewingOutDetailRepository;
 		private readonly IGarmentFinishingOutRepository garmentFinishingOutRepository;
 		private readonly IGarmentFinishingOutItemRepository garmentFinishingOutItemRepository;
-		private readonly IGarmentFinishingOutDetailRepository garmentFinishingOutDetailRepository;
 		private readonly IGarmentFinishingInRepository garmentFinishingInRepository;
 		private readonly IGarmentFinishingInItemRepository garmentFinishingInItemRepository;
 		private readonly IGarmentExpenditureGoodRepository garmentExpenditureGoodRepository;
@@ -61,7 +59,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 		private readonly IGarmentSewingDORepository garmentSewingDORepository;
 		private readonly IGarmentSewingDOItemRepository garmentSewingDOItemRepository;
 		private readonly IGarmentComodityPriceRepository garmentComodityPriceRepository;
-		public GarmentMonitoringProductionStockFlowQueryHandler(IStorage storage, IServiceProvider serviceProvider)
+		public GetGarmentMonitoringProductionStockFlowQueryHandler(IStorage storage, IServiceProvider serviceProvider)
 		{
 			_storage = storage;
 			garmentCuttingOutRepository = storage.GetRepository<IGarmentCuttingOutRepository>();
@@ -70,8 +68,6 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
 			garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
 			garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
-			garmentLoadingRepository = storage.GetRepository<IGarmentLoadingRepository>();
-			garmentLoadingItemRepository = storage.GetRepository<IGarmentLoadingItemRepository>();
 			garmentSewingInRepository = storage.GetRepository<IGarmentSewingInRepository>();
 			garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
 			garmentAvalComponentRepository = storage.GetRepository<IGarmentAvalComponentRepository>();
@@ -82,10 +78,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			garmentAdjustmentItemRepository = storage.GetRepository<IGarmentAdjustmentItemRepository>();
 			garmentSewingOutRepository = storage.GetRepository<IGarmentSewingOutRepository>();
 			garmentSewingOutItemRepository = storage.GetRepository<IGarmentSewingOutItemRepository>();
-			garmentSewingOutDetailRepository = storage.GetRepository<IGarmentSewingOutDetailRepository>();
 			garmentFinishingOutRepository = storage.GetRepository<IGarmentFinishingOutRepository>();
 			garmentFinishingOutItemRepository = storage.GetRepository<IGarmentFinishingOutItemRepository>();
-			garmentFinishingOutDetailRepository = storage.GetRepository<IGarmentFinishingOutDetailRepository>();
 			garmentFinishingInRepository = storage.GetRepository<IGarmentFinishingInRepository>();
 			garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
 			garmentExpenditureGoodRepository = storage.GetRepository<IGarmentExpenditureGoodRepository>();
@@ -1847,6 +1841,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			}
 
 			garmentMonitoringProductionFlow.garmentMonitorings = monitoringDtos;
+			garmentMonitoringProductionFlow.count = monitoringDtos.Count();
 
 			return garmentMonitoringProductionFlow;
 		}
