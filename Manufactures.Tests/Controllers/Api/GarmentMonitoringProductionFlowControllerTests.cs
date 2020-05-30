@@ -94,7 +94,7 @@ namespace Manufactures.Tests.Controllers.Api
 				.ReturnsAsync(new GarmentMonitoringProductionStockFlowListViewModel());
 
 			// Act
-			var result = await unitUnderTest.GetMonitoring(1, DateTime.Now, null, 1, 25, "{}");
+			var result = await unitUnderTest.GetMonitoringProductionStockFlow(1, DateTime.Now,DateTime.Now, null, 1, 25, "{}");
 
 			// Assert
 			GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
@@ -109,7 +109,7 @@ namespace Manufactures.Tests.Controllers.Api
 				.ReturnsAsync(new MemoryStream());
 
 			// Act
-			var result = await unitUnderTest.GetXlsMonitoringProductionStockFlow(1, DateTime.Now,DateTime.Now,"", 1, 25, "{}");
+			var result = await unitUnderTest.GetXlsMonitoringProductionStockFlow("bookkeeping",1, DateTime.Now,DateTime.Now,"", 1, 25, "{}");
 
 			// Assert
 			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));

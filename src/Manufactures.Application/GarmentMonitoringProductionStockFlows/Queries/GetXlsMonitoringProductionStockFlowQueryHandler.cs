@@ -52,10 +52,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 		private readonly IGarmentAdjustmentItemRepository garmentAdjustmentItemRepository;
 		private readonly IGarmentSewingOutRepository garmentSewingOutRepository;
 		private readonly IGarmentSewingOutItemRepository garmentSewingOutItemRepository;
-		private readonly IGarmentSewingOutDetailRepository garmentSewingOutDetailRepository;
 		private readonly IGarmentFinishingOutRepository garmentFinishingOutRepository;
 		private readonly IGarmentFinishingOutItemRepository garmentFinishingOutItemRepository;
-		private readonly IGarmentFinishingOutDetailRepository garmentFinishingOutDetailRepository;
 		private readonly IGarmentFinishingInRepository garmentFinishingInRepository;
 		private readonly IGarmentFinishingInItemRepository garmentFinishingInItemRepository;
 		private readonly IGarmentExpenditureGoodRepository garmentExpenditureGoodRepository;
@@ -86,10 +84,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			garmentAdjustmentItemRepository = storage.GetRepository<IGarmentAdjustmentItemRepository>();
 			garmentSewingOutRepository = storage.GetRepository<IGarmentSewingOutRepository>();
 			garmentSewingOutItemRepository = storage.GetRepository<IGarmentSewingOutItemRepository>();
-			garmentSewingOutDetailRepository = storage.GetRepository<IGarmentSewingOutDetailRepository>();
 			garmentFinishingOutRepository = storage.GetRepository<IGarmentFinishingOutRepository>();
 			garmentFinishingOutItemRepository = storage.GetRepository<IGarmentFinishingOutItemRepository>();
-			garmentFinishingOutDetailRepository = storage.GetRepository<IGarmentFinishingOutDetailRepository>();
 			garmentFinishingInRepository = storage.GetRepository<IGarmentFinishingInRepository>();
 			garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
 			garmentExpenditureGoodRepository = storage.GetRepository<IGarmentExpenditureGoodRepository>();
