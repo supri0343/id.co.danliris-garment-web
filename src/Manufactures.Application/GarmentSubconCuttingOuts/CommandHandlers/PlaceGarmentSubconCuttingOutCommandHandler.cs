@@ -24,6 +24,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
         private readonly IGarmentSubconCuttingRepository _garmentSubconCuttingRepository;
         //private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
+        private readonly IGarmentSubconCuttingRelationRepository _garmentSubconCuttingRelationRepository;
 
         public PlaceGarmentSubconCuttingOutCommandHandler(IStorage storage)
         {
@@ -34,6 +35,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _garmentSubconCuttingRepository = storage.GetRepository<IGarmentSubconCuttingRepository>();
             //_garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
+            _garmentSubconCuttingRelationRepository = storage.GetRepository<IGarmentSubconCuttingRelationRepository>();
         }
 
         public async Task<GarmentSubconCuttingOut> Handle(PlaceGarmentSubconCuttingOutCommand request, CancellationToken cancellationToken)
@@ -60,6 +62,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
 
             Dictionary<Guid, double> cuttingInDetailToBeUpdated = new Dictionary<Guid, double>();
             Dictionary<string, double> cuttingSubconToBeUpdated = new Dictionary<string, double>();
+            Dictionary<string, List<Guid>> cuttingSubconToBeUpdatedId = new Dictionary<string, List<Guid>>();
 
             foreach (var item in request.Items)
             {
@@ -100,10 +103,12 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                     if (cuttingSubconToBeUpdated.ContainsKey(key))
                     {
                         cuttingSubconToBeUpdated[key] += detail.CuttingOutQuantity;
+                        cuttingSubconToBeUpdatedId[key].Add(detail.Id);
                     }
                     else
                     {
                         cuttingSubconToBeUpdated.Add(key, detail.CuttingOutQuantity);
+                        cuttingSubconToBeUpdatedId.Add(key, new List<Guid> { detail.Id });
                     }
 
                     if (cuttingInDetailToBeUpdated.ContainsKey(item.CuttingInDetailId))
@@ -172,6 +177,12 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                     garmentSubconCutting.SetQuantity(garmentSubconCutting.Quantity + subconCutting.Value);
                     garmentSubconCutting.Modify();
                     await _garmentSubconCuttingRepository.Update(garmentSubconCutting);
+                }
+
+                foreach (var detailId in cuttingSubconToBeUpdatedId[subconCutting.Key] ?? new List<Guid>())
+                {
+                    GarmentSubconCuttingRelation garmentSubconCuttingRelation = new GarmentSubconCuttingRelation(Guid.NewGuid(), garmentSubconCutting.Identity, detailId);
+                    await _garmentSubconCuttingRelationRepository.Update(garmentSubconCuttingRelation);
                 }
             }
 
