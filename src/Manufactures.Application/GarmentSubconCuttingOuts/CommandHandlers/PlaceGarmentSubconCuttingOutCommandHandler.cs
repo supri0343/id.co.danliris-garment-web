@@ -80,8 +80,9 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
 
                 foreach (var detail in item.Details)
                 {
+                    var detailId = Guid.NewGuid();
                     GarmentSubconCuttingOutDetail garmentCuttingOutDetail = new GarmentSubconCuttingOutDetail(
-                        Guid.NewGuid(),
+                        detailId,
                         garmentCuttingOutItem.Identity,
                         new SizeId(detail.Size.Id),
                         detail.Size.Size,
@@ -103,12 +104,12 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
                     if (cuttingSubconToBeUpdated.ContainsKey(key))
                     {
                         cuttingSubconToBeUpdated[key] += detail.CuttingOutQuantity;
-                        cuttingSubconToBeUpdatedId[key].Add(detail.Id);
+                        cuttingSubconToBeUpdatedId[key].Add(detailId);
                     }
                     else
                     {
                         cuttingSubconToBeUpdated.Add(key, detail.CuttingOutQuantity);
-                        cuttingSubconToBeUpdatedId.Add(key, new List<Guid> { detail.Id });
+                        cuttingSubconToBeUpdatedId.Add(key, new List<Guid> { detailId });
                     }
 
                     if (cuttingInDetailToBeUpdated.ContainsKey(item.CuttingInDetailId))
