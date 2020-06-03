@@ -67,6 +67,7 @@ namespace Manufactures.Tests.Validations.GarmentSubconFinishingIns
             unitUnderTest.DOId = 1;
             unitUnderTest.DONo = "DONo";
             unitUnderTest.RONo = "RONo";
+            unitUnderTest.Article = "Article";
             unitUnderTest.TotalQuantity = 0;
             unitUnderTest.Items = new List<GarmentSubconFinishingInItemValueObject>
             {
