@@ -14,8 +14,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubconCuttingOuts.Configs
             builder.ToTable("GarmentSubconCuttingRelations");
             builder.HasKey(e => e.Identity);
 
-            builder.HasIndex(i => i.GarmentCuttingOutId).IsUnique().HasFilter("[Deleted]=(0)");
-            builder.HasIndex(i => new { i.GarmentCuttingOutId, i.GarmentSubconCuttingId }).IsUnique().HasFilter("[Deleted]=(0)");
+            builder.HasIndex(i => i.GarmentCuttingOutDetailId).IsUnique().HasFilter("[Deleted]=(0)");
+            builder.HasIndex(i => new { i.GarmentCuttingOutDetailId, i.GarmentSubconCuttingId }).IsUnique().HasFilter("[Deleted]=(0)");
 
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();

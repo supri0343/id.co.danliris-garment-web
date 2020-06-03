@@ -111,7 +111,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
 
                 foreach (var detailId in cuttingSubconToBeUpdatedId[subconCutting.Key] ?? new List<Guid>())
                 {
-                    GarmentSubconCuttingRelation garmentSubconCuttingRelation = _garmentSubconCuttingRelationRepository.Query.Where(w => w.GarmentSubconCuttingId == garmentSubconCutting.Identity && w.GarmentCuttingOutId == detailId).Select(s => new GarmentSubconCuttingRelation(s)).FirstOrDefault();
+                    GarmentSubconCuttingRelation garmentSubconCuttingRelation = _garmentSubconCuttingRelationRepository.Query.Where(w => w.GarmentSubconCuttingId == garmentSubconCutting.Identity && w.GarmentCuttingOutDetailId == detailId).Select(s => new GarmentSubconCuttingRelation(s)).FirstOrDefault();
                     if (garmentSubconCuttingRelation != null)
                     {
                         garmentSubconCuttingRelation.Remove();

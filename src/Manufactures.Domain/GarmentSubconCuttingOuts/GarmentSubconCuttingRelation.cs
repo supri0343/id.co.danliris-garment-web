@@ -8,17 +8,17 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
     public class GarmentSubconCuttingRelation : AggregateRoot<GarmentSubconCuttingRelation, GarmentSubconCuttingRelationReadModel>
     {
         public Guid GarmentSubconCuttingId { get; private set; }
-        public Guid GarmentCuttingOutId { get; private set; }
+        public Guid GarmentCuttingOutDetailId { get; private set; }
 
         public GarmentSubconCuttingRelation(Guid identity, Guid garmentSubconCuttingId, Guid garmentCuttingOutId) : base(identity)
         {
             GarmentSubconCuttingId = garmentSubconCuttingId;
-            GarmentCuttingOutId = garmentCuttingOutId;
+            GarmentCuttingOutDetailId = garmentCuttingOutId;
 
             ReadModel = new GarmentSubconCuttingRelationReadModel(Identity)
             {
                 GarmentSubconCuttingId = garmentSubconCuttingId,
-                GarmentCuttingOutId = garmentCuttingOutId,
+                GarmentCuttingOutDetailId = garmentCuttingOutId,
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconCuttingRelationPlaced(Identity));
@@ -27,7 +27,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts
         public GarmentSubconCuttingRelation(GarmentSubconCuttingRelationReadModel readModel) : base(readModel)
         {
             GarmentSubconCuttingId = readModel.GarmentSubconCuttingId;
-            GarmentCuttingOutId = readModel.GarmentCuttingOutId;
+            GarmentCuttingOutDetailId = readModel.GarmentCuttingOutDetailId;
         }
 
         public void Modify()

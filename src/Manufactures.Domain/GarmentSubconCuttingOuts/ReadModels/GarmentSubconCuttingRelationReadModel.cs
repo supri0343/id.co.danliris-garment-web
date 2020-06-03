@@ -12,6 +12,6 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.ReadModels
         }
 
         public Guid GarmentSubconCuttingId { get; internal set; }
-        public Guid GarmentCuttingOutId { get; internal set; }
+        public Guid GarmentCuttingOutDetailId { get; internal set; }
     }
 }
