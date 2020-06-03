@@ -78,7 +78,56 @@ namespace Manufactures.Tests.Queries.GarmentFinishingOuts
 			Guid guidSewingOut = Guid.NewGuid();
 			Guid guidSewingOutItem = Guid.NewGuid();
 
-			GetXlsFinishingQuery getMonitoring = new GetXlsFinishingQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "token");
+			GetXlsFinishingQuery getMonitoring = new GetXlsFinishingQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2),"", "token");
+
+			_mockGarmentFinishingOutItemRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentFinishingOutItemReadModel>
+				{
+					new GarmentFinishingOutItem(guidFinishingOutItem,guidFinishingOut,new Guid(),new Guid(),new ProductId(1),"","","",new SizeId(1),"",10, new UomId(1),"","",10,10,10).GetReadModel()
+				}.AsQueryable());
+
+			_mockGarmentFinishingOutRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentFinishingOutReadModel>
+				{
+					new GarmentFinishingOut(guidFinishingOut,"",new UnitDepartmentId(1),"","","",DateTimeOffset.Now,"ro","",new UnitDepartmentId(1),"","",new GarmentComodityId(1),"","",false).GetReadModel()
+				}.AsQueryable());
+
+			_mockGarmentSewingOutItemRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentSewingOutItemReadModel>
+				{
+					new GarmentSewingOutItem(guidSewingOutItem,guidSewingOut,new Guid(),new Guid(), new ProductId(1),"","","",new SizeId(1),"",0, new UomId(1),"","",10,100,100).GetReadModel()
+				}.AsQueryable());
+
+			_mockGarmentSewingOutRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentSewingOutReadModel>
+				{
+					new GarmentSewingOut(guidSewingOut,"",new BuyerId(1),"","",new UnitDepartmentId(1),"","","",DateTimeOffset.Now,"ro","",new UnitDepartmentId(1),"","",new GarmentComodityId(1),"","",true).GetReadModel()
+				}.AsQueryable());
+
+			// Act
+			var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
+
+			// Assert
+			result.Should().NotBeNull();
+		}
+
+		[Fact]
+		public async Task Handle_StateUnderTest_ExpectedBehavior_Bookkeeping()
+		{
+			// Arrange
+			GetXlsFinishingQueryHandler unitUnderTest = CreateGetXlsFinishingQueryHandler();
+			CancellationToken cancellationToken = CancellationToken.None;
+
+			Guid guidFinishingOut = Guid.NewGuid();
+			Guid guidFinishingOutItem = Guid.NewGuid();
+			Guid guidSewingOut = Guid.NewGuid();
+			Guid guidSewingOutItem = Guid.NewGuid();
+
+			GetXlsFinishingQuery getMonitoring = new GetXlsFinishingQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "bookkeeping", "token");
 
 			_mockGarmentFinishingOutItemRepository
 				.Setup(s => s.Query)

@@ -6,6 +6,7 @@ using Manufactures.Domain.GarmentLoadings.Commands;
 using Manufactures.Domain.GarmentLoadings.Repositories;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Manufactures.Dtos;
+using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -42,6 +43,7 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentLoadingRepository.Read(page, size, order, keyword, filter);
             var total = query.Count();
+            double totalQty = query.Sum(a => a.Items.Sum(b => b.Quantity));
             query = query.Skip((page - 1) * size).Take(size);
             List<GarmentLoadingListDto> garmentCuttingInListDtos = _garmentLoadingRepository.Find(query).Select(loading =>
             {
@@ -68,7 +70,8 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                total
+                total,
+                totalQty
             });
         }
 
@@ -82,7 +85,7 @@ namespace Manufactures.Controllers.Api
             GarmentLoadingDto garmentLoadingDto = _garmentLoadingRepository.Find(o => o.Identity == guid).Select(loading => new GarmentLoadingDto(loading)
             {
                 Items = _garmentLoadingItemRepository.Find(o => o.LoadingId == loading.Identity).Select(loadingItem => new GarmentLoadingItemDto(loadingItem)
-                ).ToList()
+                ).OrderBy(o => o.Size.Size).ToList()
             }
             ).FirstOrDefault();
 
@@ -208,5 +211,50 @@ namespace Manufactures.Controllers.Api
 				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
 			}
 		}
-	}
+
+        [HttpGet("{id}/{buyer}")]
+        public async Task<IActionResult> GetPdf(string id, string buyer)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+            GarmentLoadingDto garmentLoadingDto = _garmentLoadingRepository.Find(o => o.Identity == guid).Select(loading => new GarmentLoadingDto(loading)
+            {
+                Items = _garmentLoadingItemRepository.Find(o => o.LoadingId == loading.Identity).Select(loadingItem => new GarmentLoadingItemDto(loadingItem)
+                ).ToList()
+            }
+            ).FirstOrDefault();
+            var stream = GarmentLoadingPDFTemplate.Generate(garmentLoadingDto, buyer);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentLoadingDto.LoadingNo}.pdf"
+            };
+        }
+
+        [HttpPut("update-dates")]
+        public async Task<IActionResult> UpdateDates([FromBody]UpdateDatesGarmentLoadingCommand command)
+        {
+            VerifyUser();
+
+            if (command.Date == null || command.Date == DateTimeOffset.MinValue)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal harus diisi"
+                });
+            else if (command.Date.Date > DateTimeOffset.Now.Date)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal tidak boleh lebih dari hari ini"
+                });
+
+            var order = await Mediator.Send(command);
+
+            return Ok();
+        }
+    }
 }

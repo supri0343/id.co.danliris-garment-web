@@ -17,6 +17,7 @@ using System.Data;
 using OfficeOpenXml;
 using System.Threading.Tasks;
 using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.HOrderDataProductionReport;
+using OfficeOpenXml.Style;
 
 namespace Manufactures.Application.GarmentFinishingOuts.Queries
 {
@@ -99,7 +100,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
                 }
             }
 
-            HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(ro, token);
+            HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(freeRO, token);
 
             Dictionary<string, string> comodities = new Dictionary<string, string>();
             if (hOrderDataProductionReport.data.Count > 0)
@@ -140,6 +141,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 		{
 			public string roJob { get; internal set; }
 			public string article { get; internal set; }
+			public string buyerCode { get; internal set; }
 			public double qtyOrder { get; internal set; }
 			public double stock { get; internal set; }
 			public string style { get; internal set; }
@@ -147,6 +149,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 			public double finishingQtyPcs { get; internal set; }
 			public string uomUnit { get; internal set; }
 			public double remainQty { get; internal set; }
+			public decimal price { get; internal set; }
 		}
 
 		public async Task<MemoryStream> Handle(GetXlsFinishingQuery request, CancellationToken cancellationToken)
@@ -174,15 +177,15 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 			var QueryFinishing = from a in garmentFinishingOutRepository.Query
 								 join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 								 where a.UnitId == request.unit && a.FinishingOutDate <= dateTo
-								 select new monitoringView { finishingQtyPcs = a.FinishingOutDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.FinishingOutDate < dateFrom ? -b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+								 select new monitoringView { price = Convert.ToDecimal(b.Price), buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), finishingQtyPcs = a.FinishingOutDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.FinishingOutDate < dateFrom ? -b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 
 			var QuerySewingOut = from a in garmentSewingOutRepository.Query
 								 join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
-								 where a.UnitId == request.unit && a.SewingOutDate <= dateTo
-								 select new monitoringView { finishingQtyPcs = 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity : 0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate < dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+								 where a.UnitToId == request.unit && a.SewingOutDate <= dateTo && a.SewingTo == "FINISHING"
+								 select new monitoringView { price = 0, buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), finishingQtyPcs = 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity : 0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate < dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 
 			var queryNow = QuerySewingOut.Union(QueryFinishing);
-			var querySum = queryNow.ToList().GroupBy(x => new { x.qtyOrder, x.roJob, x.article, x.uomUnit, x.style }, (key, group) => new
+			var querySum = queryNow.ToList().GroupBy(x => new { x.buyerCode, x.qtyOrder, x.roJob, x.article, x.uomUnit, x.style }, (key, group) => new
 			{
 				QtyOrder = key.qtyOrder,
 				RoJob = key.roJob,
@@ -190,6 +193,8 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 				Stock = group.Sum(s => s.stock),
 				UomUnit = key.uomUnit,
 				Article = key.article,
+				buyer = key.buyerCode,
+				price = group.Sum(s => s.price),
 				SewingQtyPcs = group.Sum(s => s.sewingQtyPcs),
 				Finishing = group.Sum(s => s.finishingQtyPcs)
 			}).OrderBy(s => s.RoJob);
@@ -205,6 +210,8 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 					finishingOutQtyPcs = item.Finishing,
 					stock = item.Stock,
 					style = item.Style,
+					buyerCode = item.buyer,
+					price = item.price,
 					remainQty = item.Stock + item.SewingQtyPcs - item.Finishing
 				};
 				monitoringDtos.Add(dto);
@@ -213,24 +220,47 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 			var reportDataTable = new DataTable();
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO JOB", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Article", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kode Buyer", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Style", DataType = typeof(string) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Stock Awal", DataType = typeof(double) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Masuk", DataType = typeof(double) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Harga(M)", DataType = typeof(decimal) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Stong Masuk", DataType = typeof(double) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barack Awal", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Keluar", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sisa", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+			int counter = 1;
 			if (listViewModel.garmentMonitorings.Count > 0)
 			{
 				foreach (var report in listViewModel.garmentMonitorings)
-					reportDataTable.Rows.Add(report.roJob, report.article, report.qtyOrder, report.style, report.stock, report.sewingOutQtyPcs, report.finishingOutQtyPcs, report.remainQty, report.uomUnit);
-
+				{
+					reportDataTable.Rows.Add(report.roJob, report.article, report.buyerCode, report.qtyOrder, report.style, report.price, report.stock, report.sewingOutQtyPcs, report.finishingOutQtyPcs, report.remainQty, report.uomUnit);
+					counter++;
+				}
 			}
 			using (var package = new ExcelPackage())
 			{
 				var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
 				worksheet.Cells["A1"].LoadFromDataTable(reportDataTable, true);
+				worksheet.Column(4).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["D" + 2 + ":D" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Column(6).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["F" + 2 + ":F" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Column(7).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["G" + 2 + ":G" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["H" + 2 + ":H" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Column(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["I" + 2 + ":I" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Column(10).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["J" + 2 + ":J" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+
 				var stream = new MemoryStream();
+				if (request.type != "bookkeeping")
+				{
+					worksheet.Column(3).Hidden = true;
+					worksheet.Column(6).Hidden = true;
+				}
 				package.SaveAs(stream);
 
 				return stream;

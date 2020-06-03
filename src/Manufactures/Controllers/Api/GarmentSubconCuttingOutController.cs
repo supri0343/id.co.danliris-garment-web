@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Manufactures.Helpers.PDFTemplates;
 
 namespace Manufactures.Controllers.Api
 {
@@ -44,6 +45,7 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentCuttingOutRepository.Read(page, size, order, "", filter);
             var total = query.Count();
+            double totalQty = query.Sum(a => a.GarmentCuttingOutItem.Sum(b => b.GarmentCuttingOutDetail.Sum(c => c.CuttingOutQuantity)));
             query = query.Skip((page - 1) * size).Take(size);
 
             var garmentCuttingOutDto = _garmentCuttingOutRepository.Find(query).Select(o => new GarmentSubconCuttingOutListDto(o)).ToArray();
@@ -118,7 +120,7 @@ namespace Manufactures.Controllers.Api
                 {
                     garmentCuttingOutDtoListArray = garmentCuttingOutDtoList.OrderByDescending(x => x.LastModifiedDate).ToArray();
                 }
-
+                totalQty = garmentCuttingOutDtoListArray.Sum(a => a.Items.Sum(b => b.Details.Sum(c => c.CuttingOutQuantity)));
                 //garmentCuttingOutDtoListArray = garmentCuttingOutDtoListArray.Take(size).Skip((page - 1) * size).ToArray();
 
                 await Task.Yield();
@@ -126,7 +128,8 @@ namespace Manufactures.Controllers.Api
                 {
                     page,
                     size,
-                    total
+                    total,
+                    totalQty
                 });
             }
             else
@@ -148,7 +151,8 @@ namespace Manufactures.Controllers.Api
                 {
                     page,
                     size,
-                    total
+                    total,
+                    totalQty
                 });
             }
 
@@ -168,7 +172,7 @@ namespace Manufactures.Controllers.Api
                     Details = _garmentCuttingOutDetailRepository.Find(o => o.CutOutItemId == cutOutItem.Identity).Select(cutOutDetail => new GarmentSubconCuttingOutDetailDto(cutOutDetail)
                     {
                         //PreparingRemainingQuantity = _garmentPreparingItemRepository.Query.Where(o => o.Identity == cutInDetail.PreparingItemId).Select(o => o.RemainingQuantity).FirstOrDefault() + cutInDetail.PreparingQuantity,
-                    }).ToList()
+                    }).OrderBy(o => o.Size.Size).ToList()
                 }).ToList()
             }
             ).FirstOrDefault();
@@ -260,6 +264,33 @@ namespace Manufactures.Controllers.Api
                 size,
                 count
             });
+        }
+
+        [HttpGet("{id}/{buyer}")]
+        public async Task<IActionResult> GetPdf(string id, string buyer)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+            GarmentSubconCuttingOutDto garmentCuttingOutDto = _garmentCuttingOutRepository.Find(o => o.Identity == guid).Select(cutOut => new GarmentSubconCuttingOutDto(cutOut)
+            {
+                Items = _garmentCuttingOutItemRepository.Find(o => o.CutOutId == cutOut.Identity).Select(cutOutItem => new GarmentSubconCuttingOutItemDto(cutOutItem)
+                {
+                    Details = _garmentCuttingOutDetailRepository.Find(o => o.CutOutItemId == cutOutItem.Identity).Select(cutOutDetail => new GarmentSubconCuttingOutDetailDto(cutOutDetail)
+                    {
+                        //PreparingRemainingQuantity = _garmentPreparingItemRepository.Query.Where(o => o.Identity == cutInDetail.PreparingItemId).Select(o => o.RemainingQuantity).FirstOrDefault() + cutInDetail.PreparingQuantity,
+                    }).ToList()
+                }).ToList()
+            }
+            ).FirstOrDefault();
+            var stream = GarmentSubconCuttingOutPDFTemplate.Generate(garmentCuttingOutDto, buyer);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentCuttingOutDto.CutOutNo}.pdf"
+            };
         }
     }
 }

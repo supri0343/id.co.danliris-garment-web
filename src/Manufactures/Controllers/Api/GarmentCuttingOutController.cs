@@ -16,6 +16,8 @@ using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Newtonsoft.Json;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentCuttingOuts.Queries;
+using Manufactures.Helpers.PDFTemplates;
+using Manufactures.Domain.GarmentCuttingOuts;
 
 namespace Manufactures.Controllers.Api
 {
@@ -52,6 +54,7 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentCuttingOutRepository.Read(page, size, order, "", filter).Where(d => d.CuttingOutType != "SUBKON");
             var total = query.Count();
+            double totalQty = query.Sum(a => a.GarmentCuttingOutItem.Sum(b => b.GarmentCuttingOutDetail.Sum(c => c.CuttingOutQuantity)));
             query = query.Skip((page - 1) * size).Take(size);
 
             var garmentCuttingOutDto = _garmentCuttingOutRepository.Find(query).Select(o => new GarmentCuttingOutListDto(o)).ToArray();
@@ -100,7 +103,7 @@ namespace Manufactures.Controllers.Api
                                     || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                     || (x.Article != null && x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase))
                                     ).ToList();
-
+                
                 var i = 0;
                 foreach (var data in ListTemp)
                 {
@@ -129,13 +132,14 @@ namespace Manufactures.Controllers.Api
                 }
 
                 //garmentCuttingOutDtoListArray = garmentCuttingOutDtoListArray.Take(size).Skip((page - 1) * size).ToArray();
-
+                totalQty = garmentCuttingOutDtoListArray.Sum(a => a.Items.Sum(b => b.Details.Sum(c => c.CuttingOutQuantity)));
                 await Task.Yield();
                 return Ok(garmentCuttingOutDtoListArray, info: new
                 {
                     page,
                     size,
-                    total
+                    total,
+                    totalQty
                 });
             }
             else
@@ -157,7 +161,8 @@ namespace Manufactures.Controllers.Api
                 {
                     page,
                     size,
-                    total
+                    total,
+                    totalQty
                 });
             }
 
@@ -204,13 +209,42 @@ namespace Manufactures.Controllers.Api
                     Details = _garmentCuttingOutDetailRepository.Find(o => o.CutOutItemId == cutOutItem.Identity).Select(cutOutDetail => new GarmentCuttingOutDetailDto(cutOutDetail)
                     {
                         //PreparingRemainingQuantity = _garmentPreparingItemRepository.Query.Where(o => o.Identity == cutInDetail.PreparingItemId).Select(o => o.RemainingQuantity).FirstOrDefault() + cutInDetail.PreparingQuantity,
-                    }).ToList()
+                    }).OrderBy(o => o.Size.Size).ToList()
                 }).ToList()
             }
             ).FirstOrDefault();
 
             await Task.Yield();
             return Ok(garmentCuttingOutDto);
+
+            
+        }
+
+        [HttpGet("{id}/{buyer}")]
+        public async Task<IActionResult> GetPdf(string id, string buyer)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+            GarmentCuttingOutDto garmentCuttingOutDto = _garmentCuttingOutRepository.Find(o => o.Identity == guid).Select(cutOut => new GarmentCuttingOutDto(cutOut)
+            {
+                Items = _garmentCuttingOutItemRepository.Find(o => o.CutOutId == cutOut.Identity).Select(cutOutItem => new GarmentCuttingOutItemDto(cutOutItem)
+                {
+                    Details = _garmentCuttingOutDetailRepository.Find(o => o.CutOutItemId == cutOutItem.Identity).Select(cutOutDetail => new GarmentCuttingOutDetailDto(cutOutDetail)
+                    {
+                        
+                    }).ToList()
+                }).ToList()
+            }
+            ).FirstOrDefault();
+            var stream = GarmentCuttingOutPDFTemplate.Generate(garmentCuttingOutDto, buyer);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentCuttingOutDto.CutOutNo}.pdf"
+            };
         }
 
         [HttpPost]
@@ -359,5 +393,27 @@ namespace Manufactures.Controllers.Api
             });
         }
 
+        [HttpPut("update-dates")]
+        public async Task<IActionResult> UpdateDates([FromBody]UpdateDatesGarmentCuttingOutCommand command)
+        {
+            VerifyUser();
+
+            if (command.Date == null || command.Date == DateTimeOffset.MinValue)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal harus diisi"
+                });
+            else if (command.Date.Date > DateTimeOffset.Now.Date)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal tidak boleh lebih dari hari ini"
+                });
+
+            var order = await Mediator.Send(command);
+
+            return Ok();
+        }
     }
 }

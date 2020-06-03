@@ -70,6 +70,7 @@ namespace Manufactures.Data.EntityFrameworkCore
 			modelBuilder.ApplyConfiguration(new GarmentAvalComponentItemConfig());
 
 			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingRelationConfig());
 
 			modelBuilder.ApplyConfiguration(new GarmentFinishingOutConfig());
 			modelBuilder.ApplyConfiguration(new GarmentFinishingOutItemConfig());

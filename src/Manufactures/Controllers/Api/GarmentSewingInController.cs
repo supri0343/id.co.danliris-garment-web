@@ -36,6 +36,7 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentSewingInRepository.Read(page, size, order, keyword, filter);
             var total = query.Count();
+            double totalQty = query.Sum(a => a.GarmentSewingInItem.Sum(b => b.Quantity));
             query = query.Skip((page - 1) * size).Take(size);
 
             var garmentSewingInDto = _garmentSewingInRepository.Find(query).Select(o => new GarmentSewingInListDto(o)).ToArray();
@@ -109,7 +110,8 @@ namespace Manufactures.Controllers.Api
                 {
                     page,
                     size,
-                    total
+                    total,
+                    totalQty
                 });
             }
             else
@@ -131,7 +133,8 @@ namespace Manufactures.Controllers.Api
                 {
                     page,
                     size,
-                    total
+                    total,
+                    totalQty
                 });
             }
             //List<GarmentSewingInListDto> garmentSewingInListDtos = _garmentSewingInRepository.Find(query).Select(sewingIn =>
@@ -167,7 +170,7 @@ namespace Manufactures.Controllers.Api
 
             GarmentSewingInDto garmentSewingIn = _garmentSewingInRepository.Find(o => o.Identity == guid).Select(sewingIn => new GarmentSewingInDto(sewingIn)
             {
-                Items = _garmentSewingInItemRepository.Find(o => o.SewingInId == sewingIn.Identity).Select(sewingInItem => new GarmentSewingInItemDto(sewingInItem)).ToList()
+                Items = _garmentSewingInItemRepository.Find(o => o.SewingInId == sewingIn.Identity).Select(sewingInItem => new GarmentSewingInItemDto(sewingInItem)).OrderBy(o => o.Size.Size).ToList()
             }
             ).FirstOrDefault();
 
@@ -239,6 +242,29 @@ namespace Manufactures.Controllers.Api
                 size,
                 count
             });
+        }
+
+        [HttpPut("update-dates")]
+        public async Task<IActionResult> UpdateDates([FromBody]UpdateDatesGarmentSewingInCommand command)
+        {
+            VerifyUser();
+
+            if (command.Date == null || command.Date == DateTimeOffset.MinValue)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal harus diisi"
+                });
+            else if (command.Date.Date > DateTimeOffset.Now.Date)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal tidak boleh lebih dari hari ini"
+                });
+
+            var order = await Mediator.Send(command);
+
+            return Ok();
         }
     }
 }

@@ -4,6 +4,7 @@ using Infrastructure.External.DanLirisClient.Microservice.Cache;
 using Manufactures.Domain.GarmentFinishingIns.Commands;
 using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
+using Manufactures.Domain.GarmentSubconFinishingIns.Commands;
 using Manufactures.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,6 +42,7 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentFinishingInRepository.Read(page, size, order, keyword, filter);
             var total = query.Count();
+            double totalQty = query.Sum(a => a.Items.Sum(b => b.Quantity));
             query = query.Skip((page - 1) * size).Take(size);
 
             List<GarmentFinishingInListDto> garmentCuttingInListDtos = _garmentFinishingInRepository.Find(query).Select(loading =>
@@ -66,7 +69,8 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                total
+                total,
+                totalQty
             });
         }
 
@@ -80,7 +84,7 @@ namespace Manufactures.Controllers.Api
             GarmentFinishingInDto garmentFinishingInDto = _garmentFinishingInRepository.Find(o => o.Identity == guid).Select(loading => new GarmentFinishingInDto(loading)
             {
                 Items = _garmentFinishingInItemRepository.Find(o => o.FinishingInId == loading.Identity).Select(loadingItem => new GarmentFinishingInItemDto(loadingItem)
-                ).ToList()
+                ).OrderBy(o => o.Size.Size).ToList()
             }
             ).FirstOrDefault();
 
@@ -163,6 +167,29 @@ namespace Manufactures.Controllers.Api
                 size,
                 count
             });
+        }
+
+        [HttpPut("update-dates")]
+        public async Task<IActionResult> UpdateDates([FromBody]UpdateDatesGarmentFinishingInCommand command)
+        {
+            VerifyUser();
+
+            if (command.Date == null || command.Date == DateTimeOffset.MinValue)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal harus diisi"
+                });
+            else if (command.Date.Date > DateTimeOffset.Now.Date)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal tidak boleh lebih dari hari ini"
+                });
+
+            var order = await Mediator.Send(command);
+
+            return Ok();
         }
     }
 }

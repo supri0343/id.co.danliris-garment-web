@@ -39,7 +39,7 @@ namespace Manufactures.Domain.GarmentSewingOuts.Commands
 
             RuleFor(r => r.UnitTo).NotNull();
             RuleFor(r => r.UnitTo.Id).NotEmpty().OverridePropertyName("UnitTo").When(w => w.UnitTo != null);
-
+            RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.SewingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.SewingOutDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Sewing Out Tidak Boleh Lebih dari Hari Ini");

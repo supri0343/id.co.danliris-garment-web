@@ -176,6 +176,43 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task GetSingle_PDF_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentCuttingOutController();
+
+            Guid cuttingOutGuid = Guid.NewGuid();
+            _mockGarmentCuttingOutRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutReadModel, bool>>>()))
+                .Returns(new List<GarmentCuttingOut>()
+                {
+                    new GarmentCuttingOut(cuttingOutGuid, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", "art", new UnitDepartmentId(1), null, null, new GarmentComodityId(1), null, null)
+                });
+
+            Guid cuttingOutItemGuid = Guid.NewGuid();
+            _mockGarmentCuttingOutItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutItemReadModel, bool>>>()))
+                .Returns(new List<GarmentCuttingOutItem>()
+                {
+                    new GarmentCuttingOutItem(cuttingOutItemGuid, cuttingOutGuid, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, "design", 1)
+                });
+
+            _mockGarmentCuttingOutDetailRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutDetailReadModel, bool>>>()))
+                .Returns(new List<GarmentCuttingOutDetail>()
+                {
+                    new GarmentCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), "size", "color", 1, 1, new UomId(1), "uom", 1, 1)
+                });
+
+            // Act
+            var result = await unitUnderTest.GetPdf(Guid.NewGuid().ToString(), "buyerCode");
+
+            // Assert
+            //Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+            Assert.NotNull(result.GetType().GetProperty("FileStream"));
+        }
+
+        [Fact]
         public async Task Post_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -275,5 +312,67 @@ namespace Manufactures.Tests.Controllers.Api
         Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
 
 		}
-}
+		[Fact]
+		public async Task GetXLSBookKeepingBehavior()
+		{
+			var unitUnderTest = CreateGarmentCuttingOutController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetXlsCuttingQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new MemoryStream());
+
+			var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "bookkeeping", 1, 25, "{}");
+
+			// Assert
+			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+
+		}
+
+        [Fact]
+        public async Task Put_Dates_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentCuttingOutController();
+            Guid sewingOutGuid = Guid.NewGuid();
+            List<string> ids = new List<string>();
+            ids.Add(sewingOutGuid.ToString());
+
+            UpdateDatesGarmentCuttingOutCommand command = new UpdateDatesGarmentCuttingOutCommand(ids, DateTimeOffset.Now);
+            _MockMediator
+                .Setup(s => s.Send(command, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(1);
+
+            // Act
+            var result = await unitUnderTest.UpdateDates(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Put_Dates_StateUnderTest_ExpectedBehavior_BadRequest()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentCuttingOutController();
+            Guid sewingOutGuid = Guid.NewGuid();
+            List<string> ids = new List<string>();
+            ids.Add(sewingOutGuid.ToString());
+
+            UpdateDatesGarmentCuttingOutCommand command = new UpdateDatesGarmentCuttingOutCommand(ids, DateTimeOffset.Now.AddDays(3));
+
+            // Act
+            var result = await unitUnderTest.UpdateDates(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result));
+
+            UpdateDatesGarmentCuttingOutCommand command2 = new UpdateDatesGarmentCuttingOutCommand(ids, DateTimeOffset.MinValue);
+
+            // Act
+            var result1 = await unitUnderTest.UpdateDates(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result1));
+        }
+    }
 }

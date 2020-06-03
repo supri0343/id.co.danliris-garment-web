@@ -46,32 +46,8 @@ namespace Manufactures.Controllers.Api
                 var garmentPreparingItems = garmentPreparingItemDto.Where(x => x.GarmentPreparingId == itemDto.Id).ToList();
 
                 itemDto.Items = garmentPreparingItems;
-                //var selectedUnit = GetUnit(itemDto.Unit.Id, WorkContext.Token);
-
-                //if (selectedUnit != null && selectedUnit.data != null)
-                //{
-                //    itemDto.Unit.Name = selectedUnit.data.Name;
-                //    itemDto.Unit.Code = selectedUnit.data.Code;
-                //}
-
-                //Parallel.ForEach(itemDto.Items, orderItem =>
-                //{
-                //    var selectedProduct = GetGarmentProduct(orderItem.Product.Id, WorkContext.Token);
-                //    var selectedUom = GetUom(orderItem.Uom.Id, WorkContext.Token);
-
-                //    if(selectedProduct != null && selectedProduct.data != null)
-                //    {
-                //        orderItem.Product.Name = selectedProduct.data.Name;
-                //        orderItem.Product.Code = selectedProduct.data.Code;
-                //    }
-
-                //    if (selectedUom != null && selectedUom.data != null)
-                //    {
-                //        orderItem.Uom.Unit = selectedUom.data.Unit;
-                //    }
-                //});
-
-               itemDto.Items = itemDto.Items.OrderBy(x => x.Id).ToList();
+                itemDto.Items = itemDto.Items.OrderBy(x => x.Id).ToList();
+                itemDto.TotalQuantity = garmentPreparingItems.Sum(x => x.Quantity);
             });
 
             if (!string.IsNullOrEmpty(keyword))
@@ -86,8 +62,6 @@ namespace Manufactures.Controllers.Api
                         ListTemp.Add(b);
                     }
                 }
-
-
                 var garmentPreparingDtoList = garmentPreparingDto.Where(x => x.UENNo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                     || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                     || x.Unit.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)
@@ -328,5 +302,28 @@ namespace Manufactures.Controllers.Api
 				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
 			}
 		}
-	}
+
+        [HttpPut("update-dates")]
+        public async Task<IActionResult> UpdateDates([FromBody]UpdateDatesGarmentPreparingCommand command)
+        {
+            VerifyUser();
+
+            if (command.Date==null || command.Date == DateTimeOffset.MinValue)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal harus diisi"
+                });
+            else if (command.Date.Date > DateTimeOffset.Now.Date)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal tidak boleh lebih dari hari ini"
+                });
+
+            var order = await Mediator.Send(command);
+
+            return Ok();
+        }
+    }
 }

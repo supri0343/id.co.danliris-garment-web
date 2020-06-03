@@ -5,6 +5,7 @@ using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentFinishingOuts.Commands;
 using Manufactures.Domain.GarmentFinishingOuts.Repositories;
 using Manufactures.Dtos;
+using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -41,6 +42,7 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentFinishingOutRepository.Read(page, size, order, keyword, filter);
             var total = query.Count();
+            double totalQty = query.Sum(a => a.GarmentFinishingOutItem.Sum(b => b.Quantity));
             query = query.Skip((page - 1) * size).Take(size);
 
             List<GarmentFinishingOutListDto> garmentFinishingOutListDtos = _garmentFinishingOutRepository
@@ -74,7 +76,8 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                total
+                total,
+                totalQty
             });
         }
 
@@ -91,9 +94,9 @@ namespace Manufactures.Controllers.Api
                 {
                     Details = _garmentFinishingOutDetailRepository.Find(o => o.FinishingOutItemId == finishOutItem.Identity).Select(finishOutDetail => new GarmentFinishingOutDetailDto(finishOutDetail)
                     {
-                    }).ToList()
+                    }).OrderBy(o => o.Size.Size).ToList()
 
-                }).ToList()
+                }).OrderBy(o => o.Size.Size).ToList()
             }
             ).FirstOrDefault();
 
@@ -201,12 +204,12 @@ namespace Manufactures.Controllers.Api
 			});
 		}
 		[HttpGet("download")]
-		public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+		public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo,string type, int page = 1, int size = 25, string Order = "{}")
 		{
 			try
 			{
 				VerifyUser();
-				GetXlsFinishingQuery query = new GetXlsFinishingQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+				GetXlsFinishingQuery query = new GetXlsFinishingQuery(page, size, Order, unit, dateFrom, dateTo,type, WorkContext.Token);
 				byte[] xlsInBytes;
 
 				var xls = await Mediator.Send(query);
@@ -264,5 +267,55 @@ namespace Manufactures.Controllers.Api
 			});
 		}
 
-	}
+        [HttpGet("{id}/{buyer}")]
+        public async Task<IActionResult> GetPdf(string id, string buyer)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+            GarmentFinishingOutDto garmentFinishingOutDto = _garmentFinishingOutRepository.Find(o => o.Identity == guid).Select(finishOut => new GarmentFinishingOutDto(finishOut)
+            {
+                Items = _garmentFinishingOutItemRepository.Find(o => o.FinishingOutId == finishOut.Identity).Select(finishOutItem => new GarmentFinishingOutItemDto(finishOutItem)
+                {
+                    Details = _garmentFinishingOutDetailRepository.Find(o => o.FinishingOutItemId == finishOutItem.Identity).Select(finishOutDetail => new GarmentFinishingOutDetailDto(finishOutDetail)
+                    {
+                    }).ToList()
+
+                }).ToList()
+            }
+            ).FirstOrDefault();
+            var stream = GarmentFinishingOutPDFTemplate.Generate(garmentFinishingOutDto, buyer);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentFinishingOutDto.FinishingOutNo}.pdf"
+            };
+        }
+
+        [HttpPut("update-dates")]
+        public async Task<IActionResult> UpdateDates([FromBody]UpdateDatesGarmentFinishingOutCommand command)
+        {
+            VerifyUser();
+
+            if (command.Date == null || command.Date == DateTimeOffset.MinValue)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal harus diisi"
+                });
+            else if (command.Date.Date > DateTimeOffset.Now.Date)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "Tanggal tidak boleh lebih dari hari ini"
+                });
+
+            var order = await Mediator.Send(command);
+
+            return Ok();
+        }
+
+    }
 }

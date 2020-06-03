@@ -2,15 +2,30 @@
 using FluentAssertions;
 using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Manufactures.Application.GarmentMonitoringProductionFlows.Queries;
+using Manufactures.Domain.GarmentAdjustments;
+using Manufactures.Domain.GarmentAdjustments.ReadModels;
+using Manufactures.Domain.GarmentAdjustments.Repositories;
+using Manufactures.Domain.GarmentAvalComponents.Repositories;
+using Manufactures.Domain.GarmentCuttingIns;
+using Manufactures.Domain.GarmentCuttingIns.ReadModels;
+using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentCuttingOuts;
 using Manufactures.Domain.GarmentCuttingOuts.ReadModels;
 using Manufactures.Domain.GarmentCuttingOuts.Repositories;
+using Manufactures.Domain.GarmentExpenditureGoodReturns.Repositories;
+using Manufactures.Domain.GarmentExpenditureGoods.Repositories;
+using Manufactures.Domain.GarmentFinishingIns;
+using Manufactures.Domain.GarmentFinishingIns.ReadModels;
+using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentFinishingOuts;
 using Manufactures.Domain.GarmentFinishingOuts.ReadModels;
 using Manufactures.Domain.GarmentFinishingOuts.Repositories;
 using Manufactures.Domain.GarmentLoadings;
 using Manufactures.Domain.GarmentLoadings.ReadModels;
 using Manufactures.Domain.GarmentLoadings.Repositories;
+using Manufactures.Domain.GarmentSewingDOs;
+using Manufactures.Domain.GarmentSewingDOs.ReadModels;
+using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Manufactures.Domain.GarmentSewingOuts;
 using Manufactures.Domain.GarmentSewingOuts.ReadModels;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
@@ -46,7 +61,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionFlows
 		private readonly Mock<IGarmentFinishingOutDetailRepository> _mockGarmentFinishingOutDetailRepository;
 		protected readonly Mock<IHttpClientService> _mockhttpService;
 		private Mock<IServiceProvider> serviceProviderMock;
-
+		
 		public MonitoringProductionFlowCommandHandlerTest()
 		{
 			_mockGarmentFinishingOutRepository = CreateMock<IGarmentFinishingOutRepository>();
@@ -121,6 +136,14 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionFlows
 			Guid guidFinishingOutItem = Guid.NewGuid();
 			Guid guidSewingOut = Guid.NewGuid();
 			Guid guidSewingOutItem = Guid.NewGuid();
+			Guid guidSewingDO = Guid.NewGuid();
+			Guid guidSewingDOItem = Guid.NewGuid();
+			Guid guidCuttingIn = Guid.NewGuid();
+			Guid guidCuttingInItem = Guid.NewGuid();
+			Guid guidFinishingIn = Guid.NewGuid();
+			Guid guidFinishingInItem = Guid.NewGuid();
+			Guid guidAdjustment = Guid.NewGuid();
+			Guid guidAdjustmentItem = Guid.NewGuid();
 			GetMonitoringProductionFlowQuery getMonitoring = new GetMonitoringProductionFlowQuery(1, 25, "{}", 1, DateTime.Now, null, "token");
 
 			_mockGarmentLoadingItemRepository

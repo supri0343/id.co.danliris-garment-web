@@ -36,6 +36,7 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentExpenditureGoodReturnRepository.Read(page, size, order, keyword, filter);
             var total = query.Count();
+            double totalQty = query.Sum(a => a.Items.Sum(b => b.Quantity));
             query = query.Skip((page - 1) * size).Take(size);
 
             List<GarmentExpenditureGoodReturnListDto> garmentExpenditureGoodReturnListDtos = _garmentExpenditureGoodReturnRepository
@@ -61,7 +62,8 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                total
+                total,
+                totalQty
             });
         }
 
@@ -76,7 +78,7 @@ namespace Manufactures.Controllers.Api
             {
                 Items = _garmentExpenditureGoodReturnItemRepository.Find(o => o.ReturId == retur.Identity).Select(returItem => new GarmentExpenditureGoodReturnItemDto(returItem)
                 {
-                }).ToList()
+                }).OrderBy(o => o.Size.Size).ToList()
             }
             ).FirstOrDefault();
 

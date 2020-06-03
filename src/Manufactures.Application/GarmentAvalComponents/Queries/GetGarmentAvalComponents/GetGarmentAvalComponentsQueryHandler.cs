@@ -28,6 +28,7 @@ namespace Manufactures.Application.GarmentAvalComponents.Queries.GetGarmentAvalC
                 .Single();
 
             data.Items = _garmentAvalComponentItemRepository.Find(f => f.AvalComponentId == request.Identity)
+                .OrderBy(o => o.SizeName)
                 .Select(s => new GarmentAvalComponentItemDto(s))
                 .ToList();
 

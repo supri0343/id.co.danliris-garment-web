@@ -31,6 +31,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.Commands
         {
             RuleFor(r => r.Unit).NotNull().WithMessage("Unit Tidak Boleh Kosong");
             RuleFor(r => r.UnitDONo).NotNull().WithMessage("No Unit DO Tidak Boleh Kosong");
+            RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.Storage).NotNull().WithMessage("Gudang Tidak Boleh Kosong");
             RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("Item");
             RuleForEach(r => r.Items).SetValidator(new GarmentDeliveryReturnItemValueObjectValidator());

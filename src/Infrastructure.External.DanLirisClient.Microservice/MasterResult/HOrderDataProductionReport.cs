@@ -20,7 +20,7 @@ namespace Infrastructure.External.DanLirisClient.Microservice.MasterResult
             public decimal Sh_Cut { get; set; }
             public string Kode { get; set; }
             public decimal Qty { get; set; }
-
-        }
-    }
+			public double Fc { get; set; }
+		}
+	}
 }

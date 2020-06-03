@@ -29,6 +29,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubconCuttingOuts
         private readonly Mock<IGarmentSubconCuttingOutDetailRepository> _mockSubconCuttingOutDetailRepository;
         private readonly Mock<IGarmentCuttingInDetailRepository> _mockCuttingInDetailRepository;
         private readonly Mock<IGarmentSubconCuttingRepository> _mockSubconCuttingRepository;
+        private readonly Mock<IGarmentSubconCuttingRelationRepository> _mockSubconCuttingRelationRepository;
 
         public PlaceGarmentSubconCuttingOutCommandHandlerTests()
         {
@@ -37,12 +38,14 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubconCuttingOuts
             _mockSubconCuttingOutDetailRepository = CreateMock<IGarmentSubconCuttingOutDetailRepository>();
             _mockCuttingInDetailRepository = CreateMock<IGarmentCuttingInDetailRepository>();
             _mockSubconCuttingRepository = CreateMock<IGarmentSubconCuttingRepository>();
+            _mockSubconCuttingRelationRepository = CreateMock<IGarmentSubconCuttingRelationRepository>();
 
             _MockStorage.SetupStorage(_mockSubconCuttingOutRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingOutItemRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingOutDetailRepository);
             _MockStorage.SetupStorage(_mockCuttingInDetailRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingRepository);
+            _MockStorage.SetupStorage(_mockSubconCuttingRelationRepository);
         }
 
         private PlaceGarmentSubconCuttingOutCommandHandler CreatePlaceGarmentSubconCuttingOutCommandHandler()
@@ -119,6 +122,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubconCuttingOuts
             _mockSubconCuttingRepository
                 .Setup(s => s.Update(It.IsAny<GarmentSubconCutting>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentSubconCutting>()));
+            _mockSubconCuttingRelationRepository
+                .Setup(s => s.Update(It.IsAny<GarmentSubconCuttingRelation>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentSubconCuttingRelation>()));
 
             _MockStorage
                 .Setup(x => x.Save())

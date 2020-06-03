@@ -322,6 +322,8 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("DesignColor")
                         .HasMaxLength(2000);
 
+                    b.Property<bool>("IsReceived");
+
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
 
@@ -2948,6 +2950,50 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasKey("Identity");
 
                     b.ToTable("GarmentSubconCuttings");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubconCuttingOuts.ReadModels.GarmentSubconCuttingRelationReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<Guid>("GarmentCuttingOutDetailId");
+
+                    b.Property<Guid>("GarmentSubconCuttingId");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("GarmentCuttingOutDetailId")
+                        .IsUnique()
+                        .HasFilter("[Deleted]=(0)");
+
+                    b.HasIndex("GarmentCuttingOutDetailId", "GarmentSubconCuttingId")
+                        .IsUnique()
+                        .HasFilter("[Deleted]=(0)");
+
+                    b.ToTable("GarmentSubconCuttingRelations");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentItemReadModel", b =>

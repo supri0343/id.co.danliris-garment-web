@@ -156,6 +156,47 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task GetSingle_PDF_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSewingOutController();
+            Guid sewingOutGuid = Guid.NewGuid();
+            _mockGarmentSewingOutRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingOutReadModel, bool>>>()))
+                .Returns(new List<GarmentSewingOut>()
+                {
+                    new GarmentSewingOut(sewingOutGuid, null,new BuyerId(1),null,null,new UnitDepartmentId(1),null,null,"Finishing",DateTimeOffset.Now, "RONo", "art", new UnitDepartmentId(1), null, null,new GarmentComodityId(1),null,null,true)
+                });
+
+            Guid sewingInItemGuid = Guid.NewGuid();
+            Guid sewingInGuid = Guid.NewGuid();
+            Guid sewingOutItemGuid = Guid.NewGuid();
+            _mockGarmentSewingOutItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingOutItemReadModel, bool>>>()))
+                .Returns(new List<GarmentSewingOutItem>()
+                {
+                    new GarmentSewingOutItem(sewingOutItemGuid, sewingOutGuid, sewingInGuid, sewingInItemGuid, new ProductId(1), null, null, "design", new SizeId(1), "size", 1, new UomId(1), null, "color", 1,1,1)
+                });
+
+            _mockGarmentSewingOutDetailRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingOutDetailReadModel, bool>>>()))
+                .Returns(new List<GarmentSewingOutDetail>()
+                {
+                    new GarmentSewingOutDetail(Guid.NewGuid(), sewingOutItemGuid, new SizeId(1), "size", 1, new UomId(1), null)
+                });
+
+            //_mockSewingInItemRepository
+            //    .Setup(s => s.Query)
+            //    .Returns(new List<GarmentSewingInItemReadModel>().AsQueryable());
+
+            // Act
+            var result = await unitUnderTest.GetPdf(Guid.NewGuid().ToString(), "buyerCode");
+
+            // Assert
+            Assert.NotNull(result.GetType().GetProperty("FileStream"));
+        }
+
+        [Fact]
         public async Task Post_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -265,11 +306,74 @@ namespace Manufactures.Tests.Controllers.Api
 				.ReturnsAsync(new MemoryStream());
 
 			// Act
-			var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+			var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "",1, 25, "{}");
 
 			// Assert
 			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
 
 		}
-	}
+		[Fact]
+		public async Task GetXLSBookkeepingBehavior()
+		{
+			var unitUnderTest = CreateGarmentSewingOutController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetXlsSewingQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new MemoryStream());
+
+			// Act
+			var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "bookkeeping", 1, 25, "{}");
+
+			// Assert
+			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+
+		}
+
+        [Fact]
+        public async Task Put_Dates_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSewingOutController();
+            Guid sewingOutGuid = Guid.NewGuid();
+            List<string> ids = new List<string>();
+            ids.Add(sewingOutGuid.ToString());
+
+            UpdateDatesGarmentSewingOutCommand command = new UpdateDatesGarmentSewingOutCommand(ids, DateTimeOffset.Now);
+            _MockMediator
+                .Setup(s => s.Send(command, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(1);
+
+            // Act
+            var result = await unitUnderTest.UpdateDates(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Put_Dates_StateUnderTest_ExpectedBehavior_BadRequest()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSewingOutController();
+            Guid sewingOutGuid = Guid.NewGuid();
+            List<string> ids = new List<string>();
+            ids.Add(sewingOutGuid.ToString());
+
+            UpdateDatesGarmentSewingOutCommand command = new UpdateDatesGarmentSewingOutCommand(ids, DateTimeOffset.Now.AddDays(3));
+            
+            // Act
+            var result = await unitUnderTest.UpdateDates(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result));
+
+            UpdateDatesGarmentSewingOutCommand command2 = new UpdateDatesGarmentSewingOutCommand(ids, DateTimeOffset.MinValue);
+
+            // Act
+            var result1 = await unitUnderTest.UpdateDates(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result1));
+        }
+    }
 }

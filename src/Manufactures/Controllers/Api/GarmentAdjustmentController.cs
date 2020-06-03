@@ -37,6 +37,7 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentAdjustmentRepository.Read(page, size, order, keyword, filter);
             var total = query.Count();
+            double totalQty = query.Sum(a => a.Items.Sum(b=>b.Quantity));
             query = query.Skip((page - 1) * size).Take(size);
 
             List<GarmentAdjustmentListDto> garmentCuttingInListDtos = _garmentAdjustmentRepository.Find(query).Select(adjustment =>
@@ -57,7 +58,8 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                total
+                total,
+                totalQty
             });
         }
 
@@ -71,7 +73,7 @@ namespace Manufactures.Controllers.Api
             GarmentAdjustmentDto garmentAdjustmentDto = _garmentAdjustmentRepository.Find(o => o.Identity == guid).Select(adjustment => new GarmentAdjustmentDto(adjustment)
             {
                 Items = _garmentAdjustmentItemRepository.Find(o => o.AdjustmentId == adjustment.Identity).Select(adjustmentItem => new GarmentAdjustmentItemDto(adjustmentItem)
-                ).ToList()
+                ).OrderBy(o => o.Size.Size).ToList()
             }
             ).FirstOrDefault();
 

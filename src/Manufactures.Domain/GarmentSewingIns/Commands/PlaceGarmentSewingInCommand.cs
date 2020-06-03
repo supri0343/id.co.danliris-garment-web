@@ -38,7 +38,7 @@ namespace Manufactures.Domain.GarmentSewingIns.Commands
 
             RuleFor(r => r.LoadingNo).NotNull().WithMessage("No Loading Tidak Boleh Kosong").When(r=>r.SewingFrom=="CUTTING");
             //RuleFor(r => r.LoadingId).NotEmpty();
-
+            RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.Comodity).NotNull();
             RuleFor(r => r.Comodity.Id).NotEmpty().OverridePropertyName("Comodity").When(w => w.Comodity != null);
 

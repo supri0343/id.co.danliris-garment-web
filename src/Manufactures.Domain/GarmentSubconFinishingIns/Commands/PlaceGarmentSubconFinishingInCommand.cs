@@ -43,7 +43,7 @@ namespace Manufactures.Domain.GarmentSubconFinishingIns.Commands
             RuleFor(r => r.DONo).NotNull().When(w => w.Supplier != null);
             RuleFor(r => r.DOId).NotEmpty().When(w => w.Supplier != null);
             RuleFor(r => r.RONo).NotNull().When(w => w.DONo != null);
-
+            RuleFor(r => r.Article).NotNull();
             RuleFor(r => r).Must(m =>
             {
                 var existingByDONoRONo = garmentFinishingInRepository.Query.Count(f => f.DOId == m.DOId && f.RONo == m.RONo);
