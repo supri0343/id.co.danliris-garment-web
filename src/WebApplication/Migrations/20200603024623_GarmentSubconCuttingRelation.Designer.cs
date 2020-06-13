@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20200603024623_GarmentSubconCuttingRelation")]
+    partial class GarmentSubconCuttingRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2970,7 +2972,7 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset?>("DeletedDate");
 
-                    b.Property<Guid>("GarmentCuttingOutDetailId");
+                    b.Property<Guid>("GarmentCuttingOutId");
 
                     b.Property<Guid>("GarmentSubconCuttingId");
 
@@ -2985,11 +2987,11 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.HasKey("Identity");
 
-                    b.HasIndex("GarmentCuttingOutDetailId")
+                    b.HasIndex("GarmentCuttingOutId")
                         .IsUnique()
                         .HasFilter("[Deleted]=(0)");
 
-                    b.HasIndex("GarmentCuttingOutDetailId", "GarmentSubconCuttingId")
+                    b.HasIndex("GarmentCuttingOutId", "GarmentSubconCuttingId")
                         .IsUnique()
                         .HasFilter("[Deleted]=(0)");
 
