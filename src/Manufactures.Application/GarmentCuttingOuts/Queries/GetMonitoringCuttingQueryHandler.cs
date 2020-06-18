@@ -155,14 +155,14 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 							  where _ro.Distinct().Contains(a.RONo)
 							  select new { fC = a.FC, Ro = a.RONo }).GroupBy(t => t.Ro).Select(t => new { RO = t.Key, FC = t.Sum(u => u.fC) });
 			var QuerySumQtyPreparing = (from a in garmentCuttingInRepository.Query
-										join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
-										join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
-										where _ro.Distinct().Contains(a.RONo)
-										select new { QtyPrepare = c.PreparingQuantity, Ro = a.RONo }).GroupBy(t => t.Ro)
-										.Select(t => new { RO = t.Key, QtyPrepare = t.Sum(u => u.QtyPrepare) });
+										//join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
+										//join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+										//where _ro.Distinct().Contains(a.RONo)
+										select new {  Ro = a.RONo }) 
+										.Select(t => new { RO = t.Ro});
 			var Fc = from a in QuerySumFC
 					 join b in QuerySumQtyPreparing on a.RO equals b.RO
-					 select new { ro = a.RO, FC = Convert.ToDouble(a.FC / b.QtyPrepare) };
+					 select new { ro = a.RO, FC = Convert.ToDouble(a.FC / QuerySumQtyPreparing.Count()) };
 
 			var QueryCuttingIn = from a in garmentCuttingInRepository.Query
 								 join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
@@ -223,7 +223,10 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 				};
 				monitoringCuttingDtos.Add(cuttingDto);
 			}
-			listViewModel.garmentMonitorings = monitoringCuttingDtos;
+			var data = from a in monitoringCuttingDtos
+					   where a.stock > 0 || a.expenditure > 0 || a.cuttingQtyPcs > 0 || a.remainQty > 0
+					   select a;
+			listViewModel.garmentMonitorings = data.ToList();
 			return listViewModel;
 		}
 		class monitoringView

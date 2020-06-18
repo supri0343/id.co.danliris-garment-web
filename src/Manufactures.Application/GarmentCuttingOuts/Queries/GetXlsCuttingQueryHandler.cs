@@ -160,15 +160,21 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			var QuerySumFC = (from a in garmentCuttingInRepository.Query
 							  where _ro.Distinct().Contains(a.RONo)
 							  select new { fC = a.FC, Ro = a.RONo }).GroupBy(t => t.Ro).Select(t => new { RO = t.Key, FC = t.Sum(u => u.fC) });
+			//var QuerySumQtyPreparing = (from a in garmentCuttingInRepository.Query
+			//							join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
+			//							join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+			//							where _ro.Distinct().Contains(a.RONo)
+			//							select new { QtyPrepare = c.PreparingQuantity, Ro = a.RONo }).GroupBy(t => t.Ro)
+			//							.Select(t => new { RO = t.Key, QtyPrepare = t.Sum(u => u.QtyPrepare) });
 			var QuerySumQtyPreparing = (from a in garmentCuttingInRepository.Query
-										join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
-										join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
-										where _ro.Distinct().Contains(a.RONo)
-										select new { QtyPrepare = c.PreparingQuantity, Ro = a.RONo }).GroupBy(t => t.Ro)
-										.Select(t => new { RO = t.Key, QtyPrepare = t.Sum(u => u.QtyPrepare) });
+											//join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
+											//join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+											//where _ro.Distinct().Contains(a.RONo)
+										select new { Ro = a.RONo })
+										.Select(t => new { RO = t.Ro });
 			var Fc = from a in QuerySumFC
 					 join b in QuerySumQtyPreparing on a.RO equals b.RO
-					 select new { ro = a.RO, FC = Convert.ToDouble(a.FC / b.QtyPrepare) };
+					 select new { ro = a.RO, FC = Convert.ToDouble(a.FC / QuerySumQtyPreparing.Count()) };
 
 			var QueryCuttingIn = from a in garmentCuttingInRepository.Query
 								 join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
@@ -207,6 +213,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			}).OrderBy(s => s.RoJob);
 			GarmentMonitoringCuttingListViewModel listViewModel = new GarmentMonitoringCuttingListViewModel();
 			List<GarmentMonitoringCuttingDto> monitoringCuttingDtos = new List<GarmentMonitoringCuttingDto>();
+			
 			foreach (var item in querySum)
 			{
 				GarmentMonitoringCuttingDto cuttingDto = new GarmentMonitoringCuttingDto
@@ -229,7 +236,43 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 				};
 				monitoringCuttingDtos.Add(cuttingDto);
 			}
+			
+			var data = from a in monitoringCuttingDtos
+					   where a.stock > 0 || a.expenditure > 0 || a.cuttingQtyPcs > 0 || a.remainQty > 0
+					   select a;
+			double stocks = 0;
+			double cuttingQtyPcs = 0;
+			double expenditure = 0;
+			foreach (var item in data)
+			{
+				stocks += item.stock;
+				cuttingQtyPcs += item.cuttingQtyPcs;
+				expenditure += item.expenditure;
+
+			}
+			monitoringCuttingDtos = data.ToList();
+			GarmentMonitoringCuttingDto cuttingDtos = new GarmentMonitoringCuttingDto
+			{
+				roJob = "",
+				article = "",
+				productCode = "",
+				style = "",
+				hours = 0,
+				qtyOrder = 0,
+				cuttingQtyPcs = cuttingQtyPcs,
+				expenditure = expenditure,
+				stock = stocks,
+				remainQty = stocks + cuttingQtyPcs - expenditure,
+				fc = 0,
+				cuttingQtyMeter = 0,
+				price = 0,
+				buyerCode = ""
+
+			};
+			monitoringCuttingDtos.Add(cuttingDtos);
 			listViewModel.garmentMonitorings = monitoringCuttingDtos;
+
+
 			var reportDataTable = new DataTable();
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO JOB", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Article", DataType = typeof(string) });
@@ -246,12 +289,14 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Keluar", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sisa", DataType = typeof(double) });
 			int counter = 1;
+			
 			if (listViewModel.garmentMonitorings.Count > 0)
 			{
 				foreach (var report in listViewModel.garmentMonitorings)
 				{
 					reportDataTable.Rows.Add(report.roJob, report.article, report.productCode, report.buyerCode, report.qtyOrder, report.style, report.fc, report.hours, report.cuttingQtyMeter, report.price, report.stock, report.cuttingQtyPcs, report.expenditure, report.remainQty);
 					counter++;
+					
 				}
 			}
 			using (var package = new ExcelPackage())
@@ -273,6 +318,13 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 				worksheet.Cells["M" + 2 + ":M" + counter + ""].Style.Numberformat.Format = "#,##0.00";
 				worksheet.Column(14).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 				worksheet.Cells["N" + 2 + ":N" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Cells["A" + 1 + ":N" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 1 + ":N" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 1 + ":N" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 1 + ":N" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + (counter) + ":H" + (counter) + ""].Merge = true;
+				worksheet.Cells["I" + (counter) + ":N" + (counter) + ""].Style.Font.Bold = true;
+				worksheet.Cells["A" + 1 + ":N" + 1 + ""].Style.Font.Bold = true;
 				var stream = new MemoryStream();
 				if (request.type != "bookkeeping")
 				{
