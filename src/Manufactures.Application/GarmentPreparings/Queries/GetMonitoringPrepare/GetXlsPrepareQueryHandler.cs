@@ -220,7 +220,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 				productCode = "",
 				roAsal = "",
 				uomUnit = "",
-				remainQty = 0,
+				remainQty =stocks + receipts- nonMainFabric-mainFabric - avals-expenditure,
 				stock = stocks,
 				remark = "",
 				receipt = receipts,
