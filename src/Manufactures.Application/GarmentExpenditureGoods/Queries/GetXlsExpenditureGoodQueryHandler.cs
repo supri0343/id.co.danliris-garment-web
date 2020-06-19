@@ -259,10 +259,10 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 				worksheet.Cells["H" + 2 + ":H" + counter + ""].Style.Numberformat.Format = "#,##0.00";
 				worksheet.Column(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 				worksheet.Cells["I" + 2 + ":I" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-				worksheet.Cells["A" + 1 + ":K" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["A" + 1 + ":K" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["A" + 1 + ":K" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["A" + 1 + ":K" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 1 + ":J" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 1 + ":J" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 1 + ":J" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 1 + ":J" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 				worksheet.Cells["H" + (counter) + ":I" + (counter) + ""].Style.Font.Bold = true;
 				worksheet.Cells["A" + 1 + ":K" + 1 + ""].Style.Font.Bold = true;
 				var stream = new MemoryStream();
