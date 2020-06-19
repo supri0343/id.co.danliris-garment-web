@@ -215,6 +215,10 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 				monitoringDtos.Add(dto);
 			}
 			listViewModel.garmentMonitorings = monitoringDtos;
+			var data = from a in monitoringDtos
+					   where a.stock > 0 || a.loadingQtyPcs > 0 || a.cuttingQtyPcs > 0 || a.remainQty > 0
+					   select a;
+			listViewModel.garmentMonitorings = data.ToList();
 			return listViewModel;
 		}
 	}
