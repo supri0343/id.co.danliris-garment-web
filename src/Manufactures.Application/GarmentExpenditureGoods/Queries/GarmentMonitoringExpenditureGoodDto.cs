@@ -12,7 +12,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 
 		public string expenditureGoodNo { get; internal set; }
 		public string expenditureGoodType { get; internal set; }
-		public DateTimeOffset expenditureDate { get; internal set; }
+		public DateTimeOffset  ? expenditureDate { get; internal set; }
 		public string roNo { get; internal set; }
 		public string buyerArticle { get; internal set; }
 		public string buyerCode { get; internal set; }
