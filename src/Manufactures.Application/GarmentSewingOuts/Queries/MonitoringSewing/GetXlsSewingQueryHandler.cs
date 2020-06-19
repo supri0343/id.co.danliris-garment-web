@@ -214,6 +214,35 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 				};
 				monitoringDtos.Add(dto);
 			}
+			var data = from a in monitoringDtos
+					   where a.stock > 0 || a.loadingQtyPcs > 0 || a.sewingOutQtyPcs > 0 || a.remainQty > 0
+					   select a;
+			monitoringDtos = data.ToList();
+			double stocks = 0;
+			double loadingQtyPcs = 0;
+			double sewingOutQtyPcs = 0;
+			foreach (var item in data)
+			{
+				stocks += item.stock;
+				loadingQtyPcs += item.loadingQtyPcs;
+				sewingOutQtyPcs += item.sewingOutQtyPcs;
+
+			}
+			GarmentMonitoringSewingDto dtos = new GarmentMonitoringSewingDto
+			{
+				roJob = "",
+				article = "",
+				buyerCode = "",
+				uomUnit = "",
+				qtyOrder = 0,
+				sewingOutQtyPcs = sewingOutQtyPcs,
+				loadingQtyPcs = loadingQtyPcs,
+				stock = stocks,
+				style = "",
+				price = 0,
+				remainQty = stocks - sewingOutQtyPcs + loadingQtyPcs
+			};
+			monitoringDtos.Add(dtos);
 			listViewModel.garmentMonitorings = monitoringDtos;
 			var reportDataTable = new DataTable();
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO JOB", DataType = typeof(string) });
@@ -252,11 +281,22 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 				worksheet.Cells["I" + 2 + ":I" + counter + ""].Style.Numberformat.Format = "#,##0.00";
 				worksheet.Column(10).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 				worksheet.Cells["J" + 2 + ":J" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Cells["A" + 1 + ":K" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 1 + ":K" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 1 + ":K" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 1 + ":K" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["F" + (counter) + ":K" + (counter) + ""].Style.Font.Bold = true;
+				worksheet.Cells["A" + 1 + ":K" + 1 + ""].Style.Font.Bold = true;
 				var stream = new MemoryStream();
 				if (request.type != "bookkeeping")
 				{
+					worksheet.Cells["A" + (counter) + ":E" + (counter) + ""].Merge = true;
 					worksheet.Column(3).Hidden = true;
 					worksheet.Column(6).Hidden = true;
+				}
+				else
+				{
+					worksheet.Cells["A" + (counter) + ":F" + (counter) + ""].Merge = true;
 				}
 				package.SaveAs(stream);
 

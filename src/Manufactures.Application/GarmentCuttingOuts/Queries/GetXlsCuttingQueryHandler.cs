@@ -322,7 +322,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 				worksheet.Cells["A" + 1 + ":N" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
 				worksheet.Cells["A" + 1 + ":N" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
 				worksheet.Cells["A" + 1 + ":N" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["A" + (counter) + ":H" + (counter) + ""].Merge = true;
+				
 				worksheet.Cells["I" + (counter) + ":N" + (counter) + ""].Style.Font.Bold = true;
 				worksheet.Cells["A" + 1 + ":N" + 1 + ""].Style.Font.Bold = true;
 				var stream = new MemoryStream();
@@ -330,6 +330,10 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 				{
 					worksheet.Column(4).Hidden = true;
 					worksheet.Column(10).Hidden = true;
+					worksheet.Cells["A" + (counter) + ":H" + (counter) + ""].Merge = true;
+				}else
+				{
+					worksheet.Cells["A" + (counter) + ":J" + (counter) + ""].Merge = true;
 				}
 				package.SaveAs(stream);
 

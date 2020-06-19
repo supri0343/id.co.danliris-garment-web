@@ -287,7 +287,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 				worksheet.Cells["A" + 1 + ":O" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
 				worksheet.Cells["A" + 1 + ":O" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
 				worksheet.Cells["A" + 1 + ":O" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["A" + (counter ) + ":G" + (counter) + ""].Merge = true;
+			
 				worksheet.Cells["H" + (counter ) + ":O" + (counter) + ""].Style.Font.Bold = true;
 				worksheet.Cells["A" + 1 + ":O" + 1 + ""].Style.Font.Bold = true;
 
@@ -296,6 +296,10 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 				{
 					worksheet.Column(3).Hidden = true;
 					worksheet.Column(8).Hidden = true;
+					worksheet.Cells["A" + (counter) + ":G" + (counter) + ""].Merge = true;
+				}else
+				{
+					worksheet.Cells["A" + (counter) + ":H" + (counter) + ""].Merge = true;
 				}
 				package.SaveAs(stream);
 
