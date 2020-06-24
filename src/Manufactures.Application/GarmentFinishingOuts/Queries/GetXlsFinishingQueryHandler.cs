@@ -215,7 +215,36 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 					remainQty = item.Stock + item.SewingQtyPcs - item.Finishing
 				};
 				monitoringDtos.Add(dto);
+
 			}
+			var data = from a in monitoringDtos
+					   where a.stock > 0 || a.sewingOutQtyPcs > 0 || a.finishingOutQtyPcs > 0 || a.remainQty > 0
+					   select a;
+			double stocks = 0;
+			double finishing = 0;
+			double sewingOutQtyPcs = 0;
+			foreach (var item in data)
+			{
+				stocks += item.stock;
+				finishing += item.finishingOutQtyPcs;
+				sewingOutQtyPcs += item.sewingOutQtyPcs;
+
+			}
+			GarmentMonitoringFinishingDto dtos = new GarmentMonitoringFinishingDto
+			{
+				roJob = "",
+				article = "",
+				buyerCode = "",
+				uomUnit = "",
+				qtyOrder = 0,
+				sewingOutQtyPcs = sewingOutQtyPcs,
+				finishingOutQtyPcs = finishing,
+				stock = stocks,
+				style = "",
+				price = 0,
+				remainQty = stocks + sewingOutQtyPcs - finishing
+			};
+			monitoringDtos.Add(dtos);
 			listViewModel.garmentMonitorings = monitoringDtos;
 			var reportDataTable = new DataTable();
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO JOB", DataType = typeof(string) });
@@ -224,8 +253,8 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Style", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Harga(M)", DataType = typeof(decimal) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Stong Masuk", DataType = typeof(double) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barack Awal", DataType = typeof(double) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Stok Masuk", DataType = typeof(double) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Awal", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Keluar", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sisa", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
@@ -254,12 +283,22 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 				worksheet.Cells["I" + 2 + ":I" + counter + ""].Style.Numberformat.Format = "#,##0.00";
 				worksheet.Column(10).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 				worksheet.Cells["J" + 2 + ":J" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Cells["A" + 1 + ":K" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 1 + ":K" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 1 + ":K" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 1 + ":K" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["F" + (counter) + ":I" + (counter) + ""].Style.Font.Bold = true;
+				worksheet.Cells["A" + 1 + ":K" + 1 + ""].Style.Font.Bold = true;
 
 				var stream = new MemoryStream();
 				if (request.type != "bookkeeping")
 				{
+					worksheet.Cells["A" + (counter) + ":E" + (counter) + ""].Merge = true;
 					worksheet.Column(3).Hidden = true;
 					worksheet.Column(6).Hidden = true;
+				}else
+				{
+					worksheet.Cells["A" + (counter) + ":F" + (counter) + ""].Merge = true;
 				}
 				package.SaveAs(stream);
 
