@@ -332,36 +332,37 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				_ro.Add(item);
 			}
 			CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(_ro, request.token);
-			
+
+
+
 
 			var sumbasicPrice = (from a in garmentPreparingRepository.Query
-						 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
-						 where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&
-						 a.UnitId == request.unit 
-						 select new { a.RONo, b.BasicPrice})
-						 .GroupBy(x => new { x.RONo}, (key, group) => new ViewBasicPrices
+								 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
+								 where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&
+								 a.UnitId == request.unit
+								 select new { a.RONo, b.BasicPrice })
+						 .GroupBy(x => new { x.RONo }, (key, group) => new ViewBasicPrices
 						 {
 							 RO = key.RONo,
-							 BasicPrice = Convert.ToDecimal( group.Sum(s => s.BasicPrice)),
+							 BasicPrice = Convert.ToDecimal(group.Sum(s => s.BasicPrice)),
 							 Count = group.Count()
 						 });
 			var sumFCs = (from a in garmentCuttingInRepository.Query
-						  where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&
+						  where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.CuttingType == "Main Fabric" &&
 						 a.UnitId == request.unit && a.CuttingInDate <= dateTo
-						 select new { a.FC, a.RONo,a })
+						  select new { a.FC, a.RONo })
 						 .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
 						 {
 							 RO = key.RONo,
-							 FC = group.Sum(s => s.FC) ,
+							 FC = group.Sum(s => s.FC),
 							 Count = group.Count()
 						 });
 
-			var queryGroup = (from a in garmentCuttingOutRepository.Query
+			var queryGroup = (from a in (from aa in garmentCuttingOutRepository.Query where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitFromId == request.unit && aa.CuttingOutDate <= dateTo && aa.CuttingOutType == "SEWING" && aa.UnitId == aa.UnitFromId select aa)
 							  join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
 							  join c in garmentCuttingOutDetailRepository.Query on b.Identity equals c.CutOutItemId
-							  where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.UnitFromId == request.unit && a.CuttingOutDate <= dateTo && a.CuttingOutType == "SEWING" && a.UnitId == a.UnitFromId
-							  select new { BasicPrice = (from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice/ aa.Count).FirstOrDefault(), FareNew = (from aa in garmentComodityPriceRepository.Query where a.UnitId == aa.UnitId && a.ComodityId == aa.ComodityId && aa.Date > dateTo select aa.Price).FirstOrDefault(), Fare = (from aa in garmentComodityPriceRepository.Query where a.UnitId == aa.UnitId && a.ComodityId == aa.ComodityId && aa.IsValid == true select aa.Price).FirstOrDefault(), Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), FC = (from cost in sumFCs where cost.RO == a.RONo select cost.FC/ cost.Count).FirstOrDefault(), Hours = (from cost in costCalculation.data where cost.ro == a.RONo select cost.hours).FirstOrDefault() }).Distinct();
 
+							  select new { BasicPrice = (from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault(), FareNew = (from aa in garmentComodityPriceRepository.Query where a.UnitId == aa.UnitId && a.ComodityId == aa.ComodityId && aa.Date > dateTo select aa.Price).FirstOrDefault(), Fare = (from aa in garmentComodityPriceRepository.Query where a.UnitId == aa.UnitId && a.ComodityId == aa.ComodityId && aa.IsValid == true select aa.Price).FirstOrDefault(), Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, BuyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), QtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), FC = (from cost in sumFCs where cost.RO == a.RONo select cost.FC / cost.Count).FirstOrDefault(), Hours = (from cost in costCalculation.data where cost.ro == a.RONo select cost.hours).FirstOrDefault() }).Distinct();
 			var QueryCuttingOut = (from a in (from aa in garmentCuttingOutRepository.Query
 											  where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.CuttingOutDate <= dateTo && aa.CuttingOutType == "SEWING" && aa.UnitId == aa.UnitFromId
 											  select aa)
@@ -883,77 +884,77 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 								 });
 
 			var QueryLoadingInTransfer = (from a in (from aa in garmentSewingDORepository.Query
-											where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit  && aa.UnitFromId != aa.UnitId && aa.SewingDODate <= dateTo
-											select aa)
-								 join b in garmentSewingDOItemRepository.Query on a.Identity equals b.SewingDOId
-								 select new monitoringView
-								 {
-									 QtyCuttingIn = 0,
-									 PriceCuttingIn = 0,
-									 QtySewingIn = 0,
-									 PriceSewingIn = 0,
-									 QtyCuttingOut = 0,
-									 PriceCuttingOut = 0,
-									 QtyCuttingTransfer = 0,
-									 PriceCuttingTransfer = 0,
-									 QtyCuttingsubkon = 0,
-									 PriceCuttingsubkon = 0,
-									 AvalCutting = 0,
-									 AvalCuttingPrice = 0,
-									 AvalSewing = 0,
-									 AvalSewingPrice = 0,
-									 QtyLoading = 0,
-									 PriceLoading = 0,
-									 QtyLoadingAdjs = 0,
-									 PriceLoadingAdjs = 0,
-									 QtySewingOut = 0,
-									 PriceSewingOut = 0,
-									 QtySewingAdj = 0,
-									 PriceSewingAdj = 0,
-									 WipSewingOut = 0,
-									 WipSewingOutPrice = 0,
-									 WipFinishingOut = 0,
-									 WipFinishingOutPrice = 0,
-									 QtySewingRetur = 0,
-									 PriceSewingRetur = 0,
-									 QtySewingInTransfer = 0,
-									 PriceSewingInTransfer = 0,
-									 FinishingInQty = 0,
-									 FinishingInPrice = 0,
-									 SubconInQty = 0,
-									 SubconInPrice = 0,
-									 FinishingAdjQty = 0,
-									 FinishingAdjPrice = 0,
-									 FinishingTransferExpenditure = 0,
-									 FinishingTransferExpenditurePrice = 0,
-									 FinishingInTransferQty = 0,
-									 FinishingInTransferPrice = 0,
-									 FinishingOutQty = 0,
-									 FinishingOutPrice = 0,
-									 FinishingReturQty = 0,
-									 FinishingReturPrice = 0,
-									 SubconOutQty = 0,
-									 SubconOutPrice = 0,
-									 QtyLoadingInTransfer = a.SewingDODate >= dateFrom ? b.Quantity : 0,
-									 PriceLoadingInTransfer = a.SewingDODate >= dateFrom ? b.Price : 0,
-									 BeginingBalanceLoadingQty = (a.SewingDODate < dateFrom) ? b.Quantity : 0,
-									 BeginingBalanceLoadingPrice = (a.SewingDODate < dateFrom) ? b.Price : 0,
-									 Ro = a.RONo,
-									 ExpenditureGoodRetur = 0,
-									 ExpenditureGoodReturPrice = 0,
-									 ExportQty = 0,
-									 ExportPrice = 0,
-									 SampleQty = 0,
-									 SamplePrice = 0,
-									 OtherQty = 0,
-									 OtherPrice = 0,
-									 ExpenditureGoodInTransfer = 0,
-									 ExpenditureGoodInTransferPrice = 0,
-									 BeginingBalanceCuttingQty = 0,
-									 BeginingBalanceCuttingPrice = 0,
-									 BeginingBalanceFinishingQty = 0,
-									 BeginingBalanceFinishingPrice = 0
-								 });
+													 where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.UnitFromId != aa.UnitId && aa.SewingDODate <= dateTo
+													 select aa)
+										  join b in garmentSewingDOItemRepository.Query on a.Identity equals b.SewingDOId
+										  select new monitoringView
+										  {
+											  QtyCuttingIn = 0,
+											  PriceCuttingIn = 0,
+											  QtySewingIn = 0,
+											  PriceSewingIn = 0,
+											  QtyCuttingOut = 0,
+											  PriceCuttingOut = 0,
+											  QtyCuttingTransfer = 0,
+											  PriceCuttingTransfer = 0,
+											  QtyCuttingsubkon = 0,
+											  PriceCuttingsubkon = 0,
+											  AvalCutting = 0,
+											  AvalCuttingPrice = 0,
+											  AvalSewing = 0,
+											  AvalSewingPrice = 0,
+											  QtyLoading = 0,
+											  PriceLoading = 0,
+											  QtyLoadingAdjs = 0,
+											  PriceLoadingAdjs = 0,
+											  QtySewingOut = 0,
+											  PriceSewingOut = 0,
+											  QtySewingAdj = 0,
+											  PriceSewingAdj = 0,
+											  WipSewingOut = 0,
+											  WipSewingOutPrice = 0,
+											  WipFinishingOut = 0,
+											  WipFinishingOutPrice = 0,
+											  QtySewingRetur = 0,
+											  PriceSewingRetur = 0,
+											  QtySewingInTransfer = 0,
+											  PriceSewingInTransfer = 0,
+											  FinishingInQty = 0,
+											  FinishingInPrice = 0,
+											  SubconInQty = 0,
+											  SubconInPrice = 0,
+											  FinishingAdjQty = 0,
+											  FinishingAdjPrice = 0,
+											  FinishingTransferExpenditure = 0,
+											  FinishingTransferExpenditurePrice = 0,
+											  FinishingInTransferQty = 0,
+											  FinishingInTransferPrice = 0,
+											  FinishingOutQty = 0,
+											  FinishingOutPrice = 0,
+											  FinishingReturQty = 0,
+											  FinishingReturPrice = 0,
+											  SubconOutQty = 0,
+											  SubconOutPrice = 0,
+											  QtyLoadingInTransfer = a.SewingDODate >= dateFrom ? b.Quantity : 0,
+											  PriceLoadingInTransfer = a.SewingDODate >= dateFrom ? b.Price : 0,
+											  BeginingBalanceLoadingQty = (a.SewingDODate < dateFrom) ? b.Quantity : 0,
+											  BeginingBalanceLoadingPrice = (a.SewingDODate < dateFrom) ? b.Price : 0,
+											  Ro = a.RONo,
+											  ExpenditureGoodRetur = 0,
+											  ExpenditureGoodReturPrice = 0,
+											  ExportQty = 0,
+											  ExportPrice = 0,
+											  SampleQty = 0,
+											  SamplePrice = 0,
+											  OtherQty = 0,
+											  OtherPrice = 0,
+											  ExpenditureGoodInTransfer = 0,
+											  ExpenditureGoodInTransferPrice = 0,
+											  BeginingBalanceCuttingQty = 0,
+											  BeginingBalanceCuttingPrice = 0,
+											  BeginingBalanceFinishingQty = 0,
+											  BeginingBalanceFinishingPrice = 0
+										  });
 			var QueryLoading = from a in (from aa in garmentLoadingRepository.Query
 										  where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.LoadingDate <= dateTo
 										  select aa)
@@ -2150,92 +2151,92 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					Hours = item.hours,
 					BasicPrice = Convert.ToDouble(item.basicprice) * item.fc,
 					BeginingBalanceCuttingQty = item.begining,
-					BeginingBalanceCuttingPrice = item.beginingcuttingPrice,
+					BeginingBalanceCuttingPrice = ((Convert.ToDouble(item.fare) * 0.25) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.begining,
 					QtyCuttingTransfer = item.qtyCuttingTransfer,
-					PriceCuttingTransfer = item.priceCuttingTransfer,
+					PriceCuttingTransfer = ((Convert.ToDouble(item.fare) * 0.25) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.priceCuttingTransfer,
 					QtyCuttingsubkon = item.qtCuttingSubkon,
-					PriceCuttingsubkon = item.priceCuttingSubkon,
+					PriceCuttingsubkon = ((Convert.ToDouble(item.fare) * 0.25) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.priceCuttingSubkon,
 					QtyCuttingIn = item.qtyCuttingIn,
-					PriceCuttingIn = item.priceCuttingIn,
+					PriceCuttingIn = ((Convert.ToDouble(item.fare) * 0.25) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.priceCuttingIn,
 					QtyCuttingOut = item.qtycutting,
-					PriceCuttingOut = item.priceCuttingOut,
+					PriceCuttingOut = ((Convert.ToDouble(item.fare) * 0.25) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.priceCuttingOut,
 					Comodity = item.comodity,
 					AvalCutting = item.qtyavalcut,
-					AvalCuttingPrice = item.priceavalcut,
+					AvalCuttingPrice = ((Convert.ToDouble(item.fare) * 0.25) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.priceavalcut,
 					AvalSewing = item.qtyavalsew,
-					AvalSewingPrice = item.priceavalsew,
+					AvalSewingPrice = ((Convert.ToDouble(item.fare) * 0.25) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.priceavalsew,
 					EndBalancCuttingeQty = item.begining + item.qtyCuttingIn - item.qtycutting - item.qtyCuttingTransfer - item.qtCuttingSubkon - item.qtyavalcut - item.qtyavalsew,
-					EndBalancCuttingePrice = item.beginingcuttingPrice + item.priceCuttingIn - item.priceCuttingOut - item.priceCuttingTransfer - item.priceCuttingSubkon - item.priceavalcut - item.priceavalsew,
+					EndBalancCuttingePrice = ((Convert.ToDouble(item.fare) * 0.25) + (Convert.ToDouble(item.basicprice) * item.fc)) * (item.beginingcuttingPrice + item.priceCuttingIn - item.priceCuttingOut - item.priceCuttingTransfer - item.priceCuttingSubkon - item.priceavalcut - item.priceavalsew),
 					BeginingBalanceLoadingQty = item.beginingloading,
-					BeginingBalanceLoadingPrice = item.beginingloadingPrice,
+					BeginingBalanceLoadingPrice = ((Convert.ToDouble(item.fare) * 0.25) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.beginingloadingPrice,
 					QtyLoadingIn = item.qtyLoadingIn,
-					PriceLoadingIn = item.priceLoadingIn,
+					PriceLoadingIn = ((Convert.ToDouble(item.fare) * 0.25) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.priceLoadingIn,
 					QtyLoadingInTransfer = item.qtyloadingInTransfer,
-					PriceLoadingInTransfer = item.priceloadingInTransfer,
+					PriceLoadingInTransfer = ((Convert.ToDouble(item.fare) * 0.25) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.priceloadingInTransfer,
 					QtyLoading = item.qtyloading,
-					PriceLoading = item.priceloading,
+					PriceLoading = ((Convert.ToDouble(item.fare) * 0.25) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.priceloading,
 					QtyLoadingAdjs = item.qtyLoadingAdj,
-					PriceLoadingAdjs = item.priceLoadingAdj,
+					PriceLoadingAdjs = ((Convert.ToDouble(item.fare) * 0.25) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.priceLoadingAdj,
 					EndBalanceLoadingQty = item.beginingloading + item.qtyLoadingIn + item.qtyloadingInTransfer - item.qtyloading - item.qtyLoadingAdj,
-					EndBalanceLoadingPrice = item.beginingloadingPrice + item.priceLoadingIn  + item.qtyloadingInTransfer - item.priceloading - item.priceLoadingAdj,
+					EndBalanceLoadingPrice = ((Convert.ToDouble(item.fare) * 0.25) + (Convert.ToDouble(item.basicprice) * item.fc)) * (item.beginingloadingPrice + item.priceLoadingIn + item.qtyloadingInTransfer - item.priceloading - item.priceLoadingAdj),
 					BeginingBalanceSewingQty = item.beginingSewing,
-					BeginingBalanceSewingPrice = item.beginingSewingPrice,
+					BeginingBalanceSewingPrice = ((Convert.ToDouble(item.fare) * 0.5) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.beginingSewingPrice,
 					QtySewingIn = item.sewingIn,
-					PriceSewingIn = item.sewingInPrice,
+					PriceSewingIn = ((Convert.ToDouble(item.fare) * 0.5) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.sewingInPrice,
 					QtySewingOut = item.sewingout,
-					PriceSewingOut = item.sewingoutPrice,
+					PriceSewingOut = ((Convert.ToDouble(item.fare) * 0.5) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.sewingoutPrice,
 					QtySewingInTransfer = item.sewingintransfer,
-					PriceSewingInTransfer = item.sewingintransferPrice,
+					PriceSewingInTransfer = ((Convert.ToDouble(item.fare) * 0.5) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.sewingintransferPrice,
 					QtySewingRetur = item.sewingretur,
-					PriceSewingRetur = item.sewingreturPrice,
+					PriceSewingRetur = ((Convert.ToDouble(item.fare) * 0.5) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.sewingreturPrice,
 					WipSewingOut = item.wipsewing,
-					WipSewingOutPrice = item.wipsewingPrice,
+					WipSewingOutPrice = ((Convert.ToDouble(item.fare) * 0.5) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.wipsewingPrice,
 					WipFinishingOut = item.wipfinishing,
-					WipFinishingOutPrice = item.wipfinishingPrice,
+					WipFinishingOutPrice = ((Convert.ToDouble(item.fare) * 0.5) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.wipfinishingPrice,
 					QtySewingAdj = item.sewingadj,
-					PriceSewingAdj = item.sewingadjPrice,
+					PriceSewingAdj = ((Convert.ToDouble(item.fare) * 0.5) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.sewingadjPrice,
 					EndBalanceSewingQty = item.beginingSewing + item.sewingIn - item.sewingout + item.sewingintransfer - item.wipsewing - item.wipfinishing - item.sewingretur - item.sewingadj,
-					EndBalanceSewingPrice = item.beginingSewingPrice + item.sewingInPrice - item.sewingoutPrice + item.sewingintransferPrice - item.wipsewingPrice - item.wipfinishingPrice - item.sewingreturPrice - item.sewingadjPrice,
+					EndBalanceSewingPrice = ((Convert.ToDouble(item.fare) * 0.5) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.beginingSewingPrice + item.sewingInPrice - item.sewingoutPrice + item.sewingintransferPrice - item.wipsewingPrice - item.wipfinishingPrice - item.sewingreturPrice - item.sewingadjPrice,
 					BeginingBalanceFinishingQty = item.beginingbalanceFinishing,
-					BeginingBalanceFinishingPrice = item.beginingbalanceFinishingPrice,
+					BeginingBalanceFinishingPrice = ((Convert.ToDouble(item.fare) * 0.75) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.beginingbalanceFinishingPrice,
 					FinishingInExpenditure = item.finishingout + item.subconout,
-					FinishingInExpenditurepPrice = item.finishingoutPrice + item.subconoutPrice,
+					FinishingInExpenditurepPrice = (((Convert.ToDouble(item.fare) * 0.75) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.finishingoutPrice) + (((Convert.ToDouble(item.fare) * 0.75) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.subconoutPrice),
 					FinishingInQty = item.finishingin,
-					FinishingInPrice = item.finishinginPrice,
+					FinishingInPrice = ((Convert.ToDouble(item.fare) * 0.75) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.finishinginPrice,
 					FinishingOutQty = item.finishingout,
-					FinishingOutPrice = item.finishingoutPrice,
+					FinishingOutPrice = ((Convert.ToDouble(item.fare) * 0.75) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.finishingoutPrice,
 					BeginingBalanceSubconQty = item.beginingbalancesubcon,
-					BeginingBalanceSubconPrice = item.beginingbalancesubconPrice,
+					BeginingBalanceSubconPrice = ((Convert.ToDouble(item.fare) * 0.75) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.beginingbalancesubconPrice,
 					SubconInQty = item.subconIn,
-					SubconInPrice = item.subconoutPrice,
+					SubconInPrice = ((Convert.ToDouble(item.fare) * 0.75) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.subconoutPrice,
 					SubconOutQty = item.subconout,
-					SubconOutPrice = item.subconoutPrice,
+					SubconOutPrice = ((Convert.ToDouble(item.fare) * 0.75) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.subconoutPrice,
 					EndBalanceSubconQty = item.beginingbalancesubcon + item.subconIn - item.subconout,
-					EndBalanceSubconPrice = item.beginingbalancesubconPrice + item.subconInPrice - item.subconoutPrice,
+					EndBalanceSubconPrice = ((Convert.ToDouble(item.fare) * 0.75) + (Convert.ToDouble(item.basicprice) * item.fc)) * (item.beginingbalancesubconPrice + item.subconInPrice - item.subconoutPrice),
 					FinishingInTransferQty = item.finishingintransfer,
-					FinishingInTransferPrice = item.finishingintransferPrice,
+					FinishingInTransferPrice = ((Convert.ToDouble(item.fare) * 0.75) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.finishingintransferPrice,
 					FinishingReturQty = item.finishinigretur,
-					FinishingReturPrice = item.finishinigreturPrice,
+					FinishingReturPrice = ((Convert.ToDouble(item.fare) * 0.75) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.finishinigreturPrice,
 					FinishingAdjQty = item.finishingadj,
-					FinishingAdjPRice = item.finishingadjPrice,
+					FinishingAdjPRice = ((Convert.ToDouble(item.fare) * 0.75) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.finishingadjPrice,
 					BeginingBalanceExpenditureGood = item.beginingBalanceExpenditureGood,
-					BeginingBalanceExpenditureGoodPrice = item.beginingBalanceExpenditureGoodPrice,
+					BeginingBalanceExpenditureGoodPrice = ((Convert.ToDouble(item.fare)) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.beginingBalanceExpenditureGoodPrice,
 					EndBalanceFinishingQty = item.beginingbalanceFinishing + item.finishingin + item.finishingintransfer - item.finishingout - item.finishingadj - item.finishinigretur,
-					EndBalanceFinishingPrice = item.beginingbalanceFinishingPrice + item.finishinginPrice + item.finishingintransferPrice - item.finishingoutPrice - item.finishingadjPrice - item.finishinigreturPrice,
+					EndBalanceFinishingPrice = ((Convert.ToDouble(item.fare) * 0.75) + (Convert.ToDouble(item.basicprice) * item.fc)) * (item.beginingbalanceFinishingPrice + item.finishinginPrice + item.finishingintransferPrice - item.finishingoutPrice - item.finishingadjPrice - item.finishinigreturPrice),
 					ExportQty = item.exportQty,
-					ExportPrice = item.exportPrice,
+					ExportPrice = ((Convert.ToDouble(item.fare)) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.exportPrice,
 					SampleQty = item.sampleQty,
-					SamplePrice = item.samplePrice,
+					SamplePrice = ((Convert.ToDouble(item.fare)) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.samplePrice,
 					OtherQty = item.otherqty,
-					OtherPrice = item.otherprice,
+					OtherPrice = ((Convert.ToDouble(item.fare)) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.otherprice,
 					ExpenditureGoodAdj = item.expendAdj,
-					ExpenditureGoodAdjPrice = item.expendAdjPrice,
+					ExpenditureGoodAdjPrice = ((Convert.ToDouble(item.fare)) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.expendAdjPrice,
 					ExpenditureGoodRetur = item.expendRetur,
-					ExpenditureGoodReturPrice = item.expendReturPrice,
+					ExpenditureGoodReturPrice = ((Convert.ToDouble(item.fare)) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.expendReturPrice,
 					ExpenditureGoodInTransfer = item.expenditureInTransfer,
-					ExpenditureGoodInTransferPrice = item.expenditureInTransferPrice,
+					ExpenditureGoodInTransferPrice = ((Convert.ToDouble(item.fare)) + (Convert.ToDouble(item.basicprice) * item.fc)) * item.expenditureInTransferPrice,
 					EndBalanceExpenditureGood = item.beginingBalanceExpenditureGood + item.finishingout + item.subconout + item.expendRetur + item.expenditureInTransfer - item.exportQty - item.otherqty - item.sampleQty - item.expendAdj,
-					EndBalanceExpenditureGoodPrice = item.beginingBalanceExpenditureGoodPrice + item.finishingoutPrice + item.subconoutPrice + item.expendReturPrice + item.expenditureInTransferPrice - item.exportPrice - item.otherprice - item.samplePrice - item.expendAdjPrice,
+					EndBalanceExpenditureGoodPrice = ((Convert.ToDouble(item.fare)) + (Convert.ToDouble(item.basicprice) * item.fc)) * (item.beginingBalanceExpenditureGoodPrice + item.finishingoutPrice + item.subconoutPrice + item.expendReturPrice + item.expenditureInTransferPrice - item.exportPrice - item.otherprice - item.samplePrice - item.expendAdjPrice),
 					FareNew = item.farenew,
 					CuttingNew = item.farenew * Convert.ToDecimal(item.begining + item.qtyCuttingIn - item.qtycutting - item.qtyCuttingTransfer - item.qtCuttingSubkon - item.qtyavalcut - item.qtyavalsew),
 					LoadingNew = item.farenew * Convert.ToDecimal(item.beginingloading + item.qtyLoadingIn - item.qtyloading - item.qtyLoadingAdj),
@@ -2249,11 +2250,11 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			}
 			var data = from a in monitoringDtos
 					   where a.BeginingBalanceCuttingQty > 0 || a.QtyCuttingIn > 0 || a.QtyCuttingOut > 0 || a.QtyCuttingsubkon > 0 || a.QtyCuttingTransfer > 0 || a.EndBalancCuttingeQty > 0 ||
-						a.BeginingBalanceLoadingQty > 0 || a.QtyLoading > 0 || a.QtyLoadingAdjs > 0 || a.QtyLoadingIn > 0 || a.QtyLoadingInTransfer >0 || a.EndBalanceLoadingQty > 0 ||
-						a.BeginingBalanceSewingQty > 0 || a.QtySewingAdj > 0 || a.QtySewingIn > 0 || a.QtySewingInTransfer > 0|| a.QtySewingOut >0 || a.QtySewingRetur > 0  ||a.WipSewingOut > 0 || a.WipFinishingOut > 0|| a.EndBalanceSewingQty > 0 ||
-						a.BeginingBalanceSubconQty  > 0 || a.EndBalanceSubconQty > 0 || a.SubconInQty > 0 || a.SubconOutQty > 0 || a.AvalCutting > 0 || a.AvalSewing >0 ||
-						a.BeginingBalanceFinishingQty  > 0 || a.FinishingAdjQty > 0 || a.FinishingInExpenditure > 0 || a.FinishingInQty > 0 || a.FinishingInTransferQty> 0 || a.FinishingOutQty > 0 || a.FinishingReturQty > 0 ||
-						a.BeginingBalanceExpenditureGood > 0 || a.ExpenditureGoodAdj > 0 || a.ExpenditureGoodInTransfer > 0 || a.ExpenditureGoodRemainingQty > 0 ||a.ExpenditureGoodRetur > 0 || a.EndBalanceExpenditureGood > 0
+						a.BeginingBalanceLoadingQty > 0 || a.QtyLoading > 0 || a.QtyLoadingAdjs > 0 || a.QtyLoadingIn > 0 || a.QtyLoadingInTransfer > 0 || a.EndBalanceLoadingQty > 0 ||
+						a.BeginingBalanceSewingQty > 0 || a.QtySewingAdj > 0 || a.QtySewingIn > 0 || a.QtySewingInTransfer > 0 || a.QtySewingOut > 0 || a.QtySewingRetur > 0 || a.WipSewingOut > 0 || a.WipFinishingOut > 0 || a.EndBalanceSewingQty > 0 ||
+						a.BeginingBalanceSubconQty > 0 || a.EndBalanceSubconQty > 0 || a.SubconInQty > 0 || a.SubconOutQty > 0 || a.AvalCutting > 0 || a.AvalSewing > 0 ||
+						a.BeginingBalanceFinishingQty > 0 || a.FinishingAdjQty > 0 || a.FinishingInExpenditure > 0 || a.FinishingInQty > 0 || a.FinishingInTransferQty > 0 || a.FinishingOutQty > 0 || a.FinishingReturQty > 0 ||
+						a.BeginingBalanceExpenditureGood > 0 || a.ExpenditureGoodAdj > 0 || a.ExpenditureGoodInTransfer > 0 || a.ExpenditureGoodRemainingQty > 0 || a.ExpenditureGoodRetur > 0 || a.EndBalanceExpenditureGood > 0
 					   select a;
 			double BeginingBalanceCuttingQtyTotal =0, BeginingBalanceCuttingPriceTotal=0, QtyCuttingInTotal =0, PriceCuttingInTotal=0, QtyCuttingOutTotal=0, PriceCuttingOutTotal=0, QtyCuttingTransferTotal=0 , PriceCuttingTransferTotal=0, QtyCuttingsubkonTotal= 0 , PriceCuttingsubkonTotal=0,AvalCuttingTotal=0, PriceAvalCuttingTotal =0, AvalSewingTotal =0 , PriceAvalSewingTotal=0, EndBalanceCuttingeQtyTotal =0,
 				EndBalanceCuttingePriceTotal =0, BeginingBalanceLoadingQtyTotal =0, BeginingBalanceLoadingPriceTotal =0,QtyLoadingInTotal=0, QtyLoadingInTransferTotal =0, PriceLoadingInTransferTotal =0, PriceLoadingInTotal=0, QtyLoadingTotal=0, PriceLoadingTotal=0, QtyLoadingAdjsTotal =0 , PriceLoadingAdjsTotal=0,EndBalanceLoadingQtyTotal =0, EndBalanceLoadingPriceTotal =0, QtySewingInTotal=0, PriceSewingInTotal=0, QtySewingOutTotal=0, PriceSewingOutTotal=0,	QtySewingInTransferTotal=0, PriceSewingInTransferTotal=0, WipSewingOutTotal = 0, PriceWipSewingOutTotal =0, WipFinishingOutTotal=0, PriceWipFinishingOutTotal=0,
