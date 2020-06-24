@@ -39,6 +39,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 		public double BeginingBalanceLoadingPrice { get; internal set; }
 		public double QtyLoadingIn { get; internal set; }
 		public double PriceLoadingIn { get; internal set; }
+		public double QtyLoadingInTransfer { get; internal set; }
+		public double PriceLoadingInTransfer { get; internal set; }
 		public double QtyLoading { get; internal set; }
 		public double PriceLoading { get; internal set; }
 		public double QtyLoadingAdjs { get; internal set; }
@@ -114,6 +116,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 		public decimal SewingNew { get; internal set; }
 		public decimal FinishingNew { get; internal set; }
 		public decimal ExpenditureNew { get; internal set; }
+		public decimal SubconNew { get; internal set; }
 
 		public GarmentMonitoringProductionStockFlowDto(GarmentMonitoringProductionStockFlowDto flowDto)
 		{
