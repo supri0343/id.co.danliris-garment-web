@@ -125,7 +125,12 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 
 			return costCalculationGarmentDataProductionReport;
 		}
-
+		class ViewFC
+		{
+			public string RO { get; internal set; }
+			public double FC { get; internal set; }
+			public int Count { get; internal set; }
+		}
 		public async Task<GarmentMonitoringCuttingListViewModel> Handle(GetMonitoringCuttingQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
@@ -151,16 +156,24 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			}
 			CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(_ro, request.token);
 
-			var QuerySumFC = (from a in garmentCuttingInRepository.Query
-							  where _ro.Distinct().Contains(a.RONo)
-							  select new { fC = a.FC, Ro = a.RONo }).GroupBy(t => t.Ro).Select(t => new { RO = t.Key, FC = t.Sum(u => u.fC) });
+			 
+			var sumFCs = (from a in garmentCuttingInRepository.Query
+						  where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" &&
+						 a.UnitId == request.unit && a.CuttingInDate <= dateTo
+						  select new { a.FC, a.RONo })
+						 .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
+						 {
+							 RO = key.RONo,
+							 FC = group.Sum(s => s.FC),
+							 Count = group.Count()
+						 });
 			var QuerySumQtyPreparing = (from a in garmentCuttingInRepository.Query
 										//join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
 										//join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
 										//where _ro.Distinct().Contains(a.RONo)
 										select new {  Ro = a.RONo }) 
 										.Select(t => new { RO = t.Ro});
-			var Fc = from a in QuerySumFC
+			var Fc = from a in sumFCs
 					 join b in QuerySumQtyPreparing on a.RO equals b.RO
 					 select new { ro = a.RO, FC = Convert.ToDouble(a.FC / QuerySumQtyPreparing.Count()) };
 
