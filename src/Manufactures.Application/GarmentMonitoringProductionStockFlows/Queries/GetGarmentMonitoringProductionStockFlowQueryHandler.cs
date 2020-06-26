@@ -2132,17 +2132,19 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			foreach (var item in querySum)
 			{
 
-				var basicPrice = Math.Round(Convert.ToDouble(item.basicprice) * item.fc, 2);
+				var fc = Math.Round(Convert.ToDouble(item.fc), 2);
+				var basicPrice = Math.Round(Convert.ToDouble(item.basicprice) * fc, 2);
+				
 				GarmentMonitoringProductionStockFlowDto garmentMonitoringDto = new GarmentMonitoringProductionStockFlowDto()
 				{
 					Article = item.article,
 					Ro = item.ro,
 					QtyOrder = item.qtyOrder,
-					FC = Math.Round(Convert.ToDouble(item.fc), 2),
+					FC = fc,
 					Fare = item.fare,
 					BuyerCode = item.buyer,
 					Hours = item.hours,
-					BasicPrice = Math.Round(Convert.ToDouble(item.basicprice) * item.fc, 2),
+					BasicPrice = basicPrice,
 					BeginingBalanceCuttingQty = item.begining,
 					BeginingBalanceCuttingPrice = Math.Round(((Convert.ToDouble(item.fare) * 0.25) + basicPrice) * item.begining, 2),
 					QtyCuttingTransfer = Math.Round(item.qtyCuttingTransfer, 2),

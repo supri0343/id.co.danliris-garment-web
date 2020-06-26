@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.CostCalculationGarmentDataProductionReport;
 using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.HOrderDataProductionReport;
+using Manufactures.Domain.GarmentPreparings.Repositories;
 
 namespace Manufactures.Application.GarmentFinishingOuts.Queries
 {
@@ -25,13 +26,16 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 		private readonly IGarmentSewingOutItemRepository garmentSewingOutItemRepository;
 		private readonly IGarmentFinishingOutRepository garmentFinishingOutRepository;
 		private readonly IGarmentFinishingOutItemRepository garmentFinishingOutItemRepository;
+		private readonly IGarmentPreparingRepository garmentPreparingRepository;
+		private readonly IGarmentPreparingItemRepository garmentPreparingItemRepository;
 
 		public GetMonitoringFinishingQueryHandler(IStorage storage, IServiceProvider serviceProvider)
 		{
 			_storage = storage;
 			garmentSewingOutRepository = storage.GetRepository<IGarmentSewingOutRepository>();
 			garmentSewingOutItemRepository = storage.GetRepository<IGarmentSewingOutItemRepository>();
-
+			garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
+			garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
 			garmentFinishingOutRepository = storage.GetRepository<IGarmentFinishingOutRepository>();
 			garmentFinishingOutItemRepository = storage.GetRepository<IGarmentFinishingOutItemRepository>();
 			_http = serviceProvider.GetService<IHttpClientService>();
@@ -147,7 +151,12 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 			public double remainQty { get; internal set; }
 			public decimal price { get; internal set; }
 		}
-
+		class ViewBasicPrices
+		{
+			public string RO { get; internal set; }
+			public decimal BasicPrice { get; internal set; }
+			public int Count { get; internal set; }
+		}
 		public async Task<GarmentMonitoringFinishingListViewModel> Handle(GetMonitoringFinishingQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
@@ -155,11 +164,9 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 
 
 			var QueryRoFinishing = (from a in garmentFinishingOutRepository.Query
-									join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 									where a.UnitId == request.unit && a.FinishingOutDate <= dateTo
 									select a.RONo).Distinct();
 			var QueryRoSewingOut = (from a in garmentSewingOutRepository.Query
-									join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
 									where a.UnitToId == request.unit && a.SewingOutDate <= dateTo && a.SewingTo == "FINISHING"
 									select a.RONo).Distinct();
 			var QueryRo = QueryRoSewingOut.Union(QueryRoFinishing).Distinct();
@@ -169,17 +176,30 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 				_ro.Add(item);
 			}
 			CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(_ro, request.token);
+			var sumbasicPrice = (from a in garmentPreparingRepository.Query
+								 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
+								 where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&*/
+								 a.UnitId == request.unit
+								 select new { a.RONo, b.BasicPrice })
+						.GroupBy(x => new { x.RONo }, (key, group) => new ViewBasicPrices
+						{
+							RO = key.RONo,
+							BasicPrice = Convert.ToDecimal(group.Sum(s => s.BasicPrice)),
+							Count = group.Count()
+						});
 			GarmentMonitoringFinishingListViewModel listViewModel = new GarmentMonitoringFinishingListViewModel();
 			List<GarmentMonitoringFinishingDto> monitoringDtos = new List<GarmentMonitoringFinishingDto>();
-			var QueryFinishing = from a in garmentFinishingOutRepository.Query
-								join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
-								where a.UnitId == request.unit && a.FinishingOutDate <= dateTo
-								select new monitoringView { price = Convert.ToDecimal(b.Price), buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), finishingQtyPcs = a.FinishingOutDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.FinishingOutDate < dateFrom ?- b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+			var QueryFinishing = from a in (from aa in garmentFinishingOutRepository.Query
+											where aa.UnitId == request.unit && aa.FinishingOutDate <= dateTo
+											select aa)
+											join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
+								select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), finishingQtyPcs = a.FinishingOutDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.FinishingOutDate < dateFrom ?- b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 
-			var QuerySewingOut = from a in garmentSewingOutRepository.Query
-									join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
-									where a.UnitToId == request.unit && a.SewingOutDate <= dateTo && a.SewingTo =="FINISHING"
-								  select new monitoringView { price = 0, buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), finishingQtyPcs = 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity :0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate  < dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+			var QuerySewingOut = from a in (from aa in garmentSewingOutRepository.Query
+											where aa.UnitToId == request.unit && aa.SewingOutDate <= dateTo && aa.SewingTo == "FINISHING"
+											select aa)
+											join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
+									select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), finishingQtyPcs = 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity :0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate  < dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 
 			var queryNow = QuerySewingOut.Union(QueryFinishing);
 			var querySum = queryNow.ToList().GroupBy(x => new { x.buyerCode,x.qtyOrder, x.roJob, x.article, x.uomUnit, x.style }, (key, group) => new
@@ -208,7 +228,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 					stock = item.Stock,
 					style = item.Style,
 					buyerCode=item.buyer,
-					price=item.price,
+					price= Math.Round(item.price,2),
 					remainQty = item.Stock + item.SewingQtyPcs  - item.Finishing
 				};
 				monitoringDtos.Add(dto);
