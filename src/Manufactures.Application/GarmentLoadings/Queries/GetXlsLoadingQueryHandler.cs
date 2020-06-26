@@ -18,6 +18,7 @@ using System.Data;
 using OfficeOpenXml;
 using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.HOrderDataProductionReport;
 using OfficeOpenXml.Style;
+using Manufactures.Domain.GarmentPreparings.Repositories;
 
 namespace Manufactures.Application.GarmentLoadings.Queries
 {
@@ -29,13 +30,16 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 		private readonly IGarmentCuttingOutItemRepository garmentCuttingOutItemRepository;
 		private readonly IGarmentLoadingRepository garmentLoadingRepository;
 		private readonly IGarmentLoadingItemRepository garmentLoadingItemRepository;
+		private readonly IGarmentPreparingRepository garmentPreparingRepository;
+		private readonly IGarmentPreparingItemRepository garmentPreparingItemRepository;
 
 		public GetXlsLoadingQueryHandler(IStorage storage, IServiceProvider serviceProvider)
 		{
 			_storage = storage;
 			garmentCuttingOutRepository = storage.GetRepository<IGarmentCuttingOutRepository>();
 			garmentCuttingOutItemRepository = storage.GetRepository<IGarmentCuttingOutItemRepository>();
-
+			garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
+			garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
 			garmentLoadingRepository = storage.GetRepository<IGarmentLoadingRepository>();
 			garmentLoadingItemRepository = storage.GetRepository<IGarmentLoadingItemRepository>();
 			_http = serviceProvider.GetService<IHttpClientService>();
@@ -152,43 +156,59 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 			public double remainQty { get; internal set; }
 			public decimal price { get; internal set; }
 		}
-
+		class ViewBasicPrices
+		{
+			public string RO { get; internal set; }
+			public decimal BasicPrice { get; internal set; }
+			public int Count { get; internal set; }
+		}
 		public async Task<MemoryStream> Handle(GetXlsLoadingQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
 
 			var QueryRoCuttingOut = (from a in garmentCuttingOutRepository.Query
-									 join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
 									 where a.UnitId == request.unit && a.CuttingOutDate <= dateTo
 									 select a.RONo).Distinct();
 			var QueryRoLoading = (from a in garmentLoadingRepository.Query
-								  join b in garmentLoadingItemRepository.Query on a.Identity equals b.LoadingId
 								  where a.UnitId == request.unit && a.LoadingDate <= dateTo
 								  select a.RONo).Distinct();
 			var QueryRo = QueryRoCuttingOut.Union(QueryRoLoading).Distinct();
+
 			List<string> _ro = new List<string>();
 			foreach (var item in QueryRo)
 			{
 				_ro.Add(item);
 			}
 			CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(_ro, request.token);
-
-			var QueryCuttingOut = from a in garmentCuttingOutRepository.Query
+			var sumbasicPrice = (from a in garmentPreparingRepository.Query
+								 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
+								 where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&*/
+								 a.UnitId == request.unit
+								 select new { a.RONo, b.BasicPrice })
+					.GroupBy(x => new { x.RONo }, (key, group) => new ViewBasicPrices
+					{
+						RO = key.RONo,
+						BasicPrice = Math.Round( Convert.ToDecimal(group.Sum(s => s.BasicPrice)),2),
+						Count = group.Count()
+					});
+			var QueryCuttingOut = from a in (from aa in garmentCuttingOutRepository.Query
+											 where aa.UnitId == request.unit && aa.CuttingOutDate <= dateTo
+											 select aa)
 								  join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
-								  where a.UnitId == request.unit && a.CuttingOutDate <= dateTo
-								  select new monitoringView { price = 0, buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), loadingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.CuttingOutDate < dateFrom ? b.TotalCuttingOut : 0, cuttingQtyPcs = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
-			var QueryLoading = from a in garmentLoadingRepository.Query
+								  select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), loadingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.CuttingOutDate < dateFrom ? b.TotalCuttingOut : 0, cuttingQtyPcs = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+			var QueryLoading = from a in (from aa in garmentLoadingRepository.Query
+										  where aa.UnitId == request.unit && aa.LoadingDate <= dateTo
+										  select aa)
 							   join b in garmentLoadingItemRepository.Query on a.Identity equals b.LoadingId
-							   where a.UnitId == request.unit && a.LoadingDate <= dateTo
-							   select new monitoringView { price = Convert.ToDecimal(b.Price), buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, cuttingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom ? -b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+							   select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, cuttingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom ? -b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 			var queryNow = QueryCuttingOut.Union(QueryLoading);
-			var querySum = queryNow.ToList().GroupBy(x => new { x.buyerCode, x.qtyOrder, x.roJob, x.article, x.uomUnit, x.style }, (key, group) => new
+			var querySum = queryNow.ToList().GroupBy(x => new { x.price, x.buyerCode, x.qtyOrder, x.roJob, x.article, x.uomUnit, x.style }, (key, group) => new
 			{
 				QtyOrder = key.qtyOrder,
 				RoJob = key.roJob,
 				buyer = key.buyerCode,
-				price = group.Sum(s => s.price),
+				price = key.price,
 				Style = key.style,
 				Stock = group.Sum(s => s.stock),
 				UomUnit = key.uomUnit,
@@ -211,11 +231,12 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 					loadingQtyPcs = item.Loading,
 					stock = item.Stock,
 					style = item.Style,
-					price = item.price,
+					price = Math.Round(item.price,2),
 					remainQty = item.Stock + item.CuttingQtyPcs - item.Loading
 				};
 				monitoringDtos.Add(dtos);
 			}
+			listViewModel.garmentMonitorings = monitoringDtos;
 			var data = from a in monitoringDtos
 					   where a.stock > 0 || a.loadingQtyPcs > 0 || a.cuttingQtyPcs > 0 || a.remainQty > 0
 					   select a;
@@ -264,7 +285,7 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 			{
 				foreach (var report in listViewModel.garmentMonitorings)
 				{
-					reportDataTable.Rows.Add(report.roJob, report.article, report.buyerCode, report.qtyOrder, report.style, report.price, report.stock, report.cuttingQtyPcs, report.loadingQtyPcs, report.remainQty, report.uomUnit);
+					reportDataTable.Rows.Add(report.roJob, report.article, report.buyerCode, report.qtyOrder, report.style,Math.Round( report.price,2), report.stock, report.cuttingQtyPcs, report.loadingQtyPcs, report.remainQty, report.uomUnit);
 					counter++;
 				}
 			}
