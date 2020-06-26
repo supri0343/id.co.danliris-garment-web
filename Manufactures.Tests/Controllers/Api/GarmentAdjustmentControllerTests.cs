@@ -8,6 +8,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -131,6 +132,69 @@ namespace Manufactures.Tests.Controllers.Api
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentAdjustmentCommand>());
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Post_Throws_Exception()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentAdjustmentController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentAdjustmentCommand>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Assert
+            await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(It.IsAny<PlaceGarmentAdjustmentCommand>()));
+          
+        }
+
+        [Fact]
+        public async Task GetComplete_Return_Success()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            _mockAdjustmentRepository
+            .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .Returns(new List<GarmentAdjustmentReadModel>() {
+                new GarmentAdjustmentReadModel(id)    
+                }
+            .AsQueryable());
+
+            _mockAdjustmentRepository
+             .Setup(s => s.Find(It.IsAny<IQueryable<GarmentAdjustmentReadModel>>()))
+             .Returns(new List<GarmentAdjustment>()
+             {
+                    new GarmentAdjustment(id, null ,null, null,null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null, null)
+             });
+
+            _mockAdjustmentItemRepository
+               .Setup(s => s.Query)
+               .Returns(new List<GarmentAdjustmentItemReadModel>()
+               {
+                  new GarmentAdjustmentItemReadModel(id)
+               }.AsQueryable());
+
+            _mockAdjustmentItemRepository
+            .Setup(s => s.Find(It.IsAny<IQueryable<GarmentAdjustmentItemReadModel>>()))
+            .Returns(new List<GarmentAdjustmentItem>()
+            {
+                    new GarmentAdjustmentItem(id,id,id,id,id,id,new SizeId(1),"sizeName",new ProductId(1),"productCode","productName","designCOlor",1,1,new UomId(1),"uomUnit","color",1)
+            });
+
+
+            // Act
+            var orderData = new
+            {
+                AdjustmentNo = "desc",
+            };
+
+            string order = JsonConvert.SerializeObject(orderData);
+            var unitUnderTest = CreateGarmentAdjustmentController();
+            var result = await unitUnderTest.GetComplete(1,25, order, new List<string>(),"","{}");
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));

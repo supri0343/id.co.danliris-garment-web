@@ -26,6 +26,7 @@ using Manufactures.Domain.GarmentSewingDOs;
 using Manufactures.Application.GarmentCuttingOuts.Queries;
 using System.IO;
 using FluentAssertions;
+using Newtonsoft.Json;
 
 namespace Manufactures.Tests.Controllers.Api
 {
@@ -231,6 +232,21 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task Post_Throws_Exception()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentCuttingOutController();
+
+            Guid cuttingOutGuid = Guid.NewGuid();
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentCuttingOutCommand>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Assert
+            await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(It.IsAny<PlaceGarmentCuttingOutCommand>()));
+        }
+
+        [Fact]
         public async Task Put_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -246,6 +262,36 @@ namespace Manufactures.Tests.Controllers.Api
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Delete_Return_BadRequest()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentCuttingOutController();
+
+            Guid cuttingOutGuid = Guid.NewGuid();
+
+            _mockGarmentSewingDORepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSewingDOReadModel>()
+                {
+                    new GarmentSewingDO(Guid.NewGuid(), null, cuttingOutGuid, new UnitDepartmentId(1), null, null, new UnitDepartmentId(1), null, null, null, null, new GarmentComodityId(1), null, null, DateTimeOffset.Now).GetReadModel()
+                }.AsQueryable());
+
+            _mockGarmentSewingDOItemRepository
+               .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingDOItemReadModel, bool>>>()))
+               .Returns(new List<GarmentSewingDOItem>()
+               {
+                    new GarmentSewingDOItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new ProductId(1),"producCode","productName","designColor",new SizeId(1),"sizeName",5,new UomId(1),"uomUnit","color",1,1,1)
+               });
+
+           
+            // Act
+            var result = await unitUnderTest.Delete(cuttingOutGuid.ToString());
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result));
         }
 
         [Fact]
@@ -267,7 +313,7 @@ namespace Manufactures.Tests.Controllers.Api
                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingDOItemReadModel, bool>>>()))
                .Returns(new List<GarmentSewingDOItem>()
                {
-                    new GarmentSewingDOItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1), null, 0, new UomId(1), null, null, 0, 0,0)
+                    new GarmentSewingDOItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new ProductId(1),"producCode","productName","designColor",new SizeId(1),"sizeName",1,new UomId(1),"uomUnit","color",1,1,1)
                });
 
             _MockMediator
@@ -281,7 +327,7 @@ namespace Manufactures.Tests.Controllers.Api
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
 
-		[Fact]
+        [Fact]
 		public async Task GetMonitoringBehavior()
 		{
 			var unitUnderTest = CreateGarmentCuttingOutController();
@@ -298,6 +344,21 @@ namespace Manufactures.Tests.Controllers.Api
 		}
 
         [Fact]
+        public async Task GetXLSBehavior_Throws_Exception()
+        {
+            var unitUnderTest = CreateGarmentCuttingOutController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsCuttingQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+            var result =await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.InternalServerError);
+
+        }
+
+        [Fact]
         public async Task GetXLSBehavior()
         {
             var unitUnderTest = CreateGarmentCuttingOutController();
@@ -306,13 +367,70 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Send(It.IsAny<GetXlsCuttingQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream());
 
-            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now,"", 1, 25, "{}");
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
 
-        // Assert
-        Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+            // Assert
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
 
-		}
-		[Fact]
+        }
+
+        [Fact]
+        public async Task GetComplete_ExpectedBehavior()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var unitUnderTest = CreateGarmentCuttingOutController();
+            _mockGarmentCuttingOutRepository
+                 .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                 .Returns(new List<GarmentCuttingOutReadModel>() { new GarmentCuttingOutReadModel(id)}.AsQueryable());
+
+            _mockGarmentCuttingOutRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutReadModel>>()))
+                .Returns(new List<GarmentCuttingOut>()
+                {
+                    new GarmentCuttingOut(id, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", null, new UnitDepartmentId(1), null, null, new GarmentComodityId(1), null, null)
+                });
+
+            _mockGarmentCuttingOutItemRepository
+               .Setup(s => s.Query)
+               .Returns(new List<GarmentCuttingOutItemReadModel>()
+               {
+                   new GarmentCuttingOutItemReadModel(id)
+               }.AsQueryable());
+
+            _mockGarmentCuttingOutItemRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutItemReadModel>>()))
+                .Returns(new List<GarmentCuttingOutItem>()
+                {
+                    new GarmentCuttingOutItem(id,id,id,id,new ProductId(1),"productCode","productName","designColor",1)
+                });
+
+            _mockGarmentCuttingOutDetailRepository
+             .Setup(s => s.Query)
+             .Returns(new List<GarmentCuttingOutDetailReadModel>()
+             {
+                   new GarmentCuttingOutDetailReadModel(id)
+             }.AsQueryable());
+
+            _mockGarmentCuttingOutDetailRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutDetailReadModel>>()))
+                .Returns(new List<GarmentCuttingOutDetail>()
+                {
+                    new GarmentCuttingOutDetail(id,id,new SizeId(1),"sizeName","color",1,1,new UomId(1),"cuttingOutUoamUnit",1,1)
+                }) ;
+
+            // Act
+            var orderData = new
+            {
+                CuttingOutType = "desc",
+            };
+
+            string order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.GetComplete(1,25,order,new List<string>(),"","{}");
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
 		public async Task GetXLSBookKeepingBehavior()
 		{
 			var unitUnderTest = CreateGarmentCuttingOutController();
@@ -369,7 +487,7 @@ namespace Manufactures.Tests.Controllers.Api
             UpdateDatesGarmentCuttingOutCommand command2 = new UpdateDatesGarmentCuttingOutCommand(ids, DateTimeOffset.MinValue);
 
             // Act
-            var result1 = await unitUnderTest.UpdateDates(command);
+            var result1 = await unitUnderTest.UpdateDates(command2);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result1));

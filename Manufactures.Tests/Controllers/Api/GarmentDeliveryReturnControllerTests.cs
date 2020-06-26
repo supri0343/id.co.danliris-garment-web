@@ -8,6 +8,8 @@ using Manufactures.Domain.GarmentDeliveryReturns.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,6 +63,7 @@ namespace Manufactures.Tests.Controllers.Api
         public async Task Get_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
+            var id = Guid.NewGuid();
             var unitUnderTest = CreateGarmentDeliveryReturnController();
 
             _mockGarmentDeliveryReturnRepository
@@ -71,7 +74,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentDeliveryReturnReadModel>>()))
                 .Returns(new List<GarmentDeliveryReturn>()
                 {
-                    new GarmentDeliveryReturn(Guid.NewGuid(), null, "RONo", null, 0, null, 0, null, DateTimeOffset.Now, null, new UnitDepartmentId(1), null, null, new StorageId(1), null, null, false)
+                    new GarmentDeliveryReturn(id,"drNo","roNo","article",1,"unitDONo",1,"preparingId",DateTimeOffset.Now,"returnType",new UnitDepartmentId(1),"unitCode","unitName",new StorageId(1),"storageName","storageCode",true)
                 });
 
             _mockGarmentDeliveryReturnItemRepository
@@ -89,7 +92,13 @@ namespace Manufactures.Tests.Controllers.Api
                 }.AsQueryable());
 
             // Act
-            var result = await unitUnderTest.Get();
+            var orderData = new
+            {
+                Article = "desc",
+            };
+
+            string order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.Get(1,25,order,new List<string>(), "article", "{}");
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
@@ -126,18 +135,30 @@ namespace Manufactures.Tests.Controllers.Api
         public async Task Post_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
+            var id = Guid.NewGuid();
             var unitUnderTest = CreateGarmentDeliveryReturnController();
 
             _mockGarmentDeliveryReturnRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentDeliveryReturnReadModel, bool>>>()))
-                .Returns(new List<GarmentDeliveryReturn>());
+                .Returns(new List<GarmentDeliveryReturn>() {
+              
+                });
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentDeliveryReturnCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GarmentDeliveryReturn(Guid.NewGuid(), null, "RONo", null, 0, null, 0, null, DateTimeOffset.Now, null, new UnitDepartmentId(1), null, null, new StorageId(1), null, null, false));
 
             PlaceGarmentDeliveryReturnCommand command = new PlaceGarmentDeliveryReturnCommand();
-            command.Items = new List<GarmentDeliveryReturnItemValueObject>();
+            command.Items = new List<GarmentDeliveryReturnItemValueObject>()
+            {
+                new GarmentDeliveryReturnItemValueObject()
+                {
+                    Product =new Product()
+                    {
+                        Name ="NO FABRIC"
+                    }
+                }
+            };
 
             // Act
             var result = await unitUnderTest.Post(command);
@@ -147,20 +168,134 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
-        public async Task Put_StateUnderTest_ExpectedBehavior()
+        public async Task Post_Return_BadRequest()
         {
             // Arrange
+            var id = Guid.NewGuid();
+            var unitUnderTest = CreateGarmentDeliveryReturnController();
+
+            _mockGarmentDeliveryReturnRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentDeliveryReturnReadModel, bool>>>()))
+                .Returns(new List<GarmentDeliveryReturn>() {
+                new GarmentDeliveryReturn(id,"drNo","roNo","article",1,"unitDONo",1,"preparingId",DateTimeOffset.Now,"returnType",new UnitDepartmentId(1),"unitCode","unitName",new StorageId(1),"storageName","storageCode",true)
+                });
+
+          
+
+            PlaceGarmentDeliveryReturnCommand command = new PlaceGarmentDeliveryReturnCommand();
+            command.Items = new List<GarmentDeliveryReturnItemValueObject>()
+            {
+                new GarmentDeliveryReturnItemValueObject()
+                {
+                    Product =new Product()
+                    {
+                        Name ="FABRIC"
+                    }
+                }
+            };
+
+            // Act
+            var result = await unitUnderTest.Post(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Post_Return_InternalServerError()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentDeliveryReturnController();
+
+            _mockGarmentDeliveryReturnRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentDeliveryReturnReadModel, bool>>>()))
+                .Returns(new List<GarmentDeliveryReturn>());
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentDeliveryReturnCommand>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            PlaceGarmentDeliveryReturnCommand command = new PlaceGarmentDeliveryReturnCommand();
+            command.Items = new List<GarmentDeliveryReturnItemValueObject>();
+
+            // Act
+            var result = await unitUnderTest.Post(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Put_Success_When_Item_Not_Save()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
             var unitUnderTest = CreateGarmentDeliveryReturnController();
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentDeliveryReturnCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GarmentDeliveryReturn(Guid.NewGuid(), null, "RONo", null, 0, null, 0, null, DateTimeOffset.Now, null, new UnitDepartmentId(1), null, null, new StorageId(1), null, null, false));
 
+            _mockGarmentDeliveryReturnItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentDeliveryReturnItemReadModel, bool>>>()))
+                .Returns(new List<GarmentDeliveryReturnItem>()
+                {
+                    new GarmentDeliveryReturnItem(id, id, 0, 0, null, new ProductId(1), null, null, null, "RONo", 0, new UomId(1), null)
+                });
+
             UpdateGarmentDeliveryReturnCommand command = new UpdateGarmentDeliveryReturnCommand();
-            command.Items = new List<GarmentDeliveryReturnItemValueObject>();
+            command.Items = new List<GarmentDeliveryReturnItemValueObject>()
+            {
+                new GarmentDeliveryReturnItemValueObject()
+                {   
+                    IsSave =false,
+                    Product =new Product()
+                    {
+                        Name ="NOFABRIC"
+                    }
+                }
+            };
 
             // Act
-            var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), command);
+            var result = await unitUnderTest.Put(id.ToString(), command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Put_Success_When_Item_Save()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var unitUnderTest = CreateGarmentDeliveryReturnController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<UpdateGarmentDeliveryReturnCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentDeliveryReturn(Guid.NewGuid(), null, "RONo", null, 0, null, 0, null, DateTimeOffset.Now, null, new UnitDepartmentId(1), null, null, new StorageId(1), null, null, false));
+
+            _mockGarmentDeliveryReturnItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentDeliveryReturnItemReadModel, bool>>>()))
+                .Returns(new List<GarmentDeliveryReturnItem>()
+                {
+                    new GarmentDeliveryReturnItem(id, id, 0, 0, null, new ProductId(1), null, null, null, "RONo", 0, new UomId(1), null)
+                });
+
+            UpdateGarmentDeliveryReturnCommand command = new UpdateGarmentDeliveryReturnCommand();
+            command.Items = new List<GarmentDeliveryReturnItemValueObject>()
+            {
+                new GarmentDeliveryReturnItemValueObject()
+                {
+                    IsSave =true,
+                    Product =new Product()
+                    {
+                        Name ="NOFABRIC"
+                    }
+                }
+            };
+
+            // Act
+            var result = await unitUnderTest.Put(id.ToString(), command);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));

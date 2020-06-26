@@ -147,6 +147,24 @@ namespace Manufactures.Tests.Controllers.Api
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
 
+
+        [Fact]
+        public async Task Post_Throws_InternalServerError()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentAvalProductController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentAvalProductCommand>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+            var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentAvalProductCommand>());
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+        }
+
         [Fact]
         public async Task Delete_StateUnderTest_ExpectedBehavior()
         {
@@ -166,6 +184,28 @@ namespace Manufactures.Tests.Controllers.Api
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+       
+
+
+        [Fact]
+        public async Task UpdateIsReceived_Return_OK()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentAvalProductController();
+
+
+            _MockMediator
+              .Setup(s => s.Send(It.IsAny<UpdateIsReceivedGarmentAvalProductCommand>(), It.IsAny<CancellationToken>()))
+              .ReturnsAsync(true);
+
+            // Act
+            var command =new  UpdateIsReceivedGarmentAvalProductCommand(new List<string>() { "ids" },true);
+            var result = await unitUnderTest.UpdateIsReceived(command);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));

@@ -11,6 +11,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -206,6 +207,21 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task Post_Throws_Exception()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentFinishingOutController();
+            Guid finishingOutGuid = Guid.NewGuid();
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentFinishingOutCommand>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+
+            // Assert
+            await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(It.IsAny<PlaceGarmentFinishingOutCommand>()));
+        }
+
+        [Fact]
         public async Task Put_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -270,7 +286,117 @@ namespace Manufactures.Tests.Controllers.Api
 			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
 			;
 		}
-		[Fact]
+
+        [Fact]
+        public async Task GetXLS_Throws_Exception()
+        {
+            var unitUnderTest = CreateGarmentFinishingOutController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsFinishingQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Assert
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+           Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+           
+        }
+
+
+        [Fact]
+        public async Task GetColor_Return_Exception()
+        {
+            var unitUnderTest = CreateGarmentFinishingOutController();
+            var id = Guid.NewGuid();
+            _mockGarmentFinishingOutRepository
+               .Setup(s => s.ReadColor(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+               .Returns(new List<GarmentFinishingOutReadModel>() { new GarmentFinishingOutReadModel(id) }.AsQueryable());
+
+            _mockGarmentFinishingOutRepository
+               .Setup(s => s.Find(It.IsAny<IQueryable<GarmentFinishingOutReadModel>>()))
+               .Returns(new List<GarmentFinishingOut>()
+               {
+                    new GarmentFinishingOut(id,"finishingOutNo",new UnitDepartmentId(1),"unitToCode","unitToName","Finishing",DateTimeOffset.Now, "RONo","article", new UnitDepartmentId(1),"unitCode", "unitName",new GarmentComodityId(1),"comodityCode","comodityName",true)
+               });
+
+            _mockGarmentFinishingOutItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentFinishingOutItemReadModel>()
+                {
+                   new GarmentFinishingOutItemReadModel(id)
+                }.AsQueryable());
+
+            // Act
+            var orderData = new
+            {
+                Name = "desc",
+            };
+
+            string order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.GetColor(1,25, order,new List<string>(),"","{}");
+
+            // Assert
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+
+        }
+
+        [Fact]
+        public async Task GetComplete_Success()
+        {
+            var unitUnderTest = CreateGarmentFinishingOutController();
+
+            var id = Guid.NewGuid();
+            _mockGarmentFinishingOutRepository
+                 .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                 .Returns(new List<GarmentFinishingOutReadModel>().AsQueryable());
+
+            _mockGarmentFinishingOutRepository
+              .Setup(s => s.Find(It.IsAny<IQueryable<GarmentFinishingOutReadModel>>()))
+              .Returns(new List<GarmentFinishingOut>()
+              {
+                    new GarmentFinishingOut(id,"finishingOutNo",new UnitDepartmentId(1),"unitToCode","unitToName","Finishing",DateTimeOffset.Now, "RONo","article", new UnitDepartmentId(1),"unitCode", "unitName",new GarmentComodityId(1),"comodityCode","comodityName",true)
+              });
+
+            _mockGarmentFinishingOutItemRepository
+               .Setup(s => s.Query)
+               .Returns(new List<GarmentFinishingOutItemReadModel>()
+               {
+                   new GarmentFinishingOutItemReadModel(id)
+               }.AsQueryable());
+
+            _mockGarmentFinishingOutItemRepository
+             .Setup(s => s.Find(It.IsAny<IQueryable<GarmentFinishingOutItemReadModel>>()))
+             .Returns(new List<GarmentFinishingOutItem>() { new GarmentFinishingOutItem(id,id,id,id,new ProductId(1),"productCode", "productName","designColor",new SizeId(1),"sizeName",1,new UomId(1),"uomUnit","color",1,1,1) });
+
+            _mockGarmentFinishingOutDetailRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentFinishingOutDetailReadModel>()
+                {
+                    new GarmentFinishingOutDetailReadModel(id)
+                }.AsQueryable());
+
+            _mockGarmentFinishingOutDetailRepository
+               .Setup(s => s.Find(It.IsAny<IQueryable<GarmentFinishingOutDetailReadModel>>()))
+               .Returns(new List<GarmentFinishingOutDetail>()
+               {
+                    new GarmentFinishingOutDetail(id, id, new SizeId(1), "size", 1, new UomId(1), null)
+               });
+
+
+            var orderData = new
+            {
+                Article = "desc",
+            };
+
+            string order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.GetComplete(1, 25, order, new List<string>(), "", "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
 		public async Task GetXLSBookkeepingBehavior()
 		{
 			var unitUnderTest = CreateGarmentFinishingOutController();
@@ -328,7 +454,7 @@ namespace Manufactures.Tests.Controllers.Api
             UpdateDatesGarmentFinishingOutCommand command2 = new UpdateDatesGarmentFinishingOutCommand(ids, DateTimeOffset.MinValue);
 
             // Act
-            var result1 = await unitUnderTest.UpdateDates(command);
+            var result1 = await unitUnderTest.UpdateDates(command2);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result1));
