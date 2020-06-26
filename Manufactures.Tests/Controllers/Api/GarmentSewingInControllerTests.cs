@@ -8,6 +8,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,6 +59,100 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task Get_with_keyword()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var unitUnderTest = CreateGarmentSewingInController();
+
+            _mockGarmentSewingInRepository
+                .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<GarmentSewingInReadModel>()
+                {
+                    //new GarmentSewingInReadModel(id)
+                }
+                .AsQueryable());
+
+            _mockGarmentSewingInRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingInReadModel>>()))
+                .Returns(new List<GarmentSewingIn>()
+                {
+                    new GarmentSewingIn(id,"productCode", "sewingForm", id,"loadingNo", new UnitDepartmentId(1),"unitFromCode" ,"unitFromName", new UnitDepartmentId(1),"unitCode","unitName", "RONo","article", new GarmentComodityId(1),"comodityCode", "comodityName", DateTimeOffset.Now)
+                });
+
+            _mockGarmentSewingInItemRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingInItemReadModel>>()))
+                .Returns(new List<GarmentSewingInItem>()
+                {
+                    new GarmentSewingInItem(id,id,id, id, id,id,id, new ProductId(1),"productCode", "productName","designColor", new SizeId(1),"sizeName", 1, new UomId(1),"uomUnit","color", 1,1,1)
+                });
+
+            _mockGarmentSewingInItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSewingInItemReadModel>()
+                {
+                    new GarmentSewingInItemReadModel(id)
+                }.AsQueryable());
+
+            // Act
+            var orderData = new
+            {
+                Article = "desc",
+            };
+
+            string order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.Get(1,25,order,new List<string>(), "productCode", "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Get_with_keyword_NoOrder()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var unitUnderTest = CreateGarmentSewingInController();
+
+            _mockGarmentSewingInRepository
+                .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<GarmentSewingInReadModel>()
+                {
+                    //new GarmentSewingInReadModel(id)
+                }
+                .AsQueryable());
+
+            _mockGarmentSewingInRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingInReadModel>>()))
+                .Returns(new List<GarmentSewingIn>()
+                {
+                    new GarmentSewingIn(id,"sewingInNo", "sewingForm", id,"loadingNo", new UnitDepartmentId(1),"unitFromCode" ,"unitFromName", new UnitDepartmentId(1),"unitCode","unitName", "RONo","article", new GarmentComodityId(1),"comodityCode", "comodityName", DateTimeOffset.Now)
+                });
+
+            _mockGarmentSewingInItemRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingInItemReadModel>>()))
+                .Returns(new List<GarmentSewingInItem>()
+                {
+                    new GarmentSewingInItem(id,id,id, id, id,id,id, new ProductId(1),"productCode", "productName","designColor", new SizeId(1),"sizeName", 1, new UomId(1),"uomUnit","color", 1,1,1)
+                });
+
+            _mockGarmentSewingInItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSewingInItemReadModel>()
+                {
+                    new GarmentSewingInItemReadModel(id)
+                }.AsQueryable());
+
+            // Act
+            var result = await unitUnderTest.Get(1, 25, "{}", new List<string>(), "productCode", "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        
+
+        [Fact]
         public async Task Get_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -75,21 +170,67 @@ namespace Manufactures.Tests.Controllers.Api
                 });
 
             _mockGarmentSewingInItemRepository
+               .Setup(s => s.Query)
+               .Returns(new List<GarmentSewingInItemReadModel>()
+               {
+                    new GarmentSewingInItemReadModel(Guid.NewGuid())
+               }.AsQueryable());
+
+            _mockGarmentSewingInItemRepository
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingInItemReadModel>>()))
                 .Returns(new List<GarmentSewingInItem>()
                 {
                     new GarmentSewingInItem(Guid.NewGuid(),Guid.Empty,Guid.Empty, Guid.NewGuid(), Guid.NewGuid(),Guid.Empty,Guid.Empty, new ProductId(1), null, null, null, new SizeId(1), null, 0, new UomId(1), null, null, 0,1,1)
                 });
 
-            _mockGarmentSewingInItemRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentSewingInItemReadModel>()
-                {
-                    new GarmentSewingInItemReadModel(Guid.NewGuid())
-                }.AsQueryable());
+           
 
             // Act
             var result = await unitUnderTest.Get();
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task GetComplete_Return_Success()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSewingInController();
+
+            _mockGarmentSewingInRepository
+             .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+             .Returns(new List<GarmentSewingInReadModel>().AsQueryable());
+
+            _mockGarmentSewingInRepository
+               .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingInReadModel>>()))
+               .Returns(new List<GarmentSewingIn>()
+               {
+                    new GarmentSewingIn(Guid.NewGuid(),null, null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, new UnitDepartmentId(1), null, null, "RONo", null, new GarmentComodityId(1), null, null, DateTimeOffset.Now)
+               });
+
+            _mockGarmentSewingInItemRepository
+               .Setup(s => s.Query)
+               .Returns(new List<GarmentSewingInItemReadModel>()
+               {
+                    new GarmentSewingInItemReadModel(Guid.NewGuid())
+               }.AsQueryable());
+
+            _mockGarmentSewingInItemRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingInItemReadModel>>()))
+                .Returns(new List<GarmentSewingInItem>()
+                {
+                    new GarmentSewingInItem(Guid.NewGuid(),Guid.Empty,Guid.Empty, Guid.NewGuid(), Guid.NewGuid(),Guid.Empty,Guid.Empty, new ProductId(1), null, null, null, new SizeId(1), null, 0, new UomId(1), null, null, 0,1,1)
+                });
+
+            var orderData = new
+            {
+                Article = "desc",
+            };
+
+            string order = JsonConvert.SerializeObject(orderData);
+            // Act
+            var result = await unitUnderTest.GetComplete(1,25, order,new List<string>(),"","{}");
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
@@ -137,6 +278,25 @@ namespace Manufactures.Tests.Controllers.Api
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Post_Throws_Exception()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSewingInController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentSewingInCommand>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+            var command = new PlaceGarmentSewingInCommand()
+            {
+                SewingInNo = "SewingInNo",
+                Price =1
+            };
+            await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(command));
         }
 
         [Fact]
@@ -197,7 +357,7 @@ namespace Manufactures.Tests.Controllers.Api
             UpdateDatesGarmentSewingInCommand command2 = new UpdateDatesGarmentSewingInCommand(ids, DateTimeOffset.MinValue);
 
             // Act
-            var result1 = await unitUnderTest.UpdateDates(command);
+            var result1 = await unitUnderTest.UpdateDates(command2);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result1));
