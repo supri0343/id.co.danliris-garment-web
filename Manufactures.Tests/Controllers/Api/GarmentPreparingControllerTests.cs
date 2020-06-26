@@ -22,6 +22,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Threading;
@@ -156,6 +157,58 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task Post_Return_BadRequest()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var unitUnderTest = CreateGarmentPreparingController();
+
+            PlaceGarmentPreparingCommand command = new PlaceGarmentPreparingCommand();
+            command.UENId = 1;
+
+            _mockGarmentPreparingRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingReadModel, bool>>>()))
+                .Returns(new List<GarmentPreparing>() { 
+                    new GarmentPreparing(id,1,"uenNo",new UnitDepartmentId(1),"unitCode","unitName",DateTimeOffset.Now,"roNo","article",true)
+                });
+
+          
+
+            // Act
+            var result = await unitUnderTest.Post(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Post_Return_InternalServerError()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var unitUnderTest = CreateGarmentPreparingController();
+
+            PlaceGarmentPreparingCommand command = new PlaceGarmentPreparingCommand();
+            command.UENId = 1;
+
+            _mockGarmentPreparingRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingReadModel, bool>>>()))
+                .Returns(new List<GarmentPreparing>() {
+                  
+                });
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentPreparingCommand>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+            var result = await unitUnderTest.Post(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+        }
+
+        [Fact]
         public async Task Delete_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -183,14 +236,28 @@ namespace Manufactures.Tests.Controllers.Api
         public async Task GetLoaderByRO_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
+            var id = Guid.NewGuid();
             var unitUnderTest = CreateGarmentPreparingController();
+            var garmentPreparingReadModel = new GarmentPreparingReadModel(id);
 
             _mockGarmentPreparingRepository
                 .Setup(s => s.Read(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<string>()))
-                .Returns(new List<GarmentPreparingReadModel>().AsQueryable());
+                .Returns(new List<GarmentPreparingReadModel>()
+                {
+                   garmentPreparingReadModel
+                }
+                .AsQueryable());
+
+            _mockGarmentPreparingRepository
+              .Setup(s => s.Read(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<string>()))
+              .Returns(new List<GarmentPreparingReadModel>()
+              {
+                  new GarmentPreparingReadModel(id)
+              }
+              .AsQueryable());
 
             // Act
-            var result = await unitUnderTest.GetLoaderByRO(It.IsAny<string>());
+            var result = await unitUnderTest.GetLoaderByRO("", "{}");
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
@@ -228,7 +295,25 @@ namespace Manufactures.Tests.Controllers.Api
 			// Assert
 			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
 		}
-		[Fact]
+
+        [Fact]
+        public async Task GetXLSPrepareReturn_InternalServerError()
+        {
+            var unitUnderTest = CreateGarmentPreparingController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsPrepareQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+        }
+
+        [Fact]
 		public async Task GetXLSBookkeepingPrepareBehavior()
 		{
 			var unitUnderTest = CreateGarmentPreparingController();
@@ -286,7 +371,7 @@ namespace Manufactures.Tests.Controllers.Api
             UpdateDatesGarmentPreparingCommand command2 = new UpdateDatesGarmentPreparingCommand(ids, DateTimeOffset.MinValue);
 
             // Act
-            var result1 = await unitUnderTest.UpdateDates(command);
+            var result1 = await unitUnderTest.UpdateDates(command2);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result1));
