@@ -19,6 +19,8 @@ using System.IO;
 using System.Data;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using Manufactures.Domain.GarmentPreparings.Repositories;
+using Manufactures.Domain.GarmentCuttingIns.Repositories;
 
 namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 {
@@ -28,12 +30,18 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 		private readonly IStorage _storage;
 		private readonly IGarmentExpenditureGoodRepository garmentExpenditureGoodRepository;
 		private readonly IGarmentExpenditureGoodItemRepository garmentExpenditureGoodItemRepository;
+		private readonly IGarmentPreparingRepository garmentPreparingRepository;
+		private readonly IGarmentPreparingItemRepository garmentPreparingItemRepository;
+		private readonly IGarmentCuttingInRepository garmentCuttingInRepository;
 
 		public GetXlsExpenditureGoodQueryHandler(IStorage storage, IServiceProvider serviceProvider)
 		{
 			_storage = storage;
 			garmentExpenditureGoodRepository = storage.GetRepository<IGarmentExpenditureGoodRepository>();
 			garmentExpenditureGoodItemRepository = storage.GetRepository<IGarmentExpenditureGoodItemRepository>();
+			garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
+			garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
+			garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
 			_http = serviceProvider.GetService<IHttpClientService>();
 		}
 
@@ -50,6 +58,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			public double qty { get; internal set; }
 			public string invoice { get; internal set; }
 			public decimal price { get; internal set; }
+			public double fc { get; set; }
 		}
 		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
 		{
@@ -145,6 +154,18 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 
 			return hOrderDataProductionReport;
 		}
+		class ViewFC
+		{
+			public string RO { get; internal set; }
+			public double FC { get; internal set; }
+			public int Count { get; internal set; }
+		}
+		class ViewBasicPrices
+		{
+			public string RO { get; internal set; }
+			public decimal BasicPrice { get; internal set; }
+			public int Count { get; internal set; }
+		}
 		public async Task<MemoryStream> Handle(GetXlsExpenditureGoodQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
@@ -163,14 +184,38 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(_ro, request.token);
 			GarmentMonitoringExpenditureGoodListViewModel listViewModel = new GarmentMonitoringExpenditureGoodListViewModel();
 			List<GarmentMonitoringExpenditureGoodDto> monitoringDtos = new List<GarmentMonitoringExpenditureGoodDto>();
-			var Query = from a in garmentExpenditureGoodRepository.Query
+			var sumbasicPrice = (from a in garmentPreparingRepository.Query
+								 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
+								 where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&*/
+								 a.UnitId == request.unit
+								 select new { a.RONo, b.BasicPrice })
+						.GroupBy(x => new { x.RONo }, (key, group) => new ViewBasicPrices
+						{
+							RO = key.RONo,
+							BasicPrice = Convert.ToDecimal(group.Sum(s => s.BasicPrice)),
+							Count = group.Count()
+						});
+
+			var sumFCs = (from a in garmentCuttingInRepository.Query
+						  where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" &&
+						 a.UnitId == request.unit && a.CuttingInDate <= dateTo
+						  select new { a.FC, a.RONo })
+						 .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
+						 {
+							 RO = key.RONo,
+							 FC = group.Sum(s => s.FC),
+							 Count = group.Count()
+						 });
+			var Query = from a in (from aa in garmentExpenditureGoodRepository.Query
+								   where aa.UnitId == request.unit && aa.ExpenditureDate >= dateFrom && aa.ExpenditureDate <= dateTo
+								   select aa)
 						join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
 						where a.UnitId == request.unit && a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo
-						select new monitoringView { price = Convert.ToDecimal(b.Price), buyer = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), buyerArticle = a.BuyerCode + " " + a.Article, roNo = a.RONo, expenditureDate = a.ExpenditureDate, expenditureGoodNo = a.ExpenditureGoodNo, expenditureGoodType = a.ExpenditureType, invoice = a.Invoice, colour = b.Description, qty = b.Quantity, name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+						select new monitoringView { fc = (from aa in sumFCs where aa.RO == a.RONo select aa.FC / aa.Count).FirstOrDefault(), price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), buyer = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), buyerArticle = a.BuyerCode + " " + a.Article, roNo = a.RONo, expenditureDate = a.ExpenditureDate, expenditureGoodNo = a.ExpenditureGoodNo, expenditureGoodType = a.ExpenditureType, invoice = a.Invoice, colour = b.Description, qty = b.Quantity, name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 
 
 
-			var querySum = Query.ToList().GroupBy(x => new { x.buyer, x.buyerArticle, x.roNo, x.expenditureDate, x.expenditureGoodNo, x.expenditureGoodType, x.invoice, x.colour, x.name }, (key, group) => new
+			var querySum = Query.ToList().GroupBy(x => new { x.fc, x.buyer, x.buyerArticle, x.roNo, x.expenditureDate, x.expenditureGoodNo, x.expenditureGoodType, x.invoice, x.colour, x.name }, (key, group) => new
 			{
 				ros = key.roNo,
 				buyer = key.buyerArticle,
@@ -182,7 +227,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 				price = group.Sum(s => s.price),
 				buyerC = key.buyer,
 				names = key.name,
-				invoices = key.invoice
+				invoices = key.invoice,
+				fcs = key.fc
 
 			}).OrderBy(s => s.expendituregoodNo);
 			foreach (var item in querySum)
@@ -198,7 +244,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 					colour = item.color,
 					name = item.names,
 					invoice = item.invoices,
-					price = item.price,
+					price = Math.Round(Convert.ToDecimal(Convert.ToDouble(Math.Round(item.price, 2)) * Math.Round(item.fcs, 2)), 2),
 					buyerCode = item.buyerC
 
 				};

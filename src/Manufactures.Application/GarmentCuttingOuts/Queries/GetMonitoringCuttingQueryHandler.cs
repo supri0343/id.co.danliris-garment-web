@@ -162,15 +162,12 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
 
 			var QueryRoCuttingOut = (from a in garmentCuttingOutRepository.Query
-									 join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
 									 where a.UnitId == request.unit && a.CuttingOutDate <= dateTo
 									 select a.RONo).Distinct();
 			var QueryRoCuttingIn = (from a in garmentCuttingInRepository.Query
-									join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
 									where a.UnitId == request.unit && a.CuttingInDate <= dateTo
 									select a.RONo).Distinct();
 			var QueryRoAvalComp = (from a in garmentAvalComponentRepository.Query
-								   join b in garmentAvalComponentItemRepository.Query on a.Identity equals b.AvalComponentId
 								   where a.UnitId == request.unit && a.Date <= dateTo
 								   select a.RONo).Distinct();
 			var QueryRo = QueryRoCuttingOut.Union(QueryRoCuttingIn).Union(QueryRoAvalComp).Distinct();
@@ -192,6 +189,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 							BasicPrice = Convert.ToDecimal(group.Sum(s => s.BasicPrice)),
 							Count = group.Count()
 						});
+		 
 			var sumFCs = (from a in garmentCuttingInRepository.Query
 						  where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" &&
 						 a.UnitId == request.unit && a.CuttingInDate <= dateTo
@@ -260,7 +258,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 					remainQty = item.Stock + item.CuttingQtyPcs - item.Expenditure,
 					fc = Math.Round(item.Fc, 2),
 					cuttingQtyMeter = Math.Round(item.Fc * item.CuttingQtyPcs, 2),
-					price = Math.Round(Convert.ToDecimal(item.bPrice)),
+					price = Math.Round(Convert.ToDecimal(item.bPrice),2),
 					buyerCode = item.buyer
 
 				};
