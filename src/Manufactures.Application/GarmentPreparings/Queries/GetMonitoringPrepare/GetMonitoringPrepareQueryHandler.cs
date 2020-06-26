@@ -105,15 +105,21 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 			public decimal price { get; set; }
 			public Guid prepareItemId { get; set; }
 		}
-
+		class ViewBasicPrices
+		{
+			public string RO { get; internal set; }
+			public decimal BasicPrice { get; internal set; }
+			public int Count { get; internal set; }
+		}
 		public async Task<GarmentMonitoringPrepareListViewModel> Handle(GetMonitoringPrepareQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7,0,0));
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
-			var QueryMutationPrepareNow = from a in garmentPreparingRepository.Query
-										  join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
-										  where  a.UnitId == request.unit && a.ProcessDate <= dateTo 
-										  select new { RO = a.RONo, Articles = a.Article, Id = a.Identity, DetailExpend = b.UENItemId, Processdate = a.ProcessDate };
+			var QueryMutationPrepareNow = from a in ( from aa in garmentPreparingRepository.Query
+													  where aa.UnitId == request.unit && aa.ProcessDate <= dateTo
+													  select aa)
+													  join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
+										   select new { RO = a.RONo, Articles = a.Article, Id = a.Identity, DetailExpend = b.UENItemId, Processdate = a.ProcessDate };
 			List<int> detailExpendId = new List<int>();
 			foreach (var item in QueryMutationPrepareNow.Distinct())
 			{
@@ -121,23 +127,34 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 			}
 			ExpenditureROResult dataExpenditure = await GetExpenditureById(detailExpendId, request.token);
 
+			var sumbasicPrice = (from a in garmentPreparingRepository.Query
+								 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
+								 where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&*/
+								 a.UnitId == request.unit
+								 select new { a.RONo, b.BasicPrice })
+						.GroupBy(x => new { x.RONo }, (key, group) => new ViewBasicPrices
+						{
+							RO = key.RONo,
+							BasicPrice = Convert.ToDecimal(group.Sum(s => s.BasicPrice)),
+							Count = group.Count()
+						});
 			var QueryMutationPrepareItemsROASAL = (from a in QueryMutationPrepareNow
 												   join b in garmentPreparingItemRepository.Query on a.Id equals b.GarmentPreparingId
 												   join c in dataExpenditure.data on b.UENItemId equals c.DetailExpenditureId
 												   where b.UENItemId == a.DetailExpend
-												   select new { article = a.Articles, roJob = a.RO, buyerCode = c.BuyerCode, price = b.BasicPrice, prepareitemid = b.Identity, roasal = c.ROAsal });
+												   select new { article = a.Articles, roJob = a.RO, buyerCode = c.BuyerCode, price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RO select aa.BasicPrice / aa.Count).FirstOrDefault()), prepareitemid = b.Identity, roasal = c.ROAsal });
 
 
 			var QueryCuttingDONow = from a in (from data in garmentCuttingInRepository.Query where data.UnitId == request.unit && data.CuttingInDate <= dateTo select data)
 									join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
 									join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
-									select new monitoringView { prepareItemId = c.PreparingItemId, price = 0, expenditure = 0, aval = 0, uomUnit = "", stock = a.CuttingInDate < dateFrom ? -c.PreparingQuantity : 0, nonMainFabricExpenditure = a.CuttingType == "Non Main Fabric" && (a.CuttingInDate >= dateFrom) ? c.PreparingQuantity : 0, mainFabricExpenditure = a.CuttingType == "Main Fabric" && (a.CuttingInDate >= dateFrom) ? c.PreparingQuantity : 0, remark = c.DesignColor, receipt = 0, productCode = c.ProductCode, remainQty = 0 };
+									select new monitoringView { prepareItemId = c.PreparingItemId, price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), expenditure = 0, aval = 0, uomUnit = "", stock = a.CuttingInDate < dateFrom ? -c.PreparingQuantity : 0, nonMainFabricExpenditure = a.CuttingType == "Non Main Fabric" && (a.CuttingInDate >= dateFrom) ? c.PreparingQuantity : 0, mainFabricExpenditure = a.CuttingType == "Main Fabric" && (a.CuttingInDate >= dateFrom) ? c.PreparingQuantity : 0, remark = c.DesignColor, receipt = 0, productCode = c.ProductCode, remainQty = 0 };
 
 			var QueryMutationPrepareItemNow = (from d in QueryMutationPrepareNow
 											   join e in garmentPreparingItemRepository.Query on d.Id equals e.GarmentPreparingId
 											   join c in dataExpenditure.data on e.UENItemId equals c.DetailExpenditureId
 											   where e.UENItemId == d.DetailExpend
-											   select new monitoringView { prepareItemId = e.Identity, price = Convert.ToDecimal(e.BasicPrice), uomUnit = "", stock = d.Processdate < dateFrom ? e.Quantity : 0, mainFabricExpenditure = 0, nonMainFabricExpenditure = 0, remark = e.DesignColor, receipt = (d.Processdate >= dateFrom ? e.Quantity : 0), productCode = e.ProductCode, remainQty = e.RemainingQuantity }).Distinct();
+											   select new monitoringView { prepareItemId = e.Identity, price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == d.RO select aa.BasicPrice / aa.Count).FirstOrDefault()), uomUnit = "", stock = d.Processdate < dateFrom ? e.Quantity : 0, mainFabricExpenditure = 0, nonMainFabricExpenditure = 0, remark = e.DesignColor, receipt = (d.Processdate >= dateFrom ? e.Quantity : 0), productCode = e.ProductCode, remainQty = e.RemainingQuantity }).Distinct();
 
 			var QueryAval = from a in (from data in garmentAvalProductRepository.Query where data.AvalDate <= dateTo select data)
 							join b in garmentAvalProductItemRepository.Query on a.Identity equals b.APId
@@ -148,7 +165,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 			var QueryDeliveryReturn = from a in (from data in garmentDeliveryReturnRepository.Query where data.ReturnDate <= dateTo && data.UnitId == request.unit select data)
 									  join b in garmentDeliveryReturnItemRepository.Query on a.Identity equals b.DRId
 									  join c in garmentPreparingItemRepository.Query on b.PreparingItemId equals Convert.ToString(c.Identity)
-									  select new monitoringView { prepareItemId = c.Identity, price = 0, expenditure = a.ReturnDate >= dateFrom ? b.Quantity : 0, aval = 0, uomUnit = "", stock = a.ReturnDate < dateFrom ? -b.Quantity : 0, mainFabricExpenditure = 0, nonMainFabricExpenditure = 0, remark = b.DesignColor, receipt = 0, productCode = b.ProductCode, remainQty = 0 };
+									  select new monitoringView { prepareItemId = c.Identity, price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), expenditure = a.ReturnDate >= dateFrom ? b.Quantity : 0, aval = 0, uomUnit = "", stock = a.ReturnDate < dateFrom ? -b.Quantity : 0, mainFabricExpenditure = 0, nonMainFabricExpenditure = 0, remark = b.DesignColor, receipt = 0, productCode = b.ProductCode, remainQty = 0 };
 
 			var queryNow = from a in (QueryMutationPrepareItemNow
 							.Union(QueryCuttingDONow)
@@ -158,7 +175,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 						   select new { a, b };
 
 
-			var querySum = queryNow.GroupBy(x => new { x.b.roasal, x.b.roJob, x.b.article, x.b.buyerCode, x.a.productCode, x.a.remark }, (key, group) => new
+			var querySum = queryNow.GroupBy(x => new {x.a.price, x.b.roasal, x.b.roJob, x.b.article, x.b.buyerCode, x.a.productCode, x.a.remark }, (key, group) => new
 			{
 				ROAsal = key.roasal,
 				ROJob = key.roJob,
@@ -167,7 +184,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 				Article = key.article,
 				buyer = key.buyerCode,
 				Remark = key.remark,
-				Price = group.Sum(s => s.a.price),
+				Price = key.price,
 				mainFabricExpenditure = group.Sum(s => s.a.mainFabricExpenditure),
 				nonmainFabricExpenditure = group.Sum(s => s.a.nonMainFabricExpenditure),
 				receipt = group.Sum(s => s.a.receipt),
@@ -195,7 +212,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 					nonMainFabricExpenditure = item.nonmainFabricExpenditure,
 					mainFabricExpenditure = item.mainFabricExpenditure,
 					expenditure = item.drQty,
-					price=item.Price,
+					price= Math.Round(item.Price,2),
 					buyerCode=item.buyer
 
 				};
