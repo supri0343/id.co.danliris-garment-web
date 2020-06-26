@@ -58,6 +58,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			public double qty { get; internal set; }
 			public string invoice { get; internal set; }
 			public decimal price { get; internal set; }
+			public double fc { get; set; }
 		}
 		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
 		{
@@ -153,6 +154,12 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 
 			return hOrderDataProductionReport;
 		}
+		class ViewFC
+		{
+			public string RO { get; internal set; }
+			public double FC { get; internal set; }
+			public int Count { get; internal set; }
+		}
 		class ViewBasicPrices
 		{
 			public string RO { get; internal set; }
@@ -204,11 +211,11 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 								   select aa)
 						join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
 						where a.UnitId == request.unit && a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo
-						select new monitoringView { fc = (from aa in sumFCs where aa.RO == a.RONo select aa.FC / aa.Count).FirstOrDefault(), price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), buyerArticle = a.BuyerCode + " " + a.Article, roNo = a.RONo, expenditureDate = a.ExpenditureDate, expenditureGoodNo = a.ExpenditureGoodNo, expenditureGoodType = a.ExpenditureType, invoice = a.Invoice, colour = b.Description, qty = b.Quantity, name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+						select new monitoringView { fc = (from aa in sumFCs where aa.RO == a.RONo select aa.FC / aa.Count).FirstOrDefault(), price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), buyer = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), buyerArticle = a.BuyerCode + " " + a.Article, roNo = a.RONo, expenditureDate = a.ExpenditureDate, expenditureGoodNo = a.ExpenditureGoodNo, expenditureGoodType = a.ExpenditureType, invoice = a.Invoice, colour = b.Description, qty = b.Quantity, name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
 
 
 
-			var querySum = Query.ToList().GroupBy(x => new { x.fc, x.buyerCode, x.buyerArticle, x.roNo, x.expenditureDate, x.expenditureGoodNo, x.expenditureGoodType, x.invoice, x.colour, x.name }, (key, group) => new
+			var querySum = Query.ToList().GroupBy(x => new { x.fc, x.buyer, x.buyerArticle, x.roNo, x.expenditureDate, x.expenditureGoodNo, x.expenditureGoodType, x.invoice, x.colour, x.name }, (key, group) => new
 			{
 				ros = key.roNo,
 				buyer = key.buyerArticle,
@@ -218,7 +225,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 				expendituregoodTypes = key.expenditureGoodType,
 				color = key.colour,
 				price = group.Sum(s => s.price),
-				buyerC = key.buyerCode,
+				buyerC = key.buyer,
 				names = key.name,
 				invoices = key.invoice,
 				fcs = key.fc
