@@ -321,7 +321,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 				worksheet.Cells["A" + 1 + ":O" + 1 + ""].Style.Font.Bold = true;
 				worksheet.Row(5).Style.Font.Bold = true;
 				worksheet.Row(counter).Style.Font.Bold = true;
-				worksheet.Cells["A1"].Value = "Report Produksi"; worksheet.Cells["A" + 1 + ":O" + 1 + ""].Merge = true;
+				worksheet.Cells["A1"].Value = "Report Prepare"; worksheet.Cells["A" + 1 + ":O" + 1 + ""].Merge = true;
 				worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
 				worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
 				worksheet.Cells["A" + 1 + ":O" + 1 + ""].Merge = true;
