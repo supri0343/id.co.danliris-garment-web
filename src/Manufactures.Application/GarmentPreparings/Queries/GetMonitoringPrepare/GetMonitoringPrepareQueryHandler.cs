@@ -218,6 +218,10 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 				};
 				monitoringPrepareDtos.Add(garmentMonitoringPrepareDto);
 			}
+			var datas = from aa in monitoringPrepareDtos
+					   where aa.stock > 0 || aa.receipt > 0 || aa.aval > 0 || aa.mainFabricExpenditure > 0 || aa.nonMainFabricExpenditure > 0
+					   select aa;
+			monitoringPrepareDtos = datas.ToList();
 			garmentMonitoringPrepareListViewModel.garmentMonitorings = monitoringPrepareDtos;
 
 			return garmentMonitoringPrepareListViewModel;
