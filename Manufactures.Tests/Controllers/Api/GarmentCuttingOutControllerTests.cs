@@ -365,7 +365,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutReadModel, bool>>>()))
                 .Returns(new List<GarmentCuttingOut>()
                 {
-                    new GarmentCuttingOut(cuttingOutGuid, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", "art", new UnitDepartmentId(1), null, null, new GarmentComodityId(1), null, null)
+                    new GarmentCuttingOut(cuttingOutGuid,"cutOutNo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", "art", new UnitDepartmentId(1), null, null, new GarmentComodityId(1), null, null)
                 });
 
             Guid cuttingOutItemGuid = Guid.NewGuid();
@@ -373,7 +373,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutItemReadModel, bool>>>()))
                 .Returns(new List<GarmentCuttingOutItem>()
                 {
-                    new GarmentCuttingOutItem(cuttingOutItemGuid, cuttingOutGuid, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, "design", 1)
+                    new GarmentCuttingOutItem(cuttingOutItemGuid, cuttingOutGuid, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1),"productCode", "productName", "design", 1)
                 });
 
             _mockGarmentCuttingOutDetailRepository
