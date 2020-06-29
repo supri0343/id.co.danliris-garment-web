@@ -2131,18 +2131,20 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
 			foreach (var item in querySum)
 			{
-				 
-				var basicPrice = Math.Round(Convert.ToDouble(item.basicprice) * item.fc, 2);
+
+				var fc = Math.Round(Convert.ToDouble(item.fc), 2);
+				var basicPrice = Math.Round(Convert.ToDouble(item.basicprice) * fc, 2);
+
 				GarmentMonitoringProductionStockFlowDto garmentMonitoringDto = new GarmentMonitoringProductionStockFlowDto()
 				{
 					Article = item.article,
 					Ro = item.ro,
 					QtyOrder = item.qtyOrder,
-					FC = Math.Round(Convert.ToDouble(item.fc), 2),
+					FC = fc,
 					Fare = item.fare,
 					BuyerCode = item.buyer,
 					Hours = item.hours,
-					BasicPrice = Math.Round(Convert.ToDouble(item.basicprice) * item.fc, 2),
+					BasicPrice = basicPrice,
 					BeginingBalanceCuttingQty = item.begining,
 					BeginingBalanceCuttingPrice = Math.Round(((Convert.ToDouble(item.fare) * 0.25) + basicPrice) * item.begining, 2),
 					QtyCuttingTransfer = Math.Round(item.qtyCuttingTransfer, 2),
@@ -2189,7 +2191,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					QtySewingAdj = Math.Round(item.sewingadj, 2),
 					PriceSewingAdj = Math.Round(((Convert.ToDouble(item.fare) * 0.5) + basicPrice) * item.sewingadj, 2),
 					EndBalanceSewingQty = Math.Round(item.beginingSewing + item.sewingIn - item.sewingout + item.sewingintransfer - item.wipsewing - item.wipfinishing - item.sewingretur - item.sewingadj, 2),
-					EndBalanceSewingPrice = Math.Round(((Convert.ToDouble(item.fare) * 0.5) + basicPrice) * item.beginingSewing + item.sewingIn - item.sewingout + item.sewingintransfer - item.wipsewing - item.wipfinishing - item.sewingretur - item.sewingadj, 2),
+					EndBalanceSewingPrice = Math.Round(((Convert.ToDouble(item.fare) * 0.5) + basicPrice) * Math.Round(item.beginingSewing + item.sewingIn - item.sewingout + item.sewingintransfer - item.wipsewing - item.wipfinishing - item.sewingretur - item.sewingadj, 2), 2),
 					BeginingBalanceFinishingQty = Math.Round(item.beginingbalanceFinishing, 2),
 					BeginingBalanceFinishingPrice = Math.Round(((Convert.ToDouble(item.fare) * 0.75) + basicPrice) * item.beginingbalanceFinishing, 2),
 					FinishingInExpenditure = Math.Round(item.finishingout + item.subconout, 2),
@@ -2230,7 +2232,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					ExpenditureGoodInTransferPrice = Math.Round(((Convert.ToDouble(item.fare)) + basicPrice) * item.expenditureInTransfer, 2),
 					EndBalanceExpenditureGood = Math.Round(item.beginingBalanceExpenditureGood + item.finishingout + item.subconout + item.expendRetur + item.expenditureInTransfer - item.exportQty - item.otherqty - item.sampleQty - item.expendAdj, 2),
 					EndBalanceExpenditureGoodPrice = Math.Round(((Convert.ToDouble(item.fare)) + basicPrice) * (item.beginingBalanceExpenditureGood + item.finishingout + item.subconout + item.expendRetur + item.expenditureInTransfer - item.exportQty - item.otherqty - item.sampleQty - item.expendAdj), 2),
-					FareNew = Math.Round(item.farenew, 2),
+					FareNew = item.farenew,
 					CuttingNew = Math.Round(item.farenew * Convert.ToDecimal(item.begining + item.qtyCuttingIn - item.qtycutting - item.qtyCuttingTransfer - item.qtCuttingSubkon - item.qtyavalcut - item.qtyavalsew), 2),
 					LoadingNew = Math.Round(item.farenew * Convert.ToDecimal(item.beginingloading + item.qtyLoadingIn - item.qtyloading - item.qtyLoadingAdj), 2),
 					SewingNew = Math.Round(item.farenew * Convert.ToDecimal(item.beginingSewing + item.sewingIn - item.sewingout + item.sewingintransfer - item.wipsewing - item.wipfinishing - item.sewingretur - item.sewingadj), 2),
