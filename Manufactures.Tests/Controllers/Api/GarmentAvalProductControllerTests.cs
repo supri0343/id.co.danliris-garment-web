@@ -10,6 +10,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,6 +99,49 @@ namespace Manufactures.Tests.Controllers.Api
 
             // Act
             var result = await unitUnderTest.Get();
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Get_with_keyword_and_order()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentAvalProductController();
+
+            _mockGarmentAvalProductRepository
+                .Setup(s => s.Read(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<string>()))
+                .Returns(new List<GarmentAvalProductReadModel>().AsQueryable());
+
+            _mockGarmentAvalProductRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentAvalProductReadModel>>()))
+                .Returns(new List<GarmentAvalProduct>()
+                {
+                    new GarmentAvalProduct(Guid.NewGuid(),"roNo", "article", DateTimeOffset.Now, new UnitDepartmentId(1),"unitCode", "unitName")
+                });
+
+            _mockGarmentAvalProductItemRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentAvalProductItemReadModel>>()))
+                .Returns(new List<GarmentAvalProductItem>()
+                {
+                    new GarmentAvalProductItem(Guid.NewGuid(), Guid.NewGuid(), new GarmentPreparingId("1"), new GarmentPreparingItemId("1"), new Domain.GarmentAvalProducts.ValueObjects.ProductId(1),"productCode", "productName","designColor", 1, new Domain.GarmentAvalProducts.ValueObjects.UomId(1),"uomUnit",10,false)
+                });
+
+            _mockGarmentAvalProductItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentAvalProductItemReadModel>()
+                {
+                    new GarmentAvalProductItemReadModel(Guid.NewGuid())
+                }.AsQueryable());
+
+            // Act
+            var orderData = new
+            {
+                Article = "desc"
+            };
+            var order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.Get(1,25, order,new List<string>(),"productCode","{}");
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
