@@ -166,7 +166,9 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 				_ro.Add(item);
 			}
 			CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(_ro, request.token);
-
+			var _unitName = (from a in garmentCuttingOutRepository.Query
+							 where a.UnitId == request.unit
+							 select a.UnitName).FirstOrDefault();
 			var sumbasicPrice = (from a in garmentPreparingRepository.Query
 								 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
 								 where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&*/
@@ -304,7 +306,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Hasil Potong", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Keluar", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sisa", DataType = typeof(double) });
-			int counter = 1;
+			int counter = 5;
 			
 			if (listViewModel.garmentMonitorings.Count > 0)
 			{
@@ -318,8 +320,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			using (var package = new ExcelPackage())
 			{
 				var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
-				worksheet.Cells["A1"].LoadFromDataTable(reportDataTable, true);
-				
+			 
 				worksheet.Column(5).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 				worksheet.Cells["E" + 2 + ":E" + counter + ""].Style.Numberformat.Format = "#,##0.00";
 				worksheet.Column(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
@@ -334,19 +335,31 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 				worksheet.Cells["M" + 2 + ":M" + counter + ""].Style.Numberformat.Format = "#,##0.00";
 				worksheet.Column(14).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 				worksheet.Cells["N" + 2 + ":N" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-				worksheet.Cells["A" + 1 + ":N" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["A" + 1 + ":N" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["A" + 1 + ":N" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["A" + 1 + ":N" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":N" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":N" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":N" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":N" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 				
 				worksheet.Cells["I" + (counter) + ":N" + (counter) + ""].Style.Font.Bold = true;
 				worksheet.Cells["A" + 1 + ":N" + 1 + ""].Style.Font.Bold = true;
+
+				worksheet.Cells["A1"].Value = "Report Cutting"; worksheet.Cells["A" + 1 + ":N" + 1 + ""].Merge = true;
+				worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
+				worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
+				worksheet.Cells["A" + 1 + ":N" + 1 + ""].Merge = true;
+				worksheet.Cells["A" + 2 + ":N" + 2 + ""].Merge = true;
+				worksheet.Cells["A" + 3 + ":N" + 3 + ""].Merge = true;
+				worksheet.Cells["A" + 1 + ":N" + 3 + ""].Style.Font.Size = 15;
+				worksheet.Cells["A" + 1 + ":N" + 5 + ""].Style.Font.Bold = true;
+				worksheet.Cells["A" + 1 + ":N" + 6 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+				worksheet.Cells["A" + 1 + ":N" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+				worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
 				var stream = new MemoryStream();
 				if (request.type != "bookkeeping")
 				{
 					worksheet.Column(4).Hidden = true;
 					worksheet.Column(10).Hidden = true;
-					worksheet.Cells["A" + (counter) + ":H" + (counter) + ""].Merge = true;
+					worksheet.Cells["A" + (counter) + ":i" + (counter) + ""].Merge = true;
 				}else
 				{
 					worksheet.Cells["A" + (counter) + ":J" + (counter) + ""].Merge = true;
