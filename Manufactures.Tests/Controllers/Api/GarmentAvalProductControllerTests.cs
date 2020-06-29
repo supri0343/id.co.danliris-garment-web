@@ -141,7 +141,7 @@ namespace Manufactures.Tests.Controllers.Api
                 Article = "desc"
             };
             var order = JsonConvert.SerializeObject(orderData);
-            var result = await unitUnderTest.Get(1,25, order,new List<string>(),"productCode","{}");
+            var result = await unitUnderTest.Get(1,25, order,new List<string>(), "article", "{}");
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
