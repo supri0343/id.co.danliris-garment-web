@@ -54,7 +54,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentDeliveryReturns.CommandHandl
             CancellationToken cancellationToken = CancellationToken.None;
 
             _mockGarmentDeliveryReturnRepository
-                      .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentDeliveryReturnReadModel, bool>>>()))
+            .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentDeliveryReturnReadModel, bool>>>()))
             .Returns(new List<GarmentDeliveryReturn>()
             {
                 new GarmentDeliveryReturn(id,"drNo","roNo","article",1,"unitDONo",1,"preparingId",DateTimeOffset.Now,"returnType",new UnitDepartmentId(1),"unitCode","unitName",new StorageId(1),"storageName","storageCode",true)
