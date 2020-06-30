@@ -61,6 +61,20 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task Post_Throws_Exception()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSubconFinishingInController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentSubconFinishingInCommand>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            //Act and Assert
+            await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(It.IsAny<PlaceGarmentSubconFinishingInCommand>()));
+        }
+
+        [Fact]
         public async Task Delete_Success()
         {
             // Arrange

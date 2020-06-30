@@ -1,4 +1,5 @@
 ﻿using Barebone.Tests;
+using Manufactures.Application.GarmentExpenditureGoods.Queries;
 using Manufactures.Controllers.Api;
 using Manufactures.Domain.GarmentExpenditureGoods;
 using Manufactures.Domain.GarmentExpenditureGoods.Commands;
@@ -8,8 +9,10 @@ using Manufactures.Domain.Shared.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -172,6 +175,21 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task Post_Throws_Exception()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+            Guid ExpenditureGoodGuid = Guid.NewGuid();
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentExpenditureGoodCommand>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+            // Assert
+            await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(It.IsAny<PlaceGarmentExpenditureGoodCommand>()));
+        }
+
+        [Fact]
         public async Task Put_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -265,10 +283,103 @@ namespace Manufactures.Tests.Controllers.Api
             UpdateDatesGarmentExpenditureGoodCommand command2 = new UpdateDatesGarmentExpenditureGoodCommand(ids, DateTimeOffset.MinValue);
 
             // Act
-            var result1 = await unitUnderTest.UpdateDates(command);
+            var result1 = await unitUnderTest.UpdateDates(command2);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result1));
         }
+
+        [Fact]
+        public async Task GetMonitoring_Return_Success()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+            Guid ExpenditureGoodGuid = Guid.NewGuid();
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetMonitoringExpenditureGoodQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentMonitoringExpenditureGoodListViewModel());
+
+            // Act
+            var result = await unitUnderTest.GetMonitoring(1,DateTime.Now.AddDays(-1),DateTime.Now.AddDays(1),1,25,"{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task GetComplete_Return_Success()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+            Guid ExpenditureGoodGuid = Guid.NewGuid();
+            Guid ExpenditureGoodItemGuid = Guid.NewGuid();
+            _mockGarmentExpenditureGoodRepository
+                .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<GarmentExpenditureGoodReadModel>() { 
+                    new GarmentExpenditureGoodReadModel(ExpenditureGoodGuid) 
+                }
+                .AsQueryable());
+
+            _mockGarmentExpenditureGoodRepository
+               .Setup(s => s.Find(It.IsAny<IQueryable<GarmentExpenditureGoodReadModel>>()))
+               .Returns(new List<GarmentExpenditureGood>()
+               {
+                    new GarmentExpenditureGood(ExpenditureGoodGuid, null,null,new UnitDepartmentId(1),null,null,"RONo","article",new GarmentComodityId(1),null,null,new BuyerId(1), null, null,DateTimeOffset.Now,  null,null,0,null,false)
+               });
+
+            _mockGarmentExpenditureGoodItemRepository
+               .Setup(s => s.Query)
+               .Returns(new List<GarmentExpenditureGoodItemReadModel>()
+               {
+                   new GarmentExpenditureGoodItemReadModel(ExpenditureGoodItemGuid)
+               }
+               .AsQueryable());
+
+            _mockGarmentExpenditureGoodItemRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentExpenditureGoodItemReadModel>>()))
+                .Returns(new List<GarmentExpenditureGoodItem>() { 
+                    new GarmentExpenditureGoodItem(ExpenditureGoodItemGuid,ExpenditureGoodItemGuid,Guid.NewGuid(),new SizeId(1),"sizeName",1,1,new UomId(1),"uomUnit","description",1,1)
+                });
+
+
+            // Act
+            var orderData = new
+            {
+                Article = "desc",
+            };
+
+            string order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.GetComplete( 1, 25, order,new List<string>(),"","{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task GetXLSBehavior()
+        {
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsExpenditureGoodQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
+
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+        }
+
+        [Fact]
+        public async Task GetXLS_Throws_InternalServerError()
+        {
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsExpenditureGoodQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+        }
+
     }
 }
