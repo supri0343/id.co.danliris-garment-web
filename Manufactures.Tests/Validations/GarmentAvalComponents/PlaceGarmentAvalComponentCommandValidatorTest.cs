@@ -1,4 +1,5 @@
-﻿using FluentValidation.TestHelper;
+﻿using Barebone.Tests;
+using FluentValidation.TestHelper;
 using Manufactures.Domain.GarmentAvalComponents.Commands;
 using Manufactures.Domain.GarmentAvalComponents.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
@@ -9,10 +10,10 @@ using Xunit;
 
 namespace Manufactures.Tests.Validations.GarmentAvalComponents
 {
-    public class PlaceGarmentAvalComponentCommandValidatorTest
+    public class PlaceGarmentAvalComponentCommandValidatorTest :BaseValidatorUnitTest
     {
         private PlaceGarmentAvalComponentCommandValidator GetValidationRules()
-        {
+        { 
             return new PlaceGarmentAvalComponentCommandValidator();
         }
 

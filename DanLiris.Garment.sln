@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.136
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{26A17D4B-E233-415D-A841-163493349203}"
 EndProject
@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Barebone.Tests", "src\Bareb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DanLiris.Admin.Web", "src\WebApplication\DanLiris.Admin.Web.csproj", "{868FD2FD-E766-4244-A1DB-F7330B05CB1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manufactures.Tests", "Manufactures.Tests\Manufactures.Tests.csproj", "{E09E6F79-F604-42EF-A2AC-E2E56BBFA1E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manufactures.Tests", "Manufactures.Tests\Manufactures.Tests.csproj", "{E09E6F79-F604-42EF-A2AC-E2E56BBFA1E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +121,7 @@ Global
 		{69D40FB8-F1F9-4F57-B895-8C2B882DFAC8} = {61D6A864-D2C0-4701-98E2-D3AAF3E70815}
 		{34CAF266-BA99-4DAA-868D-66561CDC94B4} = {61D6A864-D2C0-4701-98E2-D3AAF3E70815}
 		{BDC23751-7809-4B7E-9495-21A7B0B704B3} = {4CF48133-4EED-4A78-AFA8-727458BAA686}
+		{868FD2FD-E766-4244-A1DB-F7330B05CB1E} = {F568D951-34C8-4095-9AFA-C8182A9F74CC}
 		{E09E6F79-F604-42EF-A2AC-E2E56BBFA1E3} = {61D6A864-D2C0-4701-98E2-D3AAF3E70815}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
