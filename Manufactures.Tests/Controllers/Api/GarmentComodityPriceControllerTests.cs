@@ -1,6 +1,7 @@
 ﻿using Barebone.Tests;
 using Manufactures.Controllers.Api;
 using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.GarmentComodityPrices.Commands;
 using Manufactures.Domain.GarmentComodityPrices.ReadModels;
 using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -73,6 +75,92 @@ namespace Manufactures.Tests.Controllers.Api
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Post_Return_OK()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var unitUnderTest = CreateGarmentComodityPriceController();
+
+            _MockMediator
+               .Setup(s => s.Send(It.IsAny<PlaceGarmentComodityPriceCommand>(), It.IsAny<CancellationToken>()))
+               .ReturnsAsync(new List<GarmentComodityPrice>() { new GarmentComodityPrice(id, true, DateTimeOffset.Now, new UnitDepartmentId(1), "unitCode", "unitName", new GarmentComodityId(1), "comodityCode", "comodityName", 1) });
+
+            // Act
+            var command = new PlaceGarmentComodityPriceCommand()
+            {
+                Date =DateTimeOffset.Now
+            };
+            var result = await unitUnderTest.Post(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Post_Return_InternalServerError()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var unitUnderTest = CreateGarmentComodityPriceController();
+
+            _MockMediator
+               .Setup(s => s.Send(It.IsAny<PlaceGarmentComodityPriceCommand>(), It.IsAny<CancellationToken>()))
+               .Throws(new Exception());
+
+            // Act
+            var command = new PlaceGarmentComodityPriceCommand()
+            {
+                Date = DateTimeOffset.Now
+            };
+            
+            // Assert
+            await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(command));
+           
+        }
+
+        [Fact]
+        public async Task Put_Return_OK()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var unitUnderTest = CreateGarmentComodityPriceController();
+
+            _MockMediator
+               .Setup(s => s.Send(It.IsAny<UpdateGarmentComodityPriceCommand>(), It.IsAny<CancellationToken>()))
+               .ReturnsAsync(new List<GarmentComodityPrice>() { new GarmentComodityPrice(id, true, DateTimeOffset.Now, new UnitDepartmentId(1), "unitCode", "unitName", new GarmentComodityId(1), "comodityCode", "comodityName", 1) });
+
+            // Act
+            var command = new UpdateGarmentComodityPriceCommand()
+            {
+                Date = DateTimeOffset.Now
+            };
+            var result = await unitUnderTest.Put(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Put_Throws_Exception()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var unitUnderTest = CreateGarmentComodityPriceController();
+
+            _MockMediator
+               .Setup(s => s.Send(It.IsAny<UpdateGarmentComodityPriceCommand>(), It.IsAny<CancellationToken>()))
+               .Throws(new Exception());
+
+            // Act
+            var command = new UpdateGarmentComodityPriceCommand()
+            {
+                Date = DateTimeOffset.Now
+            };
+            
+            await  Assert.ThrowsAsync<Exception>(() => unitUnderTest.Put(command));
         }
     }
 }

@@ -10,6 +10,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,6 +129,120 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task Get_Return_Success()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSubconCuttingOutController();
+            var id = Guid.NewGuid();
+            _mockSubconCuttingOutRepository
+                .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<GarmentCuttingOutReadModel>().AsQueryable());
+
+            _mockSubconCuttingOutRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutReadModel>>()))
+                .Returns(new List<GarmentSubconCuttingOut>()
+                {
+                    new GarmentSubconCuttingOut(id,"productCode", "cutOutType", new UnitDepartmentId(1),"unitFromCode", "unitFromName", DateTimeOffset.Now, "RONo","article",  new GarmentComodityId(1),"comodityCode", "comodityName",1,1,"remark")
+                });
+
+            GarmentSubconCuttingOutItem garmentCuttingOutItem = new GarmentSubconCuttingOutItem(id, id,id, id, new ProductId(1),"productCode", "productName","designColor", 1);
+            _mockSubconCuttingOutItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingOutItemReadModel>()
+                {
+                    garmentCuttingOutItem.GetReadModel()
+                }.AsQueryable());
+
+            _mockSubconCuttingOutItemRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutItemReadModel>>()))
+                .Returns(new List<GarmentSubconCuttingOutItem>()
+                {
+                    new GarmentSubconCuttingOutItem(id, id, id, id, new ProductId(1),"productCode", "productName","designColor",1)
+                });
+
+            GarmentSubconCuttingOutDetail garmentCuttingOutDetail = new GarmentSubconCuttingOutDetail(id, id, new SizeId(1),"sizeName", "color", 1, 1, new UomId(1),"cuttingOutUomUnit", 1, 1,"remark");
+            _mockSubconCuttingOutDetailRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingOutDetailReadModel>()
+                {
+                    garmentCuttingOutDetail.GetReadModel()
+                }.AsQueryable());
+
+            _mockSubconCuttingOutDetailRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutDetailReadModel>>()))
+                .Returns(new List<GarmentSubconCuttingOutDetail>()
+                {
+                    new GarmentSubconCuttingOutDetail(id, id, new SizeId(1),"sizeName", "color", 1, 1, new UomId(1),"cuttingOutUomUnit", 1, 1,"remark")
+                });
+
+            // Act
+            var orderData = new
+            {
+                article = "desc",
+            };
+            string order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.Get(1,25, order,new List<string>(), "productCode", "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+
+        [Fact]
+        public async Task Get_with_NoOrder_Return_Success()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSubconCuttingOutController();
+            var id = Guid.NewGuid();
+            _mockSubconCuttingOutRepository
+                .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<GarmentCuttingOutReadModel>().AsQueryable());
+
+            _mockSubconCuttingOutRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutReadModel>>()))
+                .Returns(new List<GarmentSubconCuttingOut>()
+                {
+                    new GarmentSubconCuttingOut(id,"cutOutNo", "cutOutType", new UnitDepartmentId(1),"unitFromCode", "unitFromName", DateTimeOffset.Now, "RONo","article",  new GarmentComodityId(1),"comodityCode", "comodityName",1,1,"remark")
+                });
+
+            GarmentSubconCuttingOutItem garmentCuttingOutItem = new GarmentSubconCuttingOutItem(id, id, id, id, new ProductId(1), "productCode", "productName", "designColor", 1);
+            _mockSubconCuttingOutItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingOutItemReadModel>()
+                {
+                    garmentCuttingOutItem.GetReadModel()
+                }.AsQueryable());
+
+            _mockSubconCuttingOutItemRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutItemReadModel>>()))
+                .Returns(new List<GarmentSubconCuttingOutItem>()
+                {
+                    new GarmentSubconCuttingOutItem(id, id, id, id, new ProductId(1),"productCode", "productName","designColor",1)
+                });
+
+            GarmentSubconCuttingOutDetail garmentCuttingOutDetail = new GarmentSubconCuttingOutDetail(id, id, new SizeId(1), "sizeName", "color", 1, 1, new UomId(1), "cuttingOutUomUnit", 1, 1, "remark");
+            _mockSubconCuttingOutDetailRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingOutDetailReadModel>()
+                {
+                    garmentCuttingOutDetail.GetReadModel()
+                }.AsQueryable());
+
+            _mockSubconCuttingOutDetailRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutDetailReadModel>>()))
+                .Returns(new List<GarmentSubconCuttingOutDetail>()
+                {
+                    new GarmentSubconCuttingOutDetail(id, id, new SizeId(1),"sizeName", "color", 1, 1, new UomId(1),"cuttingOutUomUnit", 1, 1,"remark")
+                });
+
+            // Act
+            var result = await unitUnderTest.Get(1, 25, "{}", new List<string>(), "productCode", "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
         public async Task GetSingle_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -192,7 +307,6 @@ namespace Manufactures.Tests.Controllers.Api
             var result = await unitUnderTest.GetPdf(Guid.NewGuid().ToString(), "buyerCode");
 
             // Assert
-            //Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
             Assert.NotNull(result.GetType().GetProperty("FileStream"));
         }
 
@@ -213,7 +327,80 @@ namespace Manufactures.Tests.Controllers.Api
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
 
+        [Fact]
+        public async Task Post_Throws_Exception()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSubconCuttingOutController();
 
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentSubconCuttingOutCommand>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act and Assert
+            await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(It.IsAny<PlaceGarmentSubconCuttingOutCommand>()));
+           
+        }
+
+        [Fact]
+        public async Task GetComplete_Return_Success()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSubconCuttingOutController();
+            _mockSubconCuttingOutRepository
+                .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<GarmentCuttingOutReadModel>().AsQueryable());
+
+            Guid id = Guid.NewGuid();
+            _mockSubconCuttingOutRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutReadModel>>()))
+                .Returns(new List<GarmentSubconCuttingOut>()
+                {
+                    new GarmentSubconCuttingOut(id,"cutOutNo", "cutOutType", new UnitDepartmentId(1),"unitFromCode","unitFromName", DateTimeOffset.Now, "RONo","article",  new GarmentComodityId(1),"comodityCode", "comodityName",1,1,"poSerialNumber")
+                });
+
+            _mockSubconCuttingOutItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingOutItemReadModel>()
+                {
+                    new GarmentCuttingOutItemReadModel(id)
+                }.AsQueryable());
+
+            _mockSubconCuttingOutItemRepository
+               .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutItemReadModel>>()))
+               .Returns(new List<GarmentSubconCuttingOutItem>()
+               {
+                    new GarmentSubconCuttingOutItem(id, id, id, id, new ProductId(1),"productCode", "productName", "design", 1)
+               });
+
+            GarmentSubconCuttingOutDetail garmentCuttingOutDetail = new GarmentSubconCuttingOutDetail(id, id, new SizeId(1),"sizeName", "color", 1, 1, new UomId(1),"cuttingOutUomUnit", 1, 1, "remark");
+            _mockSubconCuttingOutDetailRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingOutDetailReadModel>()
+                {
+                    garmentCuttingOutDetail.GetReadModel()
+                }.AsQueryable());
+
+            _mockSubconCuttingOutDetailRepository
+               .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutDetailReadModel>>()))
+               .Returns(new List<GarmentSubconCuttingOutDetail>()
+               {
+                    new GarmentSubconCuttingOutDetail(id,id,new SizeId(1),"sizeName","color",1,1,new UomId(1),"cuttingOutUomUnit",1,1,"remark")
+               });
+
+
+            // Act
+            var orderData = new
+            {
+                Article = "desc",
+            };
+
+            string order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.GetComplete(1,25, order,new List<string>(),"","{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
 
         [Fact]
         public async Task Delete_StateUnderTest_ExpectedBehavior()

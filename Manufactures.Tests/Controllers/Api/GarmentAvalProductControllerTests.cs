@@ -10,6 +10,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -104,6 +105,49 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task Get_with_keyword_and_order()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentAvalProductController();
+
+            _mockGarmentAvalProductRepository
+                .Setup(s => s.Read(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<string>()))
+                .Returns(new List<GarmentAvalProductReadModel>().AsQueryable());
+
+            _mockGarmentAvalProductRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentAvalProductReadModel>>()))
+                .Returns(new List<GarmentAvalProduct>()
+                {
+                    new GarmentAvalProduct(Guid.NewGuid(),"roNo", "article", DateTimeOffset.Now, new UnitDepartmentId(1),"unitCode", "unitName")
+                });
+
+            _mockGarmentAvalProductItemRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentAvalProductItemReadModel>>()))
+                .Returns(new List<GarmentAvalProductItem>()
+                {
+                    new GarmentAvalProductItem(Guid.NewGuid(), Guid.NewGuid(), new GarmentPreparingId("1"), new GarmentPreparingItemId("1"), new Domain.GarmentAvalProducts.ValueObjects.ProductId(1),"productCode", "productName","designColor", 1, new Domain.GarmentAvalProducts.ValueObjects.UomId(1),"uomUnit",10,false)
+                });
+
+            _mockGarmentAvalProductItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentAvalProductItemReadModel>()
+                {
+                    new GarmentAvalProductItemReadModel(Guid.NewGuid())
+                }.AsQueryable());
+
+            // Act
+            var orderData = new
+            {
+                Article = "desc"
+            };
+            var order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.Get(1,25, order,new List<string>(), "article", "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
         public async Task GetSingle_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -147,6 +191,24 @@ namespace Manufactures.Tests.Controllers.Api
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
 
+
+        [Fact]
+        public async Task Post_Throws_InternalServerError()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentAvalProductController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentAvalProductCommand>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+            var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentAvalProductCommand>());
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+        }
+
         [Fact]
         public async Task Delete_StateUnderTest_ExpectedBehavior()
         {
@@ -166,6 +228,28 @@ namespace Manufactures.Tests.Controllers.Api
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+       
+
+
+        [Fact]
+        public async Task UpdateIsReceived_Return_OK()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentAvalProductController();
+
+
+            _MockMediator
+              .Setup(s => s.Send(It.IsAny<UpdateIsReceivedGarmentAvalProductCommand>(), It.IsAny<CancellationToken>()))
+              .ReturnsAsync(true);
+
+            // Act
+            var command =new  UpdateIsReceivedGarmentAvalProductCommand(new List<string>() { "ids" },true);
+            var result = await unitUnderTest.UpdateIsReceived(command);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));

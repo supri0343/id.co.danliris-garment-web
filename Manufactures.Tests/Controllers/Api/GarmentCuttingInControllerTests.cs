@@ -10,6 +10,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -163,6 +164,20 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task Post_Throws_Exception()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentCuttingInController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentCuttingInCommand>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act and Assert
+            await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(It.IsAny<PlaceGarmentCuttingInCommand>()));
+        }
+
+        [Fact]
         public async Task Put_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -224,11 +239,13 @@ namespace Manufactures.Tests.Controllers.Api
         public async Task GetComplete_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
+            var id = Guid.NewGuid();
             var unitUnderTest = CreateGarmentCuttingInController();
 
             _mockGarmentCuttingInRepository
                 .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new List<GarmentCuttingInReadModel>().AsQueryable());
+                .Returns(new List<GarmentCuttingInReadModel>() { new GarmentCuttingInReadModel(id) }
+                .AsQueryable());
 
             _mockGarmentCuttingInRepository
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingInReadModel>>()))
@@ -266,7 +283,13 @@ namespace Manufactures.Tests.Controllers.Api
                 });
 
             // Act
-            var result = await unitUnderTest.GetComplete();
+            var orderData = new
+            {
+                Article = "desc",
+            };
+
+            string oder = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.GetComplete(1,25, oder,new List<string>(),"","{}");
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
@@ -313,10 +336,12 @@ namespace Manufactures.Tests.Controllers.Api
             UpdateDatesGarmentCuttingInCommand command2 = new UpdateDatesGarmentCuttingInCommand(ids, DateTimeOffset.MinValue);
 
             // Act
-            var result1 = await unitUnderTest.UpdateDates(command);
+            var result1 = await unitUnderTest.UpdateDates(command2);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result1));
         }
+
+        
     }
 }
