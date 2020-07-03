@@ -208,22 +208,23 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 					productCode = item.ProductCode,
 					roAsal = item.ROAsal,
 					uomUnit = "MT",
-					remainQty = item.stock + item.receipt - item.nonmainFabricExpenditure - item.mainFabricExpenditure - item.Aval - item.drQty,
-					stock = item.stock,
+					remainQty =Math.Round( item.stock + item.receipt - item.nonmainFabricExpenditure - item.mainFabricExpenditure - item.Aval - item.drQty,2),
+					stock = Math.Round(item.stock,2),
 					remark = item.Remark,
-					receipt = item.receipt,
+					receipt = Math.Round(item.receipt,2),
 					aval = item.Aval,
-					nonMainFabricExpenditure = item.nonmainFabricExpenditure,
-					mainFabricExpenditure = item.mainFabricExpenditure,
+					nonMainFabricExpenditure = Math.Round(item.nonmainFabricExpenditure,2),
+					mainFabricExpenditure = Math.Round(item.mainFabricExpenditure,2),
 					expenditure = item.drQty,
 					price = Math.Round(item.Price, 2),
-					buyerCode = item.buyer
+					buyerCode = item.buyer,
+					nominal = (item.stock + item.receipt - item.nonmainFabricExpenditure - item.mainFabricExpenditure - item.Aval - item.drQty) * Convert.ToDouble(item.Price)
 
 				};
 				monitoringPrepareDtos.Add(garmentMonitoringPrepareDto);
 			}
 			var datas = from aa in monitoringPrepareDtos
-						where aa.stock > 0 || aa.receipt > 0 || aa.aval > 0 || aa.mainFabricExpenditure > 0 || aa.nonMainFabricExpenditure > 0 || aa.remainQty > 0
+						where Math.Round(aa.stock,2) > 0 || Math.Round(aa.receipt,2) > 0 || Math.Round(aa.aval,2) > 0 || Math.Round(aa.mainFabricExpenditure,2) > 0 || Math.Round(aa.nonMainFabricExpenditure,2) > 0 || Math.Round(aa.remainQty,2) > 0
 						select aa;
 			monitoringPrepareDtos = datas.ToList();
 
@@ -233,6 +234,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 			double nonMainFabric = 0;
 			double mainFabric = 0;
 			double expenditure = 0;
+			double nominals = 0;
 			foreach (var item in datas)
 			{
 				stocks += item.stock;
@@ -241,6 +243,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 				avals += item.aval;
 				mainFabric += item.mainFabricExpenditure;
 				nonMainFabric += item.nonMainFabricExpenditure;
+				nominals += item.nominal;
 			}
 			GarmentMonitoringPrepareDto garmentMonitoringPrepareDtos = new GarmentMonitoringPrepareDto()
 			{
@@ -258,7 +261,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 				mainFabricExpenditure = mainFabric,
 				expenditure = expenditure,
 				price = 0,
-				buyerCode = ""
+				buyerCode = "",
+				nominal = nominals
 
 			};
 			monitoringPrepareDtos.Add(garmentMonitoringPrepareDtos);
@@ -280,13 +284,15 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG Keluar ke Gudang", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Aval", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sisa", DataType = typeof(double) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nominal Sisa", DataType = typeof(double) });
 			int counter = 5;
 			
+			 
 			if (garmentMonitoringPrepareListViewModel.garmentMonitorings.Count > 0)
 			{
 				foreach (var report in garmentMonitoringPrepareListViewModel.garmentMonitorings)
 				{
-					reportDataTable.Rows.Add(report.roJob, report.article, report.buyerCode, report.productCode, report.uomUnit, report.roAsal, report.remark, report.price, report.stock, report.receipt, report.mainFabricExpenditure, report.nonMainFabricExpenditure, report.expenditure, report.aval, report.remainQty);
+					reportDataTable.Rows.Add(report.roJob, report.article, report.buyerCode, report.productCode, report.uomUnit, report.roAsal, report.remark, report.price, report.stock, report.receipt, report.mainFabricExpenditure, report.nonMainFabricExpenditure, report.expenditure, report.aval, report.remainQty, report.nominal);
 					counter++;
 					
 				}
@@ -311,28 +317,28 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 				worksheet.Column(14).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 				worksheet.Cells["N" + 2 + ":N" + counter + ""].Style.Numberformat.Format = "#,##0.00";
 				worksheet.Column(15).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-				worksheet.Cells["O" + 2 + ":O" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-				worksheet.Cells["A" + 5 + ":O" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["A" + 5 + ":O" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["A" + 5 + ":O" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["A" + 5 + ":O" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["O" + 2 + ":P" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Cells["A" + 5 + ":P" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":P" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":P" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":P" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 			
 				worksheet.Cells["H" + (counter ) + ":O" + (counter) + ""].Style.Font.Bold = true;
-				worksheet.Cells["A" + 1 + ":O" + 1 + ""].Style.Font.Bold = true;
+				worksheet.Cells["A" + 1 + ":P" + 1 + ""].Style.Font.Bold = true;
 				worksheet.Row(5).Style.Font.Bold = true;
 				worksheet.Row(counter).Style.Font.Bold = true;
 				worksheet.Cells["A1"].Value = "Report Prepare"; worksheet.Cells["A" + 1 + ":O" + 1 + ""].Merge = true;
 				worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
 				worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
-				worksheet.Cells["A" + 1 + ":O" + 1 + ""].Merge = true;
-				worksheet.Cells["A" + 2 + ":O" + 2 + ""].Merge = true;
-				worksheet.Cells["A" + 3 + ":O" + 3 + ""].Merge = true;
-				worksheet.Cells["A" + 1 + ":O" + 3 + ""].Style.Font.Size = 15;
-				worksheet.Cells["A" + 1 + ":O" + 3 + ""].Style.Font.Bold = true;
-				worksheet.Cells["A" + 1 + ":O" + 6 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-				worksheet.Cells["A" + 1 + ":O" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+				worksheet.Cells["A" + 1 + ":P" + 1 + ""].Merge = true;
+				worksheet.Cells["A" + 2 + ":P" + 2 + ""].Merge = true;
+				worksheet.Cells["A" + 3 + ":P" + 3 + ""].Merge = true;
+				worksheet.Cells["A" + 1 + ":P" + 3 + ""].Style.Font.Size = 15;
+				worksheet.Cells["A" + 1 + ":P" + 3 + ""].Style.Font.Bold = true;
+				worksheet.Cells["A" + 1 + ":P" + 6 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+				worksheet.Cells["A" + 1 + ":P" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 				worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
-				worksheet.Cells["E" + 5 + ":O" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+				worksheet.Cells["E" + 5 + ":P" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 				var stream = new MemoryStream();
 				if(request.type != "bookkeeping")
 				{

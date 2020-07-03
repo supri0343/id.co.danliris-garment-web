@@ -25,21 +25,23 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 		public double expenditure { get; internal set; }
 		public double remainQty	{get; internal set;	}
 		public decimal price { get; internal set; }
+		public decimal nominal { get; internal set; }
 		public GarmentMonitoringCuttingDto(GarmentMonitoringCuttingDto garmentMonitoringCuttingDto)
 		{
 			Id = garmentMonitoringCuttingDto.Id;
-			this.roJob = garmentMonitoringCuttingDto.roJob;
-			this.article = garmentMonitoringCuttingDto.article;
-			this.qtyOrder = garmentMonitoringCuttingDto.qtyOrder;
-			this.productCode = garmentMonitoringCuttingDto.productCode;
-			this.style = garmentMonitoringCuttingDto.style;
-			this.hours = garmentMonitoringCuttingDto.hours;
-			this.cuttingQtyMeter = garmentMonitoringCuttingDto.cuttingQtyMeter;
-			this.stock = garmentMonitoringCuttingDto.stock;
-			this.cuttingQtyPcs = garmentMonitoringCuttingDto.cuttingQtyPcs;
-			this.fc = garmentMonitoringCuttingDto.fc;
-			this.expenditure = garmentMonitoringCuttingDto.expenditure;
-			this.remainQty = garmentMonitoringCuttingDto.remainQty;
+			roJob = garmentMonitoringCuttingDto.roJob;
+			article = garmentMonitoringCuttingDto.article;
+			qtyOrder = garmentMonitoringCuttingDto.qtyOrder;
+			productCode = garmentMonitoringCuttingDto.productCode;
+			style = garmentMonitoringCuttingDto.style;
+			hours = garmentMonitoringCuttingDto.hours;
+			cuttingQtyMeter = garmentMonitoringCuttingDto.cuttingQtyMeter;
+			stock = garmentMonitoringCuttingDto.stock;
+			cuttingQtyPcs = garmentMonitoringCuttingDto.cuttingQtyPcs;
+			fc = garmentMonitoringCuttingDto.fc;
+			expenditure = garmentMonitoringCuttingDto.expenditure;
+			remainQty = garmentMonitoringCuttingDto.remainQty;
+			nominal = garmentMonitoringCuttingDto.nominal;
 		}
 	}
 }
