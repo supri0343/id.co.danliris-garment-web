@@ -8,6 +8,9 @@ using Manufactures.Domain.GarmentCuttingOuts.Repositories;
 using Manufactures.Domain.GarmentLoadings;
 using Manufactures.Domain.GarmentLoadings.ReadModels;
 using Manufactures.Domain.GarmentLoadings.Repositories;
+using Manufactures.Domain.GarmentPreparings;
+using Manufactures.Domain.GarmentPreparings.ReadModels;
+using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using Moq;
 using Newtonsoft.Json;
@@ -30,6 +33,8 @@ namespace Manufactures.Tests.Queries.GarmentLoadings
 		private readonly Mock<IGarmentCuttingOutItemRepository> _mockGarmentCuttingOutItemRepository;
 		private readonly Mock<IGarmentLoadingRepository> _mockGarmentLoadingRepository;
 		private readonly Mock<IGarmentLoadingItemRepository> _mockGarmentLoadingItemRepository;
+		private readonly Mock<IGarmentPreparingRepository> _mockGarmentPreparingRepository;
+		private readonly Mock<IGarmentPreparingItemRepository> _mockGarmentPreparingItemRepository;
 		protected readonly Mock<IHttpClientService> _mockhttpService;
 		private Mock<IServiceProvider> serviceProviderMock;
 		public MonitoringLoadingCommandHandlerTest()
@@ -45,6 +50,12 @@ namespace Manufactures.Tests.Queries.GarmentLoadings
 
 			_MockStorage.SetupStorage(_mockGarmentCuttingOutRepository);
 			_MockStorage.SetupStorage(_mockGarmentCuttingOutItemRepository);
+
+			_mockGarmentPreparingRepository = CreateMock<IGarmentPreparingRepository>();
+			_MockStorage.SetupStorage(_mockGarmentPreparingRepository);
+
+			_mockGarmentPreparingItemRepository = CreateMock<IGarmentPreparingItemRepository>();
+			_MockStorage.SetupStorage(_mockGarmentPreparingItemRepository);
 
 			serviceProviderMock = new Mock<IServiceProvider>();
 			_mockhttpService = CreateMock<IHttpClientService>();
@@ -106,6 +117,22 @@ namespace Manufactures.Tests.Queries.GarmentLoadings
 				.Returns(new List<GarmentCuttingOutReadModel>
 				{
 					 new GarmentCuttingOut(guidCuttingOut, "", "",new UnitDepartmentId(1),"","",DateTime.Now,"ro","",new UnitDepartmentId(1),"","",new GarmentComodityId(1),"","").GetReadModel()
+				}.AsQueryable());
+
+			var guidGarmentPreparing = Guid.NewGuid();
+			_mockGarmentPreparingRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentPreparingReadModel>
+				{
+					new GarmentPreparing(guidGarmentPreparing,1,"uenNo",new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1),"unitCode","unitName",DateTimeOffset.Now,"roNo","article",true).GetReadModel()
+				}.AsQueryable());
+
+			var guidGarmentPreparingItem = Guid.NewGuid();
+			_mockGarmentPreparingItemRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentPreparingItemReadModel>
+				{
+					new GarmentPreparingItem(guidGarmentPreparingItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidGarmentPreparing).GetReadModel()
 				}.AsQueryable());
 
 			// Act

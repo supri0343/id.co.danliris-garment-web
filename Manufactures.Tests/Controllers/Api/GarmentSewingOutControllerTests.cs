@@ -14,6 +14,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -214,6 +215,21 @@ namespace Manufactures.Tests.Controllers.Api
         }
 
         [Fact]
+        public async Task Post_Throw_Exception()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSewingOutController();
+            Guid sewingOutGuid = Guid.NewGuid();
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentSewingOutCommand>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+            // Assert
+            await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(It.IsAny<PlaceGarmentSewingOutCommand>()));
+        }
+
+        [Fact]
         public async Task Put_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -296,7 +312,69 @@ namespace Manufactures.Tests.Controllers.Api
 			GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
 		}
 
-		[Fact]
+        [Fact]
+        public async Task GetComplete_Return_Success()
+        {
+            var unitUnderTest = CreateGarmentSewingOutController();
+            Guid id = Guid.NewGuid();
+            _mockGarmentSewingOutRepository
+              .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+              .Returns(new List<GarmentSewingOutReadModel>().AsQueryable());
+
+           
+            _mockGarmentSewingOutRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingOutReadModel>>()))
+                .Returns(new List<GarmentSewingOut>()
+                {
+                    new GarmentSewingOut(id, null,new BuyerId(1),null,null,new UnitDepartmentId(1),null,null,"Finishing",DateTimeOffset.Now, "RONo", null, new UnitDepartmentId(1), null, null,new GarmentComodityId(1),null,null,true)
+                });
+
+            GarmentSewingOutItem garmentSewingOutItem = new GarmentSewingOutItem(id, id, id, id, new ProductId(1), null, null, null, new SizeId(1), null, 1, new UomId(1), null, null, 1, 1, 1);
+            _mockGarmentSewingOutItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSewingOutItemReadModel>()
+                {
+                    garmentSewingOutItem.GetReadModel()
+                }.AsQueryable());
+
+            _mockGarmentSewingOutItemRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingOutItemReadModel>>()))
+                .Returns(new List<GarmentSewingOutItem>()
+                {
+                    new GarmentSewingOutItem(id,id,id,id,new ProductId(1),"productCode","productName","designColor",new SizeId(1),"sizeName",1,new UomId(1),"uomUnit","color",1,1,1)
+                });
+
+
+            GarmentSewingOutDetail garmentSewingOutDetail = new GarmentSewingOutDetail(id, id, new SizeId(1), "sizeName", 1, new UomId(1), "uomUnit");
+            _mockGarmentSewingOutDetailRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSewingOutDetailReadModel>()
+                {
+                    garmentSewingOutDetail.GetReadModel()
+                }.AsQueryable());
+
+            _mockGarmentSewingOutDetailRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingOutDetailReadModel>>()))
+                .Returns(new List<GarmentSewingOutDetail>()
+                {
+                    new GarmentSewingOutDetail(id, id, new SizeId(1),"sizeName", 1, new UomId(1),"uomUnit")
+                });
+
+            // Act
+            var orderData = new
+            {
+                article = "desc",
+            };
+
+            string order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.GetComplete(1,25,order,new List<string>(),"","{}");
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+        }
+
+
+        [Fact]
 		public async Task GetXLSBehavior()
 		{
 			var unitUnderTest = CreateGarmentSewingOutController();
@@ -328,6 +406,23 @@ namespace Manufactures.Tests.Controllers.Api
 			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
 
 		}
+
+        [Fact]
+        public async Task GetXLS_Return_InternalServerError()
+        {
+            var unitUnderTest = CreateGarmentSewingOutController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsSewingQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+
+        }
 
         [Fact]
         public async Task Put_Dates_StateUnderTest_ExpectedBehavior()
@@ -370,7 +465,7 @@ namespace Manufactures.Tests.Controllers.Api
             UpdateDatesGarmentSewingOutCommand command2 = new UpdateDatesGarmentSewingOutCommand(ids, DateTimeOffset.MinValue);
 
             // Act
-            var result1 = await unitUnderTest.UpdateDates(command);
+            var result1 = await unitUnderTest.UpdateDates(command2);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result1));

@@ -26,23 +26,25 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 		public double expenditure { get; internal set; }
 		public double aval { get; internal set; }
 		public double remainQty { get; internal set; }
+		public double nominal { get; internal set; }
 		public GarmentMonitoringPrepareDto(GarmentMonitoringPrepareDto garmentMonitoringPrepareDto)
 		{
 			Id = garmentMonitoringPrepareDto.Id;
-			this.roJob = garmentMonitoringPrepareDto.roJob;
-			this.article = garmentMonitoringPrepareDto.article;
-			this.buyerCode = garmentMonitoringPrepareDto.buyerCode;
-			this.productCode = garmentMonitoringPrepareDto.productCode;
-			this.uomUnit = garmentMonitoringPrepareDto.uomUnit;
-			this.roAsal = garmentMonitoringPrepareDto.roAsal;
-			this.remark = garmentMonitoringPrepareDto.remark;
-			this.stock = garmentMonitoringPrepareDto.stock;
-			this.receipt = garmentMonitoringPrepareDto.receipt;
-			this.mainFabricExpenditure = garmentMonitoringPrepareDto.mainFabricExpenditure;
-			this.nonMainFabricExpenditure = garmentMonitoringPrepareDto.nonMainFabricExpenditure;
-			this.expenditure = garmentMonitoringPrepareDto.expenditure;
-			this.aval = garmentMonitoringPrepareDto.aval;
-			this.remainQty = garmentMonitoringPrepareDto.remainQty;
+			roJob = garmentMonitoringPrepareDto.roJob;
+			article = garmentMonitoringPrepareDto.article;
+			buyerCode = garmentMonitoringPrepareDto.buyerCode;
+			productCode = garmentMonitoringPrepareDto.productCode;
+			uomUnit = garmentMonitoringPrepareDto.uomUnit;
+			roAsal = garmentMonitoringPrepareDto.roAsal;
+			remark = garmentMonitoringPrepareDto.remark;
+			stock = garmentMonitoringPrepareDto.stock;
+			receipt = garmentMonitoringPrepareDto.receipt;
+			mainFabricExpenditure = garmentMonitoringPrepareDto.mainFabricExpenditure;
+			nonMainFabricExpenditure = garmentMonitoringPrepareDto.nonMainFabricExpenditure;
+			expenditure = garmentMonitoringPrepareDto.expenditure;
+			aval = garmentMonitoringPrepareDto.aval;
+			remainQty = garmentMonitoringPrepareDto.remainQty;
+			nominal = garmentMonitoringPrepareDto.nominal;
 		}
 	}
 }
