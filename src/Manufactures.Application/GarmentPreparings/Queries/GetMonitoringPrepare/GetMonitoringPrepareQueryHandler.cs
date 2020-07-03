@@ -204,23 +204,25 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 					productCode = item.ProductCode,
 					roAsal = item.ROAsal,
 					uomUnit = "MT",
-					remainQty = item.stock + item.receipt - item.nonmainFabricExpenditure - item.mainFabricExpenditure - item.Aval - item.drQty,
-					stock = item.stock,
+					remainQty = Math.Round(item.stock + item.receipt - item.nonmainFabricExpenditure - item.mainFabricExpenditure - item.Aval - item.drQty, 2),
+					stock = Math.Round(item.stock, 2),
 					remark = item.Remark,
-					receipt = item.receipt,
+					receipt = Math.Round(item.receipt, 2),
 					aval = item.Aval,
-					nonMainFabricExpenditure = item.nonmainFabricExpenditure,
-					mainFabricExpenditure = item.mainFabricExpenditure,
+					nonMainFabricExpenditure = Math.Round(item.nonmainFabricExpenditure, 2),
+					mainFabricExpenditure = Math.Round(item.mainFabricExpenditure, 2),
 					expenditure = item.drQty,
-					price= Math.Round(item.Price,2),
-					buyerCode=item.buyer
+					price = Math.Round(item.Price, 2),
+					buyerCode = item.buyer,
+					nominal = (item.stock + item.receipt - item.nonmainFabricExpenditure - item.mainFabricExpenditure - item.Aval - item.drQty) * Convert.ToDouble(item.Price)
+
 
 				};
 				monitoringPrepareDtos.Add(garmentMonitoringPrepareDto);
 			}
 			var datas = from aa in monitoringPrepareDtos
-					   where aa.stock > 0 || aa.receipt > 0 || aa.aval > 0 || aa.mainFabricExpenditure > 0 || aa.nonMainFabricExpenditure > 0
-					   select aa;
+						where Math.Round(aa.stock, 2) > 0 || Math.Round(aa.receipt, 2) > 0 || Math.Round(aa.aval, 2) > 0 || Math.Round(aa.mainFabricExpenditure, 2) > 0 || Math.Round(aa.nonMainFabricExpenditure, 2) > 0 || Math.Round(aa.remainQty, 2) > 0
+						select aa;
 			monitoringPrepareDtos = datas.ToList();
 			garmentMonitoringPrepareListViewModel.garmentMonitorings = monitoringPrepareDtos;
 
