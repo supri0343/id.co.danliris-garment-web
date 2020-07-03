@@ -42,6 +42,7 @@ namespace Manufactures.Tests.Validations.GarmentAvalComponents
             a.AvalComponentType = "AvalComponentType";
             a.RONo = "RONo";
             a.Price = 10;
+            a.Article = "Article";
             a.Comodity = new GarmentComodity(1, "Code", "Name");
             a.Date = DateTimeOffset.Now.AddDays(-1);
             a.Items = new List<PlaceGarmentAvalComponentItemValueObject>
