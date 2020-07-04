@@ -1,4 +1,5 @@
-﻿using FluentValidation.TestHelper;
+﻿using Barebone.Tests;
+using FluentValidation.TestHelper;
 using Manufactures.Domain.GarmentAvalComponents.Commands;
 using Manufactures.Domain.GarmentAvalComponents.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
@@ -9,10 +10,10 @@ using Xunit;
 
 namespace Manufactures.Tests.Validations.GarmentAvalComponents
 {
-    public class PlaceGarmentAvalComponentCommandValidatorTest
+    public class PlaceGarmentAvalComponentCommandValidatorTest :BaseValidatorUnitTest
     {
         private PlaceGarmentAvalComponentCommandValidator GetValidationRules()
-        {
+        { 
             return new PlaceGarmentAvalComponentCommandValidator();
         }
 
@@ -41,6 +42,7 @@ namespace Manufactures.Tests.Validations.GarmentAvalComponents
             a.AvalComponentType = "AvalComponentType";
             a.RONo = "RONo";
             a.Price = 10;
+            a.Article = "Article";
             a.Comodity = new GarmentComodity(1, "Code", "Name");
             a.Date = DateTimeOffset.Now.AddDays(-1);
             a.Items = new List<PlaceGarmentAvalComponentItemValueObject>
