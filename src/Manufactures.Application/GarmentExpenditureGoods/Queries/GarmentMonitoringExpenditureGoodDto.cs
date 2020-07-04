@@ -21,19 +21,21 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 		public double qty { get; internal set; }
 		public string invoice { get; internal set; }
 		public decimal price { get; internal set; }
+		public decimal nominal { get; internal set; }
 
 		public GarmentMonitoringExpenditureGoodDto(GarmentMonitoringExpenditureGoodDto garmentMonitoring)
 		{
 
-			this.expenditureGoodNo = garmentMonitoring.expenditureGoodNo;
-			this.expenditureGoodType = garmentMonitoring.expenditureGoodType;
-			this.expenditureDate = garmentMonitoring.expenditureDate;
-			this.roNo = garmentMonitoring.roNo;
-			this.buyerArticle = garmentMonitoring.buyerArticle;
-			this.colour = garmentMonitoring.colour;
-			this.name = garmentMonitoring.name;
-			this.qty = garmentMonitoring.qty;
-			this.invoice = garmentMonitoring.invoice;
+			expenditureGoodNo = garmentMonitoring.expenditureGoodNo;
+			expenditureGoodType = garmentMonitoring.expenditureGoodType;
+			expenditureDate = garmentMonitoring.expenditureDate;
+			roNo = garmentMonitoring.roNo;
+			buyerArticle = garmentMonitoring.buyerArticle;
+			colour = garmentMonitoring.colour;
+			name = garmentMonitoring.name;
+			qty = garmentMonitoring.qty;
+			invoice = garmentMonitoring.invoice;
+			nominal = garmentMonitoring.nominal;
 		}
 	}
 }
