@@ -208,14 +208,13 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 					stock = Math.Round(item.stock, 2),
 					remark = item.Remark,
 					receipt = Math.Round(item.receipt, 2),
-					aval = item.Aval,
+					aval = Math.Round(item.Aval, 2),
 					nonMainFabricExpenditure = Math.Round(item.nonmainFabricExpenditure, 2),
 					mainFabricExpenditure = Math.Round(item.mainFabricExpenditure, 2),
-					expenditure = item.drQty,
+					expenditure = Math.Round(item.drQty, 2),
 					price = Math.Round(item.Price, 2),
 					buyerCode = item.buyer,
 					nominal = (item.stock + item.receipt - item.nonmainFabricExpenditure - item.mainFabricExpenditure - item.Aval - item.drQty) * Convert.ToDouble(item.Price)
-
 
 				};
 				monitoringPrepareDtos.Add(garmentMonitoringPrepareDto);

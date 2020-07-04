@@ -228,13 +228,14 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 					article = item.Article,
 					uomUnit = item.UomUnit,
 					qtyOrder = item.QtyOrder,
-					sewingOutQtyPcs = item.SewingQtyPcs,
-					finishingOutQtyPcs = item.Finishing,
-					stock = item.Stock,
+					sewingOutQtyPcs = Math.Round(item.SewingQtyPcs,2),
+					finishingOutQtyPcs = Math.Round(item.Finishing,2),
+					stock = Math.Round(item.Stock,2),
 					style = item.Style,
 					buyerCode = item.buyer,
 					price = Math.Round(item.price, 2),
-					remainQty = item.Stock + item.SewingQtyPcs - item.Finishing
+					remainQty = Math.Round(item.Stock + item.SewingQtyPcs - item.Finishing,2),
+					nominal = Math.Round(Convert.ToDecimal(item.Stock + item.SewingQtyPcs - item.Finishing) * item.price)
 				};
 				monitoringDtos.Add(dto);
 
@@ -245,12 +246,13 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 			double stocks = 0;
 			double finishing = 0;
 			double sewingOutQtyPcs = 0;
+			decimal nominals = 0;
 			foreach (var item in data)
 			{
 				stocks += item.stock;
 				finishing += item.finishingOutQtyPcs;
 				sewingOutQtyPcs += item.sewingOutQtyPcs;
-
+				nominals += item.nominal;
 			}
 			GarmentMonitoringFinishingDto dtos = new GarmentMonitoringFinishingDto
 			{
@@ -264,7 +266,9 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 				stock = stocks,
 				style = "",
 				price = 0,
-				remainQty = stocks + sewingOutQtyPcs - finishing
+				remainQty = stocks + sewingOutQtyPcs - finishing,
+				nominal = nominals
+
 			};
 			monitoringDtos.Add(dtos);
 			listViewModel.garmentMonitorings = monitoringDtos;
@@ -279,49 +283,42 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Awal", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Keluar", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sisa", DataType = typeof(double) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nominal Sisa", DataType = typeof(decimal) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
 			int counter = 5;
 			if (listViewModel.garmentMonitorings.Count > 0)
 			{
 				foreach (var report in listViewModel.garmentMonitorings)
 				{
-					reportDataTable.Rows.Add(report.roJob, report.article, report.buyerCode, report.qtyOrder, report.style, report.price, report.stock, report.sewingOutQtyPcs, report.finishingOutQtyPcs, report.remainQty, report.uomUnit);
+					reportDataTable.Rows.Add(report.roJob, report.article, report.buyerCode, report.qtyOrder, report.style, report.price, report.stock, report.sewingOutQtyPcs, report.finishingOutQtyPcs, report.remainQty,report.nominal, report.uomUnit);
 					counter++;
 				}
 			}
 			using (var package = new ExcelPackage())
 			{
 				var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
-				worksheet.Cells["A" + 5 + ":K" + 5 + ""].Style.Font.Bold = true;
-				worksheet.Cells["A1"].Value = "Report Finishing "; worksheet.Cells["A" + 1 + ":K" + 1 + ""].Merge = true;
+				worksheet.Cells["A" + 5 + ":L" + 5 + ""].Style.Font.Bold = true;
+				worksheet.Cells["A1"].Value = "Report Finishing "; worksheet.Cells["A" + 1 + ":L" + 1 + ""].Merge = true;
 				worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
 				worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
-				worksheet.Cells["A" + 1 + ":K" + 1 + ""].Merge = true;
-				worksheet.Cells["A" + 2 + ":K" + 2 + ""].Merge = true;
-				worksheet.Cells["A" + 3 + ":K" + 3 + ""].Merge = true;
-				worksheet.Cells["A" + 1 + ":K" + 3 + ""].Style.Font.Size = 15;
-				worksheet.Cells["A" + 1 + ":K" + 5 + ""].Style.Font.Bold = true;
-				worksheet.Cells["A" + 1 + ":K" + 6 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-				worksheet.Cells["A" + 1 + ":K" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+				worksheet.Cells["A" + 1 + ":L" + 1 + ""].Merge = true;
+				worksheet.Cells["A" + 2 + ":L" + 2 + ""].Merge = true;
+				worksheet.Cells["A" + 3 + ":L" + 3 + ""].Merge = true;
+				worksheet.Cells["A" + 1 + ":L" + 3 + ""].Style.Font.Size = 15;
+				worksheet.Cells["A" + 1 + ":L" + 5 + ""].Style.Font.Bold = true;
+				worksheet.Cells["A" + 1 + ":L" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+				worksheet.Cells["A" + 1 + ":L" + 5 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 				worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
-				worksheet.Column(4).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["D" + 2 + ":D" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 				worksheet.Cells["D" + 2 + ":D" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-				worksheet.Column(6).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-				worksheet.Cells["F" + 2 + ":F" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-				worksheet.Column(7).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-				worksheet.Cells["G" + 2 + ":G" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-				worksheet.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-				worksheet.Cells["H" + 2 + ":H" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-				worksheet.Column(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-				worksheet.Cells["I" + 2 + ":I" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-				worksheet.Column(10).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-				worksheet.Cells["J" + 2 + ":J" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-				worksheet.Cells["A" + 5 + ":K" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["A" + 5 + ":K" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["A" + 5 + ":K" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["A" + 5 + ":K" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-				worksheet.Cells["F" + (counter) + ":J" + (counter) + ""].Style.Font.Bold = true;
-				worksheet.Cells["A" + 1 + ":K" + 1 + ""].Style.Font.Bold = true;
+				worksheet.Cells["F" + 6 + ":k" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["F" + 6 + ":k" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Cells["A" + 5 + ":L" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":L" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":L" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":L" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["F" + (counter) + ":K" + (counter) + ""].Style.Font.Bold = true;
+				worksheet.Cells["A" + 1 + ":L" + 1 + ""].Style.Font.Bold = true;
 
 				var stream = new MemoryStream();
 				if (request.type != "bookkeeping")

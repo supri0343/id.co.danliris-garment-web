@@ -22,20 +22,22 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 		public string buyerCode { get; internal set; }
 		public double remainQty { get; internal set; }
 		public decimal price { get; internal set; }
+		public decimal nominal { get; internal set; }
 		public GarmentMonitoringLoadingDto(GarmentMonitoringLoadingDto garmentMonitoring)
 		{
 			Id = garmentMonitoring.Id;
-			this.roJob = garmentMonitoring.roJob;
-			this.article = garmentMonitoring.article;
-			this.qtyOrder = garmentMonitoring.qtyOrder;
-			this.stock = garmentMonitoring.stock;
-			this.cuttingQtyPcs = garmentMonitoring.cuttingQtyPcs;
-			this.loadingQtyPcs = garmentMonitoring.loadingQtyPcs;
-			this.uomUnit = garmentMonitoring.uomUnit;
-			this.remainQty = garmentMonitoring.remainQty;
-			this.style = garmentMonitoring.style;
-			this.buyerCode = garmentMonitoring.buyerCode;
-			this.price = garmentMonitoring.price;
+			roJob = garmentMonitoring.roJob;
+			article = garmentMonitoring.article;
+			qtyOrder = garmentMonitoring.qtyOrder;
+			stock = garmentMonitoring.stock;
+			cuttingQtyPcs = garmentMonitoring.cuttingQtyPcs;
+			loadingQtyPcs = garmentMonitoring.loadingQtyPcs;
+			uomUnit = garmentMonitoring.uomUnit;
+			remainQty = garmentMonitoring.remainQty;
+			style = garmentMonitoring.style;
+			buyerCode = garmentMonitoring.buyerCode;
+			price = garmentMonitoring.price;
+			nominal = garmentMonitoring.nominal;
 		}
 	}
 }
