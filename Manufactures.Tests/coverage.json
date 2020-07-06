@@ -34213,61 +34213,61 @@
       "Manufactures.ViewModels.GarmentPreparings.CreateViewModel": {
         "System.Int32 Manufactures.ViewModels.GarmentPreparings.CreateViewModel::get_UENId()": {
           "Lines": {
-            "13": 0
+            "13": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentPreparings.CreateViewModel::get_UENNo()": {
           "Lines": {
-            "17": 0
+            "17": 4
           },
           "Branches": []
         },
         "System.Int32 Manufactures.ViewModels.GarmentPreparings.CreateViewModel::get_UnitId()": {
           "Lines": {
-            "21": 0
+            "21": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentPreparings.CreateViewModel::get_UnitCode()": {
           "Lines": {
-            "25": 0
+            "25": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentPreparings.CreateViewModel::get_UnitName()": {
           "Lines": {
-            "29": 0
+            "29": 4
           },
           "Branches": []
         },
         "System.Nullable`1<System.DateTimeOffset> Manufactures.ViewModels.GarmentPreparings.CreateViewModel::get_ProcessDate()": {
           "Lines": {
-            "33": 0
+            "33": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentPreparings.CreateViewModel::get_RONo()": {
           "Lines": {
-            "37": 0
+            "37": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentPreparings.CreateViewModel::get_Article()": {
           "Lines": {
-            "41": 0
+            "41": 4
           },
           "Branches": []
         },
         "System.Boolean Manufactures.ViewModels.GarmentPreparings.CreateViewModel::get_IsCuttingIn()": {
           "Lines": {
-            "45": 0
+            "45": 4
           },
           "Branches": []
         },
         "System.Collections.Generic.List`1<Manufactures.Domain.GarmentPreparings.ValueObjects.GarmentPreparingItemValueObject> Manufactures.ViewModels.GarmentPreparings.CreateViewModel::get_Items()": {
           "Lines": {
-            "49": 0
+            "49": 3
           },
           "Branches": []
         }
@@ -34277,18 +34277,18 @@
       "Manufactures.ViewModels.GarmentPreparings.CreateViewModelMapper": {
         "Manufactures.Domain.GarmentPreparings.GarmentPreparing Manufactures.ViewModels.GarmentPreparings.CreateViewModelMapper::Map(Manufactures.ViewModels.GarmentPreparings.CreateViewModel)": {
           "Lines": {
-            "11": 0,
-            "12": 0,
-            "13": 0,
-            "14": 0
+            "11": 1,
+            "12": 1,
+            "13": 1,
+            "14": 1
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentPreparings.GarmentPreparingItem Manufactures.ViewModels.GarmentPreparings.CreateViewModelMapper::MapItem(Manufactures.Dtos.GarmentPreparingItemDto,System.Guid)": {
           "Lines": {
-            "17": 0,
-            "18": 0,
-            "19": 0
+            "17": 1,
+            "18": 1,
+            "19": 1
           },
           "Branches": []
         }
@@ -34312,103 +34312,103 @@
       "Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel": {
         "System.String Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_DRNo()": {
           "Lines": {
-            "14": 0
+            "14": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_RONo()": {
           "Lines": {
-            "17": 0
+            "17": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_Article()": {
           "Lines": {
-            "20": 0
+            "20": 4
           },
           "Branches": []
         },
         "System.Int32 Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_UnitDOId()": {
           "Lines": {
-            "23": 0
+            "23": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_UnitDONo()": {
           "Lines": {
-            "26": 0
+            "26": 4
           },
           "Branches": []
         },
         "System.Int32 Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_UENId()": {
           "Lines": {
-            "29": 0
+            "29": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_PreparingId()": {
           "Lines": {
-            "32": 0
+            "32": 4
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_ReturnDate()": {
           "Lines": {
-            "35": 0
+            "35": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_ReturnType()": {
           "Lines": {
-            "38": 0
+            "38": 4
           },
           "Branches": []
         },
         "System.Int32 Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_UnitId()": {
           "Lines": {
-            "41": 0
+            "41": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_UnitCode()": {
           "Lines": {
-            "45": 0
+            "45": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_UnitName()": {
           "Lines": {
-            "49": 0
+            "49": 4
           },
           "Branches": []
         },
         "System.Int32 Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_StorageId()": {
           "Lines": {
-            "53": 0
+            "53": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_StorageCode()": {
           "Lines": {
-            "57": 0
+            "57": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_StorageName()": {
           "Lines": {
-            "61": 0
+            "61": 4
           },
           "Branches": []
         },
         "System.Boolean Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_IsUsed()": {
           "Lines": {
-            "65": 0
+            "65": 4
           },
           "Branches": []
         },
         "System.Collections.Generic.List`1<Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject> Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel::get_Items()": {
           "Lines": {
-            "69": 0
+            "69": 3
           },
           "Branches": []
         }
@@ -34418,18 +34418,18 @@
       "Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModelMapper": {
         "Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModelMapper::Map(Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModel)": {
           "Lines": {
-            "11": 0,
-            "12": 0,
-            "13": 0,
-            "14": 0
+            "11": 1,
+            "12": 1,
+            "13": 1,
+            "14": 1
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem Manufactures.ViewModels.GarmentDeliveryReturns.CreateViewModelMapper::MapItem(Manufactures.Dtos.GarmentDeliveryReturnItemDto,System.Guid)": {
           "Lines": {
-            "17": 0,
-            "18": 0,
-            "19": 0
+            "17": 1,
+            "18": 1,
+            "19": 1
           },
           "Branches": []
         }
@@ -34453,43 +34453,43 @@
       "Manufactures.ViewModels.GarmentAvalProducts.CreateViewModel": {
         "System.String Manufactures.ViewModels.GarmentAvalProducts.CreateViewModel::get_RONo()": {
           "Lines": {
-            "14": 0
+            "14": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentAvalProducts.CreateViewModel::get_Article()": {
           "Lines": {
-            "18": 0
+            "18": 4
           },
           "Branches": []
         },
         "System.Nullable`1<System.DateTimeOffset> Manufactures.ViewModels.GarmentAvalProducts.CreateViewModel::get_AvalDate()": {
           "Lines": {
-            "22": 0
+            "22": 4
           },
           "Branches": []
         },
         "System.Int32 Manufactures.ViewModels.GarmentAvalProducts.CreateViewModel::get_UnitId()": {
           "Lines": {
-            "26": 0
+            "26": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentAvalProducts.CreateViewModel::get_UnitCode()": {
           "Lines": {
-            "29": 0
+            "29": 4
           },
           "Branches": []
         },
         "System.String Manufactures.ViewModels.GarmentAvalProducts.CreateViewModel::get_UnitName()": {
           "Lines": {
-            "32": 0
+            "32": 4
           },
           "Branches": []
         },
         "System.Collections.Generic.List`1<Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentAvalProductItemValueObject> Manufactures.ViewModels.GarmentAvalProducts.CreateViewModel::get_Items()": {
           "Lines": {
-            "36": 0
+            "36": 3
           },
           "Branches": []
         }
@@ -34499,17 +34499,17 @@
       "Manufactures.ViewModels.GarmentAvalProducts.CreateViewModelMapper": {
         "Manufactures.Domain.GarmentAvalProducts.GarmentAvalProduct Manufactures.ViewModels.GarmentAvalProducts.CreateViewModelMapper::Map(Manufactures.ViewModels.GarmentAvalProducts.CreateViewModel)": {
           "Lines": {
-            "11": 0,
-            "12": 0,
-            "13": 0
+            "11": 1,
+            "12": 1,
+            "13": 1
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem Manufactures.ViewModels.GarmentAvalProducts.CreateViewModelMapper::MapItem(Manufactures.Dtos.GarmentAvalProductItemDto,System.Guid)": {
           "Lines": {
-            "16": 0,
-            "17": 0,
-            "18": 0
+            "16": 1,
+            "17": 1,
+            "18": 1
           },
           "Branches": []
         }
@@ -37901,7 +37901,7 @@
       "Manufactures.Dtos.GarmentAvalProductItemDto": {
         "System.Guid Manufactures.Dtos.GarmentAvalProductItemDto::get_Id()": {
           "Lines": {
-            "29": 4
+            "29": 5
           },
           "Branches": []
         },
@@ -37919,75 +37919,75 @@
         },
         "System.Guid Manufactures.Dtos.GarmentAvalProductItemDto::get_APId()": {
           "Lines": {
-            "35": 5
+            "35": 6
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparing Manufactures.Dtos.GarmentAvalProductItemDto::get_PreparingId()": {
           "Lines": {
-            "36": 0
+            "36": 5
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparingItem Manufactures.Dtos.GarmentAvalProductItemDto::get_PreparingItemId()": {
           "Lines": {
-            "37": 0
+            "37": 5
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentAvalProducts.ValueObjects.Product Manufactures.Dtos.GarmentAvalProductItemDto::get_Product()": {
           "Lines": {
-            "38": 0
+            "38": 7
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentAvalProductItemDto::get_DesignColor()": {
           "Lines": {
-            "39": 0
+            "39": 5
           },
           "Branches": []
         },
         "System.Double Manufactures.Dtos.GarmentAvalProductItemDto::get_Quantity()": {
           "Lines": {
-            "40": 0
+            "40": 5
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentAvalProducts.ValueObjects.Uom Manufactures.Dtos.GarmentAvalProductItemDto::get_Uom()": {
           "Lines": {
-            "41": 0
+            "41": 6
           },
           "Branches": []
         },
         "System.Double Manufactures.Dtos.GarmentAvalProductItemDto::get_BasicPrice()": {
           "Lines": {
-            "42": 0
+            "42": 5
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Dtos.GarmentAvalProductItemDto::get_IsReceived()": {
           "Lines": {
-            "43": 0
+            "43": 5
           },
           "Branches": []
         },
         "System.Void Manufactures.Dtos.GarmentAvalProductItemDto::.ctor(Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem)": {
           "Lines": {
-            "11": 3,
-            "12": 3,
-            "13": 3,
-            "15": 3,
-            "16": 3,
-            "18": 3,
-            "19": 3,
-            "20": 3,
-            "21": 3,
-            "22": 3,
-            "23": 3,
-            "24": 3,
-            "25": 3,
-            "26": 3,
-            "27": 3
+            "11": 4,
+            "12": 4,
+            "13": 4,
+            "15": 4,
+            "16": 4,
+            "18": 4,
+            "19": 4,
+            "20": 4,
+            "21": 4,
+            "22": 4,
+            "23": 4,
+            "24": 4,
+            "25": 4,
+            "26": 4,
+            "27": 4
           },
           "Branches": [
             {
@@ -37996,7 +37996,7 @@
               "EndOffset": 43,
               "Path": 0,
               "Ordinal": 0,
-              "Hits": 3
+              "Hits": 4
             },
             {
               "Line": 15,
@@ -38012,7 +38012,7 @@
               "EndOffset": 84,
               "Path": 0,
               "Ordinal": 2,
-              "Hits": 3
+              "Hits": 4
             },
             {
               "Line": 16,
@@ -38020,7 +38020,7 @@
               "EndOffset": 96,
               "Path": 1,
               "Ordinal": 3,
-              "Hits": 3
+              "Hits": 4
             }
           ]
         }
@@ -38962,7 +38962,7 @@
       "Manufactures.Dtos.GarmentDeliveryReturnItemDto": {
         "System.Guid Manufactures.Dtos.GarmentDeliveryReturnItemDto::get_Id()": {
           "Lines": {
-            "28": 3
+            "28": 4
           },
           "Branches": []
         },
@@ -38980,75 +38980,75 @@
         },
         "System.Guid Manufactures.Dtos.GarmentDeliveryReturnItemDto::get_DRId()": {
           "Lines": {
-            "33": 3
+            "33": 4
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Dtos.GarmentDeliveryReturnItemDto::get_UnitDOItemId()": {
           "Lines": {
-            "34": 0
+            "34": 4
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Dtos.GarmentDeliveryReturnItemDto::get_UENItemId()": {
           "Lines": {
-            "35": 0
+            "35": 4
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentDeliveryReturnItemDto::get_PreparingItemId()": {
           "Lines": {
-            "36": 0
+            "36": 4
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Product Manufactures.Dtos.GarmentDeliveryReturnItemDto::get_Product()": {
           "Lines": {
-            "37": 0
+            "37": 6
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentDeliveryReturnItemDto::get_DesignColor()": {
           "Lines": {
-            "38": 0
+            "38": 4
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentDeliveryReturnItemDto::get_RONo()": {
           "Lines": {
-            "39": 0
+            "39": 4
           },
           "Branches": []
         },
         "System.Double Manufactures.Dtos.GarmentDeliveryReturnItemDto::get_Quantity()": {
           "Lines": {
-            "40": 0
+            "40": 4
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Uom Manufactures.Dtos.GarmentDeliveryReturnItemDto::get_Uom()": {
           "Lines": {
-            "41": 0
+            "41": 5
           },
           "Branches": []
         },
         "System.Void Manufactures.Dtos.GarmentDeliveryReturnItemDto::.ctor(Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem)": {
           "Lines": {
-            "11": 2,
-            "12": 2,
-            "13": 2,
-            "15": 2,
-            "16": 2,
-            "17": 2,
-            "18": 2,
-            "19": 2,
-            "20": 2,
-            "21": 2,
-            "22": 2,
-            "23": 2,
-            "24": 2,
-            "25": 2,
-            "26": 2
+            "11": 3,
+            "12": 3,
+            "13": 3,
+            "15": 3,
+            "16": 3,
+            "17": 3,
+            "18": 3,
+            "19": 3,
+            "20": 3,
+            "21": 3,
+            "22": 3,
+            "23": 3,
+            "24": 3,
+            "25": 3,
+            "26": 3
           },
           "Branches": [
             {
@@ -39057,7 +39057,7 @@
               "EndOffset": 43,
               "Path": 0,
               "Ordinal": 0,
-              "Hits": 2
+              "Hits": 3
             },
             {
               "Line": 15,
@@ -39073,7 +39073,7 @@
               "EndOffset": 84,
               "Path": 0,
               "Ordinal": 2,
-              "Hits": 2
+              "Hits": 3
             },
             {
               "Line": 16,
@@ -39081,7 +39081,7 @@
               "EndOffset": 96,
               "Path": 1,
               "Ordinal": 3,
-              "Hits": 2
+              "Hits": 3
             }
           ]
         }
@@ -40962,7 +40962,7 @@
       "Manufactures.Dtos.GarmentPreparingItemDto": {
         "System.Guid Manufactures.Dtos.GarmentPreparingItemDto::get_Id()": {
           "Lines": {
-            "28": 14
+            "28": 15
           },
           "Branches": []
         },
@@ -40980,75 +40980,75 @@
         },
         "System.Int32 Manufactures.Dtos.GarmentPreparingItemDto::get_UENItemId()": {
           "Lines": {
-            "34": 0
+            "34": 11
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentPreparings.ValueObjects.Product Manufactures.Dtos.GarmentPreparingItemDto::get_Product()": {
           "Lines": {
-            "35": 11
+            "35": 15
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentPreparingItemDto::get_DesignColor()": {
           "Lines": {
-            "36": 0
+            "36": 11
           },
           "Branches": []
         },
         "System.Decimal Manufactures.Dtos.GarmentPreparingItemDto::get_Quantity()": {
           "Lines": {
-            "37": 13
+            "37": 15
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentPreparings.ValueObjects.Uom Manufactures.Dtos.GarmentPreparingItemDto::get_Uom()": {
           "Lines": {
-            "38": 0
+            "38": 12
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentPreparingItemDto::get_FabricType()": {
           "Lines": {
-            "39": 0
+            "39": 11
           },
           "Branches": []
         },
         "System.Decimal Manufactures.Dtos.GarmentPreparingItemDto::get_RemainingQuantity()": {
           "Lines": {
-            "40": 0
+            "40": 11
           },
           "Branches": []
         },
         "System.Decimal Manufactures.Dtos.GarmentPreparingItemDto::get_BasicPrice()": {
           "Lines": {
-            "41": 0
+            "41": 11
           },
           "Branches": []
         },
         "System.Guid Manufactures.Dtos.GarmentPreparingItemDto::get_GarmentPreparingId()": {
           "Lines": {
-            "42": 15
+            "42": 16
           },
           "Branches": []
         },
         "System.Void Manufactures.Dtos.GarmentPreparingItemDto::.ctor(Manufactures.Domain.GarmentPreparings.GarmentPreparingItem)": {
           "Lines": {
-            "11": 9,
-            "12": 9,
-            "13": 9,
-            "15": 9,
-            "16": 9,
-            "17": 9,
-            "18": 9,
-            "19": 9,
-            "20": 9,
-            "21": 9,
-            "22": 9,
-            "23": 9,
-            "24": 9,
-            "25": 9,
-            "26": 9
+            "11": 10,
+            "12": 10,
+            "13": 10,
+            "15": 10,
+            "16": 10,
+            "17": 10,
+            "18": 10,
+            "19": 10,
+            "20": 10,
+            "21": 10,
+            "22": 10,
+            "23": 10,
+            "24": 10,
+            "25": 10,
+            "26": 10
           },
           "Branches": [
             {
@@ -41057,7 +41057,7 @@
               "EndOffset": 43,
               "Path": 0,
               "Ordinal": 0,
-              "Hits": 9
+              "Hits": 10
             },
             {
               "Line": 15,
@@ -41073,7 +41073,7 @@
               "EndOffset": 84,
               "Path": 0,
               "Ordinal": 2,
-              "Hits": 9
+              "Hits": 10
             },
             {
               "Line": 16,
@@ -41081,7 +41081,7 @@
               "EndOffset": 96,
               "Path": 1,
               "Ordinal": 3,
-              "Hits": 9
+              "Hits": 10
             }
           ]
         }
@@ -51454,9 +51454,9 @@
       "Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId": {
         "System.Void Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId::.ctor(System.Int32)": {
           "Lines": {
-            "9": 502,
-            "10": 502,
-            "11": 502
+            "9": 503,
+            "10": 503,
+            "11": 503
           },
           "Branches": []
         }
@@ -60092,55 +60092,55 @@
       "Manufactures.Domain.GarmentPreparings.GarmentPreparing": {
         "System.Int32 Manufactures.Domain.GarmentPreparings.GarmentPreparing::get_UENId()": {
           "Lines": {
-            "14": 78
+            "14": 80
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.GarmentPreparing::get_UENNo()": {
           "Lines": {
-            "15": 77
+            "15": 79
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentPreparings.ValueObjects.UnitDepartmentId Manufactures.Domain.GarmentPreparings.GarmentPreparing::get_UnitId()": {
           "Lines": {
-            "16": 78
+            "16": 80
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.GarmentPreparing::get_UnitCode()": {
           "Lines": {
-            "17": 77
+            "17": 79
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.GarmentPreparing::get_UnitName()": {
           "Lines": {
-            "18": 77
+            "18": 79
           },
           "Branches": []
         },
         "System.Nullable`1<System.DateTimeOffset> Manufactures.Domain.GarmentPreparings.GarmentPreparing::get_ProcessDate()": {
           "Lines": {
-            "19": 79
+            "19": 81
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.GarmentPreparing::get_RONo()": {
           "Lines": {
-            "20": 77
+            "20": 79
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.GarmentPreparing::get_Article()": {
           "Lines": {
-            "21": 77
+            "21": 79
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Domain.GarmentPreparings.GarmentPreparing::get_IsCuttingIn()": {
           "Lines": {
-            "22": 77
+            "22": 79
           },
           "Branches": []
         },
@@ -60462,33 +60462,33 @@
         },
         "System.Void Manufactures.Domain.GarmentPreparings.GarmentPreparing::.ctor(System.Guid,System.Int32,System.String,Manufactures.Domain.GarmentPreparings.ValueObjects.UnitDepartmentId,System.String,System.String,System.Nullable`1<System.DateTimeOffset>,System.String,System.String,System.Boolean)": {
           "Lines": {
-            "24": 33,
-            "25": 33,
-            "26": 33,
-            "28": 33,
-            "29": 33,
-            "30": 33,
-            "31": 33,
-            "32": 33,
-            "33": 33,
-            "34": 33,
-            "35": 33,
-            "36": 33,
-            "37": 33,
-            "39": 33,
-            "40": 33,
-            "41": 33,
-            "42": 33,
-            "43": 33,
-            "44": 33,
-            "45": 33,
-            "46": 33,
-            "47": 33,
-            "48": 33,
-            "49": 33,
-            "50": 33,
-            "51": 33,
-            "52": 33
+            "24": 34,
+            "25": 34,
+            "26": 34,
+            "28": 34,
+            "29": 34,
+            "30": 34,
+            "31": 34,
+            "32": 34,
+            "33": 34,
+            "34": 34,
+            "35": 34,
+            "36": 34,
+            "37": 34,
+            "39": 34,
+            "40": 34,
+            "41": 34,
+            "42": 34,
+            "43": 34,
+            "44": 34,
+            "45": 34,
+            "46": 34,
+            "47": 34,
+            "48": 34,
+            "49": 34,
+            "50": 34,
+            "51": 34,
+            "52": 34
           },
           "Branches": []
         },
@@ -60515,73 +60515,73 @@
       "Manufactures.Domain.GarmentPreparings.GarmentPreparingItem": {
         "System.Int32 Manufactures.Domain.GarmentPreparings.GarmentPreparingItem::get_UENItemId()": {
           "Lines": {
-            "15": 87
+            "15": 92
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentPreparings.ValueObjects.ProductId Manufactures.Domain.GarmentPreparings.GarmentPreparingItem::get_ProductId()": {
           "Lines": {
-            "16": 90
+            "16": 95
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.GarmentPreparingItem::get_ProductCode()": {
           "Lines": {
-            "17": 89
+            "17": 94
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.GarmentPreparingItem::get_ProductName()": {
           "Lines": {
-            "18": 89
+            "18": 94
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.GarmentPreparingItem::get_DesignColor()": {
           "Lines": {
-            "19": 89
+            "19": 94
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentPreparings.GarmentPreparingItem::get_Quantity()": {
           "Lines": {
-            "20": 87
+            "20": 92
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentPreparings.ValueObjects.UomId Manufactures.Domain.GarmentPreparings.GarmentPreparingItem::get_UomId()": {
           "Lines": {
-            "21": 89
+            "21": 94
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.GarmentPreparingItem::get_UomUnit()": {
           "Lines": {
-            "22": 89
+            "22": 94
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.GarmentPreparingItem::get_FabricType()": {
           "Lines": {
-            "23": 89
+            "23": 94
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentPreparings.GarmentPreparingItem::get_RemainingQuantity()": {
           "Lines": {
-            "24": 110
+            "24": 115
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentPreparings.GarmentPreparingItem::get_BasicPrice()": {
           "Lines": {
-            "25": 87
+            "25": 92
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentPreparings.GarmentPreparingItem::get_GarmentPreparingId()": {
           "Lines": {
-            "26": 89
+            "26": 94
           },
           "Branches": []
         },
@@ -60969,39 +60969,39 @@
         },
         "System.Void Manufactures.Domain.GarmentPreparings.GarmentPreparingItem::.ctor(System.Guid,System.Int32,Manufactures.Domain.GarmentPreparings.ValueObjects.ProductId,System.String,System.String,System.String,System.Double,Manufactures.Domain.GarmentPreparings.ValueObjects.UomId,System.String,System.String,System.Double,System.Double,System.Guid)": {
           "Lines": {
-            "28": 36,
-            "29": 36,
-            "30": 36,
-            "32": 36,
-            "33": 36,
-            "34": 36,
-            "35": 36,
-            "36": 36,
-            "37": 36,
-            "38": 36,
-            "39": 36,
-            "40": 36,
-            "41": 36,
-            "42": 36,
-            "43": 36,
-            "44": 36,
-            "46": 36,
-            "47": 36,
-            "48": 36,
-            "49": 36,
-            "50": 36,
-            "51": 36,
-            "52": 36,
-            "53": 36,
-            "54": 36,
-            "55": 36,
-            "56": 36,
-            "57": 36,
-            "58": 36,
-            "59": 36,
-            "60": 36,
-            "61": 36,
-            "62": 36
+            "28": 38,
+            "29": 38,
+            "30": 38,
+            "32": 38,
+            "33": 38,
+            "34": 38,
+            "35": 38,
+            "36": 38,
+            "37": 38,
+            "38": 38,
+            "39": 38,
+            "40": 38,
+            "41": 38,
+            "42": 38,
+            "43": 38,
+            "44": 38,
+            "46": 38,
+            "47": 38,
+            "48": 38,
+            "49": 38,
+            "50": 38,
+            "51": 38,
+            "52": 38,
+            "53": 38,
+            "54": 38,
+            "55": 38,
+            "56": 38,
+            "57": 38,
+            "58": 38,
+            "59": 38,
+            "60": 38,
+            "61": 38,
+            "62": 38
           },
           "Branches": []
         },
@@ -61169,55 +61169,55 @@
         },
         "System.Int32 Manufactures.Domain.GarmentPreparings.ValueObjects.GarmentPreparingItemValueObject::get_UENItemId()": {
           "Lines": {
-            "30": 6
+            "30": 8
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentPreparings.ValueObjects.Product Manufactures.Domain.GarmentPreparings.ValueObjects.GarmentPreparingItemValueObject::get_Product()": {
           "Lines": {
-            "31": 10
+            "31": 12
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ValueObjects.GarmentPreparingItemValueObject::get_DesignColor()": {
           "Lines": {
-            "32": 6
+            "32": 8
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentPreparings.ValueObjects.GarmentPreparingItemValueObject::get_Quantity()": {
           "Lines": {
-            "33": 6
+            "33": 8
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentPreparings.ValueObjects.Uom Manufactures.Domain.GarmentPreparings.ValueObjects.GarmentPreparingItemValueObject::get_Uom()": {
           "Lines": {
-            "34": 8
+            "34": 10
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ValueObjects.GarmentPreparingItemValueObject::get_FabricType()": {
           "Lines": {
-            "35": 6
+            "35": 8
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentPreparings.ValueObjects.GarmentPreparingItemValueObject::get_RemainingQuantity()": {
           "Lines": {
-            "36": 6
+            "36": 8
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentPreparings.ValueObjects.GarmentPreparingItemValueObject::get_BasicPrice()": {
           "Lines": {
-            "37": 6
+            "37": 8
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentPreparings.ValueObjects.GarmentPreparingItemValueObject::get_GarmentPreparingId()": {
           "Lines": {
-            "38": 3
+            "38": 5
           },
           "Branches": []
         },
@@ -61238,19 +61238,19 @@
         },
         "System.Void Manufactures.Domain.GarmentPreparings.ValueObjects.GarmentPreparingItemValueObject::.ctor(System.Guid,System.Int32,Manufactures.Domain.GarmentPreparings.ValueObjects.Product,System.String,System.Double,Manufactures.Domain.GarmentPreparings.ValueObjects.Uom,System.String,System.Double,System.Double,System.Guid)": {
           "Lines": {
-            "15": 0,
-            "16": 0,
-            "17": 0,
-            "18": 0,
-            "19": 0,
-            "20": 0,
-            "21": 0,
-            "22": 0,
-            "23": 0,
-            "24": 0,
-            "25": 0,
-            "26": 0,
-            "27": 0
+            "15": 2,
+            "16": 2,
+            "17": 2,
+            "18": 2,
+            "19": 2,
+            "20": 2,
+            "21": 2,
+            "22": 2,
+            "23": 2,
+            "24": 2,
+            "25": 2,
+            "26": 2,
+            "27": 2
           },
           "Branches": []
         }
@@ -61260,19 +61260,19 @@
       "Manufactures.Domain.GarmentPreparings.ValueObjects.Product": {
         "System.Int32 Manufactures.Domain.GarmentPreparings.ValueObjects.Product::get_Id()": {
           "Lines": {
-            "22": 15
+            "22": 17
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ValueObjects.Product::get_Name()": {
           "Lines": {
-            "24": 15
+            "24": 17
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ValueObjects.Product::get_Code()": {
           "Lines": {
-            "26": 17
+            "26": 19
           },
           "Branches": []
         },
@@ -61285,20 +61285,20 @@
         },
         "System.Void Manufactures.Domain.GarmentPreparings.ValueObjects.Product::.ctor()": {
           "Lines": {
-            "10": 2,
-            "11": 2,
-            "13": 2
+            "10": 4,
+            "11": 4,
+            "13": 4
           },
           "Branches": []
         },
         "System.Void Manufactures.Domain.GarmentPreparings.ValueObjects.Product::.ctor(System.Int32,System.String,System.String)": {
           "Lines": {
-            "15": 11,
-            "16": 11,
-            "17": 11,
-            "18": 11,
-            "19": 11,
-            "20": 11
+            "15": 12,
+            "16": 12,
+            "17": 12,
+            "18": 12,
+            "19": 12,
+            "20": 12
           },
           "Branches": []
         }
@@ -61308,9 +61308,9 @@
       "Manufactures.Domain.GarmentPreparings.ValueObjects.ProductId": {
         "System.Void Manufactures.Domain.GarmentPreparings.ValueObjects.ProductId::.ctor(System.Int32)": {
           "Lines": {
-            "9": 44,
-            "10": 44,
-            "11": 44
+            "9": 46,
+            "10": 46,
+            "11": 46
           },
           "Branches": []
         }
@@ -61368,9 +61368,9 @@
       "Manufactures.Domain.GarmentPreparings.ValueObjects.UnitDepartmentId": {
         "System.Void Manufactures.Domain.GarmentPreparings.ValueObjects.UnitDepartmentId::.ctor(System.Int32)": {
           "Lines": {
-            "9": 37,
-            "10": 37,
-            "11": 37
+            "9": 38,
+            "10": 38,
+            "11": 38
           },
           "Branches": []
         }
@@ -61380,13 +61380,13 @@
       "Manufactures.Domain.GarmentPreparings.ValueObjects.Uom": {
         "System.Int32 Manufactures.Domain.GarmentPreparings.ValueObjects.Uom::get_Id()": {
           "Lines": {
-            "20": 15
+            "20": 19
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ValueObjects.Uom::get_Unit()": {
           "Lines": {
-            "21": 15
+            "21": 19
           },
           "Branches": []
         },
@@ -61407,11 +61407,11 @@
         },
         "System.Void Manufactures.Domain.GarmentPreparings.ValueObjects.Uom::.ctor(System.Int32,System.String)": {
           "Lines": {
-            "14": 11,
-            "15": 11,
-            "16": 11,
-            "17": 11,
-            "18": 11
+            "14": 14,
+            "15": 14,
+            "16": 14,
+            "17": 14,
+            "18": 14
           },
           "Branches": []
         }
@@ -61421,9 +61421,9 @@
       "Manufactures.Domain.GarmentPreparings.ValueObjects.UomId": {
         "System.Void Manufactures.Domain.GarmentPreparings.ValueObjects.UomId::.ctor(System.Int32)": {
           "Lines": {
-            "9": 43,
-            "10": 43,
-            "11": 43
+            "9": 45,
+            "10": 45,
+            "11": 45
           },
           "Branches": []
         }
@@ -61527,73 +61527,73 @@
       "Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel": {
         "System.Int32 Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel::get_UENItemId()": {
           "Lines": {
-            "15": 63
+            "15": 65
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel::get_ProductId()": {
           "Lines": {
-            "16": 43
+            "16": 45
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel::get_ProductCode()": {
           "Lines": {
-            "17": 46
+            "17": 48
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel::get_ProductName()": {
           "Lines": {
-            "18": 43
+            "18": 45
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel::get_DesignColor()": {
           "Lines": {
-            "19": 46
+            "19": 48
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel::get_Quantity()": {
           "Lines": {
-            "20": 45
+            "20": 47
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel::get_UomId()": {
           "Lines": {
-            "21": 43
+            "21": 45
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel::get_UomUnit()": {
           "Lines": {
-            "22": 43
+            "22": 45
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel::get_FabricType()": {
           "Lines": {
-            "23": 43
+            "23": 45
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel::get_RemainingQuantity()": {
           "Lines": {
-            "24": 50
+            "24": 52
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel::get_BasicPrice()": {
           "Lines": {
-            "25": 84
+            "25": 86
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel::get_GarmentPreparingId()": {
           "Lines": {
-            "26": 105
+            "26": 107
           },
           "Branches": []
         },
@@ -61605,9 +61605,9 @@
         },
         "System.Void Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingItemReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "10": 44,
-            "11": 44,
-            "13": 44
+            "10": 46,
+            "11": 46,
+            "13": 46
           },
           "Branches": []
         }
@@ -61617,55 +61617,55 @@
       "Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingReadModel": {
         "System.Int32 Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingReadModel::get_UENId()": {
           "Lines": {
-            "14": 36
+            "14": 37
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingReadModel::get_UENNo()": {
           "Lines": {
-            "15": 36
+            "15": 37
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingReadModel::get_UnitId()": {
           "Lines": {
-            "16": 94
+            "16": 95
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingReadModel::get_UnitCode()": {
           "Lines": {
-            "17": 36
+            "17": 37
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingReadModel::get_UnitName()": {
           "Lines": {
-            "18": 40
+            "18": 41
           },
           "Branches": []
         },
         "System.Nullable`1<System.DateTimeOffset> Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingReadModel::get_ProcessDate()": {
           "Lines": {
-            "19": 55
+            "19": 56
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingReadModel::get_RONo()": {
           "Lines": {
-            "20": 91
+            "20": 92
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingReadModel::get_Article()": {
           "Lines": {
-            "21": 46
+            "21": 47
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingReadModel::get_IsCuttingIn()": {
           "Lines": {
-            "22": 36
+            "22": 37
           },
           "Branches": []
         },
@@ -61677,9 +61677,9 @@
         },
         "System.Void Manufactures.Domain.GarmentPreparings.ReadModels.GarmentPreparingReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "9": 41,
-            "10": 41,
-            "12": 41
+            "9": 42,
+            "10": 42,
+            "12": 42
           },
           "Branches": []
         }
@@ -68014,97 +68014,97 @@
       "Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn": {
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_DRNo()": {
           "Lines": {
-            "14": 38
+            "14": 40
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_RONo()": {
           "Lines": {
-            "15": 38
+            "15": 40
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_Article()": {
           "Lines": {
-            "16": 40
+            "16": 42
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_UnitDOId()": {
           "Lines": {
-            "17": 38
+            "17": 40
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_UnitDONo()": {
           "Lines": {
-            "18": 38
+            "18": 40
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_UENId()": {
           "Lines": {
-            "19": 36
+            "19": 38
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_PreparingId()": {
           "Lines": {
-            "20": 38
+            "20": 40
           },
           "Branches": []
         },
         "System.Nullable`1<System.DateTimeOffset> Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_ReturnDate()": {
           "Lines": {
-            "21": 38
+            "21": 40
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_ReturnType()": {
           "Lines": {
-            "22": 38
+            "22": 40
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.UnitDepartmentId Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_UnitId()": {
           "Lines": {
-            "23": 36
+            "23": 38
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_UnitCode()": {
           "Lines": {
-            "24": 38
+            "24": 40
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_UnitName()": {
           "Lines": {
-            "25": 38
+            "25": 40
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.StorageId Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_StorageId()": {
           "Lines": {
-            "26": 38
+            "26": 40
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_StorageCode()": {
           "Lines": {
-            "27": 38
+            "27": 40
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_StorageName()": {
           "Lines": {
-            "28": 38
+            "28": 40
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::get_IsUsed()": {
           "Lines": {
-            "29": 38
+            "29": 40
           },
           "Branches": []
         },
@@ -68633,47 +68633,47 @@
         },
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturn::.ctor(System.Guid,System.String,System.String,System.String,System.Int32,System.String,System.Int32,System.String,System.Nullable`1<System.DateTimeOffset>,System.String,Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.UnitDepartmentId,System.String,System.String,Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.StorageId,System.String,System.String,System.Boolean)": {
           "Lines": {
-            "31": 15,
-            "32": 15,
-            "33": 15,
-            "35": 15,
-            "36": 15,
-            "37": 15,
-            "38": 15,
-            "39": 15,
-            "40": 15,
-            "41": 15,
-            "42": 15,
-            "43": 15,
-            "44": 15,
-            "45": 15,
-            "46": 15,
-            "47": 15,
-            "48": 15,
-            "49": 15,
-            "50": 15,
-            "51": 15,
-            "53": 15,
-            "54": 15,
-            "55": 15,
-            "56": 15,
-            "57": 15,
-            "58": 15,
-            "59": 15,
-            "60": 15,
-            "61": 15,
-            "62": 15,
-            "63": 15,
-            "64": 15,
-            "65": 15,
-            "66": 15,
-            "67": 15,
-            "68": 15,
-            "69": 15,
-            "70": 15,
-            "71": 15,
-            "72": 15,
-            "73": 15
+            "31": 16,
+            "32": 16,
+            "33": 16,
+            "35": 16,
+            "36": 16,
+            "37": 16,
+            "38": 16,
+            "39": 16,
+            "40": 16,
+            "41": 16,
+            "42": 16,
+            "43": 16,
+            "44": 16,
+            "45": 16,
+            "46": 16,
+            "47": 16,
+            "48": 16,
+            "49": 16,
+            "50": 16,
+            "51": 16,
+            "53": 16,
+            "54": 16,
+            "55": 16,
+            "56": 16,
+            "57": 16,
+            "58": 16,
+            "59": 16,
+            "60": 16,
+            "61": 16,
+            "62": 16,
+            "63": 16,
+            "64": 16,
+            "65": 16,
+            "66": 16,
+            "67": 16,
+            "68": 16,
+            "69": 16,
+            "70": 16,
+            "71": 16,
+            "72": 16,
+            "73": 16
           },
           "Branches": []
         },
@@ -68707,73 +68707,73 @@
       "Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem": {
         "System.Guid Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem::get_DRId()": {
           "Lines": {
-            "13": 29
+            "13": 34
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem::get_UnitDOItemId()": {
           "Lines": {
-            "14": 30
+            "14": 35
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem::get_UENItemId()": {
           "Lines": {
-            "15": 31
+            "15": 36
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem::get_PreparingItemId()": {
           "Lines": {
-            "16": 29
+            "16": 34
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.ProductId Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem::get_ProductId()": {
           "Lines": {
-            "17": 30
+            "17": 35
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem::get_ProductCode()": {
           "Lines": {
-            "18": 29
+            "18": 34
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem::get_ProductName()": {
           "Lines": {
-            "19": 30
+            "19": 35
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem::get_DesignColor()": {
           "Lines": {
-            "20": 29
+            "20": 34
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem::get_RONo()": {
           "Lines": {
-            "21": 29
+            "21": 34
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem::get_Quantity()": {
           "Lines": {
-            "22": 36
+            "22": 41
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.UomId Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem::get_UomId()": {
           "Lines": {
-            "23": 30
+            "23": 35
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem::get_UomUnit()": {
           "Lines": {
-            "24": 29
+            "24": 34
           },
           "Branches": []
         },
@@ -69129,39 +69129,39 @@
         },
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.GarmentDeliveryReturnItem::.ctor(System.Guid,System.Guid,System.Int32,System.Int32,System.String,Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.ProductId,System.String,System.String,System.String,System.String,System.Double,Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.UomId,System.String)": {
           "Lines": {
-            "26": 12,
-            "27": 12,
-            "28": 12,
-            "30": 12,
-            "31": 12,
-            "32": 12,
-            "33": 12,
-            "34": 12,
-            "35": 12,
-            "36": 12,
-            "37": 12,
-            "38": 12,
-            "39": 12,
-            "40": 12,
-            "41": 12,
-            "42": 12,
-            "44": 12,
-            "45": 12,
-            "46": 12,
-            "47": 12,
-            "48": 12,
-            "49": 12,
-            "50": 12,
-            "51": 12,
-            "52": 12,
-            "53": 12,
-            "54": 12,
-            "55": 12,
-            "56": 12,
-            "57": 12,
-            "58": 12,
-            "59": 12,
-            "60": 12
+            "26": 14,
+            "27": 14,
+            "28": 14,
+            "30": 14,
+            "31": 14,
+            "32": 14,
+            "33": 14,
+            "34": 14,
+            "35": 14,
+            "36": 14,
+            "37": 14,
+            "38": 14,
+            "39": 14,
+            "40": 14,
+            "41": 14,
+            "42": 14,
+            "44": 14,
+            "45": 14,
+            "46": 14,
+            "47": 14,
+            "48": 14,
+            "49": 14,
+            "50": 14,
+            "51": 14,
+            "52": 14,
+            "53": 14,
+            "54": 14,
+            "55": 14,
+            "56": 14,
+            "57": 14,
+            "58": 14,
+            "59": 14,
+            "60": 14
           },
           "Branches": []
         },
@@ -69191,7 +69191,7 @@
       "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject": {
         "System.Guid Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject::get_Id()": {
           "Lines": {
-            "30": 8
+            "30": 9
           },
           "Branches": []
         },
@@ -69203,67 +69203,67 @@
         },
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject::get_UnitDOItemId()": {
           "Lines": {
-            "32": 9
+            "32": 10
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject::get_UENItemId()": {
           "Lines": {
-            "33": 12
+            "33": 13
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject::get_PreparingItemId()": {
           "Lines": {
-            "34": 11
+            "34": 12
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Product Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject::get_Product()": {
           "Lines": {
-            "35": 35
+            "35": 36
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject::get_DesignColor()": {
           "Lines": {
-            "36": 9
+            "36": 10
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject::get_RONo()": {
           "Lines": {
-            "37": 9
+            "37": 10
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject::get_Quantity()": {
           "Lines": {
-            "38": 19
+            "38": 20
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Uom Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject::get_Uom()": {
           "Lines": {
-            "39": 11
+            "39": 12
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject::get_QuantityUENItem()": {
           "Lines": {
-            "40": 8
+            "40": 9
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject::get_RemainingQuantityPreparingItem()": {
           "Lines": {
-            "41": 9
+            "41": 10
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject::get_IsSave()": {
           "Lines": {
-            "42": 32
+            "42": 33
           },
           "Branches": []
         },
@@ -69276,30 +69276,30 @@
         },
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject::.ctor()": {
           "Lines": {
-            "8": 12,
-            "9": 12,
-            "11": 12
+            "8": 13,
+            "9": 13,
+            "11": 13
           },
           "Branches": []
         },
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.GarmentDeliveryReturnItemValueObject::.ctor(System.Guid,System.Guid,System.Int32,System.Int32,System.String,Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Product,System.String,System.String,System.Double,Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Uom,System.Guid,System.Double,System.Double,System.Boolean)": {
           "Lines": {
-            "13": 1,
-            "14": 1,
-            "15": 1,
-            "16": 1,
-            "17": 1,
-            "18": 1,
-            "19": 1,
-            "20": 1,
-            "21": 1,
-            "22": 1,
-            "23": 1,
-            "24": 1,
-            "25": 1,
-            "26": 1,
-            "27": 1,
-            "28": 1
+            "13": 2,
+            "14": 2,
+            "15": 2,
+            "16": 2,
+            "17": 2,
+            "18": 2,
+            "19": 2,
+            "20": 2,
+            "21": 2,
+            "22": 2,
+            "23": 2,
+            "24": 2,
+            "25": 2,
+            "26": 2,
+            "27": 2,
+            "28": 2
           },
           "Branches": []
         }
@@ -69309,19 +69309,19 @@
       "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Product": {
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Product::get_Id()": {
           "Lines": {
-            "22": 10
+            "22": 12
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Product::get_Name()": {
           "Lines": {
-            "24": 30
+            "24": 32
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Product::get_Code()": {
           "Lines": {
-            "26": 10
+            "26": 12
           },
           "Branches": []
         },
@@ -69334,20 +69334,20 @@
         },
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Product::.ctor()": {
           "Lines": {
-            "10": 13,
-            "11": 13,
-            "13": 13
+            "10": 14,
+            "11": 14,
+            "13": 14
           },
           "Branches": []
         },
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Product::.ctor(System.Int32,System.String,System.String)": {
           "Lines": {
-            "15": 2,
-            "16": 2,
-            "17": 2,
-            "18": 2,
-            "19": 2,
-            "20": 2
+            "15": 3,
+            "16": 3,
+            "17": 3,
+            "18": 3,
+            "19": 3,
+            "20": 3
           },
           "Branches": []
         }
@@ -69357,9 +69357,9 @@
       "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.ProductId": {
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.ProductId::.ctor(System.Int32)": {
           "Lines": {
-            "9": 15,
-            "10": 15,
-            "11": 15
+            "9": 17,
+            "10": 17,
+            "11": 17
           },
           "Branches": []
         }
@@ -69417,9 +69417,9 @@
       "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.StorageId": {
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.StorageId::.ctor(System.Int32)": {
           "Lines": {
-            "10": 19,
-            "11": 19,
-            "12": 19
+            "10": 20,
+            "11": 20,
+            "12": 20
           },
           "Branches": []
         }
@@ -69477,9 +69477,9 @@
       "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.UnitDepartmentId": {
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.UnitDepartmentId::.ctor(System.Int32)": {
           "Lines": {
-            "9": 18,
-            "10": 18,
-            "11": 18
+            "9": 19,
+            "10": 19,
+            "11": 19
           },
           "Branches": []
         }
@@ -69489,13 +69489,13 @@
       "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Uom": {
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Uom::get_Id()": {
           "Lines": {
-            "20": 10
+            "20": 12
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Uom::get_Unit()": {
           "Lines": {
-            "21": 10
+            "21": 12
           },
           "Branches": []
         },
@@ -69508,19 +69508,19 @@
         },
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Uom::.ctor()": {
           "Lines": {
-            "10": 7,
-            "11": 7,
-            "13": 7
+            "10": 8,
+            "11": 8,
+            "13": 8
           },
           "Branches": []
         },
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.Uom::.ctor(System.Int32,System.String)": {
           "Lines": {
-            "14": 2,
-            "15": 2,
-            "16": 2,
-            "17": 2,
-            "18": 2
+            "14": 3,
+            "15": 3,
+            "16": 3,
+            "17": 3,
+            "18": 3
           },
           "Branches": []
         }
@@ -69530,9 +69530,9 @@
       "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.UomId": {
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.UomId::.ctor(System.Int32)": {
           "Lines": {
-            "9": 15,
-            "10": 15,
-            "11": 15
+            "9": 17,
+            "10": 17,
+            "11": 17
           },
           "Branches": []
         }
@@ -69542,73 +69542,73 @@
       "Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnItemReadModel": {
         "System.Guid Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnItemReadModel::get_DRId()": {
           "Lines": {
-            "14": 16
+            "14": 18
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnItemReadModel::get_UnitDOItemId()": {
           "Lines": {
-            "15": 14
+            "15": 16
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnItemReadModel::get_UENItemId()": {
           "Lines": {
-            "16": 14
+            "16": 16
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnItemReadModel::get_PreparingItemId()": {
           "Lines": {
-            "17": 17
+            "17": 19
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnItemReadModel::get_ProductId()": {
           "Lines": {
-            "18": 14
+            "18": 16
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnItemReadModel::get_ProductCode()": {
           "Lines": {
-            "19": 17
+            "19": 19
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnItemReadModel::get_ProductName()": {
           "Lines": {
-            "20": 13
+            "20": 15
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnItemReadModel::get_DesignColor()": {
           "Lines": {
-            "21": 17
+            "21": 19
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnItemReadModel::get_RONo()": {
           "Lines": {
-            "22": 14
+            "22": 16
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnItemReadModel::get_Quantity()": {
           "Lines": {
-            "23": 17
+            "23": 19
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnItemReadModel::get_UomId()": {
           "Lines": {
-            "24": 14
+            "24": 16
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnItemReadModel::get_UomUnit()": {
           "Lines": {
-            "25": 14
+            "25": 16
           },
           "Branches": []
         },
@@ -69620,9 +69620,9 @@
         },
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnItemReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "10": 14,
-            "11": 14,
-            "13": 14
+            "10": 16,
+            "11": 16,
+            "13": 16
           },
           "Branches": []
         }
@@ -69632,97 +69632,97 @@
       "Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel": {
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_DRNo()": {
           "Lines": {
-            "15": 19
+            "15": 20
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_RONo()": {
           "Lines": {
-            "16": 21
+            "16": 22
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_Article()": {
           "Lines": {
-            "17": 19
+            "17": 20
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_UnitDOId()": {
           "Lines": {
-            "18": 17
+            "18": 18
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_UnitDONo()": {
           "Lines": {
-            "19": 18
+            "19": 19
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_UENId()": {
           "Lines": {
-            "20": 16
+            "20": 17
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_PreparingId()": {
           "Lines": {
-            "21": 18
+            "21": 19
           },
           "Branches": []
         },
         "System.Nullable`1<System.DateTimeOffset> Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_ReturnDate()": {
           "Lines": {
-            "22": 27
+            "22": 28
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_ReturnType()": {
           "Lines": {
-            "23": 18
+            "23": 19
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_UnitId()": {
           "Lines": {
-            "24": 19
+            "24": 20
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_UnitCode()": {
           "Lines": {
-            "25": 18
+            "25": 19
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_UnitName()": {
           "Lines": {
-            "26": 18
+            "26": 19
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_StorageId()": {
           "Lines": {
-            "27": 17
+            "27": 18
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_StorageCode()": {
           "Lines": {
-            "28": 18
+            "28": 19
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_StorageName()": {
           "Lines": {
-            "29": 18
+            "29": 19
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::get_IsUsed()": {
           "Lines": {
-            "30": 17
+            "30": 18
           },
           "Branches": []
         },
@@ -69734,9 +69734,9 @@
         },
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.ReadModels.GarmentDeliveryReturnReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "10": 16,
-            "11": 16,
-            "13": 16
+            "10": 17,
+            "11": 17,
+            "13": 17
           },
           "Branches": []
         }
@@ -73270,37 +73270,37 @@
       "Manufactures.Domain.GarmentAvalProducts.GarmentAvalProduct": {
         "System.String Manufactures.Domain.GarmentAvalProducts.GarmentAvalProduct::get_RONo()": {
           "Lines": {
-            "15": 29
+            "15": 31
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.GarmentAvalProduct::get_Article()": {
           "Lines": {
-            "16": 29
+            "16": 31
           },
           "Branches": []
         },
         "System.Nullable`1<System.DateTimeOffset> Manufactures.Domain.GarmentAvalProducts.GarmentAvalProduct::get_AvalDate()": {
           "Lines": {
-            "17": 29
+            "17": 31
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId Manufactures.Domain.GarmentAvalProducts.GarmentAvalProduct::get_UnitId()": {
           "Lines": {
-            "18": 27
+            "18": 29
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.GarmentAvalProduct::get_UnitCode()": {
           "Lines": {
-            "19": 27
+            "19": 29
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.GarmentAvalProduct::get_UnitName()": {
           "Lines": {
-            "20": 27
+            "20": 29
           },
           "Branches": []
         },
@@ -73444,27 +73444,27 @@
         },
         "System.Void Manufactures.Domain.GarmentAvalProducts.GarmentAvalProduct::.ctor(System.Guid,System.String,System.String,System.Nullable`1<System.DateTimeOffset>,Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId,System.String,System.String)": {
           "Lines": {
-            "22": 11,
-            "23": 11,
-            "24": 11,
-            "26": 11,
-            "27": 11,
-            "28": 11,
-            "29": 11,
-            "30": 11,
-            "31": 11,
-            "32": 11,
-            "34": 11,
-            "35": 11,
-            "36": 11,
-            "37": 11,
-            "38": 11,
-            "39": 11,
-            "40": 11,
-            "41": 11,
-            "42": 11,
-            "43": 11,
-            "44": 11
+            "22": 12,
+            "23": 12,
+            "24": 12,
+            "26": 12,
+            "27": 12,
+            "28": 12,
+            "29": 12,
+            "30": 12,
+            "31": 12,
+            "32": 12,
+            "34": 12,
+            "35": 12,
+            "36": 12,
+            "37": 12,
+            "38": 12,
+            "39": 12,
+            "40": 12,
+            "41": 12,
+            "42": 12,
+            "43": 12,
+            "44": 12
           },
           "Branches": []
         },
@@ -73488,73 +73488,73 @@
       "Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem": {
         "System.Guid Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem::get_APId()": {
           "Lines": {
-            "14": 21
+            "14": 26
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparingId Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem::get_PreparingId()": {
           "Lines": {
-            "15": 23
+            "15": 28
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparingItemId Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem::get_PreparingItemId()": {
           "Lines": {
-            "16": 23
+            "16": 28
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentAvalProducts.ValueObjects.ProductId Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem::get_ProductId()": {
           "Lines": {
-            "17": 23
+            "17": 28
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem::get_ProductCode()": {
           "Lines": {
-            "18": 23
+            "18": 28
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem::get_ProductName()": {
           "Lines": {
-            "19": 23
+            "19": 28
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem::get_DesignColor()": {
           "Lines": {
-            "20": 23
+            "20": 28
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem::get_Quantity()": {
           "Lines": {
-            "21": 22
+            "21": 27
           },
           "Branches": []
         },
         "Manufactures.Domain.GarmentAvalProducts.ValueObjects.UomId Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem::get_UomId()": {
           "Lines": {
-            "22": 23
+            "22": 28
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem::get_UomUnit()": {
           "Lines": {
-            "23": 23
+            "23": 28
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem::get_BasicPrice()": {
           "Lines": {
-            "24": 21
+            "24": 26
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem::get_IsReceived()": {
           "Lines": {
-            "25": 25
+            "25": 30
           },
           "Branches": []
         },
@@ -73875,39 +73875,39 @@
         },
         "System.Void Manufactures.Domain.GarmentAvalProducts.GarmentAvalProductItem::.ctor(System.Guid,System.Guid,Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparingId,Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparingItemId,Manufactures.Domain.GarmentAvalProducts.ValueObjects.ProductId,System.String,System.String,System.String,System.Double,Manufactures.Domain.GarmentAvalProducts.ValueObjects.UomId,System.String,System.Double,System.Boolean)": {
           "Lines": {
-            "27": 8,
-            "28": 8,
-            "29": 8,
-            "31": 8,
-            "32": 8,
-            "33": 8,
-            "34": 8,
-            "35": 8,
-            "36": 8,
-            "37": 8,
-            "38": 8,
-            "39": 8,
-            "40": 8,
-            "41": 8,
-            "42": 8,
-            "43": 8,
-            "45": 8,
-            "46": 8,
-            "47": 8,
-            "48": 8,
-            "49": 8,
-            "50": 8,
-            "51": 8,
-            "52": 8,
-            "53": 8,
-            "54": 8,
-            "55": 8,
-            "56": 8,
-            "57": 8,
-            "58": 8,
-            "59": 8,
-            "60": 8,
-            "61": 8
+            "27": 10,
+            "28": 10,
+            "29": 10,
+            "31": 10,
+            "32": 10,
+            "33": 10,
+            "34": 10,
+            "35": 10,
+            "36": 10,
+            "37": 10,
+            "38": 10,
+            "39": 10,
+            "40": 10,
+            "41": 10,
+            "42": 10,
+            "43": 10,
+            "45": 10,
+            "46": 10,
+            "47": 10,
+            "48": 10,
+            "49": 10,
+            "50": 10,
+            "51": 10,
+            "52": 10,
+            "53": 10,
+            "54": 10,
+            "55": 10,
+            "56": 10,
+            "57": 10,
+            "58": 10,
+            "59": 10,
+            "60": 10,
+            "61": 10
           },
           "Branches": []
         },
@@ -74018,9 +74018,9 @@
         },
         "System.Void Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentAvalProductItemValueObject::.ctor(System.Guid,System.Guid,Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparingId,Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparingItemId,Manufactures.Domain.GarmentAvalProducts.ValueObjects.Product,System.String,System.Double,Manufactures.Domain.GarmentAvalProducts.ValueObjects.Uom)": {
           "Lines": {
-            "14": 0,
-            "15": 0,
-            "17": 0
+            "14": 2,
+            "15": 2,
+            "17": 2
           },
           "Branches": []
         }
@@ -74030,7 +74030,7 @@
       "Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparing": {
         "System.String Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparing::get_Id()": {
           "Lines": {
-            "22": 0
+            "22": 5
           },
           "Branches": []
         },
@@ -74056,12 +74056,12 @@
         },
         "System.Void Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparing::.ctor(System.String,System.String,System.String)": {
           "Lines": {
-            "15": 3,
-            "16": 3,
-            "17": 3,
-            "18": 3,
-            "19": 3,
-            "20": 3
+            "15": 4,
+            "16": 4,
+            "17": 4,
+            "18": 4,
+            "19": 4,
+            "20": 4
           },
           "Branches": []
         }
@@ -74083,9 +74083,9 @@
       "Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparingId": {
         "System.Void Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparingId::.ctor(System.String)": {
           "Lines": {
-            "12": 13,
-            "13": 13,
-            "14": 13
+            "12": 17,
+            "13": 17,
+            "14": 17
           },
           "Branches": []
         }
@@ -74095,7 +74095,7 @@
       "Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparingItem": {
         "System.String Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparingItem::get_Id()": {
           "Lines": {
-            "23": 0
+            "23": 5
           },
           "Branches": []
         },
@@ -74127,13 +74127,13 @@
         },
         "System.Void Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparingItem::.ctor(System.String,Manufactures.Domain.GarmentAvalProducts.ValueObjects.ProductId,System.String,System.Double)": {
           "Lines": {
-            "15": 3,
-            "16": 3,
-            "17": 3,
-            "18": 3,
-            "19": 3,
-            "20": 3,
-            "21": 3
+            "15": 4,
+            "16": 4,
+            "17": 4,
+            "18": 4,
+            "19": 4,
+            "20": 4,
+            "21": 4
           },
           "Branches": []
         }
@@ -74156,9 +74156,9 @@
       "Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparingItemId": {
         "System.Void Manufactures.Domain.GarmentAvalProducts.ValueObjects.GarmentPreparingItemId::.ctor(System.String)": {
           "Lines": {
-            "12": 13,
-            "13": 13,
-            "14": 13
+            "12": 17,
+            "13": 17,
+            "14": 17
           },
           "Branches": []
         }
@@ -74168,19 +74168,19 @@
       "Manufactures.Domain.GarmentAvalProducts.ValueObjects.Product": {
         "System.Int32 Manufactures.Domain.GarmentAvalProducts.ValueObjects.Product::get_Id()": {
           "Lines": {
-            "22": 6
+            "22": 8
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.ValueObjects.Product::get_Name()": {
           "Lines": {
-            "24": 6
+            "24": 8
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.ValueObjects.Product::get_Code()": {
           "Lines": {
-            "26": 6
+            "26": 8
           },
           "Branches": []
         },
@@ -74193,20 +74193,20 @@
         },
         "System.Void Manufactures.Domain.GarmentAvalProducts.ValueObjects.Product::.ctor()": {
           "Lines": {
-            "10": 3,
-            "11": 3,
-            "13": 3
+            "10": 5,
+            "11": 5,
+            "13": 5
           },
           "Branches": []
         },
         "System.Void Manufactures.Domain.GarmentAvalProducts.ValueObjects.Product::.ctor(System.Int32,System.String,System.String)": {
           "Lines": {
-            "15": 3,
-            "16": 3,
-            "17": 3,
-            "18": 3,
-            "19": 3,
-            "20": 3
+            "15": 4,
+            "16": 4,
+            "17": 4,
+            "18": 4,
+            "19": 4,
+            "20": 4
           },
           "Branches": []
         }
@@ -74216,9 +74216,9 @@
       "Manufactures.Domain.GarmentAvalProducts.ValueObjects.ProductId": {
         "System.Void Manufactures.Domain.GarmentAvalProducts.ValueObjects.ProductId::.ctor(System.Int32)": {
           "Lines": {
-            "9": 11,
-            "10": 11,
-            "11": 11
+            "9": 13,
+            "10": 13,
+            "11": 13
           },
           "Branches": []
         }
@@ -74228,13 +74228,13 @@
       "Manufactures.Domain.GarmentAvalProducts.ValueObjects.Uom": {
         "System.Int32 Manufactures.Domain.GarmentAvalProducts.ValueObjects.Uom::get_Id()": {
           "Lines": {
-            "20": 6
+            "20": 8
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.ValueObjects.Uom::get_Unit()": {
           "Lines": {
-            "21": 6
+            "21": 8
           },
           "Branches": []
         },
@@ -74247,19 +74247,19 @@
         },
         "System.Void Manufactures.Domain.GarmentAvalProducts.ValueObjects.Uom::.ctor()": {
           "Lines": {
-            "10": 3,
-            "11": 3,
-            "13": 3
+            "10": 5,
+            "11": 5,
+            "13": 5
           },
           "Branches": []
         },
         "System.Void Manufactures.Domain.GarmentAvalProducts.ValueObjects.Uom::.ctor(System.Int32,System.String)": {
           "Lines": {
-            "14": 3,
-            "15": 3,
-            "16": 3,
-            "17": 3,
-            "18": 3
+            "14": 4,
+            "15": 4,
+            "16": 4,
+            "17": 4,
+            "18": 4
           },
           "Branches": []
         }
@@ -74269,9 +74269,9 @@
       "Manufactures.Domain.GarmentAvalProducts.ValueObjects.UomId": {
         "System.Void Manufactures.Domain.GarmentAvalProducts.ValueObjects.UomId::.ctor(System.Int32)": {
           "Lines": {
-            "9": 11,
-            "10": 11,
-            "11": 11
+            "9": 13,
+            "10": 13,
+            "11": 13
           },
           "Branches": []
         }
@@ -74281,73 +74281,73 @@
       "Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel": {
         "System.Guid Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel::get_APId()": {
           "Lines": {
-            "15": 13
+            "15": 15
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel::get_PreparingId()": {
           "Lines": {
-            "16": 11
+            "16": 13
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel::get_PreparingItemId()": {
           "Lines": {
-            "17": 14
+            "17": 16
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel::get_ProductId()": {
           "Lines": {
-            "18": 11
+            "18": 13
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel::get_ProductCode()": {
           "Lines": {
-            "19": 14
+            "19": 16
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel::get_ProductName()": {
           "Lines": {
-            "20": 11
+            "20": 13
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel::get_DesignColor()": {
           "Lines": {
-            "21": 14
+            "21": 16
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel::get_Quantity()": {
           "Lines": {
-            "22": 13
+            "22": 15
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel::get_UomId()": {
           "Lines": {
-            "23": 11
+            "23": 13
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel::get_UomUnit()": {
           "Lines": {
-            "24": 11
+            "24": 13
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel::get_BasicPrice()": {
           "Lines": {
-            "25": 10
+            "25": 12
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel::get_IsReceived()": {
           "Lines": {
-            "26": 12
+            "26": 14
           },
           "Branches": []
         },
@@ -74359,9 +74359,9 @@
         },
         "System.Void Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductItemReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "10": 12,
-            "11": 12,
-            "13": 12
+            "10": 14,
+            "11": 14,
+            "13": 14
           },
           "Branches": []
         }
@@ -74371,37 +74371,37 @@
       "Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductReadModel": {
         "System.String Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductReadModel::get_RONo()": {
           "Lines": {
-            "14": 16
+            "14": 17
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductReadModel::get_Article()": {
           "Lines": {
-            "15": 13
+            "15": 14
           },
           "Branches": []
         },
         "System.Nullable`1<System.DateTimeOffset> Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductReadModel::get_AvalDate()": {
           "Lines": {
-            "16": 22
+            "16": 23
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductReadModel::get_UnitId()": {
           "Lines": {
-            "17": 12
+            "17": 13
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductReadModel::get_UnitCode()": {
           "Lines": {
-            "18": 12
+            "18": 13
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductReadModel::get_UnitName()": {
           "Lines": {
-            "19": 12
+            "19": 13
           },
           "Branches": []
         },
@@ -74413,9 +74413,9 @@
         },
         "System.Void Manufactures.Domain.GarmentAvalProducts.ReadModels.GarmentAvalProductReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "9": 12,
-            "10": 12,
-            "12": 12
+            "9": 13,
+            "10": 13,
+            "12": 13
           },
           "Branches": []
         }
@@ -76255,10 +76255,10 @@
         },
         "System.Void Manufactures.Domain.Events.OnGarmentAvalProductPlaced::.ctor(System.Guid)": {
           "Lines": {
-            "9": 19,
-            "10": 19,
-            "11": 19,
-            "12": 19
+            "9": 22,
+            "10": 22,
+            "11": 22,
+            "12": 22
           },
           "Branches": []
         }
@@ -76350,10 +76350,10 @@
         },
         "System.Void Manufactures.Domain.Events.OnGarmentDeliveryReturnPlaced::.ctor(System.Guid)": {
           "Lines": {
-            "9": 27,
-            "10": 27,
-            "11": 27,
-            "12": 27
+            "9": 30,
+            "10": 30,
+            "11": 30,
+            "12": 30
           },
           "Branches": []
         }
@@ -76521,10 +76521,10 @@
         },
         "System.Void Manufactures.Domain.Events.OnGarmentPreparingPlaced::.ctor(System.Guid)": {
           "Lines": {
-            "9": 69,
-            "10": 69,
-            "11": 69,
-            "12": 69
+            "9": 72,
+            "10": 72,
+            "11": 72,
+            "12": 72
           },
           "Branches": []
         }
