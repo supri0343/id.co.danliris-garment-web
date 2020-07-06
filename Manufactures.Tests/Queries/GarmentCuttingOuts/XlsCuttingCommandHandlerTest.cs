@@ -231,6 +231,8 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
 				{
 					new GarmentAvalComponentItem(guidAvalComponentItem,guidAvalComponent,guidCuttingInDetail,new Guid(),new Guid(),new ProductId(1),"","","","",10,0, new SizeId(1),"",100,100).GetReadModel()
 				}.AsQueryable());
+
+			
 			_mockGarmentAvalComponentRepository
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentAvalComponentReadModel>
