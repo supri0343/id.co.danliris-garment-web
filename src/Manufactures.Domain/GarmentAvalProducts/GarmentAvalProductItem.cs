@@ -144,7 +144,7 @@ namespace Manufactures.Domain.GarmentAvalProducts
 
         public void setQuantity(double newQuantity)
         {
-            Validator.ThrowWhenTrue(() => newQuantity <= 0);
+            Validator.ThrowWhenTrue(() => newQuantity < 0);
 
 
             if (newQuantity != Quantity)
