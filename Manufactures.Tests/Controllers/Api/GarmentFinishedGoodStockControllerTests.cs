@@ -6,6 +6,7 @@ using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,6 +75,34 @@ namespace Manufactures.Tests.Controllers.Api
 			// Assert
 			Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
 		}
+
+		
+		[Fact]
+		public async Task GetList_Success()
+		{
+			// Arrange
+			var id = Guid.NewGuid();
+			var unitUnderTest = CreateGarmentFinishedGoodStockController();
+			_mockFinishedGoodStockRepository
+				.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+				.Returns(new List<GarmentFinishedGoodStockReadModel>().AsQueryable());
+
+			_mockFinishedGoodStockRepository
+				.Setup(s => s.Find(It.IsAny<IQueryable<GarmentFinishedGoodStockReadModel>>()))
+				.Returns(new List<GarmentFinishedGoodStock>()
+				{
+					new GarmentFinishedGoodStock(id,"","","",new Domain.Shared.ValueObjects.UnitDepartmentId(1),"","",new Domain.Shared.ValueObjects.GarmentComodityId(1),"","",new Domain.Shared.ValueObjects.SizeId(1),"",new Domain.Shared.ValueObjects.UomId(1),"",10,10,10)
+				});
+			var orderData = new
+			{
+				UnitName = "desc",
+			};
+
+			string order = JsonConvert.SerializeObject(orderData);
+			var result = await unitUnderTest.GetList(1, 25, order, new List<string>(), "", "{}");
+			Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+		}
+
 		[Fact]
 		public async Task GetComplete_StateUnderTest_ExpectedBehavior()
 		{
@@ -92,7 +121,14 @@ namespace Manufactures.Tests.Controllers.Api
 				});
 
 			// Act
-			var result = await unitUnderTest.GetComplete();
+
+			var orderData = new
+			{
+				UnitName = "desc",
+			};
+
+			string order = JsonConvert.SerializeObject(orderData);
+			var result = await unitUnderTest.GetComplete(1,25,order,new List<string>(),"","{}");
 
 			// Assert
 			Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));

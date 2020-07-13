@@ -78,7 +78,7 @@ namespace Manufactures.Controllers.Api
             {
                 Items = _garmentExpenditureGoodReturnItemRepository.Find(o => o.ReturId == retur.Identity).OrderBy(i => i.SizeName).Select(returItem => new GarmentExpenditureGoodReturnItemDto(returItem)
                 {
-                }).ToList()
+                }).OrderBy(o => o.Size.Size).ToList()
             }
             ).FirstOrDefault();
 

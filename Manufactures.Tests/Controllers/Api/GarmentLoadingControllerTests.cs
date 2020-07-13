@@ -12,6 +12,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -169,11 +170,83 @@ namespace Manufactures.Tests.Controllers.Api
                 .ReturnsAsync(new GarmentLoading(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null));
 
             // Act
-            var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentLoadingCommand>());
+            var command = new PlaceGarmentLoadingCommand()
+            {
+                LoadingNo = "LoadingNo",
+                SewingDONo = "SewingDONo",
+                Price = 1
+            };
+            var result = await unitUnderTest.Post(command);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
+
+        [Fact]
+        public async Task Post_Throws_Exception()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentLoadingController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<PlaceGarmentLoadingCommand>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+            // Assert
+            var command = new PlaceGarmentLoadingCommand();
+            
+            await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(command));
+           
+        }
+
+        [Fact]
+        public async Task GetComplete_Success()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentLoadingController();
+            var id = Guid.NewGuid();
+            _mockLoadingRepository
+               .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+               .Returns(new List<GarmentLoadingReadModel>()
+               {
+                   new GarmentLoadingReadModel(id)
+               }
+               .AsQueryable());
+
+            _mockLoadingRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentLoadingReadModel>>()))
+                .Returns(new List<GarmentLoading>()
+                {
+                    new GarmentLoading(id, null , id, null, new UnitDepartmentId(1), null, null, "RONo",null,new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null)
+                });
+
+            _mockLoadingItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentLoadingItemReadModel>()
+                {
+                    new GarmentLoadingItemReadModel(id)
+                }.AsQueryable());
+
+            _mockLoadingItemRepository
+              .Setup(s => s.Find(It.IsAny<IQueryable<GarmentLoadingItemReadModel>>()))
+              .Returns(new List<GarmentLoadingItem>()
+              {
+                    new GarmentLoadingItem(id, id,id,new SizeId(1), "size", new ProductId(1), null, null, "design", 1,1,10,new UomId(1),null, "color",1)
+              });
+
+            var orderData = new
+            {
+                Article = "desc",
+            };
+
+            string order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.GetComplete(1, 25, order, new List<string>(), "", "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
 
         [Fact]
         public async Task Put_StateUnderTest_ExpectedBehavior()
@@ -303,7 +376,9 @@ namespace Manufactures.Tests.Controllers.Api
             Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
 
         }
-		[Fact]
+
+       
+        [Fact]
 		public async Task GetXLSBookkeepingBehavior()
 		{
 			var unitUnderTest = CreateGarmentLoadingController();
@@ -319,6 +394,23 @@ namespace Manufactures.Tests.Controllers.Api
 			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
 
 		}
+
+        [Fact]
+        public async Task GetXLS_Throws_Exception()
+        {
+            var unitUnderTest = CreateGarmentLoadingController();
+
+            _MockMediator
+                 .Setup(s => s.Send(It.IsAny<GetXlsLoadingQuery>(), It.IsAny<CancellationToken>()))
+                 .Throws(new Exception());
+
+            // Act
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "bookkeeping", 1, 25, "{}");
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.InternalServerError);
+
+        }
 
         [Fact]
         public async Task Put_Dates_StateUnderTest_ExpectedBehavior()
@@ -361,7 +453,7 @@ namespace Manufactures.Tests.Controllers.Api
             UpdateDatesGarmentLoadingCommand command2 = new UpdateDatesGarmentLoadingCommand(ids, DateTimeOffset.MinValue);
 
             // Act
-            var result1 = await unitUnderTest.UpdateDates(command);
+            var result1 = await unitUnderTest.UpdateDates(command2);
 
             // Assert
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result1));

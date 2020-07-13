@@ -171,6 +171,7 @@ namespace Manufactures.Controllers.Api
             GarmentSewingInDto garmentSewingIn = _garmentSewingInRepository.Find(o => o.Identity == guid).Select(sewingIn => new GarmentSewingInDto(sewingIn)
             {
                 Items = _garmentSewingInItemRepository.Find(o => o.SewingInId == sewingIn.Identity).OrderBy(i=>i.Color).ThenBy(i=>i.SizeName).Select(sewingInItem => new GarmentSewingInItemDto(sewingInItem)).ToList()
+
             }
             ).FirstOrDefault();
 

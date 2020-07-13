@@ -29,6 +29,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubconCuttingOuts
         private readonly Mock<IGarmentSubconCuttingOutDetailRepository> _mockSubconCuttingOutDetailRepository;
         private readonly Mock<IGarmentCuttingInDetailRepository> _mockCuttingInDetailRepository;
         private readonly Mock<IGarmentSubconCuttingRepository> _mockSubconCuttingRepository;
+        private readonly Mock<IGarmentSubconCuttingRelationRepository> _mockSubconCuttingRelationRepository;
 
         public RemoveGarmentSubconCuttingOutCommandHandlerTests()
         {
@@ -37,12 +38,14 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubconCuttingOuts
             _mockSubconCuttingOutDetailRepository = CreateMock<IGarmentSubconCuttingOutDetailRepository>();
             _mockCuttingInDetailRepository = CreateMock<IGarmentCuttingInDetailRepository>();
             _mockSubconCuttingRepository = CreateMock<IGarmentSubconCuttingRepository>();
+            _mockSubconCuttingRelationRepository = CreateMock<IGarmentSubconCuttingRelationRepository>();
 
             _MockStorage.SetupStorage(_mockSubconCuttingOutRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingOutItemRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingOutDetailRepository);
             _MockStorage.SetupStorage(_mockCuttingInDetailRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingRepository);
+            _MockStorage.SetupStorage(_mockSubconCuttingRelationRepository);
         }
 
         private RemoveGarmentSubconCuttingOutCommandHandler CreateRemoveGarmentSubconCuttingOutCommandHandler()
@@ -95,6 +98,13 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubconCuttingOuts
 					new GarmentSubconCutting(new Guid(),"", new SizeId(1),"",0,new ProductId(1),"","",new GarmentComodityId(0),"","","","asa",0).GetReadModel()
 				}.AsQueryable());
 
+            _mockSubconCuttingRelationRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentSubconCuttingRelationReadModel>
+				{
+					new GarmentSubconCuttingRelation(new Guid(), new Guid(), new Guid()).GetReadModel()
+				}.AsQueryable());
+
 			_mockSubconCuttingOutRepository
 				.Setup(s => s.Update(It.IsAny<GarmentSubconCuttingOut>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentSubconCuttingOut>()));
@@ -110,6 +120,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubconCuttingOuts
             _mockSubconCuttingRepository
                 .Setup(s => s.Update(It.IsAny<GarmentSubconCutting>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentSubconCutting>()));
+            _mockSubconCuttingRelationRepository
+                .Setup(s => s.Update(It.IsAny<GarmentSubconCuttingRelation>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentSubconCuttingRelation>()));
 
             _MockStorage
                 .Setup(x => x.Save())

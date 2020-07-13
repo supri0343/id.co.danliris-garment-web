@@ -21,20 +21,22 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 		public string style { get; internal set; }
 		public double remainQty { get; internal set; }
 		public decimal price { get; internal set; }
+		public decimal nominal { get; internal set; }
 		public GarmentMonitoringSewingDto(GarmentMonitoringSewingDto garmentMonitoring)
 		{
 			 
-			this.roJob = garmentMonitoring.roJob;
-			this.article = garmentMonitoring.article;
-			this.qtyOrder = garmentMonitoring.qtyOrder;
-			this.stock = garmentMonitoring.stock;
-			this.sewingOutQtyPcs = garmentMonitoring.sewingOutQtyPcs;
-			this.loadingQtyPcs = garmentMonitoring.loadingQtyPcs;
-			this.uomUnit = garmentMonitoring.uomUnit;
-			this.remainQty = garmentMonitoring.remainQty;
-			this.style = garmentMonitoring.style;
-			this.price = garmentMonitoring.price;
-			this.buyerCode = garmentMonitoring.buyerCode;
+			roJob = garmentMonitoring.roJob;
+			article = garmentMonitoring.article;
+			qtyOrder = garmentMonitoring.qtyOrder;
+			stock = garmentMonitoring.stock;
+			sewingOutQtyPcs = garmentMonitoring.sewingOutQtyPcs;
+			loadingQtyPcs = garmentMonitoring.loadingQtyPcs;
+			uomUnit = garmentMonitoring.uomUnit;
+			remainQty = garmentMonitoring.remainQty;
+			style = garmentMonitoring.style;
+			price = garmentMonitoring.price;
+			buyerCode = garmentMonitoring.buyerCode;
+			nominal = garmentMonitoring.nominal;
 		}
 	}
 }

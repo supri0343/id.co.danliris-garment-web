@@ -5,9 +5,11 @@ using Manufactures.Domain.GarmentSewingDOs.Commands;
 using Manufactures.Domain.GarmentSewingDOs.ReadModels;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Manufactures.Domain.GarmentSewingDOs.ValueObjects;
+using Manufactures.Domain.Shared.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +37,7 @@ namespace Manufactures.Tests.Controllers.Api
             _MockStorage.SetupStorage(_mockGarmentSewingDOItemRepository);
         }
 
-        private GarmentDeliveryReturnController CreateGarmentDeliveryReturnController()
+        private GarmentSewingDOController CreateGarmentSewingDOController()
         {
             var user = new Mock<ClaimsPrincipal>();
             var claims = new Claim[]
@@ -43,7 +45,7 @@ namespace Manufactures.Tests.Controllers.Api
                 new Claim("username", "unittestusername")
             };
             user.Setup(u => u.Claims).Returns(claims);
-            GarmentDeliveryReturnController controller = (GarmentDeliveryReturnController)Activator.CreateInstance(typeof(GarmentDeliveryReturnController), _MockServiceProvider.Object);
+            GarmentSewingDOController controller = (GarmentSewingDOController)Activator.CreateInstance(typeof(GarmentSewingDOController), _MockServiceProvider.Object);
             controller.ControllerContext = new ControllerContext()
             {
                 HttpContext = new DefaultHttpContext()
@@ -57,120 +59,146 @@ namespace Manufactures.Tests.Controllers.Api
             return controller;
         }
 
-        //[Fact]
-        //public async Task Get_StateUnderTest_ExpectedBehavior()
-        //{
-        //    // Arrange
-        //    var unitUnderTest = CreateGarmentDeliveryReturnController();
+        [Fact]
+        public async Task Get_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSewingDOController();
+            var id = Guid.NewGuid();
+            _mockGarmentSewingDORepository
+                .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<GarmentSewingDOReadModel>().AsQueryable());
 
-        //    _mockGarmentDeliveryReturnRepository
-        //        .Setup(s => s.Read(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<string>()))
-        //        .Returns(new List<GarmentDeliveryReturnReadModel>().AsQueryable());
+            _mockGarmentSewingDORepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingDOReadModel>>()))
+                .Returns(new List<GarmentSewingDO>()
+                {
+                    new GarmentSewingDO(id,"sewingDONo",id,new UnitDepartmentId(1),"unitFromCode","unitFromName",new UnitDepartmentId(1),"unitCode","unitName","roNo","article",new GarmentComodityId(1),"comodityCode","comodityName",DateTimeOffset.Now)
+                });
 
-        //    _mockGarmentDeliveryReturnRepository
-        //        .Setup(s => s.Find(It.IsAny<IQueryable<GarmentDeliveryReturnReadModel>>()))
-        //        .Returns(new List<GarmentDeliveryReturn>()
-        //        {
-        //            new GarmentDeliveryReturn(Guid.NewGuid(), null, "RONo", null, 0, null, 0, null, DateTimeOffset.Now, null, new UnitDepartmentId(1), null, null, new StorageId(1), null, null, false)
-        //        });
+            _mockGarmentSewingDOItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSewingDOItemReadModel>()
+                {
+                    new GarmentSewingDOItemReadModel(id)
+                }.AsQueryable());
 
-        //    _mockGarmentDeliveryReturnItemRepository
-        //        .Setup(s => s.Find(It.IsAny<IQueryable<GarmentDeliveryReturnItemReadModel>>()))
-        //        .Returns(new List<GarmentDeliveryReturnItem>()
-        //        {
-        //            new GarmentDeliveryReturnItem(Guid.NewGuid(), Guid.NewGuid(), 0, 0, null, new ProductId(1), null, null, null, "RONo", 0, new UomId(1), null)
-        //        });
 
-        //    _mockGarmentDeliveryReturnItemRepository
-        //        .Setup(s => s.Query)
-        //        .Returns(new List<GarmentDeliveryReturnItemReadModel>()
-        //        {
-        //            new GarmentDeliveryReturnItemReadModel(Guid.NewGuid())
-        //        }.AsQueryable());
+            // Act
+            var orderData = new
+            {
+                article = "desc",
+            };
+            string order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.Get(1,25, order,new List<string>(),"","{}");
 
-        //    // Act
-        //    var result = await unitUnderTest.Get();
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
 
-        //    // Assert
-        //    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        //}
+        [Fact]
+        public async Task GetBy_id()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSewingDOController();
+            var id = Guid.NewGuid();
 
-        //[Fact]
-        //public async Task GetSingle_StateUnderTest_ExpectedBehavior()
-        //{
-        //    // Arrange
-        //    var unitUnderTest = CreateGarmentDeliveryReturnController();
+            _mockGarmentSewingDORepository
+               .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingDOReadModel, bool>>>()))
+               .Returns(new List<GarmentSewingDO>()
+               {
+                    new GarmentSewingDO(id,"sewingDONo",id,new UnitDepartmentId(1),"unitFromCode","unitFromName",new UnitDepartmentId(1),"unitCode","unitName","roNo","article",new GarmentComodityId(1),"comodityCode","comodityName",DateTimeOffset.Now)
+               });
 
-        //    _mockGarmentDeliveryReturnRepository
-        //        .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentDeliveryReturnReadModel, bool>>>()))
-        //        .Returns(new List<GarmentDeliveryReturn>()
-        //        {
-        //            new GarmentDeliveryReturn(Guid.NewGuid(), null, "RONo", null, 0, null, 0, null, DateTimeOffset.Now, null, new UnitDepartmentId(1), null, null, new StorageId(1), null, null, false)
-        //        });
 
-        //    _mockGarmentDeliveryReturnItemRepository
-        //        .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentDeliveryReturnItemReadModel, bool>>>()))
-        //        .Returns(new List<GarmentDeliveryReturnItem>()
-        //        {
-        //            new GarmentDeliveryReturnItem(Guid.NewGuid(), Guid.NewGuid(), 0, 0, null, new ProductId(1), null, null, null, "RONo", 0, new UomId(1), null)
-        //        });
+            _mockGarmentSewingDOItemRepository
+              .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingDOItemReadModel,bool>>>()))
+              .Returns(new List<GarmentSewingDOItem>()
+              {
+                    new GarmentSewingDOItem(id,id,id,id,new ProductId(1),"productCode","productName","designColor",new SizeId(1),"sizeName",1,new UomId(1),"uomUnit","color",1,1,1)
+              });
 
-        //    // Act
-        //    var result = await unitUnderTest.Get(Guid.NewGuid().ToString());
+            var result = await unitUnderTest.Get(id.ToString());
 
-        //    // Assert
-        //    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        //}
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
 
-        //[Fact]
-        //public async Task Post_StateUnderTest_ExpectedBehavior()
-        //{
-        //    // Arrange
-        //    var unitUnderTest = CreateGarmentDeliveryReturnController();
+        [Fact]
+        public async Task GetByCutOutId_return_OK()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSewingDOController();
+            var id = Guid.NewGuid();
 
-        //    _MockMediator
-        //        .Setup(s => s.Send(It.IsAny<PlaceGarmentDeliveryReturnCommand>(), It.IsAny<CancellationToken>()))
-        //        .ReturnsAsync(new GarmentDeliveryReturn(Guid.NewGuid(), null, "RONo", null, 0, null, 0, null, DateTimeOffset.Now, null, new UnitDepartmentId(1), null, null, new StorageId(1), null, null, false));
+            _mockGarmentSewingDORepository
+              .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingDOReadModel,bool>>>()))
+              .Returns(new List<GarmentSewingDO>()
+              {
+                    new GarmentSewingDO(id,"sewingDONo",id,new UnitDepartmentId(1),"unitFromCode","unitFromName",new UnitDepartmentId(1),"unitCode","unitName","roNo","article",new GarmentComodityId(1),"comodityCode","comodityName",DateTimeOffset.Now)
+              });
 
-        //    // Act
-        //    var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentDeliveryReturnCommand>());
+            _mockGarmentSewingDOItemRepository
+              .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingDOItemReadModel, bool>>>()))
+              .Returns(new List<GarmentSewingDOItem>()
+              {
+                    new GarmentSewingDOItem(id,id,id,id,new ProductId(1),"productCode","productName","designColor",new SizeId(1),"sizeName",1,new UomId(1),"uomUnit","color",1,1,1)
+              });
 
-        //    // Assert
-        //    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        //}
 
-        //[Fact]
-        //public async Task Put_StateUnderTest_ExpectedBehavior()
-        //{
-        //    // Arrange
-        //    var unitUnderTest = CreateGarmentDeliveryReturnController();
+            var result = await unitUnderTest.GetByCutOutId(id.ToString());
 
-        //    _MockMediator
-        //        .Setup(s => s.Send(It.IsAny<UpdateGarmentDeliveryReturnCommand>(), It.IsAny<CancellationToken>()))
-        //        .ReturnsAsync(new GarmentDeliveryReturn(Guid.NewGuid(), null, "RONo", null, 0, null, 0, null, DateTimeOffset.Now, null, new UnitDepartmentId(1), null, null, new StorageId(1), null, null, false));
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+            
+        }
 
-        //    // Act
-        //    var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentDeliveryReturnCommand());
+        [Fact]
+        public async Task GetComplete_return_OK()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSewingDOController();
+            var id = Guid.NewGuid();
+            _mockGarmentSewingDORepository
+                .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<GarmentSewingDOReadModel>().AsQueryable());
 
-        //    // Assert
-        //    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        //}
 
-        //[Fact]
-        //public async Task Delete_StateUnderTest_ExpectedBehavior()
-        //{
-        //    // Arrange
-        //    var unitUnderTest = CreateGarmentDeliveryReturnController();
+            _mockGarmentSewingDORepository
+               .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingDOReadModel>>()))
+               .Returns(new List<GarmentSewingDO>()
+               {
+                    new GarmentSewingDO(id,"sewingDONo",id,new UnitDepartmentId(1),"unitFromCode","unitFromName",new UnitDepartmentId(1),"unitCode","unitName","roNo","article",new GarmentComodityId(1),"comodityCode","comodityName",DateTimeOffset.Now)
+               });
 
-        //    _MockMediator
-        //        .Setup(s => s.Send(It.IsAny<RemoveGarmentDeliveryReturnCommand>(), It.IsAny<CancellationToken>()))
-        //        .ReturnsAsync(new GarmentDeliveryReturn(Guid.NewGuid(), null, "RONo", null, 0, null, 0, null, DateTimeOffset.Now, null, new UnitDepartmentId(1), null, null, new StorageId(1), null, null, false));
 
-        //    // Act
-        //    var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
+            _mockGarmentSewingDOItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSewingDOItemReadModel>()
+                {
+                    new GarmentSewingDOItemReadModel(id)
+                }.AsQueryable());
 
-        //    // Assert
-        //    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        //}
-    }
+            _mockGarmentSewingDOItemRepository
+             .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingDOItemReadModel>>()))
+             .Returns(new List<GarmentSewingDOItem>()
+             {
+                    new GarmentSewingDOItem(id,id,id,id,new ProductId(1),"productCode","productName","designColor",new SizeId(1),"sizeName",1,new UomId(1),"uomUnit","color",1,1,1)
+             });
+
+
+            // Act
+            var orderData = new
+            {
+                article = "desc",
+            };
+            string order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.GetComplete(1,25,order,new List<string>(),"","{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+
+        }
+
+        }
 }

@@ -97,9 +97,9 @@ namespace Manufactures.Controllers.Api
                 {
                     Details = _garmentSewingOutDetailRepository.Find(o => o.SewingOutItemId == sewOutItem.Identity).OrderBy(i => i.SizeName).Select(sewOutDetail => new GarmentSewingOutDetailDto(sewOutDetail)
                     {
-                    }).ToList()
+                    }).OrderBy(o => o.Size.Size).ToList()
                     
-                }).ToList()
+                }).OrderBy(o => o.Size.Size).ToList()
             }
             ).FirstOrDefault();
 
