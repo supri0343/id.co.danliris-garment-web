@@ -81,7 +81,7 @@ namespace Manufactures.Controllers.Api
 
             GarmentExpenditureGoodDto garmentExpenditureGoodDto = _garmentExpenditureGoodRepository.Find(o => o.Identity == guid).Select(finishOut => new GarmentExpenditureGoodDto(finishOut)
             {
-                Items = _garmentExpenditureGoodItemRepository.Find(o => o.ExpenditureGoodId == finishOut.Identity).Select(finishOutItem => new GarmentExpenditureGoodItemDto(finishOutItem)
+                Items = _garmentExpenditureGoodItemRepository.Find(o => o.ExpenditureGoodId == finishOut.Identity).OrderBy(i => i.SizeName).Select(finishOutItem => new GarmentExpenditureGoodItemDto(finishOutItem)
                 {
                 }).ToList()
             }

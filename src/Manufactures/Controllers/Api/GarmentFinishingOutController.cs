@@ -90,9 +90,9 @@ namespace Manufactures.Controllers.Api
 
             GarmentFinishingOutDto garmentFinishingOutDto = _garmentFinishingOutRepository.Find(o => o.Identity == guid).Select(finishOut => new GarmentFinishingOutDto(finishOut)
             {
-                Items = _garmentFinishingOutItemRepository.Find(o => o.FinishingOutId == finishOut.Identity).Select(finishOutItem => new GarmentFinishingOutItemDto(finishOutItem)
+                Items = _garmentFinishingOutItemRepository.Find(o => o.FinishingOutId == finishOut.Identity).OrderBy(i => i.Color).ThenBy(i => i.SizeName).Select(finishOutItem => new GarmentFinishingOutItemDto(finishOutItem)
                 {
-                    Details = _garmentFinishingOutDetailRepository.Find(o => o.FinishingOutItemId == finishOutItem.Identity).Select(finishOutDetail => new GarmentFinishingOutDetailDto(finishOutDetail)
+                    Details = _garmentFinishingOutDetailRepository.Find(o => o.FinishingOutItemId == finishOutItem.Identity).OrderBy(i => i.SizeName).Select(finishOutDetail => new GarmentFinishingOutDetailDto(finishOutDetail)
                     {
                     }).ToList()
 

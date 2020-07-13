@@ -84,7 +84,7 @@ namespace Manufactures.Controllers.Api
 
             GarmentLoadingDto garmentLoadingDto = _garmentLoadingRepository.Find(o => o.Identity == guid).Select(loading => new GarmentLoadingDto(loading)
             {
-                Items = _garmentLoadingItemRepository.Find(o => o.LoadingId == loading.Identity).Select(loadingItem => new GarmentLoadingItemDto(loadingItem)
+                Items = _garmentLoadingItemRepository.Find(o => o.LoadingId == loading.Identity).OrderBy(i => i.Color).ThenBy(i => i.SizeName).Select(loadingItem => new GarmentLoadingItemDto(loadingItem)
                 ).ToList()
             }
             ).FirstOrDefault();
