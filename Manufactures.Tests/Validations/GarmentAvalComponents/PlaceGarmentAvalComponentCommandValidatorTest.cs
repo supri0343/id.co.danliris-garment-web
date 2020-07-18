@@ -36,6 +36,7 @@ namespace Manufactures.Tests.Validations.GarmentAvalComponents
         public void Place_NotHaveError()
         {
             // Arrange
+            Guid id = Guid.NewGuid();
             var validator = GetValidationRules();
             var a = new PlaceGarmentAvalComponentCommand();
             a.Unit = new UnitDepartment(1, "UnitCode", "UnitName");
@@ -52,6 +53,19 @@ namespace Manufactures.Tests.Validations.GarmentAvalComponents
                     IsSave = true,
                     Product = new Product(1, "Code","Name"),
                     Quantity = 10,
+                    BasicPrice =1,
+                    Color ="Color",
+                    CuttingInDetailId =id,
+                    DesignColor ="DesignColor",
+                    IsDifferentSize =true,
+                    Price =1,
+                    SewingOutDetailId =id,
+                    SewingOutItemId =id,
+                    Size=new SizeValueObject()
+                    {
+                        Id =1,
+                        Size="Size"
+                    },
                     SourceQuantity = 10
                 }
             };

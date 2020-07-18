@@ -22,8 +22,4 @@
     <ProjectReference Include="..\src\Manufactures\Manufactures.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validations\NewFolder\" />
-  </ItemGroup>
-
 </Project>
