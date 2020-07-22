@@ -31,6 +31,22 @@ namespace Manufactures.Tests.Validations.GarmentSubconCuttingOuts
         }
 
         [Fact]
+        public void Place_HaveError_Date()
+        {
+            // Arrange
+            var validator = GetValidationRules();
+            var unitUnderTest = new PlaceGarmentSubconCuttingOutCommand();
+            unitUnderTest.CuttingOutDate = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.CuttingInDate = DateTimeOffset.Now;
+
+            // Action
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+        }
+
+        [Fact]
         public void Place_ShouldNotHaveError()
         {
             // Arrange

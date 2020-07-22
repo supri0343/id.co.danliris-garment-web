@@ -32,6 +32,22 @@ namespace Manufactures.Tests.Validations.GarmentAvalProducts
         }
 
         [Fact]
+        public void Place_HaveError_Date()
+        {
+            var validator = GetValidationRules();
+            var unitUnderTest = new PlaceGarmentAvalProductCommand();
+
+            unitUnderTest.AvalDate = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.PreparingDate = DateTimeOffset.Now;
+
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+
+        }
+
+        [Fact]
         public void Place_NotHaveError()
         {
             // Arrange

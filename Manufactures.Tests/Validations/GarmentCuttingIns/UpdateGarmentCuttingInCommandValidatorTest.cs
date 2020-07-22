@@ -30,6 +30,22 @@ namespace Manufactures.Tests.Validations.GarmentCuttingIns
         }
 
         [Fact]
+        public void Place_HaveError_Date()
+        {
+            // Arrange
+            var validator = GetValidationRules();
+            var unitUnderTest = new UpdateGarmentCuttingInCommand();
+            unitUnderTest.CuttingInDate = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.PreparingDate = DateTimeOffset.Now;
+
+            // Action
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+        }
+
+        [Fact]
         public void Place_NotHaveError()
         {
             // Arrange

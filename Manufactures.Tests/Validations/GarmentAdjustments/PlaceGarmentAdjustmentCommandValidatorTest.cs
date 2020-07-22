@@ -41,6 +41,30 @@ namespace Manufactures.Tests.Validations.GarmentAdjustments
         }
 
         [Fact]
+        public void Place_HaveError_Date()
+        {
+            // Arrange
+            var unitUnderTest = new PlaceGarmentAdjustmentCommand();
+            unitUnderTest.AdjustmentDate = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.ProcessDate = DateTimeOffset.Now;
+            unitUnderTest.Items = new List<GarmentAdjustmentItemValueObject>()
+            {
+                new GarmentAdjustmentItemValueObject()
+                {
+                    Quantity =1,
+                    RemainingQuantity =0
+                }
+            };
+            var validator = GetValidationRules();
+
+            // Action
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+        }
+
+        [Fact]
         public void Place_NotHaveError()
         {
             // Arrange

@@ -31,6 +31,22 @@ namespace Manufactures.Tests.Validations.GarmentFinishingOuts
         }
 
         [Fact]
+        public void Place_HaveError_Date()
+        {
+            // Arrange
+            var validator = GetValidationRules();
+            var unitUnderTest = new PlaceGarmentFinishingOutCommand();
+            unitUnderTest.FinishingOutDate = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.FinishingInDate = DateTimeOffset.Now;
+
+            // Action
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+        }
+
+        [Fact]
         public void Place_NotHaveError()
         {
             // Arrange
