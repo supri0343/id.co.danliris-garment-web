@@ -31,6 +31,22 @@ namespace Manufactures.Tests.Validations.GarmentSubconCuttingOuts
         }
 
         [Fact]
+        public void Place_HaveError_Date()
+        {
+            // Arrange
+            var validator = GetValidationRules();
+            var unitUnderTest = new PlaceGarmentSubconCuttingOutCommand();
+            unitUnderTest.CuttingOutDate = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.CuttingInDate = DateTimeOffset.Now;
+
+            // Action
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+        }
+
+        [Fact]
         public void Place_ShouldNotHaveError()
         {
             // Arrange
@@ -54,6 +70,7 @@ namespace Manufactures.Tests.Validations.GarmentSubconCuttingOuts
                 },
                 CutOutNo = "CutOutNo",
                 CuttingOutDate = DateTimeOffset.Now,
+                CuttingInDate= DateTimeOffset.Now,
                 CuttingOutType = "CuttingOutType",
                 EPOId = 1,
                 EPOItemId = 1,

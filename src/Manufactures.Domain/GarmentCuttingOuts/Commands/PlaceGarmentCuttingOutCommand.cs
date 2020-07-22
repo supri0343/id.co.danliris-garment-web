@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentCuttingOuts.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -16,6 +17,7 @@ namespace Manufactures.Domain.GarmentCuttingOuts.Commands
 
         public UnitDepartment UnitFrom { get; set; }
         public DateTimeOffset? CuttingOutDate { get; set; }
+        public DateTimeOffset? CuttingInDate { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }
         public UnitDepartment Unit { get; set; }
@@ -42,6 +44,7 @@ namespace Manufactures.Domain.GarmentCuttingOuts.Commands
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.CuttingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.CuttingOutDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Cutting Out Tidak Boleh Lebih dari Hari Ini");
+            RuleFor(r => r.CuttingOutDate).NotNull().GreaterThan(r => r.CuttingInDate.GetValueOrDefault().Date).WithMessage(r => $"Tanggal Cutting Out Tidak Boleh Kurang dari tanggal {r.CuttingInDate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"))}");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
             RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s=>s.Items != null);

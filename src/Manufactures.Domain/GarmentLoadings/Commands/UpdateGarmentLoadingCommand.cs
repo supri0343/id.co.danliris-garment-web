@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentLoadings.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Manufactures.Domain.GarmentLoadings.Commands
@@ -20,6 +21,7 @@ namespace Manufactures.Domain.GarmentLoadings.Commands
         public string Article { get;  set; }
         public GarmentComodity Comodity { get;  set; }
         public DateTimeOffset LoadingDate { get;  set; }
+        public DateTimeOffset? SewingDODate { get; set; }
 
         public List<GarmentLoadingItemValueObject> Items { get;  set; }
 
@@ -40,6 +42,7 @@ namespace Manufactures.Domain.GarmentLoadings.Commands
             RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.LoadingDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.LoadingDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Loading Tidak Boleh Lebih dari Hari Ini");
+            RuleFor(r => r.LoadingDate).NotNull().GreaterThan(r => r.SewingDODate.GetValueOrDefault().Date).WithMessage(r => $"Tanggal Loading Tidak Boleh Kurang dari tanggal {r.SewingDODate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"))}").When(r=>r.SewingDODate!=null);
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleForEach(r => r.Items).SetValidator(new GarmentLoadingItemValueObjectValidator());
         }
