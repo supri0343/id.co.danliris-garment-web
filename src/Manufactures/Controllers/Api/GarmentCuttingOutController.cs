@@ -206,10 +206,10 @@ namespace Manufactures.Controllers.Api
             {
                 Items = _garmentCuttingOutItemRepository.Find(o => o.CutOutId == cutOut.Identity).Select(cutOutItem => new GarmentCuttingOutItemDto(cutOutItem)
                 {
-                    Details = _garmentCuttingOutDetailRepository.Find(o => o.CutOutItemId == cutOutItem.Identity).Select(cutOutDetail => new GarmentCuttingOutDetailDto(cutOutDetail)
+                    Details = _garmentCuttingOutDetailRepository.Find(o => o.CutOutItemId == cutOutItem.Identity).OrderBy(s=>s.Color).ThenBy(s=>s.SizeName).Select(cutOutDetail => new GarmentCuttingOutDetailDto(cutOutDetail)
                     {
                         //PreparingRemainingQuantity = _garmentPreparingItemRepository.Query.Where(o => o.Identity == cutInDetail.PreparingItemId).Select(o => o.RemainingQuantity).FirstOrDefault() + cutInDetail.PreparingQuantity,
-                    }).OrderBy(o => o.Size.Size).ToList()
+                    }).ToList()
                 }).ToList()
             }
             ).FirstOrDefault();
