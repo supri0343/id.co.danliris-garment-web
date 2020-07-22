@@ -53,6 +53,7 @@ namespace Manufactures.Tests.Validations.GarmentExpenditureGoodReturns
                 Invoice = "Invoice",
                 Price = 1,
                 ReturDate = DateTimeOffset.Now,
+                ExpenditureDate= DateTimeOffset.Now,
                 ReturDesc = "ReturDesc",
                 ReturGoodNo = "ReturGoodNo",
                 ReturType = "ReturType",

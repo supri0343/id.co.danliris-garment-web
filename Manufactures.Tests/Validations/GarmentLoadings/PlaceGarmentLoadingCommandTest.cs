@@ -45,6 +45,7 @@ namespace Manufactures.Tests.Validations.GarmentLoadings
                     Name = "Name"
                 },
                 LoadingDate = DateTimeOffset.Now,
+                SewingDODate= DateTimeOffset.Now,
                 LoadingNo = "LoadingNo",
                 Price = 1,
                 RONo = "RONo",

@@ -28,7 +28,7 @@ namespace Manufactures.Domain.GarmentPreparings.Commands
             RuleFor(r => r.UENId).NotEmpty().WithMessage("Nomor Bon Pengeluaran Unit Tidak Boleh Kosong");
             RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.ProcessDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Proses Tidak Boleh Lebih dari Hari Ini");
-            RuleFor(r => r.ProcessDate).NotNull().GreaterThan(r=>r.ExpenditureDate.GetValueOrDefault()).WithMessage("Tanggal Proses Tidak Boleh Kurang dari tanggal BUK");
+            RuleFor(r => r.ProcessDate).NotNull().GreaterThan(r=>r.ExpenditureDate.GetValueOrDefault().Date).WithMessage("Tanggal Proses Tidak Boleh Kurang dari tanggal BUK");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong");
         }
     }    

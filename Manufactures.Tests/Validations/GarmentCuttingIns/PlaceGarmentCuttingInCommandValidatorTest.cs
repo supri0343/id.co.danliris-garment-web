@@ -40,6 +40,7 @@ namespace Manufactures.Tests.Validations.GarmentCuttingIns
                 CutInNo = "CutInNo",
                 CuttingFrom = "CuttingFrom",
                 CuttingInDate =DateTimeOffset.Now,
+                PreparingDate= DateTimeOffset.Now,
                 CuttingType = "CuttingType",
                 FC =1,
                 Price =1,

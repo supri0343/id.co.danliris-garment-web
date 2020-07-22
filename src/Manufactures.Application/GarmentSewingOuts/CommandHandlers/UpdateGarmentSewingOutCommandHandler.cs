@@ -60,7 +60,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                     cutInItem.Modify();
                     await _garmentCuttingInItemRepository.Update(cutInItem);
                 });
-                cutIn.SetDate(request.SewingOutDate);
+                cutIn.SetDate(request.SewingOutDate.GetValueOrDefault());
                 cutIn.Modify();
                 await _garmentCuttingInRepository.Update(cutIn);
             }
@@ -295,7 +295,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 await _garmentSewingInItemRepository.Update(garmentSewInItem);
             }
 
-            sewOut.SetDate(request.SewingOutDate);
+            sewOut.SetDate(request.SewingOutDate.GetValueOrDefault());
             sewOut.Modify();
             await _garmentSewingOutRepository.Update(sewOut);
 

@@ -54,6 +54,7 @@ namespace Manufactures.Tests.Validations.GarmentCuttingOuts
                 },
                 CutOutNo = "CutOutNo",
                 CuttingOutDate = DateTimeOffset.Now,
+                CuttingInDate = DateTimeOffset.Now,
                 CuttingOutType = "CuttingOutType",
                 UnitFrom = new UnitDepartment()
                 {

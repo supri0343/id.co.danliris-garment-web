@@ -45,6 +45,7 @@ namespace Manufactures.Tests.Validations.GarmentFinishingOuts
                     Name = "Name"
                 },
                 FinishingOutDate = DateTimeOffset.Now,
+                FinishingInDate= DateTimeOffset.Now,
                 FinishingOutNo = "FinishingOutNo",
                 FinishingTo = "FinishingTo",
                 IsDifferentSize = true,

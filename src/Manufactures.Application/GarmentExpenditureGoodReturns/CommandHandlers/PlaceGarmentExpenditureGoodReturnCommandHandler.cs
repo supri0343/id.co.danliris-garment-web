@@ -61,7 +61,7 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
                 new BuyerId(request.Buyer.Id),
                 request.Buyer.Code,
                 request.Buyer.Name,
-                request.ReturDate,
+                request.ReturDate.GetValueOrDefault(),
                 request.Invoice,
                 request.ReturDesc
             );

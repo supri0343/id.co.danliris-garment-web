@@ -62,7 +62,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 request.UnitTo.Code,
                 request.UnitTo.Name,
                 request.SewingTo,
-                request.SewingOutDate,
+                request.SewingOutDate.GetValueOrDefault(),
                 request.RONo,
                 request.Article,
                 new UnitDepartmentId(request.Unit.Id),
@@ -188,7 +188,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                     new UnitDepartmentId(request.UnitTo.Id),
                     request.UnitTo.Code,
                     request.UnitTo.Name,
-                    request.SewingOutDate,
+                    request.SewingOutDate.GetValueOrDefault(),
                     0
                     );
 

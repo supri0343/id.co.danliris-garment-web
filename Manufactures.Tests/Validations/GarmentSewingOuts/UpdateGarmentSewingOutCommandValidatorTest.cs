@@ -39,6 +39,7 @@ namespace Manufactures.Tests.Validations.GarmentSewingOuts
             {
                 Article = "Article",
                 IsDifferentSize =true,
+                SewingInDate= DateTimeOffset.Now,
                 Comodity =new GarmentComodity()
                 {
                     Id = 1,

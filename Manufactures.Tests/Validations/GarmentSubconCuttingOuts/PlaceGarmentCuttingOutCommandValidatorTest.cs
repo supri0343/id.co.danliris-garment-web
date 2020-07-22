@@ -54,6 +54,7 @@ namespace Manufactures.Tests.Validations.GarmentSubconCuttingOuts
                 },
                 CutOutNo = "CutOutNo",
                 CuttingOutDate = DateTimeOffset.Now,
+                CuttingInDate= DateTimeOffset.Now,
                 CuttingOutType = "CuttingOutType",
                 EPOId = 1,
                 EPOItemId = 1,

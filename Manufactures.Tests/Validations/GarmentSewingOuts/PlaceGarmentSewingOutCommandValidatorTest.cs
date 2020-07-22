@@ -57,6 +57,7 @@ namespace Manufactures.Tests.Validations.GarmentSewingOuts
                 },
                 IsDifferentSize = true,
                 SewingOutDate = DateTimeOffset.Now,
+                SewingInDate= DateTimeOffset.Now,
                 SewingOutNo = "SewingOutNo",
                 SewingTo = "SewingTo",
                 Unit = new UnitDepartment()

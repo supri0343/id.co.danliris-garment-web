@@ -40,6 +40,7 @@ namespace Manufactures.Tests.Validations.GarmentPreparings
                 Article = "Article",
                 IsCuttingIn = true,
                 ProcessDate = DateTimeOffset.Now,
+                ExpenditureDate= DateTimeOffset.Now,
                 RONo = "RONo",
                 Unit = new UnitDepartment()
                 {

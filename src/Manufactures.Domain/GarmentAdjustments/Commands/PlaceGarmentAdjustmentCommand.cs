@@ -6,6 +6,7 @@ using Manufactures.Domain.GarmentAdjustments.ValueObjects;
 using System.Text;
 using FluentValidation;
 using System.Linq;
+using System.Globalization;
 
 namespace Manufactures.Domain.GarmentAdjustments.Commands
 {
@@ -17,7 +18,8 @@ namespace Manufactures.Domain.GarmentAdjustments.Commands
         public string RONo { get; set; }
         public string Article { get; set; }
         public GarmentComodity Comodity { get; set; }
-        public DateTimeOffset AdjustmentDate { get; set; }
+        public DateTimeOffset? AdjustmentDate { get; set; }
+        public DateTimeOffset? ProcessDate { get; set; }
         public double Price { get; set; }
         public string AdjustmentDesc { get; set; }
 
@@ -33,6 +35,7 @@ namespace Manufactures.Domain.GarmentAdjustments.Commands
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.AdjustmentDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Adjustment Tidak Boleh Kosong");
             RuleFor(r => r.AdjustmentDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Adjustment Tidak Boleh Lebih dari Hari Ini");
+            RuleFor(r => r.AdjustmentDate).NotNull().GreaterThan(r => r.ProcessDate.GetValueOrDefault().Date).WithMessage(r => $"Tanggal Tidak Boleh Kurang dari tanggal {r.ProcessDate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"))}").When(r=>r.ProcessDate!=null);
             RuleFor(r => r.Comodity).NotNull();
             RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");

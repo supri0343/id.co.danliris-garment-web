@@ -47,6 +47,7 @@ namespace Manufactures.Tests.Validations.GarmentFinishingIns
                 },
                 DOId = 1,
                 FinishingInDate = DateTimeOffset.Now,
+                SewingOutDate= DateTimeOffset.Now,
                 FinishingInNo = "FinishingInNo",
                 FinishingInType = "FinishingInType",
                 Price = 1,

@@ -39,6 +39,7 @@ namespace Manufactures.Tests.Validations.GarmentLoadings
             {
                 Article = "Article",
                 LoadingDate = DateTimeOffset.Now,
+                SewingDODate= DateTimeOffset.Now,
                 Comodity = new GarmentComodity()
                 {
                     Id = 1,

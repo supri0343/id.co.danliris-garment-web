@@ -40,6 +40,7 @@ namespace Manufactures.Tests.Validations.GarmentAvalProducts
             {
                 Article = "Article",
                 AvalDate =DateTimeOffset.Now,
+                PreparingDate= DateTimeOffset.Now,
                 RONo = "RONo",
                 Unit =new UnitDepartment()
                 {
