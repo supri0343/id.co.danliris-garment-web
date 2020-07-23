@@ -13,9 +13,9 @@ namespace Infrastructure
 
         public void Execute(IServiceCollection services, IServiceProvider sp)
         {
-            services.AddSingleton(c => new WorkContext() { CurrentUser = "System" });
+            services.AddScoped(c => new WorkContext() { CurrentUser = "System" });
             services.AddScoped<IWebApiContext>(c => c.GetRequiredService<WorkContext>());
-            services.AddSingleton<IWorkContext>(c => c.GetRequiredService<WorkContext>());
+            services.AddScoped<IWorkContext>(c => c.GetRequiredService<WorkContext>());
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
