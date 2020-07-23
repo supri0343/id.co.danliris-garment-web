@@ -46,7 +46,7 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
                 new UnitDepartmentId(request.Unit.Id),
                 request.Unit.Code,
                 request.Unit.Name,
-                request.FinishingInDate,
+                request.FinishingInDate.GetValueOrDefault(),
                 new GarmentComodityId(request.Comodity.Id),
                 request.Comodity.Code,
                 request.Comodity.Name,

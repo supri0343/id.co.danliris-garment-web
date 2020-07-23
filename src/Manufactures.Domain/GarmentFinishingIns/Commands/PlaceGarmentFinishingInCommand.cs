@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentFinishingIns.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -18,7 +19,8 @@ namespace Manufactures.Domain.GarmentFinishingIns.Commands
         public string Article { get;  set; }
         public string RONo { get;  set; }
         public GarmentComodity Comodity { get;  set; }
-        public DateTimeOffset FinishingInDate { get;  set; }
+        public DateTimeOffset? FinishingInDate { get;  set; }
+        public DateTimeOffset? SewingOutDate { get; set; }
         public List<GarmentFinishingInItemValueObject> Items { get; set; }
         public double Price { get; set; }
         public long DOId { get; set; }
@@ -37,6 +39,7 @@ namespace Manufactures.Domain.GarmentFinishingIns.Commands
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.FinishingInDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal FinishingIn Tidak Boleh Kosong");
             RuleFor(r => r.FinishingInDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal FinishingIn Tidak Boleh Lebih dari Hari Ini");
+            RuleFor(r => r.FinishingInDate).NotNull().GreaterThan(r => r.SewingOutDate.GetValueOrDefault().Date).WithMessage(r => $"Tanggal FinishingIn Tidak Boleh Kurang dari tanggal {r.SewingOutDate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"))}");
             RuleFor(r => r.Comodity).NotNull();
             RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");

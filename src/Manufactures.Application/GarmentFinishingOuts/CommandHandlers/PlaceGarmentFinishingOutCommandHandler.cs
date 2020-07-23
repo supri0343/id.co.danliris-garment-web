@@ -56,7 +56,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                 request.UnitTo.Code,
                 request.UnitTo.Name,
                 request.FinishingTo,
-                request.FinishingOutDate,
+                request.FinishingOutDate.GetValueOrDefault(),
                 request.RONo,
                 request.Article,
                 new UnitDepartmentId(request.Unit.Id),
