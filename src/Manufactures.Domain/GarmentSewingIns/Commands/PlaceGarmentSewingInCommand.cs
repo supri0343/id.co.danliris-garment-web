@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentSewingIns.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -21,6 +22,8 @@ namespace Manufactures.Domain.GarmentSewingIns.Commands
         public string Article { get; set; }
         public GarmentComodity Comodity { get; set; }
         public DateTimeOffset? SewingInDate { get; set; }
+        public DateTimeOffset? SewingDate { get; set; }
+        public DateTimeOffset? FinishingDate { get; set; }
         public double Price { get; set; }
 
         public List<GarmentSewingInItemValueObject> Items { get; set; }
@@ -47,6 +50,9 @@ namespace Manufactures.Domain.GarmentSewingIns.Commands
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.SewingInDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sewing In Tidak Boleh Kosong");
             RuleFor(r => r.SewingInDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Sewing In Tidak Boleh Lebih dari Hari Ini");
+            RuleFor(r => r.SewingInDate).NotNull().GreaterThan(r => r.SewingDate.GetValueOrDefault().Date).WithMessage(r => $"Tanggal Tidak Boleh Kurang dari tanggal {r.SewingDate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"))}").When(r => r.SewingFrom == "SEWING" && r.SewingDate != null);
+            RuleFor(r => r.SewingInDate).NotNull().GreaterThan(r => r.FinishingDate.GetValueOrDefault().Date).WithMessage(r => $"Tanggal Tidak Boleh Kurang dari tanggal {r.FinishingDate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"))}").When(r => r.SewingFrom == "FINISHING" && r.FinishingDate != null);
+
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
             RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
             RuleForEach(r => r.Items).SetValidator(new GarmentSewingInItemValueObjectValidator());
