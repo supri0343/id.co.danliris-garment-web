@@ -110,7 +110,9 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
             {
                 var garmentExpenditureGoodItem = _garmentExpenditureGoodItemRepository.Query.Where(x => x.Identity == exGood.Key).Select(s => new GarmentExpenditureGoodItem(s)).Single();
 
-                var item = request.Items.Where(a => new SizeId(a.Size.Id) == garmentExpenditureGoodItem.SizeId && new UomId(a.Uom.Id) == garmentExpenditureGoodItem.UomId && a.Description==garmentExpenditureGoodItem.Description).Single();
+                //var dup= request.Items.Where(a =>  new SizeId(a.Size.Id) == garmentExpenditureGoodItem.SizeId && new UomId(a.Uom.Id) == garmentExpenditureGoodItem.UomId && a.isSave == true).FirstOrDefault();
+
+                var item = request.Items.Where(a => a.Description.Trim()==garmentExpenditureGoodItem.Description.Trim() && new SizeId(a.Size.Id) == garmentExpenditureGoodItem.SizeId && new UomId(a.Uom.Id) == garmentExpenditureGoodItem.UomId && a.isSave==true).Single();
 
                 var quantityRetur = garmentExpenditureGoodItem.ReturQuantity + exGood.Value;
                 double price = (garmentExpenditureGoodItem.BasicPrice + ((double)garmentComodityPrice.Price * 1)) * quantityRetur;
@@ -118,7 +120,7 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
                 GarmentExpenditureGoodReturnItem garmentExpenditureGoodReturnItem = new GarmentExpenditureGoodReturnItem(
                     Guid.NewGuid(),
                     garmentExpenditureGoodReturn.Identity,
-                    item.ExpenditureGoodId,
+                    garmentExpenditureGoodItem.ExpenditureGoodId,
                     garmentExpenditureGoodItem.Identity,
                     garmentExpenditureGoodItem.FinishedGoodStockId,
                     new SizeId(item.Size.Id),
