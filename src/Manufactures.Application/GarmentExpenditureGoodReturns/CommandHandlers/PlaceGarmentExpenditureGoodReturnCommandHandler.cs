@@ -28,6 +28,7 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
         private readonly IGarmentFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
         private readonly IGarmentExpenditureGoodItemRepository _garmentExpenditureGoodItemRepository;
+        private readonly IGarmentExpenditureGoodRepository _garmentExpenditureGoodRepository;
 
         public PlaceGarmentExpenditureGoodReturnCommandHandler(IStorage storage)
         {
@@ -38,6 +39,7 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
             _garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentFinishedGoodStockHistoryRepository>();
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
             _garmentExpenditureGoodItemRepository= storage.GetRepository<IGarmentExpenditureGoodItemRepository>();
+            _garmentExpenditureGoodRepository = storage.GetRepository<IGarmentExpenditureGoodRepository>();
         }
 
         public async Task<GarmentExpenditureGoodReturn> Handle(PlaceGarmentExpenditureGoodReturnCommand request, CancellationToken cancellationToken)
@@ -74,9 +76,11 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
             {
                 if (item.isSave)
                 {
-                    var garmentexGoodItem = _garmentExpenditureGoodItemRepository.Query.Where(x => x.SizeId == item.Size.Id && x.UomId == item.Uom.Id && (x.Quantity- x.ReturQuantity) > 0 && x.Description==item.Description && x.ExpenditureGoodId==item.ExpenditureGoodId).OrderBy(a => a.CreatedDate).ToList();
+                    var garmentexGood = _garmentExpenditureGoodRepository.Query.Where(x=>x.UnitId==request.Unit.Id && x.RONo==request.RONo).OrderBy(a => a.CreatedDate).ToList();
+                    var garmentexGoodItem = _garmentExpenditureGoodItemRepository.Query.Where(x => x.SizeId == item.Size.Id && x.UomId == item.Uom.Id && (x.Quantity- x.ReturQuantity) > 0 && x.Description==item.Description).OrderBy(a => a.CreatedDate).ToList();
+                    var join = (from a in garmentexGoodItem join b in garmentexGood on a.ExpenditureGoodId equals b.Identity select a).ToList();
                     double qty = item.Quantity;
-                    foreach (var exGood in garmentexGoodItem)
+                    foreach (var exGood in join)
                     {
                         string key = exGood.FinishedGoodStockId.ToString() + "~" + item.Description;
                         if (qty > 0)
@@ -86,28 +90,27 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
 
                             if (!finstockQty.ContainsKey(exGood.FinishedGoodStockId))
                             {
-                                finstockQty.Add(exGood.FinishedGoodStockId, qty);
-                            }
-                            else
-                            {
-                                finstockQty[exGood.FinishedGoodStockId] += qty;
+                                finstockQty.Add(exGood.FinishedGoodStockId, 0);
                             }
                             //double stockQty = exGoodQty - qty;
                             if (remainQty < 0)
                             {
                                 qty -= exGood.Quantity;
                                 exGoodToBeUpdated.Add(exGood.Identity, exGoodQty);
+                                finstockQty[exGood.FinishedGoodStockId] += exGoodQty;
                                 //finStockToBeUpdated.Add(key, exGoodQty);
                             }
                             else if (remainQty == 0)
                             {
                                 exGoodToBeUpdated.Add(exGood.Identity, exGoodQty);
+                                finstockQty[exGood.FinishedGoodStockId] += exGoodQty;
                                 //finStockToBeUpdated.Add(key, exGoodQty);
                                 break;
                             }
                             else if (remainQty > 0)
                             {
                                 exGoodToBeUpdated.Add(exGood.Identity, qty);
+                                finstockQty[exGood.FinishedGoodStockId] += qty;
                                 //finStockToBeUpdated.Add(key, qty);
                                 break;
                             }
