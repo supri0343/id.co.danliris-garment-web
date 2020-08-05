@@ -83,22 +83,32 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
                         {
                             double exGoodQty = exGood.Quantity - exGood.ReturQuantity;
                             double remainQty = exGoodQty - qty;
+
+                            if (!finstockQty.ContainsKey(exGood.FinishedGoodStockId))
+                            {
+                                finstockQty.Add(exGood.FinishedGoodStockId, qty);
+                            }
+                            else
+                            {
+                                finstockQty[exGood.FinishedGoodStockId] += qty;
+                            }
+                            //double stockQty = exGoodQty - qty;
                             if (remainQty < 0)
                             {
                                 qty -= exGood.Quantity;
                                 exGoodToBeUpdated.Add(exGood.Identity, exGoodQty);
-                                finStockToBeUpdated.Add(key, exGoodQty);
+                                //finStockToBeUpdated.Add(key, exGoodQty);
                             }
                             else if (remainQty == 0)
                             {
                                 exGoodToBeUpdated.Add(exGood.Identity, exGoodQty);
-                                finStockToBeUpdated.Add(key, exGoodQty);
+                                //finStockToBeUpdated.Add(key, exGoodQty);
                                 break;
                             }
                             else if (remainQty > 0)
                             {
                                 exGoodToBeUpdated.Add(exGood.Identity, qty);
-                                finStockToBeUpdated.Add(key, qty);
+                                //finStockToBeUpdated.Add(key, qty);
                                 break;
                             }
                         }
@@ -172,10 +182,10 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
                 await _garmentExpenditureGoodItemRepository.Update(garmentExpenditureGoodItem);
             }
 
-            foreach (var finStock in finStockToBeUpdated)
+            foreach (var finStock in finstockQty)
             {
-                var keyString = finStock.Key.Split("~");
-                var garmentFinishingGoodStockItem = _garmentFinishedGoodStockRepository.Query.Where(x => x.Identity == Guid.Parse(keyString[0])).Select(s => new GarmentFinishedGoodStock(s)).Single();
+                //var keyString = finStock.Key.Split("~");
+                var garmentFinishingGoodStockItem = _garmentFinishedGoodStockRepository.Query.Where(x => x.Identity == finStock.Key).Select(s => new GarmentFinishedGoodStock(s)).Single();
                 var qty = garmentFinishingGoodStockItem.Quantity + finStock.Value;
                 garmentFinishingGoodStockItem.SetQuantity(qty);
                 garmentFinishingGoodStockItem.SetPrice((garmentFinishingGoodStockItem.BasicPrice + (double)garmentComodityPrice.Price) * (qty));
