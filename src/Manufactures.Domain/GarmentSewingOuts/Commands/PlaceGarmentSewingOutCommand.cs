@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentSewingOuts.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -19,7 +20,8 @@ namespace Manufactures.Domain.GarmentSewingOuts.Commands
         public string RONo { get;  set; }
         public string Article { get;  set; }
         public GarmentComodity Comodity { get;  set; }
-        public DateTimeOffset SewingOutDate { get;  set; }
+        public DateTimeOffset? SewingOutDate { get;  set; }
+        public DateTimeOffset? SewingInDate { get; set; }
         public bool IsDifferentSize { get;  set; }
         public bool IsUsed { get; set; }
         public List<GarmentSewingOutItemValueObject> Items { get; set; }
@@ -43,6 +45,7 @@ namespace Manufactures.Domain.GarmentSewingOuts.Commands
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.SewingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sewing Out Tidak Boleh Kosong");
             RuleFor(r => r.SewingOutDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Sewing Out Tidak Boleh Lebih dari Hari Ini");
+            RuleFor(r => r.SewingOutDate).NotNull().GreaterThan(r => r.SewingInDate.GetValueOrDefault().Date).WithMessage(r => $"Tanggal Sewing Out Tidak Boleh Kurang dari tanggal {r.SewingInDate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"))}");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
             RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);

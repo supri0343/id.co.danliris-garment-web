@@ -5,6 +5,7 @@ using Manufactures.Domain.GarmentExpenditureGoodReturns.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -19,7 +20,8 @@ namespace Manufactures.Domain.GarmentReturGoodReturns.Commands
         public string Article { get; set; }
         public GarmentComodity Comodity { get; set; }
         public Buyer Buyer { get; set; }
-        public DateTimeOffset ReturDate { get; set; }
+        public DateTimeOffset? ReturDate { get; set; }
+        public DateTimeOffset? ExpenditureDate { get; set; }
         public string Invoice { get; set; }
         public string ReturDesc { get; set; }
         public List<GarmentExpenditureGoodReturnItemValueObject> Items { get; set; }
@@ -35,6 +37,7 @@ namespace Manufactures.Domain.GarmentReturGoodReturns.Commands
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.ReturDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Tidak Boleh Kosong");
             RuleFor(r => r.ReturDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Tidak Boleh Lebih dari Hari Ini");
+            RuleFor(r => r.ReturDate).NotNull().GreaterThan(r => r.ExpenditureDate.GetValueOrDefault().Date).WithMessage(r => $"Tanggal Tidak Boleh Kurang dari tanggal {r.ExpenditureDate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"))}");
             RuleFor(r => r.Comodity).NotNull();
             RuleFor(r => r.Invoice).NotEmpty();
             RuleFor(r => r.Article).NotNull();

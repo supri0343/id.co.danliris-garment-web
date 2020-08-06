@@ -62,7 +62,7 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
                 new UnitDepartmentId(request.Unit.Id),
                 request.Unit.Code,
                 request.Unit.Name,
-                request.AdjustmentDate,
+                request.AdjustmentDate.GetValueOrDefault(),
                 new GarmentComodityId(request.Comodity.Id),
                 request.Comodity.Code,
                 request.Comodity.Name,

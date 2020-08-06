@@ -76,7 +76,7 @@ namespace Manufactures.Controllers.Api
 
 			GarmentScrapTransactionDto garmentScrapTransactionDto = _garmentScrapTransactionRepository.Find(o => o.Identity == guid).Select(ScrapTransaction => new GarmentScrapTransactionDto(ScrapTransaction)
 			{
-				Items = _garmentScrapTransactionItemRepository.Find(o => o.ScrapTransactionId == ScrapTransaction.Identity).Select(ScrapTransactionItem => new GarmentScrapTransactionItemDto(ScrapTransactionItem)
+				Items = _garmentScrapTransactionItemRepository.Find(o => o.ScrapTransactionId == ScrapTransaction.Identity).OrderBy(i=>i.ScrapClassificationName).Select(ScrapTransactionItem => new GarmentScrapTransactionItemDto(ScrapTransactionItem)
 				).ToList()
 			}
 			).FirstOrDefault();

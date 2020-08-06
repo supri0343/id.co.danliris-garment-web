@@ -93,13 +93,13 @@ namespace Manufactures.Controllers.Api
 
             GarmentSewingOutDto garmentSewingOutDto = _garmentSewingOutRepository.Find(o => o.Identity == guid).Select(sewOut => new GarmentSewingOutDto(sewOut)
             {
-                Items = _garmentSewingOutItemRepository.Find(o => o.SewingOutId == sewOut.Identity).Select(sewOutItem => new GarmentSewingOutItemDto(sewOutItem)
+                Items = _garmentSewingOutItemRepository.Find(o => o.SewingOutId == sewOut.Identity).OrderBy(i => i.Color).ThenBy(i => i.SizeName).Select(sewOutItem => new GarmentSewingOutItemDto(sewOutItem)
                 {
-                    Details = _garmentSewingOutDetailRepository.Find(o => o.SewingOutItemId == sewOutItem.Identity).Select(sewOutDetail => new GarmentSewingOutDetailDto(sewOutDetail)
+                    Details = _garmentSewingOutDetailRepository.Find(o => o.SewingOutItemId == sewOutItem.Identity).OrderBy(i => i.SizeName).Select(sewOutDetail => new GarmentSewingOutDetailDto(sewOutDetail)
                     {
-                    }).OrderBy(o => o.Size.Size).ToList()
+                    }).ToList()
                     
-                }).OrderBy(o => o.Size.Size).ToList()
+                }).ToList()
             }
             ).FirstOrDefault();
 

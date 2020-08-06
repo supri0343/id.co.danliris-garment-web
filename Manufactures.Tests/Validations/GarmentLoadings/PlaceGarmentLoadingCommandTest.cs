@@ -31,6 +31,22 @@ namespace Manufactures.Tests.Validations.GarmentLoadings
         }
 
         [Fact]
+        public void Place_HaveError_Date()
+        {
+            // Arrange
+            var validator = GetValidationRules();
+            var unitUnderTest = new PlaceGarmentLoadingCommand();
+            unitUnderTest.LoadingDate = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.SewingDODate = DateTimeOffset.Now;
+
+            // Action
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+        }
+
+        [Fact]
         public void Place_NotHaveError()
         {
             // Arrange
@@ -45,6 +61,7 @@ namespace Manufactures.Tests.Validations.GarmentLoadings
                     Name = "Name"
                 },
                 LoadingDate = DateTimeOffset.Now,
+                SewingDODate= DateTimeOffset.Now,
                 LoadingNo = "LoadingNo",
                 Price = 1,
                 RONo = "RONo",

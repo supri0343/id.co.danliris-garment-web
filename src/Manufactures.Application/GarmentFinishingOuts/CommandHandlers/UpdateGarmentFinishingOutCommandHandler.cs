@@ -153,7 +153,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                 await _garmentFinishingInItemRepository.Update(garmentSewInItem);
             }
 
-            finishOut.SetDate(request.FinishingOutDate);
+            finishOut.SetDate(request.FinishingOutDate.GetValueOrDefault());
             finishOut.Modify();
             await _garmentFinishingOutRepository.Update(finishOut);
 

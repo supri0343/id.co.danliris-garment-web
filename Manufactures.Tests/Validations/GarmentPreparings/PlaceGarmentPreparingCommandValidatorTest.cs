@@ -31,6 +31,22 @@ namespace Manufactures.Tests.Validations.GarmentPreparings
         }
 
         [Fact]
+        public void Place_HaveError_Date()
+        {
+            // Arrange
+            var validator = GetValidationRules();
+            var unitUnderTest = new PlaceGarmentPreparingCommand();
+            unitUnderTest.ProcessDate = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.ExpenditureDate = DateTimeOffset.Now;
+
+            // Action
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+        }
+
+        [Fact]
         public void Place_NotHaveError()
         {
             // Arrange
@@ -40,6 +56,7 @@ namespace Manufactures.Tests.Validations.GarmentPreparings
                 Article = "Article",
                 IsCuttingIn = true,
                 ProcessDate = DateTimeOffset.Now,
+                ExpenditureDate= DateTimeOffset.Now,
                 RONo = "RONo",
                 Unit = new UnitDepartment()
                 {

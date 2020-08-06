@@ -33,6 +33,40 @@ namespace Manufactures.Tests.Validations.GarmentAvalComponents
         }
 
         [Fact]
+        public void Place_HaveError_Date_SEWING()
+        {
+            var validator = GetValidationRules();
+            var unitUnderTest = new PlaceGarmentAvalComponentCommand();
+
+            unitUnderTest.Date = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.SewingDate = DateTimeOffset.Now;
+            unitUnderTest.AvalComponentType = "SEWING";
+
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+            
+        }
+
+        [Fact]
+        public void Place_HaveError_Date_CUTTING()
+        {
+            var validator = GetValidationRules();
+            var unitUnderTest = new PlaceGarmentAvalComponentCommand();
+
+            unitUnderTest.Date = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.CuttingDate = DateTimeOffset.Now;
+            unitUnderTest.AvalComponentType = "CUTTING";
+
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+
+        }
+
+        [Fact]
         public void Place_NotHaveError()
         {
             // Arrange

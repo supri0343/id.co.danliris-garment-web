@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentCuttingIns.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Manufactures.Domain.GarmentCuttingIns.Commands
@@ -16,6 +17,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.Commands
         public string Article { get; set; }
         public UnitDepartment Unit { get; set; }
         public DateTimeOffset? CuttingInDate { get; set; }
+        public DateTimeOffset? PreparingDate { get; set; }
         public double FC { get; set; }
         public List<GarmentCuttingInItemValueObject> Items { get; set; }
         public string CuttingFrom { get; set; }
@@ -32,6 +34,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.Commands
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.CuttingInDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.CuttingInDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Cutting In Tidak Boleh Lebih dari Hari Ini");
+            RuleFor(r => r.CuttingInDate).NotNull().GreaterThan(r => r.PreparingDate.GetValueOrDefault().Date).WithMessage(r=>$"Tanggal Cutting In Tidak Boleh Kurang dari tanggal {r.PreparingDate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"))}");
             RuleFor(r => r.FC).GreaterThan(0);
             RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");

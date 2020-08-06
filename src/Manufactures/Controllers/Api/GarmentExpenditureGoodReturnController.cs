@@ -76,9 +76,9 @@ namespace Manufactures.Controllers.Api
 
             GarmentExpenditureGoodReturnDto garmentExpenditureGoodReturnDto = _garmentExpenditureGoodReturnRepository.Find(o => o.Identity == guid).Select(retur => new GarmentExpenditureGoodReturnDto(retur)
             {
-                Items = _garmentExpenditureGoodReturnItemRepository.Find(o => o.ReturId == retur.Identity).Select(returItem => new GarmentExpenditureGoodReturnItemDto(returItem)
+                Items = _garmentExpenditureGoodReturnItemRepository.Find(o => o.ReturId == retur.Identity).OrderBy(i=>i.Description).ThenBy(i => i.SizeName).Select(returItem => new GarmentExpenditureGoodReturnItemDto(returItem)
                 {
-                }).OrderBy(o => o.Size.Size).ToList()
+                }).ToList()
             }
             ).FirstOrDefault();
 

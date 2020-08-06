@@ -31,6 +31,22 @@ namespace Manufactures.Tests.Validations.GarmentExpenditureGoodReturns
         }
 
         [Fact]
+        public void Place_HaveError_Date()
+        {
+            // Arrange
+            var validator = GetValidationRules();
+            var unitUnderTest = new PlaceGarmentExpenditureGoodReturnCommand();
+            unitUnderTest.ReturDate = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.ExpenditureDate = DateTimeOffset.Now;
+
+            // Action
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+        }
+
+        [Fact]
         public void Place_NotHaveError()
         {
             // Arrange
@@ -53,6 +69,7 @@ namespace Manufactures.Tests.Validations.GarmentExpenditureGoodReturns
                 Invoice = "Invoice",
                 Price = 1,
                 ReturDate = DateTimeOffset.Now,
+                ExpenditureDate= DateTimeOffset.Now,
                 ReturDesc = "ReturDesc",
                 ReturGoodNo = "ReturGoodNo",
                 ReturType = "ReturType",
