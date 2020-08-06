@@ -25,5 +25,8 @@ namespace Manufactures.Domain.GarmentPreparings.ReadModels
         public double BasicPrice { get; internal set; }
         public Guid GarmentPreparingId { get; internal set; }
         public virtual GarmentPreparingReadModel GarmentPreparingIdentity { get; internal set; }
+
+
+        public string ROSource { get; internal set; }
     }
 }

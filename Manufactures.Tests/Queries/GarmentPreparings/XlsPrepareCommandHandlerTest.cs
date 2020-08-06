@@ -110,14 +110,14 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentPreparingItemReadModel>
 				{
-					new Domain.GarmentPreparings.GarmentPreparingItem(guidPrepareItem, 1, new Domain.GarmentPreparings.ValueObjects.ProductId(1), "", "", "", 0, new Domain.GarmentPreparings.ValueObjects.UomId(1), "", "", 0, 50, guidPrepare).GetReadModel()
+					new Domain.GarmentPreparings.GarmentPreparingItem(guidPrepareItem, 1, new Domain.GarmentPreparings.ValueObjects.ProductId(1), "", "", "", 0, new Domain.GarmentPreparings.ValueObjects.UomId(1), "", "", 0, 50, guidPrepare,null).GetReadModel()
 				}.AsQueryable());
 
 			_mockGarmentPreparingRepository
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentPreparingReadModel>
 				{
-					new Domain.GarmentPreparings.GarmentPreparing(guidPrepare,1,"",new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1),"","",DateTimeOffset.Now,"roNo","",true).GetReadModel()
+					new Domain.GarmentPreparings.GarmentPreparing(guidPrepare,1,"",new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1),"","",DateTimeOffset.Now,"roNo","",true,new BuyerId(1), null,null).GetReadModel()
 				}.AsQueryable());
 
 			_mockGarmentCuttingInItemRepository
@@ -196,14 +196,14 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentPreparingItemReadModel>
 				{
-					new Domain.GarmentPreparings.GarmentPreparingItem(guidPrepareItem, 1, new Domain.GarmentPreparings.ValueObjects.ProductId(1), "", "", "", 0, new Domain.GarmentPreparings.ValueObjects.UomId(1), "", "", 0, 50, guidPrepare).GetReadModel()
+					new Domain.GarmentPreparings.GarmentPreparingItem(guidPrepareItem, 1, new Domain.GarmentPreparings.ValueObjects.ProductId(1), "", "", "", 0, new Domain.GarmentPreparings.ValueObjects.UomId(1), "", "", 0, 50, guidPrepare,null).GetReadModel()
 				}.AsQueryable());
 
 			_mockGarmentPreparingRepository
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentPreparingReadModel>
 				{
-					new Domain.GarmentPreparings.GarmentPreparing(guidPrepare,1,"",new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1),"","",DateTimeOffset.Now,"roNo","",true).GetReadModel()
+					new Domain.GarmentPreparings.GarmentPreparing(guidPrepare,1,"",new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1),"","",DateTimeOffset.Now,"roNo","",true,new BuyerId(1), null,null).GetReadModel()
 				}.AsQueryable());
 
 			_mockGarmentCuttingInItemRepository

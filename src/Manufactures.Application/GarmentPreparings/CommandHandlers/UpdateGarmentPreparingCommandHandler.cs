@@ -66,7 +66,7 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
                 await _garmentPreparingItemRepository.Update(dbItem);
             }
 
-            addedItems.Select(x => new GarmentPreparingItem(Guid.NewGuid(), x.UENItemId, new ProductId(x.Product.Id), x.Product.Code, x.Product.Name, x.DesignColor, x.Quantity, new UomId(x.Uom.Id), x.Uom.Unit, x.FabricType, x.RemainingQuantity, x.BasicPrice, garmentPreparing.Identity)).ToList()
+            addedItems.Select(x => new GarmentPreparingItem(Guid.NewGuid(), x.UENItemId, new ProductId(x.Product.Id), x.Product.Code, x.Product.Name, x.DesignColor, x.Quantity, new UomId(x.Uom.Id), x.Uom.Unit, x.FabricType, x.RemainingQuantity, x.BasicPrice, garmentPreparing.Identity,x.ROSource)).ToList()
                 .ForEach(async x => await _garmentPreparingItemRepository.Update(x));
 
             foreach (var item in deletedItems)
