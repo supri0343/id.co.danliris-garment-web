@@ -24,8 +24,9 @@ namespace Manufactures.Domain.GarmentPreparings
         public double RemainingQuantity { get; private set; }
         public double BasicPrice { get; private set; }
         public Guid GarmentPreparingId { get; private set; }
+        public string ROSource { get; private set; }
 
-        public GarmentPreparingItem(Guid identity, int uenItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, string fabricType, double remainingQuantity, double basicPrice, Guid garmentPreparingId) : base(identity)
+        public GarmentPreparingItem(Guid identity, int uenItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, string fabricType, double remainingQuantity, double basicPrice, Guid garmentPreparingId, string roSource) : base(identity)
         {
             this.MarkTransient();
 
@@ -42,6 +43,7 @@ namespace Manufactures.Domain.GarmentPreparings
             RemainingQuantity = remainingQuantity;
             BasicPrice = basicPrice;
             GarmentPreparingId = garmentPreparingId;
+            ROSource = roSource;
 
             ReadModel = new GarmentPreparingItemReadModel(Identity)
             {
@@ -57,6 +59,7 @@ namespace Manufactures.Domain.GarmentPreparings
                 RemainingQuantity = RemainingQuantity,
                 BasicPrice = BasicPrice,
                 GarmentPreparingId = GarmentPreparingId,
+                ROSource=roSource
             };
             ReadModel.AddDomainEvent(new OnGarmentPreparingPlaced(this.Identity));
         }
@@ -75,6 +78,7 @@ namespace Manufactures.Domain.GarmentPreparings
             RemainingQuantity = ReadModel.RemainingQuantity;
             BasicPrice = ReadModel.BasicPrice;
             GarmentPreparingId = ReadModel.GarmentPreparingId;
+            ROSource = ReadModel.ROSource;
         }
 
         public void setUenItemId(int newUenItemId)

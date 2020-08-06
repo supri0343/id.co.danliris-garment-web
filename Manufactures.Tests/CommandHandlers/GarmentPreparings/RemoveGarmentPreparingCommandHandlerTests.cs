@@ -52,14 +52,14 @@ namespace Manufactures.Tests.CommandHandlers.GarmentPreparings
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingReadModel, bool>>>()))
                 .Returns(new List<GarmentPreparing>()
                 {
-                    new GarmentPreparing(preparingGuid, 1, "UENNo", new UnitDepartmentId(1), "UnitCode", "UnitName", DateTimeOffset.Now, "RONo", "Article", true)
+                    new GarmentPreparing(preparingGuid, 1, "UENNo", new UnitDepartmentId(1), "UnitCode", "UnitName", DateTimeOffset.Now, "RONo", "Article", true,new Domain.Shared.ValueObjects.BuyerId(1), null,null)
                 });
 
             _mockPreparingItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingItemReadModel, bool>>>()))
                 .Returns(new List<GarmentPreparingItem>()
                 {
-                    new GarmentPreparingItem(preparingItemGuid, 0, new ProductId(1), null, null, null, 0, new UomId(1), null, null, 0, 0, Guid.Empty)
+                    new GarmentPreparingItem(preparingItemGuid, 0, new ProductId(1), null, null, null, 0, new UomId(1), null, null, 0, 0, Guid.Empty,null)
                 });
 
             _mockPreparingRepository
