@@ -24,6 +24,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Config
                .HasMaxLength(2000);
             builder.Property(o => o.FabricType)
                .HasMaxLength(100);
+            builder.Property(o => o.ROSource)
+               .HasMaxLength(100);
 
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();

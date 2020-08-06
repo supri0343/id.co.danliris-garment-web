@@ -87,14 +87,14 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentPreparingReadModel>>()))
                 .Returns(new List<GarmentPreparing>()
                 {
-                    new GarmentPreparing(id, 0,"uenNo", new UnitDepartmentId(1),"unitCode", "unitName", DateTimeOffset.Now,"roNo" ,"article", false)
+                    new GarmentPreparing(id, 0,"uenNo", new UnitDepartmentId(1),"unitCode", "unitName", DateTimeOffset.Now,"roNo" ,"article", false, new Domain.Shared.ValueObjects.BuyerId(1), null, null)
                 });
 
             _mockGarmentPreparingItemRepository
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentPreparingItemReadModel>>()))
                 .Returns(new List<GarmentPreparingItem>()
                 {
-                    new GarmentPreparingItem(id, 0, new ProductId(1),"productCode", "productName","designColor", 1, new UomId(1),"uomUnit", "FABRIC", 1, 1,id)
+                    new GarmentPreparingItem(id, 0, new ProductId(1),"productCode", "productName","designColor", 1, new UomId(1),"uomUnit", "FABRIC", 1, 1,id,null)
                 });
 
             _mockGarmentPreparingItemRepository
@@ -137,14 +137,14 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentPreparingReadModel>>()))
                 .Returns(new List<GarmentPreparing>()
                 {
-                    new GarmentPreparing(id, 0,"uenNo", new UnitDepartmentId(1),"unitCode", "unitName", DateTimeOffset.Now,"roNo" ,"article", false)
+                    new GarmentPreparing(id, 0,"uenNo", new UnitDepartmentId(1),"unitCode", "unitName", DateTimeOffset.Now,"roNo" ,"article", false, new Domain.Shared.ValueObjects.BuyerId(1), null, null)
                 });
 
             _mockGarmentPreparingItemRepository
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentPreparingItemReadModel>>()))
                 .Returns(new List<GarmentPreparingItem>()
                 {
-                    new GarmentPreparingItem(id, 0, new ProductId(1),"productCode", "productName","designColor", 1, new UomId(1),"uomUnit", "FABRIC", 1, 1,id)
+                    new GarmentPreparingItem(id, 0, new ProductId(1),"productCode", "productName","designColor", 1, new UomId(1),"uomUnit", "FABRIC", 1, 1,id,null)
                 });
 
             _mockGarmentPreparingItemRepository
@@ -181,14 +181,14 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentPreparingReadModel>>()))
                 .Returns(new List<GarmentPreparing>()
                 {
-                    new GarmentPreparing(id, 0,"uenNo", new UnitDepartmentId(1),"unitCode", "unitName", DateTimeOffset.Now,"roNo" ,"article", false)
+                    new GarmentPreparing(id, 0,"uenNo", new UnitDepartmentId(1),"unitCode", "unitName", DateTimeOffset.Now,"roNo" ,"article", false, new Domain.Shared.ValueObjects.BuyerId(1), null, null)
                 });
 
             _mockGarmentPreparingItemRepository
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentPreparingItemReadModel>>()))
                 .Returns(new List<GarmentPreparingItem>()
                 {
-                    new GarmentPreparingItem(id, 0, new ProductId(1),"productCode", "productName","designColor", 1, new UomId(1),"uomUnit", "FABRIC", 1, 1,id)
+                    new GarmentPreparingItem(id, 0, new ProductId(1),"productCode", "productName","designColor", 1, new UomId(1),"uomUnit", "FABRIC", 1, 1,id,null)
                 });
 
             _mockGarmentPreparingItemRepository
@@ -231,14 +231,14 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentPreparingReadModel>>()))
                 .Returns(new List<GarmentPreparing>()
                 {
-                    new GarmentPreparing(id, 0,"uenNo", new UnitDepartmentId(1),"unitCode", "unitName", DateTimeOffset.Now,"roNo" ,"article", false)
+                    new GarmentPreparing(id, 0,"uenNo", new UnitDepartmentId(1),"unitCode", "unitName", DateTimeOffset.Now,"roNo" ,"article", false, new Domain.Shared.ValueObjects.BuyerId(1), null, null)
                 });
 
             _mockGarmentPreparingItemRepository
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentPreparingItemReadModel>>()))
                 .Returns(new List<GarmentPreparingItem>()
                 {
-                    new GarmentPreparingItem(id, 0, new ProductId(1),"productCode", "productName","designColor", 1, new UomId(1),"uomUnit", "FABRIC", 1, 1,id)
+                    new GarmentPreparingItem(id, 0, new ProductId(1),"productCode", "productName","designColor", 1, new UomId(1),"uomUnit", "FABRIC", 1, 1,id,null)
                 });
 
             _mockGarmentPreparingItemRepository
@@ -265,14 +265,14 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingReadModel, bool>>>()))
                 .Returns(new List<GarmentPreparing>()
                 {
-                    new GarmentPreparing(Guid.NewGuid(), 0, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, null, null, false)
+                    new GarmentPreparing(Guid.NewGuid(), 0, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, null, null, false, new Domain.Shared.ValueObjects.BuyerId(1), null, null)
                 });
 
             _mockGarmentPreparingItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingItemReadModel, bool>>>()))
                 .Returns(new List<GarmentPreparingItem>()
                 {
-                    new GarmentPreparingItem(Guid.NewGuid(), 0, new ProductId(1), null, null, null, 0, new UomId(1), null, null, 0, 0, Guid.NewGuid())
+                    new GarmentPreparingItem(Guid.NewGuid(), 0, new ProductId(1), null, null, null, 0, new UomId(1), null, null, 0, 0, Guid.NewGuid(),null)
                 });
 
             // Act
@@ -297,7 +297,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentPreparingCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentPreparing(Guid.NewGuid(), 0, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", null, false));
+                .ReturnsAsync(new GarmentPreparing(Guid.NewGuid(), 0, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", null, false, new Domain.Shared.ValueObjects.BuyerId(1), null, null));
 
             // Act
             var result = await unitUnderTest.Post(command);
@@ -319,7 +319,7 @@ namespace Manufactures.Tests.Controllers.Api
             _mockGarmentPreparingRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingReadModel, bool>>>()))
                 .Returns(new List<GarmentPreparing>() { 
-                    new GarmentPreparing(id,1,"uenNo",new UnitDepartmentId(1),"unitCode","unitName",DateTimeOffset.Now,"roNo","article",true)
+                    new GarmentPreparing(id,1,"uenNo",new UnitDepartmentId(1),"unitCode","unitName",DateTimeOffset.Now,"roNo","article",true, new Domain.Shared.ValueObjects.BuyerId(1), null, null)
                 });
 
           
@@ -368,12 +368,12 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingReadModel, bool>>>()))
                 .Returns(new List<GarmentPreparing>()
                 {
-                    new GarmentPreparing(Guid.NewGuid(), 0, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, null, null, false)
+                    new GarmentPreparing(Guid.NewGuid(), 0, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, null, null, false,new Domain.Shared.ValueObjects.BuyerId(1), null,null)
                 });
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentPreparingCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentPreparing(Guid.NewGuid(), 0, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", null, false));
+                .ReturnsAsync(new GarmentPreparing(Guid.NewGuid(), 0, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", null, false, new Domain.Shared.ValueObjects.BuyerId(1), null, null));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());

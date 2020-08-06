@@ -21,6 +21,10 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Config
                .HasMaxLength(100);
             builder.Property(o => o.Article)
                .HasMaxLength(500);
+            builder.Property(o => o.BuyerCode)
+               .HasMaxLength(100);
+            builder.Property(o => o.BuyerName)
+               .HasMaxLength(500);
 
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();

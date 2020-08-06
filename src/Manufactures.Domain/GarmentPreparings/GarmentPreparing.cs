@@ -20,8 +20,11 @@ namespace Manufactures.Domain.GarmentPreparings
         public string RONo { get; private set; }
         public string Article { get; private set; }
         public bool IsCuttingIn { get; private set; }
+        public Shared.ValueObjects.BuyerId BuyerId { get; private set; }
+        public string BuyerCode { get; private set; }
+        public string BuyerName { get; private set; }
 
-        public GarmentPreparing(Guid identity, int uenId, string uenNo, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset? processDate, string roNo, string article, bool isCuttingIn) : base(identity)
+        public GarmentPreparing(Guid identity, int uenId, string uenNo, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset? processDate, string roNo, string article, bool isCuttingIn, Shared.ValueObjects.BuyerId buyerId, string buyerCode, string buyerName) : base(identity)
         {
             this.MarkTransient();
 
@@ -35,6 +38,9 @@ namespace Manufactures.Domain.GarmentPreparings
             RONo = roNo;
             Article = article;
             IsCuttingIn = isCuttingIn;
+            BuyerId = buyerId;
+            BuyerCode = buyerCode;
+            BuyerName = buyerName;
 
             ReadModel = new GarmentPreparingReadModel(Identity)
             {
@@ -47,6 +53,9 @@ namespace Manufactures.Domain.GarmentPreparings
                 RONo = RONo,
                 Article = Article,
                 IsCuttingIn = IsCuttingIn,
+                BuyerId=BuyerId.Value,
+                BuyerName=BuyerName,
+                BuyerCode=BuyerCode
             };
             ReadModel.AddDomainEvent(new OnGarmentPreparingPlaced(this.Identity));
         }
@@ -62,6 +71,9 @@ namespace Manufactures.Domain.GarmentPreparings
             RONo = ReadModel.RONo;
             Article = ReadModel.Article;
             IsCuttingIn = ReadModel.IsCuttingIn;
+            BuyerCode = ReadModel.BuyerCode;
+            BuyerId = new Shared.ValueObjects.BuyerId(ReadModel.BuyerId);
+            BuyerName = ReadModel.BuyerName;
         }
 
         public void setUENId(int newUENId)
