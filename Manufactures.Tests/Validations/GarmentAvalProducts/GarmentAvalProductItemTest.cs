@@ -22,7 +22,7 @@ namespace Manufactures.Tests.Validations.GarmentAvalProducts
             productItem.setProductCode("code");
             productItem.setProductId(new ProductId(1));
             productItem.setProductName("newProductName");
-          //  productItem.setQuantity(1);
+            productItem.setQuantity(1);
             productItem.setUomId(new UomId(1));
             productItem.setUomUnit("newUomUnit");
             productItem.SetDeleted();
