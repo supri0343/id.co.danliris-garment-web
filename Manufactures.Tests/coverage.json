@@ -35322,52 +35322,52 @@
       "Manufactures.Helpers.PDFTemplates.GarmentFinishingOutPDFTemplate": {
         "System.IO.MemoryStream Manufactures.Helpers.PDFTemplates.GarmentFinishingOutPDFTemplate::Generate(Manufactures.Dtos.GarmentFinishingOutDto,System.String)": {
           "Lines": {
-            "15": 1,
-            "16": 1,
-            "17": 1,
-            "18": 1,
-            "19": 1,
-            "21": 1,
-            "22": 1,
-            "23": 1,
-            "24": 1,
-            "25": 1,
-            "26": 1,
-            "28": 1,
-            "29": 1,
-            "30": 1,
-            "33": 1,
-            "34": 1,
-            "35": 1,
-            "38": 1,
-            "39": 1,
-            "41": 1,
-            "42": 1,
-            "43": 1,
-            "44": 1,
-            "45": 1,
-            "47": 1,
-            "48": 1,
-            "49": 1,
-            "50": 1,
-            "51": 1,
-            "53": 1,
-            "54": 1,
-            "55": 1,
-            "56": 1,
-            "57": 1,
-            "59": 1,
-            "61": 1,
-            "62": 1,
-            "63": 1,
-            "64": 1,
-            "67": 1,
-            "68": 1,
-            "69": 1,
-            "70": 1,
-            "72": 5,
-            "73": 1,
-            "74": 1,
+            "15": 2,
+            "16": 2,
+            "17": 2,
+            "18": 2,
+            "19": 2,
+            "21": 2,
+            "22": 2,
+            "23": 2,
+            "24": 2,
+            "25": 2,
+            "26": 2,
+            "28": 2,
+            "29": 2,
+            "30": 2,
+            "33": 2,
+            "34": 2,
+            "35": 2,
+            "38": 2,
+            "39": 2,
+            "41": 2,
+            "42": 2,
+            "43": 2,
+            "44": 2,
+            "45": 2,
+            "47": 2,
+            "48": 2,
+            "49": 2,
+            "50": 2,
+            "51": 2,
+            "53": 2,
+            "54": 2,
+            "55": 2,
+            "56": 2,
+            "57": 2,
+            "59": 2,
+            "61": 2,
+            "62": 2,
+            "63": 2,
+            "64": 2,
+            "67": 2,
+            "68": 2,
+            "69": 2,
+            "70": 2,
+            "72": 10,
+            "73": 2,
+            "74": 2,
             "75": 1,
             "76": 5,
             "77": 1,
@@ -35397,20 +35397,20 @@
             "106": 1,
             "107": 1,
             "108": 1,
-            "110": 0,
-            "111": 0,
-            "112": 0,
-            "113": 0,
-            "114": 0,
-            "116": 0,
-            "118": 0,
+            "110": 1,
+            "111": 1,
+            "112": 1,
+            "113": 1,
+            "114": 1,
+            "116": 1,
+            "118": 1,
             "119": 0,
             "120": 0,
             "121": 0,
-            "123": 0,
-            "124": 0,
-            "125": 0,
-            "127": 0,
+            "123": 1,
+            "124": 1,
+            "125": 1,
+            "127": 1,
             "128": 0,
             "129": 0,
             "130": 0,
@@ -35419,102 +35419,102 @@
             "133": 0,
             "134": 0,
             "135": 0,
-            "137": 0,
-            "138": 0,
-            "139": 0,
-            "140": 0,
-            "142": 1,
-            "144": 1,
-            "148": 1,
-            "149": 1,
-            "150": 1,
-            "151": 1,
-            "153": 5,
-            "154": 1,
-            "155": 1,
-            "156": 1,
-            "158": 1,
-            "159": 1,
-            "161": 1,
-            "163": 1,
-            "164": 1,
-            "165": 1,
-            "166": 1,
-            "167": 1,
-            "168": 1,
-            "169": 1,
-            "170": 1,
-            "171": 1,
-            "172": 1,
-            "173": 1,
-            "174": 1,
-            "175": 1,
-            "176": 1,
-            "177": 1,
-            "178": 1,
-            "179": 1,
-            "181": 5,
-            "182": 1,
-            "183": 1,
-            "184": 1,
-            "185": 1,
-            "186": 1,
-            "187": 1,
-            "189": 1,
-            "191": 5,
-            "192": 1,
-            "194": 1,
-            "195": 1,
-            "196": 1,
-            "197": 1,
-            "198": 1,
-            "199": 1,
-            "200": 1,
-            "201": 1,
-            "202": 5,
-            "203": 1,
-            "204": 1,
-            "205": 1,
-            "206": 1,
-            "207": 1,
-            "208": 1,
-            "209": 1,
-            "210": 1,
+            "137": 1,
+            "138": 1,
+            "139": 1,
+            "140": 1,
+            "142": 2,
+            "144": 2,
+            "148": 2,
+            "149": 2,
+            "150": 2,
+            "151": 2,
+            "153": 10,
+            "154": 2,
+            "155": 2,
+            "156": 2,
+            "158": 2,
+            "159": 2,
+            "161": 2,
+            "163": 2,
+            "164": 2,
+            "165": 2,
+            "166": 2,
+            "167": 2,
+            "168": 2,
+            "169": 2,
+            "170": 2,
+            "171": 2,
+            "172": 2,
+            "173": 2,
+            "174": 2,
+            "175": 2,
+            "176": 2,
+            "177": 2,
+            "178": 2,
+            "179": 2,
+            "181": 10,
+            "182": 2,
+            "183": 2,
+            "184": 2,
+            "185": 2,
+            "186": 2,
+            "187": 2,
+            "189": 2,
+            "191": 10,
+            "192": 2,
+            "194": 2,
+            "195": 2,
+            "196": 2,
+            "197": 2,
+            "198": 2,
+            "199": 2,
+            "200": 2,
+            "201": 2,
+            "202": 10,
+            "203": 2,
+            "204": 2,
+            "205": 2,
+            "206": 2,
+            "207": 2,
+            "208": 2,
+            "209": 2,
+            "210": 2,
             "212": 0,
             "213": 0,
             "214": 0,
             "215": 0,
             "216": 0,
-            "217": 1,
-            "218": 1,
-            "219": 1,
-            "220": 1,
-            "222": 1,
-            "223": 1,
-            "224": 1,
-            "225": 1,
-            "227": 1,
-            "228": 1,
-            "229": 1,
-            "230": 1,
-            "235": 1,
-            "237": 1,
-            "238": 1,
-            "239": 1,
-            "240": 1,
-            "241": 1,
-            "242": 1,
-            "243": 1,
-            "244": 1,
-            "246": 1,
-            "247": 1,
-            "248": 1,
-            "252": 1,
-            "253": 1,
-            "254": 1,
-            "255": 1,
-            "257": 1,
-            "258": 1
+            "217": 2,
+            "218": 2,
+            "219": 2,
+            "220": 2,
+            "222": 2,
+            "223": 2,
+            "224": 2,
+            "225": 2,
+            "227": 2,
+            "228": 2,
+            "229": 2,
+            "230": 2,
+            "235": 2,
+            "237": 2,
+            "238": 2,
+            "239": 2,
+            "240": 2,
+            "241": 2,
+            "242": 2,
+            "243": 2,
+            "244": 2,
+            "246": 2,
+            "247": 2,
+            "248": 2,
+            "252": 2,
+            "253": 2,
+            "254": 2,
+            "255": 2,
+            "257": 2,
+            "258": 2
           },
           "Branches": [
             {
@@ -35523,7 +35523,7 @@
               "EndOffset": 890,
               "Path": 1,
               "Ordinal": 33,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 74,
@@ -35683,7 +35683,7 @@
               "EndOffset": 1510,
               "Path": 1,
               "Ordinal": 1,
-              "Hits": 0
+              "Hits": 1
             },
             {
               "Line": 111,
@@ -35691,7 +35691,7 @@
               "EndOffset": 1544,
               "Path": 0,
               "Ordinal": 20,
-              "Hits": 0
+              "Hits": 1
             },
             {
               "Line": 111,
@@ -35699,7 +35699,7 @@
               "EndOffset": 1569,
               "Path": 1,
               "Ordinal": 21,
-              "Hits": 0
+              "Hits": 1
             },
             {
               "Line": 113,
@@ -35707,7 +35707,7 @@
               "EndOffset": 1597,
               "Path": 0,
               "Ordinal": 22,
-              "Hits": 0
+              "Hits": 1
             },
             {
               "Line": 113,
@@ -35715,7 +35715,7 @@
               "EndOffset": 1617,
               "Path": 1,
               "Ordinal": 23,
-              "Hits": 0
+              "Hits": 1
             },
             {
               "Line": 118,
@@ -35731,7 +35731,7 @@
               "EndOffset": 1717,
               "Path": 1,
               "Ordinal": 25,
-              "Hits": 0
+              "Hits": 1
             },
             {
               "Line": 127,
@@ -35779,7 +35779,7 @@
               "EndOffset": 1967,
               "Path": 1,
               "Ordinal": 27,
-              "Hits": 0
+              "Hits": 1
             },
             {
               "Line": 72,
@@ -35787,7 +35787,7 @@
               "EndOffset": 2015,
               "Path": 0,
               "Ordinal": 32,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 153,
@@ -35795,7 +35795,7 @@
               "EndOffset": 2101,
               "Path": 1,
               "Ordinal": 35,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 153,
@@ -35803,7 +35803,7 @@
               "EndOffset": 2134,
               "Path": 0,
               "Ordinal": 34,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 181,
@@ -35811,7 +35811,7 @@
               "EndOffset": 2423,
               "Path": 1,
               "Ordinal": 37,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 181,
@@ -35819,7 +35819,7 @@
               "EndOffset": 2488,
               "Path": 0,
               "Ordinal": 36,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 191,
@@ -35827,7 +35827,7 @@
               "EndOffset": 2523,
               "Path": 1,
               "Ordinal": 43,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 202,
@@ -35835,7 +35835,7 @@
               "EndOffset": 2642,
               "Path": 1,
               "Ordinal": 41,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 204,
@@ -35843,7 +35843,7 @@
               "EndOffset": 2679,
               "Path": 0,
               "Ordinal": 38,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 204,
@@ -35859,7 +35859,7 @@
               "EndOffset": 2827,
               "Path": 0,
               "Ordinal": 40,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 191,
@@ -35867,7 +35867,7 @@
               "EndOffset": 2946,
               "Path": 0,
               "Ordinal": 42,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 96,
@@ -36288,52 +36288,52 @@
       "Manufactures.Helpers.PDFTemplates.GarmentSewingOutPDFTemplate": {
         "System.IO.MemoryStream Manufactures.Helpers.PDFTemplates.GarmentSewingOutPDFTemplate::Generate(Manufactures.Dtos.GarmentSewingOutDto,System.String)": {
           "Lines": {
-            "15": 1,
-            "16": 1,
-            "17": 1,
-            "18": 1,
-            "19": 1,
-            "21": 1,
-            "22": 1,
-            "23": 1,
-            "24": 1,
-            "25": 1,
-            "26": 1,
-            "28": 1,
-            "29": 1,
-            "30": 1,
-            "33": 1,
-            "34": 1,
-            "35": 1,
-            "38": 1,
-            "39": 1,
-            "41": 1,
-            "42": 1,
-            "43": 1,
-            "44": 1,
-            "45": 1,
-            "47": 1,
-            "48": 1,
-            "49": 1,
-            "50": 1,
-            "51": 1,
-            "53": 1,
-            "54": 1,
-            "55": 1,
-            "56": 1,
-            "57": 1,
-            "59": 1,
-            "61": 1,
-            "62": 1,
-            "63": 1,
-            "64": 1,
-            "67": 1,
-            "68": 1,
-            "69": 1,
-            "70": 1,
-            "72": 5,
-            "73": 1,
-            "74": 1,
+            "15": 2,
+            "16": 2,
+            "17": 2,
+            "18": 2,
+            "19": 2,
+            "21": 2,
+            "22": 2,
+            "23": 2,
+            "24": 2,
+            "25": 2,
+            "26": 2,
+            "28": 2,
+            "29": 2,
+            "30": 2,
+            "33": 2,
+            "34": 2,
+            "35": 2,
+            "38": 2,
+            "39": 2,
+            "41": 2,
+            "42": 2,
+            "43": 2,
+            "44": 2,
+            "45": 2,
+            "47": 2,
+            "48": 2,
+            "49": 2,
+            "50": 2,
+            "51": 2,
+            "53": 2,
+            "54": 2,
+            "55": 2,
+            "56": 2,
+            "57": 2,
+            "59": 2,
+            "61": 2,
+            "62": 2,
+            "63": 2,
+            "64": 2,
+            "67": 2,
+            "68": 2,
+            "69": 2,
+            "70": 2,
+            "72": 10,
+            "73": 2,
+            "74": 2,
             "75": 1,
             "76": 5,
             "77": 1,
@@ -36363,20 +36363,20 @@
             "106": 1,
             "107": 1,
             "108": 1,
-            "110": 0,
-            "111": 0,
-            "112": 0,
-            "113": 0,
-            "114": 0,
-            "116": 0,
-            "118": 0,
+            "110": 1,
+            "111": 1,
+            "112": 1,
+            "113": 1,
+            "114": 1,
+            "116": 1,
+            "118": 1,
             "119": 0,
             "120": 0,
             "121": 0,
-            "123": 0,
-            "124": 0,
-            "125": 0,
-            "127": 0,
+            "123": 1,
+            "124": 1,
+            "125": 1,
+            "127": 1,
             "128": 0,
             "129": 0,
             "130": 0,
@@ -36385,102 +36385,102 @@
             "133": 0,
             "134": 0,
             "135": 0,
-            "137": 0,
-            "138": 0,
-            "139": 0,
-            "140": 0,
-            "142": 1,
-            "144": 1,
-            "148": 1,
-            "149": 1,
-            "150": 1,
-            "151": 1,
-            "153": 5,
-            "154": 1,
-            "155": 1,
-            "156": 1,
-            "158": 1,
-            "159": 1,
-            "161": 1,
-            "163": 1,
-            "164": 1,
-            "165": 1,
-            "166": 1,
-            "167": 1,
-            "168": 1,
-            "169": 1,
-            "170": 1,
-            "171": 1,
-            "172": 1,
-            "173": 1,
-            "174": 1,
-            "175": 1,
-            "176": 1,
-            "177": 1,
-            "178": 1,
-            "179": 1,
-            "181": 5,
-            "182": 1,
-            "183": 1,
-            "184": 1,
-            "185": 1,
-            "186": 1,
-            "187": 1,
-            "189": 1,
-            "191": 5,
-            "192": 1,
-            "194": 1,
-            "195": 1,
-            "196": 1,
-            "197": 1,
-            "198": 1,
-            "199": 1,
-            "200": 1,
-            "201": 1,
-            "202": 5,
-            "203": 1,
-            "204": 1,
-            "205": 1,
-            "206": 1,
-            "207": 1,
-            "208": 1,
-            "209": 1,
-            "210": 1,
+            "137": 1,
+            "138": 1,
+            "139": 1,
+            "140": 1,
+            "142": 2,
+            "144": 2,
+            "148": 2,
+            "149": 2,
+            "150": 2,
+            "151": 2,
+            "153": 10,
+            "154": 2,
+            "155": 2,
+            "156": 2,
+            "158": 2,
+            "159": 2,
+            "161": 2,
+            "163": 2,
+            "164": 2,
+            "165": 2,
+            "166": 2,
+            "167": 2,
+            "168": 2,
+            "169": 2,
+            "170": 2,
+            "171": 2,
+            "172": 2,
+            "173": 2,
+            "174": 2,
+            "175": 2,
+            "176": 2,
+            "177": 2,
+            "178": 2,
+            "179": 2,
+            "181": 10,
+            "182": 2,
+            "183": 2,
+            "184": 2,
+            "185": 2,
+            "186": 2,
+            "187": 2,
+            "189": 2,
+            "191": 10,
+            "192": 2,
+            "194": 2,
+            "195": 2,
+            "196": 2,
+            "197": 2,
+            "198": 2,
+            "199": 2,
+            "200": 2,
+            "201": 2,
+            "202": 10,
+            "203": 2,
+            "204": 2,
+            "205": 2,
+            "206": 2,
+            "207": 2,
+            "208": 2,
+            "209": 2,
+            "210": 2,
             "212": 0,
             "213": 0,
             "214": 0,
             "215": 0,
             "216": 0,
-            "217": 1,
-            "218": 1,
-            "219": 1,
-            "220": 1,
-            "222": 1,
-            "223": 1,
-            "224": 1,
-            "225": 1,
-            "227": 1,
-            "228": 1,
-            "229": 1,
-            "230": 1,
-            "235": 1,
-            "237": 1,
-            "238": 1,
-            "239": 1,
-            "240": 1,
-            "241": 1,
-            "242": 1,
-            "243": 1,
-            "244": 1,
-            "246": 1,
-            "247": 1,
-            "248": 1,
-            "252": 1,
-            "253": 1,
-            "254": 1,
-            "255": 1,
-            "257": 1,
-            "258": 1
+            "217": 2,
+            "218": 2,
+            "219": 2,
+            "220": 2,
+            "222": 2,
+            "223": 2,
+            "224": 2,
+            "225": 2,
+            "227": 2,
+            "228": 2,
+            "229": 2,
+            "230": 2,
+            "235": 2,
+            "237": 2,
+            "238": 2,
+            "239": 2,
+            "240": 2,
+            "241": 2,
+            "242": 2,
+            "243": 2,
+            "244": 2,
+            "246": 2,
+            "247": 2,
+            "248": 2,
+            "252": 2,
+            "253": 2,
+            "254": 2,
+            "255": 2,
+            "257": 2,
+            "258": 2
           },
           "Branches": [
             {
@@ -36489,7 +36489,7 @@
               "EndOffset": 890,
               "Path": 1,
               "Ordinal": 33,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 74,
@@ -36649,7 +36649,7 @@
               "EndOffset": 1510,
               "Path": 1,
               "Ordinal": 1,
-              "Hits": 0
+              "Hits": 1
             },
             {
               "Line": 111,
@@ -36657,7 +36657,7 @@
               "EndOffset": 1544,
               "Path": 0,
               "Ordinal": 20,
-              "Hits": 0
+              "Hits": 1
             },
             {
               "Line": 111,
@@ -36665,7 +36665,7 @@
               "EndOffset": 1569,
               "Path": 1,
               "Ordinal": 21,
-              "Hits": 0
+              "Hits": 1
             },
             {
               "Line": 113,
@@ -36673,7 +36673,7 @@
               "EndOffset": 1597,
               "Path": 0,
               "Ordinal": 22,
-              "Hits": 0
+              "Hits": 1
             },
             {
               "Line": 113,
@@ -36681,7 +36681,7 @@
               "EndOffset": 1617,
               "Path": 1,
               "Ordinal": 23,
-              "Hits": 0
+              "Hits": 1
             },
             {
               "Line": 118,
@@ -36697,7 +36697,7 @@
               "EndOffset": 1717,
               "Path": 1,
               "Ordinal": 25,
-              "Hits": 0
+              "Hits": 1
             },
             {
               "Line": 127,
@@ -36745,7 +36745,7 @@
               "EndOffset": 1967,
               "Path": 1,
               "Ordinal": 27,
-              "Hits": 0
+              "Hits": 1
             },
             {
               "Line": 72,
@@ -36753,7 +36753,7 @@
               "EndOffset": 2015,
               "Path": 0,
               "Ordinal": 32,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 153,
@@ -36761,7 +36761,7 @@
               "EndOffset": 2101,
               "Path": 1,
               "Ordinal": 35,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 153,
@@ -36769,7 +36769,7 @@
               "EndOffset": 2134,
               "Path": 0,
               "Ordinal": 34,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 181,
@@ -36777,7 +36777,7 @@
               "EndOffset": 2423,
               "Path": 1,
               "Ordinal": 37,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 181,
@@ -36785,7 +36785,7 @@
               "EndOffset": 2488,
               "Path": 0,
               "Ordinal": 36,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 191,
@@ -36793,7 +36793,7 @@
               "EndOffset": 2523,
               "Path": 1,
               "Ordinal": 43,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 202,
@@ -36801,7 +36801,7 @@
               "EndOffset": 2642,
               "Path": 1,
               "Ordinal": 41,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 204,
@@ -36809,7 +36809,7 @@
               "EndOffset": 2679,
               "Path": 0,
               "Ordinal": 38,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 204,
@@ -36825,7 +36825,7 @@
               "EndOffset": 2827,
               "Path": 0,
               "Ordinal": 40,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 191,
@@ -36833,7 +36833,7 @@
               "EndOffset": 2946,
               "Path": 0,
               "Ordinal": 42,
-              "Hits": 1
+              "Hits": 2
             },
             {
               "Line": 96,
@@ -37505,7 +37505,7 @@
       "Manufactures.Dtos.BaseDto": {
         "System.String Manufactures.Dtos.BaseDto::get_CreatedBy()": {
           "Lines": {
-            "7": 0
+            "7": 32
           },
           "Branches": []
         },
@@ -37517,7 +37517,7 @@
         },
         "System.String Manufactures.Dtos.BaseDto::get_LastModifiedBy()": {
           "Lines": {
-            "11": 0
+            "11": 10
           },
           "Branches": []
         },
@@ -37711,71 +37711,71 @@
       "Manufactures.Dtos.GarmentAdjustmentListDto": {
         "System.Guid Manufactures.Dtos.GarmentAdjustmentListDto::get_Id()": {
           "Lines": {
-            "23": 0
+            "23": 3
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentAdjustmentListDto::get_AdjustmentNo()": {
           "Lines": {
-            "24": 0
+            "24": 4
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartment Manufactures.Dtos.GarmentAdjustmentListDto::get_Unit()": {
           "Lines": {
-            "25": 0
+            "25": 3
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentAdjustmentListDto::get_RONo()": {
           "Lines": {
-            "26": 0
+            "26": 3
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentAdjustmentListDto::get_Article()": {
           "Lines": {
-            "27": 0
+            "27": 3
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.GarmentComodity Manufactures.Dtos.GarmentAdjustmentListDto::get_Comodity()": {
           "Lines": {
-            "28": 0
+            "28": 3
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Dtos.GarmentAdjustmentListDto::get_AdjustmentDate()": {
           "Lines": {
-            "29": 0
+            "29": 3
           },
           "Branches": []
         },
         "System.Double Manufactures.Dtos.GarmentAdjustmentListDto::get_TotalRemainingQuantity()": {
           "Lines": {
-            "31": 0
+            "31": 2
           },
           "Branches": []
         },
         "System.Double Manufactures.Dtos.GarmentAdjustmentListDto::get_TotalAdjustmentQuantity()": {
           "Lines": {
-            "32": 0
+            "32": 3
           },
           "Branches": []
         },
         "System.Void Manufactures.Dtos.GarmentAdjustmentListDto::.ctor(Manufactures.Domain.GarmentAdjustments.GarmentAdjustment)": {
           "Lines": {
-            "11": 1,
-            "12": 1,
-            "13": 1,
-            "14": 1,
-            "15": 1,
-            "16": 1,
-            "17": 1,
-            "18": 1,
-            "19": 1,
-            "20": 1,
-            "21": 1
+            "11": 2,
+            "12": 2,
+            "13": 2,
+            "14": 2,
+            "15": 2,
+            "16": 2,
+            "17": 2,
+            "18": 2,
+            "19": 2,
+            "20": 2,
+            "21": 2
           },
           "Branches": []
         }
@@ -37791,7 +37791,7 @@
         },
         "System.String Manufactures.Dtos.GarmentAvalProductDto::get_LastModifiedBy()": {
           "Lines": {
-            "32": 0
+            "32": 6
           },
           "Branches": []
         },
@@ -37815,34 +37815,34 @@
         },
         "System.Nullable`1<System.DateTimeOffset> Manufactures.Dtos.GarmentAvalProductDto::get_AvalDate()": {
           "Lines": {
-            "37": 0
+            "37": 6
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartment Manufactures.Dtos.GarmentAvalProductDto::get_Unit()": {
           "Lines": {
-            "38": 0
+            "38": 6
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentAvalProductDto::get_CreatedBy()": {
           "Lines": {
-            "39": 0
+            "39": 6
           },
           "Branches": []
         },
         "System.Collections.Generic.List`1<Manufactures.Dtos.GarmentAvalProductItemDto> Manufactures.Dtos.GarmentAvalProductDto::get_Items()": {
           "Lines": {
-            "40": 9
+            "40": 10
           },
           "Branches": []
         },
         "System.Void Manufactures.Dtos.GarmentAvalProductDto::.ctor()": {
           "Lines": {
-            "11": 0,
-            "12": 0,
-            "13": 0,
-            "14": 0
+            "11": 1,
+            "12": 1,
+            "13": 1,
+            "14": 1
           },
           "Branches": []
         },
@@ -38030,155 +38030,41 @@
       "Manufactures.Dtos.GarmentComodityPriceDto": {
         "System.Guid Manufactures.Dtos.GarmentComodityPriceDto::get_Id()": {
           "Lines": {
-            "20": 2
+            "20": 3
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Dtos.GarmentComodityPriceDto::get_IsValid()": {
           "Lines": {
-            "21": 0
+            "21": 3
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Dtos.GarmentComodityPriceDto::get_Date()": {
           "Lines": {
-            "22": 0
+            "22": 3
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartment Manufactures.Dtos.GarmentComodityPriceDto::get_Unit()": {
           "Lines": {
-            "23": 0
+            "23": 3
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.GarmentComodity Manufactures.Dtos.GarmentComodityPriceDto::get_Comodity()": {
           "Lines": {
-            "24": 0
+            "24": 3
           },
           "Branches": []
         },
         "System.Decimal Manufactures.Dtos.GarmentComodityPriceDto::get_Price()": {
           "Lines": {
-            "25": 0
+            "25": 4
           },
           "Branches": []
         },
         "System.Void Manufactures.Dtos.GarmentComodityPriceDto::.ctor(Manufactures.Domain.GarmentComodityPrices.GarmentComodityPrice)": {
-          "Lines": {
-            "11": 1,
-            "12": 1,
-            "13": 1,
-            "14": 1,
-            "15": 1,
-            "16": 1,
-            "17": 1,
-            "18": 1,
-            "19": 1
-          },
-          "Branches": []
-        }
-      }
-    },
-    "C:\\Users\\ade.pamungkas\\moonlay\\id.co.danliris-garment-web\\src\\Manufactures\\Dtos\\GarmentCuttingInDetailDto.cs": {
-      "Manufactures.Dtos.GarmentCuttingInDetailDto": {
-        "System.Guid Manufactures.Dtos.GarmentCuttingInDetailDto::get_Id()": {
-          "Lines": {
-            "30": 0
-          },
-          "Branches": []
-        },
-        "System.Guid Manufactures.Dtos.GarmentCuttingInDetailDto::get_CutInItemId()": {
-          "Lines": {
-            "31": 0
-          },
-          "Branches": []
-        },
-        "System.Guid Manufactures.Dtos.GarmentCuttingInDetailDto::get_PreparingItemId()": {
-          "Lines": {
-            "32": 0
-          },
-          "Branches": []
-        },
-        "Manufactures.Domain.Shared.ValueObjects.Product Manufactures.Dtos.GarmentCuttingInDetailDto::get_Product()": {
-          "Lines": {
-            "33": 0
-          },
-          "Branches": []
-        },
-        "System.String Manufactures.Dtos.GarmentCuttingInDetailDto::get_DesignColor()": {
-          "Lines": {
-            "35": 0
-          },
-          "Branches": []
-        },
-        "System.String Manufactures.Dtos.GarmentCuttingInDetailDto::get_FabricType()": {
-          "Lines": {
-            "36": 0
-          },
-          "Branches": []
-        },
-        "System.Double Manufactures.Dtos.GarmentCuttingInDetailDto::get_PreparingRemainingQuantity()": {
-          "Lines": {
-            "38": 0
-          },
-          "Branches": []
-        },
-        "System.Double Manufactures.Dtos.GarmentCuttingInDetailDto::get_PreparingQuantity()": {
-          "Lines": {
-            "39": 0
-          },
-          "Branches": []
-        },
-        "Manufactures.Domain.Shared.ValueObjects.Uom Manufactures.Dtos.GarmentCuttingInDetailDto::get_PreparingUom()": {
-          "Lines": {
-            "40": 0
-          },
-          "Branches": []
-        },
-        "System.Double Manufactures.Dtos.GarmentCuttingInDetailDto::get_CuttingInQuantity()": {
-          "Lines": {
-            "42": 0
-          },
-          "Branches": []
-        },
-        "Manufactures.Domain.Shared.ValueObjects.Uom Manufactures.Dtos.GarmentCuttingInDetailDto::get_CuttingInUom()": {
-          "Lines": {
-            "43": 0
-          },
-          "Branches": []
-        },
-        "System.Double Manufactures.Dtos.GarmentCuttingInDetailDto::get_RemainingQuantity()": {
-          "Lines": {
-            "45": 0
-          },
-          "Branches": []
-        },
-        "System.Double Manufactures.Dtos.GarmentCuttingInDetailDto::get_BasicPrice()": {
-          "Lines": {
-            "46": 0
-          },
-          "Branches": []
-        },
-        "System.Double Manufactures.Dtos.GarmentCuttingInDetailDto::get_Price()": {
-          "Lines": {
-            "47": 0
-          },
-          "Branches": []
-        },
-        "System.Double Manufactures.Dtos.GarmentCuttingInDetailDto::get_FC()": {
-          "Lines": {
-            "48": 0
-          },
-          "Branches": []
-        },
-        "System.String Manufactures.Dtos.GarmentCuttingInDetailDto::get_Color()": {
-          "Lines": {
-            "49": 0
-          },
-          "Branches": []
-        },
-        "System.Void Manufactures.Dtos.GarmentCuttingInDetailDto::.ctor(Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail)": {
           "Lines": {
             "11": 2,
             "12": 2,
@@ -38188,16 +38074,130 @@
             "16": 2,
             "17": 2,
             "18": 2,
-            "19": 2,
-            "20": 2,
-            "21": 2,
-            "22": 2,
-            "23": 2,
-            "24": 2,
-            "25": 2,
-            "26": 2,
-            "27": 2,
-            "28": 2
+            "19": 2
+          },
+          "Branches": []
+        }
+      }
+    },
+    "C:\\Users\\ade.pamungkas\\moonlay\\id.co.danliris-garment-web\\src\\Manufactures\\Dtos\\GarmentCuttingInDetailDto.cs": {
+      "Manufactures.Dtos.GarmentCuttingInDetailDto": {
+        "System.Guid Manufactures.Dtos.GarmentCuttingInDetailDto::get_Id()": {
+          "Lines": {
+            "30": 4
+          },
+          "Branches": []
+        },
+        "System.Guid Manufactures.Dtos.GarmentCuttingInDetailDto::get_CutInItemId()": {
+          "Lines": {
+            "31": 6
+          },
+          "Branches": []
+        },
+        "System.Guid Manufactures.Dtos.GarmentCuttingInDetailDto::get_PreparingItemId()": {
+          "Lines": {
+            "32": 5
+          },
+          "Branches": []
+        },
+        "Manufactures.Domain.Shared.ValueObjects.Product Manufactures.Dtos.GarmentCuttingInDetailDto::get_Product()": {
+          "Lines": {
+            "33": 5
+          },
+          "Branches": []
+        },
+        "System.String Manufactures.Dtos.GarmentCuttingInDetailDto::get_DesignColor()": {
+          "Lines": {
+            "35": 5
+          },
+          "Branches": []
+        },
+        "System.String Manufactures.Dtos.GarmentCuttingInDetailDto::get_FabricType()": {
+          "Lines": {
+            "36": 5
+          },
+          "Branches": []
+        },
+        "System.Double Manufactures.Dtos.GarmentCuttingInDetailDto::get_PreparingRemainingQuantity()": {
+          "Lines": {
+            "38": 4
+          },
+          "Branches": []
+        },
+        "System.Double Manufactures.Dtos.GarmentCuttingInDetailDto::get_PreparingQuantity()": {
+          "Lines": {
+            "39": 5
+          },
+          "Branches": []
+        },
+        "Manufactures.Domain.Shared.ValueObjects.Uom Manufactures.Dtos.GarmentCuttingInDetailDto::get_PreparingUom()": {
+          "Lines": {
+            "40": 5
+          },
+          "Branches": []
+        },
+        "System.Double Manufactures.Dtos.GarmentCuttingInDetailDto::get_CuttingInQuantity()": {
+          "Lines": {
+            "42": 6
+          },
+          "Branches": []
+        },
+        "Manufactures.Domain.Shared.ValueObjects.Uom Manufactures.Dtos.GarmentCuttingInDetailDto::get_CuttingInUom()": {
+          "Lines": {
+            "43": 5
+          },
+          "Branches": []
+        },
+        "System.Double Manufactures.Dtos.GarmentCuttingInDetailDto::get_RemainingQuantity()": {
+          "Lines": {
+            "45": 5
+          },
+          "Branches": []
+        },
+        "System.Double Manufactures.Dtos.GarmentCuttingInDetailDto::get_BasicPrice()": {
+          "Lines": {
+            "46": 5
+          },
+          "Branches": []
+        },
+        "System.Double Manufactures.Dtos.GarmentCuttingInDetailDto::get_Price()": {
+          "Lines": {
+            "47": 6
+          },
+          "Branches": []
+        },
+        "System.Double Manufactures.Dtos.GarmentCuttingInDetailDto::get_FC()": {
+          "Lines": {
+            "48": 5
+          },
+          "Branches": []
+        },
+        "System.String Manufactures.Dtos.GarmentCuttingInDetailDto::get_Color()": {
+          "Lines": {
+            "49": 5
+          },
+          "Branches": []
+        },
+        "System.Void Manufactures.Dtos.GarmentCuttingInDetailDto::.ctor(Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail)": {
+          "Lines": {
+            "11": 3,
+            "12": 3,
+            "13": 3,
+            "14": 3,
+            "15": 3,
+            "16": 3,
+            "17": 3,
+            "18": 3,
+            "19": 3,
+            "20": 3,
+            "21": 3,
+            "22": 3,
+            "23": 3,
+            "24": 3,
+            "25": 3,
+            "26": 3,
+            "27": 3,
+            "28": 3
           },
           "Branches": []
         }
@@ -38207,79 +38207,79 @@
       "Manufactures.Dtos.GarmentCuttingInDto": {
         "System.Guid Manufactures.Dtos.GarmentCuttingInDto::get_Id()": {
           "Lines": {
-            "27": 3
+            "27": 5
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentCuttingInDto::get_CutInNo()": {
           "Lines": {
-            "29": 0
+            "29": 5
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentCuttingInDto::get_CuttingType()": {
           "Lines": {
-            "30": 0
+            "30": 5
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentCuttingInDto::get_CuttingFrom()": {
           "Lines": {
-            "31": 0
+            "31": 5
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentCuttingInDto::get_RONo()": {
           "Lines": {
-            "32": 0
+            "32": 5
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentCuttingInDto::get_Article()": {
           "Lines": {
-            "33": 3
+            "33": 8
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartment Manufactures.Dtos.GarmentCuttingInDto::get_Unit()": {
           "Lines": {
-            "34": 0
+            "34": 5
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Dtos.GarmentCuttingInDto::get_CuttingInDate()": {
           "Lines": {
-            "35": 0
+            "35": 5
           },
           "Branches": []
         },
         "System.Double Manufactures.Dtos.GarmentCuttingInDto::get_FC()": {
           "Lines": {
-            "36": 0
+            "36": 5
           },
           "Branches": []
         },
         "System.Collections.Generic.List`1<Manufactures.Dtos.GarmentCuttingInItemDto> Manufactures.Dtos.GarmentCuttingInDto::get_Items()": {
           "Lines": {
-            "37": 5
+            "37": 6
           },
           "Branches": []
         },
         "System.Void Manufactures.Dtos.GarmentCuttingInDto::.ctor(Manufactures.Domain.GarmentCuttingIns.GarmentCuttingIn)": {
           "Lines": {
-            "11": 2,
-            "12": 2,
-            "13": 2,
-            "15": 2,
-            "16": 2,
-            "17": 2,
-            "18": 2,
-            "19": 2,
-            "20": 2,
-            "21": 2,
-            "22": 2,
-            "24": 2,
-            "25": 2
+            "11": 3,
+            "12": 3,
+            "13": 3,
+            "15": 3,
+            "16": 3,
+            "17": 3,
+            "18": 3,
+            "19": 3,
+            "20": 3,
+            "21": 3,
+            "22": 3,
+            "24": 3,
+            "25": 3
           },
           "Branches": []
         }
@@ -38289,13 +38289,13 @@
       "Manufactures.Dtos.GarmentCuttingInItemDto": {
         "System.Guid Manufactures.Dtos.GarmentCuttingInItemDto::get_Id()": {
           "Lines": {
-            "23": 0
+            "23": 4
           },
           "Branches": []
         },
         "System.Guid Manufactures.Dtos.GarmentCuttingInItemDto::get_CutInId()": {
           "Lines": {
-            "24": 3
+            "24": 5
           },
           "Branches": []
         },
@@ -38313,41 +38313,41 @@
         },
         "System.String Manufactures.Dtos.GarmentCuttingInItemDto::get_UENNo()": {
           "Lines": {
-            "27": 0
+            "27": 5
           },
           "Branches": []
         },
         "System.Guid Manufactures.Dtos.GarmentCuttingInItemDto::get_SewingOutId()": {
           "Lines": {
-            "28": 0
+            "28": 5
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentCuttingInItemDto::get_SewingOutNo()": {
           "Lines": {
-            "29": 0
+            "29": 5
           },
           "Branches": []
         },
         "System.Collections.Generic.List`1<Manufactures.Dtos.GarmentCuttingInDetailDto> Manufactures.Dtos.GarmentCuttingInItemDto::get_Details()": {
           "Lines": {
-            "30": 0
+            "30": 6
           },
           "Branches": []
         },
         "System.Void Manufactures.Dtos.GarmentCuttingInItemDto::.ctor(Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInItem)": {
           "Lines": {
-            "10": 2,
-            "11": 2,
-            "12": 2,
-            "13": 2,
-            "14": 2,
-            "15": 2,
-            "16": 2,
-            "17": 2,
-            "18": 2,
-            "20": 2,
-            "21": 2
+            "10": 3,
+            "11": 3,
+            "12": 3,
+            "13": 3,
+            "14": 3,
+            "15": 3,
+            "16": 3,
+            "17": 3,
+            "18": 3,
+            "20": 3,
+            "21": 3
           },
           "Branches": []
         }
@@ -38357,31 +38357,31 @@
       "Manufactures.Dtos.GarmentCuttingInListDto": {
         "System.Guid Manufactures.Dtos.GarmentCuttingInListDto::get_Id()": {
           "Lines": {
-            "25": 5
+            "25": 7
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentCuttingInListDto::get_CutInNo()": {
           "Lines": {
-            "27": 0
+            "27": 4
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentCuttingInListDto::get_CuttingType()": {
           "Lines": {
-            "28": 0
+            "28": 4
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentCuttingInListDto::get_CuttingFrom()": {
           "Lines": {
-            "29": 0
+            "29": 4
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentCuttingInListDto::get_RONo()": {
           "Lines": {
-            "30": 0
+            "30": 4
           },
           "Branches": []
         },
@@ -38393,25 +38393,25 @@
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartment Manufactures.Dtos.GarmentCuttingInListDto::get_Unit()": {
           "Lines": {
-            "32": 0
+            "32": 4
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Dtos.GarmentCuttingInListDto::get_CuttingInDate()": {
           "Lines": {
-            "33": 0
+            "33": 4
           },
           "Branches": []
         },
         "System.Double Manufactures.Dtos.GarmentCuttingInListDto::get_FC()": {
           "Lines": {
-            "34": 0
+            "34": 4
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentCuttingInListDto::get_CreatedBy()": {
           "Lines": {
-            "35": 0
+            "35": 4
           },
           "Branches": []
         },
@@ -38423,31 +38423,31 @@
         },
         "System.Collections.Generic.List`1<System.String> Manufactures.Dtos.GarmentCuttingInListDto::get_UENNos()": {
           "Lines": {
-            "37": 0
+            "37": 3
           },
           "Branches": []
         },
         "System.Collections.Generic.List`1<System.String> Manufactures.Dtos.GarmentCuttingInListDto::get_Products()": {
           "Lines": {
-            "38": 0
+            "38": 3
           },
           "Branches": []
         },
         "System.Void Manufactures.Dtos.GarmentCuttingInListDto::.ctor(Manufactures.Domain.GarmentCuttingIns.GarmentCuttingIn)": {
           "Lines": {
-            "11": 1,
-            "12": 1,
-            "13": 1,
-            "14": 1,
-            "15": 1,
-            "16": 1,
-            "17": 1,
-            "18": 1,
-            "19": 1,
-            "20": 1,
-            "21": 1,
-            "22": 1,
-            "23": 1
+            "11": 2,
+            "12": 2,
+            "13": 2,
+            "14": 2,
+            "15": 2,
+            "16": 2,
+            "17": 2,
+            "18": 2,
+            "19": 2,
+            "20": 2,
+            "21": 2,
+            "22": 2,
+            "23": 2
           },
           "Branches": []
         }
@@ -38790,13 +38790,13 @@
       "Manufactures.Dtos.GarmentDeliveryReturnDto": {
         "System.Guid Manufactures.Dtos.GarmentDeliveryReturnDto::get_Id()": {
           "Lines": {
-            "37": 4
+            "37": 6
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentDeliveryReturnDto::get_LastModifiedBy()": {
           "Lines": {
-            "39": 0
+            "39": 5
           },
           "Branches": []
         },
@@ -38814,19 +38814,19 @@
         },
         "System.String Manufactures.Dtos.GarmentDeliveryReturnDto::get_RONo()": {
           "Lines": {
-            "42": 0
+            "42": 6
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentDeliveryReturnDto::get_Article()": {
           "Lines": {
-            "43": 0
+            "43": 5
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Dtos.GarmentDeliveryReturnDto::get_UnitDOId()": {
           "Lines": {
-            "44": 0
+            "44": 5
           },
           "Branches": []
         },
@@ -38838,19 +38838,19 @@
         },
         "System.Int32 Manufactures.Dtos.GarmentDeliveryReturnDto::get_UENId()": {
           "Lines": {
-            "46": 0
+            "46": 5
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentDeliveryReturnDto::get_PreparingId()": {
           "Lines": {
-            "47": 0
+            "47": 5
           },
           "Branches": []
         },
         "System.Nullable`1<System.DateTimeOffset> Manufactures.Dtos.GarmentDeliveryReturnDto::get_ReturnDate()": {
           "Lines": {
-            "48": 0
+            "48": 5
           },
           "Branches": []
         },
@@ -38862,7 +38862,7 @@
         },
         "Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.UnitDepartment Manufactures.Dtos.GarmentDeliveryReturnDto::get_Unit()": {
           "Lines": {
-            "50": 4
+            "50": 6
           },
           "Branches": []
         },
@@ -38874,28 +38874,28 @@
         },
         "System.Boolean Manufactures.Dtos.GarmentDeliveryReturnDto::get_IsUsed()": {
           "Lines": {
-            "52": 0
+            "52": 5
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentDeliveryReturnDto::get_CreatedBy()": {
           "Lines": {
-            "53": 0
+            "53": 5
           },
           "Branches": []
         },
         "System.Collections.Generic.List`1<Manufactures.Dtos.GarmentDeliveryReturnItemDto> Manufactures.Dtos.GarmentDeliveryReturnDto::get_Items()": {
           "Lines": {
-            "54": 7
+            "54": 8
           },
           "Branches": []
         },
         "System.Void Manufactures.Dtos.GarmentDeliveryReturnDto::.ctor()": {
           "Lines": {
-            "10": 0,
-            "11": 0,
-            "12": 0,
-            "13": 0
+            "10": 1,
+            "11": 1,
+            "12": 1,
+            "13": 1
           },
           "Branches": []
         },
@@ -40188,25 +40188,25 @@
       "Manufactures.Dtos.GarmentFinishingOutDetailDto": {
         "System.Guid Manufactures.Dtos.GarmentFinishingOutDetailDto::get_Id()": {
           "Lines": {
-            "21": 4
+            "21": 5
           },
           "Branches": []
         },
         "System.Guid Manufactures.Dtos.GarmentFinishingOutDetailDto::get_FinishingOutItemId()": {
           "Lines": {
-            "22": 4
+            "22": 5
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.SizeValueObject Manufactures.Dtos.GarmentFinishingOutDetailDto::get_Size()": {
           "Lines": {
-            "23": 7
+            "23": 8
           },
           "Branches": []
         },
         "System.Double Manufactures.Dtos.GarmentFinishingOutDetailDto::get_Quantity()": {
           "Lines": {
-            "24": 4
+            "24": 5
           },
           "Branches": []
         },
@@ -40218,14 +40218,14 @@
         },
         "System.Void Manufactures.Dtos.GarmentFinishingOutDetailDto::.ctor(Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutDetail)": {
           "Lines": {
-            "11": 3,
-            "12": 3,
-            "13": 3,
-            "14": 3,
-            "15": 3,
-            "16": 3,
-            "17": 3,
-            "19": 3
+            "11": 4,
+            "12": 4,
+            "13": 4,
+            "14": 4,
+            "15": 4,
+            "16": 4,
+            "17": 4,
+            "19": 4
           },
           "Branches": []
         }
@@ -40235,86 +40235,86 @@
       "Manufactures.Dtos.GarmentFinishingOutDto": {
         "System.Guid Manufactures.Dtos.GarmentFinishingOutDto::get_Id()": {
           "Lines": {
-            "27": 4
+            "27": 6
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentFinishingOutDto::get_FinishingOutNo()": {
           "Lines": {
-            "28": 5
+            "28": 8
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartment Manufactures.Dtos.GarmentFinishingOutDto::get_Unit()": {
           "Lines": {
-            "29": 0
+            "29": 6
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentFinishingOutDto::get_FinishingTo()": {
           "Lines": {
-            "30": 0
+            "30": 6
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartment Manufactures.Dtos.GarmentFinishingOutDto::get_UnitTo()": {
           "Lines": {
-            "31": 0
+            "31": 6
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentFinishingOutDto::get_RONo()": {
           "Lines": {
-            "32": 4
+            "32": 7
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentFinishingOutDto::get_Article()": {
           "Lines": {
-            "33": 5
+            "33": 8
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.GarmentComodity Manufactures.Dtos.GarmentFinishingOutDto::get_Comodity()": {
           "Lines": {
-            "34": 0
+            "34": 6
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Dtos.GarmentFinishingOutDto::get_FinishingOutDate()": {
           "Lines": {
-            "35": 4
+            "35": 7
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Dtos.GarmentFinishingOutDto::get_IsDifferentSize()": {
           "Lines": {
-            "36": 4
+            "36": 7
           },
           "Branches": []
         },
         "System.Collections.Generic.List`1<Manufactures.Dtos.GarmentFinishingOutItemDto> Manufactures.Dtos.GarmentFinishingOutDto::get_Items()": {
           "Lines": {
-            "38": 8
+            "38": 12
           },
           "Branches": []
         },
         "System.Void Manufactures.Dtos.GarmentFinishingOutDto::.ctor(Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut)": {
           "Lines": {
-            "11": 3,
-            "12": 3,
-            "13": 3,
-            "14": 3,
-            "15": 3,
-            "16": 3,
-            "17": 3,
-            "18": 3,
-            "19": 3,
-            "20": 3,
-            "21": 3,
-            "22": 3,
-            "24": 3,
-            "25": 3
+            "11": 5,
+            "12": 5,
+            "13": 5,
+            "14": 5,
+            "15": 5,
+            "16": 5,
+            "17": 5,
+            "18": 5,
+            "19": 5,
+            "20": 5,
+            "21": 5,
+            "22": 5,
+            "24": 5,
+            "25": 5
           },
           "Branches": []
         }
@@ -40324,13 +40324,13 @@
       "Manufactures.Dtos.GarmentFinishingOutItemDto": {
         "System.Guid Manufactures.Dtos.GarmentFinishingOutItemDto::get_Id()": {
           "Lines": {
-            "30": 5
+            "30": 6
           },
           "Branches": []
         },
         "System.Guid Manufactures.Dtos.GarmentFinishingOutItemDto::get_FinishingOutId()": {
           "Lines": {
-            "31": 4
+            "31": 5
           },
           "Branches": []
         },
@@ -40354,19 +40354,19 @@
         },
         "System.String Manufactures.Dtos.GarmentFinishingOutItemDto::get_DesignColor()": {
           "Lines": {
-            "35": 4
+            "35": 6
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.SizeValueObject Manufactures.Dtos.GarmentFinishingOutItemDto::get_Size()": {
           "Lines": {
-            "36": 4
+            "36": 8
           },
           "Branches": []
         },
         "System.Double Manufactures.Dtos.GarmentFinishingOutItemDto::get_Quantity()": {
           "Lines": {
-            "37": 0
+            "37": 5
           },
           "Branches": []
         },
@@ -40378,7 +40378,7 @@
         },
         "System.String Manufactures.Dtos.GarmentFinishingOutItemDto::get_Color()": {
           "Lines": {
-            "39": 8
+            "39": 14
           },
           "Branches": []
         },
@@ -40402,29 +40402,29 @@
         },
         "System.Collections.Generic.List`1<Manufactures.Dtos.GarmentFinishingOutDetailDto> Manufactures.Dtos.GarmentFinishingOutItemDto::get_Details()": {
           "Lines": {
-            "43": 7
+            "43": 9
           },
           "Branches": []
         },
         "System.Void Manufactures.Dtos.GarmentFinishingOutItemDto::.ctor(Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem)": {
           "Lines": {
-            "11": 3,
-            "12": 3,
-            "13": 3,
-            "14": 3,
-            "15": 3,
-            "16": 3,
-            "17": 3,
-            "18": 3,
-            "19": 3,
-            "20": 3,
-            "21": 3,
-            "22": 3,
-            "23": 3,
-            "24": 3,
-            "25": 3,
-            "27": 3,
-            "28": 3
+            "11": 4,
+            "12": 4,
+            "13": 4,
+            "14": 4,
+            "15": 4,
+            "16": 4,
+            "17": 4,
+            "18": 4,
+            "19": 4,
+            "20": 4,
+            "21": 4,
+            "22": 4,
+            "23": 4,
+            "24": 4,
+            "25": 4,
+            "27": 4,
+            "28": 4
           },
           "Branches": []
         }
@@ -42071,93 +42071,93 @@
       "Manufactures.Dtos.GarmentSewingOutDto": {
         "System.Guid Manufactures.Dtos.GarmentSewingOutDto::get_Id()": {
           "Lines": {
-            "28": 4
+            "28": 6
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentSewingOutDto::get_SewingOutNo()": {
           "Lines": {
-            "29": 5
+            "29": 8
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.Buyer Manufactures.Dtos.GarmentSewingOutDto::get_Buyer()": {
           "Lines": {
-            "30": 0
+            "30": 6
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartment Manufactures.Dtos.GarmentSewingOutDto::get_Unit()": {
           "Lines": {
-            "31": 0
+            "31": 6
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentSewingOutDto::get_SewingTo()": {
           "Lines": {
-            "32": 0
+            "32": 6
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartment Manufactures.Dtos.GarmentSewingOutDto::get_UnitTo()": {
           "Lines": {
-            "33": 0
+            "33": 6
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentSewingOutDto::get_RONo()": {
           "Lines": {
-            "34": 4
+            "34": 7
           },
           "Branches": []
         },
         "System.String Manufactures.Dtos.GarmentSewingOutDto::get_Article()": {
           "Lines": {
-            "35": 5
+            "35": 8
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.GarmentComodity Manufactures.Dtos.GarmentSewingOutDto::get_Comodity()": {
           "Lines": {
-            "36": 0
+            "36": 6
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Dtos.GarmentSewingOutDto::get_SewingOutDate()": {
           "Lines": {
-            "37": 4
+            "37": 7
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Dtos.GarmentSewingOutDto::get_IsDifferentSize()": {
           "Lines": {
-            "38": 4
+            "38": 7
           },
           "Branches": []
         },
         "System.Collections.Generic.List`1<Manufactures.Dtos.GarmentSewingOutItemDto> Manufactures.Dtos.GarmentSewingOutDto::get_Items()": {
           "Lines": {
-            "40": 8
+            "40": 12
           },
           "Branches": []
         },
         "System.Void Manufactures.Dtos.GarmentSewingOutDto::.ctor(Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut)": {
           "Lines": {
-            "11": 3,
-            "12": 3,
-            "13": 3,
-            "14": 3,
-            "15": 3,
-            "16": 3,
-            "17": 3,
-            "18": 3,
-            "19": 3,
-            "20": 3,
-            "21": 3,
-            "22": 3,
-            "23": 3,
-            "25": 3,
-            "26": 3
+            "11": 5,
+            "12": 5,
+            "13": 5,
+            "14": 5,
+            "15": 5,
+            "16": 5,
+            "17": 5,
+            "18": 5,
+            "19": 5,
+            "20": 5,
+            "21": 5,
+            "22": 5,
+            "23": 5,
+            "25": 5,
+            "26": 5
           },
           "Branches": []
         }
@@ -42167,13 +42167,13 @@
       "Manufactures.Dtos.GarmentSewingOutItemDto": {
         "System.Guid Manufactures.Dtos.GarmentSewingOutItemDto::get_Id()": {
           "Lines": {
-            "30": 5
+            "30": 6
           },
           "Branches": []
         },
         "System.Guid Manufactures.Dtos.GarmentSewingOutItemDto::get_SewingOutId()": {
           "Lines": {
-            "31": 4
+            "31": 5
           },
           "Branches": []
         },
@@ -42197,19 +42197,19 @@
         },
         "System.String Manufactures.Dtos.GarmentSewingOutItemDto::get_DesignColor()": {
           "Lines": {
-            "35": 4
+            "35": 6
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.SizeValueObject Manufactures.Dtos.GarmentSewingOutItemDto::get_Size()": {
           "Lines": {
-            "36": 4
+            "36": 8
           },
           "Branches": []
         },
         "System.Double Manufactures.Dtos.GarmentSewingOutItemDto::get_Quantity()": {
           "Lines": {
-            "37": 0
+            "37": 5
           },
           "Branches": []
         },
@@ -42221,7 +42221,7 @@
         },
         "System.String Manufactures.Dtos.GarmentSewingOutItemDto::get_Color()": {
           "Lines": {
-            "39": 8
+            "39": 14
           },
           "Branches": []
         },
@@ -42245,29 +42245,29 @@
         },
         "System.Collections.Generic.List`1<Manufactures.Dtos.GarmentSewingOutDetailDto> Manufactures.Dtos.GarmentSewingOutItemDto::get_Details()": {
           "Lines": {
-            "43": 7
+            "43": 8
           },
           "Branches": []
         },
         "System.Void Manufactures.Dtos.GarmentSewingOutItemDto::.ctor(Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem)": {
           "Lines": {
-            "11": 3,
-            "12": 3,
-            "13": 3,
-            "14": 3,
-            "15": 3,
-            "16": 3,
-            "17": 3,
-            "18": 3,
-            "19": 3,
-            "20": 3,
-            "21": 3,
-            "22": 3,
-            "23": 3,
-            "24": 3,
-            "25": 3,
-            "27": 3,
-            "28": 3
+            "11": 4,
+            "12": 4,
+            "13": 4,
+            "14": 4,
+            "15": 4,
+            "16": 4,
+            "17": 4,
+            "18": 4,
+            "19": 4,
+            "20": 4,
+            "21": 4,
+            "22": 4,
+            "23": 4,
+            "24": 4,
+            "25": 4,
+            "27": 4,
+            "28": 4
           },
           "Branches": []
         }
@@ -51173,19 +51173,19 @@
       "Manufactures.Domain.Shared.ValueObjects.Buyer": {
         "System.Int32 Manufactures.Domain.Shared.ValueObjects.Buyer::get_Id()": {
           "Lines": {
-            "22": 23
+            "22": 25
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.Shared.ValueObjects.Buyer::get_Code()": {
           "Lines": {
-            "23": 23
+            "23": 25
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.Shared.ValueObjects.Buyer::get_Name()": {
           "Lines": {
-            "24": 23
+            "24": 25
           },
           "Branches": []
         },
@@ -51206,12 +51206,12 @@
         },
         "System.Void Manufactures.Domain.Shared.ValueObjects.Buyer::.ctor(System.Int32,System.String,System.String)": {
           "Lines": {
-            "15": 15,
-            "16": 15,
-            "17": 15,
-            "18": 15,
-            "19": 15,
-            "20": 15
+            "15": 17,
+            "16": 17,
+            "17": 17,
+            "18": 17,
+            "19": 17,
+            "20": 17
           },
           "Branches": []
         }
@@ -51221,9 +51221,9 @@
       "Manufactures.Domain.Shared.ValueObjects.BuyerId": {
         "System.Void Manufactures.Domain.Shared.ValueObjects.BuyerId::.ctor(System.Int32)": {
           "Lines": {
-            "12": 55,
-            "13": 55,
-            "14": 55
+            "12": 57,
+            "13": 57,
+            "14": 57
           },
           "Branches": []
         }
@@ -51233,19 +51233,19 @@
       "Manufactures.Domain.Shared.ValueObjects.GarmentComodity": {
         "System.Int32 Manufactures.Domain.Shared.ValueObjects.GarmentComodity::get_Id()": {
           "Lines": {
-            "22": 145
+            "22": 151
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.Shared.ValueObjects.GarmentComodity::get_Code()": {
           "Lines": {
-            "23": 131
+            "23": 137
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.Shared.ValueObjects.GarmentComodity::get_Name()": {
           "Lines": {
-            "24": 131
+            "24": 137
           },
           "Branches": []
         },
@@ -51266,12 +51266,12 @@
         },
         "System.Void Manufactures.Domain.Shared.ValueObjects.GarmentComodity::.ctor(System.Int32,System.String,System.String)": {
           "Lines": {
-            "15": 72,
-            "16": 72,
-            "17": 72,
-            "18": 72,
-            "19": 72,
-            "20": 72
+            "15": 78,
+            "16": 78,
+            "17": 78,
+            "18": 78,
+            "19": 78,
+            "20": 78
           },
           "Branches": []
         }
@@ -51281,9 +51281,9 @@
       "Manufactures.Domain.Shared.ValueObjects.GarmentComodityId": {
         "System.Void Manufactures.Domain.Shared.ValueObjects.GarmentComodityId::.ctor(System.Int32)": {
           "Lines": {
-            "9": 323,
-            "10": 323,
-            "11": 323
+            "9": 329,
+            "10": 329,
+            "11": 329
           },
           "Branches": []
         }
@@ -51293,19 +51293,19 @@
       "Manufactures.Domain.Shared.ValueObjects.Product": {
         "System.Int32 Manufactures.Domain.Shared.ValueObjects.Product::get_Id()": {
           "Lines": {
-            "22": 112
+            "22": 115
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.Shared.ValueObjects.Product::get_Name()": {
           "Lines": {
-            "24": 110
+            "24": 113
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.Shared.ValueObjects.Product::get_Code()": {
           "Lines": {
-            "26": 122
+            "26": 125
           },
           "Branches": []
         },
@@ -51318,20 +51318,20 @@
         },
         "System.Void Manufactures.Domain.Shared.ValueObjects.Product::.ctor()": {
           "Lines": {
-            "10": 20,
-            "11": 20,
-            "13": 20
+            "10": 21,
+            "11": 21,
+            "13": 21
           },
           "Branches": []
         },
         "System.Void Manufactures.Domain.Shared.ValueObjects.Product::.ctor(System.Int32,System.String,System.String)": {
           "Lines": {
-            "15": 71,
-            "16": 71,
-            "17": 71,
-            "18": 71,
-            "19": 71,
-            "20": 71
+            "15": 74,
+            "16": 74,
+            "17": 74,
+            "18": 74,
+            "19": 74,
+            "20": 74
           },
           "Branches": []
         }
@@ -51341,9 +51341,9 @@
       "Manufactures.Domain.Shared.ValueObjects.ProductId": {
         "System.Void Manufactures.Domain.Shared.ValueObjects.ProductId::.ctor(System.Int32)": {
           "Lines": {
-            "9": 224,
-            "10": 224,
-            "11": 224
+            "9": 227,
+            "10": 227,
+            "11": 227
           },
           "Branches": []
         }
@@ -51353,13 +51353,13 @@
       "Manufactures.Domain.Shared.ValueObjects.SizeValueObject": {
         "System.Int32 Manufactures.Domain.Shared.ValueObjects.SizeValueObject::get_Id()": {
           "Lines": {
-            "20": 155
+            "20": 158
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.Shared.ValueObjects.SizeValueObject::get_Size()": {
           "Lines": {
-            "21": 170
+            "21": 179
           },
           "Branches": []
         },
@@ -51380,11 +51380,11 @@
         },
         "System.Void Manufactures.Domain.Shared.ValueObjects.SizeValueObject::.ctor(System.Int32,System.String)": {
           "Lines": {
-            "14": 86,
-            "15": 86,
-            "16": 86,
-            "17": 86,
-            "18": 86
+            "14": 89,
+            "15": 89,
+            "16": 89,
+            "17": 89,
+            "18": 89
           },
           "Branches": []
         }
@@ -51394,9 +51394,9 @@
       "Manufactures.Domain.Shared.ValueObjects.SizeId": {
         "System.Void Manufactures.Domain.Shared.ValueObjects.SizeId::.ctor(System.Int32)": {
           "Lines": {
-            "12": 280,
-            "13": 280,
-            "14": 280
+            "12": 283,
+            "13": 283,
+            "14": 283
           },
           "Branches": []
         }
@@ -51406,19 +51406,19 @@
       "Manufactures.Domain.Shared.ValueObjects.UnitDepartment": {
         "System.Int32 Manufactures.Domain.Shared.ValueObjects.UnitDepartment::get_Id()": {
           "Lines": {
-            "21": 279
+            "21": 291
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.Shared.ValueObjects.UnitDepartment::get_Name()": {
           "Lines": {
-            "23": 231
+            "23": 243
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.Shared.ValueObjects.UnitDepartment::get_Code()": {
           "Lines": {
-            "25": 263
+            "25": 275
           },
           "Branches": []
         },
@@ -51431,20 +51431,20 @@
         },
         "System.Void Manufactures.Domain.Shared.ValueObjects.UnitDepartment::.ctor()": {
           "Lines": {
-            "9": 41,
-            "10": 41,
-            "12": 41
+            "9": 44,
+            "10": 44,
+            "12": 44
           },
           "Branches": []
         },
         "System.Void Manufactures.Domain.Shared.ValueObjects.UnitDepartment::.ctor(System.Int32,System.String,System.String)": {
           "Lines": {
-            "14": 138,
-            "15": 138,
-            "16": 138,
-            "17": 138,
-            "18": 138,
-            "19": 138
+            "14": 150,
+            "15": 150,
+            "16": 150,
+            "17": 150,
+            "18": 150,
+            "19": 150
           },
           "Branches": []
         }
@@ -51454,9 +51454,9 @@
       "Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId": {
         "System.Void Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId::.ctor(System.Int32)": {
           "Lines": {
-            "9": 504,
-            "10": 504,
-            "11": 504
+            "9": 517,
+            "10": 517,
+            "11": 517
           },
           "Branches": []
         }
@@ -51466,13 +51466,13 @@
       "Manufactures.Domain.Shared.ValueObjects.Uom": {
         "System.Int32 Manufactures.Domain.Shared.ValueObjects.Uom::get_Id()": {
           "Lines": {
-            "20": 154
+            "20": 159
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.Shared.ValueObjects.Uom::get_Unit()": {
           "Lines": {
-            "21": 146
+            "21": 151
           },
           "Branches": []
         },
@@ -51485,19 +51485,19 @@
         },
         "System.Void Manufactures.Domain.Shared.ValueObjects.Uom::.ctor()": {
           "Lines": {
-            "10": 25,
-            "11": 25,
-            "13": 25
+            "10": 27,
+            "11": 27,
+            "13": 27
           },
           "Branches": []
         },
         "System.Void Manufactures.Domain.Shared.ValueObjects.Uom::.ctor(System.Int32,System.String)": {
           "Lines": {
-            "14": 91,
-            "15": 91,
-            "16": 91,
-            "17": 91,
-            "18": 91
+            "14": 96,
+            "15": 96,
+            "16": 96,
+            "17": 96,
+            "18": 96
           },
           "Branches": []
         }
@@ -51507,9 +51507,9 @@
       "Manufactures.Domain.Shared.ValueObjects.UomId": {
         "System.Void Manufactures.Domain.Shared.ValueObjects.UomId::.ctor(System.Int32)": {
           "Lines": {
-            "9": 299,
-            "10": 299,
-            "11": 299
+            "9": 304,
+            "10": 304,
+            "11": 304
           },
           "Branches": []
         }
@@ -54763,109 +54763,109 @@
       "Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut": {
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_SewingOutNo()": {
           "Lines": {
-            "14": 45
+            "14": 51
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.BuyerId Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_BuyerId()": {
           "Lines": {
-            "15": 44
+            "15": 50
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_BuyerCode()": {
           "Lines": {
-            "16": 44
+            "16": 50
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_BuyerName()": {
           "Lines": {
-            "17": 44
+            "17": 50
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_UnitId()": {
           "Lines": {
-            "18": 45
+            "18": 51
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_UnitCode()": {
           "Lines": {
-            "19": 45
+            "19": 51
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_UnitName()": {
           "Lines": {
-            "20": 45
+            "20": 51
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_SewingTo()": {
           "Lines": {
-            "21": 49
+            "21": 55
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_UnitToId()": {
           "Lines": {
-            "22": 45
+            "22": 51
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_UnitToCode()": {
           "Lines": {
-            "23": 45
+            "23": 51
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_UnitToName()": {
           "Lines": {
-            "24": 45
+            "24": 51
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_RONo()": {
           "Lines": {
-            "25": 45
+            "25": 51
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_Article()": {
           "Lines": {
-            "26": 45
+            "26": 51
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.GarmentComodityId Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_ComodityId()": {
           "Lines": {
-            "27": 44
+            "27": 50
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_ComodityCode()": {
           "Lines": {
-            "28": 44
+            "28": 50
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_ComodityName()": {
           "Lines": {
-            "29": 44
+            "29": 50
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_SewingOutDate()": {
           "Lines": {
-            "30": 49
+            "30": 55
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::get_IsDifferentSize()": {
           "Lines": {
-            "31": 45
+            "31": 51
           },
           "Branches": []
         },
@@ -54916,53 +54916,53 @@
         },
         "System.Void Manufactures.Domain.GarmentSewingOuts.GarmentSewingOut::.ctor(System.Guid,System.String,Manufactures.Domain.Shared.ValueObjects.BuyerId,System.String,System.String,Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId,System.String,System.String,System.String,System.DateTimeOffset,System.String,System.String,Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId,System.String,System.String,Manufactures.Domain.Shared.ValueObjects.GarmentComodityId,System.String,System.String,System.Boolean)": {
           "Lines": {
-            "34": 19,
-            "35": 19,
-            "36": 19,
-            "37": 19,
-            "38": 19,
-            "42": 19,
-            "43": 19,
-            "44": 19,
-            "45": 19,
-            "46": 19,
-            "47": 19,
-            "48": 19,
-            "49": 19,
-            "50": 19,
-            "51": 19,
-            "52": 19,
-            "53": 19,
-            "54": 19,
-            "55": 19,
-            "56": 19,
-            "57": 19,
-            "58": 19,
-            "59": 19,
-            "60": 19,
-            "62": 19,
-            "63": 19,
-            "64": 19,
-            "65": 19,
-            "66": 19,
-            "67": 19,
-            "68": 19,
-            "69": 19,
-            "70": 19,
-            "71": 19,
-            "72": 19,
-            "73": 19,
-            "74": 19,
-            "75": 19,
-            "76": 19,
-            "77": 19,
-            "78": 19,
-            "79": 19,
-            "80": 19,
-            "81": 19,
-            "82": 19,
-            "84": 19,
-            "85": 19
+            "34": 21,
+            "35": 21,
+            "36": 21,
+            "37": 21,
+            "38": 21,
+            "42": 21,
+            "43": 21,
+            "44": 21,
+            "45": 21,
+            "46": 21,
+            "47": 21,
+            "48": 21,
+            "49": 21,
+            "50": 21,
+            "51": 21,
+            "52": 21,
+            "53": 21,
+            "54": 21,
+            "55": 21,
+            "56": 21,
+            "57": 21,
+            "58": 21,
+            "59": 21,
+            "60": 21,
+            "62": 21,
+            "63": 21,
+            "64": 21,
+            "65": 21,
+            "66": 21,
+            "67": 21,
+            "68": 21,
+            "69": 21,
+            "70": 21,
+            "71": 21,
+            "72": 21,
+            "73": 21,
+            "74": 21,
+            "75": 21,
+            "76": 21,
+            "77": 21,
+            "78": 21,
+            "79": 21,
+            "80": 21,
+            "81": 21,
+            "82": 21,
+            "84": 21,
+            "85": 21
           },
           "Branches": []
         },
@@ -55179,97 +55179,97 @@
       "Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem": {
         "System.Guid Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_SewingOutId()": {
           "Lines": {
-            "13": 49
+            "13": 52
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_SewingInId()": {
           "Lines": {
-            "14": 49
+            "14": 52
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_SewingInItemId()": {
           "Lines": {
-            "15": 53
+            "15": 56
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.ProductId Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_ProductId()": {
           "Lines": {
-            "16": 49
+            "16": 52
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_ProductCode()": {
           "Lines": {
-            "17": 49
+            "17": 52
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_ProductName()": {
           "Lines": {
-            "18": 49
+            "18": 52
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_DesignColor()": {
           "Lines": {
-            "19": 49
+            "19": 52
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.SizeId Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_SizeId()": {
           "Lines": {
-            "20": 49
+            "20": 52
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_SizeName()": {
           "Lines": {
-            "21": 49
+            "21": 52
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_Quantity()": {
           "Lines": {
-            "22": 53
+            "22": 56
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UomId Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_UomId()": {
           "Lines": {
-            "23": 49
+            "23": 52
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_UomUnit()": {
           "Lines": {
-            "24": 49
+            "24": 52
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_Color()": {
           "Lines": {
-            "25": 49
+            "25": 52
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_RemainingQuantity()": {
           "Lines": {
-            "26": 45
+            "26": 47
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_BasicPrice()": {
           "Lines": {
-            "27": 28
+            "27": 30
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::get_Price()": {
           "Lines": {
-            "28": 30
+            "28": 32
           },
           "Branches": []
         },
@@ -55378,46 +55378,46 @@
         },
         "System.Void Manufactures.Domain.GarmentSewingOuts.GarmentSewingOutItem::.ctor(System.Guid,System.Guid,System.Guid,System.Guid,Manufactures.Domain.Shared.ValueObjects.ProductId,System.String,System.String,System.String,Manufactures.Domain.Shared.ValueObjects.SizeId,System.String,System.Double,Manufactures.Domain.Shared.ValueObjects.UomId,System.String,System.String,System.Double,System.Double,System.Double)": {
           "Lines": {
-            "30": 21,
-            "31": 21,
-            "34": 21,
-            "35": 21,
-            "36": 21,
-            "37": 21,
-            "38": 21,
-            "39": 21,
-            "40": 21,
-            "41": 21,
-            "42": 21,
-            "43": 21,
-            "44": 21,
-            "45": 21,
-            "46": 21,
-            "47": 21,
-            "48": 21,
-            "49": 21,
-            "50": 21,
-            "52": 21,
-            "53": 21,
-            "54": 21,
-            "55": 21,
-            "56": 21,
-            "57": 21,
-            "58": 21,
-            "59": 21,
-            "60": 21,
-            "61": 21,
-            "62": 21,
-            "63": 21,
-            "64": 21,
-            "65": 21,
-            "66": 21,
-            "67": 21,
-            "68": 21,
-            "69": 21,
-            "70": 21,
-            "72": 21,
-            "73": 21
+            "30": 22,
+            "31": 22,
+            "34": 22,
+            "35": 22,
+            "36": 22,
+            "37": 22,
+            "38": 22,
+            "39": 22,
+            "40": 22,
+            "41": 22,
+            "42": 22,
+            "43": 22,
+            "44": 22,
+            "45": 22,
+            "46": 22,
+            "47": 22,
+            "48": 22,
+            "49": 22,
+            "50": 22,
+            "52": 22,
+            "53": 22,
+            "54": 22,
+            "55": 22,
+            "56": 22,
+            "57": 22,
+            "58": 22,
+            "59": 22,
+            "60": 22,
+            "61": 22,
+            "62": 22,
+            "63": 22,
+            "64": 22,
+            "65": 22,
+            "66": 22,
+            "67": 22,
+            "68": 22,
+            "69": 22,
+            "70": 22,
+            "72": 22,
+            "73": 22
           },
           "Branches": []
         },
@@ -55681,97 +55681,97 @@
       "Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel": {
         "System.Guid Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_SewingOutId()": {
           "Lines": {
-            "13": 38
+            "13": 39
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_SewingInId()": {
           "Lines": {
-            "14": 25
+            "14": 26
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_SewingInItemId()": {
           "Lines": {
-            "15": 25
+            "15": 26
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_ProductId()": {
           "Lines": {
-            "16": 25
+            "16": 26
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_ProductCode()": {
           "Lines": {
-            "17": 26
+            "17": 27
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_ProductName()": {
           "Lines": {
-            "18": 25
+            "18": 26
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_DesignColor()": {
           "Lines": {
-            "19": 25
+            "19": 26
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_SizeId()": {
           "Lines": {
-            "20": 25
+            "20": 26
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_SizeName()": {
           "Lines": {
-            "21": 25
+            "21": 26
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_Quantity()": {
           "Lines": {
-            "22": 30
+            "22": 31
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_RemainingQuantity()": {
           "Lines": {
-            "23": 30
+            "23": 31
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_UomId()": {
           "Lines": {
-            "24": 25
+            "24": 26
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_UomUnit()": {
           "Lines": {
-            "25": 25
+            "25": 26
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_Color()": {
           "Lines": {
-            "26": 26
+            "26": 27
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_BasicPrice()": {
           "Lines": {
-            "27": 25
+            "27": 26
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::get_Price()": {
           "Lines": {
-            "28": 26
+            "28": 27
           },
           "Branches": []
         },
@@ -55789,9 +55789,9 @@
         },
         "System.Void Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutItemReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "10": 25,
-            "11": 25,
-            "12": 25
+            "10": 26,
+            "11": 26,
+            "12": 26
           },
           "Branches": []
         }
@@ -55801,109 +55801,109 @@
       "Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel": {
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_SewingOutNo()": {
           "Lines": {
-            "13": 22
+            "13": 24
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_BuyerId()": {
           "Lines": {
-            "14": 22
+            "14": 24
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_BuyerCode()": {
           "Lines": {
-            "15": 22
+            "15": 24
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_BuyerName()": {
           "Lines": {
-            "16": 22
+            "16": 24
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_UnitId()": {
           "Lines": {
-            "17": 38
+            "17": 40
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_UnitCode()": {
           "Lines": {
-            "18": 22
+            "18": 24
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_UnitName()": {
           "Lines": {
-            "19": 24
+            "19": 26
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_SewingTo()": {
           "Lines": {
-            "20": 36
+            "20": 38
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_UnitToId()": {
           "Lines": {
-            "21": 28
+            "21": 30
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_UnitToCode()": {
           "Lines": {
-            "22": 22
+            "22": 24
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_UnitToName()": {
           "Lines": {
-            "23": 22
+            "23": 24
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_RONo()": {
           "Lines": {
-            "24": 43
+            "24": 45
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_Article()": {
           "Lines": {
-            "25": 25
+            "25": 27
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_ComodityId()": {
           "Lines": {
-            "26": 22
+            "26": 24
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_ComodityCode()": {
           "Lines": {
-            "27": 22
+            "27": 24
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_ComodityName()": {
           "Lines": {
-            "28": 22
+            "28": 24
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_SewingOutDate()": {
           "Lines": {
-            "29": 50
+            "29": 52
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::get_IsDifferentSize()": {
           "Lines": {
-            "30": 22
+            "30": 24
           },
           "Branches": []
         },
@@ -55915,9 +55915,9 @@
         },
         "System.Void Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "10": 22,
-            "11": 22,
-            "12": 22
+            "10": 24,
+            "11": 24,
+            "12": 24
           },
           "Branches": []
         }
@@ -62919,91 +62919,91 @@
       "Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut": {
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_FinishingOutNo()": {
           "Lines": {
-            "14": 54
+            "14": 60
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_UnitId()": {
           "Lines": {
-            "15": 59
+            "15": 65
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_UnitCode()": {
           "Lines": {
-            "16": 59
+            "16": 65
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_UnitName()": {
           "Lines": {
-            "17": 59
+            "17": 65
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_FinishingTo()": {
           "Lines": {
-            "18": 60
+            "18": 66
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_UnitToId()": {
           "Lines": {
-            "19": 58
+            "19": 64
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_UnitToCode()": {
           "Lines": {
-            "20": 54
+            "20": 60
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_UnitToName()": {
           "Lines": {
-            "21": 54
+            "21": 60
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_RONo()": {
           "Lines": {
-            "22": 55
+            "22": 61
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_Article()": {
           "Lines": {
-            "23": 55
+            "23": 61
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.GarmentComodityId Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_ComodityId()": {
           "Lines": {
-            "24": 61
+            "24": 67
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_ComodityCode()": {
           "Lines": {
-            "25": 57
+            "25": 63
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_ComodityName()": {
           "Lines": {
-            "26": 57
+            "26": 63
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_FinishingOutDate()": {
           "Lines": {
-            "27": 58
+            "27": 64
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::get_IsDifferentSize()": {
           "Lines": {
-            "28": 55
+            "28": 61
           },
           "Branches": []
         },
@@ -63054,47 +63054,47 @@
         },
         "System.Void Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOut::.ctor(System.Guid,System.String,Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId,System.String,System.String,System.String,System.DateTimeOffset,System.String,System.String,Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId,System.String,System.String,Manufactures.Domain.Shared.ValueObjects.GarmentComodityId,System.String,System.String,System.Boolean)": {
           "Lines": {
-            "31": 22,
-            "32": 22,
-            "33": 22,
-            "34": 22,
-            "35": 22,
-            "39": 22,
-            "40": 22,
-            "41": 22,
-            "42": 22,
-            "43": 22,
-            "44": 22,
-            "45": 22,
-            "46": 22,
-            "47": 22,
-            "48": 22,
-            "49": 22,
-            "50": 22,
-            "51": 22,
-            "52": 22,
-            "53": 22,
-            "54": 22,
-            "56": 22,
-            "57": 22,
-            "58": 22,
-            "59": 22,
-            "60": 22,
-            "61": 22,
-            "62": 22,
-            "63": 22,
-            "64": 22,
-            "65": 22,
-            "66": 22,
-            "67": 22,
-            "68": 22,
-            "69": 22,
-            "70": 22,
-            "71": 22,
-            "72": 22,
-            "73": 22,
-            "75": 22,
-            "76": 22
+            "31": 24,
+            "32": 24,
+            "33": 24,
+            "34": 24,
+            "35": 24,
+            "39": 24,
+            "40": 24,
+            "41": 24,
+            "42": 24,
+            "43": 24,
+            "44": 24,
+            "45": 24,
+            "46": 24,
+            "47": 24,
+            "48": 24,
+            "49": 24,
+            "50": 24,
+            "51": 24,
+            "52": 24,
+            "53": 24,
+            "54": 24,
+            "56": 24,
+            "57": 24,
+            "58": 24,
+            "59": 24,
+            "60": 24,
+            "61": 24,
+            "62": 24,
+            "63": 24,
+            "64": 24,
+            "65": 24,
+            "66": 24,
+            "67": 24,
+            "68": 24,
+            "69": 24,
+            "70": 24,
+            "71": 24,
+            "72": 24,
+            "73": 24,
+            "75": 24,
+            "76": 24
           },
           "Branches": []
         },
@@ -63127,37 +63127,37 @@
       "Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutDetail": {
         "System.Guid Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutDetail::get_FinishingOutItemId()": {
           "Lines": {
-            "13": 28
+            "13": 31
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.SizeId Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutDetail::get_SizeId()": {
           "Lines": {
-            "14": 31
+            "14": 34
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutDetail::get_SizeName()": {
           "Lines": {
-            "15": 31
+            "15": 34
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutDetail::get_Quantity()": {
           "Lines": {
-            "16": 32
+            "16": 35
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UomId Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutDetail::get_UomId()": {
           "Lines": {
-            "17": 29
+            "17": 32
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutDetail::get_UomUnit()": {
           "Lines": {
-            "18": 29
+            "18": 32
           },
           "Branches": []
         },
@@ -63266,25 +63266,25 @@
         },
         "System.Void Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutDetail::.ctor(System.Guid,System.Guid,Manufactures.Domain.Shared.ValueObjects.SizeId,System.String,System.Double,Manufactures.Domain.Shared.ValueObjects.UomId,System.String)": {
           "Lines": {
-            "47": 12,
-            "48": 12,
-            "51": 12,
-            "52": 12,
-            "53": 12,
-            "54": 12,
-            "55": 12,
-            "56": 12,
-            "58": 12,
-            "59": 12,
-            "60": 12,
-            "61": 12,
-            "62": 12,
-            "63": 12,
-            "64": 12,
-            "65": 12,
-            "66": 12,
-            "68": 12,
-            "69": 12
+            "47": 13,
+            "48": 13,
+            "51": 13,
+            "52": 13,
+            "53": 13,
+            "54": 13,
+            "55": 13,
+            "56": 13,
+            "58": 13,
+            "59": 13,
+            "60": 13,
+            "61": 13,
+            "62": 13,
+            "63": 13,
+            "64": 13,
+            "65": 13,
+            "66": 13,
+            "68": 13,
+            "69": 13
           },
           "Branches": []
         },
@@ -63308,97 +63308,97 @@
       "Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem": {
         "System.Guid Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_FinishingOutId()": {
           "Lines": {
-            "13": 43
+            "13": 46
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_FinishingInId()": {
           "Lines": {
-            "14": 43
+            "14": 46
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_FinishingInItemId()": {
           "Lines": {
-            "15": 51
+            "15": 54
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.ProductId Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_ProductId()": {
           "Lines": {
-            "16": 43
+            "16": 46
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_ProductCode()": {
           "Lines": {
-            "17": 43
+            "17": 46
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_ProductName()": {
           "Lines": {
-            "18": 43
+            "18": 46
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_DesignColor()": {
           "Lines": {
-            "19": 43
+            "19": 46
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.SizeId Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_SizeId()": {
           "Lines": {
-            "20": 44
+            "20": 47
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_SizeName()": {
           "Lines": {
-            "21": 43
+            "21": 46
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_Quantity()": {
           "Lines": {
-            "22": 49
+            "22": 52
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UomId Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_UomId()": {
           "Lines": {
-            "23": 44
+            "23": 47
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_UomUnit()": {
           "Lines": {
-            "24": 43
+            "24": 46
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_Color()": {
           "Lines": {
-            "25": 43
+            "25": 46
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_RemainingQuantity()": {
           "Lines": {
-            "26": 31
+            "26": 33
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_BasicPrice()": {
           "Lines": {
-            "27": 25
+            "27": 27
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::get_Price()": {
           "Lines": {
-            "28": 26
+            "28": 28
           },
           "Branches": []
         },
@@ -63507,46 +63507,46 @@
         },
         "System.Void Manufactures.Domain.GarmentFinishingOuts.GarmentFinishingOutItem::.ctor(System.Guid,System.Guid,System.Guid,System.Guid,Manufactures.Domain.Shared.ValueObjects.ProductId,System.String,System.String,System.String,Manufactures.Domain.Shared.ValueObjects.SizeId,System.String,System.Double,Manufactures.Domain.Shared.ValueObjects.UomId,System.String,System.String,System.Double,System.Double,System.Double)": {
           "Lines": {
-            "30": 19,
-            "31": 19,
-            "34": 19,
-            "35": 19,
-            "36": 19,
-            "37": 19,
-            "38": 19,
-            "39": 19,
-            "40": 19,
-            "41": 19,
-            "42": 19,
-            "43": 19,
-            "44": 19,
-            "45": 19,
-            "46": 19,
-            "47": 19,
-            "48": 19,
-            "49": 19,
-            "50": 19,
-            "52": 19,
-            "53": 19,
-            "54": 19,
-            "55": 19,
-            "56": 19,
-            "57": 19,
-            "58": 19,
-            "59": 19,
-            "60": 19,
-            "61": 19,
-            "62": 19,
-            "63": 19,
-            "64": 19,
-            "65": 19,
-            "66": 19,
-            "67": 19,
-            "68": 19,
-            "69": 19,
-            "70": 19,
-            "72": 19,
-            "73": 19
+            "30": 20,
+            "31": 20,
+            "34": 20,
+            "35": 20,
+            "36": 20,
+            "37": 20,
+            "38": 20,
+            "39": 20,
+            "40": 20,
+            "41": 20,
+            "42": 20,
+            "43": 20,
+            "44": 20,
+            "45": 20,
+            "46": 20,
+            "47": 20,
+            "48": 20,
+            "49": 20,
+            "50": 20,
+            "52": 20,
+            "53": 20,
+            "54": 20,
+            "55": 20,
+            "56": 20,
+            "57": 20,
+            "58": 20,
+            "59": 20,
+            "60": 20,
+            "61": 20,
+            "62": 20,
+            "63": 20,
+            "64": 20,
+            "65": 20,
+            "66": 20,
+            "67": 20,
+            "68": 20,
+            "69": 20,
+            "70": 20,
+            "72": 20,
+            "73": 20
           },
           "Branches": []
         },
@@ -63756,37 +63756,37 @@
       "Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutDetailReadModel": {
         "System.Guid Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutDetailReadModel::get_FinishingOutItemId()": {
           "Lines": {
-            "14": 19
+            "14": 20
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutDetailReadModel::get_SizeId()": {
           "Lines": {
-            "15": 14
+            "15": 15
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutDetailReadModel::get_SizeName()": {
           "Lines": {
-            "16": 14
+            "16": 15
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutDetailReadModel::get_Quantity()": {
           "Lines": {
-            "17": 14
+            "17": 15
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutDetailReadModel::get_UomId()": {
           "Lines": {
-            "18": 13
+            "18": 14
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutDetailReadModel::get_UomUnit()": {
           "Lines": {
-            "19": 13
+            "19": 14
           },
           "Branches": []
         },
@@ -63798,9 +63798,9 @@
         },
         "System.Void Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutDetailReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "10": 14,
-            "11": 14,
-            "12": 14
+            "10": 15,
+            "11": 15,
+            "12": 15
           },
           "Branches": []
         }
@@ -63810,97 +63810,97 @@
       "Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel": {
         "System.Guid Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_FinishingOutId()": {
           "Lines": {
-            "13": 38
+            "13": 39
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_FinishingInId()": {
           "Lines": {
-            "14": 21
+            "14": 22
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_FinishingInItemId()": {
           "Lines": {
-            "15": 24
+            "15": 25
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_ProductId()": {
           "Lines": {
-            "16": 21
+            "16": 22
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_ProductCode()": {
           "Lines": {
-            "17": 22
+            "17": 23
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_ProductName()": {
           "Lines": {
-            "18": 21
+            "18": 22
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_DesignColor()": {
           "Lines": {
-            "19": 21
+            "19": 22
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_SizeId()": {
           "Lines": {
-            "20": 21
+            "20": 22
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_SizeName()": {
           "Lines": {
-            "21": 21
+            "21": 22
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_Quantity()": {
           "Lines": {
-            "22": 26
+            "22": 27
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_RemainingQuantity()": {
           "Lines": {
-            "23": 24
+            "23": 25
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_UomId()": {
           "Lines": {
-            "24": 21
+            "24": 22
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_UomUnit()": {
           "Lines": {
-            "25": 21
+            "25": 22
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_Color()": {
           "Lines": {
-            "26": 22
+            "26": 23
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_BasicPrice()": {
           "Lines": {
-            "27": 21
+            "27": 22
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::get_Price()": {
           "Lines": {
-            "28": 22
+            "28": 23
           },
           "Branches": []
         },
@@ -63918,9 +63918,9 @@
         },
         "System.Void Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutItemReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "10": 23,
-            "11": 23,
-            "12": 23
+            "10": 24,
+            "11": 24,
+            "12": 24
           },
           "Branches": []
         }
@@ -63930,91 +63930,91 @@
       "Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel": {
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_FinishingOutNo()": {
           "Lines": {
-            "13": 27
+            "13": 29
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_UnitId()": {
           "Lines": {
-            "14": 52
+            "14": 54
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_UnitCode()": {
           "Lines": {
-            "15": 27
+            "15": 29
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_UnitName()": {
           "Lines": {
-            "16": 29
+            "16": 31
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_FinishingTo()": {
           "Lines": {
-            "17": 41
+            "17": 43
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_UnitToId()": {
           "Lines": {
-            "18": 30
+            "18": 32
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_UnitToCode()": {
           "Lines": {
-            "19": 27
+            "19": 29
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_UnitToName()": {
           "Lines": {
-            "20": 27
+            "20": 29
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_RONo()": {
           "Lines": {
-            "21": 54
+            "21": 56
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_Article()": {
           "Lines": {
-            "22": 30
+            "22": 32
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_ComodityId()": {
           "Lines": {
-            "23": 27
+            "23": 29
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_ComodityCode()": {
           "Lines": {
-            "24": 27
+            "24": 29
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_ComodityName()": {
           "Lines": {
-            "25": 27
+            "25": 29
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_FinishingOutDate()": {
           "Lines": {
-            "26": 55
+            "26": 57
           },
           "Branches": []
         },
         "System.Boolean Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::get_IsDifferentSize()": {
           "Lines": {
-            "27": 27
+            "27": 29
           },
           "Branches": []
         },
@@ -64026,9 +64026,9 @@
         },
         "System.Void Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "10": 25,
-            "11": 25,
-            "12": 25
+            "10": 27,
+            "11": 27,
+            "12": 27
           },
           "Branches": []
         }
@@ -69454,9 +69454,9 @@
         },
         "System.Void Manufactures.Domain.GarmentDeliveryReturns.ValueObjects.UnitDepartment::.ctor()": {
           "Lines": {
-            "9": 6,
-            "10": 6,
-            "12": 6
+            "9": 7,
+            "10": 7,
+            "12": 7
           },
           "Branches": []
         },
@@ -71339,61 +71339,61 @@
       "Manufactures.Domain.GarmentCuttingIns.GarmentCuttingIn": {
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingIn::get_CutInNo()": {
           "Lines": {
-            "12": 49
+            "12": 53
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingIn::get_CuttingType()": {
           "Lines": {
-            "13": 49
+            "13": 53
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingIn::get_CuttingFrom()": {
           "Lines": {
-            "14": 49
+            "14": 53
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingIn::get_RONo()": {
           "Lines": {
-            "15": 50
+            "15": 54
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingIn::get_Article()": {
           "Lines": {
-            "16": 50
+            "16": 54
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId Manufactures.Domain.GarmentCuttingIns.GarmentCuttingIn::get_UnitId()": {
           "Lines": {
-            "17": 49
+            "17": 53
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingIn::get_UnitCode()": {
           "Lines": {
-            "18": 49
+            "18": 53
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingIn::get_UnitName()": {
           "Lines": {
-            "19": 49
+            "19": 53
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Domain.GarmentCuttingIns.GarmentCuttingIn::get_CuttingInDate()": {
           "Lines": {
-            "20": 51
+            "20": 55
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentCuttingIns.GarmentCuttingIn::get_FC()": {
           "Lines": {
-            "21": 52
+            "21": 56
           },
           "Branches": []
         },
@@ -71508,19 +71508,19 @@
         },
         "System.Void Manufactures.Domain.GarmentCuttingIns.GarmentCuttingIn::.ctor(Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInReadModel)": {
           "Lines": {
-            "59": 4,
-            "60": 4,
-            "61": 4,
-            "62": 4,
-            "63": 4,
-            "64": 4,
-            "65": 4,
-            "66": 4,
-            "67": 4,
-            "68": 4,
-            "69": 4,
-            "70": 4,
-            "71": 4
+            "59": 6,
+            "60": 6,
+            "61": 6,
+            "62": 6,
+            "63": 6,
+            "64": 6,
+            "65": 6,
+            "66": 6,
+            "67": 6,
+            "68": 6,
+            "69": 6,
+            "70": 6,
+            "71": 6
           },
           "Branches": []
         }
@@ -71530,121 +71530,121 @@
       "Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail": {
         "System.Guid Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_CutInItemId()": {
           "Lines": {
-            "13": 43
+            "13": 45
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_PreparingItemId()": {
           "Lines": {
-            "14": 47
+            "14": 49
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_SewingOutItemId()": {
           "Lines": {
-            "16": 41
+            "16": 42
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_SewingOutDetailId()": {
           "Lines": {
-            "17": 41
+            "17": 42
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.ProductId Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_ProductId()": {
           "Lines": {
-            "19": 43
+            "19": 45
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_ProductCode()": {
           "Lines": {
-            "20": 43
+            "20": 45
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_ProductName()": {
           "Lines": {
-            "21": 43
+            "21": 45
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_DesignColor()": {
           "Lines": {
-            "23": 43
+            "23": 45
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_FabricType()": {
           "Lines": {
-            "24": 43
+            "24": 45
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_PreparingQuantity()": {
           "Lines": {
-            "26": 49
+            "26": 51
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UomId Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_PreparingUomId()": {
           "Lines": {
-            "27": 43
+            "27": 45
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_PreparingUomUnit()": {
           "Lines": {
-            "28": 43
+            "28": 45
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_CuttingInQuantity()": {
           "Lines": {
-            "30": 46
+            "30": 48
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UomId Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_CuttingInUomId()": {
           "Lines": {
-            "31": 43
+            "31": 45
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_CuttingInUomUnit()": {
           "Lines": {
-            "32": 43
+            "32": 45
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_RemainingQuantity()": {
           "Lines": {
-            "34": 58
+            "34": 60
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_BasicPrice()": {
           "Lines": {
-            "35": 43
+            "35": 45
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_Price()": {
           "Lines": {
-            "36": 45
+            "36": 47
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_FC()": {
           "Lines": {
-            "37": 45
+            "37": 47
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::get_Color()": {
           "Lines": {
-            "38": 43
+            "38": 45
           },
           "Branches": []
         },
@@ -71863,29 +71863,29 @@
         },
         "System.Void Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInDetail::.ctor(Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel)": {
           "Lines": {
-            "137": 5,
-            "138": 5,
-            "139": 5,
-            "140": 5,
-            "141": 5,
-            "142": 5,
-            "143": 5,
-            "144": 5,
-            "145": 5,
-            "146": 5,
-            "147": 5,
-            "148": 5,
-            "149": 5,
-            "150": 5,
-            "151": 5,
-            "152": 5,
-            "153": 5,
-            "154": 5,
-            "155": 5,
-            "156": 5,
-            "157": 5,
-            "158": 5,
-            "159": 5
+            "137": 6,
+            "138": 6,
+            "139": 6,
+            "140": 6,
+            "141": 6,
+            "142": 6,
+            "143": 6,
+            "144": 6,
+            "145": 6,
+            "146": 6,
+            "147": 6,
+            "148": 6,
+            "149": 6,
+            "150": 6,
+            "151": 6,
+            "152": 6,
+            "153": 6,
+            "154": 6,
+            "155": 6,
+            "156": 6,
+            "157": 6,
+            "158": 6,
+            "159": 6
           },
           "Branches": []
         }
@@ -71895,37 +71895,37 @@
       "Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInItem": {
         "System.Guid Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInItem::get_CutInId()": {
           "Lines": {
-            "12": 35
+            "12": 37
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInItem::get_PreparingId()": {
           "Lines": {
-            "13": 35
+            "13": 37
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInItem::get_UENId()": {
           "Lines": {
-            "14": 35
+            "14": 37
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInItem::get_UENNo()": {
           "Lines": {
-            "15": 35
+            "15": 37
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInItem::get_SewingOutId()": {
           "Lines": {
-            "16": 35
+            "16": 37
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInItem::get_SewingOutNo()": {
           "Lines": {
-            "17": 35
+            "17": 37
           },
           "Branches": []
         },
@@ -71972,15 +71972,15 @@
         },
         "System.Void Manufactures.Domain.GarmentCuttingIns.GarmentCuttingInItem::.ctor(Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInItemReadModel)": {
           "Lines": {
-            "44": 1,
-            "45": 1,
-            "46": 1,
-            "47": 1,
-            "48": 1,
-            "49": 1,
-            "50": 1,
-            "51": 1,
-            "52": 1
+            "44": 2,
+            "45": 2,
+            "46": 2,
+            "47": 2,
+            "48": 2,
+            "49": 2,
+            "50": 2,
+            "51": 2,
+            "52": 2
           },
           "Branches": []
         }
@@ -72160,121 +72160,121 @@
       "Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel": {
         "System.Guid Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_CutInItemId()": {
           "Lines": {
-            "15": 34
+            "15": 35
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_PreparingItemId()": {
           "Lines": {
-            "16": 26
+            "16": 27
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_SewingOutItemId()": {
           "Lines": {
-            "18": 23
+            "18": 24
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_SewingOutDetailId()": {
           "Lines": {
-            "19": 23
+            "19": 24
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_ProductId()": {
           "Lines": {
-            "21": 23
+            "21": 24
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_ProductCode()": {
           "Lines": {
-            "22": 30
+            "22": 31
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_ProductName()": {
           "Lines": {
-            "23": 23
+            "23": 24
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_DesignColor()": {
           "Lines": {
-            "25": 26
+            "25": 27
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_FabricType()": {
           "Lines": {
-            "26": 23
+            "26": 24
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_PreparingQuantity()": {
           "Lines": {
-            "28": 27
+            "28": 28
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_PreparingUomId()": {
           "Lines": {
-            "29": 23
+            "29": 24
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_PreparingUomUnit()": {
           "Lines": {
-            "30": 23
+            "30": 24
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_CuttingInQuantity()": {
           "Lines": {
-            "32": 31
+            "32": 32
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_CuttingInUomId()": {
           "Lines": {
-            "33": 23
+            "33": 24
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_CuttingInUomUnit()": {
           "Lines": {
-            "34": 23
+            "34": 24
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_RemainingQuantity()": {
           "Lines": {
-            "36": 25
+            "36": 26
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_BasicPrice()": {
           "Lines": {
-            "37": 23
+            "37": 24
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_Price()": {
           "Lines": {
-            "38": 27
+            "38": 28
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_FC()": {
           "Lines": {
-            "39": 24
+            "39": 25
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::get_Color()": {
           "Lines": {
-            "41": 23
+            "41": 24
           },
           "Branches": []
         },
@@ -72286,9 +72286,9 @@
         },
         "System.Void Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInDetailReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "11": 24,
-            "12": 24,
-            "13": 24
+            "11": 25,
+            "12": 25,
+            "13": 25
           },
           "Branches": []
         }
@@ -72298,37 +72298,37 @@
       "Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInItemReadModel": {
         "System.Guid Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInItemReadModel::get_CutInId()": {
           "Lines": {
-            "13": 31
+            "13": 32
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInItemReadModel::get_PreparingId()": {
           "Lines": {
-            "14": 17
+            "14": 18
           },
           "Branches": []
         },
         "System.Guid Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInItemReadModel::get_SewingOutId()": {
           "Lines": {
-            "15": 17
+            "15": 18
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInItemReadModel::get_SewingOutNo()": {
           "Lines": {
-            "16": 17
+            "16": 18
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInItemReadModel::get_UENId()": {
           "Lines": {
-            "17": 17
+            "17": 18
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInItemReadModel::get_UENNo()": {
           "Lines": {
-            "18": 18
+            "18": 19
           },
           "Branches": []
         },
@@ -72346,9 +72346,9 @@
         },
         "System.Void Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInItemReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "9": 18,
-            "10": 18,
-            "11": 18
+            "9": 19,
+            "10": 19,
+            "11": 19
           },
           "Branches": []
         }
@@ -72358,61 +72358,61 @@
       "Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInReadModel": {
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInReadModel::get_CutInNo()": {
           "Lines": {
-            "13": 25
+            "13": 27
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInReadModel::get_CuttingType()": {
           "Lines": {
-            "14": 49
+            "14": 51
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInReadModel::get_CuttingFrom()": {
           "Lines": {
-            "15": 25
+            "15": 27
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInReadModel::get_RONo()": {
           "Lines": {
-            "16": 76
+            "16": 78
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInReadModel::get_Article()": {
           "Lines": {
-            "17": 28
+            "17": 30
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInReadModel::get_UnitId()": {
           "Lines": {
-            "18": 54
+            "18": 56
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInReadModel::get_UnitCode()": {
           "Lines": {
-            "19": 25
+            "19": 27
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInReadModel::get_UnitName()": {
           "Lines": {
-            "20": 27
+            "20": 29
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInReadModel::get_CuttingInDate()": {
           "Lines": {
-            "21": 77
+            "21": 79
           },
           "Branches": []
         },
         "System.Double Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInReadModel::get_FC()": {
           "Lines": {
-            "22": 38
+            "22": 40
           },
           "Branches": []
         },
@@ -72424,9 +72424,9 @@
         },
         "System.Void Manufactures.Domain.GarmentCuttingIns.ReadModels.GarmentCuttingInReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "9": 26,
-            "10": 26,
-            "11": 26
+            "9": 28,
+            "10": 28,
+            "11": 28
           },
           "Branches": []
         }
@@ -72690,55 +72690,55 @@
       "Manufactures.Domain.GarmentComodityPrices.GarmentComodityPrice": {
         "System.Boolean Manufactures.Domain.GarmentComodityPrices.GarmentComodityPrice::get_IsValid()": {
           "Lines": {
-            "14": 77
+            "14": 80
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Domain.GarmentComodityPrices.GarmentComodityPrice::get_Date()": {
           "Lines": {
-            "15": 75
+            "15": 78
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId Manufactures.Domain.GarmentComodityPrices.GarmentComodityPrice::get_UnitId()": {
           "Lines": {
-            "16": 75
+            "16": 78
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentComodityPrices.GarmentComodityPrice::get_UnitCode()": {
           "Lines": {
-            "17": 75
+            "17": 78
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentComodityPrices.GarmentComodityPrice::get_UnitName()": {
           "Lines": {
-            "18": 75
+            "18": 78
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.GarmentComodityId Manufactures.Domain.GarmentComodityPrices.GarmentComodityPrice::get_ComodityId()": {
           "Lines": {
-            "19": 75
+            "19": 78
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentComodityPrices.GarmentComodityPrice::get_ComodityCode()": {
           "Lines": {
-            "20": 75
+            "20": 78
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentComodityPrices.GarmentComodityPrice::get_ComodityName()": {
           "Lines": {
-            "21": 75
+            "21": 78
           },
           "Branches": []
         },
         "System.Decimal Manufactures.Domain.GarmentComodityPrices.GarmentComodityPrice::get_Price()": {
           "Lines": {
-            "22": 92
+            "22": 95
           },
           "Branches": []
         },
@@ -72847,33 +72847,33 @@
         },
         "System.Void Manufactures.Domain.GarmentComodityPrices.GarmentComodityPrice::.ctor(System.Guid,System.Boolean,System.DateTimeOffset,Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId,System.String,System.String,Manufactures.Domain.Shared.ValueObjects.GarmentComodityId,System.String,System.String,System.Decimal)": {
           "Lines": {
-            "24": 28,
-            "25": 28,
-            "26": 28,
-            "30": 28,
-            "31": 28,
-            "32": 28,
-            "33": 28,
-            "34": 28,
-            "35": 28,
-            "36": 28,
-            "37": 28,
-            "38": 28,
-            "39": 28,
-            "41": 28,
-            "42": 28,
-            "43": 28,
-            "44": 28,
-            "45": 28,
-            "46": 28,
-            "47": 28,
-            "48": 28,
-            "49": 28,
-            "50": 28,
-            "51": 28,
-            "52": 28,
-            "54": 28,
-            "55": 28
+            "24": 29,
+            "25": 29,
+            "26": 29,
+            "30": 29,
+            "31": 29,
+            "32": 29,
+            "33": 29,
+            "34": 29,
+            "35": 29,
+            "36": 29,
+            "37": 29,
+            "38": 29,
+            "39": 29,
+            "41": 29,
+            "42": 29,
+            "43": 29,
+            "44": 29,
+            "45": 29,
+            "46": 29,
+            "47": 29,
+            "48": 29,
+            "49": 29,
+            "50": 29,
+            "51": 29,
+            "52": 29,
+            "54": 29,
+            "55": 29
           },
           "Branches": []
         },
@@ -72961,63 +72961,63 @@
       "Manufactures.Domain.GarmentComodityPrices.ReadModels.GarmentComodityPriceReadModel": {
         "System.Boolean Manufactures.Domain.GarmentComodityPrices.ReadModels.GarmentComodityPriceReadModel::get_IsValid()": {
           "Lines": {
-            "13": 67
+            "13": 68
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Domain.GarmentComodityPrices.ReadModels.GarmentComodityPriceReadModel::get_Date()": {
           "Lines": {
-            "14": 49
+            "14": 50
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentComodityPrices.ReadModels.GarmentComodityPriceReadModel::get_UnitId()": {
           "Lines": {
-            "15": 70
+            "15": 71
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentComodityPrices.ReadModels.GarmentComodityPriceReadModel::get_UnitCode()": {
           "Lines": {
-            "16": 46
+            "16": 47
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentComodityPrices.ReadModels.GarmentComodityPriceReadModel::get_UnitName()": {
           "Lines": {
-            "17": 46
+            "17": 47
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentComodityPrices.ReadModels.GarmentComodityPriceReadModel::get_ComodityId()": {
           "Lines": {
-            "18": 69
+            "18": 70
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentComodityPrices.ReadModels.GarmentComodityPriceReadModel::get_ComodityCode()": {
           "Lines": {
-            "19": 46
+            "19": 47
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentComodityPrices.ReadModels.GarmentComodityPriceReadModel::get_ComodityName()": {
           "Lines": {
-            "20": 46
+            "20": 47
           },
           "Branches": []
         },
         "System.Decimal Manufactures.Domain.GarmentComodityPrices.ReadModels.GarmentComodityPriceReadModel::get_Price()": {
           "Lines": {
-            "21": 51
+            "21": 52
           },
           "Branches": []
         },
         "System.Void Manufactures.Domain.GarmentComodityPrices.ReadModels.GarmentComodityPriceReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "10": 29,
-            "11": 29,
-            "12": 29
+            "10": 30,
+            "11": 30,
+            "12": 30
           },
           "Branches": []
         }
@@ -75314,73 +75314,73 @@
       "Manufactures.Domain.GarmentAdjustments.GarmentAdjustment": {
         "System.String Manufactures.Domain.GarmentAdjustments.GarmentAdjustment::get_AdjustmentNo()": {
           "Lines": {
-            "14": 54
+            "14": 57
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.GarmentAdjustment::get_AdjustmentType()": {
           "Lines": {
-            "15": 65
+            "15": 67
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.GarmentAdjustment::get_RONo()": {
           "Lines": {
-            "16": 54
+            "16": 57
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.GarmentAdjustment::get_Article()": {
           "Lines": {
-            "17": 54
+            "17": 57
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.GarmentComodityId Manufactures.Domain.GarmentAdjustments.GarmentAdjustment::get_ComodityId()": {
           "Lines": {
-            "18": 60
+            "18": 63
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.GarmentAdjustment::get_ComodityCode()": {
           "Lines": {
-            "19": 57
+            "19": 60
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.GarmentAdjustment::get_ComodityName()": {
           "Lines": {
-            "20": 57
+            "20": 60
           },
           "Branches": []
         },
         "Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId Manufactures.Domain.GarmentAdjustments.GarmentAdjustment::get_UnitId()": {
           "Lines": {
-            "21": 60
+            "21": 63
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.GarmentAdjustment::get_UnitCode()": {
           "Lines": {
-            "22": 57
+            "22": 60
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.GarmentAdjustment::get_UnitName()": {
           "Lines": {
-            "23": 57
+            "23": 60
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Domain.GarmentAdjustments.GarmentAdjustment::get_AdjustmentDate()": {
           "Lines": {
-            "24": 54
+            "24": 57
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.GarmentAdjustment::get_AdjustmentDesc()": {
           "Lines": {
-            "25": 53
+            "25": 55
           },
           "Branches": []
         },
@@ -75402,39 +75402,39 @@
         },
         "System.Void Manufactures.Domain.GarmentAdjustments.GarmentAdjustment::.ctor(System.Guid,System.String,System.String,System.String,System.String,Manufactures.Domain.Shared.ValueObjects.UnitDepartmentId,System.String,System.String,System.DateTimeOffset,Manufactures.Domain.Shared.ValueObjects.GarmentComodityId,System.String,System.String,System.String)": {
           "Lines": {
-            "27": 24,
-            "28": 24,
-            "29": 24,
-            "32": 24,
-            "33": 24,
-            "34": 24,
-            "35": 24,
-            "36": 24,
-            "37": 24,
-            "38": 24,
-            "39": 24,
-            "40": 24,
-            "41": 24,
-            "42": 24,
-            "43": 24,
-            "44": 24,
-            "46": 24,
-            "47": 24,
-            "48": 24,
-            "49": 24,
-            "50": 24,
-            "51": 24,
-            "52": 24,
-            "53": 24,
-            "54": 24,
-            "55": 24,
-            "56": 24,
-            "57": 24,
-            "58": 24,
-            "59": 24,
-            "60": 24,
-            "62": 24,
-            "63": 24
+            "27": 25,
+            "28": 25,
+            "29": 25,
+            "32": 25,
+            "33": 25,
+            "34": 25,
+            "35": 25,
+            "36": 25,
+            "37": 25,
+            "38": 25,
+            "39": 25,
+            "40": 25,
+            "41": 25,
+            "42": 25,
+            "43": 25,
+            "44": 25,
+            "46": 25,
+            "47": 25,
+            "48": 25,
+            "49": 25,
+            "50": 25,
+            "51": 25,
+            "52": 25,
+            "53": 25,
+            "54": 25,
+            "55": 25,
+            "56": 25,
+            "57": 25,
+            "58": 25,
+            "59": 25,
+            "60": 25,
+            "62": 25,
+            "63": 25
           },
           "Branches": []
         },
@@ -75958,73 +75958,73 @@
       "Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentReadModel": {
         "System.String Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentReadModel::get_AdjustmentNo()": {
           "Lines": {
-            "15": 27
+            "15": 28
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentReadModel::get_AdjustmentType()": {
           "Lines": {
-            "16": 27
+            "16": 28
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentReadModel::get_RONo()": {
           "Lines": {
-            "17": 39
+            "17": 40
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentReadModel::get_Article()": {
           "Lines": {
-            "18": 27
+            "18": 28
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentReadModel::get_ComodityId()": {
           "Lines": {
-            "19": 27
+            "19": 28
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentReadModel::get_ComodityCode()": {
           "Lines": {
-            "20": 27
+            "20": 28
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentReadModel::get_ComodityName()": {
           "Lines": {
-            "21": 27
+            "21": 28
           },
           "Branches": []
         },
         "System.Int32 Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentReadModel::get_UnitId()": {
           "Lines": {
-            "22": 39
+            "22": 40
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentReadModel::get_UnitCode()": {
           "Lines": {
-            "23": 27
+            "23": 28
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentReadModel::get_UnitName()": {
           "Lines": {
-            "24": 27
+            "24": 28
           },
           "Branches": []
         },
         "System.DateTimeOffset Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentReadModel::get_AdjustmentDate()": {
           "Lines": {
-            "25": 39
+            "25": 40
           },
           "Branches": []
         },
         "System.String Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentReadModel::get_AdjustmentDesc()": {
           "Lines": {
-            "26": 27
+            "26": 28
           },
           "Branches": []
         },
@@ -76036,9 +76036,9 @@
         },
         "System.Void Manufactures.Domain.GarmentAdjustments.ReadModels.GarmentAdjustmentReadModel::.ctor(System.Guid)": {
           "Lines": {
-            "10": 25,
-            "11": 25,
-            "13": 25
+            "10": 26,
+            "11": 26,
+            "13": 26
           },
           "Branches": []
         }
@@ -76217,10 +76217,10 @@
         },
         "System.Void Manufactures.Domain.Events.OnGarmentAdjustmentPlaced::.ctor(System.Guid)": {
           "Lines": {
-            "9": 45,
-            "10": 45,
-            "11": 45,
-            "12": 45
+            "9": 46,
+            "10": 46,
+            "11": 46,
+            "12": 46
           },
           "Branches": []
         }
@@ -76274,10 +76274,10 @@
         },
         "System.Void Manufactures.Domain.Events.OnGarmentComodityPricePlaced::.ctor(System.Guid)": {
           "Lines": {
-            "9": 28,
-            "10": 28,
-            "11": 28,
-            "12": 28
+            "9": 29,
+            "10": 29,
+            "11": 29,
+            "12": 29
           },
           "Branches": []
         }
@@ -76464,10 +76464,10 @@
         },
         "System.Void Manufactures.Domain.Events.OnGarmentFinishingOutPlaced::.ctor(System.Guid)": {
           "Lines": {
-            "9": 53,
-            "10": 53,
-            "11": 53,
-            "12": 53
+            "9": 57,
+            "10": 57,
+            "11": 57,
+            "12": 57
           },
           "Branches": []
         }
@@ -76730,10 +76730,10 @@
         },
         "System.Void Manufactures.Domain.Events.OnGarmentSewingOutPlaced::.ctor(System.Guid)": {
           "Lines": {
-            "9": 51,
-            "10": 51,
-            "11": 51,
-            "12": 51
+            "9": 54,
+            "10": 54,
+            "11": 54,
+            "12": 54
           },
           "Branches": []
         }

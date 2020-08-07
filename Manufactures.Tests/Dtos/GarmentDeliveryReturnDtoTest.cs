@@ -1,4 +1,5 @@
-﻿using Manufactures.Dtos;
+﻿using Manufactures.Domain.GarmentDeliveryReturns.ValueObjects;
+using Manufactures.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +15,7 @@ namespace Manufactures.Tests.Dtos
             var id = Guid.NewGuid();
             GarmentDeliveryReturnDto dto = new GarmentDeliveryReturnDto();
             dto.LastModifiedBy = "LastModifiedBy";
+            dto.Id = id;
             dto.CreatedBy = "CreatedBy";
             dto.RONo = "RONo";
             dto.PreparingId = "PreparingId";
@@ -23,6 +25,7 @@ namespace Manufactures.Tests.Dtos
             dto.UnitDOId = 1;
             dto.IsUsed = true;
             dto.UENId = 1;
+            dto.Unit = new UnitDepartment();
             dto.ReturnType = "ReturnType";
             Assert.True(dto.IsUsed);
             Assert.True(DateTimeOffset.MinValue < dto.ReturnDate);
