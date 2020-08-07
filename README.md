@@ -165,7 +165,7 @@ file launchSettings.json look like this :
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:57914/",
+      "applicationUrl": "http://localhost:52409/",
       "sslPort": 0
     }
   },
@@ -177,12 +177,13 @@ file launchSettings.json look like this :
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "WebApplication": {
+    "Com.Danliris.Service.Finance.Accounting.WebApi": {
       "commandName": "Project",
-      "applicationUrl": "http://localhost:5005",
+      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }
@@ -284,6 +285,14 @@ id.co.danliris-garment-web
  ┃ ┃ ┣ Infrastructure.External.DanLirisClient.Microservice
 
  ```
+ **Manufactures**
+
+This package contains Controller. The controller has responsibility to processing data and  HTTP requests and then send it to a web page. All responses from the HTTP requests API are formatted as JSON (JavaScript Object Notation) objects containing information related to the request, and any status.
+
+**Manufactures.Domain**
+
+This package contains models. The Model is a collection of objects that Representation of data structure which hold the application data and it may contain the associated business logic.on of data structure which hold the application data and it may contain the associated business logic.This Package also contains data validation classes to  validate data. Mechanism to validate data using Fluent Validation library.
+
 
 **Manufactures.Tests**
 
@@ -309,7 +318,7 @@ This file is used to configure code coverage in unit tests.
 
 Travis CI (continuous integration) is configured by adding a file named .travis.yml. This file in a YAML format text file, located in root directory of the repository. This file specifies the programming language used, the desired building and testing environment (including dependencies which must be installed before the software can be built and tested), and various other parameters.
 
-**DanLiris.Garment**
+**DanLiris.Garment.sln**
 
 File .sln is extention for *solution* aka file solution for .Net Core, this file is used to manage all project by code editor.
 
