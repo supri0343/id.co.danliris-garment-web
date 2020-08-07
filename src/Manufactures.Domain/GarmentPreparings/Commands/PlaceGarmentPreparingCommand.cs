@@ -17,6 +17,7 @@ namespace Manufactures.Domain.GarmentPreparings.Commands
         public string RONo { get; set; }
         public string Article { get; set; }
         public bool IsCuttingIn { get; set; }
+        public Shared.ValueObjects.Buyer Buyer { get; set; }
         public List<GarmentPreparingItemValueObject> Items { get; set; }
     }
 

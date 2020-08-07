@@ -36,6 +36,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoodReturns
         private readonly Mock<IGarmentFinishedGoodStockHistoryRepository> _mockFinishedGoodStockHistoryRepository;
         private readonly Mock<IGarmentComodityPriceRepository> _mockComodityPriceRepository;
         private readonly Mock<IGarmentExpenditureGoodItemRepository> _mockExpenditureGoodItemRepository;
+        private readonly Mock<IGarmentExpenditureGoodRepository> _mockExpenditureGoodRepository;
 
         public PlaceGarmentExpenditureGoodReturnCommandHandlerTests()
         {
@@ -45,6 +46,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoodReturns
             _mockFinishedGoodStockHistoryRepository = CreateMock<IGarmentFinishedGoodStockHistoryRepository>();
             _mockComodityPriceRepository = CreateMock<IGarmentComodityPriceRepository>();
             _mockExpenditureGoodItemRepository = CreateMock<IGarmentExpenditureGoodItemRepository>();
+            _mockExpenditureGoodRepository = CreateMock<IGarmentExpenditureGoodRepository>();
 
             _MockStorage.SetupStorage(_mockExpenditureGoodReturnRepository);
             _MockStorage.SetupStorage(_mockExpenditureGoodReturnItemRepository);
@@ -52,6 +54,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoodReturns
             _MockStorage.SetupStorage(_mockFinishedGoodStockHistoryRepository);
             _MockStorage.SetupStorage(_mockComodityPriceRepository);
             _MockStorage.SetupStorage(_mockExpenditureGoodItemRepository);
+            _MockStorage.SetupStorage(_mockExpenditureGoodRepository);
         }
         private PlaceGarmentExpenditureGoodReturnCommandHandler CreatePlaceGarmentExpenditureGoodReturnCommandHandler()
         {
@@ -103,8 +106,19 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoodReturns
                     new GarmentFinishedGoodStockReadModel(finStockGuid)
                 }.AsQueryable());
 
+            GarmentExpenditureGood garmentExpenditureGood = new GarmentExpenditureGood(exGoodGuid,"no",null,
+                new UnitDepartmentId(placeGarmentExpenditureGoodReturnCommand.Unit.Id), null,null, placeGarmentExpenditureGoodReturnCommand.RONo,null,new GarmentComodityId(1),
+                null,null,new BuyerId(1),null,null,DateTimeOffset.Now,null,null,0,null,false);
+
             GarmentExpenditureGoodItem garmentExpenditureGoodItem = new GarmentExpenditureGoodItem(
-                exGoodItemGuid, exGoodGuid, finStockGuid, new SizeId(1), null, 1, 0, new UomId(1), null, null, 1, 1);
+                exGoodItemGuid, exGoodGuid, finStockGuid, new SizeId(1), null, 1, 0, new UomId(1), null, "Color", 1, 1);
+
+            _mockExpenditureGoodRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentExpenditureGoodReadModel>
+                {
+                    garmentExpenditureGood.GetReadModel()
+                }.AsQueryable());
 
             _mockExpenditureGoodItemRepository
                 .Setup(s => s.Query)
@@ -112,6 +126,8 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoodReturns
                 {
                     garmentExpenditureGoodItem.GetReadModel()
                 }.AsQueryable());
+
+
 
             GarmentComodityPrice garmentComodity = new GarmentComodityPrice(
                 Guid.NewGuid(),
@@ -150,6 +166,10 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoodReturns
             _mockExpenditureGoodItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentExpenditureGoodItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentExpenditureGoodItem>()));
+
+            //_mockExpenditureGoodRepository
+            //    .Setup(s => s.Update(It.IsAny<GarmentExpenditureGood>()))
+            //    .Returns(Task.FromResult(It.IsAny<GarmentExpenditureGood>()));
 
             _MockStorage
                 .Setup(x => x.Save())

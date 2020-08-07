@@ -54,6 +54,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentPreparings
                 Article = "Test",
                 ProcessDate = DateTimeOffset.Now,
                 IsCuttingIn = false,
+                Buyer = new Domain.Shared.ValueObjects.Buyer(1, "buy", "buy"),
                 Items = new List<GarmentPreparingItemValueObject>
                 {
                     new GarmentPreparingItemValueObject
@@ -66,6 +67,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentPreparings
                         FabricType = "Test",
                         RemainingQuantity = 1,
                         BasicPrice = 1,
+                        ROSource="ro"
                     }
                 },
             };
