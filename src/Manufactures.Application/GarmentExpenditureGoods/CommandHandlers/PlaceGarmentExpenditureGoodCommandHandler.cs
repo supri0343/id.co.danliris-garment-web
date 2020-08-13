@@ -88,8 +88,9 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                             double remainQty = finstockQty[finishedGood.Identity] - qty;
                             if(remainQty < 0)
                             {
-                                qty -= finishedGood.Quantity;
+                                qty -= finstockQty[finishedGood.Identity];
                                 finStockToBeUpdated.Add(key, 0);
+                                finstockQty[finishedGood.Identity] = 0;
                             }
                             else if (remainQty == 0)
                             {
