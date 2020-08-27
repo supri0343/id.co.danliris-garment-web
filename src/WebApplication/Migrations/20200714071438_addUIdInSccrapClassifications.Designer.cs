@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20200714071438_addUIdInSccrapClassifications")]
+    partial class addUIdInSccrapClassifications
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2033,9 +2035,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<double>("Quantity");
 
-                    b.Property<string>("ROSource")
-                        .HasMaxLength(100);
-
                     b.Property<double>("RemainingQuantity");
 
                     b.Property<byte[]>("RowVersion")
@@ -2062,14 +2061,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("BuyerCode")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("BuyerId");
-
-                    b.Property<string>("BuyerName")
                         .HasMaxLength(500);
 
                     b.Property<string>("CreatedBy")

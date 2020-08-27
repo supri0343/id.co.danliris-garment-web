@@ -122,15 +122,13 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 													 select aa)
 										  join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
 										  select new { RO = a.RONo, Articles = a.Article, Id = a.Identity, DetailExpend = b.UENItemId, Processdate = a.ProcessDate };
-			List<int> detailExpendId = new List<int>();
-			foreach (var item in QueryMutationPrepareNow.Distinct())
-			{
-				detailExpendId.Add(item.DetailExpend);
-			}
-			ExpenditureROResult dataExpenditure = await GetExpenditureById(detailExpendId, request.token);
-			var _unitName = (from a in garmentPreparingRepository.Query
-							 where a.UnitId == request.unit
-							 select a.UnitName).FirstOrDefault();
+			//List<int> detailExpendId = new List<int>();
+			//foreach (var item in QueryMutationPrepareNow.Distinct())
+			//{
+			//	detailExpendId.Add(item.DetailExpend);
+			//}
+			//ExpenditureROResult dataExpenditure = await GetExpenditureById(detailExpendId, request.token);
+
 			var sumbasicPrice = (from a in garmentPreparingRepository.Query
 								 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
 								 where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&*/
@@ -144,9 +142,10 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 						});
 			var QueryMutationPrepareItemsROASAL = (from a in QueryMutationPrepareNow
 												   join b in garmentPreparingItemRepository.Query on a.Id equals b.GarmentPreparingId
-												   join c in dataExpenditure.data on b.UENItemId equals c.DetailExpenditureId
+
 												   where b.UENItemId == a.DetailExpend
-												   select new { article = a.Articles, roJob = a.RO, buyerCode = c.BuyerCode, price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RO select aa.BasicPrice / aa.Count).FirstOrDefault()), prepareitemid = b.Identity, roasal = c.ROAsal });
+												   select new { article = a.Articles, roJob = a.RO, buyerCode = a.Buyer, price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RO select aa.BasicPrice / aa.Count).FirstOrDefault()), prepareitemid = b.Identity, roasal = b.ROSource });
+
 
 
 			var QueryCuttingDONow = from a in (from data in garmentCuttingInRepository.Query where data.UnitId == request.unit && data.CuttingInDate <= dateTo select data)

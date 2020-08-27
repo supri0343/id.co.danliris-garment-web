@@ -18,6 +18,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentScrapTransactions.Config
 			  .HasMaxLength(25);
 			builder.Property(a => a.Name)
 			  .HasMaxLength(50);
+			builder.Property(a => a.UId)
+			  .HasMaxLength(10);
 			builder.Property(a => a.Description )
 			  .HasMaxLength(100);
 			builder.ApplyAuditTrail();
