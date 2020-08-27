@@ -113,7 +113,8 @@ namespace Manufactures.Domain.MonitoringProductionStockFlow
 		{
 			return this;
 		}
-		public GarmentMonitoringProductionStocFlow(string Ro,
+		public GarmentMonitoringProductionStocFlow(
+		 string Ro,
 		 string BuyerCode,
 		 string Article,
 		 string Comodity,

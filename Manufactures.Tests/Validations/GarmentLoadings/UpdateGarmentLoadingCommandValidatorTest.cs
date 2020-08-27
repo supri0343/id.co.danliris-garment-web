@@ -31,6 +31,22 @@ namespace Manufactures.Tests.Validations.GarmentLoadings
         }
 
         [Fact]
+        public void Place_HaveError_Date()
+        {
+            // Arrange
+            var validator = GetValidationRules();
+            var unitUnderTest = new UpdateGarmentLoadingCommand();
+            unitUnderTest.LoadingDate = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.SewingDODate = DateTimeOffset.Now;
+
+            // Action
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+        }
+
+        [Fact]
         public void Place_NotHaveError()
         {
             // Arrange
@@ -39,6 +55,7 @@ namespace Manufactures.Tests.Validations.GarmentLoadings
             {
                 Article = "Article",
                 LoadingDate = DateTimeOffset.Now,
+                SewingDODate= DateTimeOffset.Now,
                 Comodity = new GarmentComodity()
                 {
                     Id = 1,

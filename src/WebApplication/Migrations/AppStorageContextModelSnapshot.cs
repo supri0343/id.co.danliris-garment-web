@@ -2033,6 +2033,9 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<double>("Quantity");
 
+                    b.Property<string>("ROSource")
+                        .HasMaxLength(100);
+
                     b.Property<double>("RemainingQuantity");
 
                     b.Property<byte[]>("RowVersion")
@@ -2059,6 +2062,14 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("BuyerCode")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("BuyerId");
+
+                    b.Property<string>("BuyerName")
                         .HasMaxLength(500);
 
                     b.Property<string>("CreatedBy")

@@ -27,6 +27,7 @@ namespace Manufactures.Dtos
             Article = garmentPreparing.Article;
             IsCuttingIn = garmentPreparing.IsCuttingIn;
             CreatedBy = garmentPreparing.AuditTrail.CreatedBy;
+            Buyer = new Domain.Shared.ValueObjects.Buyer(garmentPreparing.BuyerId.Value, garmentPreparing.BuyerCode, garmentPreparing.BuyerName);
 
         }
 
@@ -44,6 +45,8 @@ namespace Manufactures.Dtos
         public bool IsCuttingIn { get; set; }
         public string CreatedBy { get; set; }
         public decimal TotalQuantity { get; set; }
+
+        public Domain.Shared.ValueObjects.Buyer Buyer { get; set; }
         public List<GarmentPreparingItemDto> Items { get; set; }
     }
 }

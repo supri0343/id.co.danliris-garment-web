@@ -35,7 +35,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAvalProducts.CommandHandlers
             return new UpdateGarmentAvalProductCommandHandler(_MockStorage.Object);
         }
 
-       // [Fact]
+        [Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -61,7 +61,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAvalProducts.CommandHandlers
                                Name ="Name"
                            },
                            DesignColor ="DesignColor",
-                         //  Quantity =2,
+                           Quantity =1,
                            Uom =new Uom()
                            {
                                Id =1,
@@ -106,9 +106,11 @@ namespace Manufactures.Tests.CommandHandlers.GarmentAvalProducts.CommandHandlers
               .Verifiable();
 
             var result = await unitUnderTest.Handle(request, cancellationToken);
+            result.Should().NotBeNull();
+
 
             // Assert
-            result.Should().NotBeNull();
+
 
         }
     }

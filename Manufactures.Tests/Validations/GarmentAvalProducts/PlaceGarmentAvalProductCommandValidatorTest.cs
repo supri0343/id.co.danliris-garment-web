@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
+using Product = Manufactures.Domain.GarmentAvalProducts.ValueObjects.Product;
 
 namespace Manufactures.Tests.Validations.GarmentAvalProducts
 {
@@ -31,6 +32,22 @@ namespace Manufactures.Tests.Validations.GarmentAvalProducts
         }
 
         [Fact]
+        public void Place_HaveError_Date()
+        {
+            var validator = GetValidationRules();
+            var unitUnderTest = new PlaceGarmentAvalProductCommand();
+
+            unitUnderTest.AvalDate = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.PreparingDate = DateTimeOffset.Now;
+
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+
+        }
+
+        [Fact]
         public void Place_NotHaveError()
         {
             // Arrange
@@ -39,6 +56,7 @@ namespace Manufactures.Tests.Validations.GarmentAvalProducts
             {
                 Article = "Article",
                 AvalDate =DateTimeOffset.Now,
+                PreparingDate= DateTimeOffset.Now,
                 RONo = "RONo",
                 Unit =new UnitDepartment()
                 {
@@ -48,6 +66,7 @@ namespace Manufactures.Tests.Validations.GarmentAvalProducts
                 },
                 Items =new List<GarmentAvalProductItemValueObject>()
                 {
+                  
                     new GarmentAvalProductItemValueObject()
                     {
                         APId =Guid.NewGuid(),
@@ -58,7 +77,7 @@ namespace Manufactures.Tests.Validations.GarmentAvalProducts
                         PreparingId =new GarmentPreparingId(id.ToString()),
                         PreparingItemId =new GarmentPreparingItemId(id.ToString()),
                         PreparingQuantity =2,
-                        Product =new Domain.GarmentAvalProducts.ValueObjects.Product()
+                        Product =new Product()
                         {
                             Id =1,
                             Code ="Code",
@@ -69,7 +88,8 @@ namespace Manufactures.Tests.Validations.GarmentAvalProducts
                         {
                             Id =1,
                             Unit ="Unit"
-                        }
+                        },
+                        
                     }
                 }
             };

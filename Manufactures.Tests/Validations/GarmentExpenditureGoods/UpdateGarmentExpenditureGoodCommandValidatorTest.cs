@@ -30,6 +30,7 @@ namespace Manufactures.Tests.Validations.GarmentExpenditureGoods
             result.ShouldHaveError();
         }
 
+
         [Fact]
         public void Place_NotHaveError()
         {

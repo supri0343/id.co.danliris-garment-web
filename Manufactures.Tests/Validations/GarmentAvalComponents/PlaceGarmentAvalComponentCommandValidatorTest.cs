@@ -33,9 +33,44 @@ namespace Manufactures.Tests.Validations.GarmentAvalComponents
         }
 
         [Fact]
+        public void Place_HaveError_Date_SEWING()
+        {
+            var validator = GetValidationRules();
+            var unitUnderTest = new PlaceGarmentAvalComponentCommand();
+
+            unitUnderTest.Date = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.SewingDate = DateTimeOffset.Now;
+            unitUnderTest.AvalComponentType = "SEWING";
+
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+            
+        }
+
+        [Fact]
+        public void Place_HaveError_Date_CUTTING()
+        {
+            var validator = GetValidationRules();
+            var unitUnderTest = new PlaceGarmentAvalComponentCommand();
+
+            unitUnderTest.Date = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.CuttingDate = DateTimeOffset.Now;
+            unitUnderTest.AvalComponentType = "CUTTING";
+
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+
+        }
+
+        [Fact]
         public void Place_NotHaveError()
         {
             // Arrange
+            Guid id = Guid.NewGuid();
             var validator = GetValidationRules();
             var a = new PlaceGarmentAvalComponentCommand();
             a.Unit = new UnitDepartment(1, "UnitCode", "UnitName");
@@ -52,6 +87,19 @@ namespace Manufactures.Tests.Validations.GarmentAvalComponents
                     IsSave = true,
                     Product = new Product(1, "Code","Name"),
                     Quantity = 10,
+                    BasicPrice =1,
+                    Color ="Color",
+                    CuttingInDetailId =id,
+                    DesignColor ="DesignColor",
+                    IsDifferentSize =true,
+                    Price =1,
+                    SewingOutDetailId =id,
+                    SewingOutItemId =id,
+                    Size=new SizeValueObject()
+                    {
+                        Id =1,
+                        Size="Size"
+                    },
                     SourceQuantity = 10
                 }
             };

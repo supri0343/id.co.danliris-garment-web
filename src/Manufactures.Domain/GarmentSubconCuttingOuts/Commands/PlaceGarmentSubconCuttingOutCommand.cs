@@ -6,6 +6,7 @@ using System.Text;
 using Manufactures.Domain.GarmentSubconCuttingOuts.ValueObjects;
 using FluentValidation;
 using System.Linq;
+using System.Globalization;
 
 namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
 {
@@ -16,6 +17,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
 
         public UnitDepartment UnitFrom { get; set; }
         public DateTimeOffset? CuttingOutDate { get; set; }
+        public DateTimeOffset? CuttingInDate { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }
         public UnitDepartment Unit { get; set; }
@@ -39,6 +41,7 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.CuttingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.CuttingOutDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Tidak Boleh Lebih dari Hari Ini");
+            RuleFor(r => r.CuttingOutDate).NotNull().GreaterThan(r => r.CuttingInDate.GetValueOrDefault().Date).WithMessage(r => $"Tanggal Tidak Boleh Kurang dari tanggal {r.CuttingInDate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"))}");
 
             RuleFor(r => r.TotalQty)
                .LessThanOrEqualTo(r => r.PlanPORemainingQuantity)

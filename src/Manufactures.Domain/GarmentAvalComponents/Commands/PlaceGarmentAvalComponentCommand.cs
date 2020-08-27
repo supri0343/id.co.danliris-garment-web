@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentAvalComponents.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Manufactures.Domain.GarmentAvalComponents.Commands
@@ -16,6 +17,8 @@ namespace Manufactures.Domain.GarmentAvalComponents.Commands
         public string Article { get; set; }
         public GarmentComodity Comodity { get; set; }
         public DateTimeOffset? Date { get; set; }
+        public DateTimeOffset? CuttingDate { get; set; }
+        public DateTimeOffset? SewingDate { get; set; }
         public decimal Price { get; set; }
 
         public List<PlaceGarmentAvalComponentItemValueObject> Items { get; set; }
@@ -40,6 +43,9 @@ namespace Manufactures.Domain.GarmentAvalComponents.Commands
             RuleFor(r => r.Date).NotEmpty();
 
             RuleFor(r => r.Date).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Tidak Boleh Lebih dari Hari Ini");
+            RuleFor(r => r.Date).NotNull().GreaterThan(r => r.SewingDate.GetValueOrDefault().Date).WithMessage(r => $"Tanggal Tidak Boleh Kurang dari tanggal {r.SewingDate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"))}").When(r => r.AvalComponentType == "SEWING" && r.SewingDate!=null);
+            RuleFor(r => r.Date).NotNull().GreaterThan(r => r.CuttingDate.GetValueOrDefault().Date).WithMessage(r => $"Tanggal Tidak Boleh Kurang dari tanggal {r.CuttingDate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"))}").When(r => r.AvalComponentType == "CUTTING" && r.CuttingDate!=null);
+
             RuleFor(r => r.Items).NotNull().OverridePropertyName("Item");
             RuleFor(r => r.Items.Where(w => w.IsSave)).NotEmpty().OverridePropertyName("Item").When(w => w.Items != null);
 

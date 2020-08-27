@@ -7,6 +7,7 @@ using Manufactures.Domain.GarmentSubconFinishingIns.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Manufactures.Domain.GarmentSubconFinishingIns.Commands
@@ -19,7 +20,8 @@ namespace Manufactures.Domain.GarmentSubconFinishingIns.Commands
         public string Article { get; set; }
         public string RONo { get; set; }
         public GarmentComodity Comodity { get; set; }
-        public DateTimeOffset FinishingInDate { get; set; }
+        public DateTimeOffset? FinishingInDate { get; set; }
+        public DateTimeOffset? CuttingOutDate { get; set; }
         public List<GarmentSubconFinishingInItemValueObject> Items { get; set; }
         public long DOId { get; set; }
         public string DONo { get; set; }
@@ -38,6 +40,7 @@ namespace Manufactures.Domain.GarmentSubconFinishingIns.Commands
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
             RuleFor(r => r.FinishingInDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal FinishingIn Tidak Boleh Kosong");
             RuleFor(r => r.FinishingInDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal FinishingIn Tidak Boleh Lebih dari Hari Ini");
+            //RuleFor(r => r.FinishingInDate).NotNull().GreaterThan(r => r.CuttingOutDate.GetValueOrDefault().Date).WithMessage(r => $"Tanggal FinishingIn Tidak Boleh Kurang dari tanggal {r.CuttingOutDate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"))}");
             RuleFor(r => r.Comodity).NotNull();
             RuleFor(r => r.Supplier).NotNull();
             RuleFor(r => r.DONo).NotNull().When(w => w.Supplier != null);

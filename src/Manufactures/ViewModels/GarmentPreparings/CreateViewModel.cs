@@ -47,5 +47,17 @@ namespace Manufactures.ViewModels.GarmentPreparings
         [Display(Name = "Items")]
         [Required]
         public List<GarmentPreparingItemValueObject> Items { get; set; }
+
+        [Display(Name = "BuyerId")]
+        [Required]
+        public int BuyerId { get; set; }
+
+        [Display(Name = "BuyerCode")]
+        [Required]
+        public string BuyerCode { get; set; }
+
+        [Display(Name = "BuyerName")]
+        [Required]
+        public string BuyerName { get; set; }
     }
 }

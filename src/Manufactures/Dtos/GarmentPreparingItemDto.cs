@@ -23,6 +23,7 @@ namespace Manufactures.Dtos
             RemainingQuantity = (decimal)garmentPreparingItem.RemainingQuantity;
             BasicPrice = (decimal)garmentPreparingItem.BasicPrice;
             GarmentPreparingId = garmentPreparingItem.GarmentPreparingId;
+            ROSource = garmentPreparingItem.ROSource;
         }
 
         public Guid Id { get; set; }
@@ -37,6 +38,7 @@ namespace Manufactures.Dtos
         public decimal Quantity { get; set; }
         public Uom Uom { get; set; }
         public string FabricType { get; set; }
+        public string ROSource { get; set; }
         public decimal RemainingQuantity { get; set; }
         public decimal BasicPrice { get; set; }
         public Guid GarmentPreparingId { get; set; }
