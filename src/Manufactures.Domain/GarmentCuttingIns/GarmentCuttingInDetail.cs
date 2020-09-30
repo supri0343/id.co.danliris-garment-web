@@ -36,8 +36,8 @@ namespace Manufactures.Domain.GarmentCuttingIns
         public double Price { get; private set; }
         public double FC { get; private set; }
         public string Color { get; private set; }
-
-        public void SetCuttingInQuantity(int CuttingInQuantity)
+		
+		public void SetCuttingInQuantity(int CuttingInQuantity)
         {
             if (this.CuttingInQuantity != CuttingInQuantity)
             {

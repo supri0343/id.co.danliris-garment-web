@@ -28,6 +28,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.ReadModels
         public string StorageCode { get; internal set; }
         public string StorageName { get; internal set; }
         public bool IsUsed { get; internal set; }
+		public string UId { get; set; }
         public virtual List<GarmentDeliveryReturnItemReadModel> GarmentDeliveryReturnItem { get; internal set; }
     }
 }

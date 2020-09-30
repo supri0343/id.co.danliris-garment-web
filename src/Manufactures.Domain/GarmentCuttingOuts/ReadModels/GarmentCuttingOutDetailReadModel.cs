@@ -23,8 +23,8 @@ namespace Manufactures.Domain.GarmentCuttingOuts.ReadModels
         public double BasicPrice { get; internal set; }
         public double Price { get; internal set; }
         public string Remark { get; internal set; }
-
-        public virtual GarmentCuttingOutItemReadModel GarmentCuttingOutItemIdentity { get; internal set; }
+		public string UId { get; private set; }
+		public virtual GarmentCuttingOutItemReadModel GarmentCuttingOutItemIdentity { get; internal set; }
 
     }
 }

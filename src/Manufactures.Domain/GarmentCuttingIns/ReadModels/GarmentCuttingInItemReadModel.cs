@@ -16,8 +16,8 @@ namespace Manufactures.Domain.GarmentCuttingIns.ReadModels
         public string SewingOutNo { get; internal set; }
         public int UENId { get; internal set; }
         public string UENNo { get; internal set; }
-
-        public virtual GarmentCuttingInReadModel GarmentCuttingIn { get; internal set; }
+		public string UId { get; private set; }
+		public virtual GarmentCuttingInReadModel GarmentCuttingIn { get; internal set; }
         public virtual ICollection<GarmentCuttingInDetailReadModel> Details { get; internal set; }
     }
 }

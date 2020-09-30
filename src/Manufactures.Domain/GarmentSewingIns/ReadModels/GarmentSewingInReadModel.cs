@@ -28,7 +28,7 @@ namespace Manufactures.Domain.GarmentSewingIns.ReadModels
         public string ComodityCode { get; internal set; }
         public string ComodityName { get; internal set; }
         public DateTimeOffset SewingInDate { get; internal set; }
-
-        public virtual List<GarmentSewingInItemReadModel> GarmentSewingInItem { get; internal set; }
+		public string UId { get; private set; }
+		public virtual List<GarmentSewingInItemReadModel> GarmentSewingInItem { get; internal set; }
     }
 }

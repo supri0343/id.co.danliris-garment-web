@@ -23,8 +23,8 @@ namespace Manufactures.Domain.GarmentPreparings
         public Shared.ValueObjects.BuyerId BuyerId { get; private set; }
         public string BuyerCode { get; private set; }
         public string BuyerName { get; private set; }
-
-        public GarmentPreparing(Guid identity, int uenId, string uenNo, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset? processDate, string roNo, string article, bool isCuttingIn, Shared.ValueObjects.BuyerId buyerId, string buyerCode, string buyerName) : base(identity)
+		public string UId { get; private set; }
+		public GarmentPreparing(Guid identity, int uenId, string uenNo, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset? processDate, string roNo, string article, bool isCuttingIn, Shared.ValueObjects.BuyerId buyerId, string buyerCode, string buyerName) : base(identity)
         {
             this.MarkTransient();
 

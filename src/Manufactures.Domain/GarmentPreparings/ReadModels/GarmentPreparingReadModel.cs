@@ -23,7 +23,8 @@ namespace Manufactures.Domain.GarmentPreparings.ReadModels
         public string RONo { get; internal set; }
         public string Article { get; internal set; }
         public bool IsCuttingIn { get; internal set; }
-        public virtual List<GarmentPreparingItemReadModel> GarmentPreparingItem { get; internal set; }
+		public string UId { get; internal set; }
+		public virtual List<GarmentPreparingItemReadModel> GarmentPreparingItem { get; internal set; }
 
     }
 }

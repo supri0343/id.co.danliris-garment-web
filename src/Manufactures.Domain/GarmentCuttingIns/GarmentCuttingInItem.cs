@@ -15,8 +15,8 @@ namespace Manufactures.Domain.GarmentCuttingIns
         public string UENNo { get; private set; }
         public Guid SewingOutId { get; private set; }
         public string SewingOutNo { get; private set; }
-
-        public GarmentCuttingInItem(Guid identity, Guid cutInId, Guid preparingId, int uENId, string uENNo, Guid sewingOutId, string sewingOutNo) : base(identity)
+		public string UId { get; private set; }
+		public GarmentCuttingInItem(Guid identity, Guid cutInId, Guid preparingId, int uENId, string uENNo, Guid sewingOutId, string sewingOutNo) : base(identity)
         {
             //MarkTransient();
 
