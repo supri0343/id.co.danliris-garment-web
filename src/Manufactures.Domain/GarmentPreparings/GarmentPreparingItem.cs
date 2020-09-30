@@ -25,8 +25,8 @@ namespace Manufactures.Domain.GarmentPreparings
         public double BasicPrice { get; private set; }
         public Guid GarmentPreparingId { get; private set; }
         public string ROSource { get; private set; }
-
-        public GarmentPreparingItem(Guid identity, int uenItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, string fabricType, double remainingQuantity, double basicPrice, Guid garmentPreparingId, string roSource) : base(identity)
+		public string UId { get; private set; }
+		public GarmentPreparingItem(Guid identity, int uenItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, string fabricType, double remainingQuantity, double basicPrice, Guid garmentPreparingId, string roSource) : base(identity)
         {
             this.MarkTransient();
 

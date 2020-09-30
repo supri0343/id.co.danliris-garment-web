@@ -28,8 +28,8 @@ namespace Manufactures.Domain.GarmentSewingOuts.ReadModels
         public string ComodityName { get; internal set; }
         public DateTimeOffset SewingOutDate { get; internal set; }
         public bool IsDifferentSize { get; internal set; }
-
-        public virtual List<GarmentSewingOutItemReadModel> GarmentSewingOutItem { get; internal set; }
+		public string UId { get; private set; }
+		public virtual List<GarmentSewingOutItemReadModel> GarmentSewingOutItem { get; internal set; }
 
     }
 }

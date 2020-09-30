@@ -26,7 +26,8 @@ namespace Manufactures.Domain.GarmentSewingOuts.ReadModels
         public string Color { get; internal set; }
         public double BasicPrice { get; internal set; }
         public double Price { get; internal set; }
-        public virtual ICollection<GarmentSewingOutDetailReadModel> GarmentSewingOutDetail { get; internal set; }
+		public string UId { get; private set; }
+		public virtual ICollection<GarmentSewingOutDetailReadModel> GarmentSewingOutDetail { get; internal set; }
         public virtual GarmentSewingOutReadModel GarmentSewingOutIdentity { get; internal set; }
     }
 }

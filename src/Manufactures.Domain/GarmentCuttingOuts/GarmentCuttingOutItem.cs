@@ -19,8 +19,8 @@ namespace Manufactures.Domain.GarmentCuttingOuts
         public string DesignColor { get; private set; }
         public double TotalCuttingOut { get; private set; }
         public double TotalCuttingOutQuantity { get; private set; }
-
-        public GarmentCuttingOutItem(Guid identity, Guid cuttingInId, Guid cuttingInDetailId, Guid cutOutId, ProductId productId, string productCode, string productName, string designColor, double totalCuttingOut) : base(identity)
+		public string UId { get; private set; }
+		public GarmentCuttingOutItem(Guid identity, Guid cuttingInId, Guid cuttingInDetailId, Guid cutOutId, ProductId productId, string productCode, string productName, string designColor, double totalCuttingOut) : base(identity)
         {
             //MarkTransient();
 
