@@ -28,8 +28,8 @@ namespace Manufactures.Domain.GarmentFinishingIns.ReadModels
         public double RemainingQuantity { get; internal set; }
         public double BasicPrice { get; internal set; }
         public double Price { get; internal set; }
-
-        public virtual GarmentFinishingInReadModel GarmentFinishingIn { get; internal set; }
+		public string UId { get; internal set; }
+		public virtual GarmentFinishingInReadModel GarmentFinishingIn { get; internal set; }
 
     }
 }

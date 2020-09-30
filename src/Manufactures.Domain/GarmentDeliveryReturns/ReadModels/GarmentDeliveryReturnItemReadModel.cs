@@ -23,6 +23,7 @@ namespace Manufactures.Domain.GarmentDeliveryReturns.ReadModels
         public double Quantity { get; internal set; }
         public int UomId { get; internal set; }
         public string UomUnit { get; internal set; }
-        public virtual GarmentDeliveryReturnReadModel GarmentDeliveryReturnIdentity { get; internal set; }
+		public string UId { get; set; }
+		public virtual GarmentDeliveryReturnReadModel GarmentDeliveryReturnIdentity { get; internal set; }
     }
 }

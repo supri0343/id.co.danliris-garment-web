@@ -13,8 +13,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Configs
 
             builder.Property(p => p.UENNo).HasMaxLength(100);
             builder.Property(p => p.SewingOutNo).HasMaxLength(50);
-
-            builder.HasOne(w => w.GarmentCuttingIn)
+			builder.Property(p => p.UId).HasMaxLength(255);
+			builder.HasOne(w => w.GarmentCuttingIn)
                 .WithMany(h => h.Items)
                 .HasForeignKey(f => f.CutInId);
 

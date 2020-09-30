@@ -19,8 +19,9 @@ namespace Manufactures.Domain.GarmentCuttingIns
         public string UnitName { get; private set; }
         public DateTimeOffset CuttingInDate { get; private set; }
         public double FC { get; private set; }
+		public string UId { get; private set; }
 
-        public GarmentCuttingIn(Guid identity, string cutInNo, string cuttingType, string cuttingFrom, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset cuttingInDate, double fC) : base(identity)
+		public GarmentCuttingIn(Guid identity, string cutInNo, string cuttingType, string cuttingFrom, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset cuttingInDate, double fC) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
             Validator.ThrowIfNull(() => rONo);

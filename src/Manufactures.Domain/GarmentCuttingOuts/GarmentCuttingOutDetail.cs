@@ -20,9 +20,9 @@ namespace Manufactures.Domain.GarmentCuttingOuts
         public double RemainingQuantity { get; private set; }
         public double BasicPrice { get; private set; }
         public double Price { get; private set; }
-       
+		public string UId { get; private set; }
 
-        public void SetCuttingOutQuantity(double CuttingOutQuantity)
+		public void SetCuttingOutQuantity(double CuttingOutQuantity)
         {
             if (this.CuttingOutQuantity != CuttingOutQuantity)
             {
