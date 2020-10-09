@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Security.Claims;
 using System.Threading;
@@ -50,7 +51,10 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<GetAllGarmentAvalComponentsQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentAvalComponentsListViewModel());
+                .ReturnsAsync(new GarmentAvalComponentsListViewModel
+                {
+                    GarmentAvalComponents = new List<GarmentAvalComponentDto>()
+                });
 
             // Act
             var result = await unitUnderTest.Get();
