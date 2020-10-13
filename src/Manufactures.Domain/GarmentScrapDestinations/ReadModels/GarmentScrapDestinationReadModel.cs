@@ -14,5 +14,6 @@ namespace Manufactures.Domain.GarmentScrapDestinations.ReadModels
 		public string Code { get; internal set; }
 		public string Name { get; internal set; }
 		public string Description { get; internal set; }
+		public string UId { get; internal set; }
 	}
 }

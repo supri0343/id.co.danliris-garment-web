@@ -20,7 +20,7 @@ namespace Manufactures.Domain.GarmentCuttingIns.ReadModels
         public string UnitName { get; internal set; }
         public DateTimeOffset CuttingInDate { get; internal set; }
         public double FC { get; internal set; }
-
-        public virtual ICollection<GarmentCuttingInItemReadModel> Items { get; internal set; }
+		public string UId { get; private set; }
+		public virtual ICollection<GarmentCuttingInItemReadModel> Items { get; internal set; }
     }
 }

@@ -28,7 +28,7 @@ namespace Manufactures.Domain.GarmentSewingDOs.ReadModels
         public double RemainingQuantity { get; internal set; }
         public double BasicPrice { get; internal set; }
         public double Price { get; internal set; }
-
-        public virtual GarmentSewingDOReadModel GarmentSewingDOIdentity { get; internal set; }
+		public string UId { get; private set; }
+		public virtual GarmentSewingDOReadModel GarmentSewingDOIdentity { get; internal set; }
     }
 }

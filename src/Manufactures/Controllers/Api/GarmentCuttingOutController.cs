@@ -52,147 +52,16 @@ namespace Manufactures.Controllers.Api
         {
             VerifyUser();
 
-            var query = _garmentCuttingOutRepository.Read(page, size, order, "", filter).Where(d => d.CuttingOutType != "SUBKON");
-            var total = query.Count();
-            double totalQty = query.Sum(a => a.GarmentCuttingOutItem.Sum(b => b.GarmentCuttingOutDetail.Sum(c => c.CuttingOutQuantity)));
-            query = query.Skip((page - 1) * size).Take(size);
-
-            var garmentCuttingOutDto = _garmentCuttingOutRepository.Find(query).Select(o => new GarmentCuttingOutListDto(o)).ToArray();
-            var garmentCuttingOutItemDto = _garmentCuttingOutItemRepository.Find(_garmentCuttingOutItemRepository.Query).Select(o => new GarmentCuttingOutItemDto(o)).ToList();
-            var garmentCuttingOutItemDtoArray = _garmentCuttingOutItemRepository.Find(_garmentCuttingOutItemRepository.Query).Select(o => new GarmentCuttingOutItemDto(o)).ToArray();
-            var garmentCuttingOutDetailDto = _garmentCuttingOutDetailRepository.Find(_garmentCuttingOutDetailRepository.Query).Select(o => new GarmentCuttingOutDetailDto(o)).ToList();
-            var garmentCuttingOutDetailDtoArray = _garmentCuttingOutDetailRepository.Find(_garmentCuttingOutDetailRepository.Query).Select(o => new GarmentCuttingOutDetailDto(o)).ToArray();
-
-            Parallel.ForEach(garmentCuttingOutDto, itemDto =>
+            var cuttingOutQuery = new Application.GarmentCuttingOuts.Queries.GetAllCuttingOuts.GetAllCuttingOutQuery(page, size, order, keyword, filter);
+            var viewModel = await Mediator.Send(cuttingOutQuery);
+            return Ok(viewModel.data, info: new
             {
-                var garmentCuttingOutItems = garmentCuttingOutItemDto.Where(x => x.CutOutId == itemDto.Id).ToList();
-
-
-                itemDto.Items = garmentCuttingOutItems;
-
-                Parallel.ForEach(itemDto.Items, detailDto =>
-                {
-                    var garmentCuttingOutDetails = garmentCuttingOutDetailDto.Where(x => x.CutOutItemId == detailDto.Id).ToList();
-                    detailDto.Details = garmentCuttingOutDetails;
-
-                    detailDto.Details = detailDto.Details.OrderBy(x => x.Id).ToList();
-                });
-
-                itemDto.Items = itemDto.Items.OrderBy(x => x.Id).ToList();
-
-                itemDto.Products = itemDto.Items.Select(i => i.Product.Code).ToList();
-                itemDto.TotalCuttingOutQuantity = itemDto.Items.Sum(i => i.Details.Sum(d => d.CuttingOutQuantity));
-                itemDto.TotalRemainingQuantity = itemDto.Items.Sum(i => i.Details.Sum(d => d.RemainingQuantity));
+                page,
+                size,
+                viewModel.total,
+                count = viewModel.data.Count,
+                viewModel.totalQty
             });
-
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                garmentCuttingOutItemDtoArray = garmentCuttingOutItemDto.Where(x => x.Product.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToArray();
-                List<GarmentCuttingOutListDto> ListTemp = new List<GarmentCuttingOutListDto>();
-                foreach (var a in garmentCuttingOutItemDtoArray)
-                {
-                    var temp = garmentCuttingOutDto.Where(x => x.Id.Equals(a.CutOutId)).ToArray();
-                    foreach (var b in temp)
-                    {
-                        ListTemp.Add(b);
-                    }
-                }
-
-                var garmentCuttingOutDtoList = garmentCuttingOutDto.Where(x => x.CutOutNo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    || x.Unit.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    || (x.Article != null && x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase))
-                                    ).ToList();
-                
-                var i = 0;
-                foreach (var data in ListTemp)
-                {
-                    i = 0;
-                    foreach (var item in garmentCuttingOutDtoList)
-                    {
-                        if (data.Id == item.Id)
-                        {
-                            i++;
-                        }
-                    }
-                    if (i == 0)
-                    {
-                        garmentCuttingOutDtoList.Add(data);
-                    }
-                }
-                var garmentCuttingOutDtoListArray = garmentCuttingOutDtoList.ToArray();
-                if (order != "{}")
-                {
-                    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                    garmentCuttingOutDtoListArray = QueryHelper<GarmentCuttingOutListDto>.Order(garmentCuttingOutDtoList.AsQueryable(), OrderDictionary).ToArray();
-                }
-                else
-                {
-                    garmentCuttingOutDtoListArray = garmentCuttingOutDtoList.OrderByDescending(x => x.LastModifiedDate).ToArray();
-                }
-
-                //garmentCuttingOutDtoListArray = garmentCuttingOutDtoListArray.Take(size).Skip((page - 1) * size).ToArray();
-                totalQty = garmentCuttingOutDtoListArray.Sum(a => a.Items.Sum(b => b.Details.Sum(c => c.CuttingOutQuantity)));
-                await Task.Yield();
-                return Ok(garmentCuttingOutDtoListArray, info: new
-                {
-                    page,
-                    size,
-                    total,
-                    totalQty
-                });
-            }
-            else
-            {
-                if (order != "{}")
-                {
-                    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                    garmentCuttingOutDto = QueryHelper<GarmentCuttingOutListDto>.Order(garmentCuttingOutDto.AsQueryable(), OrderDictionary).ToArray();
-                }
-                else
-                {
-                    garmentCuttingOutDto = garmentCuttingOutDto.OrderByDescending(x => x.LastModifiedDate).ToArray();
-                }
-
-                //garmentCuttingOutDto = garmentCuttingOutDto.Take(size).Skip((page - 1) * size).ToArray();
-
-                await Task.Yield();
-                return Ok(garmentCuttingOutDto, info: new
-                {
-                    page,
-                    size,
-                    total,
-                    totalQty
-                });
-            }
-
-            //List<GarmentCuttingOutListDto> garmentCuttingOutListDtos = _garmentCuttingOutRepository.Find(query).Select(cutOut =>
-            //{
-            //    var items = _garmentCuttingOutItemRepository.Query.Where(o => o.CutOutId == cutOut.Identity).Select(cutOutItem => new
-            //    {
-            //        cutOutItem.ProductCode,
-            //        details = _garmentCuttingOutDetailRepository.Query.Where(o => o.CutOutItemId == cutOutItem.Identity).Select(cutOutDetail => new
-            //        {
-            //            cutOutDetail.CuttingOutQuantity,
-            //            cutOutDetail.RemainingQuantity,
-            //        })
-            //    }).ToList();
-
-            //    return new GarmentCuttingOutListDto(cutOut)
-            //    {
-            //        Products = items.Select(i => i.ProductCode).ToList(),
-            //        TotalCuttingOutQuantity = items.Sum(i => i.details.Sum(d => d.CuttingOutQuantity)),
-            //        TotalRemainingQuantity = items.Sum(i => i.details.Sum(d => d.RemainingQuantity))
-            //    };
-            //}).ToList();
-
-            //await Task.Yield();
-            //return Ok(garmentCuttingOutListDtos, info: new
-            //{
-            //    page,
-            //    size,
-            //    count
-            //});
         }
 
         [HttpGet("{id}")]

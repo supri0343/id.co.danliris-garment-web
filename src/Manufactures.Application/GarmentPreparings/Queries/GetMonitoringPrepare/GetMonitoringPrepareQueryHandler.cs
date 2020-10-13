@@ -119,7 +119,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 													  where aa.UnitId == request.unit && aa.ProcessDate <= dateTo
 													  select aa)
 													  join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
-										   select new {Buyer=a.BuyerCode, RO = a.RONo, Articles = a.Article, Id = a.Identity, DetailExpend = b.UENItemId, Processdate = a.ProcessDate };
+										   select new { Buyer=a.BuyerCode,RO = a.RONo, Articles = a.Article, Id = a.Identity, DetailExpend = b.UENItemId, Processdate = a.ProcessDate };
 			//List<int> detailExpendId = new List<int>();
 			//foreach (var item in QueryMutationPrepareNow.Distinct())
 			//{
@@ -140,7 +140,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 						});
 			var QueryMutationPrepareItemsROASAL = (from a in QueryMutationPrepareNow
 												   join b in garmentPreparingItemRepository.Query on a.Id equals b.GarmentPreparingId
-												   //join c in dataExpenditure.data on b.UENItemId equals c.DetailExpenditureId
+                           
 												   where b.UENItemId == a.DetailExpend
 												   select new { article = a.Articles, roJob = a.RO, buyerCode = a.Buyer, price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RO select aa.BasicPrice / aa.Count).FirstOrDefault()), prepareitemid = b.Identity, roasal = b.ROSource });
 

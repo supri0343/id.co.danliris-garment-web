@@ -27,8 +27,8 @@ namespace Manufactures.Domain.GarmentCuttingOuts
         public string ComodityCode { get; private set; }
         public string ComodityName { get; private set; }
 
-
-        public GarmentCuttingOut(Guid identity, string cutOutNo, string cuttingOutType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, DateTimeOffset cuttingOutDate, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName) : base(identity)
+		public string UId { get; private set; }
+		public GarmentCuttingOut(Guid identity, string cutOutNo, string cuttingOutType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, DateTimeOffset cuttingOutDate, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName) : base(identity)
         {
             Validator.ThrowIfNull(() => unitFromId);
             Validator.ThrowIfNull(() => unitId);

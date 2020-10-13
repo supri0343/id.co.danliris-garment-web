@@ -125,7 +125,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
 
                     await _garmentCuttingOutDetailRepository.Update(garmentCuttingOutDetail);
 
-                    GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && a.UnitId == request.Unit.Id && a.ComodityId == request.Comodity.Id).Select(s => new GarmentComodityPrice(s)).Single();
+                    GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && a.UnitId == request.Unit.Id && a.ComodityId == request.Comodity.Id).OrderBy(o => o.ModifiedDate).Select(s => new GarmentComodityPrice(s)).Last();
                     double price = (detail.BasicPrice + ((double)garmentComodityPrice.Price * 25 / 100)) * detail.CuttingOutQuantity;
                     GarmentSewingDOItem garmentSewingDOItem = new GarmentSewingDOItem(
                         Guid.NewGuid(),
