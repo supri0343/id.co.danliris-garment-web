@@ -164,7 +164,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 			var QueryAval = from a in (from data in garmentAvalProductRepository.Query where data.AvalDate <= dateTo select data)
 							join b in garmentAvalProductItemRepository.Query on a.Identity equals b.APId
 							join c in garmentPreparingItemRepository.Query on Guid.Parse(b.PreparingItemId) equals c.Identity
-							join d in (from data in garmentPreparingRepository.Query where data.UnitId == request.unit select data) on Guid.Parse(b.PreparingItemId) equals (c.Identity)
+							join d in (from data in garmentPreparingRepository.Query where data.UnitId == request.unit select data) on c.GarmentPreparingId equals d.Identity
 							select new monitoringView { prepareItemId = c.Identity, price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), expenditure = 0, aval = a.AvalDate >= dateFrom ? b.Quantity : 0, uomUnit = "", stock = a.AvalDate < dateFrom ? -b.Quantity : 0, mainFabricExpenditure = 0, nonMainFabricExpenditure = 0, remark = b.DesignColor, receipt = 0, productCode = b.ProductCode, remainQty = 0 };
 
 			var QueryDeliveryReturn = from a in (from data in garmentDeliveryReturnRepository.Query where data.ReturnDate <= dateTo && data.UnitId == request.unit select data)
