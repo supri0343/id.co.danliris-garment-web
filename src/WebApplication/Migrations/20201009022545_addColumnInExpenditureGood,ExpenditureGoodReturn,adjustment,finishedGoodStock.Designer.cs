@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20201009022545_addColumnInExpenditureGood,ExpenditureGoodReturn,adjustment,finishedGoodStock")]
+    partial class addColumnInExpenditureGoodExpenditureGoodReturnadjustmentfinishedGoodStock
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,8 +353,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<string>("UId");
-
                     b.Property<int>("UomId");
 
                     b.Property<string>("UomUnit")
@@ -399,8 +399,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<string>("UId");
 
                     b.Property<string>("UnitCode")
                         .HasMaxLength(25);
