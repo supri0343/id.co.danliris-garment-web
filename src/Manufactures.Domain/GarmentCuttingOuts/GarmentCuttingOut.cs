@@ -68,6 +68,7 @@ namespace Manufactures.Domain.GarmentCuttingOuts
                 ComodityId = ComodityId.Value,
                 ComodityCode = ComodityCode,
                 ComodityName = ComodityName,
+                GarmentCuttingOutItem = new List<GarmentCuttingOutItemReadModel>()
             };
 
             ReadModel.AddDomainEvent(new OnGarmentCuttingOutPlaced(Identity));

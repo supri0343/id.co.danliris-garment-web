@@ -140,7 +140,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 						});
 			var QueryMutationPrepareItemsROASAL = (from a in QueryMutationPrepareNow
 												   join b in garmentPreparingItemRepository.Query on a.Id equals b.GarmentPreparingId
-												    
+                           
 												   where b.UENItemId == a.DetailExpend
 												   select new { article = a.Articles, roJob = a.RO, buyerCode = a.Buyer, price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RO select aa.BasicPrice / aa.Count).FirstOrDefault()), prepareitemid = b.Identity, roasal = b.ROSource });
 
