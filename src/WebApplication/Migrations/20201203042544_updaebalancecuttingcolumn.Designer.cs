@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20201203042544_updaebalancecuttingcolumn")]
+    partial class updaebalancecuttingcolumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -760,6 +762,8 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<double>("Fc");
 
                     b.Property<double>("Hours");
+
+                    b.Property<Guid>("Id");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
