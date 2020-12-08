@@ -26,6 +26,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.ReadModels
         public string BuyerName { get; internal set; }
         public DateTimeOffset ExpenditureDate { get; internal set; }
         public string Invoice { get; internal set; }
+        public int PackingListId { get; internal set; }
         public string ContractNo { get; internal set; }
         public double Carton { get; internal set; }
         public string Description { get; internal set; }

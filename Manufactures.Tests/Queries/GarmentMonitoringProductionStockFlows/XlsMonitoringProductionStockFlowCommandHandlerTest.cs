@@ -437,7 +437,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentExpenditureGoodReadModel>
 				{
-					new GarmentExpenditureGood(guidExpenditure,"np","SAMPLE",new UnitDepartmentId(1),"","","ro","article",new GarmentComodityId(1),"","",new BuyerId(1),"","",DateTimeOffset.Now,"","",9,"",true).GetReadModel()
+					new GarmentExpenditureGood(guidExpenditure,"np","SAMPLE",new UnitDepartmentId(1),"","","ro","article",new GarmentComodityId(1),"","",new BuyerId(1),"","",DateTimeOffset.Now,"","",9,"",true,1).GetReadModel()
 				}.AsQueryable());
 			_mockGarmentExpenditureGoodReturnItemRepository
 				.Setup(s => s.Query)
@@ -720,7 +720,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentExpenditureGoodReadModel>
 				{
-					new GarmentExpenditureGood(guidExpenditure,"np","SAMPLE",new UnitDepartmentId(1),"","","ro","article",new GarmentComodityId(1),"","",new BuyerId(1),"","",DateTimeOffset.Now,"","",9,"",true).GetReadModel()
+					new GarmentExpenditureGood(guidExpenditure,"np","SAMPLE",new UnitDepartmentId(1),"","","ro","article",new GarmentComodityId(1),"","",new BuyerId(1),"","",DateTimeOffset.Now,"","",9,"",true,1).GetReadModel()
 				}.AsQueryable());
 			_mockGarmentExpenditureGoodReturnItemRepository
 				.Setup(s => s.Query)
