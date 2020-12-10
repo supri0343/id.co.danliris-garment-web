@@ -98,6 +98,7 @@ namespace Manufactures.Data.EntityFrameworkCore
             modelBuilder.ApplyConfiguration(new GarmentExpenditureGoodReturnItemConfig());
 
 			modelBuilder.ApplyConfiguration(new GarmentBalanceStockProductionConfig());
-        }
+			modelBuilder.ApplyConfiguration(new GarmentBalanceCuttingConfig());
+		}
 	}
 }
