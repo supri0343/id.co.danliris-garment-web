@@ -213,7 +213,8 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                result.count
+                count = result.data.Count,
+                result.total
             });
         }
 

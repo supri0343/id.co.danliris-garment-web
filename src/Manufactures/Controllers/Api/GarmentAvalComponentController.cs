@@ -32,7 +32,8 @@ namespace Manufactures.Controllers.Api
             {
                 page,
                 size,
-                viewModel.count
+                count = viewModel.GarmentAvalComponents.Count,
+                viewModel.total
             });
         }
 

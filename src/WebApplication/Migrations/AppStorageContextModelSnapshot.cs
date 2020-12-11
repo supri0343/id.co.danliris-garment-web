@@ -81,6 +81,8 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("SizeName")
                         .HasMaxLength(50);
 
+                    b.Property<string>("UId");
+
                     b.Property<int>("UomId");
 
                     b.Property<string>("UomUnit")
@@ -144,6 +146,8 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("UId");
 
                     b.Property<string>("UnitCode")
                         .HasMaxLength(25);
@@ -347,6 +351,8 @@ namespace DanLiris.Admin.Web.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
+                    b.Property<string>("UId");
+
                     b.Property<int>("UomId");
 
                     b.Property<string>("UomUnit")
@@ -393,6 +399,8 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("UId");
 
                     b.Property<string>("UnitCode")
                         .HasMaxLength(25);
@@ -717,6 +725,79 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasFilter("[Deleted]=(0)");
 
                     b.ToTable("GarmentCuttingIns");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentCuttingOuts.ReadModels.GarmentBalanceCuttingReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Article")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("BuyerCode")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<double>("CuttingQtyMeter");
+
+                    b.Property<double>("CuttingQtyPcs");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<double>("Expenditure");
+
+                    b.Property<double>("Fc");
+
+                    b.Property<double>("Hours");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<decimal>("Nominal");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<string>("ProductCode")
+                        .HasMaxLength(50);
+
+                    b.Property<double>("QtyOrder");
+
+                    b.Property<double>("RemainQty");
+
+                    b.Property<string>("RoJob")
+                        .HasMaxLength(25);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<double>("Stock");
+
+                    b.Property<string>("Style")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("UnitCode");
+
+                    b.Property<int>("UnitId");
+
+                    b.Property<string>("UnitName");
+
+                    b.HasKey("Identity");
+
+                    b.ToTable("GarmentBalanceCuttings");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentCuttingOuts.ReadModels.GarmentCuttingOutDetailReadModel", b =>
@@ -1111,6 +1192,8 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("SizeName")
                         .HasMaxLength(100);
 
+                    b.Property<string>("UId");
+
                     b.Property<int>("UomId");
 
                     b.Property<string>("UomUnit")
@@ -1188,6 +1271,8 @@ namespace DanLiris.Admin.Web.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
+                    b.Property<string>("UId");
+
                     b.Property<string>("UnitCode")
                         .HasMaxLength(25);
 
@@ -1250,6 +1335,8 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("SizeName")
                         .HasMaxLength(100);
+
+                    b.Property<string>("UId");
 
                     b.Property<int>("UomId");
 
@@ -1324,12 +1411,16 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
 
+                    b.Property<int>("PackingListId");
+
                     b.Property<string>("RONo")
                         .HasMaxLength(25);
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("UId");
 
                     b.Property<string>("UnitCode")
                         .HasMaxLength(25);
@@ -1421,6 +1512,8 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("StockType")
                         .HasMaxLength(50);
 
+                    b.Property<string>("UId");
+
                     b.Property<string>("UnitCode")
                         .HasMaxLength(25);
 
@@ -1493,6 +1586,8 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("SizeName")
                         .HasMaxLength(50);
+
+                    b.Property<string>("UId");
 
                     b.Property<string>("UnitCode")
                         .HasMaxLength(25);
