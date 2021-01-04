@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -55,7 +56,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             VerifyUser();
 
-            GarmentSubconContractDto garmentSubconContractDto = _garmentSubconContractRepository.Find(o => o.Identity == guid).Select(sewOut => new GarmentSubconContractDto(sewOut)
+            GarmentSubconContractDto garmentSubconContractDto = _garmentSubconContractRepository.Find(o => o.Identity == guid).Select(subcon => new GarmentSubconContractDto(subcon)
             {}).FirstOrDefault();
 
             await Task.Yield();
@@ -68,7 +69,14 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             try
             {
                 VerifyUser();
-
+                var subcon = _garmentSubconContractRepository.Find(a => a.ContractNo.Replace(" ", "") == command.ContractNo.Replace(" ", "")).Select(o => new GarmentSubconContractDto(o)).FirstOrDefault();
+                if (subcon != null)
+                    return BadRequest(new
+                    {
+                        code = HttpStatusCode.BadRequest,
+                        error = "No/Tgl Contract sudah ada"
+                    });
+                
                 var order = await Mediator.Send(command);
 
                 return Ok(order.Identity);
@@ -83,7 +91,13 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         public async Task<IActionResult> Put(string id, [FromBody] UpdateGarmentSubconContractCommand command)
         {
             Guid guid = Guid.Parse(id);
-
+            var subcon = _garmentSubconContractRepository.Find(a => a.ContractNo.Replace(" ", "") == command.ContractNo.Replace(" ", "") && a.Identity!=command.Identity).Select(o => new GarmentSubconContractDto(o)).FirstOrDefault();
+            if (subcon != null)
+                return BadRequest(new
+                {
+                    code = HttpStatusCode.BadRequest,
+                    error = "No/Tgl Contract sudah ada"
+                });
             command.SetIdentity(guid);
 
             VerifyUser();
