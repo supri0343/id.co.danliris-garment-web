@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'WebApplication' " />
   <ItemGroup>
     <Compile Remove="Migrations\20190627041255_CuttingIn.cs" />
     <Compile Remove="Migrations\20190627061508_CuttingTypeMax.cs" />
