@@ -22,6 +22,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentScrapTransactions.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingDOs.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconCuttings.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentSubconContracts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubconCuttingOuts.Configs;
 using Microsoft.EntityFrameworkCore;
@@ -103,6 +104,9 @@ namespace Manufactures.Data.EntityFrameworkCore
 
             //GARMENT SUBCON
             modelBuilder.ApplyConfiguration(new GarmentSubconContractConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingConfig());
+            modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingItemConfig());
         }
 	}
 }
