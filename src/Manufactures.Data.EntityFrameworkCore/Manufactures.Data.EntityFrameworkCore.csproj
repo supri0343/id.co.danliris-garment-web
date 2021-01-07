@@ -10,4 +10,11 @@
     <ProjectReference Include="..\Manufactures.Domain\Manufactures.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="GarmentSubcon\GarmentServiceSubconCuttings\Repositories\" />
+    <Folder Include="GarmentSubcon\GarmentServiceSubconSewings\" />
+    <Folder Include="GarmentSubcon\GarmentServiceSubconSewings\Config\" />
+    <Folder Include="GarmentSubcon\GarmentServiceSubconSewings\Repositories\" />
+  </ItemGroup>
+
 </Project>
