@@ -29,6 +29,7 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 		private readonly IGarmentLoadingItemRepository garmentLoadingItemRepository;
 		private readonly IGarmentPreparingRepository garmentPreparingRepository;
 		private readonly IGarmentPreparingItemRepository garmentPreparingItemRepository;
+		private readonly IGarmentBalanceLoadingRepository garmentBalanceLoadingRepository;
 		private readonly IMemoryCacheManager cacheManager;
 
         public GetMonitoringLoadingQueryHandler(IStorage storage, IServiceProvider serviceProvider)
@@ -40,6 +41,7 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 			garmentLoadingItemRepository = storage.GetRepository<IGarmentLoadingItemRepository>();
 			garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
 			garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
+			garmentBalanceLoadingRepository = storage.GetRepository<IGarmentBalanceLoadingRepository>();
 			_http = serviceProvider.GetService<IHttpClientService>();
 
             cacheManager = serviceProvider.GetService<IMemoryCacheManager>();
@@ -104,39 +106,39 @@ namespace Manufactures.Application.GarmentLoadings.Queries
                 }
             }
 
-            HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(freeRO, token);
+            //HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(freeRO, token);
 
-            Dictionary<string, string> comodities = new Dictionary<string, string>();
-            if (hOrderDataProductionReport.data.Count > 0)
-            {
-                var comodityCodes = hOrderDataProductionReport.data.Select(s => s.Kode).Distinct().ToList();
-                var filter = "{\"(" + string.Join(" || ",  comodityCodes.Select(s => "Code==" + "\\\"" + s + "\\\"")) + ")\" : \"true\"}";
+            //Dictionary<string, string> comodities = new Dictionary<string, string>();
+            //if (hOrderDataProductionReport.data.Count > 0)
+            //{
+            //    var comodityCodes = hOrderDataProductionReport.data.Select(s => s.Kode).Distinct().ToList();
+            //    var filter = "{\"(" + string.Join(" || ",  comodityCodes.Select(s => "Code==" + "\\\"" + s + "\\\"")) + ")\" : \"true\"}";
 
-                var masterGarmentComodityUri = MasterDataSettings.Endpoint + $"master/garment-comodities?filter=" + filter;
-                var garmentComodityResponse = _http.GetAsync(masterGarmentComodityUri).Result;
-                var garmentComodityResult = new GarmentComodityResult();
-                if (garmentComodityResponse.IsSuccessStatusCode)
-                {
-                    garmentComodityResult = JsonConvert.DeserializeObject<GarmentComodityResult>(garmentComodityResponse.Content.ReadAsStringAsync().Result);
-                    //comodities = garmentComodityResult.data.ToDictionary(d => d.Code, d => d.Name);
-                    foreach (var comodity in garmentComodityResult.data)
-                    {
-                        comodities[comodity.Code] = comodity.Name;
-                    }
-                }
-            }
+            //    var masterGarmentComodityUri = MasterDataSettings.Endpoint + $"master/garment-comodities?filter=" + filter;
+            //    var garmentComodityResponse = _http.GetAsync(masterGarmentComodityUri).Result;
+            //    var garmentComodityResult = new GarmentComodityResult();
+            //    if (garmentComodityResponse.IsSuccessStatusCode)
+            //    {
+            //        garmentComodityResult = JsonConvert.DeserializeObject<GarmentComodityResult>(garmentComodityResponse.Content.ReadAsStringAsync().Result);
+            //        //comodities = garmentComodityResult.data.ToDictionary(d => d.Code, d => d.Name);
+            //        foreach (var comodity in garmentComodityResult.data)
+            //        {
+            //            comodities[comodity.Code] = comodity.Name;
+            //        }
+            //    }
+            //}
 
-            foreach (var hOrder in hOrderDataProductionReport.data)
-            {
-                costCalculationGarmentDataProductionReport.data.Add(new CostCalViewModel
-                {
-                    ro = hOrder.No,
-                    buyerCode = hOrder.Codeby,
-                    comodityName = comodities.GetValueOrDefault(hOrder.Kode),
-                    hours = (double)hOrder.Sh_Cut,
-                    qtyOrder = (double)hOrder.Qty
-                });
-            }
+            //foreach (var hOrder in hOrderDataProductionReport.data)
+            //{
+            //    costCalculationGarmentDataProductionReport.data.Add(new CostCalViewModel
+            //    {
+            //        ro = hOrder.No,
+            //        buyerCode = hOrder.Codeby,
+            //        comodityName = comodities.GetValueOrDefault(hOrder.Kode),
+            //        hours = (double)hOrder.Sh_Cut,
+            //        qtyOrder = (double)hOrder.Qty
+            //    });
+            //}
 
             return costCalculationGarmentDataProductionReport;
         }
@@ -165,7 +167,9 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
+			DateTimeOffset dateBalance = (from a in garmentBalanceLoadingRepository.Query.OrderByDescending(s => s.CreatedDate)
 
+										  select a.CreatedDate).FirstOrDefault();
 			var QueryRoCuttingOut = (from a in garmentCuttingOutRepository.Query
 									 where a.UnitId == request.unit && a.CuttingOutDate <= dateTo
 									 select a.RONo).Distinct();
@@ -179,7 +183,7 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 			{
 				_ro.Add(item);
 			}
-			CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(_ro, request.token);
+			//CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(_ro, request.token);
 			var sumbasicPrice = (from a in garmentPreparingRepository.Query
 								 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
 								 where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&*/
@@ -194,18 +198,40 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 			var _unitName = (from a in garmentCuttingOutRepository.Query
 							 where a.UnitId == request.unit
 							 select a.UnitName).FirstOrDefault();
+			var queryBalanceLoading = from a in garmentBalanceLoadingRepository.Query
+									  where a.CreatedDate < dateFrom && a.UnitId == request.unit
+									  select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RoJob select aa.BasicPrice / aa.Count).FirstOrDefault()), buyerCode = a.BuyerCode,   loadingQtyPcs = a.LoadingQtyPcs, remainQty = 0, stock = a.Stock, cuttingQtyPcs = 0, roJob = a.RoJob, article = a.Article, qtyOrder = a.QtyOrder, style = a.Style,uomUnit="PCS" };
+
 			var QueryCuttingOut = from a in (from aa in garmentCuttingOutRepository.Query
 											 where aa.UnitId == request.unit && aa.CuttingOutDate <= dateTo
 											 select aa)
 								  join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
-								  select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), loadingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.CuttingOutDate < dateFrom ? b.TotalCuttingOut : 0, cuttingQtyPcs = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
+								  select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()),  loadingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.CuttingOutDate < dateFrom && a.CuttingOutDate > dateBalance ? b.TotalCuttingOut : 0, cuttingQtyPcs = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0, roJob = a.RONo, article = a.Article,  };
 			var QueryLoading = from a in (from aa in garmentLoadingRepository.Query
 										  where aa.UnitId == request.unit && aa.LoadingDate <= dateTo
 										  select aa)
 							   join b in garmentLoadingItemRepository.Query on a.Identity equals b.LoadingId
-							   select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, cuttingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom ? -b.Quantity : 0, roJob = a.RONo, article = a.Article, qtyOrder = (from cost in costCalculation.data where cost.ro == a.RONo select cost.qtyOrder).FirstOrDefault(), style = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault() };
-			var queryNow = QueryCuttingOut.Union(QueryLoading);
-			var querySum = queryNow.ToList().GroupBy(x => new { x.price, x.buyerCode, x.qtyOrder, x.roJob, x.article, x.uomUnit, x.style }, (key, group) => new
+							   select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()),   loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, cuttingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom && a.LoadingDate > dateBalance ? -b.Quantity : 0, roJob = a.RONo, article = a.Article,  style = a.ComodityName };
+			var queryNow = queryBalanceLoading.Union(QueryCuttingOut).Union(QueryLoading);
+			var roList = (from a in (QueryCuttingOut).Union(QueryLoading)
+						  select a.roJob).Distinct().ToList();
+		 
+			var roBalance = from a in garmentBalanceLoadingRepository.Query
+					  
+					   select new CostCalViewModel { comodityName = a.Style, buyerCode = a.BuyerCode, hours = a.Hours, qtyOrder = a.QtyOrder, ro = a.RoJob };
+
+			CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(roList, request.token);
+			
+			foreach (var item in roBalance)
+			{
+				costCalculation.data.Add(item);
+			}
+			var coba = queryNow.ToList().Where(s => s.roJob == "2010578");
+			var queryReport = from a in coba
+							  select new monitoringView { uomUnit ="PCS",buyerCode = a.buyerCode ?? (from cost in costCalculation.data where cost.ro == a.roJob select cost.buyerCode).FirstOrDefault(), price = a.price,  remainQty = a.remainQty, stock = a.stock, cuttingQtyPcs = a.cuttingQtyPcs, roJob = a.roJob, article = a.article, style = a.style ?? (from cost in costCalculation.data where cost.ro == a.roJob select cost.comodityName).FirstOrDefault(), loadingQtyPcs = a.loadingQtyPcs,   qtyOrder =a.qtyOrder == 0 ? (from cost in costCalculation.data where cost.ro == a.roJob select cost.qtyOrder).FirstOrDefault():a.qtyOrder };
+			var ccc = queryReport.ToList();
+
+			var querySum = ccc.GroupBy(x => new { x.price, x.buyerCode, x.qtyOrder, x.roJob, x.article, x.uomUnit, x.style }, (key, group) => new
 			{
 				QtyOrder = key.qtyOrder,
 				RoJob = key.roJob,

@@ -102,9 +102,10 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 			modelBuilder.ApplyConfiguration(new GarmentBalanceStockProductionConfig());
 			modelBuilder.ApplyConfiguration(new GarmentBalanceCuttingConfig());
+			modelBuilder.ApplyConfiguration(new GarmentBalanceLoadingConfig());
 
-            //GARMENT SUBCON
-            modelBuilder.ApplyConfiguration(new GarmentSubconContractConfig());
+			//GARMENT SUBCON
+			modelBuilder.ApplyConfiguration(new GarmentSubconContractConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingConfig());
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingItemConfig());
