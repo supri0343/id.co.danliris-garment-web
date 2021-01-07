@@ -1,9 +1,11 @@
 ﻿using Barebone.Controllers;
+using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Repositories;
 using Manufactures.Dtos.GarmentSubcon;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -101,5 +103,40 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 throw e;
             }
         }
+
+        [HttpGet("complete")]
+        public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentServiceSubconCuttingRepository.Read(page, size, order, keyword, filter);
+            var count = query.Count();
+
+            var garmentServiceSubconCuttingDto = _garmentServiceSubconCuttingRepository.Find(query).Select(o => new GarmentServiceSubconCuttingDto(o)).ToArray();
+            var garmentServiceSubconCuttingItemDto = _garmentServiceSubconCuttingItemRepository.Find(_garmentServiceSubconCuttingItemRepository.Query).Select(o => new GarmentServiceSubconCuttingItemDto(o)).ToList();
+            
+            Parallel.ForEach(garmentServiceSubconCuttingDto, itemDto =>
+            {
+                var garmentServiceSubconCuttingItems = garmentServiceSubconCuttingItemDto.Where(x => x.ServiceSubconCuttingId == itemDto.Id).OrderBy(x => x.Id).ToList();
+
+                itemDto.Items = garmentServiceSubconCuttingItems;
+
+            });
+
+            if (order != "{}")
+            {
+                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                garmentServiceSubconCuttingDto = QueryHelper<GarmentServiceSubconCuttingDto>.Order(garmentServiceSubconCuttingDto.AsQueryable(), OrderDictionary).ToArray();
+            }
+
+            await Task.Yield();
+            return Ok(garmentServiceSubconCuttingDto, info: new
+            {
+                page,
+                size,
+                count
+            });
+        }
+
     }
 }

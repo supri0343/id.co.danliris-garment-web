@@ -15,6 +15,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             CuttingInDetailId = garmentServiceSubconCuttingItem.CuttingInDetailId;
             Product = new Product(garmentServiceSubconCuttingItem.ProductId.Value, garmentServiceSubconCuttingItem.ProductCode, garmentServiceSubconCuttingItem.ProductName);
             DesignColor = garmentServiceSubconCuttingItem.DesignColor;
+            Quantity = garmentServiceSubconCuttingItem.Quantity;
         }
 
         public Guid Id { get; set; }
