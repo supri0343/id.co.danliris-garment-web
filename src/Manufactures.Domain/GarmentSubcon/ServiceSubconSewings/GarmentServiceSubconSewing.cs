@@ -22,8 +22,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
         public string ComodityCode { get; private set; }
         public string ComodityName { get; private set; }
         public DateTimeOffset ServiceSubconSewingDate { get; private set; }
+        public bool IsDifferentSize { get; set; }
 
-        public GarmentServiceSubconSewing(Guid identity, string serviceSubconSewingNo, BuyerId buyerId, string buyerCode, string buyerName, UnitDepartmentId unitId, string unitCode, string unitName, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, DateTimeOffset serviceSubconSewingDate) : base(identity)
+        public GarmentServiceSubconSewing(Guid identity, string serviceSubconSewingNo, BuyerId buyerId, string buyerCode, string buyerName, UnitDepartmentId unitId, string unitCode, string unitName, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, DateTimeOffset serviceSubconSewingDate, bool isDifferentSize) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
             Validator.ThrowIfNull(() => rONo);
@@ -42,6 +43,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             BuyerCode = buyerCode;
             BuyerId = buyerId;
             BuyerName = buyerName;
+            IsDifferentSize = isDifferentSize;
 
             ReadModel = new GarmentServiceSubconSewingReadModel(Identity)
             {
@@ -57,7 +59,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
                 ComodityName = ComodityName,
                 BuyerCode = BuyerCode,
                 BuyerId = BuyerId.Value,
-                BuyerName = BuyerName
+                BuyerName = BuyerName,
+                IsDifferentSize = IsDifferentSize,
             };
 
             ReadModel.AddDomainEvent(new OnGarmentServiceSubconSewingPlaced(Identity));
@@ -79,6 +82,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             BuyerCode = readModel.BuyerCode;
             BuyerId = new BuyerId(readModel.BuyerId);
             BuyerName = readModel.BuyerName;
+            IsDifferentSize = readModel.IsDifferentSize;
         }
 
         public void SetDate(DateTimeOffset ServiceSubconSewingDate)

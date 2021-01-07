@@ -5,7 +5,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 
 namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ValueObjects
 {
-    public class GarmentServiceSewingItemValueObject : ValueObject
+    public class GarmentServiceSubconSewingItemValueObject : ValueObject
     {
         public Guid Id { get; set; }
         public Guid ServiceSubconSewingId { get; set; }
@@ -18,10 +18,11 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ValueObjects
         public Uom Uom { get; set; }
         public string Color { get; set; }
         public bool IsSave { get; set; }
+        public bool IsDifferentSize { get; set; }
         public double SewingInQuantity { get; set; }
         public double TotalQuantity { get; set; }
 
-        public GarmentServiceSewingItemValueObject()
+        public GarmentServiceSubconSewingItemValueObject()
         {
         }
 
