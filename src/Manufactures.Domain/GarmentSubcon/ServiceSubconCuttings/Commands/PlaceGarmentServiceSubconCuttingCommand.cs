@@ -46,7 +46,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
                 .WithMessage("'Jumlah' harus lebih dari '0'.")
                 .When(w => w.IsSave);
 
-            RuleFor(r => r.CuttingInQuantity)
+            RuleFor(r => r.Quantity)
                 .LessThanOrEqualTo(r => r.CuttingInQuantity)
                 .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.CuttingInQuantity}'.")
                 .When(w => w.IsSave);
