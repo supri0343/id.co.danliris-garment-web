@@ -12,7 +12,6 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels
         }
         public string SubconNo { get; internal set; }
         public string SubconType { get; internal set; }
-        public string ContractType { get; internal set; }
         public int UnitId { get; internal set; }
         public string UnitCode { get; internal set; }
         public string UnitName { get; internal set; }
