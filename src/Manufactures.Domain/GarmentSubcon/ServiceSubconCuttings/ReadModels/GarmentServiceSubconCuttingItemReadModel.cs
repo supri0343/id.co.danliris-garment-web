@@ -11,6 +11,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels
         {
         }
         public Guid ServiceSubconCuttingId { get; internal set; }
+        public Guid CuttingInDetailId { get; internal set; }
         public int ProductId { get; internal set; }
         public string ProductCode { get; internal set; }
         public string ProductName { get; internal set; }

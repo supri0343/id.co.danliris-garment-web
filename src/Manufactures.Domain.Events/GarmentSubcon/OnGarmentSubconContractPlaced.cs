@@ -8,9 +8,9 @@ namespace Manufactures.Domain.Events.GarmentSubcon
     {
         public OnGarmentSubconContractPlaced(Guid identity)
         {
-            OnGarmentLoadingId = identity;
+            OnGarmentSubconContractId = identity;
         }
-        public Guid OnGarmentLoadingId { get; }
+        public Guid OnGarmentSubconContractId { get; }
     }
 }
 
