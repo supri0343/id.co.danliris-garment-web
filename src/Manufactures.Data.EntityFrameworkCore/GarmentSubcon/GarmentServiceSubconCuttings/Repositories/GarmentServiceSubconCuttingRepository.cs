@@ -27,7 +27,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
                 "RONo",
                 "Article",
                 "SubconType",
-                "GarmentServiceSubconCutting.ProductCode",
+                "GarmentServiceSubconCuttingItem.ProductCode",
             };
 
             data = QueryHelper<GarmentServiceSubconCuttingReadModel>.Search(data, SearchAttributes, keyword);

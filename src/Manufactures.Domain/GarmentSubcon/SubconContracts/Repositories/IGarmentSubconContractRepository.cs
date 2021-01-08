@@ -10,6 +10,5 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories
     public interface IGarmentSubconContractRepository : IAggregateRepository<GarmentSubconContract, GarmentSubconContractReadModel>
     {
         IQueryable<GarmentSubconContractReadModel> Read(int page, int size, string order, string keyword, string filter);
-        //IQueryable ReadDynamic(string order, string search, string select, string keyword, string filter);
     }
 }

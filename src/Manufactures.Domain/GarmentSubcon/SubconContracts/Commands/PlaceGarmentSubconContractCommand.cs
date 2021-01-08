@@ -33,7 +33,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
             RuleFor(r => r.JobType).NotNull();
             RuleFor(r => r.BPJNo).NotNull();
             RuleFor(r => r.FinishedGoodType).NotNull();
-            RuleFor(r => r.DueDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sewing Out Tidak Boleh Kosong");
+            RuleFor(r => r.DueDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Tidak Boleh Kosong");
         }
     }
 }
