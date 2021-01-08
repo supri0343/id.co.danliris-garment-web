@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
@@ -32,6 +33,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
             RuleFor(r => r.Comodity).NotNull();
             RuleFor(r => r.Comodity.Id).NotEmpty().OverridePropertyName("Comodity").When(w => w.Comodity != null);
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
+            RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Data Belum Ada yang dipilih").OverridePropertyName("ItemsCount").When(s => s.Items != null);
             RuleForEach(r => r.Items).SetValidator(new GarmentServiceSubconCuttingItemValueObjectValidator());
         }
     }

@@ -22,7 +22,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentSubconContr
 
             List<string> SearchAttributes = new List<string>
             {
-                "SubconContractNo",
+                "ContractNo",
                 "SupplierCode",
                 "SupplierName",
                 "ContractType",
