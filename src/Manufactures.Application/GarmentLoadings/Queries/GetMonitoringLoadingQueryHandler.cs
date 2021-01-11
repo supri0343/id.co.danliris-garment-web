@@ -171,11 +171,11 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 
 										  select a.CreatedDate).FirstOrDefault();
 			var QueryRoCuttingOut = (from a in garmentCuttingOutRepository.Query
-									 where a.UnitId == request.unit && a.CuttingOutDate <= dateTo
+									 where a.UnitId == request.unit && a.CuttingOutDate <= dateTo && a.CuttingOutDate >= dateBalance
 									 select a.RONo).Distinct();
 			var QueryRoLoading = (from a in garmentLoadingRepository.Query
-									 where a.UnitId == request.unit && a.LoadingDate <= dateTo
-									 select a.RONo).Distinct();
+									 where a.UnitId == request.unit && a.LoadingDate <= dateTo && a.LoadingDate >= dateBalance
+								  select a.RONo).Distinct();
 			var QueryRo = QueryRoCuttingOut.Union(QueryRoLoading).Distinct();
 
 			List<string> _ro = new List<string>();
@@ -200,13 +200,13 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 							 select a.UnitName).FirstOrDefault();
 			var queryBalanceLoading = from a in garmentBalanceLoadingRepository.Query
 									  where a.CreatedDate < dateFrom && a.UnitId == request.unit
-									  select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RoJob select aa.BasicPrice / aa.Count).FirstOrDefault()), buyerCode = a.BuyerCode,   loadingQtyPcs = a.LoadingQtyPcs, remainQty = 0, stock = a.Stock, cuttingQtyPcs = 0, roJob = a.RoJob, article = a.Article, qtyOrder = a.QtyOrder, style = a.Style,uomUnit="PCS" };
+									  select new monitoringView { price = a.Price, buyerCode = a.BuyerCode,   loadingQtyPcs = a.LoadingQtyPcs, remainQty = 0, stock = a.Stock, cuttingQtyPcs = 0, roJob = a.RoJob, article = a.Article, qtyOrder = a.QtyOrder, style = a.Style,uomUnit="PCS" };
 
 			var QueryCuttingOut = from a in (from aa in garmentCuttingOutRepository.Query
 											 where aa.UnitId == request.unit && aa.CuttingOutDate <= dateTo
 											 select aa)
 								  join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
-								  select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()),  loadingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.CuttingOutDate < dateFrom && a.CuttingOutDate > dateBalance ? b.TotalCuttingOut : 0, cuttingQtyPcs = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0, roJob = a.RONo, article = a.Article,  };
+								  select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()),  loadingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.CuttingOutDate < dateFrom && a.CuttingOutDate > dateBalance ? b.TotalCuttingOut : 0, cuttingQtyPcs = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0, roJob = a.RONo, article = a.Article,style= a.ComodityName  };
 			var QueryLoading = from a in (from aa in garmentLoadingRepository.Query
 										  where aa.UnitId == request.unit && aa.LoadingDate <= dateTo
 										  select aa)
@@ -226,12 +226,14 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 			{
 				costCalculation.data.Add(item);
 			}
-			var coba = queryNow.ToList().Where(s => s.roJob == "2010578");
-			var queryReport = from a in coba
-							  select new monitoringView { uomUnit ="PCS",buyerCode = a.buyerCode ?? (from cost in costCalculation.data where cost.ro == a.roJob select cost.buyerCode).FirstOrDefault(), price = a.price,  remainQty = a.remainQty, stock = a.stock, cuttingQtyPcs = a.cuttingQtyPcs, roJob = a.roJob, article = a.article, style = a.style ?? (from cost in costCalculation.data where cost.ro == a.roJob select cost.comodityName).FirstOrDefault(), loadingQtyPcs = a.loadingQtyPcs,   qtyOrder =a.qtyOrder == 0 ? (from cost in costCalculation.data where cost.ro == a.roJob select cost.qtyOrder).FirstOrDefault():a.qtyOrder };
-			var ccc = queryReport.ToList();
 
-			var querySum = ccc.GroupBy(x => new { x.price, x.buyerCode, x.qtyOrder, x.roJob, x.article, x.uomUnit, x.style }, (key, group) => new
+			//var abc = queryNow.ToList().Where(s => s.roJob == "2010631");
+			//var costsss = costCalculation.data.Where(s => s.ro == "2010631");
+			var queryReport = from a in queryNow.ToList()
+							  select new monitoringView { uomUnit ="PCS",buyerCode = a.buyerCode ==null ? (from cost in costCalculation.data where cost.ro == a.roJob select cost.buyerCode).FirstOrDefault() :a.buyerCode, price = a.price,  remainQty = a.remainQty, stock = a.stock, cuttingQtyPcs = a.cuttingQtyPcs, roJob = a.roJob, article = a.article, style = a.style == null ? (from cost in costCalculation.data where cost.ro == a.roJob select cost.comodityName).FirstOrDefault() :a.style, loadingQtyPcs = a.loadingQtyPcs,   qtyOrder =a.qtyOrder == 0 ? (from cost in costCalculation.data where cost.ro == a.roJob select cost.qtyOrder).FirstOrDefault():a.qtyOrder };
+			 
+
+			var querySum = queryReport.GroupBy(x => new { x.price, x.buyerCode, x.qtyOrder, x.roJob, x.article, x.uomUnit, x.style }, (key, group) => new
 			{
 				QtyOrder = key.qtyOrder,
 				RoJob = key.roJob,
