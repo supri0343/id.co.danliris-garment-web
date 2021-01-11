@@ -22,6 +22,9 @@ using Manufactures.Data.EntityFrameworkCore.GarmentScrapTransactions.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingDOs.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconCuttings.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconSewings.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentSubconContracts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubconCuttingOuts.Configs;
 using Microsoft.EntityFrameworkCore;
 
@@ -99,6 +102,16 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 			modelBuilder.ApplyConfiguration(new GarmentBalanceStockProductionConfig());
 			modelBuilder.ApplyConfiguration(new GarmentBalanceCuttingConfig());
-		}
+			modelBuilder.ApplyConfiguration(new GarmentBalanceLoadingConfig());
+
+			//GARMENT SUBCON
+			modelBuilder.ApplyConfiguration(new GarmentSubconContractConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingConfig());
+            modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentServiceSubconSewingConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSubconSewingItemConfig());
+        }
 	}
 }
