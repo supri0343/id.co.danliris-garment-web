@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20210106023548_updateUOMunitColumn")]
+    partial class updateUOMunitColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3129,8 +3131,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset>("CreatedDate");
 
-                    b.Property<Guid>("CuttingInDetailId");
-
                     b.Property<bool?>("Deleted");
 
                     b.Property<string>("DeletedBy")
@@ -3184,6 +3184,9 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("ComodityName")
                         .HasMaxLength(500);
+
+                    b.Property<string>("ContractType")
+                        .HasMaxLength(25);
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -3339,8 +3342,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(32);
 
                     b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<bool>("IsDifferentSize");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);

@@ -24,6 +24,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ReadModels
         public string ComodityCode { get; internal set; }
         public string ComodityName { get; internal set; }
         public DateTimeOffset ServiceSubconSewingDate { get; internal set; }
+        public bool IsDifferentSize { get; internal set; }
         public string UId { get; private set; }
         public virtual List<GarmentServiceSubconSewingItemReadModel> GarmentServiceSubconSewingItem { get; internal set; }
 
