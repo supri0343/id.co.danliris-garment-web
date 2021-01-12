@@ -18,6 +18,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
         public string SubconNo { get; set; }
         public string SubconType { get; set; }
         public GarmentComodity Comodity { get; set; }
+
+        public bool IsUsed { get; set; }
         public List<GarmentServiceSubconCuttingItemValueObject> Items { get; set; }
     }
 

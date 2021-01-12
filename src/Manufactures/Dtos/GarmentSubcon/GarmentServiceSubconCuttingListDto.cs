@@ -19,6 +19,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             Unit = new UnitDepartment(garmentServiceSubconCutting.UnitId.Value, garmentServiceSubconCutting.UnitCode, garmentServiceSubconCutting.UnitName);
             Comodity = new GarmentComodity(garmentServiceSubconCutting.ComodityId.Value, garmentServiceSubconCutting.ComodityCode, garmentServiceSubconCutting.ComodityName);
             CreatedBy = garmentServiceSubconCutting.AuditTrail.CreatedBy;
+            IsUsed = garmentServiceSubconCutting.IsUsed;
             Items = new List<GarmentServiceSubconCuttingItemDto>();
         }
 
@@ -33,6 +34,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public GarmentComodity Comodity { get; set; }
 
         public double TotalQuantity { get; set; }
+        public bool IsUsed { get; set; }
         public List<string> Products { get; set; }
         public List<GarmentServiceSubconCuttingItemDto> Items { get; set; }
     }

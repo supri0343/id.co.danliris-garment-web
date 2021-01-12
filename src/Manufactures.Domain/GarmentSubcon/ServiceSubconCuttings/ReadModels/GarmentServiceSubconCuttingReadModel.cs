@@ -21,6 +21,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels
         public string ComodityCode { get; internal set; }
         public string ComodityName { get; internal set; }
         public DateTimeOffset SubconDate { get; internal set; }
+
+        public bool IsUsed { get; internal set; }
         public virtual List<GarmentServiceSubconCuttingItemReadModel> GarmentServiceSubconCuttingItem { get; internal set; }
     }
 }

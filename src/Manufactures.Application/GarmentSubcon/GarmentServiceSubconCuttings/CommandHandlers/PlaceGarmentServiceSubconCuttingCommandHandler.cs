@@ -42,7 +42,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
                 new GarmentComodityId(request.Comodity.Id),
                 request.Comodity.Code,
                 request.Comodity.Name,
-                request.SubconDate.GetValueOrDefault()
+                request.SubconDate.GetValueOrDefault(),
+                request.IsUsed
             );
 
             foreach (var item in request.Items)
