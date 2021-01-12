@@ -1,5 +1,6 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Repositories;
 using Manufactures.Dtos.GarmentSubcon;
@@ -136,6 +137,36 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 size,
                 count
             });
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(string id, [FromBody] UpdateGarmentServiceSubconCuttingCommand command)
+        {
+            Guid guid = Guid.Parse(id);
+
+            command.SetIdentity(guid);
+
+            VerifyUser();
+
+            var order = await Mediator.Send(command);
+
+            return Ok(order.Identity);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            var garmentServiceSubconCutting = _garmentServiceSubconCuttingRepository.Query.Where(o => o.Identity == guid).Select(o => new GarmentServiceSubconCutting(o)).Single();
+
+            RemoveGarmentServiceSubconCuttingCommand command = new RemoveGarmentServiceSubconCuttingCommand(guid);
+            var order = await Mediator.Send(command);
+
+            return Ok(order.Identity);
+            
         }
 
     }

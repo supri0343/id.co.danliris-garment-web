@@ -73,6 +73,17 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
 
         }
 
+        public void SetDate(DateTimeOffset subconDate)
+        {
+            if (subconDate != SubconDate)
+            {
+                SubconDate = subconDate;
+                ReadModel.SubconDate = subconDate;
+
+                MarkModified();
+            }
+        }
+
         public void Modify()
         {
             MarkModified();

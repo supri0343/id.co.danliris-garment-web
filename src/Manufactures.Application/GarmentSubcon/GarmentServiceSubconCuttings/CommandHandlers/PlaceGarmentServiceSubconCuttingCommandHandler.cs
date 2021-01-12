@@ -72,7 +72,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
             var now = DateTime.Now;
             var year = now.ToString("yy");
             var month = now.ToString("MM");
-            var code = request.SubconType == "BORDIR" ? "B" : "P";
+            var code = request.SubconType == "BORDIR" ? "B" : request.SubconType == "PRINT" ? "P" : "PL";
 
             var prefix = $"SJC{code}{year}{month}";
 
