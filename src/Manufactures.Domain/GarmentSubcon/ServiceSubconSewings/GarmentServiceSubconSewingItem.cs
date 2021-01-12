@@ -86,5 +86,14 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
         {
             return this;
         }
+
+        public void SetQuantity(double Quantity)
+        {
+            if (this.Quantity != Quantity)
+            {
+                this.Quantity = Quantity;
+                ReadModel.Quantity = Quantity;
+            }
+        }
     }
 }
