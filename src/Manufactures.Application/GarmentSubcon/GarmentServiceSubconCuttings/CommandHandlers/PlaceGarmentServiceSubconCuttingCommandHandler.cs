@@ -42,7 +42,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
                 new GarmentComodityId(request.Comodity.Id),
                 request.Comodity.Code,
                 request.Comodity.Name,
-                request.SubconDate.GetValueOrDefault()
+                request.SubconDate.GetValueOrDefault(),
+                request.IsUsed
             );
 
             foreach (var item in request.Items)
@@ -72,7 +73,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
             var now = DateTime.Now;
             var year = now.ToString("yy");
             var month = now.ToString("MM");
-            var code = request.SubconType == "BORDIR" ? "B" : request.SubconType == "PRINT" ? "P" : "PL";
+            var code = request.SubconType == "BORDIR" ? "B" : request.SubconType == "PRINT" ? "PR" : "PL";
 
             var prefix = $"SJC{code}{year}{month}";
 
