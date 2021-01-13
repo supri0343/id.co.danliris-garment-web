@@ -41,7 +41,17 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands
             RuleFor(r => r.ServiceSubconSewingDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Service Subcon Sewing Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
-            RuleForEach(r => r.Items).SetValidator(new GarmentServiceSubconSewingItemValueObjectValidator());
+            RuleForEach(r => r.Items).SetValidator(new UpdateGarmentServiceSubconSewingItemValueObjectValidator());
+        }
+    }
+
+    class UpdateGarmentServiceSubconSewingItemValueObjectValidator : AbstractValidator<GarmentServiceSubconSewingItemValueObject>
+    {
+        public UpdateGarmentServiceSubconSewingItemValueObjectValidator()
+        {
+            RuleFor(r => r.Quantity)
+               .LessThanOrEqualTo(r => r.SewingInQuantity)
+               .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.SewingInQuantity}'.").When(w => w.IsDifferentSize == false && w.IsSave == true);
         }
     }
 }
