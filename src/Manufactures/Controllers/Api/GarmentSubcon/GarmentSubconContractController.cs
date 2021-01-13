@@ -69,13 +69,13 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             try
             {
                 VerifyUser();
-                var subcon = _garmentSubconContractRepository.Find(a => a.ContractNo.Replace(" ", "") == command.ContractNo.Replace(" ", "")).Select(o => new GarmentSubconContractDto(o)).FirstOrDefault();
-                if (subcon != null)
-                    return BadRequest(new
-                    {
-                        code = HttpStatusCode.BadRequest,
-                        error = "No/Tgl Contract sudah ada"
-                    });
+                //var subcon = _garmentSubconContractRepository.Find(a => a.ContractNo.Replace(" ", "") == command.ContractNo.Replace(" ", "")).Select(o => new GarmentSubconContractDto(o)).FirstOrDefault();
+                //if (subcon != null)
+                //    return BadRequest(new
+                //    {
+                //        code = HttpStatusCode.BadRequest,
+                //        error = "No/Tgl Contract sudah ada"
+                //    });
                 
                 var order = await Mediator.Send(command);
 
@@ -91,13 +91,13 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         public async Task<IActionResult> Put(string id, [FromBody] UpdateGarmentSubconContractCommand command)
         {
             Guid guid = Guid.Parse(id);
-            var subcon = _garmentSubconContractRepository.Find(a => a.ContractNo.Replace(" ", "") == command.ContractNo.Replace(" ", "") && a.Identity!=command.Identity).Select(o => new GarmentSubconContractDto(o)).FirstOrDefault();
-            if (subcon != null)
-                return BadRequest(new
-                {
-                    code = HttpStatusCode.BadRequest,
-                    error = "No/Tgl Contract sudah ada"
-                });
+            //var subcon = _garmentSubconContractRepository.Find(a => a.ContractNo.Replace(" ", "") == command.ContractNo.Replace(" ", "") && a.Identity!=command.Identity).Select(o => new GarmentSubconContractDto(o)).FirstOrDefault();
+            //if (subcon != null)
+            //    return BadRequest(new
+            //    {
+            //        code = HttpStatusCode.BadRequest,
+            //        error = "No/Tgl Contract sudah ada"
+            //    });
             command.SetIdentity(guid);
 
             VerifyUser();

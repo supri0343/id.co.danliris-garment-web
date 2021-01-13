@@ -39,6 +39,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
             subconContract.SetSupplierCode(request.Supplier.Code);
             subconContract.SetSupplierId(new SupplierId(request.Supplier.Id));
             subconContract.SetSupplierName(request.Supplier.Name);
+            subconContract.SetContractDate(request.ContractDate);
+            subconContract.SetIsUsed(request.IsUsed);
             subconContract.Modify();
             await _garmentSubconContractRepository.Update(subconContract);
 

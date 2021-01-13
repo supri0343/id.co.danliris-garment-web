@@ -20,6 +20,8 @@ namespace Manufactures.Dtos.GarmentSubcon
             FinishedGoodType = garmentSubconContract.FinishedGoodType;
             Quantity = garmentSubconContract.Quantity;
             DueDate = garmentSubconContract.DueDate;
+            ContractDate = garmentSubconContract.ContractDate;
+            IsUsed = garmentSubconContract.IsUsed;
         }
         public Guid Id { get; internal set; }
         public string ContractType { get;  set; }
@@ -31,6 +33,8 @@ namespace Manufactures.Dtos.GarmentSubcon
         public string FinishedGoodType { get;  set; }
         public double Quantity { get;  set; }
         public DateTimeOffset DueDate { get;  set; }
+        public DateTimeOffset ContractDate { get; set; }
+        public bool IsUsed { get; set; }
     }
 
 }

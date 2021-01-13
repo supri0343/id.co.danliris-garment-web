@@ -22,5 +22,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels
         public string FinishedGoodType { get; internal set; }
         public double Quantity { get; internal set; }
         public DateTimeOffset DueDate { get; internal set; }
+        public DateTimeOffset ContractDate { get; internal set; }
+        public bool IsUsed { get; internal set; }
     }
 }

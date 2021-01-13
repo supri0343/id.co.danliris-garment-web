@@ -19,6 +19,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
         public string FinishedGoodType { get; set; }
         public double Quantity { get; set; }
         public DateTimeOffset DueDate { get; set; }
+        public DateTimeOffset ContractDate { get; set; }
+        public bool IsUsed { get; set; }
 
         public void SetIdentity(Guid id)
         {
@@ -34,12 +36,13 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
             RuleFor(r => r.Supplier.Id).NotEmpty().OverridePropertyName("Supplier").When(w => w.Supplier != null);
 
             RuleFor(r => r.Quantity).GreaterThan(0).WithMessage("Quantity harus lebih dari 0");
-            RuleFor(r => r.ContractNo).NotNull();
-            RuleFor(r => r.AgreementNo).NotNull();
+            //RuleFor(r => r.ContractNo).NotNull();
+            // RuleFor(r => r.AgreementNo).NotNull();
             RuleFor(r => r.JobType).NotNull();
-            RuleFor(r => r.BPJNo).NotNull();
+            // RuleFor(r => r.BPJNo).NotNull();
             RuleFor(r => r.FinishedGoodType).NotNull();
-            RuleFor(r => r.DueDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sewing Out Tidak Boleh Kosong");
+            RuleFor(r => r.DueDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Jatuh Tempo Tidak Boleh Kosong");
+            RuleFor(r => r.ContractDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Kontrak Tidak Boleh Kosong");
         }
     }
 }
