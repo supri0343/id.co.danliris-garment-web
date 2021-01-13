@@ -18,7 +18,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             Buyer = new Buyer(garmentServiceSubconSewingList.BuyerId.Value, garmentServiceSubconSewingList.BuyerCode, garmentServiceSubconSewingList.BuyerName);
             Comodity = new GarmentComodity(garmentServiceSubconSewingList.ComodityId.Value, garmentServiceSubconSewingList.ComodityCode, garmentServiceSubconSewingList.ComodityName);
             IsDifferentSize = garmentServiceSubconSewingList.IsDifferentSize;
-
+            IsUsed = garmentServiceSubconSewingList.IsUsed;
             Items = new List<GarmentServiceSubconSewingItemDto>();
         }
 
@@ -31,6 +31,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public GarmentComodity Comodity { get; set; }
         public DateTimeOffset ServiceSubconSewingDate { get; set; }
         public bool IsDifferentSize { get; set; }
+        public bool IsUsed { get; set; }
 
         public virtual List<GarmentServiceSubconSewingItemDto> Items { get; internal set; }
     }

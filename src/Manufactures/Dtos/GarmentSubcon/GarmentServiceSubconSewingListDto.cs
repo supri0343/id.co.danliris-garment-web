@@ -16,6 +16,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             Article = garmentServiceSubconSewingList.Article;
             ServiceSubconSewingDate = garmentServiceSubconSewingList.ServiceSubconSewingDate;
             CreatedBy = garmentServiceSubconSewingList.AuditTrail.CreatedBy;
+            IsUsed = garmentServiceSubconSewingList.IsUsed;
             Items = new List<GarmentServiceSubconSewingItemDto>();
         }
 
@@ -30,6 +31,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public List<string> Products { get; set; }
         public double TotalQuantity { get; set; }
         public double TotalRemainingQuantity { get; set; }
+        public bool IsUsed { get; set; }
         public List<GarmentServiceSubconSewingItemDto> Items { get; set; }
     }
 }

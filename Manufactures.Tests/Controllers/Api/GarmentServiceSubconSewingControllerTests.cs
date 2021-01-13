@@ -71,7 +71,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconSewingReadModel>>()))
                 .Returns(new List<GarmentServiceSubconSewing>()
                 {
-                    new GarmentServiceSubconSewing(serviceSubconSewingGuid,null,new BuyerId(1),null,null,new UnitDepartmentId(1),null,null,"RONo",null,new GarmentComodityId(1),null,null,DateTimeOffset.Now,true)
+                    new GarmentServiceSubconSewing(serviceSubconSewingGuid,null,new BuyerId(1),null,null,new UnitDepartmentId(1),null,null,"RONo",null,new GarmentComodityId(1),null,null,DateTimeOffset.Now,true, false)
                 });
 
             Guid sewingInItemGuid = Guid.NewGuid();
@@ -103,7 +103,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconSewingReadModel, bool>>>()))
                 .Returns(new List<GarmentServiceSubconSewing>()
                 {
-                    new GarmentServiceSubconSewing(serviceSubconSewingGuid,null,new BuyerId(1),null,null,new UnitDepartmentId(1),null,null,"RONo",null,new GarmentComodityId(1),null,null,DateTimeOffset.Now,true)
+                    new GarmentServiceSubconSewing(serviceSubconSewingGuid,null,new BuyerId(1),null,null,new UnitDepartmentId(1),null,null,"RONo",null,new GarmentComodityId(1),null,null,DateTimeOffset.Now,true, false)
                 });
 
             Guid sewingInItemGuid = Guid.NewGuid();

@@ -19,6 +19,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands
         public GarmentComodity Comodity { get; set; }
         public DateTimeOffset? ServiceSubconSewingDate { get; set; }
         public bool IsDifferentSize { get; set; }
+        public bool IsUsed { get; set; }
         public List<GarmentServiceSubconSewingItemValueObject> Items { get; set; }
 
         public void SetIdentity(Guid id)
