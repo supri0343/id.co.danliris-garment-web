@@ -63,7 +63,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
                 .OrderByDescending(o => o.ContractNo)
                 .Select(s => int.Parse(s.ContractNo.Substring(0,3)))
                 .FirstOrDefault();
-            var ContractNo = $"{(lastContractNo + 1).ToString("D3")}/DL/{request.Supplier.Code}/{month}{prefix}";
+            var ContractNo = $"{(lastContractNo + 1).ToString("D3")}/DL/{request.Supplier.Code}/{month}/{prefix}";
 
             return ContractNo;
         }

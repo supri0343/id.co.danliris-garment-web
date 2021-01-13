@@ -36,7 +36,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
             RuleFor(r => r.Supplier.Id).NotEmpty().OverridePropertyName("Supplier").When(w => w.Supplier != null);
 
             RuleFor(r => r.Quantity).GreaterThan(0).WithMessage("Quantity harus lebih dari 0");
-            RuleFor(r => r.ContractNo).NotNull();
+            //RuleFor(r => r.ContractNo).NotNull();
             // RuleFor(r => r.AgreementNo).NotNull();
             RuleFor(r => r.JobType).NotNull();
             // RuleFor(r => r.BPJNo).NotNull();
