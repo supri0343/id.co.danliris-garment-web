@@ -23,6 +23,9 @@
     <Folder Include="GarmentSubcon\ServiceSubconSewings\ReadModels\" />
     <Folder Include="GarmentSubcon\ServiceSubconSewings\Repositories\" />
     <Folder Include="GarmentSubcon\ServiceSubconSewings\ValueObjects\" />
+    <Folder Include="GarmentSubcon\SubconDeliveryLetterOuts\Commands\" />
+    <Folder Include="GarmentSubcon\SubconDeliveryLetterOuts\ValueObjects\" />
+    <Folder Include="GarmentSubcon\SubconDeliveryLetterOuts\Repositories\" />
   </ItemGroup>
 
 </Project>
