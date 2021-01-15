@@ -25,6 +25,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconCuttings.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconSewings.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentSubconContracts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLetterOuts.Cofigs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubconCuttingOuts.Configs;
 using Microsoft.EntityFrameworkCore;
 
@@ -112,6 +113,9 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconSewingConfig());
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconSewingItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutConfig());
+            modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutItemConfig());
         }
 	}
 }
