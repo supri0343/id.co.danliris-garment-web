@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20210113025602_AddField_IsUsed_ServiceSubconSewing")]
+    partial class AddField_IsUsed_ServiceSubconSewing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3393,8 +3395,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("BPJNo")
                         .HasMaxLength(50);
 
-                    b.Property<DateTimeOffset>("ContractDate");
-
                     b.Property<string>("ContractNo")
                         .HasMaxLength(50);
 
@@ -3418,8 +3418,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("FinishedGoodType")
                         .HasMaxLength(50);
-
-                    b.Property<bool>("IsUsed");
 
                     b.Property<string>("JobType")
                         .HasMaxLength(50);
@@ -3450,134 +3448,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasFilter("[Deleted]=(0)");
 
                     b.ToTable("GarmentSubconContracts");
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels.GarmentSubconDeliveryLetterOutItemReadModel", b =>
-                {
-                    b.Property<Guid>("Identity")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("DesignColor")
-                        .HasMaxLength(2000);
-
-                    b.Property<string>("FabricType")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<string>("ProductCode")
-                        .HasMaxLength(25);
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<string>("ProductName")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("ProductRemark")
-                        .HasMaxLength(2000);
-
-                    b.Property<double>("Quantity");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<Guid>("SubconDeliveryLetterOutId");
-
-                    b.Property<Guid>("UENItemId");
-
-                    b.Property<int>("UomId");
-
-                    b.Property<string>("UomUnit")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Identity");
-
-                    b.HasIndex("SubconDeliveryLetterOutId");
-
-                    b.ToTable("GarmentSubconDeliveryLetterOutItems");
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels.GarmentSubconDeliveryLetterOutReadModel", b =>
-                {
-                    b.Property<Guid>("Identity")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ContractNo")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("ContractType")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<DateTimeOffset>("DLDate");
-
-                    b.Property<string>("DLNo")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("DLType");
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<int>("EPOItemId");
-
-                    b.Property<bool>("IsUsed");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<string>("PONo")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("Remark")
-                        .HasMaxLength(4000);
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<Guid>("SubconContractId");
-
-                    b.Property<int>("UENId");
-
-                    b.Property<string>("UENNo")
-                        .HasMaxLength(25);
-
-                    b.HasKey("Identity");
-
-                    b.HasIndex("DLNo")
-                        .IsUnique()
-                        .HasFilter("[Deleted]=(0)");
-
-                    b.ToTable("GarmentSubconDeliveryLetterOutgs");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentSubconCuttingOuts.ReadModels.GarmentSubconCuttingReadModel", b =>
@@ -3864,14 +3734,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasOne("Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ReadModels.GarmentServiceSubconSewingReadModel", "GarmentServiceSubconSewingIdentity")
                         .WithMany("GarmentServiceSubconSewingItem")
                         .HasForeignKey("ServiceSubconSewingId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels.GarmentSubconDeliveryLetterOutItemReadModel", b =>
-                {
-                    b.HasOne("Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels.GarmentSubconDeliveryLetterOutReadModel", "GarmentSubconDeliveryLetterOut")
-                        .WithMany("GarmentSubconDeliveryLetterOutItem")
-                        .HasForeignKey("SubconDeliveryLetterOutId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

@@ -21,6 +21,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
         public string FinishedGoodType { get; private set; }
         public double Quantity { get; private set; }
         public DateTimeOffset DueDate { get; private set; }
+        public DateTimeOffset ContractDate { get; private set; }
+        public bool IsUsed { get; private set; }
 
 
         public GarmentSubconContract(GarmentSubconContractReadModel readModel) : base(readModel)
@@ -36,9 +38,11 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             FinishedGoodType = readModel.FinishedGoodType;
             Quantity = readModel.Quantity;
             DueDate = readModel.DueDate;
+            ContractDate = readModel.ContractDate;
+            IsUsed = readModel.IsUsed;
         }
 
-        public GarmentSubconContract(Guid identity,string contractType, string contractNo, string agreementNo, SupplierId supplierId, string supplierCode, string supplierName, string jobType, string bPJNo, string finishedGoodType, double quantity, DateTimeOffset dueDate) : base(identity)
+        public GarmentSubconContract(Guid identity,string contractType, string contractNo, string agreementNo, SupplierId supplierId, string supplierCode, string supplierName, string jobType, string bPJNo, string finishedGoodType, double quantity, DateTimeOffset dueDate, DateTimeOffset contractDate, bool isUsed) : base(identity)
         {
             Identity = identity;
             ContractType = contractType;
@@ -52,6 +56,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             FinishedGoodType = finishedGoodType;
             Quantity = quantity;
             DueDate = dueDate;
+            ContractDate = contractDate;
+            IsUsed = isUsed;
 
             ReadModel = new GarmentSubconContractReadModel(Identity)
             {
@@ -65,7 +71,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
                 BPJNo = BPJNo,
                 FinishedGoodType = FinishedGoodType,
                 Quantity = Quantity,
-                DueDate = DueDate
+                DueDate = DueDate,
+                ContractDate= ContractDate,
+                IsUsed= IsUsed
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconContractPlaced(Identity));
@@ -162,6 +170,22 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             {
                 this.Quantity = Quantity;
                 ReadModel.Quantity = Quantity;
+            }
+        }
+        public void SetContractDate(DateTimeOffset ContractDate)
+        {
+            if (this.ContractDate != ContractDate)
+            {
+                this.ContractDate = ContractDate;
+                ReadModel.ContractDate = ContractDate;
+            }
+        }
+        public void SetIsUsed(bool Isused)
+        {
+            if (this.IsUsed != Isused)
+            {
+                this.IsUsed = Isused;
+                ReadModel.IsUsed = Isused;
             }
         }
         public void Modify()

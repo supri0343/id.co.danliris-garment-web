@@ -44,7 +44,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                 request.Comodity.Code,
                 request.Comodity.Name,
                 request.ServiceSubconSewingDate.GetValueOrDefault(),
-                 request.IsDifferentSize
+                 request.IsDifferentSize,
+                 request.IsUsed
             );
 
             foreach (var item in request.Items)

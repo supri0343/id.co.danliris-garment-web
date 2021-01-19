@@ -23,7 +23,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
         public string ComodityName { get; private set; }
         public DateTimeOffset SubconDate { get; private set; }
 
-        public GarmentServiceSubconCutting(Guid identity, string subconNo, string subconType, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName, DateTimeOffset subconDate) : base(identity)
+        public bool IsUsed { get; internal set; }
+
+        public GarmentServiceSubconCutting(Guid identity, string subconNo, string subconType, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName, DateTimeOffset subconDate, bool isUsed) : base(identity)
         {
             Identity = identity;
             SubconNo = subconNo;
@@ -37,6 +39,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
             ComodityCode = comodityCode;
             ComodityName = comodityName;
             SubconDate = subconDate;
+            IsUsed = isUsed;
 
             ReadModel = new GarmentServiceSubconCuttingReadModel(Identity)
             {
@@ -50,7 +53,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
                 SubconType = SubconType,
                 UnitCode = UnitCode,
                 UnitId = UnitId.Value,
-                UnitName = UnitName
+                UnitName = UnitName,
+                IsUsed=isUsed
 
             };
 
@@ -70,7 +74,29 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
             SubconNo = readModel.SubconNo;
             SubconType = readModel.SubconType;
             RONo = readModel.RONo;
+            IsUsed = readModel.IsUsed;
+        }
 
+        public void SetDate(DateTimeOffset subconDate)
+        {
+            if (subconDate != SubconDate)
+            {
+                SubconDate = subconDate;
+                ReadModel.SubconDate = subconDate;
+
+                MarkModified();
+            }
+        }
+
+        public void SetIsUsed(bool isUsed)
+        {
+            if (isUsed != IsUsed)
+            {
+                IsUsed = isUsed;
+                ReadModel.IsUsed = isUsed;
+
+                MarkModified();
+            }
         }
 
         public void Modify()

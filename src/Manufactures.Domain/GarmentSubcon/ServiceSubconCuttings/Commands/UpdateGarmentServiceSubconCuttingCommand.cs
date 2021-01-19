@@ -9,8 +9,9 @@ using System.Text;
 
 namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
 {
-    public class PlaceGarmentServiceSubconCuttingCommand : ICommand<GarmentServiceSubconCutting>
+    public class UpdateGarmentServiceSubconCuttingCommand : ICommand<GarmentServiceSubconCutting>
     {
+        public Guid Identity { get; private set; }
         public string RONo { get; set; }
         public string Article { get; set; }
         public UnitDepartment Unit { get; set; }
@@ -21,11 +22,16 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
 
         public bool IsUsed { get; set; }
         public List<GarmentServiceSubconCuttingItemValueObject> Items { get; set; }
+
+        public void SetIdentity(Guid id)
+        {
+            Identity = id;
+        }
     }
 
-    public class PlaceGarmentServiceSubconCuttingCommandValidator : AbstractValidator<PlaceGarmentServiceSubconCuttingCommand>
+    public class UpdateGarmentServiceSubconCuttingCommandValidator : AbstractValidator<UpdateGarmentServiceSubconCuttingCommand>
     {
-        public PlaceGarmentServiceSubconCuttingCommandValidator()
+        public UpdateGarmentServiceSubconCuttingCommandValidator()
         {
             RuleFor(r => r.Unit).NotNull();
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
@@ -40,20 +46,4 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
         }
     }
 
-    class GarmentServiceSubconCuttingItemValueObjectValidator : AbstractValidator<GarmentServiceSubconCuttingItemValueObject>
-    {
-        public GarmentServiceSubconCuttingItemValueObjectValidator()
-        {
-
-            RuleFor(r => r.Quantity)
-                .GreaterThan(0)
-                .WithMessage("'Jumlah' harus lebih dari '0'.")
-                .When(w => w.IsSave);
-
-            RuleFor(r => r.Quantity)
-                .LessThanOrEqualTo(r => r.CuttingInQuantity)
-                .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.CuttingInQuantity}'.")
-                .When(w => w.IsSave);
-        }
-    }
 }

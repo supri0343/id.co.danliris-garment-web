@@ -8,6 +8,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ValueObjects
 {
     public class GarmentServiceSubconCuttingItemValueObject : ValueObject
     {
+        public Guid Id { get; set; }
         public Guid ServiceSubconCuttingId { get; set; }
         public Guid CuttingInDetailId { get; set; }
         public Product Product { get; set; }

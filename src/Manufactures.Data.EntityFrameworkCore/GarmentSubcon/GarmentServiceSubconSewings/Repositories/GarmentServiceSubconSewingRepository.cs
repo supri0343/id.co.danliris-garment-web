@@ -24,7 +24,6 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
             {
                 "ServiceSubconSewingNo",
                 "UnitCode",
-                "UnitToCode",
                 "RONo",
                 "Article",
                 "GarmentServiceSubconSewingItem.ProductCode",

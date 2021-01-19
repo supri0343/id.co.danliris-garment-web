@@ -17,13 +17,15 @@
 
   <ItemGroup>
     <Folder Include="GarmentBalanceStockProductions\ValueObjects\" />
-    <Folder Include="GarmentSubcon\ServiceSubconCuttings\Commands\" />
     <Folder Include="GarmentSubcon\ServiceSubconCuttings\Repositories\" />
     <Folder Include="GarmentSubcon\ServiceSubconSewings\" />
     <Folder Include="GarmentSubcon\ServiceSubconSewings\Commands\" />
     <Folder Include="GarmentSubcon\ServiceSubconSewings\ReadModels\" />
     <Folder Include="GarmentSubcon\ServiceSubconSewings\Repositories\" />
     <Folder Include="GarmentSubcon\ServiceSubconSewings\ValueObjects\" />
+    <Folder Include="GarmentSubcon\SubconDeliveryLetterOuts\Commands\" />
+    <Folder Include="GarmentSubcon\SubconDeliveryLetterOuts\ValueObjects\" />
+    <Folder Include="GarmentSubcon\SubconDeliveryLetterOuts\Repositories\" />
   </ItemGroup>
 
 </Project>

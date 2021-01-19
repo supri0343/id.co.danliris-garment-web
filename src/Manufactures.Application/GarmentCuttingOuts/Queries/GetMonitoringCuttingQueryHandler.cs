@@ -295,7 +295,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 					remainQty = item.Stock + item.CuttingQtyPcs - item.Expenditure,
 					fc = Math.Round(item.Fc, 2),
 					cuttingQtyMeter = Math.Round(item.Fc * item.CuttingQtyPcs, 2),
-					price = Math.Round(Convert.ToDecimal(item.bPrice),2),
+					price = Math.Round(Convert.ToDecimal(item.bPrice),2) *  Convert.ToDecimal(Math.Round(item.Fc, 2)),
 					buyerCode = item.buyer
 
 				};
