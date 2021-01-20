@@ -15,7 +15,6 @@
     <Folder Include="GarmentSubcon\GarmentServiceSubconSewings\" />
     <Folder Include="GarmentSubcon\GarmentServiceSubconSewings\Config\" />
     <Folder Include="GarmentSubcon\GarmentServiceSubconSewings\Repositories\" />
-    <Folder Include="GarmentSubcon\SubconDeliveryLetterOuts\Repositories\" />
   </ItemGroup>
 
 </Project>
