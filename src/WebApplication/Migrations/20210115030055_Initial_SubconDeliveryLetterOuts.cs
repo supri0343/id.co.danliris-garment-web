@@ -8,7 +8,7 @@ namespace DanLiris.Admin.Web.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "GarmentSubconDeliveryLetterOutgs",
+                name: "GarmentSubconDeliveryLetterOuts",
                 columns: table => new
                 {
                     Identity = table.Column<Guid>(nullable: false),
@@ -35,7 +35,7 @@ namespace DanLiris.Admin.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GarmentSubconDeliveryLetterOutgs", x => x.Identity);
+                    table.PrimaryKey("PK_GarmentSubconDeliveryLetterOuts", x => x.Identity);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,16 +67,16 @@ namespace DanLiris.Admin.Web.Migrations
                 {
                     table.PrimaryKey("PK_GarmentSubconDeliveryLetterOutItems", x => x.Identity);
                     table.ForeignKey(
-                        name: "FK_GarmentSubconDeliveryLetterOutItems_GarmentSubconDeliveryLetterOutgs_SubconDeliveryLetterOutId",
+                        name: "FK_GarmentSubconDeliveryLetterOutItems_GarmentSubconDeliveryLetterOuts_SubconDeliveryLetterOutId",
                         column: x => x.SubconDeliveryLetterOutId,
-                        principalTable: "GarmentSubconDeliveryLetterOutgs",
+                        principalTable: "GarmentSubconDeliveryLetterOuts",
                         principalColumn: "Identity",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_GarmentSubconDeliveryLetterOutgs_DLNo",
-                table: "GarmentSubconDeliveryLetterOutgs",
+                name: "IX_GarmentSubconDeliveryLetterOuts_DLNo",
+                table: "GarmentSubconDeliveryLetterOuts",
                 column: "DLNo",
                 unique: true,
                 filter: "[Deleted]=(0)");
@@ -93,7 +93,7 @@ namespace DanLiris.Admin.Web.Migrations
                 name: "GarmentSubconDeliveryLetterOutItems");
 
             migrationBuilder.DropTable(
-                name: "GarmentSubconDeliveryLetterOutgs");
+                name: "GarmentSubconDeliveryLetterOuts");
         }
     }
 }

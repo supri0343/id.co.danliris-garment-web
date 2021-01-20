@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20210120074457_update_Constraints_garmentSubconDeliveryLetterOuts")]
+    partial class update_Constraints_garmentSubconDeliveryLetterOuts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3476,6 +3478,8 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("FabricType")
                         .HasMaxLength(255);
 
+                    b.Property<Guid?>("GarmentSubconDeliveryLetterOutIdentity");
+
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
 
@@ -3500,8 +3504,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<Guid>("SubconDeliveryLetterOutId");
 
-                    b.Property<int>("UENItemId");
-
                     b.Property<int>("UomId");
 
                     b.Property<string>("UomUnit")
@@ -3509,7 +3511,7 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.HasKey("Identity");
 
-                    b.HasIndex("SubconDeliveryLetterOutId");
+                    b.HasIndex("GarmentSubconDeliveryLetterOutIdentity");
 
                     b.ToTable("GarmentSubconDeliveryLetterOutItems");
                 });
@@ -3577,7 +3579,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .IsUnique()
                         .HasFilter("[Deleted]=(0)");
 
-                    b.ToTable("GarmentSubconDeliveryLetterOuts");
+                    b.ToTable("GarmentSubconDeliveryLetterOutgs");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentSubconCuttingOuts.ReadModels.GarmentSubconCuttingReadModel", b =>
@@ -3871,8 +3873,7 @@ namespace DanLiris.Admin.Web.Migrations
                 {
                     b.HasOne("Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels.GarmentSubconDeliveryLetterOutReadModel", "GarmentSubconDeliveryLetterOut")
                         .WithMany("GarmentSubconDeliveryLetterOutItem")
-                        .HasForeignKey("SubconDeliveryLetterOutId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("GarmentSubconDeliveryLetterOutIdentity");
                 });
 #pragma warning restore 612, 618
         }

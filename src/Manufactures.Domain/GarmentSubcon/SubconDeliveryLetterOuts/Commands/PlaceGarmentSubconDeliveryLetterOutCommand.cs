@@ -59,9 +59,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
                 .GreaterThan(0)
                 .WithMessage("'Jumlah' harus lebih dari '0'.");
 
-            RuleFor(r => r.Quantity)
-                .LessThanOrEqualTo(r => r.ContractQuantity)
-                .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.ContractQuantity}'.");
+            //RuleFor(r => r.Quantity)
+            //    .LessThanOrEqualTo(r => r.ContractQuantity)
+            //    .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.ContractQuantity}'.");
         }
     }
 }

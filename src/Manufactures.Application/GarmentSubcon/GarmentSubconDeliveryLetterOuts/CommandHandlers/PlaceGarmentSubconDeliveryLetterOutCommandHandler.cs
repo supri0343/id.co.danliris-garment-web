@@ -51,7 +51,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                 GarmentSubconDeliveryLetterOutItem garmentSubconDeliveryLetterOutItem = new GarmentSubconDeliveryLetterOutItem(
                     Guid.NewGuid(),
                     garmentSubconDeliveryLetterOut.Identity,
-                  //  item.UENItemId,
+                    item.UENItemId,
                     new ProductId(item.Product.Id),
                     item.Product.Code,
                     item.Product.Name,
@@ -59,6 +59,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     item.DesignColor,
                     item.Quantity,
                     new UomId(item.Uom.Id),
+                    item.Uom.Unit,
                     item.FabricType
                 );
                 await _garmentSubconDeliveryLetterOutItemRepository.Update(garmentSubconDeliveryLetterOutItem);
