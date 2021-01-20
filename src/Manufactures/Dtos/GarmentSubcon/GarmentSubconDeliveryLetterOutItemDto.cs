@@ -12,7 +12,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         {
             Id = garmentSubconDeliveryLetterOutItem.Identity;
             SubconDeliveryLetterOutId = garmentSubconDeliveryLetterOutItem.SubconDeliveryLetterOutId;
-            UENItemId = garmentSubconDeliveryLetterOutItem.UENItemId;
+            //UENItemId = garmentSubconDeliveryLetterOutItem.UENItemId;
             Product = new Product(garmentSubconDeliveryLetterOutItem.ProductId.Value, garmentSubconDeliveryLetterOutItem.ProductCode, garmentSubconDeliveryLetterOutItem.ProductName);
             ProductRemark = garmentSubconDeliveryLetterOutItem.ProductRemark;
             DesignColor = garmentSubconDeliveryLetterOutItem.DesignColor;
@@ -24,7 +24,7 @@ namespace Manufactures.Dtos.GarmentSubcon
 
         public Guid Id { get; set; }
         public Guid SubconDeliveryLetterOutId { get; set; }
-        public Guid UENItemId { get; set; }
+        public int UENItemId { get; set; }
 
         public Product Product { get; set; }
         public string ProductRemark { get; set; }

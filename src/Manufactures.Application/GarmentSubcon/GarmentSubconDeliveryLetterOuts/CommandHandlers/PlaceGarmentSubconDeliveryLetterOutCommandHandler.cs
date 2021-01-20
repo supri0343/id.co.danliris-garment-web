@@ -51,7 +51,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                 GarmentSubconDeliveryLetterOutItem garmentSubconDeliveryLetterOutItem = new GarmentSubconDeliveryLetterOutItem(
                     Guid.NewGuid(),
                     garmentSubconDeliveryLetterOut.Identity,
-                    item.UENItemId,
+                  //  item.UENItemId,
                     new ProductId(item.Product.Id),
                     item.Product.Code,
                     item.Product.Name,
@@ -81,9 +81,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
 
             var prefix = $"SJK/{type}/{year}{month}";
 
-            var lastNo = _garmentSubconDeliveryLetterOutRepository.Query.Where(w => w.ContractNo.StartsWith(prefix))
-                .OrderByDescending(o => o.ContractNo)
-                .Select(s => int.Parse(s.ContractNo.Substring(10, 4)))
+            var lastNo = _garmentSubconDeliveryLetterOutRepository.Query.Where(w => w.DLNo.StartsWith(prefix))
+                .OrderByDescending(o => o.DLNo)
+                .Select(s => int.Parse(s.DLNo.Substring(11, 4)))
                 .FirstOrDefault();
             var no = $"{prefix}{(lastNo + 1).ToString("D4")}{code}";
 

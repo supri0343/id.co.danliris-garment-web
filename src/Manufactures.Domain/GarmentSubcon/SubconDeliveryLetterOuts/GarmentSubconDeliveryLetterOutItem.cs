@@ -13,7 +13,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
         
 
         public Guid SubconDeliveryLetterOutId { get; private set; }
-        public Guid UENItemId { get; private set; }
+        public int UENItemId { get; private set; }
 
         public ProductId ProductId { get; private set; }
         public string ProductCode { get; private set; }
@@ -26,11 +26,11 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
         public string UomUnit { get; private set; }
 
         public string FabricType { get; private set; }
-
-        public GarmentSubconDeliveryLetterOutItem(Guid identity, Guid subconDeliveryLetterOutId, Guid uENItemId, ProductId productId, string productCode, string productName, string productRemark, string designColor, double quantity, UomId uomId, string fabricType) : base(identity)
+        //int uENItemId,
+        public GarmentSubconDeliveryLetterOutItem(Guid identity, Guid subconDeliveryLetterOutId,  ProductId productId, string productCode, string productName, string productRemark, string designColor, double quantity, UomId uomId, string fabricType) : base(identity)
         {
             SubconDeliveryLetterOutId = subconDeliveryLetterOutId;
-            UENItemId = uENItemId;
+           // UENItemId = uENItemId;
             ProductId = productId;
             ProductCode = productCode;
             ProductName = productName;
@@ -43,7 +43,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             ReadModel = new GarmentSubconDeliveryLetterOutItemReadModel(Identity)
             {
                 SubconDeliveryLetterOutId = SubconDeliveryLetterOutId,
-                UENItemId = UENItemId,
+               // UENItemId = UENItemId,
                 ProductId = ProductId.Value,
                 ProductCode = ProductCode,
                 ProductName = ProductName,
@@ -61,7 +61,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
 
         public GarmentSubconDeliveryLetterOutItem(GarmentSubconDeliveryLetterOutItemReadModel readModel) : base(readModel)
         {
-            UENItemId = readModel.UENItemId;
+            //UENItemId = readModel.UENItemId;
             SubconDeliveryLetterOutId = readModel.SubconDeliveryLetterOutId;
             ProductId = new ProductId(readModel.ProductId);
             ProductCode = readModel.ProductCode;

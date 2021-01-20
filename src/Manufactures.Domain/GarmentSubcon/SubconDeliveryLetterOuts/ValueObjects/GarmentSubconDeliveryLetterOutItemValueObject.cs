@@ -10,7 +10,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ValueObject
     {
         public Guid Id { get; set; }
         public Guid SubconDeliveryLetterOutId { get; set; }
-        public Guid UENItemId { get; set; }
+        public int UENItemId { get; set; }
 
         public Product Product { get; set; }
         public string ProductRemark { get; set; }
