@@ -83,6 +83,8 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
                 var order = await Mediator.Send(command);
 
+                await PutGarmentUnitExpenditureNoteCreate(command.UENId);
+
                 return Ok(order.Identity);
             }
             catch (Exception e)
