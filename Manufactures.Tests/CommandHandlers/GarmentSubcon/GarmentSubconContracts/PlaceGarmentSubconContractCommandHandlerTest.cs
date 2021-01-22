@@ -54,7 +54,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
                     Name= "test"
                 }
             };
-
+            _mockSubconContractRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSubconContractReadModel>().AsQueryable());
             _mockSubconContractRepository
                 .Setup(s => s.Update(It.IsAny<GarmentSubconContract>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentSubconContract>()));
