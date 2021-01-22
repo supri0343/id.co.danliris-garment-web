@@ -105,9 +105,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             // Arrange
             var unitUnderTest = CreateGarmentSubconContractController();
             Guid SubconContractGuid = Guid.NewGuid();
-            _mockGarmentSubconContractRepository
-                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractReadModel, bool>>>()))
-                .Returns(new List<GarmentSubconContract>());
+            //_mockGarmentSubconContractRepository
+            //    .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractReadModel, bool>>>()))
+            //    .Returns(new List<GarmentSubconContract>());
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentSubconContractCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GarmentSubconContract(SubconContractGuid, "", "a ", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false));
@@ -125,9 +125,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             // Arrange
             var unitUnderTest = CreateGarmentSubconContractController();
             Guid SubconContractGuid = Guid.NewGuid();
-            _mockGarmentSubconContractRepository
-                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractReadModel, bool>>>()))
-                .Returns(new List<GarmentSubconContract>());
+            //_mockGarmentSubconContractRepository
+            //    .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractReadModel, bool>>>()))
+            //    .Returns(new List<GarmentSubconContract>());
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentSubconContractCommand>(), It.IsAny<CancellationToken>()))
@@ -144,9 +144,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             // Arrange
             var unitUnderTest = CreateGarmentSubconContractController();
             Guid SubconContractGuid = Guid.NewGuid();
-            _mockGarmentSubconContractRepository
-                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractReadModel, bool>>>()))
-                .Returns(new List<GarmentSubconContract>());
+            //_mockGarmentSubconContractRepository
+            //    .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractReadModel, bool>>>()))
+            //    .Returns(new List<GarmentSubconContract>());
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentSubconContractCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GarmentSubconContract(SubconContractGuid, "", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false));

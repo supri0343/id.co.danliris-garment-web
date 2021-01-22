@@ -160,8 +160,6 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             VerifyUser();
 
-            var garmentServiceSubconCutting = _garmentServiceSubconCuttingRepository.Query.Where(o => o.Identity == guid).Select(o => new GarmentServiceSubconCutting(o)).Single();
-
             RemoveGarmentServiceSubconCuttingCommand command = new RemoveGarmentServiceSubconCuttingCommand(guid);
             var order = await Mediator.Send(command);
 

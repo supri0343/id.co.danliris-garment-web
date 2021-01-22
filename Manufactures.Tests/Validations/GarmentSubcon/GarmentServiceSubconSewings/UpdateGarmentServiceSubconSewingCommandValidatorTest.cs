@@ -6,7 +6,7 @@ using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using Xunit;
 
-namespace Manufactures.Tests.Validations.GarmentServiceSubconSewings
+namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconSewings
 {
     public class UpdateGarmentServiceSubconSewingCommandValidatorTest
     {
