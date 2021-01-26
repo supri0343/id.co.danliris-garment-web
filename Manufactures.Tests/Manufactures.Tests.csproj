@@ -24,6 +24,5 @@
 
   <ItemGroup>
     <Folder Include="CommandHandlers\GarmentSubcon\GarmentServiceSubconSewings\" />
-    <Folder Include="Validations\GarmentServiceSubconSewings\" />
   </ItemGroup>
 </Project>
