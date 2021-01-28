@@ -22,11 +22,14 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
     {
         private readonly IGarmentServiceSubconCuttingRepository _garmentServiceSubconCuttingRepository;
         private readonly IGarmentServiceSubconCuttingItemRepository _garmentServiceSubconCuttingItemRepository;
+        private readonly IGarmentServiceSubconCuttingDetailRepository _garmentServiceSubconCuttingDetailRepository;
 
         public GarmentServiceSubconCuttingController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentServiceSubconCuttingRepository = Storage.GetRepository<IGarmentServiceSubconCuttingRepository>();
             _garmentServiceSubconCuttingItemRepository = Storage.GetRepository<IGarmentServiceSubconCuttingItemRepository>();
+            _garmentServiceSubconCuttingDetailRepository = Storage.GetRepository<IGarmentServiceSubconCuttingDetailRepository>();
+
         }
 
         [HttpGet]
@@ -36,7 +39,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             var query = _garmentServiceSubconCuttingRepository.Read(page, size, order, keyword, filter);
             var total = query.Count();
-            double totalQty = query.Sum(a => a.GarmentServiceSubconCuttingItem.Sum(b => b.Quantity));
+            double totalQty = query.Sum(a => a.GarmentServiceSubconCuttingItem.Sum(b => b.GarmentServiceSubconCuttingDetail.Sum(c=>c.Quantity)));
 
             query = query.Skip((page - 1) * size).Take(size);
 
@@ -46,17 +49,17 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 .ToList();
 
             var dtoIds = garmentServiceSubconCuttingListDtos.Select(s => s.Id).ToList();
-            var items = _garmentServiceSubconCuttingItemRepository.Query
-                .Where(o => dtoIds.Contains(o.ServiceSubconCuttingId))
-                .Select(s => new { s.Identity, s.ServiceSubconCuttingId, s.ProductCode, s.Quantity})
-                .ToList();
+            //var items = _garmentServiceSubconCuttingItemRepository.Query
+            //    .Where(o => dtoIds.Contains(o.ServiceSubconCuttingId))
+            //    .Select(s => new { s.Identity, s.ServiceSubconCuttingId, s.ProductCode, s.Quantity})
+            //    .ToList();
 
-            Parallel.ForEach(garmentServiceSubconCuttingListDtos, dto =>
-            {
-                var currentItems = items.Where(w => w.ServiceSubconCuttingId == dto.Id);
-                dto.Products = currentItems.Select(d => d.ProductCode).Distinct().ToList();
-                dto.TotalQuantity = currentItems.Sum(d => d.Quantity);
-            });
+            //Parallel.ForEach(garmentServiceSubconCuttingListDtos, dto =>
+            //{
+            //    var currentItems = items.Where(w => w.ServiceSubconCuttingId == dto.Id);
+            //    dto.Products = currentItems.Select(d => d.ProductCode).Distinct().ToList();
+            //    dto.TotalQuantity = currentItems.Sum(d => d.Quantity);
+            //});
 
             await Task.Yield();
             return Ok(garmentServiceSubconCuttingListDtos, info: new
@@ -79,7 +82,10 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             {
                 Items = _garmentServiceSubconCuttingItemRepository.Find(o => o.ServiceSubconCuttingId == subcon.Identity).Select(subconItem => new GarmentServiceSubconCuttingItemDto(subconItem)
                 {
-                    
+                    Details = _garmentServiceSubconCuttingDetailRepository.Find(o => o.ServiceSubconCuttingItemId == subconItem.Identity).Select(subconDetail => new GarmentServiceSubconCuttingDetailDto(subconDetail)
+                    {
+                        
+                    }).ToList()
                 }).ToList()
             }
             ).FirstOrDefault();
@@ -115,13 +121,19 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             var garmentServiceSubconCuttingDto = _garmentServiceSubconCuttingRepository.Find(query).Select(o => new GarmentServiceSubconCuttingDto(o)).ToArray();
             var garmentServiceSubconCuttingItemDto = _garmentServiceSubconCuttingItemRepository.Find(_garmentServiceSubconCuttingItemRepository.Query).Select(o => new GarmentServiceSubconCuttingItemDto(o)).ToList();
-            
+            var garmentServiceSubconCuttingDetailDto = _garmentServiceSubconCuttingDetailRepository.Find(_garmentServiceSubconCuttingDetailRepository.Query).Select(o => new GarmentServiceSubconCuttingDetailDto(o)).ToList();
+
+
             Parallel.ForEach(garmentServiceSubconCuttingDto, itemDto =>
             {
                 var garmentServiceSubconCuttingItems = garmentServiceSubconCuttingItemDto.Where(x => x.ServiceSubconCuttingId == itemDto.Id).OrderBy(x => x.Id).ToList();
 
                 itemDto.Items = garmentServiceSubconCuttingItems;
-
+                Parallel.ForEach(itemDto.Items, detailDto =>
+                {
+                    var garmentCuttingInDetails = garmentServiceSubconCuttingDetailDto.Where(x => x.ServiceSubconCuttingItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
+                    detailDto.Details = garmentCuttingInDetails;
+                });
             });
 
             if (order != "{}")

@@ -15,12 +15,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
             builder.HasKey(e => e.Identity);
 
             builder.Property(p => p.SubconNo).HasMaxLength(25);
-            builder.Property(p => p.RONo).HasMaxLength(25);
-            builder.Property(p => p.Article).HasMaxLength(50);
             builder.Property(p => p.UnitCode).HasMaxLength(25);
             builder.Property(p => p.UnitName).HasMaxLength(100);
-            builder.Property(p => p.ComodityName).HasMaxLength(500);
-            builder.Property(p => p.ComodityCode).HasMaxLength(255);
             builder.HasIndex(i => i.SubconNo).IsUnique().HasFilter("[Deleted]=(0)");
 
             builder.ApplyAuditTrail();
