@@ -17,12 +17,14 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
         private readonly IStorage _storage;
         private readonly IGarmentServiceSubconCuttingRepository _garmentServiceSubconCuttingRepository;
         private readonly IGarmentServiceSubconCuttingItemRepository _garmentServiceSubconCuttingItemRepository;
+        private readonly IGarmentServiceSubconCuttingDetailRepository _garmentServiceSubconCuttingDetailRepository;
 
         public UpdateGarmentServiceSubconCuttingCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentServiceSubconCuttingRepository = storage.GetRepository<IGarmentServiceSubconCuttingRepository>();
             _garmentServiceSubconCuttingItemRepository = storage.GetRepository<IGarmentServiceSubconCuttingItemRepository>();
+            _garmentServiceSubconCuttingDetailRepository = storage.GetRepository<IGarmentServiceSubconCuttingDetailRepository>();
         }
 
         public async Task<GarmentServiceSubconCutting> Handle(UpdateGarmentServiceSubconCuttingCommand request, CancellationToken cancellationToken)
@@ -31,18 +33,34 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
             
             _garmentServiceSubconCuttingItemRepository.Find(o => o.ServiceSubconCuttingId == subconCutting.Identity).ForEach(async subconCuttingItem =>
             {
-                var item = request.Items.Where(o => o.Id == subconCuttingItem.Identity).Single();
+                var item = request.Items.Where(o => o.Id == subconCuttingItem.Identity).SingleOrDefault();
 
-                if (!item.IsSave)
+                if (item==null)
                 {
-                    item.Quantity = 0;
+                    _garmentServiceSubconCuttingDetailRepository.Find(i => i.ServiceSubconCuttingItemId == subconCuttingItem.Identity).ForEach(async subconDetail =>
+                    {
+                        subconDetail.Remove();
+                        await _garmentServiceSubconCuttingDetailRepository.Update(subconDetail);
+                    });
                     subconCuttingItem.Remove();
 
                 }
                 else
                 {
-                   
-                    subconCuttingItem.SetQuantity(item.Quantity);
+                    _garmentServiceSubconCuttingDetailRepository.Find(i => i.ServiceSubconCuttingItemId == subconCuttingItem.Identity).ForEach(async subconDetail =>
+                    {
+                        var detail = item.Details.Where(o => o.Id == subconDetail.Identity).Single();
+                        if (!detail.IsSave)
+                        {
+                            subconDetail.Remove();
+                        }
+                        else
+                        {
+                            subconDetail.SetQuantity(detail.Quantity);
+                            subconDetail.Modify();
+                        }
+                        await _garmentServiceSubconCuttingDetailRepository.Update(subconDetail);
+                    });
                     subconCuttingItem.Modify();
                 }
 

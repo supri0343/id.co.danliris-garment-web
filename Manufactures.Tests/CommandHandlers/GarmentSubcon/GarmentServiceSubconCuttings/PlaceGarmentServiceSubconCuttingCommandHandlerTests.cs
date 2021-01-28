@@ -45,23 +45,30 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentServiceSubconCuttingCommand placeGarmentServiceSubconCuttingCommand = new PlaceGarmentServiceSubconCuttingCommand()
             {
-                RONo = "RONo",
                 Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                Article = "Article",
-                Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
                 SubconDate = DateTimeOffset.Now,
                 SubconType="BORDIR",
                 Items = new List<GarmentServiceSubconCuttingItemValueObject>
                 {
                     new GarmentServiceSubconCuttingItemValueObject
                     {
-                        Product = new Product(1, "ProductCode", "ProductName"),
-                        IsSave=true,
-                        Quantity=1,
-                        DesignColor= "ColorD",
-                        CuttingInQuantity=1,
-                        CuttingInDetailId=Guid.NewGuid(),
-                        ServiceSubconCuttingId=Guid.NewGuid()
+                        
+                        Article = "Article",
+                        Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
+                        RONo = "RONo",
+                        ServiceSubconCuttingId=Guid.NewGuid(),
+                        Details= new List<GarmentServiceSubconCuttingDetailValueObject>
+                        {
+                            new GarmentServiceSubconCuttingDetailValueObject
+                            {
+                                Product = new Product(1, "ProductCode", "ProductName"),
+                                IsSave=true,
+                                Quantity=1,
+                                DesignColor= "ColorD",
+                                CuttingInQuantity=1,
+                                CuttingInDetailId=Guid.NewGuid(),
+                            }
+                        }
                     }
                 },
 
@@ -97,26 +104,32 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentServiceSubconCuttingCommand placeGarmentServiceSubconCuttingCommand = new PlaceGarmentServiceSubconCuttingCommand()
             {
-                RONo = "RONo",
                 Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                Article = "Article",
-                Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
                 SubconDate = DateTimeOffset.Now,
                 SubconType = "PRINT",
                 Items = new List<GarmentServiceSubconCuttingItemValueObject>
                 {
                     new GarmentServiceSubconCuttingItemValueObject
                     {
-                        Product = new Product(1, "ProductCode", "ProductName"),
-                        IsSave=true,
-                        Quantity=1,
-                        DesignColor= "ColorD",
-                        CuttingInQuantity=1,
-                        CuttingInDetailId=Guid.NewGuid(),
-                        ServiceSubconCuttingId=Guid.NewGuid()
+
+                        Article = "Article",
+                        Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
+                        RONo = "RONo",
+                        ServiceSubconCuttingId=Guid.NewGuid(),
+                        Details= new List<GarmentServiceSubconCuttingDetailValueObject>
+                        {
+                            new GarmentServiceSubconCuttingDetailValueObject
+                            {
+                                Product = new Product(1, "ProductCode", "ProductName"),
+                                IsSave=true,
+                                Quantity=1,
+                                DesignColor= "ColorD",
+                                CuttingInQuantity=1,
+                                CuttingInDetailId=Guid.NewGuid(),
+                            }
+                        }
                     }
                 },
-
             };
 
             _mockServiceSubconCuttingRepository
@@ -149,26 +162,32 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentServiceSubconCuttingCommand placeGarmentServiceSubconCuttingCommand = new PlaceGarmentServiceSubconCuttingCommand()
             {
-                RONo = "RONo",
                 Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                Article = "Article",
-                Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
                 SubconDate = DateTimeOffset.Now,
                 SubconType = "PLISKET",
                 Items = new List<GarmentServiceSubconCuttingItemValueObject>
                 {
                     new GarmentServiceSubconCuttingItemValueObject
                     {
-                        Product = new Product(1, "ProductCode", "ProductName"),
-                        IsSave=true,
-                        Quantity=1,
-                        DesignColor= "ColorD",
-                        CuttingInQuantity=1,
-                        CuttingInDetailId=Guid.NewGuid(),
-                        ServiceSubconCuttingId=Guid.NewGuid()
+
+                        Article = "Article",
+                        Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
+                        RONo = "RONo",
+                        ServiceSubconCuttingId=Guid.NewGuid(),
+                        Details= new List<GarmentServiceSubconCuttingDetailValueObject>
+                        {
+                            new GarmentServiceSubconCuttingDetailValueObject
+                            {
+                                Product = new Product(1, "ProductCode", "ProductName"),
+                                IsSave=true,
+                                Quantity=1,
+                                DesignColor= "ColorD",
+                                CuttingInQuantity=1,
+                                CuttingInDetailId=Guid.NewGuid(),
+                            }
+                        }
                     }
                 },
-
             };
 
             _mockServiceSubconCuttingRepository

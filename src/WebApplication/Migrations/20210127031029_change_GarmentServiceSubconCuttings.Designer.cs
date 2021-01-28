@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20210127031029_change_GarmentServiceSubconCuttings")]
+    partial class change_GarmentServiceSubconCuttings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3118,10 +3120,21 @@ namespace DanLiris.Admin.Web.Migrations
                     b.ToTable("GarmentSewingOuts");
                 });
 
-            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels.GarmentServiceSubconCuttingDetailReadModel", b =>
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels.GarmentServiceSubconCuttingItemReadModel", b =>
                 {
                     b.Property<Guid>("Identity")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Article")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("ComodityCode")
+                        .HasMaxLength(255);
+
+                    b.Property<int>("ComodityId");
+
+                    b.Property<string>("ComodityName")
+                        .HasMaxLength(500);
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -3130,6 +3143,8 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset>("CreatedDate");
 
                     b.Property<Guid>("CuttingInDetailId");
+
+                    b.Property<Guid>("CuttingInId");
 
                     b.Property<bool?>("Deleted");
 
@@ -3155,55 +3170,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(100);
 
                     b.Property<double>("Quantity");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<Guid>("ServiceSubconCuttingItemId");
-
-                    b.HasKey("Identity");
-
-                    b.HasIndex("ServiceSubconCuttingItemId");
-
-                    b.ToTable("GarmentServiceSubconCuttingDetails");
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels.GarmentServiceSubconCuttingItemReadModel", b =>
-                {
-                    b.Property<Guid>("Identity")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Article")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("ComodityCode")
-                        .HasMaxLength(255);
-
-                    b.Property<int>("ComodityId");
-
-                    b.Property<string>("ComodityName")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<Guid>("CuttingInId");
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
 
                     b.Property<string>("RONo")
                         .HasMaxLength(25);
@@ -3886,14 +3852,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasOne("Manufactures.Domain.GarmentSewingOuts.ReadModels.GarmentSewingOutReadModel", "GarmentSewingOutIdentity")
                         .WithMany("GarmentSewingOutItem")
                         .HasForeignKey("SewingOutId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels.GarmentServiceSubconCuttingDetailReadModel", b =>
-                {
-                    b.HasOne("Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels.GarmentServiceSubconCuttingItemReadModel", "GarmentServiceSubconCuttingItem")
-                        .WithMany("GarmentServiceSubconCuttingDetail")
-                        .HasForeignKey("ServiceSubconCuttingItemId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

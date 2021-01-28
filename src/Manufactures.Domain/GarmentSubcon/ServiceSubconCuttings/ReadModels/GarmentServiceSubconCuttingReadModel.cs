@@ -15,11 +15,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels
         public int UnitId { get; internal set; }
         public string UnitCode { get; internal set; }
         public string UnitName { get; internal set; }
-        public string RONo { get; internal set; }
-        public string Article { get; internal set; }
-        public int ComodityId { get; internal set; }
-        public string ComodityCode { get; internal set; }
-        public string ComodityName { get; internal set; }
+        
         public DateTimeOffset SubconDate { get; internal set; }
 
         public bool IsUsed { get; internal set; }

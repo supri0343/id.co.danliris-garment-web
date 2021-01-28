@@ -39,14 +39,6 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
             var unitUnderTest = new UpdateGarmentServiceSubconCuttingCommand()
             {
                 IsUsed = true,
-                Article = "Article",
-                RONo = "RONo",
-                Comodity = new GarmentComodity()
-                {
-                    Id = 1,
-                    Code = "Code",
-                    Name = "Name"
-                },
                 SubconDate = DateTimeOffset.Now,
                 SubconNo = "CuttingOutNo",
                 Unit = new UnitDepartment()
@@ -59,20 +51,33 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
                 {
                     new GarmentServiceSubconCuttingItemValueObject()
                     {
-                        DesignColor ="DesignColor",
                         Id =id,
-                        IsSave =true,
-                        Product =new Product()
+                        ServiceSubconCuttingId =id,
+                        Article = "Article",
+                        RONo = "RONo",
+                        Comodity = new GarmentComodity()
                         {
                             Id = 1,
                             Code = "Code",
                             Name = "Name"
                         },
-                        Quantity =1,
-                        CuttingInDetailId =id,
-                        CuttingInQuantity =1,
-                        ServiceSubconCuttingId =id,
-
+                        Details= new List<GarmentServiceSubconCuttingDetailValueObject>()
+                        {
+                            new GarmentServiceSubconCuttingDetailValueObject
+                            {
+                                DesignColor ="DesignColor",
+                                IsSave =true,
+                                Product =new Product()
+                                {
+                                    Id = 1,
+                                    Code = "Code",
+                                    Name = "Name"
+                                },
+                                Quantity =1,
+                                CuttingInDetailId =id,
+                                CuttingInQuantity =1,
+                            }
+                        }
                     }
                 }
             };

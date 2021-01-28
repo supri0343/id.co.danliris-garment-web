@@ -48,23 +48,30 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
             CancellationToken cancellationToken = CancellationToken.None;
             UpdateGarmentServiceSubconCuttingCommand UpdateGarmentServiceSubconCuttingCommand = new UpdateGarmentServiceSubconCuttingCommand()
             {
-                RONo = "RONo",
                 Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                Article = "Article",
-                Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
                 SubconDate = DateTimeOffset.Now,
-                SubconType = "BORDIR",
+                SubconType = "PRINT",
                 Items = new List<GarmentServiceSubconCuttingItemValueObject>
                 {
                     new GarmentServiceSubconCuttingItemValueObject
                     {
-                        Product = new Product(1, "ProductCode", "ProductName"),
-                        IsSave=true,
-                        Quantity=1,
-                        DesignColor= "ColorD",
-                        CuttingInQuantity=1,
-                        CuttingInDetailId=Guid.NewGuid(),
-                        ServiceSubconCuttingId=Guid.NewGuid()
+
+                        Article = "Article",
+                        Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
+                        RONo = "RONo",
+                        ServiceSubconCuttingId=Guid.NewGuid(),
+                        Details= new List<GarmentServiceSubconCuttingDetailValueObject>
+                        {
+                            new GarmentServiceSubconCuttingDetailValueObject
+                            {
+                                Product = new Product(1, "ProductCode", "ProductName"),
+                                IsSave=true,
+                                Quantity=1,
+                                DesignColor= "ColorD",
+                                CuttingInQuantity=1,
+                                CuttingInDetailId=Guid.NewGuid(),
+                            }
+                        }
                     }
                 },
 
@@ -81,7 +88,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingItemReadModel, bool>>>()))
                 .Returns(new List<GarmentServiceSubconCuttingItem>()
                 {
-                    new GarmentServiceSubconCuttingItem(Guid.Empty, ServiceSubconCuttingGuid, Guid.Empty,new ProductId(1),null,null,null, 1)
+                    new GarmentServiceSubconCuttingItem(Guid.Empty, ServiceSubconCuttingGuid,Guid.Empty,null,null,new GarmentComodityId(1),null,null)
                 });
 
             _mockServiceSubconCuttingRepository
