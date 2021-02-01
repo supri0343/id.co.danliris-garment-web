@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Manufactures.Dtos.GarmentSubcon
 {
-    class GarmentSubconContractDto : BaseDto
+    public class GarmentSubconContractDto : BaseDto
     {
         public GarmentSubconContractDto(GarmentSubconContract garmentSubconContract)
         {

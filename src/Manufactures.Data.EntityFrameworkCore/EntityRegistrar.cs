@@ -110,8 +110,9 @@ namespace Manufactures.Data.EntityFrameworkCore
 
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingConfig());
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingItemConfig());
+            modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingDetailConfig());
 
-			modelBuilder.ApplyConfiguration(new GarmentServiceSubconSewingConfig());
+            modelBuilder.ApplyConfiguration(new GarmentServiceSubconSewingConfig());
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconSewingItemConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutConfig());

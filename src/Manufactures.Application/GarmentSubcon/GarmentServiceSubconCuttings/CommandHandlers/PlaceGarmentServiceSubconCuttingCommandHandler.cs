@@ -18,30 +18,27 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
         private readonly IStorage _storage;
         private readonly IGarmentServiceSubconCuttingRepository _garmentServiceSubconCuttingRepository;
         private readonly IGarmentServiceSubconCuttingItemRepository _garmentServiceSubconCuttingItemRepository;
+        private readonly IGarmentServiceSubconCuttingDetailRepository _garmentServiceSubconCuttingDetailRepository;
 
         public PlaceGarmentServiceSubconCuttingCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentServiceSubconCuttingRepository = storage.GetRepository<IGarmentServiceSubconCuttingRepository>();
             _garmentServiceSubconCuttingItemRepository = storage.GetRepository<IGarmentServiceSubconCuttingItemRepository>();
+            _garmentServiceSubconCuttingDetailRepository= storage.GetRepository<IGarmentServiceSubconCuttingDetailRepository>();
         }
 
         public async Task<GarmentServiceSubconCutting> Handle(PlaceGarmentServiceSubconCuttingCommand request, CancellationToken cancellationToken)
         {
-            request.Items = request.Items.Where(item => item.IsSave).ToList();
+            request.Items = request.Items.Where(item => item.Details.Where(detail => detail.IsSave).Count() > 0).ToList();
 
             GarmentServiceSubconCutting garmentServiceSubconCutting = new GarmentServiceSubconCutting(
                 Guid.NewGuid(),
                 GenerateSubconNo(request),
                 request.SubconType,
-                request.RONo,
-                request.Article,
                 new UnitDepartmentId(request.Unit.Id),
                 request.Unit.Code,
                 request.Unit.Name,
-                new GarmentComodityId(request.Comodity.Id),
-                request.Comodity.Code,
-                request.Comodity.Name,
                 request.SubconDate.GetValueOrDefault(),
                 request.IsUsed
             );
@@ -51,13 +48,31 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
                 GarmentServiceSubconCuttingItem garmentServiceSubconCuttingItem = new GarmentServiceSubconCuttingItem(
                     Guid.NewGuid(),
                     garmentServiceSubconCutting.Identity,
-                    item.CuttingInDetailId,
-                    new ProductId(item.Product.Id),
-                    item.Product.Code,
-                    item.Product.Name,
-                    item.DesignColor,
-                    item.Quantity
+                    item.CuttingInId,
+                    item.RONo,
+                    item.Article,
+                    new GarmentComodityId(item.Comodity.Id),
+                    item.Comodity.Code,
+                    item.Comodity.Name
                 );
+
+                foreach(var detail in item.Details)
+                {
+                    if (detail.IsSave)
+                    {
+                        GarmentServiceSubconCuttingDetail garmentServiceSubconCuttingDetail = new GarmentServiceSubconCuttingDetail(
+                            Guid.NewGuid(),
+                            garmentServiceSubconCuttingItem.Identity,
+                            detail.CuttingInDetailId,
+                            new ProductId(detail.Product.Id),
+                            detail.Product.Code,
+                            detail.Product.Name,
+                            detail.DesignColor,
+                            detail.Quantity
+                            );
+                        await _garmentServiceSubconCuttingDetailRepository.Update(garmentServiceSubconCuttingDetail);
+                    }
+                }
                 await _garmentServiceSubconCuttingItemRepository.Update(garmentServiceSubconCuttingItem);
             }
 
