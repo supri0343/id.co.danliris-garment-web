@@ -13,6 +13,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
 
         public Guid ServiceSubconCuttingItemId { get; private set; }
         public Guid CuttingInDetailId { get; private set; }
+        public Guid CuttingInId { get; private set; }
         public ProductId ProductId { get; private set; }
         public string ProductCode { get; private set; }
         public string ProductName { get; private set; }
@@ -20,11 +21,12 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
         public string DesignColor { get; private set; }
         public double Quantity { get; private set; }
 
-        public GarmentServiceSubconCuttingDetail(Guid identity, Guid serviceSubconCuttingItemId, Guid cuttingInDetailId, ProductId productId, string productCode, string productName, string designColor, double quantity) : base(identity)
+        public GarmentServiceSubconCuttingDetail(Guid identity, Guid serviceSubconCuttingItemId, Guid cuttingId, Guid cuttingInDetailId, ProductId productId, string productCode, string productName, string designColor, double quantity) : base(identity)
         {
             Identity = identity;
             ServiceSubconCuttingItemId = serviceSubconCuttingItemId;
             CuttingInDetailId = cuttingInDetailId;
+            CuttingInId = cuttingId;
             ProductId = productId;
             ProductCode = productCode;
             ProductName = productName;
@@ -40,6 +42,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
                 ProductName = ProductName,
                 DesignColor = DesignColor,
                 Quantity = Quantity,
+                CuttingInId = CuttingInId
             };
 
             ReadModel.AddDomainEvent(new OnServiceSubconCuttingPlaced(Identity));
@@ -54,6 +57,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
             ProductName = readModel.ProductName;
             DesignColor = readModel.DesignColor;
             Quantity = readModel.Quantity;
+            CuttingInId = readModel.CuttingInId;
         }
 
         public void SetQuantity(double Quantity)

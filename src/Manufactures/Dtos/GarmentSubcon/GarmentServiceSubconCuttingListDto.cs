@@ -15,6 +15,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             SubconType = garmentServiceSubconCutting.SubconType;
             SubconDate = garmentServiceSubconCutting.SubconDate;
             CreatedBy = garmentServiceSubconCutting.AuditTrail.CreatedBy;
+            Unit = new UnitDepartment(garmentServiceSubconCutting.UnitId.Value, garmentServiceSubconCutting.UnitCode, garmentServiceSubconCutting.UnitName);
             IsUsed = garmentServiceSubconCutting.IsUsed;
             Items = new List<GarmentServiceSubconCuttingItemDto>();
         }
