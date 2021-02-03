@@ -179,5 +179,40 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             
         }
 
+        [HttpGet("item")]
+        public async Task<IActionResult> GetItems(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentServiceSubconCuttingItemRepository.ReadItem(page, size, order, keyword, filter);
+            var count = query.Count();
+
+            //var garmentServiceSubconCuttingDto = _garmentServiceSubconCuttingRepository.Find(query).Select(o => new GarmentServiceSubconCuttingDto(o)).ToArray();
+            var garmentServiceSubconCuttingItemDto = _garmentServiceSubconCuttingItemRepository.Find(_garmentServiceSubconCuttingItemRepository.Query).Select(o => new GarmentServiceSubconCuttingItemDto(o)).ToArray();
+            var garmentServiceSubconCuttingDetailDto = _garmentServiceSubconCuttingDetailRepository.Find(_garmentServiceSubconCuttingDetailRepository.Query).Select(o => new GarmentServiceSubconCuttingDetailDto(o)).ToList();
+
+
+            Parallel.ForEach(garmentServiceSubconCuttingItemDto, itemDto =>
+            {
+                var garmentServiceSubconCuttingDetails = garmentServiceSubconCuttingDetailDto.Where(x => x.ServiceSubconCuttingItemId == itemDto.Id).OrderBy(x => x.Id).ToList();
+
+                itemDto.Details = garmentServiceSubconCuttingDetails;
+            });
+
+            if (order != "{}")
+            {
+                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                garmentServiceSubconCuttingItemDto = QueryHelper<GarmentServiceSubconCuttingItemDto>.Order(garmentServiceSubconCuttingItemDto.AsQueryable(), OrderDictionary).ToArray();
+            }
+
+            await Task.Yield();
+            return Ok(garmentServiceSubconCuttingItemDto, info: new
+            {
+                page,
+                size,
+                count
+            });
+        }
+
     }
 }
