@@ -15,7 +15,6 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels
         public int ComodityId { get; internal set; }
         public string ComodityCode { get; internal set; }
         public string ComodityName { get; internal set; }
-        public Guid CuttingInId { get; internal set; }
 
         public Guid ServiceSubconCuttingId { get; internal set; }
         

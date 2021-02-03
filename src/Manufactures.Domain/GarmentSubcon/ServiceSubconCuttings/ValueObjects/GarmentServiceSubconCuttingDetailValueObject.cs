@@ -11,6 +11,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ValueObjects
         public Guid Id { get; set; }
         public Guid ServiceSubconCuttingItemId { get; set; }
         public Guid CuttingInDetailId { get; set; }
+        public Guid CuttingInId { get; set; }
         public Product Product { get; set; }
 
         public string DesignColor { get; set; }

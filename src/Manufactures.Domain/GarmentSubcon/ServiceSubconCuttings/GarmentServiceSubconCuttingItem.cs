@@ -12,18 +12,16 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
     {
 
         public Guid ServiceSubconCuttingId { get; private set; }
-        public Guid CuttingInId { get; private set; }
         public string RONo { get; private set; }
         public string Article { get; private set; }
         public GarmentComodityId ComodityId { get; private set; }
         public string ComodityCode { get; private set; }
         public string ComodityName { get; private set; }
 
-        public GarmentServiceSubconCuttingItem(Guid identity, Guid serviceSubconCuttingId, Guid cuttingId, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName) : base(identity)
+        public GarmentServiceSubconCuttingItem(Guid identity, Guid serviceSubconCuttingId, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName) : base(identity)
         {
             Identity = identity;
             ServiceSubconCuttingId = serviceSubconCuttingId;
-            CuttingInId = cuttingId;
             RONo = rONo;
             Article = article;
             ComodityId = comodityId;
@@ -37,8 +35,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
                 ComodityCode = ComodityCode,
                 ComodityId = ComodityId.Value,
                 ComodityName = ComodityName,
-                RONo = RONo,
-                CuttingInId = CuttingInId
+                RONo = RONo
             };
 
             ReadModel.AddDomainEvent(new OnServiceSubconCuttingPlaced(Identity));
@@ -52,7 +49,6 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
             ComodityId = new GarmentComodityId(readModel.ComodityId);
             Article = readModel.Article;
             RONo = readModel.RONo;
-            CuttingInId = readModel.CuttingInId;
         }
 
         public void Modify()

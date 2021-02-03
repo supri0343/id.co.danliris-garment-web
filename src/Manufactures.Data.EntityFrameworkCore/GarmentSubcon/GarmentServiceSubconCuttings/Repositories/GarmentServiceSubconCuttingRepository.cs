@@ -25,7 +25,6 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
                 "SubconNo",
                 "UnitCode",
                 "SubconType",
-                "GarmentServiceSubconCuttingItem.ProductCode",
             };
 
             data = QueryHelper<GarmentServiceSubconCuttingReadModel>.Search(data, SearchAttributes, keyword);
@@ -36,6 +35,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
 
             return data;
         }
+
+        
 
         protected override GarmentServiceSubconCutting Map(GarmentServiceSubconCuttingReadModel readModel)
         {

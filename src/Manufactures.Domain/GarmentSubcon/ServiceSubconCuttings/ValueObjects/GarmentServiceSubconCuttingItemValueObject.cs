@@ -10,7 +10,6 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ValueObjects
     {
         public Guid Id { get; set; }
         public Guid ServiceSubconCuttingId { get; set; }
-        public Guid CuttingInId { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }
         public GarmentComodity Comodity { get; set; }

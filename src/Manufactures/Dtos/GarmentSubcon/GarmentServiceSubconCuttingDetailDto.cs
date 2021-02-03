@@ -11,6 +11,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public GarmentServiceSubconCuttingDetailDto(GarmentServiceSubconCuttingDetail garmentServiceSubconCuttingDetail)
         {
             Id = garmentServiceSubconCuttingDetail.Identity;
+            CuttingInId = garmentServiceSubconCuttingDetail.CuttingInId;
             ServiceSubconCuttingItemId = garmentServiceSubconCuttingDetail.ServiceSubconCuttingItemId;
             CuttingInDetailId = garmentServiceSubconCuttingDetail.CuttingInDetailId;
             Product = new Product(garmentServiceSubconCuttingDetail.ProductId.Value, garmentServiceSubconCuttingDetail.ProductCode, garmentServiceSubconCuttingDetail.ProductName);
@@ -19,8 +20,9 @@ namespace Manufactures.Dtos.GarmentSubcon
         }
 
         public Guid Id { get; set; }
-        public Guid ServiceSubconCuttingItemId { get; internal set; }
-        public Guid CuttingInDetailId { get; internal set; }
+        public Guid ServiceSubconCuttingItemId { get; set; }
+        public Guid CuttingInDetailId { get; set; }
+        public Guid CuttingInId { get; set; }
         public Product Product { get; set; }
 
         public string DesignColor { get; set; }

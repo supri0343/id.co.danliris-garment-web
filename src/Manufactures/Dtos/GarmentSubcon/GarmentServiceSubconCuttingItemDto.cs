@@ -12,7 +12,6 @@ namespace Manufactures.Dtos.GarmentSubcon
         {
             Id = garmentServiceSubconCuttingItem.Identity;
             ServiceSubconCuttingId = garmentServiceSubconCuttingItem.ServiceSubconCuttingId;
-            CuttingInId = garmentServiceSubconCuttingItem.CuttingInId;
             RONo = garmentServiceSubconCuttingItem.RONo;
             Article = garmentServiceSubconCuttingItem.Article;
             Comodity = new GarmentComodity(garmentServiceSubconCuttingItem.ComodityId.Value, garmentServiceSubconCuttingItem.ComodityCode, garmentServiceSubconCuttingItem.ComodityName);
@@ -20,8 +19,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         }
 
         public Guid Id { get; set; }
-        public Guid ServiceSubconCuttingId { get; internal set; }
-        public Guid CuttingInId { get; internal set; }
+        public Guid ServiceSubconCuttingId { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }
         public GarmentComodity Comodity { get; set; }

@@ -78,7 +78,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 });
 
             Guid ServiceSubconCuttingItemGuid = Guid.NewGuid();
-            GarmentServiceSubconCuttingItem garmentServiceSubconCuttingItem = new GarmentServiceSubconCuttingItem(Guid.Empty, ServiceSubconCuttingGuid, Guid.Empty, null, null, new GarmentComodityId(1), null, null);
+            GarmentServiceSubconCuttingItem garmentServiceSubconCuttingItem = new GarmentServiceSubconCuttingItem(Guid.Empty, ServiceSubconCuttingGuid, null, null, new GarmentComodityId(1), null, null);
             _mockGarmentServiceSubconCuttingItemRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconCuttingItemReadModel>()
@@ -110,7 +110,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingItemReadModel, bool>>>()))
                 .Returns(new List<GarmentServiceSubconCuttingItem>()
                 {
-                    new GarmentServiceSubconCuttingItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),null,null,new GarmentComodityId(1),null,null)
+                    new GarmentServiceSubconCuttingItem(Guid.NewGuid(), Guid.NewGuid(),null,null,new GarmentComodityId(1),null,null)
                 });
 
            
@@ -219,7 +219,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconCuttingItemReadModel>>()))
                 .Returns(new List<GarmentServiceSubconCuttingItem>()
                 {
-                    new GarmentServiceSubconCuttingItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),null,null,new GarmentComodityId(1),null,null)
+                    new GarmentServiceSubconCuttingItem(Guid.NewGuid(), Guid.NewGuid(),null,null,new GarmentComodityId(1),null,null)
                 });
 
             // Act
