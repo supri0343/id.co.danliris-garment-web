@@ -27,53 +27,52 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
 
         public async Task<GarmentServiceSubconSewing> Handle(PlaceGarmentServiceSubconSewingCommand request, CancellationToken cancellationToken)
         {
-            request.Items = request.Items.Where(item => item.IsSave == true).ToList();
+            request.Items = request.Items.ToList();
 
             GarmentServiceSubconSewing garmentServiceSubconSewing = new GarmentServiceSubconSewing(
                 Guid.NewGuid(),
                 GenerateServiceSubconSewingNo(request),
-                     new BuyerId(request.Buyer.Id),
-            request.Buyer.Code,
-            request.Buyer.Name,
+                new BuyerId(request.Buyer.Id),
+                request.Buyer.Code,
+                request.Buyer.Name,
                 new UnitDepartmentId(request.Unit.Id),
                 request.Unit.Code,
                 request.Unit.Name,
-                request.RONo,
-                request.Article,
-                new GarmentComodityId(request.Comodity.Id),
-                request.Comodity.Code,
-                request.Comodity.Name,
                 request.ServiceSubconSewingDate.GetValueOrDefault(),
-                 request.IsDifferentSize,
-                 request.IsUsed
+                request.IsUsed
             );
 
             foreach (var item in request.Items)
             {
-                if (item.IsSave)
+                GarmentServiceSubconSewingItem garmentServiceSubconSewingItem = new GarmentServiceSubconSewingItem(
+                    Guid.NewGuid(),
+                    garmentServiceSubconSewing.Identity,
+                    item.RONo,
+                    item.Article,
+                    new GarmentComodityId(item.Comodity.Id),
+                    item.Comodity.Code,
+                    item.Comodity.Name
+                );
+                item.Id = garmentServiceSubconSewingItem.Identity;
+                    
+                foreach(var detail in item.Details)
                 {
-                    GarmentServiceSubconSewingItem garmentServiceSubconSewingItem = new GarmentServiceSubconSewingItem(
-                       Guid.NewGuid(),
-                       garmentServiceSubconSewing.Identity,
-                       item.SewingInId,
-                       item.SewingInItemId,
-                       new ProductId(item.Product.Id),
-                       item.Product.Code,
-                       item.Product.Name,
-                       item.DesignColor,
-                       new SizeId(item.Size.Id),
-                       item.Size.Size,
-                       item.Quantity,
-                       new UomId(item.Uom.Id),
-                       item.Uom.Unit,
-                       item.Color
-                   );
-                    item.Id = garmentServiceSubconSewingItem.Identity;
-
-
+                    GarmentServiceSubconSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSubconSewingDetail(
+                        new Guid(),
+                        item.Id,
+                        detail.SewingInId,
+                        detail.SewingInItemId,
+                        new ProductId(detail.Product.Id),
+                        detail.Product.Code,
+                        detail.Product.Name,
+                        detail.DesignColor,
+                        detail.Quantity,
+                        new UomId(detail.Uom.Id),
+                        detail.Uom.Unit
+                    );
+                }
 
                     await _garmentServiceSubconSewingItemRepository.Update(garmentServiceSubconSewingItem);
-                }
             }
 
             await _garmentServiceSubconSewingRepository.Update(garmentServiceSubconSewing);

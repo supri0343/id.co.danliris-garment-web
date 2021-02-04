@@ -50,7 +50,6 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
                 request.SubconDate.GetValueOrDefault(),
                 request.IsUsed
             );
-            List<GarmentServiceSubconCuttingDetail> cuttingInDetails = new List<GarmentServiceSubconCuttingDetail>();
             foreach (var item in request.Items)
             {
                 GarmentServiceSubconCuttingItem garmentServiceSubconCuttingItem = new GarmentServiceSubconCuttingItem(
@@ -63,6 +62,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
                     item.Comodity.Name
                 );
 
+                List<GarmentServiceSubconCuttingDetail> cuttingInDetails = new List<GarmentServiceSubconCuttingDetail>();
                 var cuttingIn = _garmentCuttingInRepository.Query.Where(x => x.RONo==item.RONo).OrderBy(a => a.CreatedDate).ToList();
 
                 foreach(var cutIn in cuttingIn)

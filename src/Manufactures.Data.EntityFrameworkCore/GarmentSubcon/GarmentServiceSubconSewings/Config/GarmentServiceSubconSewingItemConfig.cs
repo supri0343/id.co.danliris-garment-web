@@ -15,18 +15,11 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
                    .WithMany(a => a.GarmentServiceSubconSewingItem)
                    .HasForeignKey(a => a.ServiceSubconSewingId);
 
-            builder.Property(a => a.ProductCode)
-               .HasMaxLength(25);
-            builder.Property(a => a.ProductName)
-               .HasMaxLength(100);
-            builder.Property(a => a.DesignColor)
-               .HasMaxLength(2000);
 
-            builder.Property(a => a.SizeName)
-               .HasMaxLength(100);
-
-            builder.Property(a => a.UomUnit)
-               .HasMaxLength(25);
+            builder.Property(a => a.RONo).HasMaxLength(25);
+            builder.Property(a => a.Article).HasMaxLength(50);
+            builder.Property(a => a.ComodityCode).HasMaxLength(25);
+            builder.Property(a => a.ComodityName).HasMaxLength(100);
 
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();

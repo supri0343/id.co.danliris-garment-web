@@ -60,16 +60,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                     new GarmentServiceSubconSewingItem(
                         Guid.Empty,
                         serviceSubconSewingGuid,
-                        Guid.Empty,
-                        sewingInItemGuid,
-                        new ProductId(1),
                         null,
                         null,
-                        null,
-                        new SizeId(1),
-                        null,
-                        1,
-                        new UomId(1),
+                        new GarmentComodityId(1),
                         null,
                         null)
                 });
