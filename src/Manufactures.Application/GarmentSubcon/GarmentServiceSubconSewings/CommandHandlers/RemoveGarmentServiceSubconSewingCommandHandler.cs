@@ -32,17 +32,17 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
 
             _garmentServiceSubconSewingItemRepository.Find(o => o.ServiceSubconSewingId == serviceSubconSewing.Identity).ForEach(async serviceSubconSewingItem =>
             {
-                if (!serviceSubconSewing.IsDifferentSize)
-                {
-                    if (sewInItemToBeUpdated.ContainsKey(serviceSubconSewingItem.SewingInItemId))
-                    {
-                        sewInItemToBeUpdated[serviceSubconSewingItem.SewingInItemId] += serviceSubconSewingItem.Quantity;
-                    }
-                    else
-                    {
-                        sewInItemToBeUpdated.Add(serviceSubconSewingItem.SewingInItemId, serviceSubconSewingItem.Quantity);
-                    }
-                }
+                //if (!serviceSubconSewing.IsDifferentSize)
+                //{
+                //    if (sewInItemToBeUpdated.ContainsKey(serviceSubconSewingItem.SewingInItemId))
+                //    {
+                //        sewInItemToBeUpdated[serviceSubconSewingItem.SewingInItemId] += serviceSubconSewingItem.Quantity;
+                //    }
+                //    else
+                //    {
+                //        sewInItemToBeUpdated.Add(serviceSubconSewingItem.SewingInItemId, serviceSubconSewingItem.Quantity);
+                //    }
+                //}
                 serviceSubconSewingItem.Remove();
                 await _garmentServiceSubconSewingItemRepository.Update(serviceSubconSewingItem);
             });

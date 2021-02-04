@@ -35,7 +35,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             var query = _garmentServiceSubconSewingRepository.Read(page, size, order, keyword, filter);
             var total = query.Count();
-            double totalQty = query.Sum(a => a.GarmentServiceSubconSewingItem.Sum(b => b.Quantity));
+            double totalQty = query.Sum(a => a.GarmentServiceSubconSewingItem.Sum(b => b.GarmentServiceSubconSewingDetail.Sum(c=>c.Quantity)));
             query = query.Skip((page - 1) * size).Take(size);
 
             List<GarmentServiceSubconSewingListDto> garmentServiceSubconSewingListDtos = _garmentServiceSubconSewingRepository
@@ -46,7 +46,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             var dtoIds = garmentServiceSubconSewingListDtos.Select(s => s.Id).ToList();
             var items = _garmentServiceSubconSewingItemRepository.Query
                 .Where(o => dtoIds.Contains(o.ServiceSubconSewingId))
-                .Select(s => new { s.Identity, s.ServiceSubconSewingId, s.ProductCode, s.Color, s.Quantity })
+                .Select(s => new { s.Identity, s.ServiceSubconSewingId })
                 .ToList();
 
             var itemIds = items.Select(s => s.Identity).ToList();
@@ -54,9 +54,9 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             Parallel.ForEach(garmentServiceSubconSewingListDtos, dto =>
             {
                 var currentItems = items.Where(w => w.ServiceSubconSewingId == dto.Id);
-                dto.Colors = currentItems.Where(i => i.Color != null).Select(i => i.Color).Distinct().ToList();
-                dto.Products = currentItems.Select(i => i.ProductCode).Distinct().ToList();
-                dto.TotalQuantity = currentItems.Sum(i => i.Quantity);
+                //dto.Colors = currentItems.Where(i => i.Color != null).Select(i => i.Color).Distinct().ToList();
+                //dto.Products = currentItems.Select(i => i.ProductCode).Distinct().ToList();
+                //dto.TotalQuantity = currentItems.Sum(i => i.Quantity);
             });
 
             await Task.Yield();
@@ -78,7 +78,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             GarmentServiceSubconSewingDto garmentServiceSubconSewingDto = _garmentServiceSubconSewingRepository.Find(o => o.Identity == guid).Select(serviceSubconSewing => new GarmentServiceSubconSewingDto(serviceSubconSewing)
             {
-                Items = _garmentServiceSubconSewingItemRepository.Find(o => o.ServiceSubconSewingId == serviceSubconSewing.Identity).OrderBy(i => i.Color).ThenBy(i => i.SizeName).Select(serviceSubconSewingItem => new GarmentServiceSubconSewingItemDto(serviceSubconSewingItem)).ToList()
+                Items = _garmentServiceSubconSewingItemRepository.Find(o => o.ServiceSubconSewingId == serviceSubconSewing.Identity).Select(serviceSubconSewingItem => new GarmentServiceSubconSewingItemDto(serviceSubconSewingItem)).ToList()
             }
             ).FirstOrDefault();
 

@@ -46,25 +46,30 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentServiceSubconSewingCommand placeGarmentServiceSubconSewingCommand = new PlaceGarmentServiceSubconSewingCommand()
             {
-                RONo = "RONo",
+                
                 Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                Article = "Article",
-                IsDifferentSize = true,
                 Buyer = new Buyer(1, "BuyerCode", "BuyerName"),
-                Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
                 Items = new List<GarmentServiceSubconSewingItemValueObject>
                 {
                     new GarmentServiceSubconSewingItemValueObject
                     {
-                        Product = new Product(1, "ProductCode", "ProductName"),
-                        Uom = new Uom(1, "UomUnit"),
-                        SewingInId= new Guid(),
-                        SewingInItemId=sewingInItemGuid,
-                        Color="Color",
-                        Size=new SizeValueObject(1, "Size"),
-                        IsSave=true,
-                        Quantity=1,
-                        DesignColor= "ColorD",
+                        RONo = "RONo",
+                        Article = "Article",
+                        Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
+                        Details= new List<GarmentServiceSubconSewingDetailValueObject>
+                        {
+                            new GarmentServiceSubconSewingDetailValueObject
+                            {
+                                Product = new Product(1, "ProductCode", "ProductName"),
+                                Uom = new Uom(1, "UomUnit"),
+                                SewingInId= new Guid(),
+                                SewingInItemId=sewingInItemGuid,
+                                IsSave=true,
+                                Quantity=1,
+                                DesignColor= "ColorD",
+                            }
+                        }
+                        
                     }
                 },
 

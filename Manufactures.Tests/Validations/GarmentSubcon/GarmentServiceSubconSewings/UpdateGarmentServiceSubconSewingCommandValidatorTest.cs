@@ -51,21 +51,12 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconSewin
             Guid id = Guid.NewGuid();
             var unitUnderTest = new UpdateGarmentServiceSubconSewingCommand()
             {
-                Article = "Article",
-                IsDifferentSize = true,
-                Comodity = new GarmentComodity()
-                {
-                    Id = 1,
-                    Code = "Code",
-                    Name = "Name"
-                },
                 Buyer = new Buyer()
                 {
                     Id = 1,
                     Code = "Code",
                     Name = "Name"
                 },
-                RONo = "RONo",
                 ServiceSubconSewingDate = DateTimeOffset.Now,
                 ServiceSubconSewingNo = "SewingOutNo",
                 Unit = new UnitDepartment()
@@ -78,33 +69,40 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconSewin
                 {
                     new GarmentServiceSubconSewingItemValueObject()
                     {
-                        Color ="Color",
-                        DesignColor ="DesignColor",
-                        Id =id,
-                        IsDifferentSize =true,
-                        IsSave =true,
-                        Product =new Product()
+                        Article = "Article",
+                        Comodity = new GarmentComodity()
                         {
                             Id = 1,
                             Code = "Code",
                             Name = "Name"
                         },
-                        Quantity =1,
-                        SewingInId =id,
-                        SewingInItemId =id,
-                        SewingInQuantity =1,
-                        ServiceSubconSewingId =id,
-                        Size =new SizeValueObject()
+                        RONo = "RONo",
+                        Details= new List<GarmentServiceSubconSewingDetailValueObject>
                         {
-                            Id =1,
-                            Size ="Size"
-                        },
-                        TotalQuantity =1,
-                        Uom =new Uom()
-                        {
-                            Id =1,
-                            Unit ="Unit"
-                        },
+                            new GarmentServiceSubconSewingDetailValueObject
+                            {
+                                DesignColor ="DesignColor",
+                                Id =id,
+                                IsSave =true,
+                                Product =new Product()
+                                {
+                                    Id = 1,
+                                    Code = "Code",
+                                    Name = "Name"
+                                },
+                                Quantity =1,
+                                SewingInId =id,
+                                SewingInItemId =id,
+                                SewingInQuantity =1,
+                                ServiceSubconSewingId =id,
+                                TotalQuantity =1,
+                                Uom =new Uom()
+                                {
+                                    Id =1,
+                                    Unit ="Unit"
+                                },
+                            }
+                        }
                     }
                 }
             };

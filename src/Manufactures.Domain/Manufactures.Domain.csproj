@@ -17,11 +17,8 @@
 
   <ItemGroup>
     <Folder Include="GarmentBalanceStockProductions\ValueObjects\" />
-    <Folder Include="GarmentSubcon\ServiceSubconSewings\" />
     <Folder Include="GarmentSubcon\ServiceSubconSewings\Commands\" />
-    <Folder Include="GarmentSubcon\ServiceSubconSewings\ReadModels\" />
     <Folder Include="GarmentSubcon\ServiceSubconSewings\Repositories\" />
-    <Folder Include="GarmentSubcon\ServiceSubconSewings\ValueObjects\" />
   </ItemGroup>
 
 </Project>

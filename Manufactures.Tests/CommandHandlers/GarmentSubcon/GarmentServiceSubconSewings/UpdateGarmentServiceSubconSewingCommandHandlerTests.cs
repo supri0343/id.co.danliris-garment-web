@@ -48,26 +48,29 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
             CancellationToken cancellationToken = CancellationToken.None;
             UpdateGarmentServiceSubconSewingCommand UpdateGarmentServiceSubconSewingCommand = new UpdateGarmentServiceSubconSewingCommand()
             {
-                RONo = "RONo",
                 Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                Article = "Article",
-                IsDifferentSize = true,
                 Buyer = new Buyer(1, "BuyerCode", "BuyerName"),
-                Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
-                ServiceSubconSewingDate = DateTimeOffset.Now,
                 Items = new List<GarmentServiceSubconSewingItemValueObject>
                 {
                     new GarmentServiceSubconSewingItemValueObject
                     {
-                        Product = new Product(1, "ProductCode", "ProductName"),
-                        Uom = new Uom(1, "UomUnit"),
-                        SewingInId= sewingInId,
-                        SewingInItemId=sewingInItemGuid,
-                        Color="Color",
-                        Size=new SizeValueObject(1, "Size"),
-                        IsSave=true,
-                        Quantity=1,
-                        DesignColor= "ColorD",
+                        RONo = "RONo",
+                        Article = "Article",
+                        Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
+                        Details= new List<GarmentServiceSubconSewingDetailValueObject>
+                        {
+                            new GarmentServiceSubconSewingDetailValueObject
+                            {
+                                Product = new Product(1, "ProductCode", "ProductName"),
+                                Uom = new Uom(1, "UomUnit"),
+                                SewingInId= new Guid(),
+                                SewingInItemId=sewingInItemGuid,
+                                IsSave=true,
+                                Quantity=1,
+                                DesignColor= "ColorD",
+                            }
+                        }
+
                     }
                 },
 
@@ -89,16 +92,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                     new GarmentServiceSubconSewingItem(
                         Guid.Empty,
                         serviceSubconSewingGuid,
-                        Guid.Empty,
-                        sewingInItemGuid,
-                        new ProductId(1),
                         null,
                         null,
-                        null,
-                        new SizeId(1),
-                        null,
-                        1,
-                        new UomId(1),
+                        new GarmentComodityId(1),
                         null,
                         null)
                 });
