@@ -18,6 +18,10 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ReadModels
         public string ComodityCode { get; internal set; }
         public string ComodityName { get; internal set; }
 
+        public int BuyerId { get; internal set; }
+        public string BuyerCode { get; internal set; }
+        public string BuyerName { get; internal set; }
+
         public virtual GarmentServiceSubconSewingReadModel GarmentServiceSubconSewingIdentity { get; internal set; }
         public virtual List<GarmentServiceSubconSewingDetailReadModel> GarmentServiceSubconSewingDetail { get; internal set; }
     }

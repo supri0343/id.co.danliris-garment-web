@@ -13,14 +13,12 @@ namespace Manufactures.Dtos.GarmentSubcon
             ServiceSubconSewingNo = garmentServiceSubconSewingList.ServiceSubconSewingNo;
             Unit = new UnitDepartment(garmentServiceSubconSewingList.UnitId.Value, garmentServiceSubconSewingList.UnitCode, garmentServiceSubconSewingList.UnitName);
             ServiceSubconSewingDate = garmentServiceSubconSewingList.ServiceSubconSewingDate;
-            Buyer = new Buyer(garmentServiceSubconSewingList.BuyerId.Value, garmentServiceSubconSewingList.BuyerCode, garmentServiceSubconSewingList.BuyerName);
             IsUsed = garmentServiceSubconSewingList.IsUsed;
             Items = new List<GarmentServiceSubconSewingItemDto>();
         }
 
         public Guid Id { get; internal set; }
         public string ServiceSubconSewingNo { get; set; }
-        public Buyer Buyer { get; set; }
         public UnitDepartment Unit { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }

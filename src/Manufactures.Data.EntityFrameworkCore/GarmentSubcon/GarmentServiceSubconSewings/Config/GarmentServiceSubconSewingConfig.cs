@@ -13,8 +13,6 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
             builder.HasKey(e => e.Identity);
 
             builder.Property(a => a.ServiceSubconSewingNo).HasMaxLength(25);
-            builder.Property(a => a.BuyerName).HasMaxLength(100);
-            builder.Property(a => a.BuyerCode).HasMaxLength(25);
             builder.Property(a => a.UnitCode).HasMaxLength(25);
             builder.Property(a => a.UnitName).HasMaxLength(100);
 

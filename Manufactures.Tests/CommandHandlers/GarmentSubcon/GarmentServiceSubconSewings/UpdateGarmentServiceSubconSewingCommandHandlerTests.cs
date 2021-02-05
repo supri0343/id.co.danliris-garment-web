@@ -49,7 +49,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
             UpdateGarmentServiceSubconSewingCommand UpdateGarmentServiceSubconSewingCommand = new UpdateGarmentServiceSubconSewingCommand()
             {
                 Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                Buyer = new Buyer(1, "BuyerCode", "BuyerName"),
                 Items = new List<GarmentServiceSubconSewingItemValueObject>
                 {
                     new GarmentServiceSubconSewingItemValueObject
@@ -57,6 +56,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                         RONo = "RONo",
                         Article = "Article",
                         Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
+                        Buyer = new Buyer(1, "BuyerCode", "BuyerName"),
                         Details= new List<GarmentServiceSubconSewingDetailValueObject>
                         {
                             new GarmentServiceSubconSewingDetailValueObject
@@ -95,6 +95,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                         null,
                         null,
                         new GarmentComodityId(1),
+                        null,
+                        null,
+                        new BuyerId(1),
                         null,
                         null)
                 });

@@ -14,13 +14,17 @@ namespace Manufactures.Dtos.GarmentSubcon
             RONo = garmentServiceSubconSewingItem.RONo;
             Article = garmentServiceSubconSewingItem.Article;
             Comodity = new GarmentComodity(garmentServiceSubconSewingItem.ComodityId.Value, garmentServiceSubconSewingItem.ComodityCode, garmentServiceSubconSewingItem.ComodityName);
-            
+            Buyer = new Buyer(garmentServiceSubconSewingItem.BuyerId.Value, garmentServiceSubconSewingItem.BuyerCode, garmentServiceSubconSewingItem.BuyerName);
+
+            Details = new List<GarmentServiceSubconSewingDetailDto>();
         }
 
         public Guid Id { get; set; }
         public Guid ServiceSubconSewingId { get; set; }
+        public Buyer Buyer { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }
         public GarmentComodity Comodity { get; set; }
+        public virtual List<GarmentServiceSubconSewingDetailDto> Details { get; internal set; }
     }
 }

@@ -64,6 +64,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                         null,
                         new GarmentComodityId(1),
                         null,
+                        null,
+                        new BuyerId(1),
+                        null,
                         null)
                 });
 

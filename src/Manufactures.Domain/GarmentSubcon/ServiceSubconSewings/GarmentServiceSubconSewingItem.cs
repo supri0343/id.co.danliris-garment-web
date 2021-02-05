@@ -15,8 +15,11 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
         public GarmentComodityId ComodityId { get; private set; }
         public string ComodityCode { get; private set; }
         public string ComodityName { get; private set; }
+        public BuyerId BuyerId { get; private set; }
+        public string BuyerCode { get; private set; }
+        public string BuyerName { get; private set; }
 
-        public GarmentServiceSubconSewingItem(Guid identity, Guid serviceSubconSewingId, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName) : base(identity)
+        public GarmentServiceSubconSewingItem(Guid identity, Guid serviceSubconSewingId, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, BuyerId buyerId, string buyerCode, string buyerName) : base(identity)
         {
             Identity = identity;
             ServiceSubconSewingId = serviceSubconSewingId;
@@ -25,6 +28,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             ComodityId = comodityId;
             ComodityCode = comodityCode;
             ComodityName = comodityName;
+            BuyerCode = buyerCode;
+            BuyerId = buyerId;
+            BuyerName = buyerName;
 
             ReadModel = new GarmentServiceSubconSewingItemReadModel(identity)
             {
@@ -33,7 +39,10 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
                 Article = Article,
                 ComodityId = ComodityId.Value,
                 ComodityCode = ComodityCode,
-                ComodityName = ComodityName
+                ComodityName = ComodityName,
+                BuyerCode = BuyerCode,
+                BuyerId = BuyerId.Value,
+                BuyerName = BuyerName
             };
 
             ReadModel.AddDomainEvent(new OnGarmentServiceSubconSewingPlaced(Identity));
@@ -48,11 +57,19 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             ComodityId = new GarmentComodityId(readModel.ComodityId);
             ComodityCode = readModel.ComodityCode;
             ComodityName = readModel.ComodityName;
+            BuyerCode = readModel.BuyerCode;
+            BuyerId = new BuyerId(readModel.BuyerId);
+            BuyerName = readModel.BuyerName;
+        }
+
+        public void Modify()
+        {
+            MarkModified();
         }
 
         protected override GarmentServiceSubconSewingItem GetEntity()
         {
-            throw new NotImplementedException();
+            return this;
         }
     }
 }

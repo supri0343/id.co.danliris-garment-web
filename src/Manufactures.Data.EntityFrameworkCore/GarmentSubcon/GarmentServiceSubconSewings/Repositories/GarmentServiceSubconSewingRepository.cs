@@ -24,10 +24,6 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
             {
                 "ServiceSubconSewingNo",
                 "UnitCode",
-                "RONo",
-                "Article",
-                "GarmentServiceSubconSewingItem.ProductCode",
-                "GarmentServiceSubconSewingItem.Color"
             };
 
             data = QueryHelper<GarmentServiceSubconSewingReadModel>.Search(data, SearchAttributes, keyword);

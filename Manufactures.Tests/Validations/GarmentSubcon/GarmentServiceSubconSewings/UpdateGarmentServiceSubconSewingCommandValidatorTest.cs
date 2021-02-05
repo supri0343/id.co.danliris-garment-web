@@ -51,12 +51,6 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconSewin
             Guid id = Guid.NewGuid();
             var unitUnderTest = new UpdateGarmentServiceSubconSewingCommand()
             {
-                Buyer = new Buyer()
-                {
-                    Id = 1,
-                    Code = "Code",
-                    Name = "Name"
-                },
                 ServiceSubconSewingDate = DateTimeOffset.Now,
                 ServiceSubconSewingNo = "SewingOutNo",
                 Unit = new UnitDepartment()
@@ -71,6 +65,12 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconSewin
                     {
                         Article = "Article",
                         Comodity = new GarmentComodity()
+                        {
+                            Id = 1,
+                            Code = "Code",
+                            Name = "Name"
+                        },
+                        Buyer = new Buyer()
                         {
                             Id = 1,
                             Code = "Code",

@@ -11,6 +11,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ValueObjects
         public string RONo { get; set; }
         public string Article { get; set; }
         public GarmentComodity Comodity { get; set; }
+        public Buyer Buyer { get; set; }
         public List<GarmentServiceSubconSewingDetailValueObject> Details { get; set; }
 
         public GarmentServiceSubconSewingItemValueObject()
