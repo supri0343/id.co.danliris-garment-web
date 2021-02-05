@@ -10,16 +10,13 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
     public class GarmentServiceSubconSewing : AggregateRoot<GarmentServiceSubconSewing, GarmentServiceSubconSewingReadModel>
     {
         public string ServiceSubconSewingNo { get; private set; }
-        public BuyerId BuyerId { get; private set; }
-        public string BuyerCode { get; private set; }
-        public string BuyerName { get; private set; }
         public UnitDepartmentId UnitId { get; private set; }
         public string UnitCode { get; private set; }
         public string UnitName { get; private set; }
         public DateTimeOffset ServiceSubconSewingDate { get; private set; }
         public bool IsUsed { get; internal set; }
 
-        public GarmentServiceSubconSewing(Guid identity, string serviceSubconSewingNo, BuyerId buyerId, string buyerCode, string buyerName, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset serviceSubconSewingDate, bool isUsed) : base(identity)
+        public GarmentServiceSubconSewing(Guid identity, string serviceSubconSewingNo, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset serviceSubconSewingDate, bool isUsed) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
 
@@ -29,9 +26,6 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             UnitId = unitId;
             UnitCode = unitCode;
             UnitName = unitName;
-            BuyerCode = buyerCode;
-            BuyerId = buyerId;
-            BuyerName = buyerName;
             IsUsed = isUsed;
 
             ReadModel = new GarmentServiceSubconSewingReadModel(Identity)
@@ -41,10 +35,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
                 UnitId = UnitId.Value,
                 UnitCode = UnitCode,
                 UnitName = UnitName,
-                BuyerCode = BuyerCode,
-                BuyerId = BuyerId.Value,
-                BuyerName = BuyerName,
-                IsUsed = IsUsed,
+                IsUsed = IsUsed
             };
 
             ReadModel.AddDomainEvent(new OnGarmentServiceSubconSewingPlaced(Identity));
@@ -58,9 +49,6 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             UnitId = new UnitDepartmentId(readModel.UnitId);
             UnitCode = readModel.UnitCode;
             UnitName = readModel.UnitName;
-            BuyerCode = readModel.BuyerCode;
-            BuyerId = new BuyerId(readModel.BuyerId);
-            BuyerName = readModel.BuyerName;
             IsUsed = readModel.IsUsed;
         }
 

@@ -20,6 +20,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
             builder.Property(a => a.Article).HasMaxLength(50);
             builder.Property(a => a.ComodityCode).HasMaxLength(25);
             builder.Property(a => a.ComodityName).HasMaxLength(100);
+            builder.Property(a => a.BuyerName).HasMaxLength(100);
+            builder.Property(a => a.BuyerCode).HasMaxLength(25);
 
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();

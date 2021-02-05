@@ -18,7 +18,6 @@
   <ItemGroup>
     <Folder Include="GarmentBalanceStockProductions\ValueObjects\" />
     <Folder Include="GarmentSubcon\ServiceSubconSewings\Commands\" />
-    <Folder Include="GarmentSubcon\ServiceSubconSewings\Repositories\" />
   </ItemGroup>
 
 </Project>

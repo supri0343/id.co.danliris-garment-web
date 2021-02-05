@@ -48,7 +48,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
             {
                 
                 Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                Buyer = new Buyer(1, "BuyerCode", "BuyerName"),
                 Items = new List<GarmentServiceSubconSewingItemValueObject>
                 {
                     new GarmentServiceSubconSewingItemValueObject
@@ -56,6 +55,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                         RONo = "RONo",
                         Article = "Article",
                         Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
+                        Buyer = new Buyer(1, "BuyerCode", "BuyerName"),
                         Details= new List<GarmentServiceSubconSewingDetailValueObject>
                         {
                             new GarmentServiceSubconSewingDetailValueObject
