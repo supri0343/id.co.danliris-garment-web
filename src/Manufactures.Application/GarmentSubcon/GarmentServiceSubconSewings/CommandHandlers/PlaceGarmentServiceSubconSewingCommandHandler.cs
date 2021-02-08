@@ -39,9 +39,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
             GarmentServiceSubconSewing garmentServiceSubconSewing = new GarmentServiceSubconSewing(
                 Guid.NewGuid(),
                 GenerateServiceSubconSewingNo(request),
-                new UnitDepartmentId(request.Unit.Id),
-                request.Unit.Code,
-                request.Unit.Name,
+                //new UnitDepartmentId(request.Unit.Id),
+                //request.Unit.Code,
+                //request.Unit.Name,
                 request.ServiceSubconSewingDate.GetValueOrDefault(),
                 request.IsUsed
             );

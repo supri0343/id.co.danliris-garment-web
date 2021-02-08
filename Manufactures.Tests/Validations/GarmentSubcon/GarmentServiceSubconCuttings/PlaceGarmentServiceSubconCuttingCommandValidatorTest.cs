@@ -136,7 +136,7 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
                                     Code = "Code",
                                     Name = "Name"
                                 },
-                                Quantity =0,
+                                Quantity =5,
                                 CuttingInDetailId =id,
                                 CuttingInQuantity =1,
                             }

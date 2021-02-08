@@ -15,26 +15,25 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
         public string UnitName { get; private set; }
         public DateTimeOffset ServiceSubconSewingDate { get; private set; }
         public bool IsUsed { get; internal set; }
-
-        public GarmentServiceSubconSewing(Guid identity, string serviceSubconSewingNo, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset serviceSubconSewingDate, bool isUsed) : base(identity)
+        //, UnitDepartmentId unitId, string unitCode, string unitName
+        public GarmentServiceSubconSewing(Guid identity, string serviceSubconSewingNo, DateTimeOffset serviceSubconSewingDate, bool isUsed) : base(identity)
         {
-            Validator.ThrowIfNull(() => unitId);
-
+            
             Identity = identity;
             ServiceSubconSewingNo = serviceSubconSewingNo;
             ServiceSubconSewingDate = serviceSubconSewingDate;
-            UnitId = unitId;
-            UnitCode = unitCode;
-            UnitName = unitName;
+            //UnitId = unitId;
+            //UnitCode = unitCode;
+            //UnitName = unitName;
             IsUsed = isUsed;
 
             ReadModel = new GarmentServiceSubconSewingReadModel(Identity)
             {
                 ServiceSubconSewingNo = ServiceSubconSewingNo,
                 ServiceSubconSewingDate = ServiceSubconSewingDate,
-                UnitId = UnitId.Value,
-                UnitCode = UnitCode,
-                UnitName = UnitName,
+                //UnitId = UnitId.Value,
+                //UnitCode = UnitCode,
+                //UnitName = UnitName,
                 IsUsed = IsUsed
             };
 
@@ -46,9 +45,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
         {
             ServiceSubconSewingNo = readModel.ServiceSubconSewingNo;
             ServiceSubconSewingDate = readModel.ServiceSubconSewingDate;
-            UnitId = new UnitDepartmentId(readModel.UnitId);
-            UnitCode = readModel.UnitCode;
-            UnitName = readModel.UnitName;
+            //UnitId = new UnitDepartmentId(readModel.UnitId);
+            //UnitCode = readModel.UnitCode;
+            //UnitName = readModel.UnitName;
             IsUsed = readModel.IsUsed;
         }
 
