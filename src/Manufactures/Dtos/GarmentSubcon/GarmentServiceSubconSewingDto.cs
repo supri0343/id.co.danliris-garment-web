@@ -11,7 +11,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         {
             Id = garmentServiceSubconSewingList.Identity;
             ServiceSubconSewingNo = garmentServiceSubconSewingList.ServiceSubconSewingNo;
-            Unit = new UnitDepartment(garmentServiceSubconSewingList.UnitId.Value, garmentServiceSubconSewingList.UnitCode, garmentServiceSubconSewingList.UnitName);
+            //Unit = new UnitDepartment(garmentServiceSubconSewingList.UnitId.Value, garmentServiceSubconSewingList.UnitCode, garmentServiceSubconSewingList.UnitName);
             ServiceSubconSewingDate = garmentServiceSubconSewingList.ServiceSubconSewingDate;
             IsUsed = garmentServiceSubconSewingList.IsUsed;
             Items = new List<GarmentServiceSubconSewingItemDto>();

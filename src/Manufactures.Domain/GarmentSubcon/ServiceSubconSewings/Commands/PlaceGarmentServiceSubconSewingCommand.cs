@@ -24,8 +24,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands
     {
         public PlaceGarmentServiceSubconSewingCommandValidator()
         {
-            RuleFor(r => r.Unit).NotNull();
-            RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
+            //RuleFor(r => r.Unit).NotNull();
+            //RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
             RuleFor(r => r.ServiceSubconSewingDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Subcon Jasa Sewing Tidak Boleh Kosong");
             RuleFor(r => r.ServiceSubconSewingDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Subcon Jasa Sewing Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
