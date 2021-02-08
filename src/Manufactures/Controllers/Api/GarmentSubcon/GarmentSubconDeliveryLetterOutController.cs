@@ -1,5 +1,6 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Repositories;
 using Manufactures.Dtos.GarmentSubcon;
@@ -127,35 +128,33 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             });
         }
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Put(string id, [FromBody] UpdateGarmentSubconDeliveryLetterOutCommand command)
-        //{
-        //    Guid guid = Guid.Parse(id);
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(string id, [FromBody] UpdateGarmentSubconDeliveryLetterOutCommand command)
+        {
+            Guid guid = Guid.Parse(id);
 
-        //    command.SetIdentity(guid);
+            command.SetIdentity(guid);
 
-        //    VerifyUser();
+            VerifyUser();
 
-        //    var order = await Mediator.Send(command);
+            var order = await Mediator.Send(command);
 
-        //    return Ok(order.Identity);
-        //}
+            return Ok(order.Identity);
+        }
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(string id)
-        //{
-        //    Guid guid = Guid.Parse(id);
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            Guid guid = Guid.Parse(id);
 
-        //    VerifyUser();
+            VerifyUser();
 
-        //    var garmentSubconDeliveryLetterOut = _garmentSubconDeliveryLetterOutRepository.Query.Where(o => o.Identity == guid).Select(o => new GarmentSubconDeliveryLetterOut(o)).Single();
+            var garmentSubconDeliveryLetterOut = _garmentSubconDeliveryLetterOutRepository.Query.Where(o => o.Identity == guid).Select(o => new GarmentSubconDeliveryLetterOut(o)).Single();
 
-        //    RemoveGarmentSubconDeliveryLetterOutCommand command = new RemoveGarmentSubconDeliveryLetterOutCommand(guid);
-        //    var order = await Mediator.Send(command);
+            RemoveGarmentSubconDeliveryLetterOutCommand command = new RemoveGarmentSubconDeliveryLetterOutCommand(guid);
+            var order = await Mediator.Send(command);
 
-        //    return Ok(order.Identity);
-
-        //}
-
+            return Ok(order.Identity);
+        }
     }
 }
