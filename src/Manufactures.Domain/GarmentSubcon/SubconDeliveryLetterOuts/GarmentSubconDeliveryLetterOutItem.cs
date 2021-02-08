@@ -29,6 +29,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
         //
         public GarmentSubconDeliveryLetterOutItem(Guid identity, Guid subconDeliveryLetterOutId, int uENItemId, ProductId productId, string productCode, string productName, string productRemark, string designColor, double quantity, UomId uomId, string uomUnit, string fabricType) : base(identity)
         {
+            Identity = identity;
             SubconDeliveryLetterOutId = subconDeliveryLetterOutId;
             UENItemId = uENItemId;
             ProductId = productId;
@@ -84,6 +85,15 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
         protected override GarmentSubconDeliveryLetterOutItem GetEntity()
         {
             return this;
+        }
+
+        public void SetQuantity(double Quantity)
+        {
+            if (this.Quantity != Quantity)
+            {
+                this.Quantity = Quantity;
+                ReadModel.Quantity = Quantity;
+            }
         }
     }
 }

@@ -29,6 +29,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
 
         public GarmentSubconDeliveryLetterOut(Guid identity, string dLNo, string dLType, Guid subconContractId, string contractNo, string contractType, DateTimeOffset dLDate, int uENId, string uENNo, string pONo, int ePOItemId, string remark, bool isUsed) : base(identity)
         {
+            Identity = identity;
             DLNo = dLNo;
             DLType = dLType;
             SubconContractId = subconContractId;
@@ -85,6 +86,59 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
         protected override GarmentSubconDeliveryLetterOut GetEntity()
         {
             return this;
+        }
+
+        public void SetDate(DateTimeOffset DLDate)
+        {
+            if (this.DLDate != DLDate)
+            {
+                this.DLDate = DLDate;
+                ReadModel.DLDate = DLDate;
+            }
+        }
+
+        public void SetIsUsed(bool isUsed)
+        {
+            if (isUsed != IsUsed)
+            {
+                IsUsed = isUsed;
+                ReadModel.IsUsed = isUsed;
+
+                MarkModified();
+            }
+        }
+
+        public void SetPONo(string poNo)
+        {
+            if(this.PONo != poNo)
+            {
+                this.PONo = poNo;
+                ReadModel.PONo = poNo;
+
+                MarkModified();
+            }
+        }
+
+        public void SetEPOItemId(int ePOItemId)
+        {
+            if(this.EPOItemId != ePOItemId)
+            {
+                this.EPOItemId = ePOItemId;
+                ReadModel.EPOItemId = ePOItemId;
+
+                MarkModified();
+            }
+        }
+
+        public void SetRemark(string remark)
+        {
+            if(this.Remark != remark)
+            {
+                this.Remark = remark;
+                ReadModel.Remark = remark;
+
+                MarkModified();
+            }
         }
     }
 }
