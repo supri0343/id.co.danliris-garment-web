@@ -11,7 +11,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLett
     {
         public void Configure(EntityTypeBuilder<GarmentSubconDeliveryLetterOutReadModel> builder)
         {
-            builder.ToTable("GarmentSubconDeliveryLetterOutgs");
+            builder.ToTable("GarmentSubconDeliveryLetterOuts");
             builder.HasKey(e => e.Identity);
 
             builder.Property(p => p.ContractNo).HasMaxLength(25);

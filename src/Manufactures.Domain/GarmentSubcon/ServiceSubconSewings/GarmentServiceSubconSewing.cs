@@ -10,60 +10,31 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
     public class GarmentServiceSubconSewing : AggregateRoot<GarmentServiceSubconSewing, GarmentServiceSubconSewingReadModel>
     {
         public string ServiceSubconSewingNo { get; private set; }
-        public BuyerId BuyerId { get; private set; }
-        public string BuyerCode { get; private set; }
-        public string BuyerName { get; private set; }
         public UnitDepartmentId UnitId { get; private set; }
         public string UnitCode { get; private set; }
         public string UnitName { get; private set; }
-        public string RONo { get; private set; }
-        public string Article { get; private set; }
-        public GarmentComodityId ComodityId { get; private set; }
-        public string ComodityCode { get; private set; }
-        public string ComodityName { get; private set; }
         public DateTimeOffset ServiceSubconSewingDate { get; private set; }
-        public bool IsDifferentSize { get; set; }
         public bool IsUsed { get; internal set; }
-
-        public GarmentServiceSubconSewing(Guid identity, string serviceSubconSewingNo, BuyerId buyerId, string buyerCode, string buyerName, UnitDepartmentId unitId, string unitCode, string unitName, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, DateTimeOffset serviceSubconSewingDate, bool isDifferentSize, bool isUsed) : base(identity)
+        //, UnitDepartmentId unitId, string unitCode, string unitName
+        public GarmentServiceSubconSewing(Guid identity, string serviceSubconSewingNo, DateTimeOffset serviceSubconSewingDate, bool isUsed) : base(identity)
         {
-            Validator.ThrowIfNull(() => unitId);
-            Validator.ThrowIfNull(() => rONo);
-
+            
             Identity = identity;
             ServiceSubconSewingNo = serviceSubconSewingNo;
             ServiceSubconSewingDate = serviceSubconSewingDate;
-            RONo = rONo;
-            Article = article;
-            UnitId = unitId;
-            UnitCode = unitCode;
-            UnitName = unitName;
-            ComodityId = comodityId;
-            ComodityCode = comodityCode;
-            ComodityName = comodityName;
-            BuyerCode = buyerCode;
-            BuyerId = buyerId;
-            BuyerName = buyerName;
-            IsDifferentSize = isDifferentSize;
+            //UnitId = unitId;
+            //UnitCode = unitCode;
+            //UnitName = unitName;
             IsUsed = isUsed;
 
             ReadModel = new GarmentServiceSubconSewingReadModel(Identity)
             {
                 ServiceSubconSewingNo = ServiceSubconSewingNo,
                 ServiceSubconSewingDate = ServiceSubconSewingDate,
-                RONo = RONo,
-                Article = Article,
-                UnitId = UnitId.Value,
-                UnitCode = UnitCode,
-                UnitName = UnitName,
-                ComodityId = ComodityId.Value,
-                ComodityCode = ComodityCode,
-                ComodityName = ComodityName,
-                BuyerCode = BuyerCode,
-                BuyerId = BuyerId.Value,
-                BuyerName = BuyerName,
-                IsDifferentSize = IsDifferentSize,
-                IsUsed = IsUsed,
+                //UnitId = UnitId.Value,
+                //UnitCode = UnitCode,
+                //UnitName = UnitName,
+                IsUsed = IsUsed
             };
 
             ReadModel.AddDomainEvent(new OnGarmentServiceSubconSewingPlaced(Identity));
@@ -74,18 +45,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
         {
             ServiceSubconSewingNo = readModel.ServiceSubconSewingNo;
             ServiceSubconSewingDate = readModel.ServiceSubconSewingDate;
-            RONo = readModel.RONo;
-            Article = readModel.Article;
-            UnitId = new UnitDepartmentId(readModel.UnitId);
-            UnitCode = readModel.UnitCode;
-            UnitName = readModel.UnitName;
-            ComodityId = new GarmentComodityId(readModel.ComodityId);
-            ComodityCode = readModel.ComodityCode;
-            ComodityName = readModel.ComodityName;
-            BuyerCode = readModel.BuyerCode;
-            BuyerId = new BuyerId(readModel.BuyerId);
-            BuyerName = readModel.BuyerName;
-            IsDifferentSize = readModel.IsDifferentSize;
+            //UnitId = new UnitDepartmentId(readModel.UnitId);
+            //UnitCode = readModel.UnitCode;
+            //UnitName = readModel.UnitName;
             IsUsed = readModel.IsUsed;
         }
 

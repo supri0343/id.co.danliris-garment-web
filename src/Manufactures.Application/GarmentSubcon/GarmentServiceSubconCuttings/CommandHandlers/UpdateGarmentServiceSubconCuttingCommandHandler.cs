@@ -17,38 +17,56 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
         private readonly IStorage _storage;
         private readonly IGarmentServiceSubconCuttingRepository _garmentServiceSubconCuttingRepository;
         private readonly IGarmentServiceSubconCuttingItemRepository _garmentServiceSubconCuttingItemRepository;
+        private readonly IGarmentServiceSubconCuttingDetailRepository _garmentServiceSubconCuttingDetailRepository;
 
         public UpdateGarmentServiceSubconCuttingCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentServiceSubconCuttingRepository = storage.GetRepository<IGarmentServiceSubconCuttingRepository>();
             _garmentServiceSubconCuttingItemRepository = storage.GetRepository<IGarmentServiceSubconCuttingItemRepository>();
+            _garmentServiceSubconCuttingDetailRepository = storage.GetRepository<IGarmentServiceSubconCuttingDetailRepository>();
         }
 
         public async Task<GarmentServiceSubconCutting> Handle(UpdateGarmentServiceSubconCuttingCommand request, CancellationToken cancellationToken)
         {
             var subconCutting = _garmentServiceSubconCuttingRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentServiceSubconCutting(o)).Single();
             
-            _garmentServiceSubconCuttingItemRepository.Find(o => o.ServiceSubconCuttingId == subconCutting.Identity).ForEach(async subconCuttingItem =>
-            {
-                var item = request.Items.Where(o => o.Id == subconCuttingItem.Identity).Single();
+            //_garmentServiceSubconCuttingItemRepository.Find(o => o.ServiceSubconCuttingId == subconCutting.Identity).ForEach(async subconCuttingItem =>
+            //{
+            //    var item = request.Items.Where(o => o.Id == subconCuttingItem.Identity).SingleOrDefault();
 
-                if (!item.IsSave)
-                {
-                    item.Quantity = 0;
-                    subconCuttingItem.Remove();
+            //    if (item==null)
+            //    {
+            //        _garmentServiceSubconCuttingDetailRepository.Find(i => i.ServiceSubconCuttingItemId == subconCuttingItem.Identity).ForEach(async subconDetail =>
+            //        {
+            //            subconDetail.Remove();
+            //            await _garmentServiceSubconCuttingDetailRepository.Update(subconDetail);
+            //        });
+            //        subconCuttingItem.Remove();
 
-                }
-                else
-                {
-                   
-                    subconCuttingItem.SetQuantity(item.Quantity);
-                    subconCuttingItem.Modify();
-                }
+            //    }
+            //    else
+            //    {
+            //        _garmentServiceSubconCuttingDetailRepository.Find(i => i.ServiceSubconCuttingItemId == subconCuttingItem.Identity).ForEach(async subconDetail =>
+            //        {
+            //            var detail = item.Details.Where(o => o.Id == subconDetail.Identity).Single();
+            //            if (!detail.IsSave)
+            //            {
+            //                subconDetail.Remove();
+            //            }
+            //            else
+            //            {
+            //                subconDetail.SetQuantity(detail.Quantity);
+            //                subconDetail.Modify();
+            //            }
+            //            await _garmentServiceSubconCuttingDetailRepository.Update(subconDetail);
+            //        });
+            //        subconCuttingItem.Modify();
+            //    }
 
 
-                await _garmentServiceSubconCuttingItemRepository.Update(subconCuttingItem);
-            });
+            //    await _garmentServiceSubconCuttingItemRepository.Update(subconCuttingItem);
+            //});
 
            
 

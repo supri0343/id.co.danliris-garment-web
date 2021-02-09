@@ -14,11 +14,8 @@ namespace Manufactures.Dtos.GarmentSubcon
             SubconNo = garmentServiceSubconCutting.SubconNo;
             SubconType = garmentServiceSubconCutting.SubconType;
             SubconDate = garmentServiceSubconCutting.SubconDate;
-            RONo = garmentServiceSubconCutting.RONo;
-            Article = garmentServiceSubconCutting.Article;
-            Unit = new UnitDepartment(garmentServiceSubconCutting.UnitId.Value, garmentServiceSubconCutting.UnitCode, garmentServiceSubconCutting.UnitName);
-            Comodity = new GarmentComodity(garmentServiceSubconCutting.ComodityId.Value, garmentServiceSubconCutting.ComodityCode, garmentServiceSubconCutting.ComodityName);
             CreatedBy = garmentServiceSubconCutting.AuditTrail.CreatedBy;
+            Unit = new UnitDepartment(garmentServiceSubconCutting.UnitId.Value, garmentServiceSubconCutting.UnitCode, garmentServiceSubconCutting.UnitName);
             IsUsed = garmentServiceSubconCutting.IsUsed;
             Items = new List<GarmentServiceSubconCuttingItemDto>();
         }
@@ -28,10 +25,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public string SubconType { get; set; }
 
         public DateTimeOffset SubconDate { get; set; }
-        public string RONo { get; set; }
-        public string Article { get; set; }
         public UnitDepartment Unit { get; set; }
-        public GarmentComodity Comodity { get; set; }
 
         public double TotalQuantity { get; set; }
         public bool IsUsed { get; set; }

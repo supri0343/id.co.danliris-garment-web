@@ -8,19 +8,11 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ValueObjects
     public class GarmentServiceSubconSewingItemValueObject : ValueObject
     {
         public Guid Id { get; set; }
-        public Guid ServiceSubconSewingId { get; set; }
-        public Guid SewingInId { get; set; }
-        public Guid SewingInItemId { get; set; }
-        public Product Product { get; set; }
-        public string DesignColor { get; set; }
-        public SizeValueObject Size { get; set; }
-        public double Quantity { get; set; }
-        public Uom Uom { get; set; }
-        public string Color { get; set; }
-        public bool IsSave { get; set; }
-        public bool IsDifferentSize { get; set; }
-        public double SewingInQuantity { get; set; }
-        public double TotalQuantity { get; set; }
+        public string RONo { get; set; }
+        public string Article { get; set; }
+        public GarmentComodity Comodity { get; set; }
+        public Buyer Buyer { get; set; }
+        public List<GarmentServiceSubconSewingDetailValueObject> Details { get; set; }
 
         public GarmentServiceSubconSewingItemValueObject()
         {

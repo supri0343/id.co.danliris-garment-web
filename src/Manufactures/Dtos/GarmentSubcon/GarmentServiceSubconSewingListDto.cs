@@ -11,9 +11,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         {
             Id = garmentServiceSubconSewingList.Identity;
             ServiceSubconSewingNo = garmentServiceSubconSewingList.ServiceSubconSewingNo;
-            Unit = new UnitDepartment(garmentServiceSubconSewingList.UnitId.Value, garmentServiceSubconSewingList.UnitCode, garmentServiceSubconSewingList.UnitName);
-            RONo = garmentServiceSubconSewingList.RONo;
-            Article = garmentServiceSubconSewingList.Article;
+           // Unit = new UnitDepartment(garmentServiceSubconSewingList.UnitId.Value, garmentServiceSubconSewingList.UnitCode, garmentServiceSubconSewingList.UnitName);
             ServiceSubconSewingDate = garmentServiceSubconSewingList.ServiceSubconSewingDate;
             CreatedBy = garmentServiceSubconSewingList.AuditTrail.CreatedBy;
             IsUsed = garmentServiceSubconSewingList.IsUsed;
@@ -24,11 +22,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public string ServiceSubconSewingNo { get; set; }
         public UnitDepartment Unit { get; set; }
         public string SewingTo { get; set; }
-        public string RONo { get; set; }
-        public string Article { get; set; }
         public DateTimeOffset ServiceSubconSewingDate { get; set; }
-        public List<string> Colors { get; set; }
-        public List<string> Products { get; set; }
         public double TotalQuantity { get; set; }
         public double TotalRemainingQuantity { get; set; }
         public bool IsUsed { get; set; }

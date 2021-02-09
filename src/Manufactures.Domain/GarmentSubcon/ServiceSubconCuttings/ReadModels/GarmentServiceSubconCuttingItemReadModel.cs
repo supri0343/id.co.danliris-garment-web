@@ -10,14 +10,15 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels
         public GarmentServiceSubconCuttingItemReadModel(Guid identity) : base(identity)
         {
         }
-        public Guid ServiceSubconCuttingId { get; internal set; }
-        public Guid CuttingInDetailId { get; internal set; }
-        public int ProductId { get; internal set; }
-        public string ProductCode { get; internal set; }
-        public string ProductName { get; internal set; }
+        public string RONo { get; internal set; }
+        public string Article { get; internal set; }
+        public int ComodityId { get; internal set; }
+        public string ComodityCode { get; internal set; }
+        public string ComodityName { get; internal set; }
 
-        public string DesignColor { get; internal set; }
-        public double Quantity { get; internal set; }
+        public Guid ServiceSubconCuttingId { get; internal set; }
+        
         public virtual GarmentServiceSubconCuttingReadModel GarmentServiceSubconCutting { get; internal set; }
+        public virtual List<GarmentServiceSubconCuttingDetailReadModel> GarmentServiceSubconCuttingDetail { get; internal set; }
     }
 }

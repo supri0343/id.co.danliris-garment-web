@@ -12,19 +12,17 @@ namespace Manufactures.Dtos.GarmentSubcon
         {
             Id = garmentServiceSubconCuttingItem.Identity;
             ServiceSubconCuttingId = garmentServiceSubconCuttingItem.ServiceSubconCuttingId;
-            CuttingInDetailId = garmentServiceSubconCuttingItem.CuttingInDetailId;
-            Product = new Product(garmentServiceSubconCuttingItem.ProductId.Value, garmentServiceSubconCuttingItem.ProductCode, garmentServiceSubconCuttingItem.ProductName);
-            DesignColor = garmentServiceSubconCuttingItem.DesignColor;
-            Quantity = garmentServiceSubconCuttingItem.Quantity;
+            RONo = garmentServiceSubconCuttingItem.RONo;
+            Article = garmentServiceSubconCuttingItem.Article;
+            Comodity = new GarmentComodity(garmentServiceSubconCuttingItem.ComodityId.Value, garmentServiceSubconCuttingItem.ComodityCode, garmentServiceSubconCuttingItem.ComodityName);
+            Details = new List<GarmentServiceSubconCuttingDetailDto>();
         }
 
         public Guid Id { get; set; }
-        public Guid ServiceSubconCuttingId { get; internal set; }
-        public Guid CuttingInDetailId { get; internal set; }
-        public Product Product { get; set; }
-
-        public string DesignColor { get; set; }
-
-        public double Quantity { get; set; }
+        public Guid ServiceSubconCuttingId { get; set; }
+        public string RONo { get; set; }
+        public string Article { get; set; }
+        public GarmentComodity Comodity { get; set; }
+        public List<GarmentServiceSubconCuttingDetailDto> Details { get; set; }
     }
 }

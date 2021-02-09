@@ -17,12 +17,14 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
         private readonly IStorage _storage;
         private readonly IGarmentServiceSubconCuttingRepository _garmentServiceSubconCuttingRepository;
         private readonly IGarmentServiceSubconCuttingItemRepository _garmentServiceSubconCuttingItemRepository;
+        private readonly IGarmentServiceSubconCuttingDetailRepository _garmentServiceSubconCuttingDetailRepository;
 
         public RemoveGarmentServiceSubconCuttingCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentServiceSubconCuttingRepository = storage.GetRepository<IGarmentServiceSubconCuttingRepository>();
             _garmentServiceSubconCuttingItemRepository = storage.GetRepository<IGarmentServiceSubconCuttingItemRepository>();
+            _garmentServiceSubconCuttingDetailRepository = storage.GetRepository<IGarmentServiceSubconCuttingDetailRepository>();
         }
 
         public async Task<GarmentServiceSubconCutting> Handle(RemoveGarmentServiceSubconCuttingCommand request, CancellationToken cancellationToken)
@@ -31,6 +33,11 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
 
             _garmentServiceSubconCuttingItemRepository.Find(o => o.ServiceSubconCuttingId == subconCutting.Identity).ForEach(async subconCuttingItem =>
             {
+                _garmentServiceSubconCuttingDetailRepository.Find(i => i.ServiceSubconCuttingItemId == subconCuttingItem.Identity).ForEach(async subconDetail =>
+                    {
+                        subconDetail.Remove();
+                        await _garmentServiceSubconCuttingDetailRepository.Update(subconDetail);
+                    });
                 subconCuttingItem.Remove();
                 await _garmentServiceSubconCuttingItemRepository.Update(subconCuttingItem);
             });

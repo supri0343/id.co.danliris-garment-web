@@ -30,44 +30,44 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
 
             Dictionary<Guid, double> sewInItemToBeUpdated = new Dictionary<Guid, double>();
 
-            _garmentServiceSubconSewingItemRepository.Find(o => o.ServiceSubconSewingId == serviceSubconSewing.Identity).ForEach(async serviceSubconSewingItem =>
-            {
-                var item = request.Items.Where(o => o.Id == serviceSubconSewingItem.Identity).Single();
+            //_garmentServiceSubconSewingItemRepository.Find(o => o.ServiceSubconSewingId == serviceSubconSewing.Identity).ForEach(async serviceSubconSewingItem =>
+            //{
+            //    var item = request.Items.Where(o => o.Id == serviceSubconSewingItem.Identity).Single();
 
-                var diffSewInQuantity = item.IsSave ? (serviceSubconSewingItem.Quantity - (request.IsDifferentSize ? item.TotalQuantity : item.Quantity)) : serviceSubconSewingItem.Quantity;
+            //    var diffSewInQuantity = item.IsSave ? (serviceSubconSewingItem.Quantity - (request.IsDifferentSize ? item.TotalQuantity : item.Quantity)) : serviceSubconSewingItem.Quantity;
 
-                if (sewInItemToBeUpdated.ContainsKey(serviceSubconSewingItem.SewingInItemId))
-                {
-                    sewInItemToBeUpdated[serviceSubconSewingItem.SewingInItemId] += diffSewInQuantity;
-                }
-                else
-                {
-                    sewInItemToBeUpdated.Add(serviceSubconSewingItem.SewingInItemId, diffSewInQuantity);
-                }
+            //    if (sewInItemToBeUpdated.ContainsKey(serviceSubconSewingItem.SewingInItemId))
+            //    {
+            //        sewInItemToBeUpdated[serviceSubconSewingItem.SewingInItemId] += diffSewInQuantity;
+            //    }
+            //    else
+            //    {
+            //        sewInItemToBeUpdated.Add(serviceSubconSewingItem.SewingInItemId, diffSewInQuantity);
+            //    }
 
-                if (!item.IsSave)
-                {
-                    item.Quantity = 0;
+            //    if (!item.IsSave)
+            //    {
+            //        item.Quantity = 0;
 
-                    serviceSubconSewingItem.Remove();
+            //        serviceSubconSewingItem.Remove();
 
-                }
-                else
-                {
-                    if (request.IsDifferentSize)
-                    {
-                        serviceSubconSewingItem.SetQuantity(item.TotalQuantity);
-                    }
-                    else
-                    {
-                        serviceSubconSewingItem.SetQuantity(item.Quantity);
-                    }
-                    serviceSubconSewingItem.Modify();
-                }
+            //    }
+            //    else
+            //    {
+            //        if (request.IsDifferentSize)
+            //        {
+            //            serviceSubconSewingItem.SetQuantity(item.TotalQuantity);
+            //        }
+            //        else
+            //        {
+            //            serviceSubconSewingItem.SetQuantity(item.Quantity);
+            //        }
+            //        serviceSubconSewingItem.Modify();
+            //    }
 
 
-                await _garmentServiceSubconSewingItemRepository.Update(serviceSubconSewingItem);
-            });
+            //    await _garmentServiceSubconSewingItemRepository.Update(serviceSubconSewingItem);
+            //});
 
             serviceSubconSewing.SetDate(request.ServiceSubconSewingDate.GetValueOrDefault());
             serviceSubconSewing.Modify();

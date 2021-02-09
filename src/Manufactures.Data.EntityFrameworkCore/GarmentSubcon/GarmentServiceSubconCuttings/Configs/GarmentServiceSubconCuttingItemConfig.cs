@@ -14,9 +14,10 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
             builder.ToTable("GarmentServiceSubconCuttingItems");
             builder.HasKey(e => e.Identity);
 
-            builder.Property(p => p.ProductCode).HasMaxLength(25);
-            builder.Property(p => p.ProductName).HasMaxLength(100);
-            builder.Property(p => p.DesignColor).HasMaxLength(2000);
+            builder.Property(p => p.RONo).HasMaxLength(25);
+            builder.Property(p => p.Article).HasMaxLength(50);
+            builder.Property(p => p.ComodityName).HasMaxLength(500);
+            builder.Property(p => p.ComodityCode).HasMaxLength(255);
             builder.HasOne(w => w.GarmentServiceSubconCutting)
                 .WithMany(h => h.GarmentServiceSubconCuttingItem)
                 .HasForeignKey(f => f.ServiceSubconCuttingId);
