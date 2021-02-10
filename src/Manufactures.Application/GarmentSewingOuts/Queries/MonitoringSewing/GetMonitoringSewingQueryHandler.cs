@@ -161,8 +161,8 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
  
 			var sumbasicPrice = (from a in garmentPreparingRepository.Query
 								 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
-								 where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&*/
-								 a.UnitId == request.unit
+								 /*where a.ProcessDate  <= dateTo(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&
+							   a.UnitId == request.unit*/
 								 select new { a.RONo, b.BasicPrice })
 					.GroupBy(x => new { x.RONo }, (key, group) => new ViewBasicPrices
 					{
@@ -171,8 +171,8 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 						Count = group.Count()
 					});
 			var sumFCs = (from a in garmentCuttingInRepository.Query
-						  where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" &&
-						 a.UnitId == request.unit && a.CuttingInDate <= dateTo
+						  where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" //&&
+						 /*a.UnitId == request.unit && a.CuttingInDate <= dateTo*/
 						  select new { a.FC, a.RONo })
 						 .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
 						 {
