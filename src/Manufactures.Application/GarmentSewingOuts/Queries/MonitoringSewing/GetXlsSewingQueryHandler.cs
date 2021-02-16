@@ -20,6 +20,8 @@ using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.HO
 using OfficeOpenXml.Style;
 using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
+using System.Net.Http;
+using System.Text;
 
 namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 {
