@@ -10,21 +10,15 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
     public class GarmentServiceSubconSewing : AggregateRoot<GarmentServiceSubconSewing, GarmentServiceSubconSewingReadModel>
     {
         public string ServiceSubconSewingNo { get; private set; }
-        public UnitDepartmentId UnitId { get; private set; }
-        public string UnitCode { get; private set; }
-        public string UnitName { get; private set; }
         public DateTimeOffset ServiceSubconSewingDate { get; private set; }
         public bool IsUsed { get; internal set; }
-        //, UnitDepartmentId unitId, string unitCode, string unitName
+        //
         public GarmentServiceSubconSewing(Guid identity, string serviceSubconSewingNo, DateTimeOffset serviceSubconSewingDate, bool isUsed) : base(identity)
         {
             
             Identity = identity;
             ServiceSubconSewingNo = serviceSubconSewingNo;
             ServiceSubconSewingDate = serviceSubconSewingDate;
-            //UnitId = unitId;
-            //UnitCode = unitCode;
-            //UnitName = unitName;
             IsUsed = isUsed;
 
             ReadModel = new GarmentServiceSubconSewingReadModel(Identity)

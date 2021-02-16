@@ -16,12 +16,14 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
         private readonly IStorage _storage;
         private readonly IGarmentServiceSubconSewingRepository _garmentServiceSubconSewingRepository;
         private readonly IGarmentServiceSubconSewingItemRepository _garmentServiceSubconSewingItemRepository;
+        private readonly IGarmentServiceSubconSewingDetailRepository _garmentServiceSubconSewingDetailRepository;
 
         public RemoveGarmentServiceSubconSewingCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentServiceSubconSewingRepository = storage.GetRepository<IGarmentServiceSubconSewingRepository>();
             _garmentServiceSubconSewingItemRepository = storage.GetRepository<IGarmentServiceSubconSewingItemRepository>();
+            _garmentServiceSubconSewingDetailRepository = storage.GetRepository<IGarmentServiceSubconSewingDetailRepository>();
         }
 
         public async Task<GarmentServiceSubconSewing> Handle(RemoveGarmentServiceSubconSewingCommand request, CancellationToken cancellationToken)
@@ -43,6 +45,11 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                 //        sewInItemToBeUpdated.Add(serviceSubconSewingItem.SewingInItemId, serviceSubconSewingItem.Quantity);
                 //    }
                 //}
+                _garmentServiceSubconSewingDetailRepository.Find(i => i.ServiceSubconSewingItemId == serviceSubconSewingItem.Identity).ForEach(async subconDetail =>
+                {
+                    subconDetail.Remove();
+                    await _garmentServiceSubconSewingDetailRepository.Update(subconDetail);
+                });
                 serviceSubconSewingItem.Remove();
                 await _garmentServiceSubconSewingItemRepository.Update(serviceSubconSewingItem);
             });

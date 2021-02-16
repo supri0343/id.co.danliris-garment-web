@@ -46,8 +46,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentServiceSubconSewingCommand placeGarmentServiceSubconSewingCommand = new PlaceGarmentServiceSubconSewingCommand()
             {
-                
-                Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
                 Items = new List<GarmentServiceSubconSewingItemValueObject>
                 {
                     new GarmentServiceSubconSewingItemValueObject
@@ -67,6 +65,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                                 IsSave=true,
                                 Quantity=1,
                                 DesignColor= "ColorD",
+                                Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
                             }
                         }
                         
