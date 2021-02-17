@@ -27,6 +27,9 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
             builder.Property(a => a.UomUnit)
                .HasMaxLength(25);
 
+            builder.Property(a => a.UnitCode).HasMaxLength(25);
+            builder.Property(a => a.UnitName).HasMaxLength(100);
+
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();
         }

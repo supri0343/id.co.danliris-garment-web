@@ -53,12 +53,6 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconSewin
             {
                 ServiceSubconSewingDate = DateTimeOffset.Now,
                 ServiceSubconSewingNo = "SewingOutNo",
-                Unit = new UnitDepartment()
-                {
-                    Id = 1,
-                    Code = "Code",
-                    Name = "Name"
-                },
                 Items = new List<GarmentServiceSubconSewingItemValueObject>()
                 {
                     new GarmentServiceSubconSewingItemValueObject()
@@ -100,6 +94,12 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconSewin
                                 {
                                     Id =1,
                                     Unit ="Unit"
+                                },
+                                Unit = new UnitDepartment()
+                                {
+                                    Id = 1,
+                                    Code = "Code",
+                                    Name = "Name"
                                 },
                             }
                         }
