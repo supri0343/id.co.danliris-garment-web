@@ -23,6 +23,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels
 
         public int UomId { get; internal set; }
         public string UomUnit { get; internal set; }
+        public int UomOutId { get; internal set; }
+        public string UomOutUnit { get; internal set; }
 
         public string FabricType { get; internal set; }
         public virtual GarmentSubconDeliveryLetterOutReadModel GarmentSubconDeliveryLetterOut { get; internal set; }

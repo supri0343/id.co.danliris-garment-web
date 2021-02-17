@@ -24,10 +24,12 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
         public double Quantity { get; private set; }
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
+        public UomId UomOutId { get; private set; }
+        public string UomOutUnit { get; private set; }
 
         public string FabricType { get; private set; }
         //
-        public GarmentSubconDeliveryLetterOutItem(Guid identity, Guid subconDeliveryLetterOutId, int uENItemId, ProductId productId, string productCode, string productName, string productRemark, string designColor, double quantity, UomId uomId, string uomUnit, string fabricType) : base(identity)
+        public GarmentSubconDeliveryLetterOutItem(Guid identity, Guid subconDeliveryLetterOutId, int uENItemId, ProductId productId, string productCode, string productName, string productRemark, string designColor, double quantity, UomId uomId, string uomUnit, UomId uomOutId, string uomOutUnit, string fabricType) : base(identity)
         {
             Identity = identity;
             SubconDeliveryLetterOutId = subconDeliveryLetterOutId;
@@ -40,6 +42,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             Quantity = quantity;
             UomId = uomId;
             UomUnit = uomUnit;
+            UomOutId = uomOutId;
+            UomOutUnit = uomOutUnit;
             FabricType = fabricType;
 
             ReadModel = new GarmentSubconDeliveryLetterOutItemReadModel(Identity)
@@ -74,6 +78,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             FabricType = readModel.FabricType;
             UomUnit = readModel.UomUnit;
             UomId = new UomId(readModel.UomId);
+            UomOutId = new UomId(readModel.UomOutId);
+            UomOutUnit = readModel.UomOutUnit;
 
         }
 
