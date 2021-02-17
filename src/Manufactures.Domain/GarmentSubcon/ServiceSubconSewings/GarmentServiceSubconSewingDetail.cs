@@ -53,7 +53,10 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
                 Quantity = Quantity,
                 UomId = UomId.Value,
                 UomUnit = UomUnit,
-            };
+                UnitId = UnitId.Value,
+                UnitCode = UnitCode,
+                UnitName = UnitName
+        };
 
             ReadModel.AddDomainEvent(new OnGarmentServiceSubconSewingPlaced(Identity));
         }
@@ -70,6 +73,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             Quantity = readModel.Quantity;
             UomId = new UomId(readModel.UomId);
             UomUnit = readModel.UomUnit;
+            UnitCode = readModel.UnitCode;
+            UnitId = new UnitDepartmentId(readModel.UnitId);
+            UnitName = readModel.UnitName;
         }
 
         public void Modify()

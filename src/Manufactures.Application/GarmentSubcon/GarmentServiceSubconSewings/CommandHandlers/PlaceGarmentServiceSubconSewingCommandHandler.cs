@@ -103,7 +103,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                 {
                     if (detail.IsSave)
                     {
-                        var sewInDetail = SewingInDetails.Where(y => y.DesignColor == detail.DesignColor).ToList();
+                        var sewInDetail = SewingInDetails.Where(y => y.DesignColor == detail.DesignColor && y.UnitId== new UnitDepartmentId(detail.Unit.Id)).ToList();
                         var qty = detail.Quantity;
                         foreach (var d in sewInDetail)
                         {
