@@ -57,6 +57,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
                 Quantity = Quantity,
                 UomId = UomId.Value,
                 UomUnit = UomUnit,
+                UomOutId = UomOutId.Value,
+                UomOutUnit = UomOutUnit,
                 ProductRemark = ProductRemark,
                 FabricType = FabricType,
 

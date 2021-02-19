@@ -18,6 +18,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             DesignColor = garmentSubconDeliveryLetterOutItem.DesignColor;
             Quantity = garmentSubconDeliveryLetterOutItem.Quantity;
             Uom = new Uom(garmentSubconDeliveryLetterOutItem.UomId.Value, garmentSubconDeliveryLetterOutItem.UomUnit);
+            UomOut = new Uom(garmentSubconDeliveryLetterOutItem.UomOutId.Value, garmentSubconDeliveryLetterOutItem.UomOutUnit);
             FabricType = garmentSubconDeliveryLetterOutItem.FabricType;
             
         }
@@ -33,6 +34,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public double Quantity { get; set; }
 
         public Uom Uom { get; set; }
+        public Uom UomOut { get; set; }
 
         public string FabricType { get; set; }
         //public double ContractQuantity { get; set; }
