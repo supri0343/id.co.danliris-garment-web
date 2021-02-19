@@ -11,7 +11,6 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands
     public class PlaceGarmentServiceSubconSewingCommand : ICommand<GarmentServiceSubconSewing>
     {
         public string ServiceSubconSewingNo { get; set; }
-        public UnitDepartment Unit { get; set; }
         public DateTimeOffset? ServiceSubconSewingDate { get; set; }
         public bool IsUsed { get; set; }
         public List<GarmentServiceSubconSewingItemValueObject> Items { get; set; }

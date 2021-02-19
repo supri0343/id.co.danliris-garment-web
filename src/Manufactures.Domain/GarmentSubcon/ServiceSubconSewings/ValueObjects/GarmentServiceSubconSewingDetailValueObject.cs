@@ -13,6 +13,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ValueObjects
         public Guid SewingInId { get; set; }
         public Guid SewingInItemId { get; set; }
         public Product Product { get; set; }
+        public UnitDepartment Unit { get; set; }
         public string DesignColor { get; set; }
         public double Quantity { get; set; }
         public Uom Uom { get; set; }

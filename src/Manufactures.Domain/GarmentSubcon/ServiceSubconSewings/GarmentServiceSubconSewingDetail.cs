@@ -21,8 +21,11 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
         public double Quantity { get; private set; }
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
+        public UnitDepartmentId UnitId { get; private set; }
+        public string UnitCode { get; private set; }
+        public string UnitName { get; private set; }
 
-        public GarmentServiceSubconSewingDetail(Guid identity, Guid serviceSubconSewingItemId, Guid sewingInId, Guid sewingInItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit) : base(identity)
+        public GarmentServiceSubconSewingDetail(Guid identity, Guid serviceSubconSewingItemId, Guid sewingInId, Guid sewingInItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, UnitDepartmentId unitId, string unitCode, string unitName) : base(identity)
         {
             ServiceSubconSewingItemId = serviceSubconSewingItemId;
             SewingInId = sewingInId;
@@ -34,6 +37,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             Quantity = quantity;
             UomId = uomId;
             UomUnit = uomUnit;
+            UnitId = unitId;
+            UnitCode = unitCode;
+            UnitName = unitName;
 
             ReadModel = new GarmentServiceSubconSewingDetailReadModel(identity)
             {
@@ -47,7 +53,10 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
                 Quantity = Quantity,
                 UomId = UomId.Value,
                 UomUnit = UomUnit,
-            };
+                UnitId = UnitId.Value,
+                UnitCode = UnitCode,
+                UnitName = UnitName
+        };
 
             ReadModel.AddDomainEvent(new OnGarmentServiceSubconSewingPlaced(Identity));
         }
@@ -64,6 +73,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             Quantity = readModel.Quantity;
             UomId = new UomId(readModel.UomId);
             UomUnit = readModel.UomUnit;
+            UnitCode = readModel.UnitCode;
+            UnitId = new UnitDepartmentId(readModel.UnitId);
+            UnitName = readModel.UnitName;
         }
 
         public void Modify()
