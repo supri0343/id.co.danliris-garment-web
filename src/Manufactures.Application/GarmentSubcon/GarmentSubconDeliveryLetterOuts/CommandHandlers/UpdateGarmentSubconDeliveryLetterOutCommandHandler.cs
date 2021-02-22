@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts.CommandHandlers
 {
-    class UpdateGarmentSubconDeliveryLetterOutCommandHandler : ICommandHandler<UpdateGarmentSubconDeliveryLetterOutCommand, GarmentSubconDeliveryLetterOut>
+    public class UpdateGarmentSubconDeliveryLetterOutCommandHandler : ICommandHandler<UpdateGarmentSubconDeliveryLetterOutCommand, GarmentSubconDeliveryLetterOut>
     {
         private readonly IStorage _storage;
         private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;

@@ -50,7 +50,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
         }
     }
 
-    class GarmentSubconDeliveryLetterOutItemValueObjectValidator : AbstractValidator<GarmentSubconDeliveryLetterOutItemValueObject>
+    public class GarmentSubconDeliveryLetterOutItemValueObjectValidator : AbstractValidator<GarmentSubconDeliveryLetterOutItemValueObject>
     {
         public GarmentSubconDeliveryLetterOutItemValueObjectValidator()
         {
