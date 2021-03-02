@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.CommandHandlers;
 using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.GarmentSewingIns;
+using Manufactures.Domain.GarmentSewingIns.ReadModels;
+using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ReadModels;
@@ -22,14 +26,23 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
     {
         private readonly Mock<IGarmentServiceSubconSewingRepository> _mockServiceSubconSewingRepository;
         private readonly Mock<IGarmentServiceSubconSewingItemRepository> _mockServiceSubconSewingItemRepository;
+        private readonly Mock<IGarmentServiceSubconSewingDetailRepository> _mockServiceSubconSewingDetailRepository;
+        private readonly Mock<IGarmentSewingInRepository> _mockSewingInRepository;
+        private readonly Mock<IGarmentSewingInItemRepository> _mockSewingInItemRepository;
 
         public PlaceGarmentServiceSubconSewingCommandHandlerTests()
         {
             _mockServiceSubconSewingRepository = CreateMock<IGarmentServiceSubconSewingRepository>();
             _mockServiceSubconSewingItemRepository = CreateMock<IGarmentServiceSubconSewingItemRepository>();
+            _mockServiceSubconSewingDetailRepository = CreateMock<IGarmentServiceSubconSewingDetailRepository>();
+            _mockSewingInRepository = CreateMock<IGarmentSewingInRepository>();
+            _mockSewingInItemRepository = CreateMock<IGarmentSewingInItemRepository>();
 
             _MockStorage.SetupStorage(_mockServiceSubconSewingRepository);
             _MockStorage.SetupStorage(_mockServiceSubconSewingItemRepository);
+            _MockStorage.SetupStorage(_mockServiceSubconSewingDetailRepository);
+            _MockStorage.SetupStorage(_mockSewingInRepository);
+            _MockStorage.SetupStorage(_mockSewingInItemRepository);
         }
 
         private PlaceGarmentServiceSubconSewingCommandHandler CreatePlaceGarmentServiceSubconSewingCommandHandler()
@@ -42,6 +55,8 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
         {
             // Arrange
             Guid sewingInItemGuid = Guid.NewGuid();
+            Guid SewingInGuid = Guid.NewGuid();
+            Guid sewingOutItemGuid = Guid.NewGuid();
             PlaceGarmentServiceSubconSewingCommandHandler unitUnderTest = CreatePlaceGarmentServiceSubconSewingCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentServiceSubconSewingCommand placeGarmentServiceSubconSewingCommand = new PlaceGarmentServiceSubconSewingCommand()
@@ -73,10 +88,32 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                 },
 
             };
+            GarmentSewingIn garmentSewingIn = new GarmentSewingIn(
+                SewingInGuid, null, "SEWING", Guid.Empty, null, new UnitDepartmentId(1), null, null,
+                new UnitDepartmentId(1), null, null, null, null, new GarmentComodityId(1), null, null, DateTimeOffset.Now);
+            //GarmentServiceSubconSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSubconSewingDetail(new Guid,)
+            _mockSewingInRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSewingInReadModel>()
+                {
+                    garmentSewingIn.GetReadModel()
+                }.AsQueryable());
+            _mockSewingInItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingInItemReadModel, bool>>>()))
+                .Returns(new List<GarmentSewingInItem>()
+                {
+                    new GarmentSewingInItem(Guid.Empty, SewingInGuid,sewingOutItemGuid,Guid.Empty,Guid.Empty,Guid.Empty,Guid.Empty, new ProductId(1), null, null, "ColorD", new SizeId(1), null, 0, new UomId(1), null, null, 0,1,1)
+                });
 
             _mockServiceSubconSewingRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconSewingReadModel>().AsQueryable());
+            _mockServiceSubconSewingItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconSewingItemReadModel>().AsQueryable());
+            _mockServiceSubconSewingDetailRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconSewingDetailReadModel>().AsQueryable());
 
 
             _mockServiceSubconSewingRepository
@@ -85,6 +122,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
             _mockServiceSubconSewingItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentServiceSubconSewingItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconSewingItem>()));
+            _mockServiceSubconSewingDetailRepository
+                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconSewingDetail>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconSewingDetail>()));
 
             _MockStorage
                 .Setup(x => x.Save())

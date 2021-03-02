@@ -23,15 +23,17 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
     {
         private readonly Mock<IGarmentServiceSubconCuttingRepository> _mockServiceSubconCuttingRepository;
         private readonly Mock<IGarmentServiceSubconCuttingItemRepository> _mockServiceSubconCuttingItemRepository;
-        
+        private readonly Mock<IGarmentServiceSubconCuttingDetailRepository> _mockServiceSubconCuttingDetailRepository;
+
         public UpdateGarmentServiceSubconCuttingCommandHandlerTests()
         {
             _mockServiceSubconCuttingRepository = CreateMock<IGarmentServiceSubconCuttingRepository>();
             _mockServiceSubconCuttingItemRepository = CreateMock<IGarmentServiceSubconCuttingItemRepository>();
-            
+            _mockServiceSubconCuttingDetailRepository = CreateMock<IGarmentServiceSubconCuttingDetailRepository>();
+
             _MockStorage.SetupStorage(_mockServiceSubconCuttingRepository);
             _MockStorage.SetupStorage(_mockServiceSubconCuttingItemRepository);
-            
+            _MockStorage.SetupStorage(_mockServiceSubconCuttingDetailRepository);
         }
         private UpdateGarmentServiceSubconCuttingCommandHandler CreateUpdateGarmentServiceSubconCuttingCommandHandler()
         {
@@ -43,7 +45,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
         {
             // Arrange
             Guid ServiceSubconCuttingGuid = Guid.NewGuid();
-            Guid sewingInId = Guid.NewGuid();
+            Guid ServiceSubconCuttingItemGuid = Guid.NewGuid();
             UpdateGarmentServiceSubconCuttingCommandHandler unitUnderTest = CreateUpdateGarmentServiceSubconCuttingCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
             UpdateGarmentServiceSubconCuttingCommand UpdateGarmentServiceSubconCuttingCommand = new UpdateGarmentServiceSubconCuttingCommand()
@@ -84,19 +86,28 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                 {
                     new GarmentServiceSubconCuttingReadModel(ServiceSubconCuttingGuid)
                 }.AsQueryable());
-            _mockServiceSubconCuttingItemRepository
-                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingItemReadModel, bool>>>()))
-                .Returns(new List<GarmentServiceSubconCuttingItem>()
-                {
-                    new GarmentServiceSubconCuttingItem(Guid.Empty, ServiceSubconCuttingGuid,null,null,new GarmentComodityId(1),null,null)
-                });
+            //_mockServiceSubconCuttingItemRepository
+            //    .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingItemReadModel, bool>>>()))
+            //    .Returns(new List<GarmentServiceSubconCuttingItem>()
+            //    {
+            //        new GarmentServiceSubconCuttingItem(ServiceSubconCuttingItemGuid, ServiceSubconCuttingGuid,null,null,new GarmentComodityId(1),null,null)
+            //    });
+            //_mockServiceSubconCuttingDetailRepository
+            //    .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingDetailReadModel, bool>>>()))
+            //    .Returns(new List<GarmentServiceSubconCuttingDetail>()
+            //    {
+            //        new GarmentServiceSubconCuttingDetail(new Guid(), ServiceSubconCuttingItemGuid, new Guid(),new Guid(),new ProductId(1), "", "", "ColorD", 1)
+            //    });
 
             _mockServiceSubconCuttingRepository
                 .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCutting>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCutting>()));
-            _mockServiceSubconCuttingItemRepository
-                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingItem>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingItem>()));
+            //_mockServiceSubconCuttingItemRepository
+            //    .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingItem>()))
+            //    .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingItem>()));
+            //_mockServiceSubconCuttingDetailRepository
+            //    .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingDetail>()))
+            //    .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingDetail>()));
 
             _MockStorage
                 .Setup(x => x.Save())

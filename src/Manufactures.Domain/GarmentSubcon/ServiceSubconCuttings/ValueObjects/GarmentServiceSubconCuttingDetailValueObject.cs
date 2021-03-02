@@ -18,6 +18,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ValueObjects
         public double Quantity { get; set; }
         public double CuttingInQuantity { get; set; }
         public bool IsSave { get; set; }
+        public List<GarmentServiceSubconCuttingSizeValueObject> Sizes { get; set; }
         public GarmentServiceSubconCuttingDetailValueObject()
         {
         }

@@ -63,6 +63,21 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
                 .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.CuttingInQuantity}'.")
                 .When(w => w.IsSave);
 
+            RuleFor(r => r.Sizes).NotEmpty().OverridePropertyName("Size");
+            RuleForEach(r => r.Sizes).SetValidator(new GarmentServiceSubconCuttingSizeValueObjectValidator());
+        }
+    }
+
+    class GarmentServiceSubconCuttingSizeValueObjectValidator : AbstractValidator<GarmentServiceSubconCuttingSizeValueObject>
+    {
+        public GarmentServiceSubconCuttingSizeValueObjectValidator()
+        {
+            RuleFor(r => r.Quantity)
+                .GreaterThan(0)
+                .WithMessage("'Jumlah Potong' harus lebih dari '0'.");
+
+            RuleFor(r => r.Size).NotNull();
+            RuleFor(r => r.Uom).NotNull();
         }
     }
 }

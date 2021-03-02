@@ -22,15 +22,17 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
     {
         private readonly Mock<IGarmentServiceSubconCuttingRepository> _mockServiceSubconCuttingRepository;
         private readonly Mock<IGarmentServiceSubconCuttingItemRepository> _mockServiceSubconCuttingItemRepository;
-        
+        private readonly Mock<IGarmentServiceSubconCuttingDetailRepository> _mockServiceSubconCuttingDetailRepository;
 
         public RemoveGarmentServiceSubconCuttingCommandHandlerTests()
         {
             _mockServiceSubconCuttingRepository = CreateMock<IGarmentServiceSubconCuttingRepository>();
             _mockServiceSubconCuttingItemRepository = CreateMock<IGarmentServiceSubconCuttingItemRepository>();
+            _mockServiceSubconCuttingDetailRepository = CreateMock<IGarmentServiceSubconCuttingDetailRepository>();
 
             _MockStorage.SetupStorage(_mockServiceSubconCuttingRepository);
             _MockStorage.SetupStorage(_mockServiceSubconCuttingItemRepository);
+            _MockStorage.SetupStorage(_mockServiceSubconCuttingDetailRepository);
         }
         private RemoveGarmentServiceSubconCuttingCommandHandler CreateRemoveGarmentServiceSubconCuttingCommandHandler()
         {
@@ -40,7 +42,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
         public async Task Handle_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            Guid sewingInItemGuid = Guid.NewGuid();
+            Guid ServiceSubconCuttingItemGuid = Guid.NewGuid();
             Guid ServiceSubconCuttingGuid = Guid.NewGuid();
             RemoveGarmentServiceSubconCuttingCommandHandler unitUnderTest = CreateRemoveGarmentServiceSubconCuttingCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
@@ -56,7 +58,13 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingItemReadModel, bool>>>()))
                 .Returns(new List<GarmentServiceSubconCuttingItem>()
                 {
-                    new GarmentServiceSubconCuttingItem(Guid.Empty, ServiceSubconCuttingGuid,null,null,new GarmentComodityId(1),null,null)
+                    new GarmentServiceSubconCuttingItem(ServiceSubconCuttingItemGuid, ServiceSubconCuttingGuid,null,null,new GarmentComodityId(1),null,null)
+                });
+            _mockServiceSubconCuttingDetailRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingDetailReadModel, bool>>>()))
+                .Returns(new List<GarmentServiceSubconCuttingDetail>()
+                {
+                    new GarmentServiceSubconCuttingDetail(Guid.Empty, ServiceSubconCuttingItemGuid, new Guid(),new Guid(),new ProductId(1), "", "", "ColorD", 1)
                 });
 
             _mockServiceSubconCuttingRepository
@@ -65,6 +73,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
             _mockServiceSubconCuttingItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingItem>()));
+            _mockServiceSubconCuttingDetailRepository
+                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingDetail>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingDetail>()));
             _MockStorage
                 .Setup(x => x.Save())
                 .Verifiable();

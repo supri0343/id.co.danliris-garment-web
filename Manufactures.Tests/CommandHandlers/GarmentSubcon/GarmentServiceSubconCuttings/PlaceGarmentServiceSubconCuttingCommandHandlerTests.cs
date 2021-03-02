@@ -1,6 +1,9 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.CommandHandlers;
+using Manufactures.Domain.GarmentCuttingIns;
+using Manufactures.Domain.GarmentCuttingIns.ReadModels;
+using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels;
@@ -22,14 +25,26 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
     {
         private readonly Mock<IGarmentServiceSubconCuttingRepository> _mockServiceSubconCuttingRepository;
         private readonly Mock<IGarmentServiceSubconCuttingItemRepository> _mockServiceSubconCuttingItemRepository;
+        private readonly Mock<IGarmentServiceSubconCuttingDetailRepository> _mockServiceSubconCuttingDetailRepository;
+        private readonly Mock<IGarmentCuttingInRepository> _mockCuttingInRepository;
+        private readonly Mock<IGarmentCuttingInItemRepository> _mockCuttingInItemRepository;
+        private readonly Mock<IGarmentCuttingInDetailRepository> _mockCuttingInDetailRepository;
 
         public PlaceGarmentServiceSubconCuttingCommandHandlerTests()
         {
             _mockServiceSubconCuttingRepository = CreateMock<IGarmentServiceSubconCuttingRepository>();
             _mockServiceSubconCuttingItemRepository = CreateMock<IGarmentServiceSubconCuttingItemRepository>();
+            _mockServiceSubconCuttingDetailRepository = CreateMock<IGarmentServiceSubconCuttingDetailRepository>();
+            _mockCuttingInRepository = CreateMock<IGarmentCuttingInRepository>();
+            _mockCuttingInItemRepository = CreateMock<IGarmentCuttingInItemRepository>();
+            _mockCuttingInDetailRepository = CreateMock<IGarmentCuttingInDetailRepository>();
 
+            _MockStorage.SetupStorage(_mockCuttingInRepository);
+            _MockStorage.SetupStorage(_mockCuttingInItemRepository);
+            _MockStorage.SetupStorage(_mockCuttingInDetailRepository);
             _MockStorage.SetupStorage(_mockServiceSubconCuttingRepository);
             _MockStorage.SetupStorage(_mockServiceSubconCuttingItemRepository);
+            _MockStorage.SetupStorage(_mockServiceSubconCuttingDetailRepository);
         }
         private PlaceGarmentServiceSubconCuttingCommandHandler CreatePlaceGarmentServiceSubconCuttingCommandHandler()
         {
@@ -40,7 +55,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
         public async Task Handle_StateUnderTest_ExpectedBehavior_BORDIR()
         {
             // Arrange
-            Guid sewingInItemGuid = Guid.NewGuid();
+            Guid cuttingInGuid = Guid.NewGuid();
+            Guid cuttingInDetailGuid= Guid.NewGuid();
+            Guid cuttingInItemGuid = Guid.NewGuid();
             PlaceGarmentServiceSubconCuttingCommandHandler unitUnderTest = CreatePlaceGarmentServiceSubconCuttingCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentServiceSubconCuttingCommand placeGarmentServiceSubconCuttingCommand = new PlaceGarmentServiceSubconCuttingCommand()
@@ -63,10 +80,11 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                             {
                                 Product = new Product(1, "ProductCode", "ProductName"),
                                 IsSave=true,
-                                Quantity=1,
+                                Quantity=20,
                                 DesignColor= "ColorD",
-                                CuttingInQuantity=1,
-                                CuttingInDetailId=Guid.NewGuid(),
+                                CuttingInQuantity=20,
+                                CuttingInDetailId=cuttingInDetailGuid,
+                                CuttingInId=cuttingInGuid
                             }
                         }
                     }
@@ -74,20 +92,56 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
 
             };
 
+            GarmentCuttingIn garmentCuttingIn = new GarmentCuttingIn(cuttingInGuid, "", "", "", "RONo", "", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, 1);
+            GarmentCuttingInItem garmentCuttingInItem = new GarmentCuttingInItem(cuttingInItemGuid, cuttingInGuid, new Guid(), 1, "", new Guid(), "");
+            GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(cuttingInDetailGuid, cuttingInItemGuid, new Guid(), new Guid(), new Guid(), new ProductId(1), "", "", "ColorD", "", 1, new UomId(1), "", 10, new UomId(1), "", 10, 1, 1, 1, "");
+
+            GarmentServiceSubconCuttingDetail garmentServiceSubconCuttingDetail = new GarmentServiceSubconCuttingDetail(new Guid(), new Guid(), cuttingInGuid, cuttingInDetailGuid, new ProductId(1), "", "", "ColorD", 1);
+
             _mockServiceSubconCuttingRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconCuttingReadModel>().AsQueryable());
+            _mockServiceSubconCuttingDetailRepository
+               .Setup(s => s.Query)
+               .Returns(new List<GarmentServiceSubconCuttingDetailReadModel>
+               {
+                   garmentServiceSubconCuttingDetail.GetReadModel()
+               }.AsQueryable()
+               );
+
+            _mockCuttingInRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingInReadModel>
+                {
+                    garmentCuttingIn.GetReadModel()
+                }.AsQueryable());
+            _mockCuttingInItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingInItemReadModel>
+                {
+                    garmentCuttingInItem.GetReadModel()
+                }.AsQueryable());
+            _mockCuttingInDetailRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingInDetailReadModel>
+                {
+                    garmentCuttingInDetail.GetReadModel(),
+                    garmentCuttingInDetail.GetReadModel()
+                }.AsQueryable());
+
             _mockServiceSubconCuttingRepository
                 .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCutting>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCutting>()));
             _mockServiceSubconCuttingItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingItem>()));
+            _mockServiceSubconCuttingDetailRepository
+                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingDetail>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingDetail>()));
 
             _MockStorage
                 .Setup(x => x.Save())
                 .Verifiable();
-
             // Act
             var result = await unitUnderTest.Handle(placeGarmentServiceSubconCuttingCommand, cancellationToken);
 
@@ -99,7 +153,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
         public async Task Handle_StateUnderTest_ExpectedBehavior_PRINT()
         {
             // Arrange
-            Guid sewingInItemGuid = Guid.NewGuid();
+            Guid cuttingInGuid = Guid.NewGuid();
+            Guid cuttingInDetailGuid = Guid.NewGuid();
+            Guid cuttingInItemGuid = Guid.NewGuid();
             PlaceGarmentServiceSubconCuttingCommandHandler unitUnderTest = CreatePlaceGarmentServiceSubconCuttingCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentServiceSubconCuttingCommand placeGarmentServiceSubconCuttingCommand = new PlaceGarmentServiceSubconCuttingCommand()
@@ -131,17 +187,51 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                     }
                 },
             };
+            GarmentCuttingIn garmentCuttingIn = new GarmentCuttingIn(cuttingInGuid, "", "", "", "RONo", "", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, 1);
+            GarmentCuttingInItem garmentCuttingInItem = new GarmentCuttingInItem(cuttingInItemGuid, cuttingInGuid, new Guid(), 1, "", new Guid(), "");
+            GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(cuttingInDetailGuid, cuttingInItemGuid, new Guid(), new Guid(), new Guid(), new ProductId(1), "", "", "ColorD", "", 1, new UomId(1), "", 10, new UomId(1), "", 10, 1, 1, 1, "");
+
+            GarmentServiceSubconCuttingDetail garmentServiceSubconCuttingDetail = new GarmentServiceSubconCuttingDetail(new Guid(), new Guid(), cuttingInGuid, cuttingInDetailGuid, new ProductId(1), "", "", "ColorD", 1);
 
             _mockServiceSubconCuttingRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconCuttingReadModel>().AsQueryable());
+            _mockServiceSubconCuttingDetailRepository
+               .Setup(s => s.Query)
+               .Returns(new List<GarmentServiceSubconCuttingDetailReadModel>
+               {
+                   garmentServiceSubconCuttingDetail.GetReadModel()
+               }.AsQueryable()
+               );
+
+            _mockCuttingInRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingInReadModel>
+                {
+                    garmentCuttingIn.GetReadModel()
+                }.AsQueryable());
+            _mockCuttingInItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingInItemReadModel>
+                {
+                    garmentCuttingInItem.GetReadModel()
+                }.AsQueryable());
+            _mockCuttingInDetailRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingInDetailReadModel>
+                {
+                    garmentCuttingInDetail.GetReadModel()
+                }.AsQueryable());
+
             _mockServiceSubconCuttingRepository
                 .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCutting>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCutting>()));
             _mockServiceSubconCuttingItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingItem>()));
-
+            _mockServiceSubconCuttingDetailRepository
+                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingDetail>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingDetail>()));
             _MockStorage
                 .Setup(x => x.Save())
                 .Verifiable();
@@ -157,7 +247,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
         public async Task Handle_StateUnderTest_ExpectedBehavior_PLISKET()
         {
             // Arrange
-            Guid sewingInItemGuid = Guid.NewGuid();
+            Guid cuttingInGuid = Guid.NewGuid();
+            Guid cuttingInDetailGuid = Guid.NewGuid();
+            Guid cuttingInItemGuid = Guid.NewGuid();
             PlaceGarmentServiceSubconCuttingCommandHandler unitUnderTest = CreatePlaceGarmentServiceSubconCuttingCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentServiceSubconCuttingCommand placeGarmentServiceSubconCuttingCommand = new PlaceGarmentServiceSubconCuttingCommand()
@@ -189,16 +281,51 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                     }
                 },
             };
+            GarmentCuttingIn garmentCuttingIn = new GarmentCuttingIn(cuttingInGuid, "", "", "", "RONo", "", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, 1);
+            GarmentCuttingInItem garmentCuttingInItem = new GarmentCuttingInItem(cuttingInItemGuid, cuttingInGuid, new Guid(), 1, "", new Guid(), "");
+            GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(cuttingInDetailGuid, cuttingInItemGuid, new Guid(), new Guid(), new Guid(), new ProductId(1), "", "", "ColorD", "", 1, new UomId(1), "", 10, new UomId(1), "", 10, 1, 1, 1, "");
+
+            GarmentServiceSubconCuttingDetail garmentServiceSubconCuttingDetail = new GarmentServiceSubconCuttingDetail(new Guid(), new Guid(), cuttingInGuid, cuttingInDetailGuid, new ProductId(1), "", "", "ColorD", 1);
 
             _mockServiceSubconCuttingRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconCuttingReadModel>().AsQueryable());
+            _mockServiceSubconCuttingDetailRepository
+               .Setup(s => s.Query)
+               .Returns(new List<GarmentServiceSubconCuttingDetailReadModel>
+               {
+                   garmentServiceSubconCuttingDetail.GetReadModel()
+               }.AsQueryable()
+               );
+
+            _mockCuttingInRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingInReadModel>
+                {
+                    garmentCuttingIn.GetReadModel()
+                }.AsQueryable());
+            _mockCuttingInItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingInItemReadModel>
+                {
+                    garmentCuttingInItem.GetReadModel()
+                }.AsQueryable());
+            _mockCuttingInDetailRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingInDetailReadModel>
+                {
+                    garmentCuttingInDetail.GetReadModel()
+                }.AsQueryable());
+
             _mockServiceSubconCuttingRepository
                 .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCutting>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCutting>()));
             _mockServiceSubconCuttingItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingItem>()));
+            _mockServiceSubconCuttingDetailRepository
+                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingDetail>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingDetail>()));
 
             _MockStorage
                 .Setup(x => x.Save())
