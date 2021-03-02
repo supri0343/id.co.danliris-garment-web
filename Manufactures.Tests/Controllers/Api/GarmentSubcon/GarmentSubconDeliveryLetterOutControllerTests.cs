@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Manufactures.Domain.Shared.ValueObjects;
 
 namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 {
@@ -108,7 +109,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
                 {
-                    new GarmentSubconDeliveryLetterOutItem(Guid.NewGuid(),new Guid(),1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit","fabType")
+                    new GarmentSubconDeliveryLetterOutItem(Guid.NewGuid(),new Guid(),1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit",new Domain.Shared.ValueObjects.UomId(1),"unit","fabType")
                 });
 
 
@@ -153,5 +154,50 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             // Act and Assert
             await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(It.IsAny<PlaceGarmentSubconDeliveryLetterOutCommand>()));
         }
+
+        [Fact]
+        public async Task Put_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSubconDeliveryLetterOutController();
+            Guid subconDeliveryLetterOutGuid = Guid.NewGuid();
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<UpdateGarmentSubconDeliveryLetterOutCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentSubconDeliveryLetterOut(subconDeliveryLetterOutGuid, null, null, new Guid(), "", "", DateTimeOffset.Now, 1, "", "", 1, "", false));
+
+            // Act
+            var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentSubconDeliveryLetterOutCommand());
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Delete_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSubconDeliveryLetterOutController();
+            var subconDeliveryLetterOutGuid = Guid.NewGuid();
+
+            _mockGarmentSubconDeliveryLetterOutRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutReadModel, bool>>>()))
+                .Returns(new List<GarmentSubconDeliveryLetterOut>()
+                {
+                    new GarmentSubconDeliveryLetterOut(subconDeliveryLetterOutGuid, null, null, new Guid(), "", "", DateTimeOffset.Now, 1, "", "", 1, "", false)
+                });
+
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<RemoveGarmentSubconDeliveryLetterOutCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentSubconDeliveryLetterOut(subconDeliveryLetterOutGuid, null, null, new Guid(), "", "", DateTimeOffset.Now, 1, "", "", 1, "", false));
+
+            // Act
+            var result = await unitUnderTest.Delete(subconDeliveryLetterOutGuid.ToString());
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+
     }
 }

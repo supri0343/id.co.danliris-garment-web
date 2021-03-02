@@ -19,6 +19,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ValueObject
         public double Quantity { get; set; }
 
         public Uom Uom { get; set; }
+        public Uom UomOut { get; set; }
 
         public string FabricType { get; set; }
         public double ContractQuantity { get; set; }

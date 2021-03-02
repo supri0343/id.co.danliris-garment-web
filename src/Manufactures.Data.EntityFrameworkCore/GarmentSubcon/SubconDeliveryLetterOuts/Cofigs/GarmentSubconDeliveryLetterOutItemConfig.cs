@@ -19,6 +19,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLett
             builder.Property(p => p.DesignColor).HasMaxLength(2000);
             builder.Property(p => p.ProductRemark).HasMaxLength(2000);
             builder.Property(p => p.UomUnit).HasMaxLength(50);
+            builder.Property(p => p.UomOutUnit).HasMaxLength(50);
             builder.Property(p => p.FabricType).HasMaxLength(255);
             builder.HasOne(w => w.GarmentSubconDeliveryLetterOut)
                 .WithMany(h => h.GarmentSubconDeliveryLetterOutItem)
