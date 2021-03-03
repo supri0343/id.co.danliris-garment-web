@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20210225045405_add_GarmentServiceSubconCuttingSizes")]
+    partial class add_GarmentServiceSubconCuttingSizes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3198,6 +3200,10 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset>("CreatedDate");
 
+                    b.Property<Guid>("CuttingInDetailId");
+
+                    b.Property<Guid>("CuttingInId");
+
                     b.Property<bool?>("Deleted");
 
                     b.Property<string>("DeletedBy")
@@ -3212,6 +3218,14 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(32);
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<string>("ProductCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<string>("ProductName")
+                        .HasMaxLength(100);
 
                     b.Property<double>("Quantity");
 
@@ -3345,10 +3359,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset>("CreatedDate");
 
-                    b.Property<Guid>("CuttingInDetailId");
-
-                    b.Property<Guid>("CuttingInId");
-
                     b.Property<bool?>("Deleted");
 
                     b.Property<string>("DeletedBy")
@@ -3360,14 +3370,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(32);
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<string>("ProductCode")
-                        .HasMaxLength(25);
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<string>("ProductName")
-                        .HasMaxLength(100);
 
                     b.Property<double>("Quantity");
 
@@ -3682,11 +3684,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<int>("UENItemId");
 
                     b.Property<int>("UomId");
-
-                    b.Property<int>("UomOutId");
-
-                    b.Property<string>("UomOutUnit")
-                        .HasMaxLength(50);
 
                     b.Property<string>("UomUnit")
                         .HasMaxLength(50);

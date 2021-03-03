@@ -112,6 +112,7 @@ namespace Manufactures.Data.EntityFrameworkCore
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingConfig());
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingItemConfig());
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingDetailConfig());
+            modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingSizeConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconSewingConfig());
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconSewingItemConfig());

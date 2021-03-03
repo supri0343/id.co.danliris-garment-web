@@ -67,14 +67,14 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
                             {
                                 DesignColor ="DesignColor",
                                 IsSave =true,
-                                Product =new Product()
-                                {
-                                    Id = 1,
-                                    Code = "Code",
-                                    Name = "Name"
-                                },
-                                Quantity =1,
-                                CuttingInDetailId =id,
+                                //Product =new Product()
+                                //{
+                                //    Id = 1,
+                                //    Code = "Code",
+                                //    Name = "Name"
+                                //},
+                                //Quantity =1,
+                                //CuttingInDetailId =id,
                                 CuttingInQuantity =1,
                             }
                         }
