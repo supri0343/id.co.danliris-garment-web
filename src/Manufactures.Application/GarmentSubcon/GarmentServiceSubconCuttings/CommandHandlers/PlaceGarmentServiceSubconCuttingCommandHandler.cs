@@ -122,7 +122,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
                         foreach (var size in detail.Sizes)
                         {
                             var cutInDetail = cuttingInDetails.Where(y => y.Color == detail.DesignColor).ToList();
-                            var qty = detail.Quantity;
+                            var qty = size.Quantity;
                             foreach (var d in cutInDetail)
                             {
                                 var qtyRemains = d.Quantity - qty;
