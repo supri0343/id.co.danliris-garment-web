@@ -66,12 +66,12 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                         {
                             new GarmentServiceSubconCuttingDetailValueObject
                             {
-                                Product = new Product(1, "ProductCode", "ProductName"),
-                                IsSave=true,
-                                Quantity=1,
-                                DesignColor= "ColorD",
-                                CuttingInQuantity=1,
-                                CuttingInDetailId=Guid.NewGuid(),
+                                //Product = new Product(1, "ProductCode", "ProductName"),
+                                //IsSave=true,
+                                //Quantity=1,
+                                //DesignColor= "ColorD",
+                                //CuttingInQuantity=1,
+                                //CuttingInDetailId=Guid.NewGuid(),
                             }
                         }
                     }

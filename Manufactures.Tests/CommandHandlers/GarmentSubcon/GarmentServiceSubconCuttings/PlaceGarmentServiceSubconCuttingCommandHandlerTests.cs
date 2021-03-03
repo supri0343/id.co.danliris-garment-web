@@ -78,13 +78,19 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                         {
                             new GarmentServiceSubconCuttingDetailValueObject
                             {
-                                Product = new Product(1, "ProductCode", "ProductName"),
                                 IsSave=true,
                                 Quantity=20,
                                 DesignColor= "ColorD",
                                 CuttingInQuantity=20,
-                                CuttingInDetailId=cuttingInDetailGuid,
-                                CuttingInId=cuttingInGuid
+                                Sizes= new List<GarmentServiceSubconCuttingSizeValueObject>
+                                {
+                                    new GarmentServiceSubconCuttingSizeValueObject
+                                    {
+                                        Product = new Product(1, "ProductCode", "ProductName"),
+                                        CuttingInDetailId=cuttingInDetailGuid,
+                                        CuttingInId=cuttingInGuid,
+                                    }
+                                }
                             }
                         }
                     }
@@ -96,8 +102,8 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
             GarmentCuttingInItem garmentCuttingInItem = new GarmentCuttingInItem(cuttingInItemGuid, cuttingInGuid, new Guid(), 1, "", new Guid(), "");
             GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(cuttingInDetailGuid, cuttingInItemGuid, new Guid(), new Guid(), new Guid(), new ProductId(1), "", "", "ColorD", "", 1, new UomId(1), "", 10, new UomId(1), "", 10, 1, 1, 1, "");
 
-            GarmentServiceSubconCuttingDetail garmentServiceSubconCuttingDetail = new GarmentServiceSubconCuttingDetail(new Guid(), new Guid(), cuttingInGuid, cuttingInDetailGuid, new ProductId(1), "", "", "ColorD", 1);
-
+            GarmentServiceSubconCuttingDetail garmentServiceSubconCuttingDetail = new GarmentServiceSubconCuttingDetail(new Guid(), new Guid(),  "ColorD", 1);
+            //cuttingInGuid, cuttingInDetailGuid, new ProductId(1), "", "",
             _mockServiceSubconCuttingRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconCuttingReadModel>().AsQueryable());
@@ -176,12 +182,19 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                         {
                             new GarmentServiceSubconCuttingDetailValueObject
                             {
-                                Product = new Product(1, "ProductCode", "ProductName"),
                                 IsSave=true,
-                                Quantity=1,
+                                Quantity=20,
                                 DesignColor= "ColorD",
-                                CuttingInQuantity=1,
-                                CuttingInDetailId=Guid.NewGuid(),
+                                CuttingInQuantity=20,
+                                Sizes= new List<GarmentServiceSubconCuttingSizeValueObject>
+                                {
+                                    new GarmentServiceSubconCuttingSizeValueObject
+                                    {
+                                        Product = new Product(1, "ProductCode", "ProductName"),
+                                        CuttingInDetailId=cuttingInDetailGuid,
+                                        CuttingInId=cuttingInGuid,
+                                    }
+                                }
                             }
                         }
                     }
@@ -191,7 +204,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
             GarmentCuttingInItem garmentCuttingInItem = new GarmentCuttingInItem(cuttingInItemGuid, cuttingInGuid, new Guid(), 1, "", new Guid(), "");
             GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(cuttingInDetailGuid, cuttingInItemGuid, new Guid(), new Guid(), new Guid(), new ProductId(1), "", "", "ColorD", "", 1, new UomId(1), "", 10, new UomId(1), "", 10, 1, 1, 1, "");
 
-            GarmentServiceSubconCuttingDetail garmentServiceSubconCuttingDetail = new GarmentServiceSubconCuttingDetail(new Guid(), new Guid(), cuttingInGuid, cuttingInDetailGuid, new ProductId(1), "", "", "ColorD", 1);
+            GarmentServiceSubconCuttingDetail garmentServiceSubconCuttingDetail = new GarmentServiceSubconCuttingDetail(new Guid(), new Guid(), "ColorD", 1);
 
             _mockServiceSubconCuttingRepository
                 .Setup(s => s.Query)
@@ -270,12 +283,12 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                         {
                             new GarmentServiceSubconCuttingDetailValueObject
                             {
-                                Product = new Product(1, "ProductCode", "ProductName"),
+                                //Product = new Product(1, "ProductCode", "ProductName"),
                                 IsSave=true,
                                 Quantity=1,
                                 DesignColor= "ColorD",
                                 CuttingInQuantity=1,
-                                CuttingInDetailId=Guid.NewGuid(),
+                               // CuttingInDetailId=Guid.NewGuid(),
                             }
                         }
                     }
@@ -285,7 +298,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
             GarmentCuttingInItem garmentCuttingInItem = new GarmentCuttingInItem(cuttingInItemGuid, cuttingInGuid, new Guid(), 1, "", new Guid(), "");
             GarmentCuttingInDetail garmentCuttingInDetail = new GarmentCuttingInDetail(cuttingInDetailGuid, cuttingInItemGuid, new Guid(), new Guid(), new Guid(), new ProductId(1), "", "", "ColorD", "", 1, new UomId(1), "", 10, new UomId(1), "", 10, 1, 1, 1, "");
 
-            GarmentServiceSubconCuttingDetail garmentServiceSubconCuttingDetail = new GarmentServiceSubconCuttingDetail(new Guid(), new Guid(), cuttingInGuid, cuttingInDetailGuid, new ProductId(1), "", "", "ColorD", 1);
+            GarmentServiceSubconCuttingDetail garmentServiceSubconCuttingDetail = new GarmentServiceSubconCuttingDetail(new Guid(), new Guid(),"ColorD", 1);
 
             _mockServiceSubconCuttingRepository
                 .Setup(s => s.Query)

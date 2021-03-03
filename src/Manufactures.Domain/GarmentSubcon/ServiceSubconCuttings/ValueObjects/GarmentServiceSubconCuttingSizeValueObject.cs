@@ -10,10 +10,13 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ValueObjects
     {
         public Guid Id { get; set; }
         public Guid ServiceSubconCuttingDetailId { get; set; }
-        public SizeValueObject Size { get; internal set; }
-        public double Quantity { get; internal set; }
-        public Uom Uom { get; internal set; }
-        public string Color { get; internal set; }
+        public SizeValueObject Size { get; set; }
+        public double Quantity { get; set; }
+        public Uom Uom { get; set; }
+        public string Color { get; set; }
+        public Guid CuttingInId { get; set; }
+        public Guid CuttingInDetailId { get; set; }
+        public Product Product { get; set; }
         public GarmentServiceSubconCuttingSizeValueObject()
         {
         }

@@ -23,12 +23,14 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         private readonly IGarmentServiceSubconCuttingRepository _garmentServiceSubconCuttingRepository;
         private readonly IGarmentServiceSubconCuttingItemRepository _garmentServiceSubconCuttingItemRepository;
         private readonly IGarmentServiceSubconCuttingDetailRepository _garmentServiceSubconCuttingDetailRepository;
+        private readonly IGarmentServiceSubconCuttingSizeRepository _garmentServiceSubconCuttingSizeRepository;
 
         public GarmentServiceSubconCuttingController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentServiceSubconCuttingRepository = Storage.GetRepository<IGarmentServiceSubconCuttingRepository>();
             _garmentServiceSubconCuttingItemRepository = Storage.GetRepository<IGarmentServiceSubconCuttingItemRepository>();
             _garmentServiceSubconCuttingDetailRepository = Storage.GetRepository<IGarmentServiceSubconCuttingDetailRepository>();
+            _garmentServiceSubconCuttingSizeRepository = Storage.GetRepository<IGarmentServiceSubconCuttingSizeRepository>();
 
         }
 
@@ -84,7 +86,10 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 {
                     Details = _garmentServiceSubconCuttingDetailRepository.Find(o => o.ServiceSubconCuttingItemId == subconItem.Identity).Select(subconDetail => new GarmentServiceSubconCuttingDetailDto(subconDetail)
                     {
-                        
+                        Sizes= _garmentServiceSubconCuttingSizeRepository.Find(o => o.ServiceSubconCuttingDetailId == subconDetail.Identity).Select(subconSize => new GarmentServiceSubconCuttingSizeDto(subconSize)
+                        {
+
+                        }).ToList()
                     }).ToList()
                 }).ToList()
             }
@@ -122,7 +127,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             var garmentServiceSubconCuttingDto = _garmentServiceSubconCuttingRepository.Find(query).Select(o => new GarmentServiceSubconCuttingDto(o)).ToArray();
             var garmentServiceSubconCuttingItemDto = _garmentServiceSubconCuttingItemRepository.Find(_garmentServiceSubconCuttingItemRepository.Query).Select(o => new GarmentServiceSubconCuttingItemDto(o)).ToList();
             var garmentServiceSubconCuttingDetailDto = _garmentServiceSubconCuttingDetailRepository.Find(_garmentServiceSubconCuttingDetailRepository.Query).Select(o => new GarmentServiceSubconCuttingDetailDto(o)).ToList();
-
+            var garmentServiceSubconCuttingSizeDto = _garmentServiceSubconCuttingSizeRepository.Find(_garmentServiceSubconCuttingSizeRepository.Query).Select(o => new GarmentServiceSubconCuttingSizeDto(o)).ToList();
 
             Parallel.ForEach(garmentServiceSubconCuttingDto, itemDto =>
             {
@@ -133,6 +138,11 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 {
                     var garmentCuttingInDetails = garmentServiceSubconCuttingDetailDto.Where(x => x.ServiceSubconCuttingItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
                     detailDto.Details = garmentCuttingInDetails;
+                    Parallel.ForEach(detailDto.Details, detDto =>
+                    {
+                        var garmentCuttingSizes = garmentServiceSubconCuttingSizeDto.Where(x => x.ServiceSubconCuttingDetailId == detDto.Id).OrderBy(x => x.Id).ToList();
+                        detDto.Sizes = garmentCuttingSizes;
+                    });
                 });
             });
 
@@ -190,13 +200,18 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             //var garmentServiceSubconCuttingDto = _garmentServiceSubconCuttingRepository.Find(query).Select(o => new GarmentServiceSubconCuttingDto(o)).ToArray();
             var garmentServiceSubconCuttingItemDto = _garmentServiceSubconCuttingItemRepository.Find(_garmentServiceSubconCuttingItemRepository.Query).Select(o => new GarmentServiceSubconCuttingItemDto(o)).ToArray();
             var garmentServiceSubconCuttingDetailDto = _garmentServiceSubconCuttingDetailRepository.Find(_garmentServiceSubconCuttingDetailRepository.Query).Select(o => new GarmentServiceSubconCuttingDetailDto(o)).ToList();
-
+            var garmentServiceSubconCuttingSizeDto = _garmentServiceSubconCuttingSizeRepository.Find(_garmentServiceSubconCuttingSizeRepository.Query).Select(o => new GarmentServiceSubconCuttingSizeDto(o)).ToList();
 
             Parallel.ForEach(garmentServiceSubconCuttingItemDto, itemDto =>
             {
                 var garmentServiceSubconCuttingDetails = garmentServiceSubconCuttingDetailDto.Where(x => x.ServiceSubconCuttingItemId == itemDto.Id).OrderBy(x => x.Id).ToList();
 
                 itemDto.Details = garmentServiceSubconCuttingDetails;
+                Parallel.ForEach(itemDto.Details, detailDto =>
+                {
+                    var garmentCuttingSizes = garmentServiceSubconCuttingSizeDto.Where(x => x.ServiceSubconCuttingDetailId == detailDto.Id).OrderBy(x => x.Id).ToList();
+                    detailDto.Sizes = garmentCuttingSizes;
+                });
             });
 
             if (order != "{}")

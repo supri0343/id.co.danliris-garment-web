@@ -10,8 +10,6 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels
         public GarmentServiceSubconCuttingDetailReadModel(Guid identity) : base(identity)
         {
         }
-        public Guid CuttingInId { get; internal set; }
-
         public string DesignColor { get; internal set; }
         public double Quantity { get; internal set; }
         public Guid ServiceSubconCuttingItemId { get; internal set; }

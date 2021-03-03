@@ -64,7 +64,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingDetailReadModel, bool>>>()))
                 .Returns(new List<GarmentServiceSubconCuttingDetail>()
                 {
-                    new GarmentServiceSubconCuttingDetail(Guid.Empty, ServiceSubconCuttingItemGuid, new Guid(),new Guid(),new ProductId(1), "", "", "ColorD", 1)
+                    new GarmentServiceSubconCuttingDetail(Guid.Empty, ServiceSubconCuttingItemGuid,  "ColorD", 1)
                 });
 
             _mockServiceSubconCuttingRepository

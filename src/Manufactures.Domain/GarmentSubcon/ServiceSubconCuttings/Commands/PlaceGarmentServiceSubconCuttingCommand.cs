@@ -44,6 +44,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
 
             RuleFor(r => r.Comodity.Id).NotEmpty().OverridePropertyName("Comodity").When(w => w.Comodity != null);
 
+            RuleFor(r => r.Details.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Detail data harus diisi").OverridePropertyName("DetailsCount").When(s => s.Details != null);
             RuleFor(r => r.Details).NotEmpty().OverridePropertyName("Detail");
             RuleForEach(r => r.Details).SetValidator(new GarmentServiceSubconCuttingDetailValueObjectValidator());
         }
@@ -63,7 +64,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
                 .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.CuttingInQuantity}'.")
                 .When(w => w.IsSave);
 
-            RuleFor(r => r.Sizes).NotEmpty().OverridePropertyName("Size");
+            RuleFor(r => r.Sizes).NotEmpty().OverridePropertyName("Size").When(w => w.IsSave);
             RuleForEach(r => r.Sizes).SetValidator(new GarmentServiceSubconCuttingSizeValueObjectValidator());
         }
     }
@@ -74,8 +75,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
         {
             RuleFor(r => r.Quantity)
                 .GreaterThan(0)
-                .WithMessage("'Jumlah Potong' harus lebih dari '0'.");
-
+                .WithMessage("'Jumlah' harus lebih dari '0'.");
+            RuleFor(r => r.Color).NotEmpty();
             RuleFor(r => r.Size).NotNull();
             RuleFor(r => r.Uom).NotNull();
         }
