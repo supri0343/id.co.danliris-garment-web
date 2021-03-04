@@ -73,6 +73,17 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
             CuttingInId = readModel.CuttingInId;
         }
 
+        public void SetQuantity(double qty)
+        {
+            if (Quantity != qty)
+            {
+                Quantity = qty;
+                ReadModel.Quantity = qty;
+
+                MarkModified();
+            }
+        }
+
         public void Modify()
         {
             MarkModified();
