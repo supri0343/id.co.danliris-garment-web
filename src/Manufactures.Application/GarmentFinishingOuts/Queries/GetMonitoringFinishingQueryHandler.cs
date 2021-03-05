@@ -48,33 +48,6 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 			_http = serviceProvider.GetService<IHttpClientService>();
 		}
 
-        async Task<HOrderDataProductionReport> GetDataHOrder(List<string> ro, string token)
-        {
-            HOrderDataProductionReport hOrderDataProductionReport = new HOrderDataProductionReport();
-
-            var listRO = string.Join(",", ro.Distinct());
-            var costCalculationUri = SalesDataSettings.Endpoint + $"local-merchandiser/horders/data-production-report-by-no/{listRO}";
-            var httpResponse = await _http.GetAsync(costCalculationUri, token);
-
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                var contentString = await httpResponse.Content.ReadAsStringAsync();
-                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
-                var dataString = content.GetValueOrDefault("data").ToString();
-                var listData = JsonConvert.DeserializeObject<List<HOrderViewModel>>(dataString);
-
-                foreach (var item in ro)
-                {
-                    var data = listData.SingleOrDefault(s => s.No == item);
-                    if (data != null)
-                    {
-                        hOrderDataProductionReport.data.Add(data);
-                    }
-                }
-            }
-
-            return hOrderDataProductionReport;
-        }
 
         public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
         {
@@ -151,18 +124,6 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 			DateTimeOffset dateBalance = (from a in garmentBalanceFinishingRepository.Query.OrderByDescending(s => s.CreatedDate)
 										  select a.CreatedDate).FirstOrDefault();
 
-			//var QueryRoFinishing = (from a in garmentFinishingOutRepository.Query
-			//						where a.UnitId == request.unit && a.FinishingOutDate <= dateTo
-			//						select a.RONo).Distinct();
-			//var QueryRoSewingOut = (from a in garmentSewingOutRepository.Query
-			//						where a.UnitId == request.unit && a.SewingOutDate <= dateTo //&& a.SewingTo == "FINISHING"
-			//						select a.RONo).Distinct();
-			//var QueryRo = QueryRoSewingOut.Union(QueryRoFinishing).Distinct();
-			////List<string> _ro = new List<string>();
-			//foreach (var item in QueryRo)
-			//{
-			//	_ro.Add(item);
-			//}
 		
 			var sumbasicPrice = (from a in garmentPreparingRepository.Query
 								 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
