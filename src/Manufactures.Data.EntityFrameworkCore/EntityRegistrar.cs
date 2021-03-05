@@ -105,6 +105,7 @@ namespace Manufactures.Data.EntityFrameworkCore
 			modelBuilder.ApplyConfiguration(new GarmentBalanceCuttingConfig());
 			modelBuilder.ApplyConfiguration(new GarmentBalanceLoadingConfig());
 			modelBuilder.ApplyConfiguration(new GarmentBalanceSewingConfig());
+			modelBuilder.ApplyConfiguration(new GarmentBalanceFinishingConfig());
 
 			//GARMENT SUBCON
 			modelBuilder.ApplyConfiguration(new GarmentSubconContractConfig());
