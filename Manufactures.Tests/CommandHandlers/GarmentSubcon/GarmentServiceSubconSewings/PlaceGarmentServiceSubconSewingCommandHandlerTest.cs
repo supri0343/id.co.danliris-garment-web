@@ -90,8 +90,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
             };
             GarmentSewingIn garmentSewingIn = new GarmentSewingIn(
                 SewingInGuid, null, "SEWING", Guid.Empty, null, new UnitDepartmentId(1), null, null,
-                new UnitDepartmentId(1), null, null, null, null, new GarmentComodityId(1), null, null, DateTimeOffset.Now);
-            //GarmentServiceSubconSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSubconSewingDetail(new Guid,)
+                new UnitDepartmentId(1), null, null, "RONo", null, new GarmentComodityId(1), null, null, DateTimeOffset.Now);
+            GarmentSewingInItem garmentSewingInItem = new GarmentSewingInItem(sewingInItemGuid, SewingInGuid, sewingOutItemGuid, Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, new ProductId(1), null, null, "ColorD", new SizeId(1), null, 10, new UomId(1), null, null, 0, 1, 1);
+            GarmentServiceSubconSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSubconSewingDetail(new Guid(), new Guid(), SewingInGuid, sewingInItemGuid, new ProductId(1), null, null, "ColorD", 1, new UomId(1), null, new UnitDepartmentId(1), null, null);
             _mockSewingInRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSewingInReadModel>()
@@ -99,21 +100,23 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                     garmentSewingIn.GetReadModel()
                 }.AsQueryable());
             _mockSewingInItemRepository
-                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSewingInItemReadModel, bool>>>()))
-                .Returns(new List<GarmentSewingInItem>()
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSewingInItemReadModel>()
                 {
-                    new GarmentSewingInItem(Guid.Empty, SewingInGuid,sewingOutItemGuid,Guid.Empty,Guid.Empty,Guid.Empty,Guid.Empty, new ProductId(1), null, null, "ColorD", new SizeId(1), null, 0, new UomId(1), null, null, 0,1,1)
-                });
+                    garmentSewingInItem.GetReadModel()
+                }.AsQueryable());
 
             _mockServiceSubconSewingRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconSewingReadModel>().AsQueryable());
-            _mockServiceSubconSewingItemRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentServiceSubconSewingItemReadModel>().AsQueryable());
+            //_mockServiceSubconSewingItemRepository
+            //    .Setup(s => s.Query)
+            //    .Returns(new List<GarmentServiceSubconSewingItemReadModel>().AsQueryable());
             _mockServiceSubconSewingDetailRepository
                 .Setup(s => s.Query)
-                .Returns(new List<GarmentServiceSubconSewingDetailReadModel>().AsQueryable());
+                .Returns(new List<GarmentServiceSubconSewingDetailReadModel>() {
+                    garmentServiceSubconSewingDetail.GetReadModel()
+                }.AsQueryable());
 
 
             _mockServiceSubconSewingRepository
