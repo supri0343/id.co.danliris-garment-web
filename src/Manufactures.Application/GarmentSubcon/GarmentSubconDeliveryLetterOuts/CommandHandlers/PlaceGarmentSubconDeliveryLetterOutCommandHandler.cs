@@ -60,6 +60,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     item.Quantity,
                     new UomId(item.Uom.Id),
                     item.Uom.Unit,
+                    new UomId(item.UomOut.Id),
+                    item.UomOut.Unit,
                     item.FabricType
                 );
                 await _garmentSubconDeliveryLetterOutItemRepository.Update(garmentSubconDeliveryLetterOutItem);

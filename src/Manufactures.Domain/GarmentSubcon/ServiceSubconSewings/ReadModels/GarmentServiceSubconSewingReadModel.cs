@@ -12,9 +12,6 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ReadModels
         }
 
         public string ServiceSubconSewingNo { get; internal set; }
-        public int UnitId { get; internal set; }
-        public string UnitCode { get; internal set; }
-        public string UnitName { get; internal set; }
         public DateTimeOffset ServiceSubconSewingDate { get; internal set; }
         public bool IsUsed { get; internal set; }
         public virtual List<GarmentServiceSubconSewingItemReadModel> GarmentServiceSubconSewingItem { get; internal set; }

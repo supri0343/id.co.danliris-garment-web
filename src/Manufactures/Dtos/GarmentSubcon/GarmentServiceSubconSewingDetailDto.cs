@@ -17,6 +17,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             Product = new Product(garmentServiceSubconSewingDetail.ProductId.Value, garmentServiceSubconSewingDetail.ProductCode, garmentServiceSubconSewingDetail.ProductName);
             DesignColor = garmentServiceSubconSewingDetail.DesignColor;
             Quantity = garmentServiceSubconSewingDetail.Quantity;
+            Unit = new UnitDepartment(garmentServiceSubconSewingDetail.UnitId.Value, garmentServiceSubconSewingDetail.UnitCode, garmentServiceSubconSewingDetail.UnitName);
             Uom = new Uom(garmentServiceSubconSewingDetail.UomId.Value, garmentServiceSubconSewingDetail.UomUnit);
         }
 
@@ -27,6 +28,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public Guid SewingInItemId { get; set; }
         public Product Product { get; set; }
         public string DesignColor { get; set; }
+        public UnitDepartment Unit { get; set; }
         public SizeValueObject Size { get; set; }
         public double Quantity { get; set; }
         public Uom Uom { get; set; }

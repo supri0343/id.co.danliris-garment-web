@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20210303012734_Update_GarmentServiceSubconCuttingSizes")]
+    partial class Update_GarmentServiceSubconCuttingSizes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1765,75 +1767,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasFilter("[Deleted]=(0)");
 
                     b.ToTable("GarmentFinishingIns");
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentBalanceFinishingReadModel", b =>
-                {
-                    b.Property<Guid>("Identity")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Article")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("BuyerCode")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<double>("FinishingQty");
-
-                    b.Property<double>("Hours");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<decimal>("Nominal");
-
-                    b.Property<decimal>("Price");
-
-                    b.Property<double>("QtyOrder");
-
-                    b.Property<double>("RemainQty");
-
-                    b.Property<string>("RoJob")
-                        .HasMaxLength(25);
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<double>("SewingQtyPcs");
-
-                    b.Property<double>("Stock");
-
-                    b.Property<string>("Style")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("UnitCode");
-
-                    b.Property<int>("UnitId");
-
-                    b.Property<string>("UnitName");
-
-                    b.Property<string>("UomUnit")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Identity");
-
-                    b.ToTable("GarmentBalanceFinishings");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentFinishingOuts.ReadModels.GarmentFinishingOutDetailReadModel", b =>

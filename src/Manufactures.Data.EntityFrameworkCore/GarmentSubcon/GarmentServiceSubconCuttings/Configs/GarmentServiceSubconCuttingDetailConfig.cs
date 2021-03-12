@@ -14,8 +14,6 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
             builder.ToTable("GarmentServiceSubconCuttingDetails");
             builder.HasKey(e => e.Identity);
 
-            builder.Property(p => p.ProductCode).HasMaxLength(25);
-            builder.Property(p => p.ProductName).HasMaxLength(100);
             builder.Property(p => p.DesignColor).HasMaxLength(2000);
             builder.HasOne(w => w.GarmentServiceSubconCuttingItem)
                 .WithMany(h => h.GarmentServiceSubconCuttingDetail)

@@ -15,7 +15,6 @@ namespace Manufactures.Tests.Dtos
             var dto = new GarmentServiceSubconSewingDto(new GarmentServiceSubconSewing(id, "serviceSubconSewingNo",   DateTimeOffset.Now, false));
 
             Assert.NotNull(dto.Unit);
-
         }
     }
 }

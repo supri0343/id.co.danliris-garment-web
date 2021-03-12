@@ -75,7 +75,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 {
                     new GarmentServiceSubconSewing(serviceSubconSewingGuid,null,  DateTimeOffset.Now, false)
                 });
-
+            //, new UnitDepartmentId(1),null,null
             Guid sewingInItemGuid = Guid.NewGuid();
             Guid sewingInGuid = Guid.NewGuid();
             Guid serviceSubconSewingItemGuid = Guid.NewGuid();
@@ -165,8 +165,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             Guid serviceSubconSewingGuid = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentServiceSubconSewingCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentServiceSubconSewing(serviceSubconSewingGuid, null,   DateTimeOffset.Now, false));
-
+                .ReturnsAsync(new GarmentServiceSubconSewing(serviceSubconSewingGuid, null, DateTimeOffset.Now, false));
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentServiceSubconSewingCommand());
 
@@ -182,7 +181,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             Guid serviceSubconSewingGuid = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentServiceSubconSewingCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentServiceSubconSewing(serviceSubconSewingGuid, null,   DateTimeOffset.Now, false));
+                .ReturnsAsync(new GarmentServiceSubconSewing(serviceSubconSewingGuid, null, DateTimeOffset.Now, false));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
@@ -205,7 +204,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconSewingReadModel>>()))
                 .Returns(new List<GarmentServiceSubconSewing>()
                 {
-                    new GarmentServiceSubconSewing(id, null,   DateTimeOffset.Now, false)
+                    new GarmentServiceSubconSewing(id, null, DateTimeOffset.Now, false)
                 });
 
             GarmentServiceSubconSewingItem garmentServiceSubconSewingItem = new GarmentServiceSubconSewingItem(id, id,  null, null,new GarmentComodityId(1),null, null, new BuyerId(1), null, null);

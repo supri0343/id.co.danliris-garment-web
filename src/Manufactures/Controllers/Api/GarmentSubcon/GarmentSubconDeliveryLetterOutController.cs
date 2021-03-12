@@ -148,11 +148,11 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             Guid guid = Guid.Parse(id);
 
             VerifyUser();
-
-            var garmentSubconDeliveryLetterOut = _garmentSubconDeliveryLetterOutRepository.Query.Where(o => o.Identity == guid).Select(o => new GarmentSubconDeliveryLetterOut(o)).Single();
+            var garmentSubconDeliveryLetterOut = _garmentSubconDeliveryLetterOutRepository.Find(x => x.Identity == guid).Select(o => new GarmentSubconDeliveryLetterOutDto(o)).FirstOrDefault();
 
             RemoveGarmentSubconDeliveryLetterOutCommand command = new RemoveGarmentSubconDeliveryLetterOutCommand(guid);
             var order = await Mediator.Send(command);
+            await PutGarmentUnitExpenditureNoteDelete(garmentSubconDeliveryLetterOut.UENId); 
 
             return Ok(order.Identity);
         }

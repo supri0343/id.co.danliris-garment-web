@@ -13,8 +13,6 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
             builder.HasKey(e => e.Identity);
 
             builder.Property(a => a.ServiceSubconSewingNo).HasMaxLength(25);
-            builder.Property(a => a.UnitCode).HasMaxLength(25);
-            builder.Property(a => a.UnitName).HasMaxLength(100);
 
             builder.HasIndex(i => i.ServiceSubconSewingNo).IsUnique().HasFilter("[Deleted]=(0)");
             builder.ApplyAuditTrail();
