@@ -169,7 +169,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 
 			var QueryDeliveryReturn = from a in (from data in garmentDeliveryReturnRepository.Query where data.ReturnDate <= dateTo && data.UnitId == request.unit select data)
 									  join b in garmentDeliveryReturnItemRepository.Query on a.Identity equals b.DRId
-									  join c in garmentPreparingItemRepository.Query on b.PreparingItemId equals Convert.ToString(c.Identity)
+									  join c in garmentPreparingItemRepository.Query on Guid.Parse(b.PreparingItemId) equals  (c.Identity)
 									  select new monitoringView { prepareItemId = c.Identity, price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), expenditure = a.ReturnDate >= dateFrom ? b.Quantity : 0, aval = 0, uomUnit = "", stock = a.ReturnDate < dateFrom ? -b.Quantity : 0, mainFabricExpenditure = 0, nonMainFabricExpenditure = 0, remark = b.DesignColor, receipt = 0, productCode = b.ProductCode, remainQty = 0 };
 
 			var queryNow = from a in (QueryMutationPrepareItemNow

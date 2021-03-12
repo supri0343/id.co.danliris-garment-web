@@ -73,7 +73,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconSewingReadModel>>()))
                 .Returns(new List<GarmentServiceSubconSewing>()
                 {
-                    new GarmentServiceSubconSewing(serviceSubconSewingGuid,null,DateTimeOffset.Now, false)
+                    new GarmentServiceSubconSewing(serviceSubconSewingGuid,null,  DateTimeOffset.Now, false)
                 });
             //, new UnitDepartmentId(1),null,null
             Guid sewingInItemGuid = Guid.NewGuid();
@@ -105,7 +105,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconSewingReadModel, bool>>>()))
                 .Returns(new List<GarmentServiceSubconSewing>()
                 {
-                    new GarmentServiceSubconSewing(serviceSubconSewingGuid,null,DateTimeOffset.Now, false)
+                    new GarmentServiceSubconSewing(serviceSubconSewingGuid,null, DateTimeOffset.Now, false)
                 });
 
             Guid sewingInItemGuid = Guid.NewGuid();
@@ -166,7 +166,6 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentServiceSubconSewingCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GarmentServiceSubconSewing(serviceSubconSewingGuid, null, DateTimeOffset.Now, false));
-
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentServiceSubconSewingCommand());
 

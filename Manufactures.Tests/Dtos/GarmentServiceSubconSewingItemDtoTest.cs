@@ -12,8 +12,9 @@ namespace Manufactures.Tests.Dtos
         public void should_Success_Instantiate()
         {
             Guid id = Guid.NewGuid();
-            var dto = new GarmentServiceSubconSewingDto(new GarmentServiceSubconSewing(id, "serviceSubconSewingNo",  DateTimeOffset.Now, false));
+            var dto = new GarmentServiceSubconSewingDto(new GarmentServiceSubconSewing(id, "serviceSubconSewingNo",   DateTimeOffset.Now, false));
 
+            Assert.NotNull(dto.Unit);
         }
     }
 }
