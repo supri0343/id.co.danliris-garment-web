@@ -3,6 +3,7 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Repositories;
+using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,20 +30,72 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
         {
             var subconDeliveryLetterOut = _garmentSubconDeliveryLetterOutRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentSubconDeliveryLetterOut(o)).Single();
 
-            _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subconDeliveryLetterOut.Identity).ForEach(async subconDeliveryLetterOutItem =>
+            if(subconDeliveryLetterOut.ContractType=="SUBCON BAHAN BAKU")
             {
-                var item = request.Items.Where(o => o.Id == subconDeliveryLetterOutItem.Identity).Single();
 
-                subconDeliveryLetterOutItem.SetQuantity(item.Quantity);
+                subconDeliveryLetterOut.SetEPOItemId(request.EPOItemId);
+                subconDeliveryLetterOut.SetPONo(request.PONo);
 
-                subconDeliveryLetterOutItem.Modify();
+                _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subconDeliveryLetterOut.Identity).ForEach(async subconDeliveryLetterOutItem =>
+                {
+                    var item = request.Items.Where(o => o.Id == subconDeliveryLetterOutItem.Identity).Single();
 
-                await _garmentSubconDeliveryLetterOutItemRepository.Update(subconDeliveryLetterOutItem);
-            });
+                    subconDeliveryLetterOutItem.SetQuantity(item.Quantity);
+
+                    subconDeliveryLetterOutItem.Modify();
+
+                    await _garmentSubconDeliveryLetterOutItemRepository.Update(subconDeliveryLetterOutItem);
+                });
+            }
+            else
+            {
+                _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subconDeliveryLetterOut.Identity).ForEach(async subconDLItem =>
+                {
+                    var item = request.Items.Where(o => o.Id == subconDLItem.Identity).SingleOrDefault();
+                    
+                    if (item==null)
+                    {
+                        subconDLItem.Remove();
+                    }
+                    else
+                    {
+                        subconDLItem.Modify();
+                    }
+
+
+                    await _garmentSubconDeliveryLetterOutItemRepository.Update(subconDLItem);
+                });
+
+                foreach(var item in request.Items)
+                {
+                    if (item.Id == Guid.Empty)
+                    {
+                        GarmentSubconDeliveryLetterOutItem garmentSubconDeliveryLetterOutItem = new GarmentSubconDeliveryLetterOutItem(
+                            Guid.NewGuid(),
+                            subconDeliveryLetterOut.Identity,
+                            item.UENItemId,
+                            new ProductId(item.Product.Id),
+                            item.Product.Code,
+                            item.Product.Name,
+                            item.ProductRemark,
+                            item.DesignColor,
+                            item.Quantity,
+                            new UomId(item.Uom.Id),
+                            item.Uom.Unit,
+                            new UomId(item.UomOut.Id),
+                            item.UomOut.Unit,
+                            item.FabricType,
+                            item.SubconCuttingOutId,
+                            item.RONo,
+                            item.POSerialNumber,
+                            item.SubconCuttingOutNo
+                        );
+                        await _garmentSubconDeliveryLetterOutItemRepository.Update(garmentSubconDeliveryLetterOutItem);
+                    }
+                }
+            }
 
             subconDeliveryLetterOut.SetDate(request.DLDate.GetValueOrDefault());
-            subconDeliveryLetterOut.SetEPOItemId(request.EPOItemId);
-            subconDeliveryLetterOut.SetPONo(request.PONo);
             subconDeliveryLetterOut.SetRemark(request.Remark);
             
 

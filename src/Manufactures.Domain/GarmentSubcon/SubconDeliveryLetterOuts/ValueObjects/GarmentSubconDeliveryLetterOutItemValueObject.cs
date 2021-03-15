@@ -23,6 +23,14 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ValueObject
 
         public string FabricType { get; set; }
         public double ContractQuantity { get; set; }
+
+        #region Cutting
+        public string RONo { get; set; }
+        public Guid SubconCuttingOutId { get; set; }
+        public string POSerialNumber { get; set; }
+        public string SubconCuttingOutNo { get; set; }
+
+        #endregion
         public GarmentSubconDeliveryLetterOutItemValueObject()
         {
         }
