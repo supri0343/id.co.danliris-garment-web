@@ -21,14 +21,17 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
     {
         private readonly Mock<IGarmentServiceSubconSewingRepository> _mockServiceSubconSewingRepository;
         private readonly Mock<IGarmentServiceSubconSewingItemRepository> _mockServiceSubconSewingItemRepository;
+        private readonly Mock<IGarmentServiceSubconSewingDetailRepository> _mockServiceSubconSewingDetailRepository;
 
         public RemoveGarmentServiceSubconSewingCommandHandlerTests()
         {
             _mockServiceSubconSewingRepository = CreateMock<IGarmentServiceSubconSewingRepository>();
             _mockServiceSubconSewingItemRepository = CreateMock<IGarmentServiceSubconSewingItemRepository>();
+            _mockServiceSubconSewingDetailRepository = CreateMock<IGarmentServiceSubconSewingDetailRepository>();
 
             _MockStorage.SetupStorage(_mockServiceSubconSewingRepository);
             _MockStorage.SetupStorage(_mockServiceSubconSewingItemRepository);
+            _MockStorage.SetupStorage(_mockServiceSubconSewingDetailRepository);
         }
 
         private RemoveGarmentServiceSubconSewingCommandHandler CreateRemoveGarmentServiceSubconSewingCommandHandler()
@@ -42,6 +45,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
             // Arrange
             Guid sewingInItemGuid = Guid.NewGuid();
             Guid serviceSubconSewingGuid = Guid.NewGuid();
+            Guid serviceSubconSewingItemGuid = Guid.NewGuid();
             RemoveGarmentServiceSubconSewingCommandHandler unitUnderTest = CreateRemoveGarmentServiceSubconSewingCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
             RemoveGarmentServiceSubconSewingCommand RemoveGarmentServiceSubconSewingCommand = new RemoveGarmentServiceSubconSewingCommand(serviceSubconSewingGuid);
@@ -58,7 +62,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                 .Returns(new List<GarmentServiceSubconSewingItem>()
                 {
                     new GarmentServiceSubconSewingItem(
-                        Guid.Empty,
+                        serviceSubconSewingItemGuid,
                         serviceSubconSewingGuid,
                         null,
                         null,
@@ -69,7 +73,26 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                         null,
                         null)
                 });
-
+            _mockServiceSubconSewingDetailRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconSewingDetailReadModel, bool>>>()))
+                .Returns(new List<GarmentServiceSubconSewingDetail>()
+                {
+                    new GarmentServiceSubconSewingDetail(
+                        new Guid(),
+                        serviceSubconSewingItemGuid,
+                        Guid.Empty,
+                        Guid.Empty,
+                        new ProductId(1),
+                        null,
+                        null,
+                        null,
+                        1,
+                        new UomId(1),
+                        null,
+                        new UnitDepartmentId(1),
+                        null,
+                        null)
+                });
 
             _mockServiceSubconSewingRepository
                 .Setup(s => s.Update(It.IsAny<GarmentServiceSubconSewing>()))
@@ -77,6 +100,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
             _mockServiceSubconSewingItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentServiceSubconSewingItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconSewingItem>()));
+            _mockServiceSubconSewingDetailRepository
+                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconSewingDetail>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconSewingDetail>()));
 
             _MockStorage
                 .Setup(x => x.Save())
