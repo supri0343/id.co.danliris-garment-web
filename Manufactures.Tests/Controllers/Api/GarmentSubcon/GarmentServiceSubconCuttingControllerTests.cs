@@ -26,15 +26,21 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
     {
         private Mock<IGarmentServiceSubconCuttingRepository> _mockGarmentServiceSubconCuttingRepository;
         private Mock<IGarmentServiceSubconCuttingItemRepository> _mockGarmentServiceSubconCuttingItemRepository;
-        
+        private Mock<IGarmentServiceSubconCuttingDetailRepository> _mockGarmentServiceSubconCuttingDetailRepository;
+        private Mock<IGarmentServiceSubconCuttingSizeRepository> _mockGarmentServiceSubconCuttingSizeRepository;
+
         public GarmentServiceSubconCuttingControllerTests() : base()
         {
             _mockGarmentServiceSubconCuttingRepository = CreateMock<IGarmentServiceSubconCuttingRepository>();
             _mockGarmentServiceSubconCuttingItemRepository = CreateMock<IGarmentServiceSubconCuttingItemRepository>();
-           
+            _mockGarmentServiceSubconCuttingDetailRepository = CreateMock<IGarmentServiceSubconCuttingDetailRepository>();
+            _mockGarmentServiceSubconCuttingSizeRepository= CreateMock<IGarmentServiceSubconCuttingSizeRepository>();
+
             _MockStorage.SetupStorage(_mockGarmentServiceSubconCuttingRepository);
             _MockStorage.SetupStorage(_mockGarmentServiceSubconCuttingItemRepository);
-            
+            _MockStorage.SetupStorage(_mockGarmentServiceSubconCuttingDetailRepository);
+            _MockStorage.SetupStorage(_mockGarmentServiceSubconCuttingSizeRepository);
+
         }
 
         private GarmentServiceSubconCuttingController CreateGarmentServiceSubconCuttingController()
@@ -77,14 +83,14 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                     new GarmentServiceSubconCutting(ServiceSubconCuttingGuid, null, null, new UnitDepartmentId(1), null, null,  DateTimeOffset.Now, false)
                 });
 
-            Guid ServiceSubconCuttingItemGuid = Guid.NewGuid();
-            GarmentServiceSubconCuttingItem garmentServiceSubconCuttingItem = new GarmentServiceSubconCuttingItem(Guid.Empty, ServiceSubconCuttingGuid, null, null, new GarmentComodityId(1), null, null);
-            _mockGarmentServiceSubconCuttingItemRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentServiceSubconCuttingItemReadModel>()
-                {
-                    garmentServiceSubconCuttingItem.GetReadModel()
-                }.AsQueryable());
+            //Guid ServiceSubconCuttingItemGuid = Guid.NewGuid();
+            //GarmentServiceSubconCuttingItem garmentServiceSubconCuttingItem = new GarmentServiceSubconCuttingItem(Guid.Empty, ServiceSubconCuttingGuid, null, null, new GarmentComodityId(1), null, null);
+            //_mockGarmentServiceSubconCuttingItemRepository
+            //    .Setup(s => s.Query)
+            //    .Returns(new List<GarmentServiceSubconCuttingItemReadModel>()
+            //    {
+            //        garmentServiceSubconCuttingItem.GetReadModel()
+            //    }.AsQueryable());
 
             // Act
             var result = await unitUnderTest.Get();
@@ -113,7 +119,21 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                     new GarmentServiceSubconCuttingItem(Guid.NewGuid(), Guid.NewGuid(),null,null,new GarmentComodityId(1),null,null)
                 });
 
-           
+            _mockGarmentServiceSubconCuttingDetailRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingDetailReadModel, bool>>>()))
+                .Returns(new List<GarmentServiceSubconCuttingDetail>()
+                {
+                    new GarmentServiceSubconCuttingDetail(Guid.NewGuid(), Guid.NewGuid(),"",1)
+                });
+
+            _mockGarmentServiceSubconCuttingSizeRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingSizeReadModel, bool> >> ()))
+                .Returns(new List<GarmentServiceSubconCuttingSize>()
+                {
+                    new GarmentServiceSubconCuttingSize(Guid.NewGuid(), new SizeId(1),null,1,new UomId(1),null,null,Guid.NewGuid(),Guid.NewGuid(),Guid.NewGuid(),new ProductId(1),null,null)
+                });
+
+
             // Act
             var result = await unitUnderTest.Get(Guid.NewGuid().ToString());
 
@@ -222,10 +242,38 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                     new GarmentServiceSubconCuttingItem(Guid.NewGuid(), Guid.NewGuid(),null,null,new GarmentComodityId(1),null,null)
                 });
 
+            _mockGarmentServiceSubconCuttingDetailRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconCuttingDetailReadModel>()
+                {
+                    new GarmentServiceSubconCuttingDetailReadModel(Guid.NewGuid())
+                }.AsQueryable());
+
+            _mockGarmentServiceSubconCuttingDetailRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconCuttingDetailReadModel>>()))
+                .Returns(new List<GarmentServiceSubconCuttingDetail>()
+                {
+                    new GarmentServiceSubconCuttingDetail(Guid.NewGuid(), Guid.NewGuid(),"",1)
+                });
+
+            _mockGarmentServiceSubconCuttingSizeRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconCuttingSizeReadModel>()
+                {
+                    new GarmentServiceSubconCuttingSizeReadModel(Guid.NewGuid())
+                }.AsQueryable());
+
+            _mockGarmentServiceSubconCuttingSizeRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconCuttingSizeReadModel>>()))
+                .Returns(new List<GarmentServiceSubconCuttingSize>()
+                {
+                    new GarmentServiceSubconCuttingSize(Guid.NewGuid(), new SizeId(1),null,1,new UomId(1),null,null,Guid.NewGuid(),Guid.NewGuid(),Guid.NewGuid(),new ProductId(1),null,null)
+                });
+
             // Act
             var orderData = new
             {
-                Article = "desc",
+                SubconNo = "desc",
             };
 
             string oder = JsonConvert.SerializeObject(orderData);
