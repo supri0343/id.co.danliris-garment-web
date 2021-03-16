@@ -152,8 +152,8 @@ namespace Manufactures.Controllers.Api
 
         }
 
-        [HttpGet("get-ro")]
-        public async Task<IActionResult> GetRoByQuery(int page = 1, int size = 10, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        [HttpGet("get-by-ro")]
+        public async Task<IActionResult> GetByRo(int page = 1, int size = 10, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
         {
             VerifyUser();
 

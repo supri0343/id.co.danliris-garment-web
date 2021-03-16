@@ -196,7 +196,32 @@ namespace Manufactures.Controllers.Api
             });
         }
 
-		[HttpGet("download")]
+        [HttpGet("get-by-ro")]
+        public async Task<IActionResult> GetByRo(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentExpenditureGoodRepository.Read(page, size, order, keyword, filter);
+            var count = query.Count();
+
+            var garmentExpenditureGoodDto = _garmentExpenditureGoodRepository.Find(query).Select(o => new GarmentExpenditureGoodDto(o)).ToArray();
+
+            if (order != "{}")
+            {
+                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                garmentExpenditureGoodDto = QueryHelper<GarmentExpenditureGoodDto>.Order(garmentExpenditureGoodDto.AsQueryable(), OrderDictionary).ToArray();
+            }
+
+            await Task.Yield();
+            return Ok(garmentExpenditureGoodDto, info: new
+            {
+                page,
+                size,
+                count
+            });
+        }
+
+        [HttpGet("download")]
 		public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, string type,int page = 1, int size = 25, string Order = "{}")
 		{
 			try
