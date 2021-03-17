@@ -78,6 +78,7 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
                                 Quantity =0,
                                 //CuttingInDetailId =id,
                                 CuttingInQuantity =1,
+                                
                                 Sizes= new List<GarmentServiceSubconCuttingSizeValueObject>()
                                 {
                                     new GarmentServiceSubconCuttingSizeValueObject
@@ -86,6 +87,13 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
                                         {
                                             Id=1,
                                             Size="size"
+                                        },
+                                        Color="RED",
+                                        Quantity=1,
+                                        Uom= new Uom
+                                        {
+                                            Id=1,
+                                            Unit="uom"
                                         }
                                     }
                                 }
