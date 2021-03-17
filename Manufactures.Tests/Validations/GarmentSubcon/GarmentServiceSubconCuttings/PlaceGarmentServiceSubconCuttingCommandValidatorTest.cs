@@ -75,9 +75,20 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
                                 //    Code = "Code",
                                 //    Name = "Name"
                                 //},
-                                //Quantity =1,
+                                Quantity =0,
                                 //CuttingInDetailId =id,
                                 CuttingInQuantity =1,
+                                Sizes= new List<GarmentServiceSubconCuttingSizeValueObject>()
+                                {
+                                    new GarmentServiceSubconCuttingSizeValueObject
+                                    {
+                                        Size= new SizeValueObject()
+                                        {
+                                            Id=1,
+                                            Size="size"
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -199,6 +210,17 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
                                 //Quantity =5,
                                 //CuttingInDetailId =id,
                                 CuttingInQuantity =1,
+                                Sizes= new List<GarmentServiceSubconCuttingSizeValueObject>()
+                                {
+                                    new GarmentServiceSubconCuttingSizeValueObject
+                                    {
+                                        Size= new SizeValueObject()
+                                        {
+                                            Id=1,
+                                            Size="size"
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

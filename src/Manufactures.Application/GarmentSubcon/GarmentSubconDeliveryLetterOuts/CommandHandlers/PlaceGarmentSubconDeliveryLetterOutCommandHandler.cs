@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Manufactures.Domain.Shared.ValueObjects;
 using System.Threading;
+using Manufactures.Domain.GarmentSubconCuttingOuts.Repositories;
+using Manufactures.Domain.GarmentSubconCuttingOuts;
 
 namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts.CommandHandlers
 {
@@ -18,12 +20,14 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
         private readonly IStorage _storage;
         private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;
         private readonly IGarmentSubconDeliveryLetterOutItemRepository _garmentSubconDeliveryLetterOutItemRepository;
+        private readonly IGarmentSubconCuttingOutRepository _garmentCuttingOutRepository;
 
         public PlaceGarmentSubconDeliveryLetterOutCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentSubconDeliveryLetterOutRepository = storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
             _garmentSubconDeliveryLetterOutItemRepository = storage.GetRepository<IGarmentSubconDeliveryLetterOutItemRepository>();
+            _garmentCuttingOutRepository = storage.GetRepository<IGarmentSubconCuttingOutRepository>();
         }
 
         public async Task<GarmentSubconDeliveryLetterOut> Handle(PlaceGarmentSubconDeliveryLetterOutCommand request, CancellationToken cancellationToken)
@@ -68,6 +72,14 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     item.POSerialNumber,
                     item.SubconCuttingOutNo
                 );
+                if(request.ContractType=="SUBCON CUTTING")
+                {
+                    var subconCuttingOut= _garmentCuttingOutRepository.Query.Where(x => x.Identity == item.SubconCuttingOutId).Select(s => new GarmentSubconCuttingOut(s)).Single();
+                    subconCuttingOut.SetIsUsed(true);
+                    subconCuttingOut.Modify();
+
+                    await _garmentCuttingOutRepository.Update(subconCuttingOut);
+                }
                 await _garmentSubconDeliveryLetterOutItemRepository.Update(garmentSubconDeliveryLetterOutItem);
             }
 

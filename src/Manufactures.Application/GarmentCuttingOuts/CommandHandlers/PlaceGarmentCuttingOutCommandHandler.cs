@@ -61,7 +61,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                 request.Unit.Name,
                 new GarmentComodityId(request.Comodity.Id),
                 request.Comodity.Code,
-                request.Comodity.Name
+                request.Comodity.Name,
+                request.IsUsed
             );
 
             GarmentSewingDO garmentSewingDO = new GarmentSewingDO(

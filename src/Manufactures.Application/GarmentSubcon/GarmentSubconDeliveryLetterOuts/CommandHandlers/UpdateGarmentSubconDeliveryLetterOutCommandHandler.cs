@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Repositories;
+using Manufactures.Domain.GarmentSubconCuttingOuts;
+using Manufactures.Domain.GarmentSubconCuttingOuts.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -18,12 +20,14 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
         private readonly IStorage _storage;
         private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;
         private readonly IGarmentSubconDeliveryLetterOutItemRepository _garmentSubconDeliveryLetterOutItemRepository;
+        private readonly IGarmentSubconCuttingOutRepository _garmentCuttingOutRepository;
 
         public UpdateGarmentSubconDeliveryLetterOutCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentSubconDeliveryLetterOutRepository = _storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
             _garmentSubconDeliveryLetterOutItemRepository = _storage.GetRepository<IGarmentSubconDeliveryLetterOutItemRepository>();
+            _garmentCuttingOutRepository = storage.GetRepository<IGarmentSubconCuttingOutRepository>();
         }
 
         public async Task<GarmentSubconDeliveryLetterOut> Handle(UpdateGarmentSubconDeliveryLetterOutCommand request, CancellationToken cancellationToken)
@@ -55,6 +59,11 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     
                     if (item==null)
                     {
+                        var subconCuttingOut = _garmentCuttingOutRepository.Query.Where(x => x.Identity == subconDLItem.SubconCuttingOutId).Select(s => new GarmentSubconCuttingOut(s)).Single();
+                        subconCuttingOut.SetIsUsed(false);
+                        subconCuttingOut.Modify();
+
+                        await _garmentCuttingOutRepository.Update(subconCuttingOut);
                         subconDLItem.Remove();
                     }
                     else
@@ -90,6 +99,12 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                             item.POSerialNumber,
                             item.SubconCuttingOutNo
                         );
+                        var subconCuttingOut = _garmentCuttingOutRepository.Query.Where(x => x.Identity == item.SubconCuttingOutId).Select(s => new GarmentSubconCuttingOut(s)).Single();
+                        subconCuttingOut.SetIsUsed(true);
+                        subconCuttingOut.Modify();
+
+                        await _garmentCuttingOutRepository.Update(subconCuttingOut);
+
                         await _garmentSubconDeliveryLetterOutItemRepository.Update(garmentSubconDeliveryLetterOutItem);
                     }
                 }

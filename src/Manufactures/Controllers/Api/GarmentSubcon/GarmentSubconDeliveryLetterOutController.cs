@@ -153,7 +153,8 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             RemoveGarmentSubconDeliveryLetterOutCommand command = new RemoveGarmentSubconDeliveryLetterOutCommand(guid);
             var order = await Mediator.Send(command);
-            await PutGarmentUnitExpenditureNoteDelete(garmentSubconDeliveryLetterOut.UENId); 
+            if(garmentSubconDeliveryLetterOut.ContractType== "SUBCON BAHAN BAKU")
+                await PutGarmentUnitExpenditureNoteDelete(garmentSubconDeliveryLetterOut.UENId); 
 
             return Ok(order.Identity);
         }
