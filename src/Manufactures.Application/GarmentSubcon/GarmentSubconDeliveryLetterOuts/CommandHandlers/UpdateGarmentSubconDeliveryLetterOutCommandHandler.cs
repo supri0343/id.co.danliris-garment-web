@@ -37,8 +37,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             if(subconDeliveryLetterOut.ContractType=="SUBCON BAHAN BAKU")
             {
 
-                subconDeliveryLetterOut.SetEPOItemId(request.EPOItemId);
-                subconDeliveryLetterOut.SetPONo(request.PONo);
+                //subconDeliveryLetterOut.SetEPOItemId(request.EPOItemId);
+                //subconDeliveryLetterOut.SetPONo(request.PONo);
 
                 _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subconDeliveryLetterOut.Identity).ForEach(async subconDeliveryLetterOutItem =>
                 {

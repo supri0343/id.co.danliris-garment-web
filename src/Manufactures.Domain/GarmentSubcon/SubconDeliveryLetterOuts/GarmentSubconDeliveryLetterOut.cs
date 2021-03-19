@@ -108,27 +108,27 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             }
         }
 
-        public void SetPONo(string poNo)
-        {
-            if(this.PONo != poNo)
-            {
-                this.PONo = poNo;
-                ReadModel.PONo = poNo;
+        //public void SetPONo(string poNo)
+        //{
+        //    if(this.PONo != poNo)
+        //    {
+        //        this.PONo = poNo;
+        //        ReadModel.PONo = poNo;
 
-                MarkModified();
-            }
-        }
+        //        MarkModified();
+        //    }
+        //}
 
-        public void SetEPOItemId(int ePOItemId)
-        {
-            if(this.EPOItemId != ePOItemId)
-            {
-                this.EPOItemId = ePOItemId;
-                ReadModel.EPOItemId = ePOItemId;
+        //public void SetEPOItemId(int ePOItemId)
+        //{
+        //    if(this.EPOItemId != ePOItemId)
+        //    {
+        //        this.EPOItemId = ePOItemId;
+        //        ReadModel.EPOItemId = ePOItemId;
 
-                MarkModified();
-            }
-        }
+        //        MarkModified();
+        //    }
+        //}
 
         public void SetRemark(string remark)
         {

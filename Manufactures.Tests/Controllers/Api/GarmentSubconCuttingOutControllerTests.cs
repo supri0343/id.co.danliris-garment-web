@@ -419,6 +419,28 @@ namespace Manufactures.Tests.Controllers.Api
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
 
+        [Fact]
+        public async Task GetByRONo_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSubconCuttingOutController();
 
+            _mockSubconCuttingOutRepository
+                .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<GarmentCuttingOutReadModel>().AsQueryable());
+
+            Guid id = Guid.NewGuid();
+            _mockSubconCuttingOutRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentCuttingOutReadModel>>()))
+                .Returns(new List<GarmentSubconCuttingOut>()
+                {
+                    new GarmentSubconCuttingOut(id,"cutOutNo", "cutOutType", new UnitDepartmentId(1),"unitFromCode","unitFromName", DateTimeOffset.Now, "RONo","article",  new GarmentComodityId(1),"comodityCode", "comodityName",1,1,"poSerialNumber",false)
+                });
+            // Act
+            var result = await unitUnderTest.GetLoaderByRO(It.IsAny<string>(), It.IsAny<string>());
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
     }
 }
