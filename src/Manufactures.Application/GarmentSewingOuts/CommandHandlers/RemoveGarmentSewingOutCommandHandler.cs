@@ -22,6 +22,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
         private readonly IGarmentSewingOutRepository _garmentSewingOutRepository;
         private readonly IGarmentSewingOutItemRepository _garmentSewingOutItemRepository;
         private readonly IGarmentSewingOutDetailRepository _garmentSewingOutDetailRepository;
+        private readonly IGarmentSewingInRepository _garmentSewingInRepository;
         private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
         private readonly IGarmentCuttingInRepository _garmentCuttingInRepository;
         private readonly IGarmentCuttingInItemRepository _garmentCuttingInItemRepository;
@@ -33,6 +34,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             _garmentSewingOutRepository = storage.GetRepository<IGarmentSewingOutRepository>();
             _garmentSewingOutItemRepository = storage.GetRepository<IGarmentSewingOutItemRepository>();
             _garmentSewingOutDetailRepository = storage.GetRepository<IGarmentSewingOutDetailRepository>();
+            _garmentSewingInRepository = storage.GetRepository<IGarmentSewingInRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
             _garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
             _garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
@@ -64,6 +66,34 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
 
                 cutIn.Remove();
                 await _garmentCuttingInRepository.Update(cutIn);
+            }
+
+            if (sewOut.SewingTo == "SEWING")
+            {
+                Guid sewInId = Guid.Empty;
+                _garmentSewingOutItemRepository.Find(o => o.SewingOutId == sewOut.Identity).ForEach(async sewOutItem =>
+                {
+                    var sewInItem = _garmentSewingInItemRepository.Query.Where(o => o.SewingOutItemId == sewOutItem.Identity).Select(o => new GarmentSewingInItem(o)).Single();
+                    sewInId = sewInItem.SewingInId;
+                    if (sewOut.IsDifferentSize)
+                    {
+                        _garmentSewingOutDetailRepository.Find(o => o.SewingOutItemId == sewOutItem.Identity).ForEach(async sewOutDetail =>
+                        {
+                            sewInItem= _garmentSewingInItemRepository.Query.Where(o => o.SewingOutDetailId == sewOutDetail.Identity).Select(o => new GarmentSewingInItem(o)).Single();
+                            
+                            sewInItem.Remove();
+                            await _garmentSewingInItemRepository.Update(sewInItem);
+                        });
+                    }
+                    else
+                    {
+                        sewInItem.Remove();
+                        await _garmentSewingInItemRepository.Update(sewInItem);
+                    }
+                });
+                var sewIn= _garmentSewingInRepository.Query.Where(a=>a.Identity==sewInId).Select(o => new GarmentSewingIn(o)).Single();
+                sewIn.Remove();
+                await _garmentSewingInRepository.Update(sewIn);
             }
 
             Dictionary<Guid, double> sewInItemToBeUpdated = new Dictionary<Guid, double>();
