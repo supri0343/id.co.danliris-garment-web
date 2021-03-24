@@ -42,6 +42,7 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
                 IsUsed = true,
                 SubconDate = DateTimeOffset.Now,
                 SubconNo = "CuttingOutNo",
+                SubconType="test",
                 Unit = new UnitDepartment()
                 {
                     Id = 1,
@@ -78,6 +79,7 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
                                 Quantity =0,
                                 //CuttingInDetailId =id,
                                 CuttingInQuantity =1,
+                                
                                 Sizes= new List<GarmentServiceSubconCuttingSizeValueObject>()
                                 {
                                     new GarmentServiceSubconCuttingSizeValueObject
@@ -86,6 +88,13 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
                                         {
                                             Id=1,
                                             Size="size"
+                                        },
+                                        Color="RED",
+                                        Quantity=1,
+                                        Uom= new Uom
+                                        {
+                                            Id=1,
+                                            Unit="uom"
                                         }
                                     }
                                 }
@@ -232,6 +241,74 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
 
             // Assert
             result.ShouldHaveError();
+        }
+
+        [Fact]
+        public void Place_ShouldHaveError_Detail()
+        {
+            // Arrange
+            Guid id = Guid.NewGuid();
+            var unitUnderTest = new PlaceGarmentServiceSubconCuttingCommand()
+            {
+                IsUsed = true,
+                SubconDate = DateTimeOffset.Now,
+                SubconNo = "CuttingOutNo",
+                Unit = new UnitDepartment()
+                {
+                    Id = 1,
+                    Code = "Code",
+                    Name = "Name"
+                },
+
+                Items = new List<GarmentServiceSubconCuttingItemValueObject>()
+                {
+                    new GarmentServiceSubconCuttingItemValueObject()
+                    {
+                        Id =id,
+                        ServiceSubconCuttingId =id,
+                        Article = "Article",
+                        RONo = "RONo",
+                        Comodity = new GarmentComodity()
+                        {
+                            Id = 1,
+                            Code = "Code",
+                            Name = "Name"
+                        },
+                        Details= new List<GarmentServiceSubconCuttingDetailValueObject>()
+                        {
+                            new GarmentServiceSubconCuttingDetailValueObject
+                            {
+                                DesignColor ="DesignColor",
+                                IsSave =true,
+                                //Product =new Product()
+                                //{
+                                //    Id = 1,
+                                //    Code = "Code",
+                                //    Name = "Name"
+                                //},
+                                Quantity =10,
+                                //CuttingInDetailId =id,
+                                CuttingInQuantity =1,
+
+                                Sizes= new List<GarmentServiceSubconCuttingSizeValueObject>()
+                                {
+                                    new GarmentServiceSubconCuttingSizeValueObject
+                                    {
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            // Action
+            var validator = GetValidationRules();
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+
         }
     }
 }

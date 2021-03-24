@@ -256,5 +256,55 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             // Assert
             GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
         }
+
+        [Fact]
+        public async Task GetItem_Return_Success()
+        {
+            var unitUnderTest = CreateGarmentServiceSubconSewingController();
+            Guid id = Guid.NewGuid();
+            _mockGarmentServiceSubconSewingItemRepository
+              .Setup(s => s.ReadItem(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+              .Returns(new List<GarmentServiceSubconSewingItemReadModel>().AsQueryable());
+            GarmentServiceSubconSewingItem garmentServiceSubconSewingItem = new GarmentServiceSubconSewingItem(id, id, null, null, new GarmentComodityId(1), null, null, new BuyerId(1), null, null);
+            GarmentServiceSubconSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSubconSewingDetail(new Guid(), new Guid(), new Guid(), new Guid(), new ProductId(1), null, null, "ColorD", 1, new UomId(1), null, new UnitDepartmentId(1), null, null);
+            //id, id, new ProductId(1), null, null, null, new SizeId(1), null, 1, new UomId(1),
+            _mockGarmentServiceSubconSewingItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconSewingItemReadModel>()
+                {
+                    garmentServiceSubconSewingItem.GetReadModel()
+                }.AsQueryable());
+
+            _mockServiceSubconSewingDetailRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconSewingDetailReadModel>() {
+                    garmentServiceSubconSewingDetail.GetReadModel()
+                }.AsQueryable());
+
+            _mockGarmentServiceSubconSewingItemRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconSewingItemReadModel>>()))
+                .Returns(new List<GarmentServiceSubconSewingItem>()
+                {
+                    new GarmentServiceSubconSewingItem(id, id,  null, null,new GarmentComodityId(1),null,null, new BuyerId(1), null, null)
+                });
+            _mockServiceSubconSewingDetailRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconSewingDetailReadModel>>()))
+                .Returns(new List<GarmentServiceSubconSewingDetail>()
+                {
+                    new GarmentServiceSubconSewingDetail(id, id,  new Guid(), new Guid(), new ProductId(1), null, null, "ColorD", 1, new UomId(1), null, new UnitDepartmentId(1), null, null)
+                });
+
+            // Act
+            var orderData = new
+            {
+                article = "desc",
+            };
+
+            string order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.GetItems(1, 25, order, new List<string>(), "", "{}");
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+        }
     }
 }

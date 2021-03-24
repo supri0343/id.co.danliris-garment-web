@@ -32,7 +32,7 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
         }
 
         [Fact]
-        public void Place_ShouldNotHaveError()
+        public void Place_ShouldNotHaveError_BB()
         {
             // Arrange
             Guid id = Guid.NewGuid();
@@ -40,7 +40,7 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
             {
                 IsUsed = true,
                 ContractNo="test",
-                ContractType= "test",
+                ContractType= "SUBCON BAHAN BAKU",
                 DLDate=DateTimeOffset.Now,
                 DLType= "test",
                 EPOItemId=1,
@@ -87,14 +87,14 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
         }
 
         [Fact]
-        public void Place_HaveError_Qty()
+        public void Place_HaveError_Qty_BB()
         {
             Guid id = Guid.NewGuid();
             var unitUnderTest = new PlaceGarmentSubconDeliveryLetterOutCommand()
             {
                 IsUsed = true,
                 ContractNo = "test",
-                ContractType = "test",
+                ContractType = "SUBCON BAHAN BAKU",
                 DLDate = DateTimeOffset.Now,
                 DLType = "test",
                 EPOItemId = 1,
@@ -141,7 +141,7 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
         }
 
         [Fact]
-        public void Place_HaveError_Qty_Item()
+        public void Place_HaveError_Qty_Item_BB()
         {
             // Arrange
             var validator = GetValidationRules();
@@ -150,7 +150,7 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
             {
                 IsUsed = true,
                 ContractNo = "test",
-                ContractType = "test",
+                ContractType = "SUBCON BAHAN BAKU",
                 DLDate = DateTimeOffset.Now,
                 DLType = "test",
                 EPOItemId = 1,
@@ -184,6 +184,126 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
                             Id=1,
                             Unit="test"
                         }
+                    }
+                }
+            };
+
+            // Action
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+        }
+
+        [Fact]
+        public void Place_ShouldNotHaveError_CUTTING()
+        {
+            // Arrange
+            Guid id = Guid.NewGuid();
+            var unitUnderTest = new PlaceGarmentSubconDeliveryLetterOutCommand()
+            {
+                IsUsed = true,
+                ContractNo = "test",
+                ContractType = "SUBCON CUTTING",
+                DLDate = DateTimeOffset.Now,
+                DLType = "test",
+                EPOItemId = 1,
+                PONo = "test",
+                Remark = "test",
+                SubconContractId = new Guid(),
+                TotalQty = 1,
+                UsedQty = 1,
+                Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>()
+                {
+                    new GarmentSubconDeliveryLetterOutItemValueObject()
+                    {
+                        DesignColor ="DesignColor",
+                        Id =id,
+                        Quantity =1,
+                        SubconDeliveryLetterOutId =id,
+                        ContractQuantity=1,
+                        SubconCuttingOutId=new Guid(),
+                        POSerialNumber="test",
+                        RONo="RONo",
+                        SubconCuttingOutNo="no"
+                    }
+                }
+            };
+            // Action
+            var validator = GetValidationRules();
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldNotHaveError();
+
+        }
+
+        [Fact]
+        public void Place_HaveError_Qty_CUTTING()
+        {
+            Guid id = Guid.NewGuid();
+            var unitUnderTest = new PlaceGarmentSubconDeliveryLetterOutCommand()
+            {
+                IsUsed = true,
+                ContractNo = "test",
+                ContractType = "SUBCON CUTTING",
+                DLDate = DateTimeOffset.Now,
+                DLType = "test",
+                Remark = "test",
+                SubconContractId = new Guid(),
+                TotalQty = 9,
+                UsedQty = 1,
+                Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>()
+                {
+                    new GarmentSubconDeliveryLetterOutItemValueObject()
+                    {
+                        DesignColor ="DesignColor",
+                        Id =id,
+                        Quantity =1,
+                        SubconDeliveryLetterOutId =id,
+                        ContractQuantity=1,
+                    }
+                }
+            };
+            // Action
+            var validator = GetValidationRules();
+            var result = validator.TestValidate(unitUnderTest);
+
+            // Assert
+            result.ShouldHaveError();
+
+        }
+
+        [Fact]
+        public void Place_HaveError_Qty_Item_CUTTING()
+        {
+            // Arrange
+            var validator = GetValidationRules();
+            Guid id = Guid.NewGuid();
+            var unitUnderTest = new PlaceGarmentSubconDeliveryLetterOutCommand()
+            {
+                IsUsed = true,
+                ContractNo = "test",
+                ContractType = "SUBCON CUTTING",
+                DLDate = DateTimeOffset.Now,
+                DLType = "test",
+                Remark = "test",
+                SubconContractId = new Guid(),
+                TotalQty = 1,
+                UsedQty = 1,
+                Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>()
+                {
+                    new GarmentSubconDeliveryLetterOutItemValueObject()
+                    {
+                        DesignColor ="DesignColor",
+                        Id =id,
+                        Quantity =0,
+                        SubconDeliveryLetterOutId =id,
+                        ContractQuantity=1,
+                        SubconCuttingOutId=new Guid(),
+                        POSerialNumber="test",
+                        RONo="RONo",
+                        SubconCuttingOutNo="no"
                     }
                 }
             };
