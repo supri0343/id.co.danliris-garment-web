@@ -4,6 +4,8 @@ using Manufactures.Domain.GarmentComodityPrices;
 using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.GarmentCuttingIns;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
+using Manufactures.Domain.GarmentFinishingIns;
+using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentSewingOuts;
@@ -31,6 +33,8 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
         private readonly IGarmentCuttingInItemRepository _garmentCuttingInItemRepository;
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
+        private readonly IGarmentFinishingInRepository _garmentFinishingInRepository;
+        private readonly IGarmentFinishingInItemRepository _garmentFinishingInItemRepository;
 
         public PlaceGarmentSewingOutCommandHandler(IStorage storage)
         {
@@ -44,6 +48,8 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             _garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
+            _garmentFinishingInRepository = storage.GetRepository<IGarmentFinishingInRepository>();
+            _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
         }
 
         public async Task<GarmentSewingOut> Handle(PlaceGarmentSewingOutCommand request, CancellationToken cancellationToken)
@@ -97,7 +103,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                         new UomId(item.Uom.Id),
                         item.Uom.Unit,
                         item.Color,
-                        request.IsDifferentSize ? item.TotalQuantity : item.Quantity,
+                        0,
                         item.BasicPrice,
                         item.Price
                     );
@@ -305,27 +311,27 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                             foreach (var detail in item.Details)
                             {
                                 GarmentSewingInItem garmentSewingInItem = new GarmentSewingInItem(
-                                           Guid.NewGuid(),
-                                           garmentSewingIn.Identity,
-                                           item.Id,
-                                           detail.Id,
-                                           Guid.Empty,
-                                           Guid.Empty,
-                                           Guid.Empty,
-                                           new ProductId(item.Product.Id),
-                                           item.Product.Code,
-                                           item.Product.Name,
-                                           item.DesignColor,
-                                           new SizeId(detail.Size.Id),
-                                           detail.Size.Size,
-                                           detail.Quantity,
-                                           new UomId(detail.Uom.Id),
-                                           detail.Uom.Unit,
-                                           item.Color,
-                                           detail.Quantity,
-                                           item.BasicPrice,
-                                           item.Price
-                                       );
+                                    Guid.NewGuid(),
+                                    garmentSewingIn.Identity,
+                                    item.Id,
+                                    detail.Id,
+                                    Guid.Empty,
+                                    Guid.Empty,
+                                    Guid.Empty,
+                                    new ProductId(item.Product.Id),
+                                    item.Product.Code,
+                                    item.Product.Name,
+                                    item.DesignColor,
+                                    new SizeId(detail.Size.Id),
+                                    detail.Size.Size,
+                                    detail.Quantity,
+                                    new UomId(detail.Uom.Id),
+                                    detail.Uom.Unit,
+                                    item.Color,
+                                    detail.Quantity,
+                                    item.BasicPrice,
+                                    item.Price
+                                );
                                 await _garmentSewingInItemRepository.Update(garmentSewingInItem);
                             }
                         }
@@ -360,6 +366,88 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             }
             #endregion
 
+            #region Create FinishingIn
+            if (request.SewingTo == "FINISHING")
+            {
+                GarmentFinishingIn garmentFinishingIn = new GarmentFinishingIn(
+                    Guid.NewGuid(),
+                    GenerateFinishingInNo(request),
+                    "SEWING",
+                    new UnitDepartmentId(request.UnitTo.Id),
+                    request.UnitTo.Code,
+                    request.UnitTo.Name,
+                    request.RONo,
+                    request.Article,
+                    new UnitDepartmentId(request.UnitTo.Id),
+                    request.UnitTo.Code,
+                    request.UnitTo.Name,
+                    request.SewingOutDate.GetValueOrDefault(),
+                    new GarmentComodityId(request.Comodity.Id),
+                    request.Comodity.Code,
+                    request.Comodity.Name,
+                    0,
+                    null
+                );
+                await _garmentFinishingInRepository.Update(garmentFinishingIn);
+                foreach (var item in request.Items)
+                {
+                    if (item.IsSave)
+                    {
+                        if (request.IsDifferentSize)
+                        {
+                            foreach (var detail in item.Details)
+                            {
+                                GarmentFinishingInItem garmentFinishingInItem = new GarmentFinishingInItem(
+                                    Guid.NewGuid(),
+                                    garmentFinishingIn.Identity,
+                                    item.Id,
+                                    detail.Id,
+                                    Guid.Empty,
+                                    new SizeId(detail.Size.Id),
+                                    detail.Size.Size,
+                                    new ProductId(item.Product.Id),
+                                    item.Product.Code,
+                                    item.Product.Name,
+                                    item.DesignColor,
+                                    detail.Quantity,
+                                    detail.Quantity,
+                                    new UomId(detail.Uom.Id),
+                                    detail.Uom.Unit,
+                                    item.Color,
+                                    item.BasicPrice,
+                                    item.Price
+                                );
+                                await _garmentFinishingInItemRepository.Update(garmentFinishingInItem);
+                            }
+                        }
+                        else
+                        {
+                            GarmentFinishingInItem garmentFinishingInItem = new GarmentFinishingInItem(
+                                Guid.NewGuid(),
+                                garmentFinishingIn.Identity,
+                                item.Id,
+                                Guid.Empty,
+                                Guid.Empty,
+                                new SizeId(item.Size.Id),
+                                item.Size.Size,
+                                new ProductId(item.Product.Id),
+                                item.Product.Code,
+                                item.Product.Name,
+                                item.DesignColor,
+                                item.Quantity,
+                                item.RemainingQuantity,
+                                new UomId(item.Uom.Id),
+                                item.Uom.Unit,
+                                item.Color,
+                                item.BasicPrice,
+                                item.Price
+                            );
+                            await _garmentFinishingInItemRepository.Update(garmentFinishingInItem);
+                        }
+                    }
+                }
+            }
+            #endregion
             _storage.Save();
 
             return garmentSewingOut;
@@ -396,6 +484,25 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             var SewingInNo = $"{prefix}{(lastSewingInNo + 1).ToString("D4")}";
 
             return SewingInNo;
+        }
+
+        private string GenerateFinishingInNo(PlaceGarmentSewingOutCommand request)
+        {
+            var now = DateTime.Now;
+            var year = now.ToString("yy");
+            var month = now.ToString("MM");
+            var day = now.ToString("dd");
+            var unitcode = request.UnitTo.Code;
+
+            var prefix = $"FI{unitcode}{year}{month}";
+
+            var lastFinishingInNo = _garmentFinishingInRepository.Query.Where(w => w.FinishingInNo.StartsWith(prefix))
+                .OrderByDescending(o => o.FinishingInNo)
+                .Select(s => int.Parse(s.FinishingInNo.Replace(prefix, "")))
+                .FirstOrDefault();
+            var finInNo = $"{prefix}{(lastFinishingInNo + 1).ToString("D4")}";
+
+            return finInNo;
         }
     }
 }
