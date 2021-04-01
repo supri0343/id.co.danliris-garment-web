@@ -16,6 +16,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentFinishedGoodStocks.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentFinishingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentFinishingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentLoadings.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentMonitoringProductionStockFlows.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentScrapClassifications.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentScrapTransactions.Config;
@@ -106,9 +107,10 @@ namespace Manufactures.Data.EntityFrameworkCore
 			modelBuilder.ApplyConfiguration(new GarmentBalanceLoadingConfig());
 			modelBuilder.ApplyConfiguration(new GarmentBalanceSewingConfig());
 			modelBuilder.ApplyConfiguration(new GarmentBalanceFinishingConfig());
+            modelBuilder.ApplyConfiguration(new GarmentBalanceMonitoringProductionStockFlowConfig());
 
-			//GARMENT SUBCON
-			modelBuilder.ApplyConfiguration(new GarmentSubconContractConfig());
+            //GARMENT SUBCON
+            modelBuilder.ApplyConfiguration(new GarmentSubconContractConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingConfig());
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingItemConfig());
