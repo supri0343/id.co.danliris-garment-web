@@ -191,5 +191,19 @@ namespace Manufactures.Controllers.Api
 
             return Ok();
         }
+
+        [HttpGet("get-by-ro")]
+        public async Task<IActionResult> GetLoaderByRO(string keyword, string filter = "{}")
+        {
+            var query = _garmentFinishingInRepository.Read(1, int.MaxValue, "{}", "", filter);
+            query = query.Where(o => o.RONo.Contains(keyword));
+
+            var rOs = _garmentFinishingInRepository.Find(query)
+                .Select(o => new { o.RONo, o.Article, o.ComodityCode, o.ComodityId, o.ComodityName }).Distinct().ToList();
+
+            await Task.Yield();
+
+            return Ok(rOs);
+        }
     }
 }
