@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Microsoft.ApplicationInsights.AspNetCore;
 
 namespace DanLiris.Admin.Web
 {
@@ -32,7 +33,7 @@ namespace DanLiris.Admin.Web
         private readonly string[] EXPOSED_HEADERS = new string[] { "Content-Disposition", "api-version", "content-length", "content-md5", "content-type", "date", "request-id", "response-time" };
         private readonly string extensionsPath;
         private readonly string GARMENT_POLICY = "GarmentPolicy";
-
+        public bool HasAppInsight => !string.IsNullOrEmpty(Configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY") ?? Configuration.GetValue<string>("ApplicationInsights:InstrumentationKey"));
         public Startup(IHostingEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             this.configuration = configuration;
@@ -98,11 +99,11 @@ namespace DanLiris.Admin.Web
 			}
 
 		}
-		public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             RegisterMasterDataSettings();
             RegisterPurchasingDataSettings();
-			RegisterSalesDataSettings();
+            RegisterSalesDataSettings();
             services.AddScoped<IIdentityService, IdentityService>();
 
             services.AddSingleton<IMemoryCacheManager, MemoryCacheManager>()
@@ -177,6 +178,15 @@ namespace DanLiris.Admin.Web
                 .AddAuthorization();
 
             #endregion
+
+            #region ApplicationInsight
+            services.AddApplicationInsightsTelemetry();
+            if (HasAppInsight)
+            {
+                services.AddApplicationInsightsTelemetry();
+                services.AddAppInsightRequestBodyLogging();
+            }
+            #endregion
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -205,6 +215,11 @@ namespace DanLiris.Admin.Web
 
             //JobManager.Initialize(new JobRegistry(app.ApplicationServices));
             JobManager.Initialize(new DefaultScheduleRegistry());
+            if (HasAppInsight)
+            {
+                app.UseAppInsightRequestBodyLogging();
+                app.UseAppInsightResponseBodyLogging();
+            }
         }
     }
 }
