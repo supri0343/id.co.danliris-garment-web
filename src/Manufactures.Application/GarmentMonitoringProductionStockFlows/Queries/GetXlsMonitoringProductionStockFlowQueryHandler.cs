@@ -2358,11 +2358,11 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				PriceExpenditureGoodReturTotal += item.ExpenditureGoodReturPrice;
 				ExportQtyTotal += item.ExportQty;
 				ExportPriceTotal += item.ExportPrice;
-				OtherQtyTotal += item.OtherPrice;
+				OtherQtyTotal += item.OtherQty;
 				OtherPriceTotal += item.OtherPrice;
 				OtherQtyTotal += item.OtherQty;
 				SampleQtyTotal += item.SampleQty;
-				SamplePriceTotal += item.SampleQty;
+				SamplePriceTotal += item.SamplePrice;
 				ExpenditureGoodAdjTotal += item.ExpenditureGoodAdj;
 				PriceExpenditureGoodAdjTotal += item.ExpenditureGoodAdjPrice;
 				EndBalanceExpenditureGoodTotal += item.EndBalanceExpenditureGood;
