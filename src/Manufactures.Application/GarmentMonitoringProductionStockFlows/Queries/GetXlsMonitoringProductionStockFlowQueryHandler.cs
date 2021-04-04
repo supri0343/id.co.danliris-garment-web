@@ -2405,7 +2405,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				PriceSewingInTotal += item.PriceSewingIn;
 				QtySewingOutTotal += item.QtySewingOut;
 				PriceSewingOutTotal += item.PriceSewingOut;
-				QtySewingInTransferTotal += item.PriceSewingInTransfer;
+				QtySewingInTransferTotal += item.QtySewingInTransfer;
 				PriceSewingInTransferTotal += item.PriceSewingInTransfer;
 				WipSewingOutTotal += item.WipSewingOut;
 				PriceWipSewingOutTotal += item.WipSewingOutPrice;
