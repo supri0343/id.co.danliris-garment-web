@@ -2360,7 +2360,6 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				ExportPriceTotal += item.ExportPrice;
 				OtherQtyTotal += item.OtherQty;
 				OtherPriceTotal += item.OtherPrice;
-				OtherQtyTotal += item.OtherQty;
 				SampleQtyTotal += item.SampleQty;
 				SamplePriceTotal += item.SamplePrice;
 				ExpenditureGoodAdjTotal += item.ExpenditureGoodAdj;
@@ -2384,7 +2383,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				QtyCuttingTransferTotal += item.QtyCuttingTransfer;
 				PriceCuttingTransferTotal += item.PriceCuttingTransfer;
 				AvalCuttingTotal += item.AvalCutting;
-				PriceAvalCuttingTotal += PriceAvalCuttingTotal;
+				PriceAvalCuttingTotal += item.AvalCuttingPrice;
 				AvalSewingTotal += item.AvalSewing;
 				PriceAvalSewingTotal += item.AvalSewingPrice;
 				EndBalanceCuttingeQtyTotal += item.EndBalancCuttingeQty;
