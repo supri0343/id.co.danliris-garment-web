@@ -2158,7 +2158,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			GarmentMonitoringProductionStockFlowListViewModel garmentMonitoringProductionFlow = new GarmentMonitoringProductionStockFlowListViewModel();
 			List<GarmentMonitoringProductionStockFlowDto> monitoringDtos = new List<GarmentMonitoringProductionStockFlowDto>();
 
-			foreach (var item in querySum)
+			foreach (var item in querySum.OrderBy(s=>s.ro))
 			{
 
 				var fc = Math.Round(Convert.ToDouble(item.fc), 2);
