@@ -33,7 +33,7 @@ namespace DanLiris.Admin.Web
         private readonly string[] EXPOSED_HEADERS = new string[] { "Content-Disposition", "api-version", "content-length", "content-md5", "content-type", "date", "request-id", "response-time" };
         private readonly string extensionsPath;
         private readonly string GARMENT_POLICY = "GarmentPolicy";
-        public bool HasAppInsight => !string.IsNullOrEmpty(Configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY") ?? Configuration.GetValue<string>("ApplicationInsights:InstrumentationKey"));
+        public bool HasAppInsight => !string.IsNullOrEmpty(configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY") ?? configuration.GetValue<string>("ApplicationInsights:InstrumentationKey"));
         public Startup(IHostingEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             this.configuration = configuration;
