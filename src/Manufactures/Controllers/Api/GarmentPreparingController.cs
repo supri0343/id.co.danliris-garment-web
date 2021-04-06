@@ -2,6 +2,7 @@
 using Infrastructure.External.DanLirisClient.Microservice.Cache;
 using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
 using Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepare;
+using Manufactures.Application.GarmentPreparings.Queries.GetWIP;
 using Manufactures.Domain.GarmentPreparings.Commands;
 using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Dtos;
@@ -324,6 +325,47 @@ namespace Manufactures.Controllers.Api
             var order = await Mediator.Send(command);
 
             return Ok();
+        }
+
+        [HttpGet("wip")]
+        public async Task<IActionResult> GetWIP(DateTime date, int page = 1, int size = 25, string Order = "{}")
+        {
+            VerifyUser();
+            GetWIPQuery query = new GetWIPQuery(page, size, Order,date, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.garmentWIP, info: new
+            {
+                page,
+                size,
+                viewModel.count
+            });
+        }
+
+        [HttpGet("wip/download")]
+        public async Task<IActionResult> GetXlsWIP(DateTime date, int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsWIPQuery query = new GetXlsWIPQuery(page, size, Order, date, WorkContext.Token);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = "Laporan WIP";
+
+                if (date != null) filename += " " + ((DateTime)date).ToString("dd-MM-yyyy");
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
         }
     }
 }
