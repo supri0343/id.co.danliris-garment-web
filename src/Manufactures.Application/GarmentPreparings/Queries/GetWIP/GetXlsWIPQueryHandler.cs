@@ -184,7 +184,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
 
             for (int i = 1; i <= pages + 1; i++)
             {
-                var code1 = string.Join(",", FactPrepareTemp2.Skip(i - 1 * 800).Take(800).Select(x => x.itemCode).ToList());
+                var code1 = string.Join(",", FactPrepareTemp2.Skip((i - 1) * 800).Take(800).Select(x => x.itemCode).ToList());
                 GarmentProductResult GarmentProduct1 = await GetProducts(code1, request.token);
 
                 foreach (var a in GarmentProduct1.data)
