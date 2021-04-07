@@ -157,7 +157,7 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentCuttingOutReadModel>
 				{
-					 new GarmentCuttingOut(guidCuttingOut,"cutOutNo", "cuttingOutType",new UnitDepartmentId(1),"unitFromCode","unitFromName",DateTime.Now,"ro","article",new UnitDepartmentId(1),"","",new GarmentComodityId(1),"","").GetReadModel()
+					 new GarmentCuttingOut(guidCuttingOut,"cutOutNo", "cuttingOutType",new UnitDepartmentId(1),"unitFromCode","unitFromName",DateTime.Now,"ro","article",new UnitDepartmentId(1),"","",new GarmentComodityId(1),"","",false).GetReadModel()
 				}.AsQueryable());
 
 			var guidGarmentPreparing = Guid.NewGuid();

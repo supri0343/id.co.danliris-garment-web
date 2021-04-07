@@ -15,7 +15,7 @@ namespace Manufactures.Tests.Dtos
         public void should_Success_Instantiate()
         {
             var id = Guid.NewGuid();
-            GarmentCuttingOut garmentCuttingOut = new GarmentCuttingOut(id,"cutOutNo", "cuttingOutType",new Domain.Shared.ValueObjects.UnitDepartmentId(1), "unitFromCode", "unitFromName",DateTimeOffset.Now,"roNo","article",new Domain.Shared.ValueObjects.UnitDepartmentId(1),"unitCode","unitName",new Domain.Shared.ValueObjects.GarmentComodityId(1),"comodityCode","comodityName");
+            GarmentCuttingOut garmentCuttingOut = new GarmentCuttingOut(id,"cutOutNo", "cuttingOutType",new Domain.Shared.ValueObjects.UnitDepartmentId(1), "unitFromCode", "unitFromName",DateTimeOffset.Now,"roNo","article",new Domain.Shared.ValueObjects.UnitDepartmentId(1),"unitCode","unitName",new Domain.Shared.ValueObjects.GarmentComodityId(1),"comodityCode","comodityName", false);
 
             GarmentCuttingOutListDto dto = new GarmentCuttingOutListDto(garmentCuttingOut);
             dto.LastModifiedBy = "LastModifiedBy";

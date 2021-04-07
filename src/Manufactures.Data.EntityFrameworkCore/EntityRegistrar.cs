@@ -7,6 +7,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentAvalComponents.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentAvalProducts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentBalanceStockProductions.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentComodityPrices.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentCuttingAdjustments.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentCuttingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentDeliveryReturns.Config;
@@ -109,6 +110,8 @@ namespace Manufactures.Data.EntityFrameworkCore
 			modelBuilder.ApplyConfiguration(new GarmentBalanceFinishingConfig());
             modelBuilder.ApplyConfiguration(new GarmentBalanceMonitoringProductionStockFlowConfig());
 
+            modelBuilder.ApplyConfiguration(new GarmentCuttingAdjustmentConfig());
+            modelBuilder.ApplyConfiguration(new GarmentCuttingAdjustmentItemConfig());
             //GARMENT SUBCON
             modelBuilder.ApplyConfiguration(new GarmentSubconContractConfig());
 
