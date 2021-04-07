@@ -151,7 +151,6 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                     await _garmentSewingDOItemRepository.Update(garmentSewingDOItem);
 
                 }
-
                 await _garmentCuttingOutItemRepository.Update(garmentCuttingOutItem);
             }
 
