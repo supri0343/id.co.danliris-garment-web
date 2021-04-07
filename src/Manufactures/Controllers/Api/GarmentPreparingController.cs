@@ -130,6 +130,69 @@ namespace Manufactures.Controllers.Api
             }
         }
 
+        [HttpGet("get-by-ro")]
+        public async Task<IActionResult> GetByRo(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+            var query = _garmentPreparingRepository.Read(order, select, filter);
+            int totalRows = query.Count();
+            var garmentPreparingDto = _garmentPreparingRepository.Find(query).Select(o => new GarmentPreparingDto(o)).ToArray();
+
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var garmentPreparingDtoList = garmentPreparingDto.Where(x => x.UENNo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    || x.Unit.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    || (x.Article != null && x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+                                    //|| x.Items.Where(y => y.ProductId.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+                                    ).ToList();
+
+                var garmentPreparingDtoListArray = garmentPreparingDtoList.ToArray();
+                if (order != "{}")
+                {
+                    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                    garmentPreparingDtoListArray = QueryHelper<GarmentPreparingDto>.Order(garmentPreparingDtoList.AsQueryable(), OrderDictionary).ToArray();
+                }
+                else
+                {
+                    garmentPreparingDtoListArray = garmentPreparingDtoList.OrderByDescending(x => x.LastModifiedDate).ToArray();
+                }
+
+                garmentPreparingDtoListArray = garmentPreparingDtoListArray.Skip((page - 1) * size).Take(size).ToArray();
+
+                await Task.Yield();
+                return Ok(garmentPreparingDtoListArray, info: new
+                {
+                    page,
+                    size,
+                    total = totalRows
+                });
+            }
+            else
+            {
+                if (order != "{}")
+                {
+                    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                    garmentPreparingDto = QueryHelper<GarmentPreparingDto>.Order(garmentPreparingDto.AsQueryable(), OrderDictionary).ToArray();
+                }
+                else
+                {
+                    garmentPreparingDto = garmentPreparingDto.OrderByDescending(x => x.LastModifiedDate).ToArray();
+                }
+
+                garmentPreparingDto = garmentPreparingDto.Skip((page - 1) * size).Take(size).ToArray();
+
+                await Task.Yield();
+                return Ok(garmentPreparingDto, info: new
+                {
+                    page,
+                    size,
+                    total = totalRows
+                });
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {

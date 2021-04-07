@@ -398,7 +398,7 @@ namespace Manufactures.Tests.Controllers.Api
             };
 
             string order = JsonConvert.SerializeObject(orderData);
-            var result = await unitUnderTest.GetRoByQuery(1, 25, order, new List<string>(), "", "{}");
+            var result = await unitUnderTest.GetByRo(1, 25, order, new List<string>(), "", "{}");
 
             // Assert
             GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);

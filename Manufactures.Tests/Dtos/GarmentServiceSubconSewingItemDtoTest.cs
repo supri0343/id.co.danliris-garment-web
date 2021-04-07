@@ -14,7 +14,7 @@ namespace Manufactures.Tests.Dtos
             Guid id = Guid.NewGuid();
             var dto = new GarmentServiceSubconSewingDto(new GarmentServiceSubconSewing(id, "serviceSubconSewingNo",   DateTimeOffset.Now, false));
 
-           // Assert.NotNull(dto.Unit);
+            Assert.NotNull(dto);
         }
     }
 }
