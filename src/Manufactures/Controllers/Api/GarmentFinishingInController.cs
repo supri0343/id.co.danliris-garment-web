@@ -60,7 +60,7 @@ namespace Manufactures.Controllers.Api
                     Products = items.Select(i => i.ProductName).Distinct().ToList(),
                     TotalFinishingInQuantity = Math.Round(items.Sum(i => i.Quantity), 2),
                     TotalRemainingQuantity = Math.Round(items.Sum(i => i.RemainingQuantity), 2),
-                    
+
                 };
             }).ToList();
 
@@ -74,30 +74,30 @@ namespace Manufactures.Controllers.Api
             });
         }
 
-        [HttpGet("get-by-ro")]
-        public async Task<IActionResult> GetByRo(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
-        {
-            VerifyUser();
+        //[HttpGet("get-by-ro")]
+        //public async Task<IActionResult> GetByRo(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        //{
+        //    VerifyUser();
 
-            var query = _garmentFinishingInRepository.ReadComplete(page, size, order, keyword, filter);
-            var count = query.Count();
+        //    var query = _garmentFinishingInRepository.ReadComplete(page, size, order, keyword, filter);
+        //    var count = query.Count();
 
-            var garmentFinishingInDto = _garmentFinishingInRepository.Find(query).Select(o => new GarmentFinishingInDto(o)).ToArray();
+        //    var garmentFinishingInDto = _garmentFinishingInRepository.Find(query).Select(o => new GarmentFinishingInDto(o)).ToArray();
 
-            if (order != "{}")
-            {
-                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                garmentFinishingInDto = QueryHelper<GarmentFinishingInDto>.Order(garmentFinishingInDto.AsQueryable(), OrderDictionary).ToArray();
-            }
+        //    if (order != "{}")
+        //    {
+        //        Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+        //        garmentFinishingInDto = QueryHelper<GarmentFinishingInDto>.Order(garmentFinishingInDto.AsQueryable(), OrderDictionary).ToArray();
+        //    }
 
-            await Task.Yield();
-            return Ok(garmentFinishingInDto, info: new
-            {
-                page,
-                size,
-                count
-            });
-        }
+        //    await Task.Yield();
+        //    return Ok(garmentFinishingInDto, info: new
+        //    {
+        //        page,
+        //        size,
+        //        count
+        //    });
+        //}
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
