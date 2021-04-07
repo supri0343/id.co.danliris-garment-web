@@ -152,8 +152,8 @@ namespace Manufactures.Controllers.Api
 
         }
 
-        [HttpGet("get-ro")]
-        public async Task<IActionResult> GetRoByQuery(int page = 1, int size = 10, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        [HttpGet("get-by-ro")]
+        public async Task<IActionResult> GetByRo(int page = 1, int size = 10, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
         {
             VerifyUser();
 
@@ -167,6 +167,7 @@ namespace Manufactures.Controllers.Api
                 Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
                 garmentSewingOutDto = QueryHelper<GarmentSewingOutDto>.Order(garmentSewingOutDto.AsQueryable(), OrderDictionary).ToArray();
             }
+
 
             await Task.Yield();
             return Ok(garmentSewingOutDto, info: new
