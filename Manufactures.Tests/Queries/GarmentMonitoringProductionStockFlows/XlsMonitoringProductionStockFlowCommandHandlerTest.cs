@@ -424,7 +424,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentAvalComponentReadModel>
 				{
-					new GarmentAvalComponent(guidAval,"",new UnitDepartmentId(1),"","","","ro","article",new GarmentComodityId(1),"","",DateTimeOffset.Now).GetReadModel()
+					new GarmentAvalComponent(guidAval,"",new UnitDepartmentId(1),"","","","ro","article",new GarmentComodityId(1),"","",DateTimeOffset.Now, false).GetReadModel()
 				}.AsQueryable());
 			_mockGarmentExpenditureGoodItemRepository
 				.Setup(s => s.Query)
@@ -707,7 +707,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentAvalComponentReadModel>
 				{
-					new GarmentAvalComponent(guidAval,"",new UnitDepartmentId(1),"","","","ro","article",new GarmentComodityId(1),"","",DateTimeOffset.Now).GetReadModel()
+					new GarmentAvalComponent(guidAval,"",new UnitDepartmentId(1),"","","","ro","article",new GarmentComodityId(1),"","",DateTimeOffset.Now, false).GetReadModel()
 				}.AsQueryable());
 			_mockGarmentExpenditureGoodItemRepository
 				.Setup(s => s.Query)
