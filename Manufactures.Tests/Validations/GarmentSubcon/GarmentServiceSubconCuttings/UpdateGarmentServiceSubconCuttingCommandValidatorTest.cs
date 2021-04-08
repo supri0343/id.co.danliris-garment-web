@@ -67,15 +67,25 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
                             {
                                 DesignColor ="DesignColor",
                                 IsSave =true,
-                                //Product =new Product()
-                                //{
-                                //    Id = 1,
-                                //    Code = "Code",
-                                //    Name = "Name"
-                                //},
-                                //Quantity =1,
-                                //CuttingInDetailId =id,
                                 CuttingInQuantity =1,
+                                Sizes= new List<GarmentServiceSubconCuttingSizeValueObject>()
+                                {
+                                    new GarmentServiceSubconCuttingSizeValueObject
+                                    {
+                                        Size= new SizeValueObject()
+                                        {
+                                            Id=1,
+                                            Size="size"
+                                        },
+                                        Color="RED",
+                                        Quantity=1,
+                                        Uom= new Uom
+                                        {
+                                            Id=1,
+                                            Unit="uom"
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

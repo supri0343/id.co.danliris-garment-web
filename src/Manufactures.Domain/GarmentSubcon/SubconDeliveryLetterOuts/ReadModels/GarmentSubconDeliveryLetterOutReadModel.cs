@@ -17,14 +17,14 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels
         public string ContractType { get; internal set; }
         public DateTimeOffset DLDate { get; internal set; }
 
+
         public int UENId { get; internal set; }
         public string UENNo { get; internal set; }
-
         public string PONo { get; internal set; }
         public int EPOItemId { get; internal set; }
 
-        public string Remark { get; internal set; }
 
+        public string Remark { get; internal set; }
         public bool IsUsed { get; internal set; }
         public virtual List<GarmentSubconDeliveryLetterOutItemReadModel> GarmentSubconDeliveryLetterOutItem { get; internal set; }
     }

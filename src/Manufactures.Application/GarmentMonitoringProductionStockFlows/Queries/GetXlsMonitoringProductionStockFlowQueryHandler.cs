@@ -1491,6 +1491,9 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                          BeginingBalanceFinishingPrice = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType != "PEMBELIAN") ? -b.Price : 0,
                                          BeginingBalanceExpenditureGood = ((a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType != "PEMBELIAN") ? b.Quantity : 0) + ((a.FinishingOutDate < dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Quantity : 0),
                                          BeginingBalanceExpenditureGoodPrice = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType != "PEMBELIAN") ? b.Price : 0 + ((a.FinishingOutDate < dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Price : 0),
+                                         BeginingBalanceSubconQty = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType == "PEMBELIAN") ? -b.Quantity : 0,
+                                         BeginingBalanceSubconPrice = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType == "PEMBELIAN") ? -b.Price : 0,
+
                                          FinishingOutQty = (a.FinishingOutDate >= dateFrom && d.FinishingInType != "PEMBELIAN") ? b.Quantity : 0,
                                          FinishingOutPrice = (a.FinishingOutDate >= dateFrom && d.FinishingInType != "PEMBELIAN") ? b.Price : 0,
                                          SubconOutQty = (a.FinishingOutDate >= dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
@@ -2164,7 +2167,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
             GarmentMonitoringProductionStockFlowListViewModel garmentMonitoringProductionFlow = new GarmentMonitoringProductionStockFlowListViewModel();
             List<GarmentMonitoringProductionStockFlowDto> monitoringDtos = new List<GarmentMonitoringProductionStockFlowDto>();
 
-            foreach (var item in querySum)
+            foreach (var item in querySum.OrderBy(s=>s.ro))
             {
 
                 var fc = Math.Round(Convert.ToDouble(item.fc), 2);
@@ -2358,11 +2361,10 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				PriceExpenditureGoodReturTotal += item.ExpenditureGoodReturPrice;
 				ExportQtyTotal += item.ExportQty;
 				ExportPriceTotal += item.ExportPrice;
-				OtherQtyTotal += item.OtherPrice;
-				OtherPriceTotal += item.OtherPrice;
 				OtherQtyTotal += item.OtherQty;
+				OtherPriceTotal += item.OtherPrice;
 				SampleQtyTotal += item.SampleQty;
-				SamplePriceTotal += item.SampleQty;
+				SamplePriceTotal += item.SamplePrice;
 				ExpenditureGoodAdjTotal += item.ExpenditureGoodAdj;
 				PriceExpenditureGoodAdjTotal += item.ExpenditureGoodAdjPrice;
 				EndBalanceExpenditureGoodTotal += item.EndBalanceExpenditureGood;
@@ -2384,7 +2386,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				QtyCuttingTransferTotal += item.QtyCuttingTransfer;
 				PriceCuttingTransferTotal += item.PriceCuttingTransfer;
 				AvalCuttingTotal += item.AvalCutting;
-				PriceAvalCuttingTotal += PriceAvalCuttingTotal;
+				PriceAvalCuttingTotal += item.AvalCuttingPrice;
 				AvalSewingTotal += item.AvalSewing;
 				PriceAvalSewingTotal += item.AvalSewingPrice;
 				EndBalanceCuttingeQtyTotal += item.EndBalancCuttingeQty;
@@ -2405,7 +2407,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				PriceSewingInTotal += item.PriceSewingIn;
 				QtySewingOutTotal += item.QtySewingOut;
 				PriceSewingOutTotal += item.PriceSewingOut;
-				QtySewingInTransferTotal += item.PriceSewingInTransfer;
+				QtySewingInTransferTotal += item.QtySewingInTransfer;
 				PriceSewingInTransferTotal += item.PriceSewingInTransfer;
 				WipSewingOutTotal += item.WipSewingOut;
 				PriceWipSewingOutTotal += item.WipSewingOutPrice;
@@ -2715,7 +2717,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					report.BeginingBalanceLoadingQty, report.QtyLoadingIn,report.QtyLoadingInTransfer, report.QtyLoading, report.QtyLoadingAdjs, report.EndBalanceLoadingQty,
 					report.BeginingBalanceSewingQty, report.QtySewingIn, report.QtySewingOut, report.QtySewingInTransfer, report.WipSewingOut, report.WipFinishingOut, report.QtySewingRetur, report.QtySewingAdj, report.EndBalanceSewingQty,
 					report.BeginingBalanceFinishingQty, report.FinishingInQty, report.BeginingBalanceSubconQty, report.SubconInQty, report.SubconOutQty, report.EndBalanceSubconQty, report.FinishingOutQty, report.FinishingInTransferQty, report.FinishingAdjQty, report.FinishingReturQty, report.EndBalanceFinishingQty,
-					report.BeginingBalanceExpenditureGood, report.ExpenditureGoodInTransfer, report.FinishingInTransferQty, report.ExpenditureGoodRetur, report.ExportQty, report.OtherQty, report.SampleQty, report.ExpenditureGoodAdj, report.EndBalanceExpenditureGood);
+					report.BeginingBalanceExpenditureGood, report.FinishingInExpenditure, report.FinishingInTransferQty, report.ExpenditureGoodRetur, report.ExportQty, report.OtherQty, report.SampleQty, report.ExpenditureGoodAdj, report.EndBalanceExpenditureGood);
 					counter++;
 				}
 				else
@@ -2725,7 +2727,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 						report.BeginingBalanceLoadingQty, report.BeginingBalanceLoadingPrice, report.QtyLoadingIn, report.PriceLoadingIn,report.QtyLoadingInTransfer,report.PriceLoadingInTransfer, report.QtyLoading, report.PriceLoading, report.QtyLoadingAdjs, report.PriceLoadingAdjs, report.EndBalanceLoadingQty, report.EndBalanceLoadingPrice,
 						report.BeginingBalanceSewingQty, report.BeginingBalanceSewingPrice, report.QtySewingIn,report.PriceSewingIn, report.QtySewingOut,report.PriceSewingOut, report.QtySewingInTransfer,report.PriceSewingInTransfer, report.WipSewingOut,report.WipSewingOutPrice, report.WipFinishingOut,report.WipFinishingOutPrice, report.QtySewingRetur,report.PriceSewingRetur, report.QtySewingAdj,report.PriceSewingAdj, report.EndBalanceSewingQty,report.EndBalanceSewingPrice,
 						report.BeginingBalanceFinishingQty,report.BeginingBalanceFinishingPrice, report.FinishingInQty,report.FinishingInPrice, report.BeginingBalanceSubconQty,report.BeginingBalanceSubconPrice, report.SubconInQty,report.SubconInPrice, report.SubconOutQty,report.SubconOutPrice, report.EndBalanceSubconQty,report.EndBalanceSubconPrice, report.FinishingOutQty,report.FinishingOutPrice, report.FinishingInTransferQty,report.FinishingInTransferPrice, report.FinishingAdjQty,report.FinishingAdjPRice, report.FinishingReturQty,report.FinishingReturPrice, report.EndBalanceFinishingQty,report.EndBalanceFinishingPrice,
-						report.BeginingBalanceExpenditureGood,report.BeginingBalanceExpenditureGoodPrice, report.ExpenditureGoodInTransfer,report.ExpenditureGoodInTransferPrice, report.FinishingInTransferQty,report.FinishingInTransferPrice, report.ExpenditureGoodRetur,report.ExpenditureGoodReturPrice,report.FinishingInExpenditure * Convert.ToDouble(report.Fare), report.FinishingInExpenditure * report.BasicPrice, report.ExportQty,report.ExportPrice, report.OtherQty,report.OtherPrice, report.SampleQty,report.SamplePrice, report.ExpenditureGoodAdj,report.ExpenditureGoodAdjPrice, report.EndBalanceExpenditureGood,report.EndBalanceExpenditureGoodPrice,
+						report.BeginingBalanceExpenditureGood,report.BeginingBalanceExpenditureGoodPrice, report.FinishingInExpenditure,report.FinishingInExpenditurepPrice, report.FinishingInTransferQty,report.FinishingInTransferPrice, report.ExpenditureGoodRetur,report.ExpenditureGoodReturPrice,report.FinishingInExpenditure * Convert.ToDouble(report.Fare), report.FinishingInExpenditure * report.BasicPrice, report.ExportQty,report.ExportPrice, report.OtherQty,report.OtherPrice, report.SampleQty,report.SamplePrice, report.ExpenditureGoodAdj,report.ExpenditureGoodAdjPrice, report.EndBalanceExpenditureGood,report.EndBalanceExpenditureGoodPrice,
 						report.FareNew, report.CuttingNew, report.LoadingNew, report.SewingNew, report.FinishingNew,report.SubconNew, report.ExpenditureNew
 						);
 					counter++;

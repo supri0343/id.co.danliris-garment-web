@@ -36,14 +36,15 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
         {
             RuleFor(r => r.SubconContractId).NotNull();
             RuleFor(r => r.ContractNo).NotNull();
-            RuleFor(r => r.UENId).NotEmpty();
+            RuleFor(r => r.UENId).NotEmpty().When(r => r.ContractType == "SUBCON BAHAN BAKU");
             RuleFor(r => r.DLDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
-            RuleFor(r => r.UENNo).NotNull();
-            RuleFor(r => r.PONo).NotNull();
-            RuleFor(r => r.EPOItemId).NotNull();
+            RuleFor(r => r.UENNo).NotNull().When(r=>r.ContractType== "SUBCON BAHAN BAKU");
+            RuleFor(r => r.PONo).NotNull().When(r => r.ContractType == "SUBCON BAHAN BAKU");
+            RuleFor(r => r.EPOItemId).NotNull().When(r => r.ContractType == "SUBCON BAHAN BAKU");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item tidak boleh kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
-            RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutItemValueObjectValidator());
+            RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutItemValueObjectValidator()).When(r => r.ContractType == "SUBCON BAHAN BAKU");
+            RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutCuttingItemValueObjectValidator()).When(r => r.ContractType == "SUBCON CUTTING");
             RuleFor(r => r.TotalQty)
                  .LessThanOrEqualTo(r => r.UsedQty)
                  .WithMessage(x => $"'Jumlah Total' tidak boleh lebih dari '{x.UsedQty}'.");
@@ -58,10 +59,22 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
             RuleFor(r => r.Quantity)
                 .GreaterThan(0)
                 .WithMessage("'Jumlah' harus lebih dari '0'.");
+        }
+    }
 
-            //RuleFor(r => r.Quantity)
-            //    .LessThanOrEqualTo(r => r.ContractQuantity)
-            //    .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.ContractQuantity}'.");
+    public class GarmentSubconDeliveryLetterOutCuttingItemValueObjectValidator : AbstractValidator<GarmentSubconDeliveryLetterOutItemValueObject>
+    {
+        public GarmentSubconDeliveryLetterOutCuttingItemValueObjectValidator()
+        {
+
+            RuleFor(r => r.Quantity)
+                .GreaterThan(0)
+                .WithMessage("'Jumlah' harus lebih dari '0'.");
+
+            RuleFor(r => r.RONo).NotNull();
+            RuleFor(r => r.POSerialNumber).NotNull();
+            RuleFor(r => r.SubconCuttingOutId).NotNull();
+            RuleFor(r => r.SubconCuttingOutNo).NotNull();
         }
     }
 }
