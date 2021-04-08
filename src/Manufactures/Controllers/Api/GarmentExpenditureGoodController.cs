@@ -1,6 +1,7 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentExpenditureGoods.Queries;
+using Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationExpenditureGoods;
 using Manufactures.Domain.GarmentDeliveryReturns.ValueObjects;
 using Manufactures.Domain.GarmentExpenditureGoods;
 using Manufactures.Domain.GarmentExpenditureGoods.Commands;
@@ -294,6 +295,50 @@ namespace Manufactures.Controllers.Api
             var order = await Mediator.Send(command);
 
             return Ok();
+        }
+
+        [HttpGet("mutation")]
+        public async Task<IActionResult> GetMutation(DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+        {
+            VerifyUser();
+            GetMutationExpenditureGoodsQuery query = new GetMutationExpenditureGoodsQuery(page, size, Order, dateFrom, dateTo, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.garmentMutations, info: new
+            {
+                page,
+                size,
+                viewModel.count
+            });
+        }
+
+        [HttpGet("mutation/download")]
+        public async Task<IActionResult> GetXlsMutation(DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsMutationExpenditureGoodsQuery query = new GetXlsMutationExpenditureGoodsQuery(page, size, Order, dateFrom, dateTo, WorkContext.Token);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = "Laporan Pertanggungjawaban Mutasi Barang Jadi ";
+
+                if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+                if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
         }
     }
 }

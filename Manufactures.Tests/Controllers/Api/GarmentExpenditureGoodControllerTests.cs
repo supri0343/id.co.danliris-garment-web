@@ -1,5 +1,6 @@
 ﻿using Barebone.Tests;
 using Manufactures.Application.GarmentExpenditureGoods.Queries;
+using Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationExpenditureGoods;
 using Manufactures.Controllers.Api;
 using Manufactures.Domain.GarmentExpenditureGoods;
 using Manufactures.Domain.GarmentExpenditureGoods.Commands;
@@ -378,6 +379,50 @@ namespace Manufactures.Tests.Controllers.Api
                 .Throws(new Exception());
 
             var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+        }
+
+
+        [Fact]
+        public async Task GetMutation_Return_Success()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+            Guid ExpenditureGoodGuid = Guid.NewGuid();
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetMutationExpenditureGoodsQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentMutationExpenditureGoodListViewModel());
+
+            // Act
+            var result = await unitUnderTest.GetMutation(DateTime.Now.AddDays(-1), DateTime.Now.AddDays(1), 1, 25, "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task GetXLSMutationBehavior()
+        {
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsMutationExpenditureGoodsQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
+
+            var result = await unitUnderTest.GetXlsMutation(DateTime.Now, DateTime.Now, 1, 25, "{}");
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+        }
+
+        [Fact]
+        public async Task GetMutationXLS_Throws_InternalServerError()
+        {
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsMutationExpenditureGoodsQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            var result = await unitUnderTest.GetXlsMutation(DateTime.Now, DateTime.Now, 1, 25, "{}");
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
         }
 
