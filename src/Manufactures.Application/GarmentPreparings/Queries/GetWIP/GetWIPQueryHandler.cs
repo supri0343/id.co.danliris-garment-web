@@ -17,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http;
 
 namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
 {
@@ -65,9 +66,10 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
         {
             GarmentProductResult garmentProduct = new GarmentProductResult();
 
+            var httpContent = new StringContent(JsonConvert.SerializeObject(codes), Encoding.UTF8, "application/json");
 
-            var garmentProductionUri = MasterDataSettings.Endpoint + $"master/garmentProducts/byCode?code={codes}";
-            var httpResponse = await _http.GetAsync(garmentProductionUri, token);
+            var garmentProductionUri = MasterDataSettings.Endpoint + $"master/garmentProducts/byCode";
+            var httpResponse = await _http.SendAsync(HttpMethod.Get, garmentProductionUri, token, httpContent);
 
 
 
@@ -173,21 +175,29 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
 
             FactPrepareTemp2 = FactPrepareTemp2.Where(x => x.Quantity > 0.01).Select(x => x).OrderBy(x=>x.itemCode).ToList();
 
-            var pages = (int)Math.Ceiling((decimal)FactPrepareTemp2.Count() / (decimal)150);
+            //var pages = (int)Math.Ceiling((decimal)FactPrepareTemp2.Count() / (decimal)150);
 
             List<GarmentProductViewModel> GarmentProducts = new List<GarmentProductViewModel>();
 
-            for (int i = 1; i <= pages; i++)
+            var code1 = string.Join(",", FactPrepareTemp2.Select(x => x.itemCode).ToList());
+            GarmentProductResult GarmentProduct1 = await GetProducts(code1, request.token);
+
+            foreach (var a in GarmentProduct1.data)
             {
-                var code1 = string.Join(",", FactPrepareTemp2.Skip((i - 1) * 150).Take(150).Select(x => x.itemCode).ToList());
-                GarmentProductResult GarmentProduct1 = await GetProducts(code1, request.token);
-
-                foreach(var a in GarmentProduct1.data)
-                {
-                    GarmentProducts.Add(a);
-                }
-
+                GarmentProducts.Add(a);
             }
+
+            //for (int i = 1; i <= pages; i++)
+            //{
+            //    var code1 = string.Join(",", FactPrepareTemp2.Skip((i - 1) * 150).Take(150).Select(x => x.itemCode).ToList());
+            //    GarmentProductResult GarmentProduct1 = await GetProducts(code1, request.token);
+
+            //    foreach(var a in GarmentProduct1.data)
+            //    {
+            //        GarmentProducts.Add(a);
+            //    }
+
+            //}
 
 
             foreach (var a in FactPrepareTemp2.Where(x => x.Quantity > 0.01))
