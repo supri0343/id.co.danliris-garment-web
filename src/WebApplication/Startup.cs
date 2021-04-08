@@ -197,6 +197,13 @@ namespace DanLiris.Admin.Web
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
+
+            if (HasAppInsight)
+            {
+                app.UseAppInsightRequestBodyLogging();
+                app.UseAppInsightResponseBodyLogging();
+            }
+
             app.UseCors(GARMENT_POLICY);
             app.UseExtCore();
 
@@ -210,16 +217,9 @@ namespace DanLiris.Admin.Web
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
             });
 
-
-
-
             //JobManager.Initialize(new JobRegistry(app.ApplicationServices));
             JobManager.Initialize(new DefaultScheduleRegistry());
-            if (HasAppInsight)
-            {
-                app.UseAppInsightRequestBodyLogging();
-                app.UseAppInsightResponseBodyLogging();
-            }
+            
         }
     }
 }
