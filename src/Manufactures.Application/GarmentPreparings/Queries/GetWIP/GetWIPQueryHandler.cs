@@ -173,13 +173,13 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
 
             FactPrepareTemp2 = FactPrepareTemp2.Where(x => x.Quantity > 0.01).Select(x => x).OrderBy(x=>x.itemCode).ToList();
 
-            var pages = (int)Math.Ceiling((decimal)FactPrepareTemp2.Count() / (decimal)200);
+            var pages = (int)Math.Ceiling((decimal)FactPrepareTemp2.Count() / (decimal)150);
 
             List<GarmentProductViewModel> GarmentProducts = new List<GarmentProductViewModel>();
 
             for (int i = 1; i <= pages; i++)
             {
-                var code1 = string.Join(",", FactPrepareTemp2.Skip((i - 1) * 200).Take(200).Select(x => x.itemCode).ToList());
+                var code1 = string.Join(",", FactPrepareTemp2.Skip((i - 1) * 150).Take(150).Select(x => x.itemCode).ToList());
                 GarmentProductResult GarmentProduct1 = await GetProducts(code1, request.token);
 
                 foreach(var a in GarmentProduct1.data)
