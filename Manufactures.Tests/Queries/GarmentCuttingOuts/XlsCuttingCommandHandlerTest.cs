@@ -144,7 +144,7 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentAvalComponentReadModel>
 				{
-					new GarmentAvalComponent(guidAvalComponent,"",new UnitDepartmentId(1),"","","","ro","",new GarmentComodityId(1),"","",DateTimeOffset.Now).GetReadModel()
+					new GarmentAvalComponent(guidAvalComponent,"",new UnitDepartmentId(1),"","","","ro","",new GarmentComodityId(1),"","",DateTimeOffset.Now, false).GetReadModel()
 				}.AsQueryable());
 
 			_mockGarmentCuttingOutItemRepository
@@ -237,7 +237,7 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentAvalComponentReadModel>
 				{
-					new GarmentAvalComponent(guidAvalComponent,"",new UnitDepartmentId(1),"","","","ro","",new GarmentComodityId(1),"","",DateTimeOffset.Now).GetReadModel()
+					new GarmentAvalComponent(guidAvalComponent,"",new UnitDepartmentId(1),"","","","ro","",new GarmentComodityId(1),"","",DateTimeOffset.Now, false).GetReadModel()
 				}.AsQueryable());
 
 			_mockGarmentCuttingOutItemRepository
