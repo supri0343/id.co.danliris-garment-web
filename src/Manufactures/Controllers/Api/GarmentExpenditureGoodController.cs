@@ -73,6 +73,39 @@ namespace Manufactures.Controllers.Api
             });
         }
 
+        [HttpGet("byRO")]
+        public async Task<IActionResult> GetRONo(string RONo)
+        {
+            VerifyUser();
+
+            var query = _garmentExpenditureGoodRepository.Read(1, 75, "{}", null, "{}");
+            query = query.Where(x => x.RONo == RONo).Select(x => x);
+            var total = query.Count();
+            double totalQty = query.Sum(a => a.Items.Sum(b => b.Quantity));
+            //query = query.Skip((page - 1) * size).Take(size);
+
+            List<GarmentExpenditureGoodListDto> garmentExpenditureGoodListDtos = _garmentExpenditureGoodRepository
+                .Find(query)
+                .Select(ExGood => new GarmentExpenditureGoodListDto(ExGood))
+                .ToList();
+
+            var dtoIds = garmentExpenditureGoodListDtos.Select(s => s.Id).ToList();
+            var items = _garmentExpenditureGoodItemRepository.Query
+                .Where(o => dtoIds.Contains(o.ExpenditureGoodId))
+                .Select(s => new { s.Identity, s.ExpenditureGoodId, s.Quantity })
+                .ToList();
+
+            var itemIds = items.Select(s => s.Identity).ToList();
+            Parallel.ForEach(garmentExpenditureGoodListDtos, dto =>
+            {
+                var currentItems = items.Where(w => w.ExpenditureGoodId == dto.Id);
+                dto.TotalQuantity = currentItems.Sum(i => i.Quantity);
+            });
+
+            await Task.Yield();
+            return Ok(garmentExpenditureGoodListDtos);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
