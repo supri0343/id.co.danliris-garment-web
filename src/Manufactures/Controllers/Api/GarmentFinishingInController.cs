@@ -60,7 +60,7 @@ namespace Manufactures.Controllers.Api
                     Products = items.Select(i => i.ProductName).Distinct().ToList(),
                     TotalFinishingInQuantity = Math.Round(items.Sum(i => i.Quantity), 2),
                     TotalRemainingQuantity = Math.Round(items.Sum(i => i.RemainingQuantity), 2),
-                    
+
                 };
             }).ToList();
 
