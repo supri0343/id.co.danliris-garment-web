@@ -295,8 +295,6 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                           where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro))
                                           /*&& aa.UnitFromId == request.unit && aa.CuttingOutDate <= dateTo && aa.CuttingOutType == "SEWING" && aa.UnitId == aa.UnitFromId*/
                                           select aa)
-							  join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
-							 
 							  select new { BasicPrice = (from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault(), FareNew = (from aa in garmentComodityPriceRepository.Query where aa.UnitId == request.unit && a.ComodityId == aa.ComodityId && aa.Date ==dateFareNew select aa.Price).FirstOrDefault(), Fare = (from aa in garmentComodityPriceRepository.Query where aa.UnitId == request.unit && a.ComodityId == aa.ComodityId && aa.IsValid == true select aa.Price).FirstOrDefault(), Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, FC = (from cost in sumFCs where cost.RO == a.RONo select cost.FC / cost.Count).FirstOrDefault() }).Distinct();
          
 

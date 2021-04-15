@@ -188,11 +188,11 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 											where aa.UnitId == request.unit && aa.SewingOutDate <= dateTo
 											select aa)
 											join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
-								  select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()) , loadingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate < dateFrom && a.SewingOutDate > dateBalance ? -b.Quantity : 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article    };
+								  select new monitoringView { price = 0 , loadingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate < dateFrom && a.SewingOutDate > dateBalance ? -b.Quantity : 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article    };
 			var QueryLoading = from a in (from aa in garmentLoadingRepository.Query
 										  where aa.UnitId == request.unit && aa.LoadingDate <= dateTo select aa)
 										  join b in garmentLoadingItemRepository.Query on a.Identity equals b.LoadingId
-							   select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom && a.LoadingDate > dateBalance ? b.Quantity : 0, roJob = a.RONo, article = a.Article };
+							   select new monitoringView { price = 0, loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom && a.LoadingDate > dateBalance ? b.Quantity : 0, roJob = a.RONo, article = a.Article };
 			var queryNow = queryBalanceSewing.Union(QuerySewingOut).Union(QueryLoading);
 			var querySum = queryNow.ToList().GroupBy(x => new { x.roJob, x.article, x.uomUnit }, (key, group) => new
 			{

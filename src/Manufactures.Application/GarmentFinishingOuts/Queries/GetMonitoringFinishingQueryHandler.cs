@@ -156,13 +156,13 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 											where aa.UnitId == request.unit && aa.FinishingOutDate <= dateTo
 											select aa)
 											join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
-								select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()),  finishingQtyPcs = a.FinishingOutDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance ? - b.Quantity : 0, roJob = a.RONo, article = a.Article };
+								select new monitoringView { price = 0,  finishingQtyPcs = a.FinishingOutDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance ? - b.Quantity : 0, roJob = a.RONo, article = a.Article };
 
 			var QuerySewingOut = from a in (from aa in garmentSewingOutRepository.Query
 											where aa.UnitId == request.unit && aa.SewingOutDate <= dateTo  //&& aa.SewingTo == "FINISHING"
 											select aa)
 											join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
-									select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()),  finishingQtyPcs = 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity :0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate  <   dateFrom && a.SewingOutDate > dateBalance  ? b.Quantity : 0, roJob = a.RONo, article = a.Article};
+									select new monitoringView { price = 0,  finishingQtyPcs = 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity :0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate  <   dateFrom && a.SewingOutDate > dateBalance  ? b.Quantity : 0, roJob = a.RONo, article = a.Article};
 
 			var queryNow = queryBalanceFinishing.Union(QuerySewingOut).Union(QueryFinishing);
 			var querySum = queryNow.ToList().GroupBy(x => new { x.roJob, x.article, x.uomUnit }, (key, group) => new
