@@ -134,7 +134,6 @@ namespace Manufactures.Controllers.Api
             VerifyUser();
 
             var query = _garmentSewingDORepository.Read(page, size, order, keyword, filter);
-            var count = query.Count();
 
             // var garmentSewingDODto = _garmentSewingDORepository.Find(query).Select(o => new GarmentSewingDODto(o)).ToArray();
             // var garmentSewingDOItemDto = _garmentSewingDOItemRepository.Find(_garmentSewingDOItemRepository.Query).Select(o => new GarmentSewingDOItemDto(o)).ToList();
@@ -153,7 +152,8 @@ namespace Manufactures.Controllers.Api
             //     garmentSewingDODto = QueryHelper<GarmentSewingDODto>.Order(garmentSewingDODto.AsQueryable(), OrderDictionary).ToArray();
             // }
             
-            var newQuery = _garmentSewingDORepository.ReadExecute(query);
+            var newQuery = _garmentSewingDORepository.ReadExecute(query).ToList();
+            var count = newQuery.Count();
 
             await Task.Yield();
             return Ok(newQuery, info: new
