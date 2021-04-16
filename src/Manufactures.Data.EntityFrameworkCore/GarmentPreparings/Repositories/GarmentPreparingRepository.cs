@@ -84,7 +84,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Repositories
                     BasicPrice = y.BasicPrice,
                     GarmentPreparingId = y.GarmentPreparingId,
                     ROSource = y.ROSource,
-                }).OrderByDescending(y => y.Id)
+                }).OrderBy(y => y.Id)
             });
             
             if (!string.IsNullOrWhiteSpace(keyword))
@@ -93,7 +93,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Repositories
                         || d.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                         || d.Unit.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                         || d.Article != null && d.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                        || d.Items.All(e => e.Product.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)));
+                        || d.Items.Any(e => e.Product.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)));
             }
             return newQuery;
         }
