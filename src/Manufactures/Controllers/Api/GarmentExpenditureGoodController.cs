@@ -2,6 +2,7 @@
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentExpenditureGoods.Queries;
 using Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationExpenditureGoods;
+using Manufactures.Application.GarmentExpenditureGoods.Queries.GetReportExpenditureGoods;
 using Manufactures.Domain.GarmentDeliveryReturns.ValueObjects;
 using Manufactures.Domain.GarmentExpenditureGoods;
 using Manufactures.Domain.GarmentExpenditureGoods.Commands;
@@ -71,6 +72,39 @@ namespace Manufactures.Controllers.Api
                 total,
                 totalQty
             });
+        }
+
+        [HttpGet("byRO")]
+        public async Task<IActionResult> GetRONo(string RONo)
+        {
+            VerifyUser();
+
+            var query = _garmentExpenditureGoodRepository.Read(1, 75, "{}", null, "{}");
+            query = query.Where(x => x.RONo == RONo).Select(x => x);
+            var total = query.Count();
+            double totalQty = query.Sum(a => a.Items.Sum(b => b.Quantity));
+            //query = query.Skip((page - 1) * size).Take(size);
+
+            List<GarmentExpenditureGoodListDto> garmentExpenditureGoodListDtos = _garmentExpenditureGoodRepository
+                .Find(query)
+                .Select(ExGood => new GarmentExpenditureGoodListDto(ExGood))
+                .ToList();
+
+            var dtoIds = garmentExpenditureGoodListDtos.Select(s => s.Id).ToList();
+            var items = _garmentExpenditureGoodItemRepository.Query
+                .Where(o => dtoIds.Contains(o.ExpenditureGoodId))
+                .Select(s => new { s.Identity, s.ExpenditureGoodId, s.Quantity })
+                .ToList();
+
+            var itemIds = items.Select(s => s.Identity).ToList();
+            Parallel.ForEach(garmentExpenditureGoodListDtos, dto =>
+            {
+                var currentItems = items.Where(w => w.ExpenditureGoodId == dto.Id);
+                dto.TotalQuantity = currentItems.Sum(i => i.Quantity);
+            });
+
+            await Task.Yield();
+            return Ok(garmentExpenditureGoodListDtos);
         }
 
         [HttpGet("{id}")]
@@ -324,6 +358,50 @@ namespace Manufactures.Controllers.Api
                 var xls = await Mediator.Send(query);
 
                 string filename = "Laporan Pertanggungjawaban Mutasi Barang Jadi ";
+
+                if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+                if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [HttpGet("report-out")]
+        public async Task<IActionResult> GetReport(DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+        {
+            VerifyUser();
+            GetReportExpenditureGoodsQuery query = new GetReportExpenditureGoodsQuery(page, size, Order, dateFrom, dateTo, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.garmentReports, info: new
+            {
+                page,
+                size,
+                viewModel.count
+            });
+        }
+
+        [HttpGet("report-out/download")]
+        public async Task<IActionResult> GetXlsReport(DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsReportExpenditureGoodsQuery query = new GetXlsReportExpenditureGoodsQuery(page, size, Order, dateFrom, dateTo, WorkContext.Token);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = "Laporan Pengeluaran Barang Jadi ";
 
                 if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
 
