@@ -225,23 +225,23 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 
 			var roList = (from a in queryNow
 						  select a.roJob).Distinct().ToList();
-			var RO = (from a in roList
-					  where a.StartsWith("19")
-					  select a).Union(from a in roList
-									  where a.StartsWith("18")
-									  select a).Union
-									 (from a in roList
-									  where a.StartsWith("17")
-									  select a);
-			var ro19 = from a in garmentBalanceCuttingRepository.Query
-					   where RO.Contains(a.RoJob)
-					   select new CostCalViewModel { comodityName = a.Style, buyerCode = a.BuyerCode, hours = a.Hours, qtyOrder = a.QtyOrder, ro = a.RoJob };
+            //var RO = (from a in roList
+            //		  where a.StartsWith("19")
+            //		  select a).Union(from a in roList
+            //						  where a.StartsWith("18")
+            //						  select a).Union
+            //						 (from a in roList
+            //						  where a.StartsWith("17")
+            //						  select a);
+            //var ro19 = from a in garmentBalanceCuttingRepository.Query
+            //		   where RO.Contains(a.RoJob)
+            //		   select new CostCalViewModel { comodityName = a.Style, buyerCode = a.BuyerCode, hours = a.Hours, qtyOrder = a.QtyOrder, ro = a.RoJob };
 
-			CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(roList, request.token);
-			foreach (var item in ro19)
-			{
-				costCalculation.data.Add(item);
-			}
+            CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(roList, request.token);
+			//foreach (var item in ro19)
+			//{
+			//	costCalculation.data.Add(item);
+			//}
 
 			var queryReport = from a in queryNow
 							  select new monitoringView { buyerCode = (from cost in costCalculation.data where cost.ro == a.roJob select cost.buyerCode).FirstOrDefault(), price = a.price, fc = a.fc, cuttingQtyMeter = a.cuttingQtyMeter, remainQty = a.remainQty, stock = a.stock, cuttingQtyPcs = a.cuttingQtyPcs, roJob = a.roJob, article = a.article, style = (from cost in costCalculation.data where cost.ro == a.roJob select cost.comodityName).FirstOrDefault(), expenditure = a.expenditure, hours = (from cost in costCalculation.data where cost.ro == a.roJob select cost.hours).FirstOrDefault(), qtyOrder = (from cost in costCalculation.data where cost.ro == a.roJob select cost.qtyOrder).FirstOrDefault() };
