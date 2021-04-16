@@ -169,42 +169,42 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 							 where a.UnitId == request.unit
 							 select a.UnitName).FirstOrDefault();
 
-			var sumbasicPrice = (from a in garmentPreparingRepository.Query
-								 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
-								 /*where a.ProcessDate  <= dateTo(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&
-							   a.UnitId == request.unit*/
-								 select new { a.RONo, b.BasicPrice })
-					.GroupBy(x => new { x.RONo }, (key, group) => new ViewBasicPrices
-					{
-						RO = key.RONo,
-						BasicPrice = Math.Round(Convert.ToDecimal(group.Sum(s => s.BasicPrice)), 2),
-						Count = group.Count()
-					});
-			var sumFCs = (from a in garmentCuttingInRepository.Query
-						  where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" //&&
-																																								/*a.UnitId == request.unit && a.CuttingInDate <= dateTo*/
-						  select new { a.FC, a.RONo })
-						 .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
-						 {
-							 RO = key.RONo,
-							 FC = group.Sum(s => s.FC),
-							 Count = group.Count()
-						 });
-			var queryBalanceSewing = from a in garmentBalanceSewingRepository.Query
-									 where a.CreatedDate < dateFrom && a.UnitId == request.unit //&& a.RoJob == "2010810"
-									 select new monitoringView { price = a.Price, buyerCode = a.BuyerCode, loadingQtyPcs = a.LoadingQtyPcs, remainQty = 0, stock = a.Stock, sewingQtyPcs = 0, roJob = a.RoJob, article = a.Article, qtyOrder = a.QtyOrder, style = a.Style, uomUnit = "PCS" };
+            var sumbasicPrice = (from a in (from prep in garmentPreparingRepository.Query
+                                            select new { prep.RONo, prep.Identity })
+                                 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
 
-			var QuerySewingOut = from a in (from aa in garmentSewingOutRepository.Query
-											where aa.UnitId == request.unit && aa.SewingOutDate <= dateTo
-											select aa)
-								 join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
-								 select new monitoringView { price = 0, loadingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate < dateFrom && a.SewingOutDate > dateBalance ? -b.Quantity : 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article };
-			var QueryLoading = from a in (from aa in garmentLoadingRepository.Query
-										  where aa.UnitId == request.unit && aa.LoadingDate <= dateTo
-										  select aa)
-							   join b in garmentLoadingItemRepository.Query on a.Identity equals b.LoadingId
-							   select new monitoringView { price = 0, loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom && a.LoadingDate > dateBalance ? b.Quantity : 0, roJob = a.RONo, article = a.Article };
-			var queryNow = queryBalanceSewing.Union(QuerySewingOut).Union(QueryLoading);
+                                 select new { a.RONo, b.BasicPrice })
+                    .GroupBy(x => new { x.RONo }, (key, group) => new ViewBasicPrices
+                    {
+                        RO = key.RONo,
+                        BasicPrice = Math.Round(Convert.ToDecimal(group.Sum(s => s.BasicPrice)), 2),
+                        Count = group.Count()
+                    });
+            var sumFCs = (from a in garmentCuttingInRepository.Query
+                          where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" //&&
+                                                                                                                                                                /*a.UnitId == request.unit && a.CuttingInDate <= dateTo*/
+                          select new { a.FC, a.RONo })
+                         .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
+                         {
+                             RO = key.RONo,
+                             FC = group.Sum(s => s.FC),
+                             Count = group.Count()
+                         });
+            var queryBalanceSewing = from a in garmentBalanceSewingRepository.Query
+                                     where a.CreatedDate < dateFrom && a.UnitId == request.unit //&& a.RoJob == "2010810"
+                                     select new monitoringView { price = a.Price, buyerCode = a.BuyerCode, loadingQtyPcs = a.LoadingQtyPcs, remainQty = 0, stock = a.Stock, sewingQtyPcs = 0, roJob = a.RoJob, article = a.Article, qtyOrder = a.QtyOrder, style = a.Style, uomUnit = "PCS" };
+
+            var QuerySewingOut = from a in (from aa in garmentSewingOutRepository.Query
+                                            where aa.UnitId == request.unit && aa.SewingOutDate <= dateTo && aa.SewingOutDate > dateBalance
+                                            select new { aa.Identity, aa.SewingOutDate, aa.RONo, aa.Article })
+                                 join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
+                                 select new monitoringView { price = 0, loadingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate < dateFrom ? -b.Quantity : 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article };
+            var QueryLoading = from a in (from aa in garmentLoadingRepository.Query
+                                          where aa.UnitId == request.unit && aa.LoadingDate <= dateTo && aa.LoadingDate > dateBalance
+                                          select new { aa.Identity, aa.LoadingDate, aa.RONo, aa.Article })
+                               join b in garmentLoadingItemRepository.Query on a.Identity equals b.LoadingId
+                               select new monitoringView { price = 0, loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article };
+            var queryNow = queryBalanceSewing.Union(QuerySewingOut).Union(QueryLoading);
 			var querySum = queryNow.ToList().GroupBy(x => new { x.roJob, x.article, x.uomUnit }, (key, group) => new
 			{
 

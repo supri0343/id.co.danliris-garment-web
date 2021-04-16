@@ -274,10 +274,11 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
             DateTimeOffset dateFareNew = dateTo.AddDays(1);
 
 
-            var sumbasicPrice = (from a in garmentPreparingRepository.Query
-                                 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
-                                 where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) //&&
-                                                                                                                                // a.UnitId == request.unit
+            var sumbasicPrice = (from a in (from prep in garmentPreparingRepository.Query
+                                            where (request.ro == null || (request.ro != null && request.ro != "" && prep.RONo == request.ro))
+                                            select new { prep.RONo,prep.Identity})
+                                            join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
+                                 
                                  select new { a.RONo, b.BasicPrice })
                          .GroupBy(x => new { x.RONo }, (key, group) => new ViewBasicPrices
                          {
@@ -298,18 +299,14 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
             var queryGroup = (from a in (from aa in garmentCuttingOutRepository.Query
                                          where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro))
-                                         /*&& aa.UnitFromId == request.unit && aa.CuttingOutDate <= dateTo && aa.CuttingOutType == "SEWING" && aa.UnitId == aa.UnitFromId*/
-                                         select aa)
+                                         select new { aa.RONo, aa.ComodityId, aa.ComodityName, aa.Article })
                               select new { BasicPrice = (from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault(), FareNew = (from aa in garmentComodityPriceRepository.Query where aa.UnitId == request.unit && a.ComodityId == aa.ComodityId && aa.Date == dateFareNew select aa.Price).FirstOrDefault(), Fare = (from aa in garmentComodityPriceRepository.Query where aa.UnitId == request.unit && a.ComodityId == aa.ComodityId && aa.IsValid == true select aa.Price).FirstOrDefault(), Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, FC = (from cost in sumFCs where cost.RO == a.RONo select cost.FC / cost.Count).FirstOrDefault() }).Distinct();
-
-
-
+            
             var queryBalance = from a in
                                       (from aa in garmentBalanceProductionStockRepository.Query
-                                       where (request.ro == null || (request.ro != null && request.ro != "" && aa.Ro == request.ro)) && aa.UnitId == request.unit && aa.UnitId == aa.UnitId
+                                       where aa.CreatedDate < dateFrom && (request.ro == null || (request.ro != null && request.ro != "" && aa.Ro == request.ro)) && aa.UnitId == request.unit && aa.UnitId == aa.UnitId
                                        select aa)
 
-                               where a.CreatedDate < dateFrom && a.UnitId == request.unit //&& a.RoJob == "2010810"
                                select new monitoringView
                                {
                                    QtyCuttingIn = 0,
@@ -391,7 +388,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
             var QueryCuttingOut = (from a in (from aa in garmentCuttingOutRepository.Query
                                               where aa.CuttingOutDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.CuttingOutDate <= dateTo && aa.CuttingOutType == "SEWING" && aa.UnitId == aa.UnitFromId
-                                              select aa)
+                                              select new { aa.RONo, aa.Identity, aa.CuttingOutDate, aa.CuttingOutType })
                                    join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
                                    join c in garmentCuttingOutDetailRepository.Query on b.Identity equals c.CutOutItemId
 
@@ -467,7 +464,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                    });
             var QueryCuttingOutSubkon = (from a in (from aa in garmentCuttingOutRepository.Query
                                                     where aa.CuttingOutDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitFromId == request.unit && aa.CuttingOutDate <= dateTo && aa.CuttingOutType == "SUBKON"
-                                                    select aa)
+                                                    select new { aa.RONo,aa.Identity,aa.CuttingOutDate,aa.CuttingOutType})
                                          join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
                                          join c in garmentCuttingOutDetailRepository.Query on b.Identity equals c.CutOutItemId
                                          select new monitoringView
@@ -543,7 +540,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                          });
             var QueryCuttingOutTransfer = (from a in (from aa in garmentCuttingOutRepository.Query
                                                       where aa.CuttingOutDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitFromId == request.unit && aa.CuttingOutDate <= dateTo && aa.CuttingOutType == "SEWING" && aa.UnitId != aa.UnitFromId
-                                                      select aa)
+                                                      select new { aa.RONo,aa.Identity,aa.CuttingOutType,aa.CuttingOutDate })
                                            join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
                                            join c in garmentCuttingOutDetailRepository.Query on b.Identity equals c.CutOutItemId
                                            select new monitoringView
@@ -618,7 +615,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                            });
             var QueryCuttingIn = (from a in (from aa in garmentCuttingInRepository.Query
                                              where aa.CuttingInDate >= dateBalance && aa.CuttingType != "Non Main Fabric" && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.CuttingInDate <= dateTo
-                                             select aa)
+                                             select new { aa.RONo,aa.Identity,aa.CuttingInDate })
                                   join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
                                   join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
                                   select new monitoringView
@@ -692,7 +689,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
             var QueryAvalCompSewing = from a in (from aa in garmentAvalComponentRepository.Query
                                                  where aa.Date >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.Date <= dateTo && aa.AvalComponentType == "SEWING"
-                                                 select aa)
+                                                 select new { aa.RONo,aa.Identity,aa.Date,aa.AvalComponentType })
                                       join b in garmentAvalComponentItemRepository.Query on a.Identity equals b.AvalComponentId
                                       select new monitoringView
                                       {
@@ -764,7 +761,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                       };
             var QueryAvalCompCutting = from a in (from aa in garmentAvalComponentRepository.Query
                                                   where aa.Date >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.Date <= dateTo && aa.AvalComponentType == "CUTTING"
-                                                  select aa)
+                                                  select new { aa.RONo, aa.Identity, aa.Date, aa.AvalComponentType })
                                        join b in garmentAvalComponentItemRepository.Query on a.Identity equals b.AvalComponentId
                                        select new monitoringView
                                        {
@@ -836,7 +833,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                        };
             var QuerySewingDO = (from a in (from aa in garmentSewingDORepository.Query
                                             where aa.SewingDODate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.UnitFromId == aa.UnitId && aa.SewingDODate <= dateTo
-                                            select aa)
+                                            select new { aa.RONo, aa.Identity, aa.SewingDODate })
                                  join b in garmentSewingDOItemRepository.Query on a.Identity equals b.SewingDOId
                                  select new monitoringView
                                  {
@@ -911,7 +908,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
             var QueryLoadingInTransfer = (from a in (from aa in garmentSewingDORepository.Query
                                                      where aa.SewingDODate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.UnitFromId != aa.UnitId && aa.SewingDODate <= dateTo
-                                                     select aa)
+                                                     select new { aa.RONo, aa.Identity, aa.SewingDODate })
                                           join b in garmentSewingDOItemRepository.Query on a.Identity equals b.SewingDOId
                                           select new monitoringView
                                           {
@@ -983,7 +980,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                           });
             var QueryLoading = from a in (from aa in garmentLoadingRepository.Query
                                           where aa.LoadingDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.LoadingDate <= dateTo
-                                          select aa)
+                                          select new { aa.RONo, aa.Identity, aa.LoadingDate,aa.UnitId,aa.UnitFromId })
                                join b in garmentLoadingItemRepository.Query on a.Identity equals b.LoadingId
                                select new monitoringView
                                {
@@ -1059,7 +1056,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                };
             var QueryLoadingAdj = from a in (from aa in garmentAdjustmentRepository.Query
                                              where aa.AdjustmentDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.AdjustmentDate <= dateTo && aa.AdjustmentType == "LOADING"
-                                             select aa)
+                                             select new { aa.RONo, aa.Identity, aa.AdjustmentDate })
                                   join b in garmentAdjustmentItemRepository.Query on a.Identity equals b.AdjustmentId
                                   select new monitoringView
                                   {
@@ -1131,7 +1128,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                   };
             var QuerySewingIn = (from a in (from aa in garmentSewingInRepository.Query
                                             where aa.SewingInDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.SewingInDate <= dateTo
-                                            select aa)
+                                            select new { aa.RONo, aa.Identity, aa.SewingInDate, aa.SewingFrom })
                                  join b in garmentSewingInItemRepository.Query on a.Identity equals b.SewingInId
                                  select new monitoringView
                                  {
@@ -1206,7 +1203,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                  });
             var QuerySewingOut = (from a in (from aa in garmentSewingOutRepository.Query
                                              where aa.SewingOutDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.SewingOutDate <= dateTo
-                                             select aa)
+                                             select new { aa.RONo, aa.Identity, aa.SewingOutDate,aa.SewingTo,aa.UnitToId,aa.UnitId})
                                   join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
 
                                   select new monitoringView
@@ -1286,7 +1283,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
             var QuerySewingAdj = from a in (from aa in garmentAdjustmentRepository.Query
                                             where aa.AdjustmentDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.AdjustmentDate <= dateTo && aa.AdjustmentType == "SEWING"
-                                            select aa)
+                                            select new { aa.RONo, aa.Identity, aa.AdjustmentDate})
                                  join b in garmentAdjustmentItemRepository.Query on a.Identity equals b.AdjustmentId
                                  select new monitoringView
                                  {
@@ -1361,7 +1358,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
             var QueryFinishingIn = (from a in (from aa in garmentFinishingInRepository.Query
                                                where aa.FinishingInDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.FinishingInDate <= dateTo
-                                               select aa)
+                                               select new { aa.RONo, aa.Identity, aa.FinishingInDate, aa.FinishingInType })
                                     join b in garmentFinishingInItemRepository.Query on a.Identity equals b.FinishingInId
                                     select new monitoringView
                                     {
@@ -1435,7 +1432,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                     });
             var QueryFinishingOut = (from a in (from aa in garmentFinishingOutRepository.Query
                                                 where aa.FinishingOutDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.FinishingOutDate <= dateTo && aa.FinishingTo == "GUDANG JADI"
-                                                select aa)
+                                                select new { aa.RONo, aa.Identity, aa.FinishingOutDate, aa.FinishingTo })
                                      join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
                                      join c in garmentFinishingInItemRepository.Query on b.FinishingInItemId equals c.Identity
                                      join d in garmentFinishingInRepository.Query on c.FinishingInId equals d.Identity
@@ -1516,7 +1513,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
             var QueryExpenditureGoodInTransfer = (from a in (from aa in garmentFinishingOutRepository.Query
                                                              where aa.FinishingOutDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId != aa.UnitToId && aa.FinishingOutDate <= dateTo && aa.FinishingTo == "GUDANG JADI" && aa.UnitToId == request.unit
-                                                             select aa)
+                                                             select new { aa.RONo, aa.Identity, aa.FinishingOutDate, aa.FinishingTo })
                                                   join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
                                                   join c in garmentFinishingInItemRepository.Query on b.FinishingInItemId equals c.Identity
                                                   join d in garmentFinishingInRepository.Query on c.FinishingInId equals d.Identity
@@ -1594,7 +1591,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
             var QueryFinishingAdj = from a in (from aa in garmentAdjustmentRepository.Query
                                                where aa.AdjustmentDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.AdjustmentDate <= dateTo && aa.AdjustmentType == "FINISHING"
-                                               select aa)
+                                               select new { aa.RONo, aa.Identity, aa.AdjustmentDate })
                                     join b in garmentAdjustmentItemRepository.Query on a.Identity equals b.AdjustmentId
                                     select new monitoringView
                                     {
@@ -1667,7 +1664,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
             var QueryFinishingRetur = (from a in (from aa in garmentFinishingOutRepository.Query
                                                   where aa.FinishingOutDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.FinishingOutDate <= dateTo && aa.FinishingTo == "SEWING"
-                                                  select aa)
+                                                  select new { aa.RONo, aa.Identity, aa.FinishingOutDate, aa.FinishingTo,aa.UnitId,aa.UnitToId })
                                        join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
                                        join c in garmentFinishingInItemRepository.Query on b.FinishingInItemId equals c.Identity
                                        join d in garmentFinishingInRepository.Query on c.FinishingInId equals d.Identity
@@ -1741,7 +1738,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                        });
             var QueryExpenditureGoods = (from a in (from aa in garmentExpenditureGoodRepository.Query
                                                     where aa.ExpenditureDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.ExpenditureDate <= dateTo
-                                                    select aa)
+                                                    select new { aa.RONo, aa.Identity, aa.ExpenditureDate, aa.ExpenditureType })
                                          join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
                                          select new monitoringView
                                          {
@@ -1815,7 +1812,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                          });
             var QueryExpenditureGoodsAdj = from a in (from aa in garmentAdjustmentRepository.Query
                                                       where aa.AdjustmentDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.AdjustmentDate <= dateTo && aa.AdjustmentType == "BARANG JADI"
-                                                      select aa)
+                                                      select new { aa.RONo, aa.Identity, aa.AdjustmentDate })
                                            join b in garmentAdjustmentItemRepository.Query on a.Identity equals b.AdjustmentId
                                            select new monitoringView
                                            {
@@ -1891,7 +1888,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                            };
             var QueryExpenditureGoodRetur = from a in (from aa in garmentExpenditureGoodReturnRepository.Query
                                                        where aa.ReturDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == request.unit && aa.ReturDate <= dateTo
-                                                       select aa)
+                                                       select new { aa.RONo, aa.Identity, aa.ReturDate })
                                             join b in garmentExpenditureGoodReturnItemRepository.Query on a.Identity equals b.ReturId
                                             select new monitoringView
                                             {
@@ -1961,8 +1958,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                                 BeginingBalanceLoadingQty = 0,
                                                 BeginingBalanceLoadingPrice = 0,
                                                 BeginingBalanceFinishingQty = 0,
-                                                BeginingBalanceFinishingPrice = 0,
-                                                Article = a.Article
+                                                BeginingBalanceFinishingPrice = 0
+                                               
 
                                             };
 
