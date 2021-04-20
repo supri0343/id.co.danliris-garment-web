@@ -22,6 +22,7 @@ using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using System.Net.Http;
 using System.Text;
+using Manufactures.Domain.GarmentFinishingOuts.Repositories;
 
 namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 {
@@ -36,7 +37,9 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 		private readonly IGarmentPreparingRepository garmentPreparingRepository;
 		private readonly IGarmentPreparingItemRepository garmentPreparingItemRepository;
 		private readonly IGarmentBalanceSewingRepository garmentBalanceSewingRepository;
-		private readonly IGarmentCuttingInRepository garmentCuttingInRepository;
+        private readonly IGarmentFinishingOutRepository garmentFinishingOutRepository;
+        private readonly IGarmentFinishingOutItemRepository garmentFinishingOutItemRepository;
+        private readonly IGarmentCuttingInRepository garmentCuttingInRepository;
 		public GetXlsSewingQueryHandler(IStorage storage, IServiceProvider serviceProvider)
 		{
 			_storage = storage;
@@ -48,7 +51,10 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 			garmentLoadingItemRepository = storage.GetRepository<IGarmentLoadingItemRepository>();
 			garmentBalanceSewingRepository = storage.GetRepository<IGarmentBalanceSewingRepository>();
 			garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
-			_http = serviceProvider.GetService<IHttpClientService>();
+            garmentFinishingOutRepository = storage.GetRepository<IGarmentFinishingOutRepository>();
+            garmentFinishingOutItemRepository = storage.GetRepository<IGarmentFinishingOutItemRepository>();
+            _http = serviceProvider.GetService<IHttpClientService>();
+            _http = serviceProvider.GetService<IHttpClientService>();
 		}
 
         async Task<HOrderDataProductionReport> GetDataHOrder(List<string> ro, string token)
@@ -204,8 +210,19 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
                                           select new { aa.Identity, aa.LoadingDate, aa.RONo, aa.Article })
                                join b in garmentLoadingItemRepository.Query on a.Identity equals b.LoadingId
                                select new monitoringView { price = 0, loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article };
-            var queryNow = queryBalanceSewing.Union(QuerySewingOut).Union(QueryLoading);
-			var querySum = queryNow.ToList().GroupBy(x => new { x.roJob, x.article, x.uomUnit }, (key, group) => new
+            var QueryLoadingSewingOut = from a in (from aa in garmentSewingOutRepository.Query
+                                                   where aa.SewingTo == "SEWING" && aa.UnitToId == request.unit && aa.SewingOutDate <= dateTo && aa.SewingOutDate > dateBalance
+                                                   select new { aa.Identity, aa.SewingOutDate, aa.RONo, aa.Article })
+                                        join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
+                                        select new monitoringView { price = 0, loadingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity : 0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate < dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, roJob = a.RONo, article = a.Article };
+            var QueryLoadingFinishingOut = from a in (from aa in garmentFinishingOutRepository.Query
+                                                      where aa.FinishingTo == "SEWING" && aa.UnitToId == request.unit && aa.FinishingOutDate <= dateTo && aa.FinishingOutDate > dateBalance
+                                                      select new { aa.Identity, aa.FinishingOutDate, aa.RONo, aa.Article })
+                                           join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
+                                           select new monitoringView { price = 0, loadingQtyPcs = a.FinishingOutDate >= dateFrom ? b.Quantity : 0, uomUnit = "PCS", remainQty = 0, stock = a.FinishingOutDate < dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, roJob = a.RONo, article = a.Article };
+
+            var queryNow = queryBalanceSewing.Union(QuerySewingOut).Union(QueryLoading).Union(QueryLoadingSewingOut).Union(QueryLoadingFinishingOut);
+            var querySum = queryNow.ToList().GroupBy(x => new { x.roJob, x.article, x.uomUnit }, (key, group) => new
 			{
 
 				RoJob = key.roJob,
