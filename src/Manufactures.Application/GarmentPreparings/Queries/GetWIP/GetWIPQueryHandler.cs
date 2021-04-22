@@ -119,7 +119,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
             GarmentWIPListViewModel listViewModel = new GarmentWIPListViewModel();
             List<GarmentWIPDto> monitoringDtos = new List<GarmentWIPDto>();
             var FactPreparePreparing = from a in (from aa in garmentPreparingRepository.Query
-                                                  where aa.ProcessDate.Value.Date < request.Date.Date
+                                                  //where aa.ProcessDate.Value.Date < request.Date.Date
+                                                  where aa.ProcessDate.Value.Year == request.Date.Year
                                                   select aa)
                                        join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
                                        select new monitoringViewTemp
@@ -130,7 +131,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
                                        };
 
             var FactPrepareCutting = from a in (from aa in garmentCuttingInRepository.Query
-                                                where aa.CuttingInDate.Date < request.Date.Date
+                                                //where aa.CuttingInDate.Date < request.Date.Date
+                                                where aa.CuttingInDate.Year == request.Date.Year
                                                 select aa)
                                      join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
                                      join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
@@ -141,7 +143,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
                                          Quantity = c.CuttingInQuantity * -1
                                      };
             var FactPrepareAvalProduct = from a in (from aa in garmentAvalProductRepository.Query
-                                                    where aa.AvalDate.Value.Date < request.Date.Date
+                                                    //where aa.AvalDate.Value.Date < request.Date.Date
+                                                    where aa.AvalDate.Value.Year == request.Date.Year
                                                     select aa)
                                          join b in garmentAvalProductItemRepository.Query on a.Identity equals b.APId
                                          select new monitoringViewTemp
@@ -152,7 +155,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
                                          };
 
             var FactPrepareDeliveryReturn = from a in (from aa in garmentPreparingRepository.Query
-                                                       where aa.ProcessDate.Value.Date < request.Date.Date
+                                                       //where aa.ProcessDate.Value.Date < request.Date.Date
+                                                       where aa.ProcessDate.Value.Year == request.Date.Year
                                                        select aa)
                                             join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
                                             join c in garmentDeliveryReturnItemRepository.Query on b.Identity.ToString() equals c.PreparingItemId
@@ -221,7 +225,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
             }
 
             var FactCutting = (from a in (from aa in garmentCuttingOutRepository.Query
-                                          where aa.CuttingOutDate.Date < request.Date.Date
+                                          //where aa.CuttingOutDate.Date < request.Date.Date
+                                          where aa.CuttingOutDate.Year == request.Date.Year
                                           select aa)
                                join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
                                join c in garmentCuttingOutDetailRepository.Query on b.Identity equals c.CutOutItemId
@@ -239,7 +244,9 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
                                });
 
             var FactFinishing = (from a in (from aa in garmentFinishingOutRepository.Query
-                                            where aa.FinishingOutDate.Date < request.Date.Date && aa.FinishingTo == "GUDANG JADI"
+                                            //where aa.FinishingOutDate.Date < request.Date.Date
+                                            where aa.FinishingOutDate.Year == request.Date.Year
+                                            && aa.FinishingTo == "GUDANG JADI"
                                             select aa)
                                  join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
                                  //join c in garmentFinishingOutDetailRepository.Query on b.Identity equals c.FinishingOutItemId
