@@ -2767,8 +2767,11 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					worksheet.Cells["A" + 5 + ":AU" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
 					worksheet.Cells["A" + 5 + ":AU" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 					worksheet.Cells["A" + counter + ":AU" + counter + ""].Style.Font.Bold = true;
-					
-				}
+                    foreach (var cell in worksheet.Cells["D" + 8 + ":AU" + (counter + 1) + ""])
+                    {
+                        cell.Value = Convert.ToDecimal(cell.Value);
+                    }
+                }
 				else
 				{
 					worksheet.Cells["A1"].Value = "Report Produksi"; worksheet.Cells["A" + 1 + ":AT" + 1 + ""].Merge = true;
@@ -2853,7 +2856,10 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					worksheet.Cells["A" + 5 + ":CZ" + (counter + 1) + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
 					worksheet.Cells["A" + 5 + ":CZ" + (counter + 1) + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
 					worksheet.Cells["A" + 5 + ":CZ" + (counter + 1) + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                  
+                    foreach (var cell in worksheet.Cells["E" + 8 + ":CZ" + (counter + 1) + ""])
+                    {
+                        cell.Value = Convert.ToDecimal(cell.Value);
+                    }
 
                 }
 				var stream = new MemoryStream();
