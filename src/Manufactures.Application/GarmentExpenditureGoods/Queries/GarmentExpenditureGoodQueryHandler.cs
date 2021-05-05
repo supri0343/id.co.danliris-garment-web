@@ -56,7 +56,42 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			public decimal price { get; internal set; }
 			public double fc { get; internal set; }
 		}
-		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
+
+        public async Task<PEBResult> GetDataPEB(List<string> invoice, string token)
+        {
+            PEBResult pEB = new PEBResult();
+
+            var listInvoice = string.Join(",", invoice.Distinct());
+            var stringcontent = new StringContent(JsonConvert.SerializeObject(listInvoice), Encoding.UTF8, "application/json");
+
+            var garmentProductionUri = CustomsDataSettings.Endpoint + $"customs-reports/getPEB";
+            var httpResponse = await _http.SendAsync(HttpMethod.Get, garmentProductionUri, token, stringcontent);
+
+
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var contentString = await httpResponse.Content.ReadAsStringAsync();
+                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+                var dataString = content.GetValueOrDefault("data").ToString();
+
+                var listdata = JsonConvert.DeserializeObject<List<PEBResultViewModel>>(dataString);
+
+                foreach (var i in listdata)
+                {
+                    pEB.data.Add(i);
+                }
+                //garmentProduct.data = listdata;
+
+
+
+            }
+
+            return pEB;
+        }
+
+
+        public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
 		{
 			CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();
 
@@ -237,13 +272,19 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 				fcs = key.fc
 
 			}).OrderBy(s => s.expendituregoodNo);
+
+            var Pebs = await GetDataPEB(querySum.Select(x => x.invoices).ToList(), request.token);
+
 			foreach (var item in querySum)
 			{
-				GarmentMonitoringExpenditureGoodDto dto = new GarmentMonitoringExpenditureGoodDto
-				{
-					roNo = item.ros,
-					buyerArticle = item.buyer,
-					expenditureGoodType = item.expendituregoodTypes,
+                var peb = Pebs.data.FirstOrDefault(x => x.BonNo.Trim() == item.invoices);
+
+                GarmentMonitoringExpenditureGoodDto dto = new GarmentMonitoringExpenditureGoodDto
+                {
+                    roNo = item.ros,
+                    buyerArticle = item.buyer,
+                    expenditureGoodType = item.expendituregoodTypes,
+                    pebDate = peb == null ? new DateTime(1970,01,01) : peb.BCDate,
 					expenditureGoodNo = item.expendituregoodNo,
 					expenditureDate = item.expenditureDates,
 					qty = item.qty,
