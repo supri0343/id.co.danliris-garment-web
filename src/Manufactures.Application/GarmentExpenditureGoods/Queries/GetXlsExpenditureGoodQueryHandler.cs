@@ -23,6 +23,7 @@ using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using System.Net.Http;
 using System.Text;
+using System.Globalization;
 
 namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 {
@@ -63,7 +64,41 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			public decimal price { get; internal set; }
 			public double fc { get; set; }
 		}
-		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
+
+        public async Task<PEBResult> GetDataPEB(List<string> invoice, string token)
+        {
+            PEBResult pEB = new PEBResult();
+
+            var listInvoice = string.Join(",", invoice.Distinct());
+            var stringcontent = new StringContent(JsonConvert.SerializeObject(listInvoice), Encoding.UTF8, "application/json");
+
+            var garmentProductionUri = CustomsDataSettings.Endpoint + $"customs-reports/getPEB";
+            var httpResponse = await _http.SendAsync(HttpMethod.Get, garmentProductionUri, token, stringcontent);
+
+
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var contentString = await httpResponse.Content.ReadAsStringAsync();
+                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+                var dataString = content.GetValueOrDefault("data").ToString();
+
+                var listdata = JsonConvert.DeserializeObject<List<PEBResultViewModel>>(dataString);
+
+                foreach (var i in listdata)
+                {
+                    pEB.data.Add(i);
+                }
+                //garmentProduct.data = listdata;
+
+
+
+            }
+
+            return pEB;
+        }
+
+        public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
 		{
 			CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();
 
@@ -245,16 +280,21 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 				fcs = key.fc
 
 			}).OrderBy(s => s.expendituregoodNo);
-			foreach (var item in querySum)
+
+            var Pebs = await GetDataPEB(querySum.Select(x => x.invoices).ToList(), request.token);
+
+            foreach (var item in querySum)
 			{
-				GarmentMonitoringExpenditureGoodDto dto = new GarmentMonitoringExpenditureGoodDto
+                var peb = Pebs.data.FirstOrDefault(x => x.BonNo.Trim() == item.invoices);
+                GarmentMonitoringExpenditureGoodDto dto = new GarmentMonitoringExpenditureGoodDto
 				{
 					roNo = item.ros,
 					buyerArticle = item.buyer,
 					expenditureGoodType = item.expendituregoodTypes,
 					expenditureGoodNo = item.expendituregoodNo,
 					expenditureDate = item.expenditureDates,
-					qty = item.qty,
+                    pebDate = peb == null ? new DateTime(1970,1,1) : peb.BCDate,
+                    qty = item.qty,
 					colour = item.color,
 					name = item.names,
                     unitname = item.unitname,
@@ -285,6 +325,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 				expenditureGoodType = "",
 				expenditureGoodNo = "",
 				expenditureDate=null, 
+                pebDate = null,
 				qty = qty,
 				colour = "",
 				name = "",
@@ -301,6 +342,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NO BON", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "TIPE PENGELUARAN", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "TGL", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "TGL PEB", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BUYER & ARTICLE", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "COLOUR", DataType = typeof(string) });
@@ -314,10 +356,15 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			if (listViewModel.garmentMonitorings.Count > 0)
 			{
 				foreach (var report in listViewModel.garmentMonitorings)
-				{	reportDataTable.Rows.Add(report.expenditureGoodNo, report.expenditureGoodType, report.expenditureDate.GetValueOrDefault().ToString("dd MMM yyy"), 
+				{
+                    
+                    string pebDate = report.pebDate.GetValueOrDefault() == new DateTime(1970, 1, 1) || report.pebDate.GetValueOrDefault().ToString("dd MMM yyyy") == "01 Jan 0001" ? "-" : report.pebDate.GetValueOrDefault().ToString("dd MMM yyy");
+                    //Console.WriteLine(pebDate);
+                    reportDataTable.Rows.Add(report.expenditureGoodNo, report.expenditureGoodType, report.expenditureDate.GetValueOrDefault().ToString("dd MMM yyy"), pebDate,
                     report.roNo, report.buyerArticle, report.colour, report.name, report.unitname, report.price, report.qty,report.nominal, report.invoice);
 					counter++;
-				}
+                    //Console.WriteLine(counter);
+                }
 			}
 			using (var package = new ExcelPackage())
 			{
