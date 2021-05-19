@@ -257,8 +257,8 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Style", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Harga()", DataType = typeof(decimal) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Stok Masuk", DataType = typeof(double) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Awal", DataType = typeof(double) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Stock Awal", DataType = typeof(double) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Masuk", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Keluar", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sisa", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nominal Sisa", DataType = typeof(decimal) });
