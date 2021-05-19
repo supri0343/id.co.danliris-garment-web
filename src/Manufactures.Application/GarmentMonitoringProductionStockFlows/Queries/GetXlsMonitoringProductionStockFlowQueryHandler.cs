@@ -2767,7 +2767,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					worksheet.Cells["A" + 5 + ":AU" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
 					worksheet.Cells["A" + 5 + ":AU" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 					worksheet.Cells["A" + counter + ":AU" + counter + ""].Style.Font.Bold = true;
-                    foreach (var cell in worksheet.Cells["D" + 8 + ":AU" + (counter + 1) + ""])
+                    foreach (var cell in worksheet.Cells["D" + 7 + ":AU" + (counter + 1) + ""])
                     {
                         cell.Value = Convert.ToDecimal(cell.Value);
                     }
