@@ -360,7 +360,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
                     
                     string pebDate = report.pebDate.GetValueOrDefault() == new DateTime(1970, 1, 1) || report.pebDate.GetValueOrDefault().ToString("dd MMM yyyy") == "01 Jan 0001" ? "-" : report.pebDate.GetValueOrDefault().ToString("dd MMM yyy");
                     //Console.WriteLine(pebDate);
-                    reportDataTable.Rows.Add(report.expenditureGoodNo, report.expenditureGoodType, report.expenditureDate.GetValueOrDefault().ToString("dd MMM yyy"), pebDate,
+                    reportDataTable.Rows.Add(report.expenditureGoodNo, report.expenditureGoodType, report.expenditureDate.GetValueOrDefault().ToOffset(new TimeSpan(7,0,0)).ToString("dd MMM yyy"), pebDate,
                     report.roNo, report.buyerArticle, report.colour, report.name, report.unitname, report.price, report.qty,report.nominal, report.invoice);
 					counter++;
                     //Console.WriteLine(counter);
