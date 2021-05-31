@@ -80,7 +80,7 @@ namespace Manufactures.Controllers.Api
             VerifyUser();
 
             var query = _garmentExpenditureGoodRepository.Read(1, 75, "{}", null, "{}");
-            query = query.Where(x => x.RONo == RONo).Select(x => x);
+            query = query.Where(x => x.RONo == RONo && x.ExpenditureType == "EXPORT").Select(x => x);
             var total = query.Count();
             double totalQty = query.Sum(a => a.Items.Sum(b => b.Quantity));
             //query = query.Skip((page - 1) * size).Take(size);
