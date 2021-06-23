@@ -286,7 +286,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                           a.CuttingInDate <= dateTo
                           join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
                           join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
-                          select new { a.FC, a.RONo, FCs= Convert.ToDouble( c.CuttingInQuantity  * c.FC),c.CuttingInQuantity}) 
+                          select new { a.FC, a.RONo, FCs= Convert.ToDouble( c.CuttingInQuantity  * a.FC),c.CuttingInQuantity}) 
                          .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
                          {
                              RO = key.RONo,
