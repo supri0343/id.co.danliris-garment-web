@@ -93,7 +93,7 @@ namespace Manufactures.Controllers.Api
             var dtoIds = garmentExpenditureGoodListDtos.Select(s => s.Id).ToList();
             var items = _garmentExpenditureGoodItemRepository.Query
                 .Where(o => dtoIds.Contains(o.ExpenditureGoodId))
-                .Select(s => new { s.Identity, s.ExpenditureGoodId, s.Quantity })
+                .Select(s => new { s.Identity, s.ExpenditureGoodId, s.Quantity, s.BasicPrice })
                 .ToList();
 
             var itemIds = items.Select(s => s.Identity).ToList();
@@ -101,6 +101,7 @@ namespace Manufactures.Controllers.Api
             {
                 var currentItems = items.Where(w => w.ExpenditureGoodId == dto.Id);
                 dto.TotalQuantity = currentItems.Sum(i => i.Quantity);
+                dto.TotalPrice = currentItems.Sum(i => i.Quantity * i.BasicPrice);
             });
 
             await Task.Yield();
