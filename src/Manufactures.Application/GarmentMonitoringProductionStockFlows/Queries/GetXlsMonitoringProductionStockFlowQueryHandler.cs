@@ -263,7 +263,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 		{
 			public string RO { get; internal set; }
 			public double FC { get; internal set; }
-			public int Count { get; internal set; }
+			public double Count { get; internal set; }
 		}
 		public async Task<MemoryStream> Handle(GetXlsMonitoringProductionStockFlowQuery request, CancellationToken cancellationToken)
 		{
