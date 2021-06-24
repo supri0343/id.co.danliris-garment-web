@@ -381,5 +381,126 @@ namespace Manufactures.Tests.Controllers.Api
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
         }
 
+
+        [Fact]
+        public async Task GetMutation_Return_Success()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+            Guid ExpenditureGoodGuid = Guid.NewGuid();
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetMutationExpenditureGoodsQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentMutationExpenditureGoodListViewModel());
+
+            // Act
+            var result = await unitUnderTest.GetMutation(DateTime.Now.AddDays(-1), DateTime.Now.AddDays(1), 1, 25, "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task GetXLSMutationBehavior()
+        {
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsMutationExpenditureGoodsQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
+
+            var result = await unitUnderTest.GetXlsMutation(DateTime.Now, DateTime.Now, 1, 25, "{}");
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+        }
+
+        [Fact]
+        public async Task GetMutationXLS_Throws_InternalServerError()
+        {
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsMutationExpenditureGoodsQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            var result = await unitUnderTest.GetXlsMutation(DateTime.Now, DateTime.Now, 1, 25, "{}");
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task GetReport_Return_Success()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+            Guid ExpenditureGoodGuid = Guid.NewGuid();
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetReportExpenditureGoodsQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentReportExpenditureGoodListViewModel());
+
+            // Act
+            var result = await unitUnderTest.GetReport(DateTime.Now.AddDays(-1), DateTime.Now.AddDays(1), 1, 25, "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task GetXLSReportBehavior()
+        {
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsReportExpenditureGoodsQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
+
+            var result = await unitUnderTest.GetXlsReport(DateTime.Now, DateTime.Now, 1, 25, "{}");
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+        }
+
+        [Fact]
+        public async Task GetReportXLS_Throws_InternalServerError()
+        {
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsReportExpenditureGoodsQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            var result = await unitUnderTest.GetXlsReport(DateTime.Now, DateTime.Now, 1, 25, "{}");
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task GetForTraceable_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+
+            _mockGarmentExpenditureGoodRepository
+                .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<GarmentExpenditureGoodReadModel>().AsQueryable());
+
+            Guid ExpenditureGoodGuid = Guid.NewGuid();
+            _mockGarmentExpenditureGoodRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentExpenditureGoodReadModel>>()))
+                .Returns(new List<GarmentExpenditureGood>()
+                {
+                    new GarmentExpenditureGood(ExpenditureGoodGuid, null,null,new UnitDepartmentId(1),null,null,"RONo","article",new GarmentComodityId(1),null,null,new BuyerId(1), null, null,DateTimeOffset.Now,  null,null,0,null,false,1)
+                });
+
+            Guid ExpenditureGoodItemGuid = Guid.NewGuid();
+            GarmentExpenditureGoodItem garmentExpenditureGoodItem = new GarmentExpenditureGoodItem(ExpenditureGoodItemGuid, ExpenditureGoodGuid, new Guid(), new SizeId(1), null, 1, 0, new UomId(1), null, null, 1, 1);
+            _mockGarmentExpenditureGoodItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentExpenditureGoodItemReadModel>()
+                {
+                    garmentExpenditureGoodItem.GetReadModel()
+                }.AsQueryable());
+
+
+            // Act
+            var result = await unitUnderTest.GetTraceablebyRONo("RONo");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentFinishingOuts.Queries;
+using Manufactures.Application.GarmentFinishingOuts.Queries.GetTotalQuantityTraceable;
 using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentFinishingOuts.Commands;
 using Manufactures.Domain.GarmentFinishingOuts.Repositories;
@@ -315,6 +316,17 @@ namespace Manufactures.Controllers.Api
             var order = await Mediator.Send(command);
 
             return Ok();
+        }
+
+        [HttpGet("for-traceable")]
+        public async Task<IActionResult> ForTraceable([FromBody] string RO)
+        {
+            VerifyUser();
+
+            GetTotalQuantityTraceableQuery query = new GetTotalQuantityTraceableQuery(RO, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.garmentTotalQtyTraceables);
         }
 
     }

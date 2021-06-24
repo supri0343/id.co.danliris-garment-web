@@ -28,6 +28,7 @@ using System.IO;
 using FluentAssertions;
 using Newtonsoft.Json;
 using Manufactures.Application.GarmentCuttingOuts.Queries.GetAllCuttingOuts;
+using Manufactures.Application.GarmentCuttingOuts.Queries.GetCuttingOutForTraceable;
 
 namespace Manufactures.Tests.Controllers.Api
 {
@@ -529,5 +530,23 @@ namespace Manufactures.Tests.Controllers.Api
             // Assert
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result1));
         }
+
+        [Fact]
+        public async Task GetTraceabeBehavior()
+        {
+            var unitUnderTest = CreateGarmentCuttingOutController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetCuttingOutForTraceableQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GetCuttingOutForTraceableListViewModel());
+
+            // Act
+            var result = await unitUnderTest.GetForTraceable("ro1,ro2");
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+        }
+
+
     }
 }
