@@ -71,7 +71,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<GetGarmentAvalComponentQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentAvalComponentViewModel(new GarmentAvalComponent(Guid.Empty, null, new UnitDepartmentId(1), null, null, null, null, null, new GarmentComodityId(1), null, null, DateTimeOffset.Now)));
+                .ReturnsAsync(new GarmentAvalComponentViewModel(new GarmentAvalComponent(Guid.Empty, null, new UnitDepartmentId(1), null, null, null, null, null, new GarmentComodityId(1), null, null, DateTimeOffset.Now, false)));
 
             // Act
             var result = await unitUnderTest.Get(Guid.NewGuid().ToString());
@@ -88,7 +88,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentAvalComponentCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentAvalComponent(Guid.Empty, null, new UnitDepartmentId(1), null, null, null, null, null, new GarmentComodityId(1), null, null, DateTimeOffset.Now));
+                .ReturnsAsync(new GarmentAvalComponent(Guid.Empty, null, new UnitDepartmentId(1), null, null, null, null, null, new GarmentComodityId(1), null, null, DateTimeOffset.Now, false));
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentAvalComponentCommand>());
@@ -105,7 +105,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentAvalComponentCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentAvalComponent(Guid.Empty, null, new UnitDepartmentId(1), null, null, null, null, null, new GarmentComodityId(1), null, null, DateTimeOffset.Now));
+                .ReturnsAsync(new GarmentAvalComponent(Guid.Empty, null, new UnitDepartmentId(1), null, null, null, null, null, new GarmentComodityId(1), null, null, DateTimeOffset.Now, false));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());

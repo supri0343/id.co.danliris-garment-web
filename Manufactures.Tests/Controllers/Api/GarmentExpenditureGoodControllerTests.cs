@@ -1,5 +1,7 @@
 ﻿using Barebone.Tests;
 using Manufactures.Application.GarmentExpenditureGoods.Queries;
+using Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationExpenditureGoods;
+using Manufactures.Application.GarmentExpenditureGoods.Queries.GetReportExpenditureGoods;
 using Manufactures.Controllers.Api;
 using Manufactures.Domain.GarmentExpenditureGoods;
 using Manufactures.Domain.GarmentExpenditureGoods.Commands;

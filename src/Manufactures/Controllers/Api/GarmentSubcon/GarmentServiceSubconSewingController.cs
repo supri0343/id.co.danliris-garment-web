@@ -52,13 +52,13 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             var itemIds = items.Select(s => s.Identity).ToList();
 
-            Parallel.ForEach(garmentServiceSubconSewingListDtos, dto =>
-            {
-                var currentItems = items.Where(w => w.ServiceSubconSewingId == dto.Id);
-                //dto.Colors = currentItems.Where(i => i.Color != null).Select(i => i.Color).Distinct().ToList();
-                //dto.Products = currentItems.Select(i => i.ProductCode).Distinct().ToList();
-                //dto.TotalQuantity = currentItems.Sum(i => i.Quantity);
-            });
+            //Parallel.ForEach(garmentServiceSubconSewingListDtos, dto =>
+            //{
+            //    var currentItems = items.Where(w => w.ServiceSubconSewingId == dto.Id);
+            //    //dto.Colors = currentItems.Where(i => i.Color != null).Select(i => i.Color).Distinct().ToList();
+            //    //dto.Products = currentItems.Select(i => i.ProductCode).Distinct().ToList();
+            //    //dto.TotalQuantity = currentItems.Sum(i => i.Quantity);
+            //});
 
             await Task.Yield();
             return Ok(garmentServiceSubconSewingListDtos, info: new

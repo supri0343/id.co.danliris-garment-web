@@ -235,12 +235,12 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 											 where aa.UnitId == request.unit && aa.CuttingOutDate <= dateTo//&& aa.RONo== "2010810"
 											 select aa)
 								  join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
-								  select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()),  loadingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.CuttingOutDate < dateFrom && a.CuttingOutDate > dateBalance ? b.TotalCuttingOut : 0, cuttingQtyPcs = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0, roJob = a.RONo, article = a.Article,style= a.ComodityName  };
+								  select new monitoringView { price = 0,  loadingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.CuttingOutDate < dateFrom && a.CuttingOutDate > dateBalance ? b.TotalCuttingOut : 0, cuttingQtyPcs = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0, roJob = a.RONo, article = a.Article,style= a.ComodityName  };
 			var QueryLoading = from a in (from aa in garmentLoadingRepository.Query
 										  where aa.UnitId == request.unit && aa.LoadingDate <= dateTo //&& aa.RONo == "2010810"
 										  select aa)
 							   join b in garmentLoadingItemRepository.Query on a.Identity equals b.LoadingId
-							   select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()),   loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, cuttingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom && a.LoadingDate > dateBalance ? -b.Quantity : 0, roJob = a.RONo, article = a.Article,  style = a.ComodityName };
+							   select new monitoringView { price = 0,   loadingQtyPcs = a.LoadingDate >= dateFrom ? b.Quantity : 0, cuttingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.LoadingDate < dateFrom && a.LoadingDate > dateBalance ? -b.Quantity : 0, roJob = a.RONo, article = a.Article,  style = a.ComodityName };
 			var queryNow = queryBalanceLoading.Union(QueryCuttingOut).Union(QueryLoading);
 			
 			var querySum = queryNow.ToList().GroupBy(x => new {   x.roJob, x.article, x.uomUnit }, (key, group) => new

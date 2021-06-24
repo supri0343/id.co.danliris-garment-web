@@ -7,6 +7,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentAvalComponents.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentAvalProducts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentBalanceStockProductions.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentComodityPrices.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentCuttingAdjustments.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentCuttingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentDeliveryReturns.Config;
@@ -16,6 +17,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentFinishedGoodStocks.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentFinishingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentFinishingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentLoadings.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentMonitoringProductionStockFlows.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentScrapClassifications.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentScrapTransactions.Config;
@@ -106,9 +108,12 @@ namespace Manufactures.Data.EntityFrameworkCore
 			modelBuilder.ApplyConfiguration(new GarmentBalanceLoadingConfig());
 			modelBuilder.ApplyConfiguration(new GarmentBalanceSewingConfig());
 			modelBuilder.ApplyConfiguration(new GarmentBalanceFinishingConfig());
+            modelBuilder.ApplyConfiguration(new GarmentBalanceMonitoringProductionStockFlowConfig());
 
-			//GARMENT SUBCON
-			modelBuilder.ApplyConfiguration(new GarmentSubconContractConfig());
+            modelBuilder.ApplyConfiguration(new GarmentCuttingAdjustmentConfig());
+            modelBuilder.ApplyConfiguration(new GarmentCuttingAdjustmentItemConfig());
+            //GARMENT SUBCON
+            modelBuilder.ApplyConfiguration(new GarmentSubconContractConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingConfig());
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingItemConfig());

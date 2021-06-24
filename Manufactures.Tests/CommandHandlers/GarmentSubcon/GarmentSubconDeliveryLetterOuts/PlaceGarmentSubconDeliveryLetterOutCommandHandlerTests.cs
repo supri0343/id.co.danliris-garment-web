@@ -15,6 +15,9 @@ using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels;
 using System.Linq;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using FluentAssertions;
+using Manufactures.Domain.GarmentSubconCuttingOuts.Repositories;
+using Manufactures.Domain.GarmentSubconCuttingOuts;
+using Manufactures.Domain.GarmentCuttingOuts.ReadModels;
 
 namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDeliveryLetterOuts
 {
@@ -22,14 +25,17 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
     {
         private readonly Mock<IGarmentSubconDeliveryLetterOutRepository> _mockSubconDeliveryLetterOutRepository;
         private readonly Mock<IGarmentSubconDeliveryLetterOutItemRepository> _mockSubconDeliveryLetterOutItemRepository;
+        private readonly Mock<IGarmentSubconCuttingOutRepository> _mockSubconCuttingOutRepository;
 
         public PlaceGarmentSubconDeliveryLetterOutCommandHandlerTests()
         {
             _mockSubconDeliveryLetterOutRepository = CreateMock<IGarmentSubconDeliveryLetterOutRepository>();
             _mockSubconDeliveryLetterOutItemRepository = CreateMock<IGarmentSubconDeliveryLetterOutItemRepository>();
+            _mockSubconCuttingOutRepository = CreateMock<IGarmentSubconCuttingOutRepository>();
 
             _MockStorage.SetupStorage(_mockSubconDeliveryLetterOutRepository);
             _MockStorage.SetupStorage(_mockSubconDeliveryLetterOutItemRepository);
+            _MockStorage.SetupStorage(_mockSubconCuttingOutRepository);
         }
         private PlaceGarmentSubconDeliveryLetterOutCommandHandler CreatePlaceGarmentSubconDeliveryLetterOutCommandHandler()
         {
@@ -101,7 +107,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
         public async Task Handle_StateUnderTest_ExpectedBehavior_CT()
         {
             // Arrange
-            Guid sewingInItemGuid = Guid.NewGuid();
+            Guid subconCuttingOutGuid = Guid.NewGuid();
             PlaceGarmentSubconDeliveryLetterOutCommandHandler unitUnderTest = CreatePlaceGarmentSubconDeliveryLetterOutCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentSubconDeliveryLetterOutCommand placeGarmentSubconDeliveryLetterOutCommand = new PlaceGarmentSubconDeliveryLetterOutCommand()
@@ -132,11 +138,23 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                         UENItemId=1,
                         Uom=new Uom(1,"UomUnit"),
                         UomOut=new Uom(1,"UomUnit"),
-                        ContractQuantity=1
+                        ContractQuantity=1,
+                        SubconCuttingOutId=subconCuttingOutGuid,
+                        SubconCuttingOutNo="no",
+                        POSerialNumber="poNo",
+                        RONo="RONo"
                     }
                 },
 
             };
+            GarmentSubconCuttingOut garmentSubconCuttingOut = new GarmentSubconCuttingOut(subconCuttingOutGuid, "no", "", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, "ro", "", new GarmentComodityId(1), "", "", 1, 1, "", false);
+
+            _mockSubconCuttingOutRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingOutReadModel>
+                {
+                    garmentSubconCuttingOut.GetReadModel()
+                }.AsQueryable());
 
             _mockSubconDeliveryLetterOutRepository
                 .Setup(s => s.Query)
@@ -147,6 +165,10 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
             _mockSubconDeliveryLetterOutItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOutItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOutItem>()));
+
+            _mockSubconCuttingOutRepository
+                .Setup(s => s.Update(It.IsAny<GarmentSubconCuttingOut>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentSubconCuttingOut>()));
 
             _MockStorage
                 .Setup(x => x.Save())

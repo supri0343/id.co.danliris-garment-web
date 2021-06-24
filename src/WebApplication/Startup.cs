@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Microsoft.ApplicationInsights.AspNetCore;
 
 namespace DanLiris.Admin.Web
 {
@@ -32,7 +33,7 @@ namespace DanLiris.Admin.Web
         private readonly string[] EXPOSED_HEADERS = new string[] { "Content-Disposition", "api-version", "content-length", "content-md5", "content-type", "date", "request-id", "response-time" };
         private readonly string extensionsPath;
         private readonly string GARMENT_POLICY = "GarmentPolicy";
-
+        public bool HasAppInsight => !string.IsNullOrEmpty(configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY") ?? configuration.GetValue<string>("ApplicationInsights:InstrumentationKey"));
         public Startup(IHostingEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             this.configuration = configuration;
@@ -98,11 +99,32 @@ namespace DanLiris.Admin.Web
 			}
 
 		}
-		public void ConfigureServices(IServiceCollection services)
+
+
+        public void RegisterCustomsDataSettings()
+		{
+			if (!configuration.GetSection("DanLirisSettings").Exists())
+			{
+				CustomsDataSettings.Endpoint = configuration.GetValue<string>("CustomsDataEndpoint") ?? configuration["CustomsDataEndpoint"];
+                CustomsDataSettings.TokenEndpoint = configuration.GetValue<string>("TokenEndpoint") ?? configuration["TokenEndpoint"];
+                CustomsDataSettings.Username = configuration.GetValue<string>("Username") ?? configuration["Username"];
+                CustomsDataSettings.Password = configuration.GetValue<string>("Password") ?? configuration["Password"];
+			}
+			else
+			{
+                CustomsDataSettings.Endpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("CustomsDataEndpoint");
+                CustomsDataSettings.TokenEndpoint = this.configuration.GetSection("DanLirisSettings").GetValue<string>("TokenEndpoint");
+                CustomsDataSettings.Username = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Username");
+                CustomsDataSettings.Password = this.configuration.GetSection("DanLirisSettings").GetValue<string>("Password");
+			}
+
+		}
+        public void ConfigureServices(IServiceCollection services)
         {
             RegisterMasterDataSettings();
             RegisterPurchasingDataSettings();
-			RegisterSalesDataSettings();
+            RegisterSalesDataSettings();
+            RegisterCustomsDataSettings();
             services.AddScoped<IIdentityService, IdentityService>();
 
             services.AddSingleton<IMemoryCacheManager, MemoryCacheManager>()
@@ -177,6 +199,15 @@ namespace DanLiris.Admin.Web
                 .AddAuthorization();
 
             #endregion
+
+            #region ApplicationInsight
+            services.AddApplicationInsightsTelemetry();
+            if (HasAppInsight)
+            {
+                services.AddApplicationInsightsTelemetry();
+                services.AddAppInsightRequestBodyLogging();
+            }
+            #endregion
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -187,6 +218,13 @@ namespace DanLiris.Admin.Web
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
+
+            if (HasAppInsight)
+            {
+                app.UseAppInsightRequestBodyLogging();
+                app.UseAppInsightResponseBodyLogging();
+            }
+
             app.UseCors(GARMENT_POLICY);
             app.UseExtCore();
 
@@ -200,11 +238,9 @@ namespace DanLiris.Admin.Web
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
             });
 
-
-
-
             //JobManager.Initialize(new JobRegistry(app.ApplicationServices));
             JobManager.Initialize(new DefaultScheduleRegistry());
+            
         }
     }
 }

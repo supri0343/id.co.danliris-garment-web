@@ -1,6 +1,7 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
 using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
+using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
 using Manufactures.Application.GarmentExpenditureGoods.Queries;
 using Manufactures.Application.GarmentFinishingOuts.Queries;
 using Manufactures.Domain.GarmentCuttingIns;
@@ -68,9 +69,25 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
 				}
 			};
 
-			_mockhttpService.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()))
+            List<PEBResultViewModel> pEBResultViews = new List<PEBResultViewModel> {
+                new PEBResultViewModel
+                {
+                    BCDate = DateTime.MinValue,
+                    BCNo = "",
+                    BonNo = ""
+                }
+            };
+
+			_mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.Is<string>(s => s.Contains("cost-calculation-garments/data")), It.IsAny<string>(), It.IsAny<HttpContent>()))
 				.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
-			serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
+
+            _mockhttpService.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
+
+            _mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.Is<string>(s => s.Contains("customs-reports/getPEB")), It.IsAny<string>(), It.IsAny<HttpContent>()))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(pEBResultViews) + "}") });
+
+            serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
 		}
 		private GarmentExpenditureGoodQueryHandler CreateGetMonitoringExpenditureGoodQueryHandler()
 		{

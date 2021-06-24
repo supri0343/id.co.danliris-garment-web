@@ -20,7 +20,10 @@ namespace Manufactures.Dtos.GarmentSubcon
             Uom = new Uom(garmentSubconDeliveryLetterOutItem.UomId.Value, garmentSubconDeliveryLetterOutItem.UomUnit);
             UomOut = new Uom(garmentSubconDeliveryLetterOutItem.UomOutId.Value, garmentSubconDeliveryLetterOutItem.UomOutUnit);
             FabricType = garmentSubconDeliveryLetterOutItem.FabricType;
-            
+            RONo = garmentSubconDeliveryLetterOutItem.RONo;
+            POSerialNumber = garmentSubconDeliveryLetterOutItem.POSerialNumber;
+            SubconCuttingOutId = garmentSubconDeliveryLetterOutItem.SubconCuttingOutId;
+            SubconCuttingOutNo = garmentSubconDeliveryLetterOutItem.SubconCuttingOutNo;
         }
 
         public Guid Id { get; set; }
@@ -37,6 +40,13 @@ namespace Manufactures.Dtos.GarmentSubcon
         public Uom UomOut { get; set; }
 
         public string FabricType { get; set; }
+
+        #region Cutting
+        public string RONo { get; set; }
+        public Guid SubconCuttingOutId { get; set; }
+        public string POSerialNumber { get; set; }
+        public string SubconCuttingOutNo { get; set; }
+        #endregion
         //public double ContractQuantity { get; set; }
     }
 }
