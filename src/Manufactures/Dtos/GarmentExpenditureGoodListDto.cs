@@ -42,5 +42,6 @@ namespace Manufactures.Dtos
         public string Description { get; internal set; }
         public bool IsReceived { get; private set; }
         public double TotalQuantity { get; set; }
+        public double TotalPrice { get; set; }
     }
 }

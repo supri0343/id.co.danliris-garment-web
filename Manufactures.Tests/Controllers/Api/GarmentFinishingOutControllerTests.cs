@@ -1,6 +1,7 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentFinishingOuts.Queries;
+using Manufactures.Application.GarmentFinishingOuts.Queries.GetTotalQuantityTraceable;
 using Manufactures.Controllers.Api;
 using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentFinishingOuts;
@@ -459,5 +460,23 @@ namespace Manufactures.Tests.Controllers.Api
             // Assert
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result1));
         }
+
+        [Fact]
+        public async Task GetForTraceableBehavior()
+        {
+            var unitUnderTest = CreateGarmentFinishingOutController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetTotalQuantityTraceableQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentTotalQtyTraceableListViewModel());
+
+            // Act
+            var result = await unitUnderTest.ForTraceable("RO1,RO2");
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+        }
+
+
     }
 }
