@@ -2160,16 +2160,18 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			{
 
 				var fc = Math.Round(Convert.ToDouble(item.fc), 2);
-				var basicPrice = Math.Round(Convert.ToDouble(item.basicprice) * fc, 2);
+                var basicPrice = Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == item.ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2) * Convert.ToDouble((from cost in sumFCs where cost.RO == item.ro select cost.FC / cost.Count).FirstOrDefault()) == 0 ? Convert.ToDouble((from a in queryBalance.ToList() where a.Ro == item.ro select a.BasicPrice).FirstOrDefault()) : Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == item.ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2) * Convert.ToDouble((from cost in sumFCs where cost.RO == item.ro select cost.FC / cost.Count).FirstOrDefault());
+                //Math.Round(Convert.ToDouble(item.basicprice) * fc, 2);
 
-				GarmentMonitoringProductionStockFlowDto garmentMonitoringDto = new GarmentMonitoringProductionStockFlowDto()
+                GarmentMonitoringProductionStockFlowDto garmentMonitoringDto = new GarmentMonitoringProductionStockFlowDto()
 				{
 					Article = item.article,
 					Ro = item.ro,
 					FC = fc,
 					Fare = item.fare,
 					BasicPrice = basicPrice,
-					BeginingBalanceCuttingQty = item.begining <0? 0: item.begining,
+                    
+                    BeginingBalanceCuttingQty = item.begining <0? 0: item.begining,
 					BeginingBalanceCuttingPrice = Math.Round(((Convert.ToDouble(item.fare) * 0.25) + basicPrice) * item.begining, 2)<0?0: Math.Round(((Convert.ToDouble(item.fare) * 0.25) + basicPrice) * item.begining, 2),
 					QtyCuttingTransfer = Math.Round(item.qtyCuttingTransfer, 2),
 					PriceCuttingTransfer = Math.Round(((Convert.ToDouble(item.fare) * 0.25) + basicPrice) * item.qtyCuttingTransfer, 2),

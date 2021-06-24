@@ -2168,7 +2168,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
             {
 
                 var fc = Math.Round(Convert.ToDouble(item.fc), 2);
-                var basicPrice = Math.Round(Convert.ToDouble(item.basicprice) * fc, 2);
+                //var basicPrice = Math.Round(Convert.ToDouble(item.basicprice) * fc, 2);
+                var basicPrice = Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == item.ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2) * Convert.ToDouble((from cost in sumFCs where cost.RO == item.ro select cost.FC / cost.Count).FirstOrDefault()) == 0 ? Convert.ToDouble((from a in queryBalance.ToList() where a.Ro == item.ro select a.BasicPrice).FirstOrDefault()) : Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == item.ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2) * Convert.ToDouble((from cost in sumFCs where cost.RO == item.ro select cost.FC / cost.Count).FirstOrDefault());
 
                 GarmentMonitoringProductionStockFlowDto garmentMonitoringDto = new GarmentMonitoringProductionStockFlowDto()
                 {
