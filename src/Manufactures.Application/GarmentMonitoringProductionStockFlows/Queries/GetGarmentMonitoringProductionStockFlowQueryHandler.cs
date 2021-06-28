@@ -258,7 +258,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 		{
 			public string RO { get; internal set; }
 			public double FC { get; internal set; }
-			public int Count { get; internal set; }
+			public double Count { get; internal set; }
 		}
 		public async Task<GarmentMonitoringProductionStockFlowListViewModel> Handle(GetMonitoringProductionStockFlowQuery request, CancellationToken cancellationToken)
 		{
@@ -284,22 +284,23 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
             var sumFCs = (from a in garmentCuttingInRepository.Query
                           where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.CuttingType == "Main Fabric" &&
                           a.CuttingInDate <= dateTo
-                          select new { a.FC, a.RONo })
+                          join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
+                          join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+                          select new { a.FC, a.RONo, FCs= Convert.ToDouble( c.CuttingInQuantity  * a.FC),c.CuttingInQuantity}) 
                          .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
                          {
                              RO = key.RONo,
-                             FC = group.Sum(s => s.FC),
-                             Count = group.Count()
+                             FC = group.Sum(s => (s.FCs)),
+                             Count = group.Sum(s =>  s.CuttingInQuantity)
                          });
 
             var queryGroup = (from a in ( from aa in garmentCuttingOutRepository.Query
                                           where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro))
                                           select new {aa.RONo,aa.ComodityId,aa.ComodityName, aa.Article })
 							  select new { BasicPrice = (from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault(), FareNew = (from aa in garmentComodityPriceRepository.Query where aa.UnitId == request.unit && a.ComodityId == aa.ComodityId && aa.Date ==dateFareNew select aa.Price).FirstOrDefault(), Fare = (from aa in garmentComodityPriceRepository.Query where aa.UnitId == request.unit && a.ComodityId == aa.ComodityId && aa.IsValid == true select aa.Price).FirstOrDefault(), Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName, FC = (from cost in sumFCs where cost.RO == a.RONo select cost.FC / cost.Count).FirstOrDefault() }).Distinct();
-         
 
 
-         var queryBalance = from a in
+            var queryBalance = from a in
                                    (from aa in garmentBalanceProductionStockRepository.Query
                                     where (request.ro == null || (request.ro != null && request.ro != "" && aa.Ro == request.ro)) && aa.UnitId == request.unit && aa.UnitId == aa.UnitId
                                     select aa)
@@ -2159,16 +2160,18 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			{
 
 				var fc = Math.Round(Convert.ToDouble(item.fc), 2);
-				var basicPrice = Math.Round(Convert.ToDouble(item.basicprice) * fc, 2);
+                var basicPrice = Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == item.ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2) * Convert.ToDouble((from cost in sumFCs where cost.RO == item.ro select cost.FC / cost.Count).FirstOrDefault()) == 0 ? Convert.ToDouble((from a in queryBalance.ToList() where a.Ro == item.ro select a.BasicPrice).FirstOrDefault()) : Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == item.ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2) * Convert.ToDouble((from cost in sumFCs where cost.RO == item.ro select cost.FC / cost.Count).FirstOrDefault());
+                //Math.Round(Convert.ToDouble(item.basicprice) * fc, 2);
 
-				GarmentMonitoringProductionStockFlowDto garmentMonitoringDto = new GarmentMonitoringProductionStockFlowDto()
+                GarmentMonitoringProductionStockFlowDto garmentMonitoringDto = new GarmentMonitoringProductionStockFlowDto()
 				{
 					Article = item.article,
 					Ro = item.ro,
 					FC = fc,
 					Fare = item.fare,
 					BasicPrice = basicPrice,
-					BeginingBalanceCuttingQty = item.begining <0? 0: item.begining,
+                    
+                    BeginingBalanceCuttingQty = item.begining <0? 0: item.begining,
 					BeginingBalanceCuttingPrice = Math.Round(((Convert.ToDouble(item.fare) * 0.25) + basicPrice) * item.begining, 2)<0?0: Math.Round(((Convert.ToDouble(item.fare) * 0.25) + basicPrice) * item.begining, 2),
 					QtyCuttingTransfer = Math.Round(item.qtyCuttingTransfer, 2),
 					PriceCuttingTransfer = Math.Round(((Convert.ToDouble(item.fare) * 0.25) + basicPrice) * item.qtyCuttingTransfer, 2),

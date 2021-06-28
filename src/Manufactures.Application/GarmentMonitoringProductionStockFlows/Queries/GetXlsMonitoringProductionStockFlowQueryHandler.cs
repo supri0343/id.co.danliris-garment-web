@@ -263,7 +263,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 		{
 			public string RO { get; internal set; }
 			public double FC { get; internal set; }
-			public int Count { get; internal set; }
+			public double Count { get; internal set; }
 		}
 		public async Task<MemoryStream> Handle(GetXlsMonitoringProductionStockFlowQuery request, CancellationToken cancellationToken)
 		{
@@ -289,12 +289,14 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
             var sumFCs = (from a in garmentCuttingInRepository.Query
                           where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.CuttingType == "Main Fabric" &&
                           a.CuttingInDate <= dateTo
-                          select new { a.FC, a.RONo })
+                          join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
+                          join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+                          select new { a.FC, a.RONo, FCs= Convert.ToDouble( c.CuttingInQuantity  * a.FC),c.CuttingInQuantity}) 
                          .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
                          {
                              RO = key.RONo,
-                             FC = group.Sum(s => s.FC),
-                             Count = group.Count()
+                             FC = group.Sum(s => (s.FCs)),
+                             Count = group.Sum(s =>  s.CuttingInQuantity)
                          });
 
             var queryGroup = (from a in (from aa in garmentCuttingOutRepository.Query
@@ -2166,7 +2168,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
             {
 
                 var fc = Math.Round(Convert.ToDouble(item.fc), 2);
-                var basicPrice = Math.Round(Convert.ToDouble(item.basicprice) * fc, 2);
+                //var basicPrice = Math.Round(Convert.ToDouble(item.basicprice) * fc, 2);
+                var basicPrice = Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == item.ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2) * Convert.ToDouble((from cost in sumFCs where cost.RO == item.ro select cost.FC / cost.Count).FirstOrDefault()) == 0 ? Convert.ToDouble((from a in queryBalance.ToList() where a.Ro == item.ro select a.BasicPrice).FirstOrDefault()) : Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == item.ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2) * Convert.ToDouble((from cost in sumFCs where cost.RO == item.ro select cost.FC / cost.Count).FirstOrDefault());
 
                 GarmentMonitoringProductionStockFlowDto garmentMonitoringDto = new GarmentMonitoringProductionStockFlowDto()
                 {
@@ -2225,7 +2228,9 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                     BeginingBalanceFinishingQty = Math.Round(item.beginingbalanceFinishing, 2),
                     BeginingBalanceFinishingPrice = Math.Round(((Convert.ToDouble(item.fare) * 0.75) + basicPrice) * item.beginingbalanceFinishing, 2),
                     FinishingInExpenditure = Math.Round(item.finishingout + item.subconout, 2),
-                    FinishingInExpenditurepPrice = Math.Round((((Convert.ToDouble(item.fare) * 0.75) + basicPrice) * item.finishingout) + (((Convert.ToDouble(item.fare) * 0.75) + basicPrice) * item.subconout), 2),
+                    //FinishingInExpenditurepPrice = Math.Round((((Convert.ToDouble(item.fare) * 0.75) + basicPrice) * item.finishingout) + (((Convert.ToDouble(item.fare) * 0.75) + basicPrice) * item.subconout), 2),
+                    //minta diganti pak teguh tarif + harga bahan baki
+                    FinishingInExpenditurepPrice = Math.Round(Convert.ToDouble((item.finishingout + item.subconout)) * Convert.ToDouble( item.fare)) + Math.Round(Convert.ToDouble((item.finishingout + item.subconout)) * Convert.ToDouble( item.basicprice)),
                     FinishingInQty = Math.Round(item.finishingin, 2),
                     FinishingInPrice = Math.Round(((Convert.ToDouble(item.fare) * 0.75) + basicPrice) * item.finishingin, 2),
                     FinishingOutQty = Math.Round(item.finishingout, 2),
@@ -2301,6 +2306,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                 garment.Hours = garment.Hours == 0 ? (from cost in costCalculation.data where cost.ro == garment.Ro select cost.hours).FirstOrDefault() : garment.Hours;
 
                 garment.BasicPrice = Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == garment.Ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2) * Convert.ToDouble((from cost in sumFCs where cost.RO == garment.Ro select cost.FC / cost.Count).FirstOrDefault()) == 0 ? Convert.ToDouble((from a in queryBalance.ToList() where a.Ro == garment.Ro select a.BasicPrice).FirstOrDefault()) : Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == garment.Ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2) * Convert.ToDouble((from cost in sumFCs where cost.RO == garment.Ro select cost.FC / cost.Count).FirstOrDefault());
+                garment.FinishingInExpenditurepPrice = (garment.FinishingInExpenditure * Convert.ToDouble(garment.Fare) + (garment.FinishingInExpenditure * garment.BasicPrice));
             }
             garmentMonitoringProductionFlow.garmentMonitorings = data.ToList();
             garmentMonitoringProductionFlow.count = data.Count();
@@ -2349,7 +2355,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				BeginingBalanceExpenditureGoodTotal += item.BeginingBalanceExpenditureGood;
 				PriceBeginingBalanceExpenditureGoodTotal += item.BeginingBalanceExpenditureGoodPrice;
 				FinishingInExpenditureTotal += item.FinishingInExpenditure;
-				PriceFinishingInExpenditureTotal += item.FinishingInExpenditurepPrice;
+                PriceFinishingInExpenditureTotal += (item.FinishingInExpenditure * Convert.ToDouble(item.Fare) + (item.FinishingInExpenditure * item.BasicPrice));
 				ExpenditureGoodInTransferTotal += item.ExpenditureGoodInTransfer;
 				PriceExpenditureGoodInTransferTotal += item.ExpenditureGoodInTransferPrice;
 				ExpenditureGoodReturTotal += item.ExpenditureGoodRetur;
@@ -2767,8 +2773,11 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					worksheet.Cells["A" + 5 + ":AU" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
 					worksheet.Cells["A" + 5 + ":AU" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 					worksheet.Cells["A" + counter + ":AU" + counter + ""].Style.Font.Bold = true;
-					
-				}
+                    foreach (var cell in worksheet.Cells["D" + 7 + ":AU" + (counter + 1) + ""])
+                    {
+                        cell.Value = Convert.ToDecimal(cell.Value);
+                    }
+                }
 				else
 				{
 					worksheet.Cells["A1"].Value = "Report Produksi"; worksheet.Cells["A" + 1 + ":AT" + 1 + ""].Merge = true;
@@ -2853,7 +2862,10 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					worksheet.Cells["A" + 5 + ":CZ" + (counter + 1) + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
 					worksheet.Cells["A" + 5 + ":CZ" + (counter + 1) + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
 					worksheet.Cells["A" + 5 + ":CZ" + (counter + 1) + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                  
+                    foreach (var cell in worksheet.Cells["E" + 8 + ":CZ" + (counter + 1) + ""])
+                    {
+                        cell.Value = Convert.ToDecimal(cell.Value);
+                    }
 
                 }
 				var stream = new MemoryStream();
