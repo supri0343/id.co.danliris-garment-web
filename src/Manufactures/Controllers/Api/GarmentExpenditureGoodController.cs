@@ -12,6 +12,7 @@ using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,7 @@ namespace Manufactures.Controllers.Api
 
             var dtoIds = garmentExpenditureGoodListDtos.Select(s => s.Id).ToList();
             var items = _garmentExpenditureGoodItemRepository.Query
+                .IgnoreQueryFilters()
                 .Where(o => dtoIds.Contains(o.ExpenditureGoodId))
                 .Select(s => new { s.Identity, s.ExpenditureGoodId, s.Quantity })
                 .ToList();
