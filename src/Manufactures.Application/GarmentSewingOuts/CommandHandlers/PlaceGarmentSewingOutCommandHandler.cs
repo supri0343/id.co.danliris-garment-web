@@ -103,7 +103,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                         new UomId(item.Uom.Id),
                         item.Uom.Unit,
                         item.Color,
-                        0,
+                        request.SewingTo == "CUTTING" ? item.RemainingQuantity : 0,
                         item.BasicPrice,
                         item.Price
                     );
