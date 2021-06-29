@@ -18,6 +18,7 @@ using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentCuttingOuts.Queries;
 using Manufactures.Helpers.PDFTemplates;
 using Manufactures.Domain.GarmentCuttingOuts;
+using Manufactures.Application.GarmentCuttingOuts.Queries.GetCuttingOutForTraceable;
 
 namespace Manufactures.Controllers.Api
 {
@@ -283,6 +284,19 @@ namespace Manufactures.Controllers.Api
             var order = await Mediator.Send(command);
 
             return Ok();
+        }
+
+        [HttpGet("for-traceable")]
+        public async Task<IActionResult> GetForTraceable ([FromBody]string RONo)
+        {
+            VerifyUser();
+
+            var ros = RONo.Contains(",") ? RONo.Split(",").ToList() : new List<string> { RONo };
+
+            GetCuttingOutForTraceableQuery query = new GetCuttingOutForTraceableQuery(ros, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.data);
         }
     }
 }
