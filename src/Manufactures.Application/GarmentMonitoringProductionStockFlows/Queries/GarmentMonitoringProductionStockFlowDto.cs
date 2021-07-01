@@ -117,8 +117,10 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 		public decimal FinishingNew { get; internal set; }
 		public decimal ExpenditureNew { get; internal set; }
 		public decimal SubconNew { get; internal set; }
+        public double MaterialUsage { get; internal set; }
+        public double PriceUsage { get; internal set; }
 
-		public GarmentMonitoringProductionStockFlowDto(GarmentMonitoringProductionStockFlowDto flowDto)
+        public GarmentMonitoringProductionStockFlowDto(GarmentMonitoringProductionStockFlowDto flowDto)
 		{
 			 
 			this.Ro = flowDto.Ro;
@@ -213,6 +215,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			this.LoadingNew = flowDto.LoadingNew;
 			this.FinishingNew = flowDto.FinishingNew;
 			this.ExpenditureNew = flowDto.ExpenditureNew;
+            this.MaterialUsage = flowDto.MaterialUsage;
+            this.PriceUsage = flowDto.PriceUsage;
 			
 		}
 		
