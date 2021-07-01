@@ -453,5 +453,15 @@ namespace Manufactures.Controllers.Api
                 return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
+
+        [HttpGet("basic-price")]
+        public async Task<IActionResult> GetBasicPriceByRONo(string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentExpenditureGoodRepository.BasicPriceByRO(keyword, filter);
+            
+            return Ok(query);
+        }
     }
 }

@@ -504,5 +504,52 @@ namespace Manufactures.Tests.Controllers.Api
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
+
+        [Fact]
+        public async Task GetBasicPrice_Return_Success()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+            Guid ExpenditureGoodGuid = Guid.NewGuid();
+            Guid ExpenditureGoodItemGuid = Guid.NewGuid();
+            //_mockGarmentExpenditureGoodRepository
+            //    .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            //    .Returns(new List<GarmentExpenditureGoodReadModel>() {
+            //        new GarmentExpenditureGoodReadModel(ExpenditureGoodGuid)
+            //    }
+            //    .AsQueryable());
+
+            _mockGarmentExpenditureGoodRepository
+               .Setup(s => s.BasicPriceByRO(It.IsAny<string>(), It.IsAny<string>()))
+               .Returns(It.IsAny<double>());
+
+            //_mockGarmentExpenditureGoodItemRepository
+            //   .Setup(s => s.Query)
+            //   .Returns(new List<GarmentExpenditureGoodItemReadModel>()
+            //   {
+            //       new GarmentExpenditureGoodItemReadModel(ExpenditureGoodItemGuid)
+            //   }
+            //   .AsQueryable());
+
+            //_mockGarmentExpenditureGoodItemRepository
+            //    .Setup(s => s.Find(It.IsAny<IQueryable<GarmentExpenditureGoodItemReadModel>>()))
+            //    .Returns(new List<GarmentExpenditureGoodItem>() {
+            //        new GarmentExpenditureGoodItem(ExpenditureGoodItemGuid,ExpenditureGoodItemGuid,Guid.NewGuid(),new SizeId(1),"sizeName",1,1,new UomId(1),"uomUnit","description",1,1)
+            //    });
+
+
+            // Act
+            var filterData = new
+            {
+                RONo= "RONo",
+                UnitId= 1
+            };
+
+            string filter = JsonConvert.SerializeObject(filterData);
+            var result = await unitUnderTest.GetBasicPriceByRONo("", filter);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
     }
 }
