@@ -44,8 +44,10 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
         private readonly IGarmentAdjustmentRepository garmentAdjustmentRepository;
         private readonly IGarmentAdjustmentItemRepository garmentAdjustmentItemRepository;
         private readonly IGarmentFinishingOutRepository garmentFinishingOutRepository;
-        
-		public GetXlsSewingQueryHandler(IStorage storage, IServiceProvider serviceProvider)
+        private readonly IGarmentCuttingInItemRepository garmentCuttingInItemRepository;
+        private readonly IGarmentCuttingInDetailRepository garmentCuttingInDetailRepository;
+
+        public GetXlsSewingQueryHandler(IStorage storage, IServiceProvider serviceProvider)
 		{
 			_storage = storage;
 			garmentSewingOutRepository = storage.GetRepository<IGarmentSewingOutRepository>();
@@ -58,6 +60,8 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
             garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
             garmentAdjustmentRepository = storage.GetRepository<IGarmentAdjustmentRepository>();
             garmentAdjustmentItemRepository = storage.GetRepository<IGarmentAdjustmentItemRepository>();
+            garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
+            garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _http = serviceProvider.GetService<IHttpClientService>();
             _http = serviceProvider.GetService<IHttpClientService>();
 		}
@@ -197,13 +201,15 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
             var sumFCs = (from a in garmentCuttingInRepository.Query
                           where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" //&&
                                                                                                                                                                 /*a.UnitId == request.unit && a.CuttingInDate <= dateTo*/
-                          select new { a.FC, a.RONo })
-                         .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
-                         {
-                             RO = key.RONo,
-                             FC = group.Sum(s => s.FC),
-                             Count = group.Count()
-                         });
+                          join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
+                          join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+                          select new { a.FC, a.RONo, FCs = Convert.ToDouble(c.CuttingInQuantity * a.FC), c.CuttingInQuantity })
+                       .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
+                       {
+                           RO = key.RONo,
+                           FC = group.Sum(s => (s.FCs)),
+                           Count = group.Sum(s => s.CuttingInQuantity)
+                       });
             var queryBalanceSewing = from a in
                                   (from aa in garmentBalanceSewingRepository.Query
                                    where aa.BeginingBalanceSewingQty > 0 && aa.UnitId == request.unit && aa.UnitId == aa.UnitId
