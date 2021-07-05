@@ -117,7 +117,7 @@ namespace Manufactures.Controllers.Api
             var ros = RONo.Contains(",") ? RONo.Split(",").ToList() : new List<string> { RONo };
 
             var query = _garmentExpenditureGoodRepository.Read(1, 75, "{}", null, "{}");
-            query = query.Where(x => ros.Contains(x.RONo) && x.ExpenditureType == "EXPORT").Select(x => x);
+            query = query.Where(x => ros.Contains(x.RONo)).Select(x => x);
             var total = query.Count();
             double totalQty = query.Sum(a => a.Items.Sum(b => b.Quantity));
             //query = query.Skip((page - 1) * size).Take(size);
@@ -132,6 +132,8 @@ namespace Manufactures.Controllers.Api
                 .Where(o => dtoIds.Contains(o.ExpenditureGoodId))
                 .Select(s => new { s.Identity, s.ExpenditureGoodId, s.Quantity })
                 .ToList();
+
+
 
             var itemIds = items.Select(s => s.Identity).ToList();
             Parallel.ForEach(garmentExpenditureGoodListDtos, dto =>

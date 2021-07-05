@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Manufactures.Application.GarmentAvalComponents.Queries.GetAllGarmentAvalComponents;
 using Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepare;
+using Manufactures.Application.GarmentPreparings.Queries.GetPrepareTraceable;
 using Manufactures.Application.GarmentPreparings.Queries.GetWIP;
 using Manufactures.Controllers.Api;
 using Manufactures.Domain.GarmentAvalProducts.Repositories;
@@ -577,5 +578,23 @@ namespace Manufactures.Tests.Controllers.Api
             // Assert
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
         }
+
+        [Fact]
+        public async Task GetDataTraceableBehavior()
+        {
+            var unitUnderTest = CreateGarmentPreparingController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetPrepareTraceableQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GetPrepareTraceableListViewModel());
+
+            // Act
+
+            var result = await unitUnderTest.GetpreparingbyRONO("ro1,ro2");
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+        }
+
     }
 }

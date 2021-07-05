@@ -2,6 +2,7 @@
 using Infrastructure.External.DanLirisClient.Microservice.Cache;
 using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
 using Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepare;
+using Manufactures.Application.GarmentPreparings.Queries.GetPrepareTraceable;
 using Manufactures.Application.GarmentPreparings.Queries.GetWIP;
 using Manufactures.Domain.GarmentPreparings.Commands;
 using Manufactures.Domain.GarmentPreparings.Repositories;
@@ -441,6 +442,18 @@ namespace Manufactures.Controllers.Api
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
+        }
+
+        [HttpGet("byRONO")]
+        public async Task<IActionResult> GetpreparingbyRONO([FromBody]string RO)
+        {
+
+            VerifyUser();
+
+            GetPrepareTraceableQuery query = new GetPrepareTraceableQuery(RO, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.getPrepareTraceableDtos);
         }
     }
 }
