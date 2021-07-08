@@ -34,7 +34,9 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 		private readonly IGarmentPreparingItemRepository garmentPreparingItemRepository;
 		private readonly IGarmentBalanceLoadingRepository garmentBalanceLoadingRepository;
 		private readonly IGarmentCuttingInRepository garmentCuttingInRepository;
-		private readonly IMemoryCacheManager cacheManager;
+        private readonly IGarmentCuttingInItemRepository garmentCuttingInItemRepository;
+        private readonly IGarmentCuttingInDetailRepository garmentCuttingInDetailRepository;
+        private readonly IMemoryCacheManager cacheManager;
 
         public GetMonitoringLoadingQueryHandler(IStorage storage, IServiceProvider serviceProvider)
 		{
@@ -47,7 +49,9 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 			garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
 			garmentBalanceLoadingRepository = storage.GetRepository<IGarmentBalanceLoadingRepository>();
 			garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
-			_http = serviceProvider.GetService<IHttpClientService>();
+            garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
+            garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
+            _http = serviceProvider.GetService<IHttpClientService>();
 
             cacheManager = serviceProvider.GetService<IMemoryCacheManager>();
         }
@@ -217,14 +221,16 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 			var sumFCs = (from a in garmentCuttingInRepository.Query
 						  where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" &&
 						 a.UnitId == request.unit && a.CuttingInDate <= dateTo
-						  select new { a.FC, a.RONo })
-						 .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
-						 {
-							 RO = key.RONo,
-							 FC = group.Sum(s => s.FC),
-							 Count = group.Count()
-						 });
-			var _unitName = (from a in garmentCuttingOutRepository.Query
+                          join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
+                          join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+                          select new { a.FC, a.RONo, FCs = Convert.ToDouble(c.CuttingInQuantity * a.FC), c.CuttingInQuantity })
+                       .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
+                       {
+                           RO = key.RONo,
+                           FC = group.Sum(s => (s.FCs)),
+                           Count = group.Sum(s => s.CuttingInQuantity)
+                       });
+            var _unitName = (from a in garmentCuttingOutRepository.Query
 							 where a.UnitId == request.unit
 							 select a.UnitName).FirstOrDefault();
 			var queryBalanceLoading = from a in garmentBalanceLoadingRepository.Query

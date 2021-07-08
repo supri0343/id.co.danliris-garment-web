@@ -186,14 +186,16 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			var sumFCs = (from a in garmentCuttingInRepository.Query
 						  where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" &&
 						 a.UnitId == request.unit && a.CuttingInDate <= dateTo
-						  select new { a.FC, a.RONo })
-						 .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
-						 {
-							 RO = key.RONo,
-							 FC = group.Sum(s => s.FC),
-							 Count = group.Count()
-						 });
-			var queryBalanceCutting = from a in garmentBalanceCuttingRepository.Query
+                          join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
+                          join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+                          select new { a.FC, a.RONo, FCs = Convert.ToDouble(c.CuttingInQuantity * a.FC), c.CuttingInQuantity })
+                       .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
+                       {
+                           RO = key.RONo,
+                           FC = group.Sum(s => (s.FCs)),
+                           Count = group.Sum(s => s.CuttingInQuantity)
+                       });
+            var queryBalanceCutting = from a in garmentBalanceCuttingRepository.Query
 									  where a.CreatedDate < dateFrom && a.UnitId == request.unit
 									  select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RoJob select aa.BasicPrice / aa.Count).FirstOrDefault()), buyerCode = a.BuyerCode, fc = (from cost in sumFCs where cost.RO == a.RoJob select cost.FC / cost.Count).FirstOrDefault(), cuttingQtyMeter = 0, remainQty = 0, stock = a.Stock, cuttingQtyPcs = 0, roJob = a.RoJob, article = a.Article, qtyOrder = a.QtyOrder, style = a.Style, hours = a.Hours, expenditure = a.Expenditure };
 
