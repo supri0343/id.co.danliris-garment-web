@@ -60,10 +60,10 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
                              join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                              join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
                              where a.CreatedDate < dateFrom && a.Deleted == false && b.Deleted == false
-                             && c.Code == "AVP01" && a.TransactionType == "IN"
+                             && c.Code == "ZB05" && a.TransactionType == "IN"
                              select new monitoringView
                              {
-                                 classificationCode = c.Code,
+                                 classificationCode = "AVP01",
                                  classificationName = c.Name,
                                  saldoAwal = b.Quantity,
                                  pemasukan = 0,
@@ -92,10 +92,10 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
                              join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                              join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
                              where a.CreatedDate < dateFrom && a.Deleted == false && b.Deleted == false
-                             && c.Code == "AVP01" && a.TransactionType == "OUT"
+                             && c.Code == "ZB05" && a.TransactionType == "OUT"
                              select new monitoringView
                              {
-                                 classificationCode = c.Code,
+                                 classificationCode = "AVP01",
                                  classificationName = c.Name,
                                  saldoAwal = -b.Quantity,
                                  pemasukan = 0,
@@ -140,10 +140,10 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
                              join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
                              where a.CreatedDate >= dateFrom && a.CreatedDate <= dateTo
                              && a.Deleted == false && b.Deleted == false
-                             && c.Code == "AVP01" && a.TransactionType == "IN"
+                             && c.Code == "ZB05" && a.TransactionType == "IN"
                              select new monitoringView
                              {
-                                 classificationCode = c.Code,
+                                 classificationCode = "AVP01",
                                  classificationName = c.Name,
                                  saldoAwal = 0,
                                  pemasukan = b.Quantity,
@@ -172,10 +172,10 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
                               join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                               join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
                               where a.CreatedDate >= dateFrom && a.CreatedDate <= dateTo && a.Deleted == false && b.Deleted == false
-                              && c.Code == "AVP01" && a.TransactionType == "OUT"
+                              && c.Code == "ZB05" && a.TransactionType == "OUT"
                               select new monitoringView
                               {
-                                  classificationCode = c.Code,
+                                  classificationCode = "AVP01",
                                   classificationName = c.Name,
                                   saldoAwal = 0,
                                   pemasukan = 0,
