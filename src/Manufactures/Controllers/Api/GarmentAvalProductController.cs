@@ -43,8 +43,13 @@ namespace Manufactures.Controllers.Api
             var query = _garmentAvalProductRepository.Read(order, select, filter);
             int totalRows = query.Count();
             double totalQty = query.Sum(a => a.GarmentAvalProductItem.Sum(b => b.Quantity));
+            query = query.Skip((page - 1) * size).Take(size);
             var garmentAvalProductDto = _garmentAvalProductRepository.Find(query).Select(o => new GarmentAvalProductDto(o)).OrderByDescending(x => x.LastModifiedDate).ToArray();
-            var garmentAvalProductItemDto = _garmentAvalProductItemRepository.Find(_garmentAvalProductItemRepository.Query).Select(o => new GarmentAvalProductItemDto(o)).ToList();
+            var dtoIds = garmentAvalProductDto.Select(s => s.Id).ToList();
+            var query2 = _garmentAvalProductItemRepository.Query.Where(x => dtoIds.Contains(x.APId));
+            var garmentAvalProductItemDto = _garmentAvalProductItemRepository.Find(query2).Select(o => new GarmentAvalProductItemDto(o)).ToList();
+
+            //var garmentAvalProductItemDto = _garmentAvalProductItemRepository.Find(_garmentAvalProductItemRepository.Query).Select(o => new GarmentAvalProductItemDto(o)).ToList();
 
             Parallel.ForEach(garmentAvalProductDto, itemDto =>
             {
@@ -84,7 +89,7 @@ namespace Manufactures.Controllers.Api
                 garmentAvalProductDto = QueryHelper<GarmentAvalProductDto>.Order(garmentAvalProductDto.AsQueryable(), OrderDictionary).ToArray();
             }
 
-            garmentAvalProductDto = garmentAvalProductDto.Take(size).Skip((page - 1) * size).ToArray();
+            //garmentAvalProductDto = garmentAvalProductDto.Take(size).Skip((page - 1) * size).ToArray();
 
             await Task.Yield();
             return Ok(garmentAvalProductDto, info: new

@@ -31,6 +31,16 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries.GetAllCuttingOuts
         public async Task<CuttingOutListViewModel> Handle(GetAllCuttingOutQuery request, CancellationToken cancellationToken)
         {
             var cuttingOutQuery = _garmentCuttingOutRepository.Query.Where(co => co.CuttingOutType != "SUBKON");
+            
+            var DocId = cuttingOutQuery.Select(x => x.Identity);
+            var DocItemId = _garmentCuttingOutItemRepository.Query.Where(x => DocId.Contains(x.CutOutId)).Select(x => x.Identity);
+            var queryDetail = _garmentCuttingOutDetailRepository.Query.Where(x => DocItemId.Contains(x.CutOutItemId));
+            double totalQty = queryDetail.Sum(x => x.CuttingOutQuantity);
+            //double totalQty = cuttingOutQuery.Sum(a => a.GarmentCuttingOutItem.Sum(b => b.GarmentCuttingOutDetail.Sum(c => c.CuttingOutQuantity)));
+            int total = cuttingOutQuery.Count();
+
+            cuttingOutQuery = cuttingOutQuery.Skip((request.page - 1) * request.size)
+                .Take(request.size);
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(request.filter);
             cuttingOutQuery = QueryHelper<GarmentCuttingOutReadModel>.Filter(cuttingOutQuery, FilterDictionary);
@@ -48,8 +58,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries.GetAllCuttingOuts
                     || co.GarmentCuttingOutItem.Any(coi => coi.CutOutId == co.Identity && coi.ProductCode.Contains(request.keyword)));
             }
 
-            double totalQty = cuttingOutQuery.Sum(a => a.GarmentCuttingOutItem.Sum(b => b.GarmentCuttingOutDetail.Sum(c => c.CuttingOutQuantity)));
-            int total = cuttingOutQuery.Count();
+            
 
             var selectedQuery = cuttingOutQuery.Select(co => new GarmentCuttingOutListDto
             {
@@ -64,10 +73,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries.GetAllCuttingOuts
                 Comodity = new GarmentComodity(co.ComodityId, co.ComodityCode, co.ComodityName)
             });
 
-            var selectedData = selectedQuery
-                .Skip((request.page - 1) * request.size)
-                .Take(request.size)
-                .ToList();
+            var selectedData = selectedQuery.ToList();
 
             foreach (var co in selectedData)
             {
