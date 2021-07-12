@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Domain;
+using Manufactures.Domain.Events;
 using Manufactures.Domain.GarmentCuttingOuts.ReadModels;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,9 @@ namespace Manufactures.Domain.GarmentCuttingOuts
 	{
 		public GarmentBalanceCutting(Guid identity,string roJob, string article, int unitId, string unitCode, string unitName, string buyerCode, double qtyOrder, string style, double hours, double stock, double cuttingQtyMeter, double cuttingQtyPcs, double fc, double expenditure, double remainQty, decimal price, decimal nominal) : base(identity)
 		{
-			RoJob = roJob;
+            this.MarkTransient();
+
+            RoJob = roJob;
 			Article = article;
 			UnitId = unitId;
 			UnitCode = unitCode;
@@ -27,7 +30,30 @@ namespace Manufactures.Domain.GarmentCuttingOuts
 			RemainQty = remainQty;
 			Price = price;
 			Nominal = nominal;
-		}
+            this.Identity = identity;
+            ReadModel = new GarmentBalanceCuttingReadModel(Identity)
+            {
+                RoJob = RoJob,
+                Article = Article,
+                UnitId = UnitId,
+                UnitCode = UnitCode,
+                UnitName = UnitName,
+                BuyerCode = BuyerCode,
+                QtyOrder = QtyOrder,
+                Style = Style,
+                Hours = Hours,
+                Stock = Stock,
+                CuttingQtyMeter = CuttingQtyMeter,
+                CuttingQtyPcs = CuttingQtyPcs,
+                Fc = Fc,
+                Expenditure = Expenditure,
+                RemainQty = RemainQty,
+                Price = Price,
+                Nominal = Nominal
+
+            };
+            ReadModel.AddDomainEvent(new OnGarmentBalanceCuttingPlaced(this.Identity));
+        }
 
 		public string RoJob { get; private set; }
 		public string Article { get; private set; }
@@ -65,7 +91,9 @@ namespace Manufactures.Domain.GarmentCuttingOuts
 			RemainQty = readModel.RemainQty;
 			Price = readModel.Price;
 			Nominal = readModel.Nominal;
-		}
+            Identity = readModel.Identity;
+           
+        }
 		protected override GarmentBalanceCutting GetEntity()
 		{
 			return this;
