@@ -1,6 +1,7 @@
 ﻿using Barebone.Tests;
 using Castle.DynamicProxy.Generators;
 using FluentAssertions;
+using Infrastructure.External.DanLirisClient.Microservice;
 using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Manufactures.Application.GarmentCuttingOuts.Queries;
 using Manufactures.Domain.GarmentAvalComponents;
@@ -42,36 +43,37 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
 		private readonly Mock<IGarmentAvalComponentItemRepository> _mockGarmentAvalComponentItemRepository;
 		private readonly Mock<IGarmentPreparingRepository> _mockGarmentPreparingRepository;
 		private readonly Mock<IGarmentPreparingItemRepository> _mockGarmentPreparingItemRepository;
-		protected readonly Mock<IHttpClientService> _mockhttpService;
+        private readonly Mock<IGarmentBalanceCuttingRepository> _mockGarmentBalanceCuttingRepository;
+        protected readonly Mock<IHttpClientService> _mockhttpService;
 		private Mock<IServiceProvider> serviceProviderMock;
 		
 		public MonitoringCuttingCommandHandlerTest()
 		{
-			_mockGarmentCuttingInRepository = CreateMock<IGarmentCuttingInRepository>();
+            _mockGarmentCuttingOutRepository = CreateMock<IGarmentCuttingOutRepository>();
+            _mockGarmentCuttingOutItemRepository = CreateMock<IGarmentCuttingOutItemRepository>();
+            _mockGarmentCuttingInRepository = CreateMock<IGarmentCuttingInRepository>();
 			_mockGarmentCuttingInItemRepository = CreateMock<IGarmentCuttingInItemRepository>();
 			_mockGarmentCuttingInDetailRepository = CreateMock<IGarmentCuttingInDetailRepository>();
-			_MockStorage.SetupStorage(_mockGarmentCuttingInRepository);
-			_MockStorage.SetupStorage(_mockGarmentCuttingInItemRepository);
+            _mockGarmentCuttingInRepository = CreateMock<IGarmentCuttingInRepository>();
+            _mockGarmentAvalComponentRepository = CreateMock<IGarmentAvalComponentRepository>();
+            _mockGarmentAvalComponentItemRepository = CreateMock<IGarmentAvalComponentItemRepository>();
+            _mockGarmentPreparingRepository = CreateMock<IGarmentPreparingRepository>();
+            _mockGarmentPreparingItemRepository = CreateMock<IGarmentPreparingItemRepository>();
+            _mockGarmentBalanceCuttingRepository = CreateMock<IGarmentBalanceCuttingRepository>();
+
+            _MockStorage.SetupStorage(_mockGarmentCuttingInRepository);
+            _MockStorage.SetupStorage(_mockGarmentCuttingInItemRepository);
 			_MockStorage.SetupStorage(_mockGarmentCuttingInDetailRepository);
-
-			_mockGarmentAvalComponentRepository = CreateMock<IGarmentAvalComponentRepository>();
-			_mockGarmentAvalComponentItemRepository = CreateMock<IGarmentAvalComponentItemRepository>();
-			_MockStorage.SetupStorage(_mockGarmentAvalComponentRepository);
+            _MockStorage.SetupStorage(_mockGarmentAvalComponentRepository);
 			_MockStorage.SetupStorage(_mockGarmentAvalComponentItemRepository);
-
-			_mockGarmentCuttingOutRepository = CreateMock<IGarmentCuttingOutRepository>();
-			_mockGarmentCuttingOutItemRepository = CreateMock<IGarmentCuttingOutItemRepository>();
-		
 			_MockStorage.SetupStorage(_mockGarmentCuttingOutRepository);
 			_MockStorage.SetupStorage(_mockGarmentCuttingOutItemRepository);
-
-			_mockGarmentPreparingRepository = CreateMock<IGarmentPreparingRepository>();
-			_MockStorage.SetupStorage(_mockGarmentPreparingRepository);
-
-			_mockGarmentPreparingItemRepository = CreateMock<IGarmentPreparingItemRepository>();
+            _MockStorage.SetupStorage(_mockGarmentPreparingRepository);
 			_MockStorage.SetupStorage(_mockGarmentPreparingItemRepository);
+            _MockStorage.SetupStorage(_mockGarmentBalanceCuttingRepository);
 
-			serviceProviderMock = new Mock<IServiceProvider>();
+            SalesDataSettings.Endpoint = "https://com-danliris-service-sales.azurewebsites.net/v1/";
+            serviceProviderMock = new Mock<IServiceProvider>();
 			_mockhttpService = CreateMock<IHttpClientService>();
 
 			List<CostCalViewModel> costCalViewModels = new List<CostCalViewModel> {
@@ -93,6 +95,7 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
 			return new GetMonitoringCuttingQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
 
+        //belom bisa gara2 salesdatasettings
 		[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior()
 		{
@@ -175,9 +178,16 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
 				{
 					 new GarmentPreparingItem(garmentPreparingItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidGarmentPreparing,null).GetReadModel()
 				}.AsQueryable());
+            var garmentBalanceCutting = Guid.NewGuid();
+            _mockGarmentBalanceCuttingRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentBalanceCuttingReadModel>
+                {
+                     new GarmentBalanceCutting(garmentBalanceCutting,"ro","article",1,"unitCode","unitName","buyerCode",1,"comodityName",2,1,1,2,2,9,9,100,100).GetReadModel()
+                }.AsQueryable());
 
-			// Act
-			var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
+            // Act
+            var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
 
 			// Assert
 			result.Should().NotBeNull();
