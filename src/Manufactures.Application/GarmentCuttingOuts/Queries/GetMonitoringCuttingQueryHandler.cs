@@ -136,8 +136,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 		}
 		public async Task<GarmentMonitoringCuttingListViewModel> Handle(GetMonitoringCuttingQuery request, CancellationToken cancellationToken)
 		{
-			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
-			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
+			DateTimeOffset dateFrom = request.dateFrom.AddHours(7).ToUniversalTime();
+			DateTimeOffset dateTo = request.dateTo.AddHours(7).ToUniversalTime();
 
 			DateTimeOffset dateBalance = (from a in garmentBalanceCuttingRepository.Query.OrderByDescending(s=>s.CreatedDate)
 										   
