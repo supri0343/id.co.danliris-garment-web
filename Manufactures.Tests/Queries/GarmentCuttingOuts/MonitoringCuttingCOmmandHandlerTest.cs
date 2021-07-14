@@ -86,6 +86,7 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
                     hours=10
                 }
             };
+
 			_mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpContent>()))
 				.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
 			serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
@@ -95,8 +96,7 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
 		{
 			return new GetMonitoringCuttingQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
-
-        //belom bisa gara2 salesdatasettings
+         
 		[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior()
 		{

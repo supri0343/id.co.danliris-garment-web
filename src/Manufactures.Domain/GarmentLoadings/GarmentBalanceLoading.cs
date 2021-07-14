@@ -25,7 +25,28 @@ namespace Manufactures.Domain.GarmentLoadings
 			RemainQty = remainQty;
 			Price = price;
 			Nominal = nominal;
-		}
+            Identity = identity;
+
+            ReadModel = new GarmentBalanceLoadingReadModel(Identity)
+            {
+                RoJob = roJob,
+                Article = article,
+                UnitId = unitId,
+                UnitCode = unitCode,
+                UnitName = unitName,
+                BuyerCode = buyerCode,
+                QtyOrder = qtyOrder,
+                Style = style,
+                Hours = hours,
+                Stock = stock,
+                CuttingQtyPcs = cuttingQtyPcs,
+                LoadingQtyPcs = loadingqty,
+                RemainQty = remainQty,
+                Price = price,
+                Nominal = nominal
+
+            };
+    }
 
 		public string RoJob { get; private set; }
 		public string Article { get; private set; }
