@@ -41,8 +41,16 @@ namespace Manufactures.Controllers.Api
         {
             VerifyUser();
             var query = _garmentAvalProductRepository.Read(order, select, filter);
+            
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                query = query.Where(x => x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                    || x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+            }
             int totalRows = query.Count();
             double totalQty = query.Sum(a => a.GarmentAvalProductItem.Sum(b => b.Quantity));
+
             query = query.Skip((page - 1) * size).Take(size);
             var garmentAvalProductDto = _garmentAvalProductRepository.Find(query).Select(o => new GarmentAvalProductDto(o)).OrderByDescending(x => x.LastModifiedDate).ToArray();
             var dtoIds = garmentAvalProductDto.Select(s => s.Id).ToList();
@@ -77,11 +85,11 @@ namespace Manufactures.Controllers.Api
                 itemDto.Items = itemDto.Items.OrderBy(x => x.Id).ToList();
             });
 
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                garmentAvalProductDto = garmentAvalProductDto.Where(x => x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    || x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToArray();
-            }
+            //if (!string.IsNullOrEmpty(keyword))
+            //{
+            //    garmentAvalProductDto = garmentAvalProductDto.Where(x => x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+            //                        || x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToArray();
+            //}
 
             if (order != "{}")
             {
