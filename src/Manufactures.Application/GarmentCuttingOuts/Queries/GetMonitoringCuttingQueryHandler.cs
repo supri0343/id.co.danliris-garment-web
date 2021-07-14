@@ -53,33 +53,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 
 
 		}
-		async Task<HOrderDataProductionReport> GetDataHOrder(List<string> ro, string token)
-		{
-			HOrderDataProductionReport hOrderDataProductionReport = new HOrderDataProductionReport();
-
-			var listRO = string.Join(",", ro.Distinct().Where(s=>s.StartsWith("19")));
-			var costCalculationUri = SalesDataSettings.Endpoint + $"local-merchandiser/horders/data-production-report-by-no/{listRO}";
-			var httpResponse = await _http.GetAsync(costCalculationUri, token);
-
-			if (httpResponse.IsSuccessStatusCode)
-			{
-				var contentString = await httpResponse.Content.ReadAsStringAsync();
-				Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
-				var dataString = content.GetValueOrDefault("data").ToString();
-				var listData = JsonConvert.DeserializeObject<List<HOrderViewModel>>(dataString);
-
-				foreach (var item in ro)
-				{
-					var data = listData.SingleOrDefault(s => s.No == item);
-					if (data != null)
-					{
-						hOrderDataProductionReport.data.Add(data);
-					}
-				}
-			}
-
-			return hOrderDataProductionReport;
-		}
+		 
 
 		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
 		{
