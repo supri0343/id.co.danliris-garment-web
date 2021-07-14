@@ -80,11 +80,11 @@ namespace Manufactures.Tests.Queries.GarmentFinishingOuts
                     hours=10
                 }
             };
-            _mockhttpService.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()))
-				.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
-			serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
-		}
-		private GetXlsFinishingQueryHandler CreateGetXlsFinishingQueryHandler()
+            _mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpContent>()))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
+            serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
+        }
+        private GetXlsFinishingQueryHandler CreateGetXlsFinishingQueryHandler()
 		{
 			return new GetXlsFinishingQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
@@ -170,9 +170,15 @@ namespace Manufactures.Tests.Queries.GarmentFinishingOuts
 				{
 					new GarmentPreparingItem(guidGarmentPreparingItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidGarmentPreparing,null).GetReadModel()
 				}.AsQueryable());
-
-			// Act
-			var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
+            var garmentBalanceFinishing = Guid.NewGuid();
+            _mockGarmentBalanceFinishingRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentBalanceFinishingReadModel>
+                {
+                     new GarmentBalanceFinishing(garmentBalanceFinishing,"ro","article",1,"unitCode","unitName","buyerCode",1,"comodityName",2,1,1,2,2,100,100).GetReadModel()
+                }.AsQueryable());
+            // Act
+            var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
 
 			// Assert
 			result.Should().NotBeNull();

@@ -20,10 +20,13 @@ using Manufactures.Domain.GarmentLoadings.Repositories;
 using Manufactures.Domain.GarmentPreparings;
 using Manufactures.Domain.GarmentPreparings.ReadModels;
 using Manufactures.Domain.GarmentPreparings.Repositories;
+using Manufactures.Domain.GarmentSewingIns;
+using Manufactures.Domain.GarmentSewingIns.ReadModels;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentSewingOuts;
 using Manufactures.Domain.GarmentSewingOuts.ReadModels;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
+using Manufactures.Domain.MonitoringProductionStockFlow;
 using Manufactures.Domain.Shared.ValueObjects;
 using Moq;
 using Newtonsoft.Json;
@@ -46,16 +49,12 @@ namespace Manufactures.Tests.Queries.GarmentSewingOuts
 		private readonly Mock<IGarmentSewingOutItemRepository> _mockGarmentSewingOutItemRepository;
         private readonly Mock<IGarmentSewingInRepository> _mockGarmentSewingInRepository;
         private readonly Mock<IGarmentSewingInItemRepository> _mockGarmentSewingInItemRepository;
-        private readonly Mock<IGarmentLoadingRepository> _mockGarmentLoadingRepository;
-		private readonly Mock<IGarmentLoadingItemRepository> _mockGarmentLoadingItemRepository;
 		private readonly Mock<IGarmentPreparingRepository> _mockGarmentPreparingRepository;
 		private readonly Mock<IGarmentPreparingItemRepository> _mockGarmentPreparingItemRepository;
-        private readonly Mock<IGarmentBalanceSewingRepository> _mockGarmentBalanceSewingRepository;
+        private readonly Mock<IGarmentBalanceMonitoringProductionStockFlowRepository> _mockGarmentBalanceSewingRepository;
         private readonly Mock<IGarmentCuttingInRepository> _mockGarmentCuttingInRepository;
         private readonly Mock<IGarmentCuttingInItemRepository> _mockGarmentCuttingInItemRepository;
         private readonly Mock<IGarmentCuttingInDetailRepository> _mockGarmentCuttingInDetailRepository;
-        private readonly Mock<IGarmentFinishingOutRepository> _mockGarmentFinishingOutRepository;
-        private readonly Mock<IGarmentFinishingOutItemRepository> _mockGarmentFinishingOutItemRepository;
         private readonly Mock<IGarmentAdjustmentRepository> _mockGarmentAdjustmentRepository;
         private readonly Mock<IGarmentAdjustmentItemRepository> _mockGarmentAdjustmentItemRepository;
 
@@ -63,25 +62,19 @@ namespace Manufactures.Tests.Queries.GarmentSewingOuts
 		private Mock<IServiceProvider> serviceProviderMock;
 		public MonitoringSewingCommandHandlerTest()
 		{
-			_mockGarmentLoadingRepository = CreateMock<IGarmentLoadingRepository>();
-			_mockGarmentLoadingItemRepository = CreateMock<IGarmentLoadingItemRepository>();
-            _mockGarmentSewingOutRepository = CreateMock<IGarmentSewingOutRepository>();
+			 _mockGarmentSewingOutRepository = CreateMock<IGarmentSewingOutRepository>();
             _mockGarmentSewingOutItemRepository = CreateMock<IGarmentSewingOutItemRepository>();
             _mockGarmentPreparingRepository = CreateMock<IGarmentPreparingRepository>();
             _mockGarmentPreparingItemRepository = CreateMock<IGarmentPreparingItemRepository>();
-            _mockGarmentFinishingOutRepository = CreateMock<IGarmentFinishingOutRepository>();
-            _mockGarmentFinishingOutItemRepository = CreateMock<IGarmentFinishingOutItemRepository>();
-            _mockGarmentCuttingInRepository = CreateMock<IGarmentCuttingInRepository>();
+              _mockGarmentCuttingInRepository = CreateMock<IGarmentCuttingInRepository>();
             _mockGarmentCuttingInItemRepository = CreateMock<IGarmentCuttingInItemRepository>();
             _mockGarmentCuttingInDetailRepository = CreateMock<IGarmentCuttingInDetailRepository>();
             _mockGarmentAdjustmentRepository = CreateMock<IGarmentAdjustmentRepository>();
             _mockGarmentAdjustmentItemRepository = CreateMock<IGarmentAdjustmentItemRepository>();
-            _mockGarmentBalanceSewingRepository = CreateMock<IGarmentBalanceSewingRepository>();
+            _mockGarmentBalanceSewingRepository = CreateMock<IGarmentBalanceMonitoringProductionStockFlowRepository>();
             _mockGarmentSewingInRepository = CreateMock<IGarmentSewingInRepository>();
             _mockGarmentSewingInItemRepository = CreateMock<IGarmentSewingInItemRepository>();
-
-            _MockStorage.SetupStorage(_mockGarmentLoadingRepository);
-			_MockStorage.SetupStorage(_mockGarmentLoadingItemRepository);
+             
 			_MockStorage.SetupStorage(_mockGarmentSewingOutRepository);
 			_MockStorage.SetupStorage(_mockGarmentSewingOutItemRepository);
             _MockStorage.SetupStorage(_mockGarmentPreparingRepository);
@@ -93,8 +86,6 @@ namespace Manufactures.Tests.Queries.GarmentSewingOuts
             _MockStorage.SetupStorage(_mockGarmentSewingInItemRepository);
             _MockStorage.SetupStorage(_mockGarmentAdjustmentRepository);
             _MockStorage.SetupStorage(_mockGarmentAdjustmentItemRepository);
-            _MockStorage.SetupStorage(_mockGarmentFinishingOutRepository);
-            _MockStorage.SetupStorage(_mockGarmentFinishingOutItemRepository);
             _MockStorage.SetupStorage(_mockGarmentBalanceSewingRepository);
 
             serviceProviderMock = new Mock<IServiceProvider>();
@@ -109,11 +100,11 @@ namespace Manufactures.Tests.Queries.GarmentSewingOuts
                     hours=10
                 }
             };
-            _mockhttpService.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()))
-				.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
-			serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
-		}
-		private GetMonitoringSewingQueryHandler CreateGetMonitoringSewingQueryHandler()
+            _mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpContent>()))
+              .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
+            serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
+        }
+        private GetMonitoringSewingQueryHandler CreateGetMonitoringSewingQueryHandler()
 		{
 			return new GetMonitoringSewingQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
@@ -160,34 +151,7 @@ namespace Manufactures.Tests.Queries.GarmentSewingOuts
                     new GarmentCuttingInDetail(guidCuttingInDetail,guidCuttingInItem,guidPrepareItem,Guid.Empty,Guid.Empty,new Domain.Shared.ValueObjects.ProductId(1),"productCode","productName","designColor","fabricType",9,new Domain.Shared.ValueObjects.UomId(1),"",4,new Domain.Shared.ValueObjects.UomId(1),"",1,100,100,5.5,null).GetReadModel()
                 }.AsQueryable());
 
-            _mockGarmentFinishingOutItemRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentFinishingOutItemReadModel>
-                {
-                    new GarmentFinishingOutItem(guidFinishingOutItem,guidFinishingOut,new Guid(),new Guid(),new ProductId(1),"","","",new SizeId(1),"",10, new UomId(1),"","",10,10,10).GetReadModel()
-                }.AsQueryable());
-
-            _mockGarmentFinishingOutRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentFinishingOutReadModel>
-                {
-                    new GarmentFinishingOut(guidFinishingOut,"",new UnitDepartmentId(1),"","","",DateTimeOffset.Now,"ro","",new UnitDepartmentId(1),"","",new GarmentComodityId(1),"","",false).GetReadModel()
-                }.AsQueryable());
-
-            _mockGarmentLoadingItemRepository
-				.Setup(s => s.Query)
-				.Returns(new List<GarmentLoadingItemReadModel>
-				{
-					new GarmentLoadingItem(guidLoadingItem,guidLoading,new Guid(),new SizeId(1),"",new ProductId(1),"","","",0,0,0, new UomId(1),"","",10).GetReadModel()
-				}.AsQueryable());
-
-			_mockGarmentLoadingRepository
-				.Setup(s => s.Query)
-				.Returns(new List<GarmentLoadingReadModel>
-				{
-					new GarmentLoading(guidLoading,"",new Guid(),"",new UnitDepartmentId(1),"","","ro","",new UnitDepartmentId(1),"","",DateTimeOffset.Now,new GarmentComodityId(1),"","").GetReadModel()
-				}.AsQueryable());
-
+          
 			_mockGarmentSewingOutItemRepository
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentSewingOutItemReadModel>
@@ -201,8 +165,20 @@ namespace Manufactures.Tests.Queries.GarmentSewingOuts
 				{
 					new GarmentSewingOut(guidSewingOut,"",new BuyerId(1),"","",new UnitDepartmentId(1),"","","",DateTimeOffset.Now,"ro","",new UnitDepartmentId(1),"","",new GarmentComodityId(1),"","",true).GetReadModel()
 				}.AsQueryable());
-             
-			_mockGarmentPreparingRepository
+            _mockGarmentSewingInRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSewingInReadModel>
+                {
+                    new GarmentSewingIn(guidSewingOut,"","",new Guid(),"",new UnitDepartmentId(1),"","",new UnitDepartmentId(1),"","","rono","article",new GarmentComodityId(1),"","",DateTimeOffset.Now).GetReadModel()
+                }.AsQueryable());
+            _mockGarmentSewingInItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSewingInItemReadModel>
+                {
+                    new GarmentSewingInItem(new Guid(),guidSewingOut,new Guid(),new Guid(),new Guid(),new Guid(),new Guid(),new ProductId(1),"","","",new SizeId(1),"",1,new UomId(1),"","",1,1,1).GetReadModel()
+                }.AsQueryable());
+
+            _mockGarmentPreparingRepository
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentPreparingReadModel>
 				{
@@ -220,47 +196,23 @@ namespace Manufactures.Tests.Queries.GarmentSewingOuts
             var garmentBalanceSewing = Guid.NewGuid();
             _mockGarmentBalanceSewingRepository
                 .Setup(s => s.Query)
-                .Returns(new List<GarmentBalanceSewingReadModel>
+                .Returns(new List<GarmentBalanceMonitoringProductionStockReadModel>
                 {
-                     new GarmentBalanceSewing(garmentBalanceSewing,"ro","article",1,"unitCode","unitName","buyerCode",1,"comodityName",2,1,1,2,2,100,100).GetReadModel()
+                     new GarmentBalanceMonitoringProductionStocFlow("ro","buyer","article","comodityName",1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,garmentBalanceSewing).GetReadModel()
                 }.AsQueryable());
-
-            Guid sewingDOItemGuid = Guid.NewGuid();
-            Guid sewingDOGuid = Guid.NewGuid();
-            PlaceGarmentAdjustmentCommandHandler testt = CreatePlaceGarmentAdjustmentCommandHandler();
-            PlaceGarmentAdjustmentCommand placeGarmentAdjustmentCommand = new PlaceGarmentAdjustmentCommand()
-            {
-                RONo = "RONo",
-                Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                AdjustmentType = "LOADING",
-                AdjustmentDate = DateTimeOffset.Now,
-                Article = "Article",
-                Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
-                Items = new List<GarmentAdjustmentItemValueObject>
-                {
-                    new GarmentAdjustmentItemValueObject
-                    {
-                        IsSave=true,
-                        SewingDOItemId=sewingDOItemGuid,
-                        Size=new SizeValueObject(1, "Size"),
-                        Quantity=1,
-                        RemainingQuantity=2,
-                        Product= new Product(1, "ProdCode", "ProdName"),
-                        Uom=new Uom(1, "Uom"),
-                    }
-                },
-
-            };
-
+            var garmentadjustmentId = Guid.NewGuid();
             _mockGarmentAdjustmentRepository
                 .Setup(s => s.Query)
-                .Returns(new List<GarmentAdjustmentReadModel>().AsQueryable());
+                .Returns(new List<GarmentAdjustmentReadModel>
+                {
+                     new GarmentAdjustment(garmentadjustmentId,"no","type","ro","article",new UnitDepartmentId(1),"unitcode","unitname",DateTimeOffset.Now,new GarmentComodityId(1),"comoditycode","comodityname","").GetReadModel()
+                }.AsQueryable());
             _mockGarmentAdjustmentItemRepository
-               .Setup(s => s.Update(It.IsAny<GarmentAdjustmentItem>()))
-               .Returns(Task.FromResult(It.IsAny<GarmentAdjustmentItem>()));
-            _MockStorage
-               .Setup(x => x.Save())
-               .Verifiable();
+               .Setup(s => s.Query)
+               .Returns(new List<GarmentAdjustmentItemReadModel>
+               {
+                     new GarmentAdjustmentItem(new Guid(),new Guid(),new Guid(),new Guid(),new Guid(),new Guid(),new SizeId(1),"sizeName",new ProductId(1),"productCode","productName","",1,1,new UomId(1),"uom","color",10).GetReadModel()
+               }.AsQueryable());
             // Act
             var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
 

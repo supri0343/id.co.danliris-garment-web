@@ -58,6 +58,7 @@ namespace Manufactures.Domain.MonitoringProductionStockFlow
           Guid identity
          ) : base(identity)
         {
+            this.Identity = identity;
             this.Ro = Ro;
             this.BuyerCode = BuyerCode;
             this.Article = Article;
@@ -79,9 +80,35 @@ namespace Manufactures.Domain.MonitoringProductionStockFlow
             this.BeginingBalanceSubconPrice = BeginingBalanceSubconPrice;
             this.BeginingBalanceExpenditureGood = BeginingBalanceExpenditureGood;
             this.BeginingBalanceExpenditureGoodPrice = BeginingBalanceExpenditureGoodPrice;
-           
 
-        }
+            ReadModel = new GarmentBalanceMonitoringProductionStockReadModel(Identity)
+            {
+                Ro = Ro,
+                BuyerCode = BuyerCode,
+                Article = Article,
+                Comodity = Comodity,
+                QtyOrder = QtyOrder,
+                BasicPrice = BasicPrice,
+                Fare = Fare,
+                FC = FC,
+                Hours = Hours,
+                BeginingBalanceCuttingQty = BeginingBalanceCuttingQty,
+                BeginingBalanceCuttingPrice = BeginingBalanceCuttingPrice,
+                BeginingBalanceLoadingQty = BeginingBalanceLoadingQty,
+                BeginingBalanceLoadingPrice = BeginingBalanceLoadingPrice,
+                BeginingBalanceSewingQty = BeginingBalanceSewingQty,
+                BeginingBalanceSewingPrice = BeginingBalanceSewingPrice,
+                BeginingBalanceFinishingQty = BeginingBalanceFinishingQty,
+                BeginingBalanceFinishingPrice = BeginingBalanceFinishingPrice,
+                BeginingBalanceSubconQty = BeginingBalanceSubconQty,
+                BeginingBalanceSubconPrice = BeginingBalanceSubconPrice,
+                BeginingBalanceExpenditureGood = BeginingBalanceExpenditureGood,
+                BeginingBalanceExpenditureGoodPrice = BeginingBalanceExpenditureGoodPrice
+
+
+            };
+
+    }
         public GarmentBalanceMonitoringProductionStocFlow(GarmentBalanceMonitoringProductionStockReadModel readModel) : base(readModel)
         {
             this.Ro = readModel.Ro;

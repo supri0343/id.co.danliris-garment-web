@@ -82,11 +82,11 @@ namespace Manufactures.Tests.Queries.GarmentLoadings
                     hours=10
                 }
             };
-            _mockhttpService.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()))
-				.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
-			serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
-		}
-		private GetXlsLoadingQueryHandler CreateGetXlsLoadingQueryHandler()
+            _mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpContent>()))
+             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
+            serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
+        }
+        private GetXlsLoadingQueryHandler CreateGetXlsLoadingQueryHandler()
 		{
 			return new GetXlsLoadingQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
@@ -173,75 +173,6 @@ namespace Manufactures.Tests.Queries.GarmentLoadings
 				{
 					new GarmentPreparingItem(guidGarmentPreparingItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidGarmentPreparing,null).GetReadModel()
 				}.AsQueryable());
-
-			// Act
-			var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
-
-			// Assert
-			result.Should().NotBeNull();
-		}
-		[Fact]
-		public async Task Handle_StateUnderTest_ExpectedBehavior_bookkeeping()
-		{
-			// Arrange
-			GetXlsLoadingQueryHandler unitUnderTest = CreateGetXlsLoadingQueryHandler();
-			CancellationToken cancellationToken = CancellationToken.None;
-
-			Guid guidLoading = Guid.NewGuid();
-			Guid guidLoadingItem = Guid.NewGuid();
-			Guid guidCuttingOut = Guid.NewGuid();
-			Guid guidCuttingOutItem = Guid.NewGuid();
-			Guid guidCuttingOutDetail = Guid.NewGuid();
-            Guid guidPrepare = Guid.NewGuid();
-            Guid guidPrepareItem = Guid.NewGuid();
-            GetXlsLoadingQuery getMonitoring = new GetXlsLoadingQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "bookkeeping", "token");
-
-
-			_mockGarmentLoadingItemRepository
-				.Setup(s => s.Query)
-				.Returns(new List<GarmentLoadingItemReadModel>
-				{
-					new GarmentLoadingItem(guidLoadingItem,guidLoading,new Guid(),new SizeId(1),"",new ProductId(1),"","","",0,0,0, new UomId(1),"","",10).GetReadModel()
-				}.AsQueryable());
-
-			_mockGarmentLoadingRepository
-				.Setup(s => s.Query)
-				.Returns(new List<GarmentLoadingReadModel>
-				{
-					new GarmentLoading(guidLoading,"",new Guid(),"",new UnitDepartmentId(1),"","","ro","",new UnitDepartmentId(1),"","",DateTimeOffset.Now,new GarmentComodityId(1),"","").GetReadModel()
-				}.AsQueryable());
-
-
-			_mockGarmentCuttingOutItemRepository
-				.Setup(s => s.Query)
-				.Returns(new List<GarmentCuttingOutItemReadModel>
-				{
-					new GarmentCuttingOutItem(guidCuttingOutItem,new Guid() ,new Guid(),guidCuttingOut,new ProductId(1),"","","",100).GetReadModel()
-				}.AsQueryable());
-			_mockGarmentCuttingOutRepository
-				.Setup(s => s.Query)
-				.Returns(new List<GarmentCuttingOutReadModel>
-				{
-					 new GarmentCuttingOut(guidCuttingOut, "", "",new UnitDepartmentId(1),"","",DateTime.Now,"ro","",new UnitDepartmentId(1),"","",new GarmentComodityId(1),"","",false).GetReadModel()
-				}.AsQueryable());
-
-			 
-			_mockGarmentPreparingRepository
-				.Setup(s => s.Query)
-				.Returns(new List<GarmentPreparingReadModel>
-				{
-					new GarmentPreparing(guidPrepare,1,"uenNo",new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1),"unitCode","unitName",DateTimeOffset.Now,"roNo","article",true,new BuyerId(1), null,null).GetReadModel()
-				}.AsQueryable());
-
-			 
-			_mockGarmentPreparingItemRepository
-				.Setup(s => s.Query)
-				.Returns(new List<GarmentPreparingItemReadModel>
-				{
-					new GarmentPreparingItem(guidPrepareItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidPrepare,null).GetReadModel()
-				}.AsQueryable());
-
-
             var garmentBalanceLoading = Guid.NewGuid();
             _mockGarmentBalanceLoadingRepository
                 .Setup(s => s.Query)
@@ -249,13 +180,11 @@ namespace Manufactures.Tests.Queries.GarmentLoadings
                 {
                      new GarmentBalanceLoading(garmentBalanceLoading,"ro","article",1,"unitCode","unitName","buyerCode",1,"comodityName",2,1,1,2,2,100,100).GetReadModel()
                 }.AsQueryable());
-
-
             // Act
             var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
 
 			// Assert
 			result.Should().NotBeNull();
 		}
-	}
+			}
 }

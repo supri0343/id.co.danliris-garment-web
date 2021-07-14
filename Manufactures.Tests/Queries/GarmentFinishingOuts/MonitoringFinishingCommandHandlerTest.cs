@@ -82,12 +82,12 @@ namespace Manufactures.Tests.Queries.GarmentFinishingOuts
                     hours=10
                 }
             };
-		
-			_mockhttpService.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()))
-				.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
-			serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
-		}
-		private GetMonitoringFinishingQueryHandler CreateGetMonitoringFinishingQueryHandler()
+
+            _mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpContent>()))
+               .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
+            serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
+        }
+        private GetMonitoringFinishingQueryHandler CreateGetMonitoringFinishingQueryHandler()
 		{
 			return new GetMonitoringFinishingQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}

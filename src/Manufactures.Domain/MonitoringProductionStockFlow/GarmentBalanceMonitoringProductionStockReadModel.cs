@@ -38,4 +38,5 @@ namespace Manufactures.Domain.MonitoringProductionStockFlow
         public double BeginingBalanceExpenditureGoodPrice { get; internal set; }
         
     }
+
 }
