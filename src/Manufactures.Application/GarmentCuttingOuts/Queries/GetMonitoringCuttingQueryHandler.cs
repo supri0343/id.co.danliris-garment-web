@@ -92,7 +92,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 
 			var httpResponse = await _http.SendAsync(HttpMethod.Get,costCalculationUri, token,httpContent);
 
-			var freeRO = new List<string>();
+            var freeRO = new List<string>();
 
 		if (httpResponse.IsSuccessStatusCode)
 			{
