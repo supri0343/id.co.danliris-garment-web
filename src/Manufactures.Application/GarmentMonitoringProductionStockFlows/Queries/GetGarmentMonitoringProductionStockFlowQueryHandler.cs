@@ -2154,13 +2154,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			GarmentMonitoringProductionStockFlowListViewModel garmentMonitoringProductionFlow = new GarmentMonitoringProductionStockFlowListViewModel();
 			List<GarmentMonitoringProductionStockFlowDto> monitoringDtos = new List<GarmentMonitoringProductionStockFlowDto>();
 
-            int skip = 0;
-            int take = 500;
-            int page = querySum.Count() / take;
-            int totalData = 500;
-            while (skip <= page)
-            {
-                foreach (var item in querySum.OrderBy(s => s.ro).Skip(skip * page).Take(take))
+
+                foreach (var item in querySum.OrderBy(s => s.ro))
                 {
 
                     var fc = Math.Round(Convert.ToDouble(item.fc), 2);
@@ -2305,9 +2300,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
             }
             garmentMonitoringProductionFlow.garmentMonitorings = data.ToList();
 			garmentMonitoringProductionFlow.count = data.Count();
-                skip++;
-                totalData += 500;
-            }
+             
+           
             return garmentMonitoringProductionFlow;
 		}
 	}
