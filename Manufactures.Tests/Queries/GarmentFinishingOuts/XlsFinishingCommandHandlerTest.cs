@@ -14,6 +14,7 @@ using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Domain.GarmentSewingOuts;
 using Manufactures.Domain.GarmentSewingOuts.ReadModels;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
+using Manufactures.Domain.MonitoringProductionStockFlow;
 using Manufactures.Domain.Shared.ValueObjects;
 using Moq;
 using Newtonsoft.Json;
@@ -38,7 +39,7 @@ namespace Manufactures.Tests.Queries.GarmentFinishingOuts
 		private readonly Mock<IGarmentFinishingOutItemRepository> _mockGarmentFinishingOutItemRepository;
 		private readonly Mock<IGarmentPreparingRepository> _mockGarmentPreparingRepository;
 		private readonly Mock<IGarmentPreparingItemRepository> _mockGarmentPreparingItemRepository;
-        private readonly Mock<IGarmentBalanceFinishingRepository> _mockGarmentBalanceFinishingRepository;
+        private readonly Mock<IGarmentBalanceMonitoringProductionStockFlowRepository> _mockGarmentBalanceFinishingRepository;
         private readonly Mock<IGarmentCuttingInRepository> _mockGarmentCuttingInRepository;
         private readonly Mock<IGarmentCuttingInItemRepository> _mockGarmentCuttingInItemRepository;
         private readonly Mock<IGarmentCuttingInDetailRepository> _mockGarmentCuttingInDetailRepository;
@@ -55,7 +56,7 @@ namespace Manufactures.Tests.Queries.GarmentFinishingOuts
             _mockGarmentSewingOutItemRepository = CreateMock<IGarmentSewingOutItemRepository>();
             _mockGarmentPreparingRepository = CreateMock<IGarmentPreparingRepository>();
             _mockGarmentPreparingItemRepository = CreateMock<IGarmentPreparingItemRepository>();
-            _mockGarmentBalanceFinishingRepository = CreateMock<IGarmentBalanceFinishingRepository>();
+            _mockGarmentBalanceFinishingRepository = CreateMock<IGarmentBalanceMonitoringProductionStockFlowRepository>();
 
             _MockStorage.SetupStorage(_mockGarmentFinishingOutRepository);
             _MockStorage.SetupStorage(_mockGarmentFinishingOutItemRepository);
@@ -172,10 +173,10 @@ namespace Manufactures.Tests.Queries.GarmentFinishingOuts
 				}.AsQueryable());
             var garmentBalanceFinishing = Guid.NewGuid();
             _mockGarmentBalanceFinishingRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentBalanceFinishingReadModel>
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentBalanceMonitoringProductionStockReadModel>
                 {
-                     new GarmentBalanceFinishing(garmentBalanceFinishing,"ro","article",1,"unitCode","unitName","buyerCode",1,"comodityName",2,1,1,2,2,100,100).GetReadModel()
+                     new GarmentBalanceMonitoringProductionStocFlow("ro","buyer","article","comodityName",1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,garmentBalanceFinishing).GetReadModel()
                 }.AsQueryable());
             // Act
             var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
@@ -244,10 +245,10 @@ namespace Manufactures.Tests.Queries.GarmentFinishingOuts
 
             var garmentBalanceFinishing = Guid.NewGuid();
             _mockGarmentBalanceFinishingRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentBalanceFinishingReadModel>
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentBalanceMonitoringProductionStockReadModel>
                 {
-                     new GarmentBalanceFinishing(garmentBalanceFinishing,"ro","article",1,"unitCode","unitName","buyerCode",1,"comodityName",2,1,1,2,2,100,100).GetReadModel()
+                     new GarmentBalanceMonitoringProductionStocFlow("ro","buyer","article","comodityName",1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,garmentBalanceFinishing).GetReadModel()
                 }.AsQueryable());
             // Act
             var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);

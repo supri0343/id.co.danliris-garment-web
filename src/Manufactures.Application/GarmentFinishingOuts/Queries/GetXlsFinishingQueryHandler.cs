@@ -22,6 +22,7 @@ using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using System.Net.Http;
 using System.Text;
+using Manufactures.Domain.MonitoringProductionStockFlow;
 
 namespace Manufactures.Application.GarmentFinishingOuts.Queries
 {
@@ -35,7 +36,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 		private readonly IGarmentFinishingOutItemRepository garmentFinishingOutItemRepository;
 		private readonly IGarmentPreparingRepository garmentPreparingRepository;
 		private readonly IGarmentPreparingItemRepository garmentPreparingItemRepository;
-		private readonly IGarmentBalanceFinishingRepository garmentBalanceFinishingRepository;
+		private readonly IGarmentBalanceMonitoringProductionStockFlowRepository garmentBalanceFinishingRepository;
 		private readonly IGarmentCuttingInRepository garmentCuttingInRepository;
         private readonly IGarmentCuttingInItemRepository garmentCuttingInItemRepository;
         private readonly IGarmentCuttingInDetailRepository garmentCuttingInDetailRepository;
@@ -48,7 +49,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 			garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
 			garmentFinishingOutRepository = storage.GetRepository<IGarmentFinishingOutRepository>();
 			garmentFinishingOutItemRepository = storage.GetRepository<IGarmentFinishingOutItemRepository>();
-			garmentBalanceFinishingRepository = storage.GetRepository<IGarmentBalanceFinishingRepository>();
+			garmentBalanceFinishingRepository = storage.GetRepository<IGarmentBalanceMonitoringProductionStockFlowRepository>();
 			garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
             garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
             garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
@@ -161,18 +162,18 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
                        });
             GarmentMonitoringFinishingListViewModel listViewModel = new GarmentMonitoringFinishingListViewModel();
 			List<GarmentMonitoringFinishingDto> monitoringDtos = new List<GarmentMonitoringFinishingDto>();
-			var queryBalanceFinishing = from a in garmentBalanceFinishingRepository.Query
-										where a.CreatedDate < dateFrom  && a.UnitId == request.unit //&& a.RoJob == "2010810"
-										select new monitoringView { price = a.Price, buyerCode = a.BuyerCode, finishingQtyPcs = 0, remainQty = 0, stock = a.Stock, sewingQtyPcs = 0, roJob = a.RoJob, article = a.Article, qtyOrder = a.QtyOrder, style = a.Style, uomUnit = "PCS" };
+            var queryBalanceFinishing = from a in garmentBalanceFinishingRepository.Query
+                                        where a.BeginingBalanceFinishingQty > 0 && a.CreatedDate < dateFrom && a.UnitId == request.unit //&& a.RoJob == "2010810"
+                                        select new monitoringView { price = Convert.ToDecimal(a.BeginingBalanceFinishingPrice), buyerCode = a.BuyerCode, finishingQtyPcs = 0, remainQty = 0, stock = a.BeginingBalanceFinishingQty, sewingQtyPcs = 0, roJob = a.Ro, article = a.Article, qtyOrder = a.QtyOrder, style = a.Comodity, uomUnit = "PCS" };
 
-			var QueryFinishing = from a in (from aa in garmentFinishingOutRepository.Query
+            var QueryFinishing = from a in (from aa in garmentFinishingOutRepository.Query
 											where aa.UnitId == request.unit && aa.FinishingOutDate <= dateTo && aa.FinishingOutDate > dateBalance
 											select new { aa.Identity,aa.FinishingOutDate,aa.RONo,aa.Article })
 								 join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 								 select new monitoringView { price = 0, finishingQtyPcs = a.FinishingOutDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.FinishingOutDate < dateFrom  ? -b.Quantity : 0, roJob = a.RONo, article = a.Article };
 
 			var QuerySewingOut = from a in (from aa in garmentSewingOutRepository.Query
-											where aa.UnitId == request.unit && aa.SewingOutDate <= dateTo  && aa.SewingOutDate > dateBalance//&& aa.SewingTo == "FINISHING"
+											where aa.UnitId == request.unit && aa.SewingOutDate <= dateTo  && aa.SewingOutDate > dateBalance&& aa.SewingTo == "FINISHING"
 
                                             select new { aa.Identity,aa.SewingOutDate,aa.RONo,aa.Article})
 								 join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
@@ -210,7 +211,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
 			var roList = (from a in data
 						  select a.roJob).Distinct().ToList();
 			var roBalance = from a in garmentBalanceFinishingRepository.Query
-							select new CostCalViewModel { comodityName = a.Style, buyerCode = a.BuyerCode, hours = a.Hours, qtyOrder = a.QtyOrder, ro = a.RoJob };
+							select new CostCalViewModel { comodityName = a.Comodity, buyerCode = a.BuyerCode, hours = a.Hours, qtyOrder = a.QtyOrder, ro = a.Ro };
 
 			CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(roList, request.token);
 
