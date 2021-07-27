@@ -10,6 +10,8 @@ namespace Manufactures.Domain.GarmentCuttingOuts.Repositories
     public interface IGarmentCuttingOutRepository : IAggregateRepository<GarmentCuttingOut, GarmentCuttingOutReadModel>
     {
         IQueryable<GarmentCuttingOutReadModel> Read(int page, int size, string order, string keyword, string filter);
+
+        IQueryable<object> ReadExecute(IQueryable<GarmentCuttingOutReadModel> query);
     }
     
 }

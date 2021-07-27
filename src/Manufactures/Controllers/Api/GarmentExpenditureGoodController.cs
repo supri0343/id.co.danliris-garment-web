@@ -245,21 +245,23 @@ namespace Manufactures.Controllers.Api
             var query = _garmentExpenditureGoodRepository.Read(page, size, order, keyword, filter);
             var count = query.Count();
 
-            var garmentExpenditureGoodDto = _garmentExpenditureGoodRepository.Find(query).Select(o => new GarmentExpenditureGoodDto(o)).ToArray();
-            var garmentExpenditureGoodItemDto = _garmentExpenditureGoodItemRepository.Find(_garmentExpenditureGoodItemRepository.Query).Select(o => new GarmentExpenditureGoodItemDto(o)).ToList();
-            
-            Parallel.ForEach(garmentExpenditureGoodDto, itemDto =>
-            {
-                var garmentExpenditureGoodItems = garmentExpenditureGoodItemDto.Where(x => x.ExpenditureGoodId == itemDto.Id).OrderBy(x => x.Id).ToList();
+            var garmentExpenditureGoodDto = _garmentExpenditureGoodRepository.ReadExecute(query);
 
-                itemDto.Items = garmentExpenditureGoodItems;
-            });
+            //var garmentExpenditureGoodDto = _garmentExpenditureGoodRepository.Find(query).Select(o => new GarmentExpenditureGoodDto(o)).ToArray();
+            //var garmentExpenditureGoodItemDto = _garmentExpenditureGoodItemRepository.Find(_garmentExpenditureGoodItemRepository.Query).Select(o => new GarmentExpenditureGoodItemDto(o)).ToList();
 
-            if (order != "{}")
-            {
-                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                garmentExpenditureGoodDto = QueryHelper<GarmentExpenditureGoodDto>.Order(garmentExpenditureGoodDto.AsQueryable(), OrderDictionary).ToArray();
-            }
+            //Parallel.ForEach(garmentExpenditureGoodDto, itemDto =>
+            //{
+            //    var garmentExpenditureGoodItems = garmentExpenditureGoodItemDto.Where(x => x.ExpenditureGoodId == itemDto.Id).OrderBy(x => x.Id).ToList();
+
+            //    itemDto.Items = garmentExpenditureGoodItems;
+            //});
+
+            //if (order != "{}")
+            //{
+            //    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            //    garmentExpenditureGoodDto = QueryHelper<GarmentExpenditureGoodDto>.Order(garmentExpenditureGoodDto.AsQueryable(), OrderDictionary).ToArray();
+            //}
 
             await Task.Yield();
             return Ok(garmentExpenditureGoodDto, info: new

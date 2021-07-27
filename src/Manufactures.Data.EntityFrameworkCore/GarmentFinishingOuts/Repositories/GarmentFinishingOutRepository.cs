@@ -65,7 +65,86 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentFinishingOuts.Repositorie
 			return data;
 		}
 
-		protected override GarmentFinishingOut Map(GarmentFinishingOutReadModel readModel)
+        public IQueryable<object> ReadExecute(IQueryable<GarmentFinishingOutReadModel> query)
+        {
+            var newQuery = query.Select(garmentFinishingOutList => new
+            {
+                Id = garmentFinishingOutList.Identity,
+                FinishingOutNo = garmentFinishingOutList.FinishingOutNo,
+                UnitTo = new
+                {
+                    Id = garmentFinishingOutList.UnitToId,
+                    Code = garmentFinishingOutList.UnitToCode,
+                    Name = garmentFinishingOutList.UnitToName
+                },
+                Unit = new
+                {
+                    Id = garmentFinishingOutList.UnitId,
+                    Code = garmentFinishingOutList.UnitCode,
+                    Name = garmentFinishingOutList.UnitName
+                },
+                RONo = garmentFinishingOutList.RONo,
+                Article = garmentFinishingOutList.Article,
+                FinishingOutDate = garmentFinishingOutList.FinishingOutDate,
+                FinishingTo = garmentFinishingOutList.FinishingTo,
+                Comodity = new
+                {
+                    Id = garmentFinishingOutList.ComodityId,
+                    Code = garmentFinishingOutList.ComodityCode,
+                    Name = garmentFinishingOutList.ComodityName
+                },
+                IsDifferentSize = garmentFinishingOutList.IsDifferentSize,
+
+                Items = garmentFinishingOutList.GarmentFinishingOutItem.Select(garmentFinishingOutItem => new {
+                    Id = garmentFinishingOutItem.Identity,
+                    FinishingOutId = garmentFinishingOutItem.FinishingOutId,
+                    FinishingInId = garmentFinishingOutItem.FinishingInId,
+                    FinishingInItemId = garmentFinishingOutItem.FinishingInItemId,
+                    Product = new
+                    {
+                        Id = garmentFinishingOutItem.ProductId,
+                        Code = garmentFinishingOutItem.ProductCode,
+                        Name = garmentFinishingOutItem.ProductName
+                    },
+                    Size = new
+                    {
+                        Id = garmentFinishingOutItem.SizeId,
+                        Size = garmentFinishingOutItem.SizeName,
+                    },
+                    DesignColor = garmentFinishingOutItem.DesignColor,
+                    Quantity = garmentFinishingOutItem.Quantity,
+                    Uom = new {
+                        Id = garmentFinishingOutItem.UomId,
+                        Unit = garmentFinishingOutItem.UomUnit
+                    },
+                    Color = garmentFinishingOutItem.Color,
+                    RemainingQuantity = garmentFinishingOutItem.RemainingQuantity,
+                    BasicPrice = garmentFinishingOutItem.BasicPrice,
+                    Price = garmentFinishingOutItem.Price,
+
+                    Details = garmentFinishingOutItem.GarmentFinishingOutDetail.Select(garmentFinishingOutDetail => new {
+                        Id = garmentFinishingOutDetail.Identity,
+                        FinishingOutItemId = garmentFinishingOutDetail.FinishingOutItemId,
+                        Size = new
+                        {
+                            Id = garmentFinishingOutDetail.SizeId,
+                            Size = garmentFinishingOutDetail.SizeName,
+                        },
+                        Quantity = garmentFinishingOutDetail.Quantity,
+                        Uom = new
+                        {
+                            Id = garmentFinishingOutDetail.UomId,
+                            Unit = garmentFinishingOutDetail.UomUnit
+                        },
+
+                    })
+                })
+
+            });
+            return newQuery;
+        }
+
+        protected override GarmentFinishingOut Map(GarmentFinishingOutReadModel readModel)
         {
             return new GarmentFinishingOut(readModel);
         }

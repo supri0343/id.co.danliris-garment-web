@@ -322,26 +322,31 @@ namespace Manufactures.Tests.Controllers.Api
                 }
                 .AsQueryable());
 
+            //_mockGarmentExpenditureGoodRepository
+            //   .Setup(s => s.Find(It.IsAny<IQueryable<GarmentExpenditureGoodReadModel>>()))
+            //   .Returns(new List<GarmentExpenditureGood>()
+            //   {
+            //        new GarmentExpenditureGood(ExpenditureGoodGuid, null,null,new UnitDepartmentId(1),null,null,"RONo","article",new GarmentComodityId(1),null,null,new BuyerId(1), null, null,DateTimeOffset.Now,  null,null,0,null,false,1)
+            //   });
+
+            //_mockGarmentExpenditureGoodItemRepository
+            //   .Setup(s => s.Query)
+            //   .Returns(new List<GarmentExpenditureGoodItemReadModel>()
+            //   {
+            //       new GarmentExpenditureGoodItemReadModel(ExpenditureGoodItemGuid)
+            //   }
+            //   .AsQueryable());
+
+            //_mockGarmentExpenditureGoodItemRepository
+            //    .Setup(s => s.Find(It.IsAny<IQueryable<GarmentExpenditureGoodItemReadModel>>()))
+            //    .Returns(new List<GarmentExpenditureGoodItem>() { 
+            //        new GarmentExpenditureGoodItem(ExpenditureGoodItemGuid,ExpenditureGoodItemGuid,Guid.NewGuid(),new SizeId(1),"sizeName",1,1,new UomId(1),"uomUnit","description",1,1)
+            //    });
+
             _mockGarmentExpenditureGoodRepository
-               .Setup(s => s.Find(It.IsAny<IQueryable<GarmentExpenditureGoodReadModel>>()))
-               .Returns(new List<GarmentExpenditureGood>()
-               {
-                    new GarmentExpenditureGood(ExpenditureGoodGuid, null,null,new UnitDepartmentId(1),null,null,"RONo","article",new GarmentComodityId(1),null,null,new BuyerId(1), null, null,DateTimeOffset.Now,  null,null,0,null,false,1)
-               });
-
-            _mockGarmentExpenditureGoodItemRepository
-               .Setup(s => s.Query)
-               .Returns(new List<GarmentExpenditureGoodItemReadModel>()
-               {
-                   new GarmentExpenditureGoodItemReadModel(ExpenditureGoodItemGuid)
-               }
-               .AsQueryable());
-
-            _mockGarmentExpenditureGoodItemRepository
-                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentExpenditureGoodItemReadModel>>()))
-                .Returns(new List<GarmentExpenditureGoodItem>() { 
-                    new GarmentExpenditureGoodItem(ExpenditureGoodItemGuid,ExpenditureGoodItemGuid,Guid.NewGuid(),new SizeId(1),"sizeName",1,1,new UomId(1),"uomUnit","description",1,1)
-                });
+                .Setup(s => s.ReadExecute(It.IsAny<IQueryable<GarmentExpenditureGoodReadModel>>()))
+                .Returns(new List<object>()
+                .AsQueryable());
 
 
             // Act

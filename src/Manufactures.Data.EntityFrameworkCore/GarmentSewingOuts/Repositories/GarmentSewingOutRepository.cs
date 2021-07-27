@@ -95,6 +95,85 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Repositories
             return selectedData;
         }
 
+        public IQueryable<object> ReadExecute(IQueryable<GarmentSewingOutReadModel> query)
+        {
+            var newQuery = query.Select(x => new {
+                Id = x.Identity,
+                SewingOutNo = x.SewingOutNo,
+                Buyer = new {
+                    Id = x.BuyerId,
+                    Code = x.BuyerCode,
+                    Name = x.BuyerName
+                },
+                Unit = new
+                {
+                    Id = x.UnitId,
+                    Code = x.UnitCode,
+                    Name = x.UnitName
+                },
+                SewingTo = x.SewingTo,
+                UnitTo = new
+                {
+                    Id = x.UnitToId,
+                    Code = x.UnitToCode,
+                    Name = x.UnitToName
+                },
+                RONo = x.RONo, 
+                Article = x.Article,
+                Comodity = new {
+                    Id = x.ComodityId,
+                    Code = x.ComodityCode,
+                    Name = x.ComodityName
+                },
+                SewingOutDate = x.SewingOutDate,
+                IsDifferentSize = x.IsDifferentSize,
+                Items = x.GarmentSewingOutItem.Select(garmentSewingOutItem => new {
+                    Id = garmentSewingOutItem.Identity,
+                    SewingOutId = garmentSewingOutItem.SewingOutId,
+                    SewingInId = garmentSewingOutItem.SewingInId,
+                    SewingInItemId = garmentSewingOutItem.SewingInItemId,
+                    Product = new {
+                        Id = garmentSewingOutItem.ProductId,
+                        Code = garmentSewingOutItem.ProductCode,
+                        Name = garmentSewingOutItem.ProductName
+                    },
+                    Size = new {
+                        Id = garmentSewingOutItem.SizeId,
+                        Size = garmentSewingOutItem.SizeName,
+                    },
+                    DesignColor = garmentSewingOutItem.DesignColor,
+                    Quantity = garmentSewingOutItem.Quantity,
+                    Uom = new {
+                        Id = garmentSewingOutItem.UomId,
+                        Unit = garmentSewingOutItem.UomUnit,
+                    },
+                    Color = garmentSewingOutItem.Color,
+                    RemainingQuantity = garmentSewingOutItem.RemainingQuantity,
+                    BasicPrice = garmentSewingOutItem.BasicPrice,
+                    Price = garmentSewingOutItem.Price,
+
+                    Details = garmentSewingOutItem.GarmentSewingOutDetail.Select(garmentSewingOutDetail => new {
+                        Id = garmentSewingOutDetail.Identity,
+                        SewingOutItemId = garmentSewingOutDetail.SewingOutItemId,
+                        Size = new
+                        {
+                            Id = garmentSewingOutDetail.SizeId,
+                            Size = garmentSewingOutDetail.SizeName,
+                        },
+                        Quantity = garmentSewingOutDetail.Quantity,
+                        Uom = new
+                        {
+                            Id = garmentSewingOutDetail.UomId,
+                            Unit = garmentSewingOutDetail.UomUnit,
+                        },
+                    })
+
+                })
+            });
+
+            return newQuery;
+        }
+
         protected override GarmentSewingOut Map(GarmentSewingOutReadModel readModel)
         {
             return new GarmentSewingOut(readModel);
