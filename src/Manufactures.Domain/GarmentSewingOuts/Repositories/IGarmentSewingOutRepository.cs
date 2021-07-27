@@ -12,6 +12,8 @@ namespace Manufactures.Domain.GarmentSewingOuts.Repositories
         IQueryable<GarmentSewingOutReadModel> Read(int page, int size, string order, string keyword, string filter);
 
         IQueryable<GarmentSewingOutReadModel> ReadComplete(int page, int size, string order, string keyword, string filter);
+
+        IQueryable<object> ReadExecute(IQueryable<GarmentSewingOutReadModel> model);
         IQueryable ReadDynamic(string order, string search, string select, string keyword, string filter);
     }
 }

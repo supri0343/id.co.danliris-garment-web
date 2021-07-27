@@ -186,28 +186,30 @@ namespace Manufactures.Controllers.Api
             var query = _garmentSewingOutRepository.Read(page, size, order, keyword, filter);
             var count = query.Count();
 
-            var garmentSewingOutDto = _garmentSewingOutRepository.Find(query).Select(o => new GarmentSewingOutDto(o)).ToArray();
-            var garmentSewingOutItemDto = _garmentSewingOutItemRepository.Find(_garmentSewingOutItemRepository.Query).Select(o => new GarmentSewingOutItemDto(o)).ToList();
-            var garmentSewingOutDetailDto = _garmentSewingOutDetailRepository.Find(_garmentSewingOutDetailRepository.Query).Select(o => new GarmentSewingOutDetailDto(o)).ToList();
+            var garmentSewingOutDto = _garmentSewingOutRepository.ReadExecute(query);
 
-            Parallel.ForEach(garmentSewingOutDto, itemDto =>
-            {
-                var garmentSewingOutItems = garmentSewingOutItemDto.Where(x => x.SewingOutId == itemDto.Id).OrderBy(x => x.Id).ToList();
+            //var garmentSewingOutDto = _garmentSewingOutRepository.Find(query).Select(o => new GarmentSewingOutDto(o)).ToArray();
+            //var garmentSewingOutItemDto = _garmentSewingOutItemRepository.Find(_garmentSewingOutItemRepository.Query).Select(o => new GarmentSewingOutItemDto(o)).ToList();
+            //var garmentSewingOutDetailDto = _garmentSewingOutDetailRepository.Find(_garmentSewingOutDetailRepository.Query).Select(o => new GarmentSewingOutDetailDto(o)).ToList();
 
-                itemDto.Items = garmentSewingOutItems;
+            //Parallel.ForEach(garmentSewingOutDto, itemDto =>
+            //{
+            //    var garmentSewingOutItems = garmentSewingOutItemDto.Where(x => x.SewingOutId == itemDto.Id).OrderBy(x => x.Id).ToList();
 
-                Parallel.ForEach(itemDto.Items, detailDto =>
-                {
-                    var garmentSewingOutDetails = garmentSewingOutDetailDto.Where(x => x.SewingOutItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
-                    detailDto.Details = garmentSewingOutDetails;
-                });
-            });
+            //    itemDto.Items = garmentSewingOutItems;
 
-            if (order != "{}")
-            {
-                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                garmentSewingOutDto = QueryHelper<GarmentSewingOutDto>.Order(garmentSewingOutDto.AsQueryable(), OrderDictionary).ToArray();
-            }
+            //    Parallel.ForEach(itemDto.Items, detailDto =>
+            //    {
+            //        var garmentSewingOutDetails = garmentSewingOutDetailDto.Where(x => x.SewingOutItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
+            //        detailDto.Details = garmentSewingOutDetails;
+            //    });
+            //});
+
+            //if (order != "{}")
+            //{
+            //    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            //    garmentSewingOutDto = QueryHelper<GarmentSewingOutDto>.Order(garmentSewingOutDto.AsQueryable(), OrderDictionary).ToArray();
+            //}
 
             await Task.Yield();
             return Ok(garmentSewingOutDto, info: new
