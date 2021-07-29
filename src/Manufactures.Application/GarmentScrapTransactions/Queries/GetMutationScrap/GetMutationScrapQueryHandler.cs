@@ -51,15 +51,18 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
 
         public async Task<GetMutationScrapListViewModel> Handle(GetMutationScrapQuery request, CancellationToken cancellationToken)
         {
-            DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
-            DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
+            //DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
+            //DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
+
+            DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(0, 0, 0));
+            DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(0, 0, 0));
 
             List<GetMutationScrapDto> getMutationScrapDtos = new List<GetMutationScrapDto>();
 
             var SAScrapIN = (from a in _garmentScrapTransactionRepository.Query
                              join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                              join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
-                             where a.CreatedDate < dateFrom && a.Deleted == false && b.Deleted == false
+                             where a.CreatedDate.Date.Date < dateFrom.Date && a.Deleted == false && b.Deleted == false
                              && c.Code == "ZB05" && a.TransactionType == "IN"
                              select new monitoringView
                              {
@@ -91,7 +94,7 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
             var SAScrapOut = (from a in _garmentScrapTransactionRepository.Query
                              join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                              join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
-                             where a.CreatedDate < dateFrom && a.Deleted == false && b.Deleted == false
+                             where a.CreatedDate.Date.Date < dateFrom.Date && a.Deleted == false && b.Deleted == false
                              && c.Code == "ZB05" && a.TransactionType == "OUT"
                              select new monitoringView
                              {
@@ -138,7 +141,7 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
             var FilterdScrapIN = (from a in _garmentScrapTransactionRepository.Query
                              join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                              join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
-                             where a.CreatedDate >= dateFrom && a.CreatedDate <= dateTo
+                             where a.CreatedDate.Date.Date >= dateFrom.Date && a.CreatedDate.Date.Date <= dateTo.Date
                              && a.Deleted == false && b.Deleted == false
                              && c.Code == "ZB05" && a.TransactionType == "IN"
                              select new monitoringView
@@ -171,7 +174,7 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
             var FilterdScrapOut = (from a in _garmentScrapTransactionRepository.Query
                               join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                               join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
-                              where a.CreatedDate >= dateFrom && a.CreatedDate <= dateTo && a.Deleted == false && b.Deleted == false
+                              where a.CreatedDate.Date.Date >= dateFrom.Date && a.CreatedDate.Date.Date <= dateTo.Date && a.Deleted == false && b.Deleted == false
                               && c.Code == "ZB05" && a.TransactionType == "OUT"
                               select new monitoringView
                               {
