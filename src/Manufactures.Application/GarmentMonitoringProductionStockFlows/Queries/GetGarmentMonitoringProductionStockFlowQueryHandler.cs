@@ -313,8 +313,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                     where (request.ro == null || (request.ro != null && request.ro != "" && aa.Ro == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.UnitId == aa.UnitId
                                     select aa)
                                   
-                                        where a.CreatedDate < dateFrom && a.UnitId == request.unit //&& a.RoJob == "2010810"
-                                        select new monitoringView {
+                                        where a.CreatedDate < dateFrom && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) //&& a.RoJob == "2010810"
+                                select new monitoringView {
                                             QtyCuttingIn = 0,
                                             PriceCuttingIn = 0,
                                             QtySewingIn = 0,
@@ -2355,7 +2355,11 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                where ros.Contains(a.RO)
                                select new
                                {
-                                   BasicPrice = Math.Round(Convert.ToDouble(a.BasicPrice / a.Count), 2) * Convert.ToDouble((bb.FC / bb.Count) == 0 ? cc.BasicPrice : Math.Round(Convert.ToDouble(a.BasicPrice / a.Count), 2)) * Convert.ToDouble(bb.FC / bb.Count),
+                                   BasicPrice = 
+                                   //Math.Round(Convert.ToDouble(a.BasicPrice / a.Count), 2) 
+                                   //* 
+                                   Math.Round(Convert.ToDouble((bb.FC / bb.Count)) == 0 ? cc.BasicPrice : 
+                                   Math.Round(Convert.ToDouble(a.BasicPrice / a.Count), 2) * Convert.ToDouble(bb.FC / bb.Count),2),
                                    realization = a.RO
                                }).ToList();
 
@@ -2470,12 +2474,12 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
             //{
 
             //    var fc = Math.Round(Convert.ToDouble(item.fc), 2);
-            //    var basicPrice = Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == item.ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2)
-            //    * Convert.ToDouble((from cost in sumFCs where cost.RO == item.ro select cost.FC / cost.Count).FirstOrDefault()) == 0 ?
-            //    Convert.ToDouble((from a in queryBalance.ToList() where a.Ro == item.ro select a.BasicPrice).FirstOrDefault()) :
-            //    Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == item.ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2)
-            //    * Convert.ToDouble((from cost in sumFCs where cost.RO == item.ro select cost.FC / cost.Count).FirstOrDefault());
-            //    //Math.Round(Convert.ToDouble(item.basicprice) * fc, 2);
+            //var basicPrice = Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == item.ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2)
+            //* Convert.ToDouble((from cost in sumFCs where cost.RO == item.ro select cost.FC / cost.Count).FirstOrDefault()) == 0 ?
+            //Convert.ToDouble((from a in queryBalance.ToList() where a.Ro == item.ro select a.BasicPrice).FirstOrDefault()) :
+            //Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == item.ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2)
+            //* Convert.ToDouble((from cost in sumFCs where cost.RO == item.ro select cost.FC / cost.Count).FirstOrDefault());
+            //Math.Round(Convert.ToDouble(item.basicprice) * fc, 2);
 
             //    GarmentMonitoringProductionStockFlowDto garmentMonitoringDto = new GarmentMonitoringProductionStockFlowDto()
             //    {
