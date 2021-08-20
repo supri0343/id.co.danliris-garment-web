@@ -352,38 +352,42 @@ namespace Manufactures.Tests.Controllers.Api
                  .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                  .Returns(new List<GarmentFinishingOutReadModel>().AsQueryable());
 
+            //_mockGarmentFinishingOutRepository
+            //  .Setup(s => s.Find(It.IsAny<IQueryable<GarmentFinishingOutReadModel>>()))
+            //  .Returns(new List<GarmentFinishingOut>()
+            //  {
+            //        new GarmentFinishingOut(id,"finishingOutNo",new UnitDepartmentId(1),"unitToCode","unitToName","Finishing",DateTimeOffset.Now, "RONo","article", new UnitDepartmentId(1),"unitCode", "unitName",new GarmentComodityId(1),"comodityCode","comodityName",true)
+            //  });
+
+            //_mockGarmentFinishingOutItemRepository
+            //   .Setup(s => s.Query)
+            //   .Returns(new List<GarmentFinishingOutItemReadModel>()
+            //   {
+            //       new GarmentFinishingOutItemReadModel(id)
+            //   }.AsQueryable());
+
+            //_mockGarmentFinishingOutItemRepository
+            // .Setup(s => s.Find(It.IsAny<IQueryable<GarmentFinishingOutItemReadModel>>()))
+            // .Returns(new List<GarmentFinishingOutItem>() { new GarmentFinishingOutItem(id,id,id,id,new ProductId(1),"productCode", "productName","designColor",new SizeId(1),"sizeName",1,new UomId(1),"uomUnit","color",1,1,1) });
+
+            //_mockGarmentFinishingOutDetailRepository
+            //    .Setup(s => s.Query)
+            //    .Returns(new List<GarmentFinishingOutDetailReadModel>()
+            //    {
+            //        new GarmentFinishingOutDetailReadModel(id)
+            //    }.AsQueryable());
+
+            //_mockGarmentFinishingOutDetailRepository
+            //   .Setup(s => s.Find(It.IsAny<IQueryable<GarmentFinishingOutDetailReadModel>>()))
+            //   .Returns(new List<GarmentFinishingOutDetail>()
+            //   {
+            //        new GarmentFinishingOutDetail(id, id, new SizeId(1), "size", 1, new UomId(1), null)
+            //   });
+
             _mockGarmentFinishingOutRepository
-              .Setup(s => s.Find(It.IsAny<IQueryable<GarmentFinishingOutReadModel>>()))
-              .Returns(new List<GarmentFinishingOut>()
-              {
-                    new GarmentFinishingOut(id,"finishingOutNo",new UnitDepartmentId(1),"unitToCode","unitToName","Finishing",DateTimeOffset.Now, "RONo","article", new UnitDepartmentId(1),"unitCode", "unitName",new GarmentComodityId(1),"comodityCode","comodityName",true)
-              });
-
-            _mockGarmentFinishingOutItemRepository
-               .Setup(s => s.Query)
-               .Returns(new List<GarmentFinishingOutItemReadModel>()
-               {
-                   new GarmentFinishingOutItemReadModel(id)
-               }.AsQueryable());
-
-            _mockGarmentFinishingOutItemRepository
-             .Setup(s => s.Find(It.IsAny<IQueryable<GarmentFinishingOutItemReadModel>>()))
-             .Returns(new List<GarmentFinishingOutItem>() { new GarmentFinishingOutItem(id,id,id,id,new ProductId(1),"productCode", "productName","designColor",new SizeId(1),"sizeName",1,new UomId(1),"uomUnit","color",1,1,1) });
-
-            _mockGarmentFinishingOutDetailRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentFinishingOutDetailReadModel>()
-                {
-                    new GarmentFinishingOutDetailReadModel(id)
-                }.AsQueryable());
-
-            _mockGarmentFinishingOutDetailRepository
-               .Setup(s => s.Find(It.IsAny<IQueryable<GarmentFinishingOutDetailReadModel>>()))
-               .Returns(new List<GarmentFinishingOutDetail>()
-               {
-                    new GarmentFinishingOutDetail(id, id, new SizeId(1), "size", 1, new UomId(1), null)
-               });
-
+                .Setup(s => s.ReadExecute(It.IsAny<IQueryable<GarmentFinishingOutReadModel>>()))
+                .Returns(new List<object>()
+                .AsQueryable());
 
             var orderData = new
             {

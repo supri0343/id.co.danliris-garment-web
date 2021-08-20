@@ -88,6 +88,65 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentExpenditureGoods.Reposito
             return basicPrice;
         }
 
+        public IQueryable<object> ReadExecute(IQueryable<GarmentExpenditureGoodReadModel> query) {
+            var newQuery = query.Select(garmentExpenditureGood => new
+            {
+                Id = garmentExpenditureGood.Identity,
+                ExpenditureGoodNo = garmentExpenditureGood.ExpenditureGoodNo,
+                RONo = garmentExpenditureGood.RONo,
+                Article = garmentExpenditureGood.Article,
+                Unit = new
+                {
+                    Id = garmentExpenditureGood.UnitId,
+                    Code = garmentExpenditureGood.UnitCode,
+                    Name = garmentExpenditureGood.UnitName
+                },
+                ExpenditureDate = garmentExpenditureGood.ExpenditureDate,
+                ExpenditureType = garmentExpenditureGood.ExpenditureType,
+                Comodity = new
+                {
+                    Id = garmentExpenditureGood.ComodityId,
+                    Code = garmentExpenditureGood.ComodityCode,
+                    Name = garmentExpenditureGood.ComodityName
+                },
+                Buyer = new
+                {
+                    Id = garmentExpenditureGood.BuyerId,
+                    Code = garmentExpenditureGood.BuyerCode,
+                    Name = garmentExpenditureGood.BuyerName
+                },
+                Invoice = garmentExpenditureGood.Invoice,
+                ContractNo = garmentExpenditureGood.ContractNo,
+                Carton = garmentExpenditureGood.Carton,
+                Description = garmentExpenditureGood.Description,
+                IsReceived = garmentExpenditureGood.IsReceived,
+                PackingListId = garmentExpenditureGood.PackingListId,
+
+                Items = garmentExpenditureGood.Items.Select(garmentExpenditureGoodItem => new {
+                    Id = garmentExpenditureGoodItem.Identity,
+                    ExpenditureGoodId = garmentExpenditureGoodItem.ExpenditureGoodId,
+                    FinishedGoodStockId = garmentExpenditureGoodItem.FinishedGoodStockId,
+                    Size = new
+                    {
+                        Id = garmentExpenditureGoodItem.SizeId,
+                        Size = garmentExpenditureGoodItem.SizeName,
+                    },
+                    Quantity = garmentExpenditureGoodItem.Quantity,
+                    Uom = new
+                    {
+                        Id = garmentExpenditureGoodItem.UomId,
+                        Unit = garmentExpenditureGoodItem.UomUnit
+                    },
+                    Description = garmentExpenditureGoodItem.Description,
+                    BasicPrice = garmentExpenditureGoodItem.BasicPrice,
+                    Price = garmentExpenditureGoodItem.Price,
+                    ReturQuantity = garmentExpenditureGoodItem.ReturQuantity,
+
+                })
+
+            });
+            return newQuery;
+        }
 
         protected override GarmentExpenditureGood Map(GarmentExpenditureGoodReadModel readModel)
         {

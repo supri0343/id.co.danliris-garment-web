@@ -51,16 +51,21 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
 
         public async Task<GetMutationScrapListViewModel> Handle(GetMutationScrapQuery request, CancellationToken cancellationToken)
         {
-            DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
-            DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
+            //DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
+            //DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
+
+            DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(0, 0, 0));
+            DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(0, 0, 0));
 
             List<GetMutationScrapDto> getMutationScrapDtos = new List<GetMutationScrapDto>();
+
+            var CodeScrap = new List<string> { "ZB05", "ZA59" };
 
             var SAScrapIN = (from a in _garmentScrapTransactionRepository.Query
                              join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                              join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
                              where a.CreatedDate < dateFrom && a.Deleted == false && b.Deleted == false
-                             && c.Code == "AVP01" && a.TransactionType == "IN"
+                             && CodeScrap.Contains(c.Code) && a.TransactionType == "IN"
                              select new monitoringView
                              {
                                  classificationCode = c.Code,
@@ -92,7 +97,7 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
                              join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                              join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
                              where a.CreatedDate < dateFrom && a.Deleted == false && b.Deleted == false
-                             && c.Code == "AVP01" && a.TransactionType == "OUT"
+                             && CodeScrap.Contains(c.Code) && a.TransactionType == "OUT"
                              select new monitoringView
                              {
                                  classificationCode = c.Code,
@@ -138,9 +143,9 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
             var FilterdScrapIN = (from a in _garmentScrapTransactionRepository.Query
                              join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                              join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
-                             where a.CreatedDate >= dateFrom && a.CreatedDate <= dateTo
+                             where a.CreatedDate.Date.Date >= dateFrom.Date && a.CreatedDate.Date.Date <= dateTo.Date
                              && a.Deleted == false && b.Deleted == false
-                             && c.Code == "AVP01" && a.TransactionType == "IN"
+                             && CodeScrap.Contains(c.Code) && a.TransactionType == "IN"
                              select new monitoringView
                              {
                                  classificationCode = c.Code,
@@ -172,7 +177,7 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
                               join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                               join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
                               where a.CreatedDate >= dateFrom && a.CreatedDate <= dateTo && a.Deleted == false && b.Deleted == false
-                              && c.Code == "AVP01" && a.TransactionType == "OUT"
+                              && CodeScrap.Contains(c.Code) && a.TransactionType == "OUT"
                               select new monitoringView
                               {
                                   classificationCode = c.Code,
@@ -221,11 +226,11 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
                 {
                     ClassificationCode = a.classificationCode,
                     ClassificationName = a.classificationName,
-                    SaldoAwal = a.saldoAwal,
-                    Pemasukan = a.pemasukan,
-                    Pengeluaran = a.pengeluaran,
-                    Penyesuaian = a.penyesuaian,
-                    SaldoAkhir = a.saldoAkhir,
+                    SaldoAwal = Math.Round(a.saldoAwal, 2),
+                    Pemasukan = Math.Round(a.pemasukan, 2),
+                    Pengeluaran = Math.Round(a.pengeluaran, 2),
+                    Penyesuaian = Math.Round(a.penyesuaian, 2),
+                    SaldoAkhir = Math.Round(a.saldoAkhir, 2),
                     Selisih = a.selisih,
                     StockOpname = a.stockOpname,
                     UnitQtyName = a.unitQtyName

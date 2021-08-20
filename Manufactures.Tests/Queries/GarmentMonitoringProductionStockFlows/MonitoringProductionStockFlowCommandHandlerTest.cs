@@ -44,6 +44,7 @@ using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentSewingOuts;
 using Manufactures.Domain.GarmentSewingOuts.ReadModels;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
+using Manufactures.Domain.MonitoringProductionStockFlow;
 using Manufactures.Domain.Shared.ValueObjects;
 using Moq;
 using Newtonsoft.Json;
@@ -92,85 +93,81 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 		private readonly Mock<IGarmentComodityPriceRepository> _mockGarmentComodityPriceRepository;
 		private readonly Mock<IGarmentPreparingRepository> _mockGarmentPreparingRepository;
 		private readonly Mock<IGarmentPreparingItemRepository> _mockGarmentPreparingItemRepository;
+        private readonly Mock<IGarmentBalanceMonitoringProductionStockFlowRepository> _mockGarmentBalanceRepository;
 
-		protected readonly Mock<IHttpClientService> _mockhttpService;
+        protected readonly Mock<IHttpClientService> _mockhttpService;
 		private Mock<IServiceProvider> serviceProviderMock;
 
 		public MonitoringProductionStockFlowCommandHandlerTest()
 		{
 			_mockGarmentFinishingOutRepository = CreateMock<IGarmentFinishingOutRepository>();
 			_mockGarmentFinishingOutItemRepository = CreateMock<IGarmentFinishingOutItemRepository>();
-			_MockStorage.SetupStorage(_mockGarmentFinishingOutRepository);
-			_MockStorage.SetupStorage(_mockGarmentFinishingOutItemRepository);
+            _mockGarmentSewingOutRepository = CreateMock<IGarmentSewingOutRepository>();
+            _mockGarmentSewingOutItemRepository = CreateMock<IGarmentSewingOutItemRepository>();
+            _mockGarmentLoadingRepository = CreateMock<IGarmentLoadingRepository>();
+            _mockGarmentLoadingItemRepository = CreateMock<IGarmentLoadingItemRepository>();
+            _mockGarmentCuttingOutRepository = CreateMock<IGarmentCuttingOutRepository>();
+            _mockGarmentCuttingOutItemRepository = CreateMock<IGarmentCuttingOutItemRepository>();
+            _mockGarmentCuttingOutDetailRepository = CreateMock<IGarmentCuttingOutDetailRepository>();
+            _mockGarmentSewingDORepository = CreateMock<IGarmentSewingDORepository>();
+            _mockGarmentSewingDOItemRepository = CreateMock<IGarmentSewingDOItemRepository>();
+            _mockGarmentExpenditureGoodRepository = CreateMock<IGarmentExpenditureGoodRepository>();
+            _mockGarmentExpenditureGoodItemRepository = CreateMock<IGarmentExpenditureGoodItemRepository>();
+            _mockGarmentFinishingInRepository = CreateMock<IGarmentFinishingInRepository>();
+            _mockGarmentFinishingInItemRepository = CreateMock<IGarmentFinishingInItemRepository>();
+            _mockGarmentSewingOutRepository = CreateMock<IGarmentSewingOutRepository>();
+            _mockGarmentSewingOutItemRepository = CreateMock<IGarmentSewingOutItemRepository>();
+            _mockGarmentPreparingRepository = CreateMock<IGarmentPreparingRepository>();
+            _mockGarmentPreparingItemRepository = CreateMock<IGarmentPreparingItemRepository>();
+            _mockGarmentCuttingInRepository = CreateMock<IGarmentCuttingInRepository>();
+            _mockGarmentCuttingInItemRepository = CreateMock<IGarmentCuttingInItemRepository>();
+            _mockGarmentCuttingInDetailRepository = CreateMock<IGarmentCuttingInDetailRepository>();
+            _mockGarmentAdjustmentRepository = CreateMock<IGarmentAdjustmentRepository>();
+            _mockGarmentAdjustmentItemRepository = CreateMock<IGarmentAdjustmentItemRepository>();
+            _mockGarmentBalanceRepository = CreateMock<IGarmentBalanceMonitoringProductionStockFlowRepository>();
+            _mockGarmentSewingInRepository = CreateMock<IGarmentSewingInRepository>();
+            _mockGarmentSewingInItemRepository = CreateMock<IGarmentSewingInItemRepository>();
+            _mockGarmentAvalComponentRepository = CreateMock<IGarmentAvalComponentRepository>();
+            _mockGarmentAvalComponentItemRepository = CreateMock<IGarmentAvalComponentItemRepository>();
+            _mockGarmentExpenditureGoodReturnRepository = CreateMock<IGarmentExpenditureGoodReturnRepository>();
+            _mockGarmentExpenditureGoodReturnItemRepository = CreateMock<IGarmentExpenditureGoodReturnItemRepository>();
+            _mockGarmentComodityPriceRepository = CreateMock<IGarmentComodityPriceRepository>();
 
-			_mockGarmentSewingOutRepository = CreateMock<IGarmentSewingOutRepository>();
-			_mockGarmentSewingOutItemRepository = CreateMock<IGarmentSewingOutItemRepository>();
+            _MockStorage.SetupStorage(_mockGarmentSewingOutRepository);
+            _MockStorage.SetupStorage(_mockGarmentSewingOutItemRepository);
+            _MockStorage.SetupStorage(_mockGarmentPreparingRepository);
+            _MockStorage.SetupStorage(_mockGarmentCuttingInRepository);
+            _MockStorage.SetupStorage(_mockGarmentCuttingInItemRepository);
+            _MockStorage.SetupStorage(_mockGarmentCuttingInDetailRepository);
+            _MockStorage.SetupStorage(_mockGarmentPreparingItemRepository);
+            _MockStorage.SetupStorage(_mockGarmentSewingInRepository);
+            _MockStorage.SetupStorage(_mockGarmentSewingInItemRepository);
+            _MockStorage.SetupStorage(_mockGarmentAdjustmentRepository);
+            _MockStorage.SetupStorage(_mockGarmentAdjustmentItemRepository);
+            _MockStorage.SetupStorage(_mockGarmentBalanceRepository);
+            _MockStorage.SetupStorage(_mockGarmentFinishingOutRepository);
+			_MockStorage.SetupStorage(_mockGarmentFinishingOutItemRepository);
 			_MockStorage.SetupStorage(_mockGarmentSewingOutRepository);
 			_MockStorage.SetupStorage(_mockGarmentSewingOutItemRepository);
-
-			_mockGarmentLoadingRepository = CreateMock<IGarmentLoadingRepository>();
-			_mockGarmentLoadingItemRepository = CreateMock<IGarmentLoadingItemRepository>();
 			_MockStorage.SetupStorage(_mockGarmentLoadingRepository);
 			_MockStorage.SetupStorage(_mockGarmentLoadingItemRepository);
-
-			_mockGarmentCuttingOutRepository = CreateMock<IGarmentCuttingOutRepository>();
-			_mockGarmentCuttingOutItemRepository = CreateMock<IGarmentCuttingOutItemRepository>();
-			_mockGarmentCuttingOutDetailRepository = CreateMock<IGarmentCuttingOutDetailRepository>();
 			_MockStorage.SetupStorage(_mockGarmentCuttingOutRepository);
 			_MockStorage.SetupStorage(_mockGarmentCuttingOutItemRepository);
 			_MockStorage.SetupStorage(_mockGarmentCuttingOutDetailRepository);
-
-			_mockGarmentSewingDORepository = CreateMock<IGarmentSewingDORepository>();
-			_mockGarmentSewingDOItemRepository = CreateMock<IGarmentSewingDOItemRepository>();
 			_MockStorage.SetupStorage(_mockGarmentSewingDORepository);
 			_MockStorage.SetupStorage(_mockGarmentSewingDOItemRepository);
-
-			_mockGarmentExpenditureGoodRepository = CreateMock<IGarmentExpenditureGoodRepository>();
-			_mockGarmentExpenditureGoodItemRepository = CreateMock<IGarmentExpenditureGoodItemRepository>();
 			_MockStorage.SetupStorage(_mockGarmentExpenditureGoodRepository);
 			_MockStorage.SetupStorage(_mockGarmentExpenditureGoodItemRepository);
-
-			_mockGarmentFinishingInRepository = CreateMock<IGarmentFinishingInRepository>();
-			_mockGarmentFinishingInItemRepository = CreateMock<IGarmentFinishingInItemRepository>();
 			_MockStorage.SetupStorage(_mockGarmentFinishingInRepository);
 			_MockStorage.SetupStorage(_mockGarmentFinishingInItemRepository);
-
-			_mockGarmentCuttingInRepository = CreateMock<IGarmentCuttingInRepository>();
-			_mockGarmentCuttingInItemRepository = CreateMock<IGarmentCuttingInItemRepository>();
-			_mockGarmentCuttingInDetailRepository = CreateMock<IGarmentCuttingInDetailRepository>();
-			_MockStorage.SetupStorage(_mockGarmentCuttingInRepository);
+ 			_MockStorage.SetupStorage(_mockGarmentCuttingInRepository);
 			_MockStorage.SetupStorage(_mockGarmentCuttingInItemRepository);
-			_MockStorage.SetupStorage(_mockGarmentCuttingInDetailRepository);
-
-
-			_mockGarmentAdjustmentRepository = CreateMock<IGarmentAdjustmentRepository>();
-			_mockGarmentAdjustmentItemRepository = CreateMock<IGarmentAdjustmentItemRepository>();
-			_MockStorage.SetupStorage(_mockGarmentAdjustmentRepository);
-			_MockStorage.SetupStorage(_mockGarmentAdjustmentItemRepository);
-
-			_mockGarmentAvalComponentRepository = CreateMock<IGarmentAvalComponentRepository>();
-			_mockGarmentAvalComponentItemRepository = CreateMock<IGarmentAvalComponentItemRepository>();
+			_MockStorage.SetupStorage(_mockGarmentCuttingInDetailRepository);			
 			_MockStorage.SetupStorage(_mockGarmentAvalComponentRepository);
 			_MockStorage.SetupStorage(_mockGarmentAvalComponentItemRepository);
-
-			_mockGarmentExpenditureGoodReturnRepository = CreateMock<IGarmentExpenditureGoodReturnRepository>();
-			_mockGarmentExpenditureGoodReturnItemRepository = CreateMock<IGarmentExpenditureGoodReturnItemRepository>();
 			_MockStorage.SetupStorage(_mockGarmentExpenditureGoodReturnRepository);
 			_MockStorage.SetupStorage(_mockGarmentExpenditureGoodReturnItemRepository);
-
-			_mockGarmentSewingInRepository = CreateMock<IGarmentSewingInRepository>();
-			_mockGarmentSewingInItemRepository = CreateMock<IGarmentSewingInItemRepository>();
-			_MockStorage.SetupStorage(_mockGarmentSewingInRepository);
-			_MockStorage.SetupStorage(_mockGarmentSewingInItemRepository);
-
-			_mockGarmentComodityPriceRepository = CreateMock<IGarmentComodityPriceRepository>();
 			_MockStorage.SetupStorage(_mockGarmentComodityPriceRepository);
-
-			_mockGarmentPreparingRepository = CreateMock<IGarmentPreparingRepository>();
-			_MockStorage.SetupStorage(_mockGarmentPreparingRepository);
-
-			_mockGarmentPreparingItemRepository = CreateMock<IGarmentPreparingItemRepository>();
-			_MockStorage.SetupStorage(_mockGarmentPreparingItemRepository);
 
 			serviceProviderMock = new Mock<IServiceProvider>();
 			_mockhttpService = CreateMock<IHttpClientService>();
@@ -184,19 +181,12 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 					hours=10
 				}
 			};
-			List<HOrderViewModel> HOrderViewModels = new List<HOrderViewModel> {
-				new HOrderViewModel
-				{
-					No="ro",
-					Codeby="buyer",
-					Qty=100,
-					Kode="dd"
-				}
-			};
-			_mockhttpService.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()))
-				.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
-			serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
-		}
+            
+            _mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpContent>()))
+             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
+            serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
+        
+    }
 		private GetGarmentMonitoringProductionStockFlowQueryHandler CreateGetMonitoringProductionFlowQueryHandler()
 		{
 			return new GetGarmentMonitoringProductionStockFlowQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
@@ -480,9 +470,15 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 				{
 					new GarmentPreparingItem(guidGarmentPreparingItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidGarmentPreparing,null).GetReadModel()
 				}.AsQueryable());
-
-			// Act
-			var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
+            var garmentBalanceSewing = Guid.NewGuid();
+            _mockGarmentBalanceRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentBalanceMonitoringProductionStockReadModel>
+                {
+                     new GarmentBalanceMonitoringProductionStocFlow("ro","buyer","article","comodityName",1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,garmentBalanceSewing).GetReadModel()
+                }.AsQueryable());
+            // Act
+            var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
 
 			// Assert
 			result.Should().NotBeNull();

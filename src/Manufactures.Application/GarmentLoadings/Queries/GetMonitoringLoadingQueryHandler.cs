@@ -34,7 +34,9 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 		private readonly IGarmentPreparingItemRepository garmentPreparingItemRepository;
 		private readonly IGarmentBalanceLoadingRepository garmentBalanceLoadingRepository;
 		private readonly IGarmentCuttingInRepository garmentCuttingInRepository;
-		private readonly IMemoryCacheManager cacheManager;
+        private readonly IGarmentCuttingInItemRepository garmentCuttingInItemRepository;
+        private readonly IGarmentCuttingInDetailRepository garmentCuttingInDetailRepository;
+        private readonly IMemoryCacheManager cacheManager;
 
         public GetMonitoringLoadingQueryHandler(IStorage storage, IServiceProvider serviceProvider)
 		{
@@ -47,39 +49,14 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 			garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
 			garmentBalanceLoadingRepository = storage.GetRepository<IGarmentBalanceLoadingRepository>();
 			garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
-			_http = serviceProvider.GetService<IHttpClientService>();
+            garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
+            garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
+            _http = serviceProvider.GetService<IHttpClientService>();
 
             cacheManager = serviceProvider.GetService<IMemoryCacheManager>();
         }
 
-        async Task<HOrderDataProductionReport> GetDataHOrder(List<string> ro, string token)
-        {
-            HOrderDataProductionReport hOrderDataProductionReport = new HOrderDataProductionReport();
-
-            var listRO = string.Join(",", ro.Distinct());
-            var costCalculationUri = SalesDataSettings.Endpoint + $"local-merchandiser/horders/data-production-report-by-no/{listRO}";
-            var httpResponse = await _http.GetAsync(costCalculationUri, token);
-
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                var contentString = await httpResponse.Content.ReadAsStringAsync();
-                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
-                var dataString = content.GetValueOrDefault("data").ToString();
-                var listData = JsonConvert.DeserializeObject<List<HOrderViewModel>>(dataString);
-
-                foreach (var item in ro)
-                {
-                    var data = listData.SingleOrDefault(s => s.No == item);
-                    if (data != null)
-                    {
-                        hOrderDataProductionReport.data.Add(data);
-                    }
-                }
-            }
-
-            return hOrderDataProductionReport;
-        }
-
+        
 		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
 		{
 			CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();
@@ -119,40 +96,7 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 
 			}
 
-			//HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(freeRO, token);
-
-			//Dictionary<string, string> comodities = new Dictionary<string, string>();
-			//if (hOrderDataProductionReport.data.Count > 0)
-			//{
-			//	var comodityCodes = hOrderDataProductionReport.data.Select(s => s.Kode).Distinct().ToList();
-			//	var filter = "{\"(" + string.Join(" || ", comodityCodes.Select(s => "Code==" + "\\\"" + s + "\\\"")) + ")\" : \"true\"}";
-
-			//	var masterGarmentComodityUri = MasterDataSettings.Endpoint + $"master/garment-comodities?filter=" + filter;
-			//	var garmentComodityResponse = _http.GetAsync(masterGarmentComodityUri).Result;
-			//	var garmentComodityResult = new GarmentComodityResult();
-			//	if (garmentComodityResponse.IsSuccessStatusCode)
-			//	{
-			//		garmentComodityResult = JsonConvert.DeserializeObject<GarmentComodityResult>(garmentComodityResponse.Content.ReadAsStringAsync().Result);
-			//		//comodities = garmentComodityResult.data.ToDictionary(d => d.Code, d => d.Name);
-			//		foreach (var comodity in garmentComodityResult.data)
-			//		{
-			//			comodities[comodity.Code] = comodity.Name;
-			//		}
-			//	}
-			//}
-
-			//foreach (var hOrder in hOrderDataProductionReport.data)
-			//{
-			//	costCalculationGarmentDataProductionReport.data.Add(new CostCalViewModel
-			//	{
-			//		ro = hOrder.No,
-			//		buyerCode = hOrder.Codeby,
-			//		comodityName = comodities.GetValueOrDefault(hOrder.Kode),
-			//		hours = (double)hOrder.Sh_Cut,
-			//		qtyOrder = (double)hOrder.Qty
-			//	});
-			//}
-
+			
 			return costCalculationGarmentDataProductionReport;
 		}
 
@@ -217,14 +161,16 @@ namespace Manufactures.Application.GarmentLoadings.Queries
 			var sumFCs = (from a in garmentCuttingInRepository.Query
 						  where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" &&
 						 a.UnitId == request.unit && a.CuttingInDate <= dateTo
-						  select new { a.FC, a.RONo })
-						 .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
-						 {
-							 RO = key.RONo,
-							 FC = group.Sum(s => s.FC),
-							 Count = group.Count()
-						 });
-			var _unitName = (from a in garmentCuttingOutRepository.Query
+                          join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
+                          join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+                          select new { a.FC, a.RONo, FCs = Convert.ToDouble(c.CuttingInQuantity * a.FC), c.CuttingInQuantity })
+                       .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
+                       {
+                           RO = key.RONo,
+                           FC = group.Sum(s => (s.FCs)),
+                           Count = group.Sum(s => s.CuttingInQuantity)
+                       });
+            var _unitName = (from a in garmentCuttingOutRepository.Query
 							 where a.UnitId == request.unit
 							 select a.UnitName).FirstOrDefault();
 			var queryBalanceLoading = from a in garmentBalanceLoadingRepository.Query

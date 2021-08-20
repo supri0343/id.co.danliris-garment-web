@@ -321,44 +321,49 @@ namespace Manufactures.Tests.Controllers.Api
               .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
               .Returns(new List<GarmentSewingOutReadModel>().AsQueryable());
 
-           
+
+            //_mockGarmentSewingOutRepository
+            //    .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingOutReadModel>>()))
+            //    .Returns(new List<GarmentSewingOut>()
+            //    {
+            //        new GarmentSewingOut(id, null,new BuyerId(1),null,null,new UnitDepartmentId(1),null,null,"Finishing",DateTimeOffset.Now, "RONo", null, new UnitDepartmentId(1), null, null,new GarmentComodityId(1),null,null,true)
+            //    });
+
+            //GarmentSewingOutItem garmentSewingOutItem = new GarmentSewingOutItem(id, id, id, id, new ProductId(1), null, null, null, new SizeId(1), null, 1, new UomId(1), null, null, 1, 1, 1);
+            //_mockGarmentSewingOutItemRepository
+            //    .Setup(s => s.Query)
+            //    .Returns(new List<GarmentSewingOutItemReadModel>()
+            //    {
+            //        garmentSewingOutItem.GetReadModel()
+            //    }.AsQueryable());
+
+            //_mockGarmentSewingOutItemRepository
+            //    .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingOutItemReadModel>>()))
+            //    .Returns(new List<GarmentSewingOutItem>()
+            //    {
+            //        new GarmentSewingOutItem(id,id,id,id,new ProductId(1),"productCode","productName","designColor",new SizeId(1),"sizeName",1,new UomId(1),"uomUnit","color",1,1,1)
+            //    });
+
+
+            //GarmentSewingOutDetail garmentSewingOutDetail = new GarmentSewingOutDetail(id, id, new SizeId(1), "sizeName", 1, new UomId(1), "uomUnit");
+            //_mockGarmentSewingOutDetailRepository
+            //    .Setup(s => s.Query)
+            //    .Returns(new List<GarmentSewingOutDetailReadModel>()
+            //    {
+            //        garmentSewingOutDetail.GetReadModel()
+            //    }.AsQueryable());
+
+            //_mockGarmentSewingOutDetailRepository
+            //    .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingOutDetailReadModel>>()))
+            //    .Returns(new List<GarmentSewingOutDetail>()
+            //    {
+            //        new GarmentSewingOutDetail(id, id, new SizeId(1),"sizeName", 1, new UomId(1),"uomUnit")
+            //    });
+
             _mockGarmentSewingOutRepository
-                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingOutReadModel>>()))
-                .Returns(new List<GarmentSewingOut>()
-                {
-                    new GarmentSewingOut(id, null,new BuyerId(1),null,null,new UnitDepartmentId(1),null,null,"Finishing",DateTimeOffset.Now, "RONo", null, new UnitDepartmentId(1), null, null,new GarmentComodityId(1),null,null,true)
-                });
-
-            GarmentSewingOutItem garmentSewingOutItem = new GarmentSewingOutItem(id, id, id, id, new ProductId(1), null, null, null, new SizeId(1), null, 1, new UomId(1), null, null, 1, 1, 1);
-            _mockGarmentSewingOutItemRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentSewingOutItemReadModel>()
-                {
-                    garmentSewingOutItem.GetReadModel()
-                }.AsQueryable());
-
-            _mockGarmentSewingOutItemRepository
-                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingOutItemReadModel>>()))
-                .Returns(new List<GarmentSewingOutItem>()
-                {
-                    new GarmentSewingOutItem(id,id,id,id,new ProductId(1),"productCode","productName","designColor",new SizeId(1),"sizeName",1,new UomId(1),"uomUnit","color",1,1,1)
-                });
-
-
-            GarmentSewingOutDetail garmentSewingOutDetail = new GarmentSewingOutDetail(id, id, new SizeId(1), "sizeName", 1, new UomId(1), "uomUnit");
-            _mockGarmentSewingOutDetailRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentSewingOutDetailReadModel>()
-                {
-                    garmentSewingOutDetail.GetReadModel()
-                }.AsQueryable());
-
-            _mockGarmentSewingOutDetailRepository
-                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSewingOutDetailReadModel>>()))
-                .Returns(new List<GarmentSewingOutDetail>()
-                {
-                    new GarmentSewingOutDetail(id, id, new SizeId(1),"sizeName", 1, new UomId(1),"uomUnit")
-                });
+                .Setup(s => s.ReadExecute(It.IsAny<IQueryable<GarmentSewingOutReadModel>>()))
+                .Returns(new List<object>()
+                .AsQueryable());
 
             // Act
             var orderData = new

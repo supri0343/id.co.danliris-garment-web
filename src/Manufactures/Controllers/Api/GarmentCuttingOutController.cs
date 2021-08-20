@@ -231,31 +231,34 @@ namespace Manufactures.Controllers.Api
             var query = _garmentCuttingOutRepository.Read(page, size, order, keyword, filter);
             var count = query.Count();
 
-            var garmentCuttingOutDto = _garmentCuttingOutRepository.Find(query).Select(o => new GarmentCuttingOutDto(o)).ToArray();
-            var garmentCuttingOutItemDto = _garmentCuttingOutItemRepository.Find(_garmentCuttingOutItemRepository.Query).Select(o => new GarmentCuttingOutItemDto(o)).ToList();
-            var garmentCuttingOutDetailDto = _garmentCuttingOutDetailRepository.Find(_garmentCuttingOutDetailRepository.Query).Select(o => new GarmentCuttingOutDetailDto(o)).ToList();
+            var newQuery = _garmentCuttingOutRepository.ReadExecute(query);
+            //var garmentCuttingOutDto = _garmentCuttingOutRepository.Find(query).Select(o => new GarmentCuttingOutDto(o)).ToArray();
+            ////var CuttingOutsIdentities = garmentCuttingOutDto.Select(x => x.Id).ToArray();
+            //var garmentCuttingOutItemDto = _garmentCuttingOutItemRepository.Find(_garmentCuttingOutItemRepository.Query).Where(x=> CuttingOutsIdentities.Contains(x.CutOutId)).Select(o => new GarmentCuttingOutItemDto(o)).ToList();
+            ////var CuttingOutItemsIdentities = garmentCuttingOutDto.Select(x => x.Id).ToArray();
+            //var garmentCuttingOutDetailDto = _garmentCuttingOutDetailRepository.Find(_garmentCuttingOutDetailRepository.Query).Where(x=> CuttingOutItemsIdentities.Contains(x.CutOutItemId)).Select(o => new GarmentCuttingOutDetailDto(o)).ToList();
 
-            Parallel.ForEach(garmentCuttingOutDto, itemDto =>
-            {
-                var garmentCuttingOutItems = garmentCuttingOutItemDto.Where(x => x.CutOutId == itemDto.Id).OrderBy(x => x.Id).ToList();
+            //Parallel.ForEach(garmentCuttingOutDto, itemDto =>
+            //{
+            //    var garmentCuttingOutItems = garmentCuttingOutItemDto.Where(x => x.CutOutId == itemDto.Id).OrderBy(x => x.Id).ToList();
 
-                itemDto.Items = garmentCuttingOutItems;
+            //    itemDto.Items = garmentCuttingOutItems;
 
-                Parallel.ForEach(itemDto.Items, detailDto =>
-                {
-                    var garmentCuttingInDetails = garmentCuttingOutDetailDto.Where(x => x.CutOutItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
-                    detailDto.Details = garmentCuttingInDetails;
-                });
-            });
+            //    Parallel.ForEach(itemDto.Items, detailDto =>
+            //    {
+            //        var garmentCuttingInDetails = garmentCuttingOutDetailDto.Where(x => x.CutOutItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
+            //        detailDto.Details = garmentCuttingInDetails;
+            //    });
+            //});
 
-            if (order != "{}")
-            {
-                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                garmentCuttingOutDto = QueryHelper<GarmentCuttingOutDto>.Order(garmentCuttingOutDto.AsQueryable(), OrderDictionary).ToArray();
-            }
+            //if (order != "{}")
+            //{
+            //    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            //    garmentCuttingOutDto = QueryHelper<GarmentCuttingOutDto>.Order(garmentCuttingOutDto.AsQueryable(), OrderDictionary).ToArray();
+            //}
 
             await Task.Yield();
-            return Ok(garmentCuttingOutDto, info: new
+            return Ok(newQuery, info: new
             {
                 page,
                 size,

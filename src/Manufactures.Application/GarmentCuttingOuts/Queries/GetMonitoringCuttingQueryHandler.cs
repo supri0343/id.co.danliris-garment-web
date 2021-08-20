@@ -53,33 +53,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 
 
 		}
-		async Task<HOrderDataProductionReport> GetDataHOrder(List<string> ro, string token)
-		{
-			HOrderDataProductionReport hOrderDataProductionReport = new HOrderDataProductionReport();
-
-			var listRO = string.Join(",", ro.Distinct().Where(s=>s.StartsWith("19")));
-			var costCalculationUri = SalesDataSettings.Endpoint + $"local-merchandiser/horders/data-production-report-by-no/{listRO}";
-			var httpResponse = await _http.GetAsync(costCalculationUri, token);
-
-			if (httpResponse.IsSuccessStatusCode)
-			{
-				var contentString = await httpResponse.Content.ReadAsStringAsync();
-				Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
-				var dataString = content.GetValueOrDefault("data").ToString();
-				var listData = JsonConvert.DeserializeObject<List<HOrderViewModel>>(dataString);
-
-				foreach (var item in ro)
-				{
-					var data = listData.SingleOrDefault(s => s.No == item);
-					if (data != null)
-					{
-						hOrderDataProductionReport.data.Add(data);
-					}
-				}
-			}
-
-			return hOrderDataProductionReport;
-		}
+		 
 
 		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
 		{
@@ -92,7 +66,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 
 			var httpResponse = await _http.SendAsync(HttpMethod.Get,costCalculationUri, token,httpContent);
 
-			var freeRO = new List<string>();
+            var freeRO = new List<string>();
 
 		if (httpResponse.IsSuccessStatusCode)
 			{
@@ -136,8 +110,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 		}
 		public async Task<GarmentMonitoringCuttingListViewModel> Handle(GetMonitoringCuttingQuery request, CancellationToken cancellationToken)
 		{
-			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
-			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
+			DateTimeOffset dateFrom = request.dateFrom.AddHours(7).ToUniversalTime();
+			DateTimeOffset dateTo = request.dateTo.AddHours(7).ToUniversalTime();
 
 			DateTimeOffset dateBalance = (from a in garmentBalanceCuttingRepository.Query.OrderByDescending(s=>s.CreatedDate)
 										   
@@ -163,14 +137,18 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 
             var sumFCs = (from a in garmentCuttingInRepository.Query
                           where a.CuttingType == "Main Fabric" &&
-                          a.CuttingInDate <= dateTo  
-                          select new { a.FC, a.RONo })
-                         .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
-                         {
-                             RO = key.RONo,
-                             FC = group.Sum(s => s.FC),
-                             Count = group.Count()
-                         });
+                          a.CuttingInDate <= dateTo
+                          join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
+                          join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+                          select new { a.FC, a.RONo, FCs = Convert.ToDouble(c.CuttingInQuantity * a.FC), c.CuttingInQuantity })
+                       .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
+                       {
+                           RO = key.RONo,
+                           FC = group.Sum(s => (s.FCs)),
+                           Count = group.Sum(s => s.CuttingInQuantity)
+                       });
+
+            
             var queryBalanceCutting = from a in garmentBalanceCuttingRepository.Query
 									  where a.CreatedDate < dateFrom  && a.UnitId == request.unit  
 									  select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RoJob select aa.BasicPrice / aa.Count).FirstOrDefault()),buyerCode = a.BuyerCode,  fc = (from cost in sumFCs where cost.RO == a.RoJob select cost.FC / cost.Count).FirstOrDefault(), cuttingQtyMeter = 0, remainQty = 0, stock = a.Stock, cuttingQtyPcs = 0, roJob = a.RoJob, article = a.Article,   qtyOrder =a.QtyOrder, style =a.Style, hours = a.Hours, expenditure = a.Expenditure };
