@@ -460,6 +460,16 @@ namespace Manufactures.Controllers.Api
             }
         }
 
+        [HttpGet("basic-price")]
+        public async Task<IActionResult> GetBasicPriceByRONo(string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentExpenditureGoodRepository.BasicPriceByRO(keyword, filter);
+            
+            return Ok(query);
+        }
+        
         [HttpGet("byInvoice")]
         public async Task<IActionResult> GetTraceablebyInvoice([FromBody]string invoice)
         {
