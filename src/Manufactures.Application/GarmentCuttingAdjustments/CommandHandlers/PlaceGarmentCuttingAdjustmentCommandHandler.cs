@@ -14,6 +14,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 using Manufactures.Domain.GarmentPreparings;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentCuttingIns;
+using Microsoft.EntityFrameworkCore;
 
 namespace Manufactures.Application.GarmentCuttingAdjustments.CommandHandlers
 {
@@ -78,8 +79,8 @@ namespace Manufactures.Application.GarmentCuttingAdjustments.CommandHandlers
                     cuttingInDetail.SetFC((double)item.ActualFC);
                     cuttingInDetail.Modify();
                     await _garmentCuttingInDetailRepository.Update(cuttingInDetail);
-
-                    var garmentPreparingItem = _garmentPreparingItemRepository.Query.Where(x => x.Identity == item.PreparingItemId).Select(s => new GarmentPreparingItem(s)).Single();
+                    
+                    var garmentPreparingItem = _garmentPreparingItemRepository.Query.IgnoreQueryFilters().Where(i => (i.Deleted == true && i.DeletedBy == "LUCIA") || (i.Deleted == false)).Where(x => x.Identity == item.PreparingItemId).Select(s => new GarmentPreparingItem(s)).Single();
                     garmentPreparingItem.setRemainingQuantity(Convert.ToDouble((decimal)garmentPreparingItem.RemainingQuantity + (item.Quantity - item.ActualQuantity)));
                     garmentPreparingItem.SetModified();
 
