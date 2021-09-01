@@ -245,21 +245,23 @@ namespace Manufactures.Controllers.Api
             var query = _garmentExpenditureGoodRepository.Read(page, size, order, keyword, filter);
             var count = query.Count();
 
-            var garmentExpenditureGoodDto = _garmentExpenditureGoodRepository.Find(query).Select(o => new GarmentExpenditureGoodDto(o)).ToArray();
-            var garmentExpenditureGoodItemDto = _garmentExpenditureGoodItemRepository.Find(_garmentExpenditureGoodItemRepository.Query).Select(o => new GarmentExpenditureGoodItemDto(o)).ToList();
-            
-            Parallel.ForEach(garmentExpenditureGoodDto, itemDto =>
-            {
-                var garmentExpenditureGoodItems = garmentExpenditureGoodItemDto.Where(x => x.ExpenditureGoodId == itemDto.Id).OrderBy(x => x.Id).ToList();
+            var garmentExpenditureGoodDto = _garmentExpenditureGoodRepository.ReadExecute(query);
 
-                itemDto.Items = garmentExpenditureGoodItems;
-            });
+            //var garmentExpenditureGoodDto = _garmentExpenditureGoodRepository.Find(query).Select(o => new GarmentExpenditureGoodDto(o)).ToArray();
+            //var garmentExpenditureGoodItemDto = _garmentExpenditureGoodItemRepository.Find(_garmentExpenditureGoodItemRepository.Query).Select(o => new GarmentExpenditureGoodItemDto(o)).ToList();
 
-            if (order != "{}")
-            {
-                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                garmentExpenditureGoodDto = QueryHelper<GarmentExpenditureGoodDto>.Order(garmentExpenditureGoodDto.AsQueryable(), OrderDictionary).ToArray();
-            }
+            //Parallel.ForEach(garmentExpenditureGoodDto, itemDto =>
+            //{
+            //    var garmentExpenditureGoodItems = garmentExpenditureGoodItemDto.Where(x => x.ExpenditureGoodId == itemDto.Id).OrderBy(x => x.Id).ToList();
+
+            //    itemDto.Items = garmentExpenditureGoodItems;
+            //});
+
+            //if (order != "{}")
+            //{
+            //    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            //    garmentExpenditureGoodDto = QueryHelper<GarmentExpenditureGoodDto>.Order(garmentExpenditureGoodDto.AsQueryable(), OrderDictionary).ToArray();
+            //}
 
             await Task.Yield();
             return Ok(garmentExpenditureGoodDto, info: new
@@ -466,6 +468,43 @@ namespace Manufactures.Controllers.Api
             var query = _garmentExpenditureGoodRepository.BasicPriceByRO(keyword, filter);
             
             return Ok(query);
+        }
+        
+        [HttpGet("byInvoice")]
+        public async Task<IActionResult> GetTraceablebyInvoice([FromBody]string invoice)
+        {
+            VerifyUser();
+
+            var invoices = invoice.Contains(",") ? invoice.Split(",").ToList() : new List<string> { invoice };
+
+            var query = _garmentExpenditureGoodRepository.Read(1, 75, "{}", null, "{}");
+            query = query.Where(x => invoices.Contains(x.Invoice)).Select(x => x);
+            var total = query.Count();
+            double totalQty = query.Sum(a => a.Items.Sum(b => b.Quantity));
+            //query = query.Skip((page - 1) * size).Take(size);
+
+            List<GarmentExpenditureGoodListDto> garmentExpenditureGoodListDtos = _garmentExpenditureGoodRepository
+                .Find(query)
+                .Select(ExGood => new GarmentExpenditureGoodListDto(ExGood))
+                .ToList();
+
+            var dtoIds = garmentExpenditureGoodListDtos.Select(s => s.Id).ToList();
+            var items = _garmentExpenditureGoodItemRepository.Query
+                .Where(o => dtoIds.Contains(o.ExpenditureGoodId))
+                .Select(s => new { s.Identity, s.ExpenditureGoodId, s.Quantity })
+                .ToList();
+
+
+
+            var itemIds = items.Select(s => s.Identity).ToList();
+            Parallel.ForEach(garmentExpenditureGoodListDtos, dto =>
+            {
+                var currentItems = items.Where(w => w.ExpenditureGoodId == dto.Id);
+                dto.TotalQuantity = currentItems.Sum(i => i.Quantity);
+            });
+
+            await Task.Yield();
+            return Ok(garmentExpenditureGoodListDtos);
         }
     }
 }

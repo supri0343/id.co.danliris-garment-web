@@ -53,33 +53,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 
 
 		}
-		async Task<HOrderDataProductionReport> GetDataHOrder(List<string> ro, string token)
-		{
-			HOrderDataProductionReport hOrderDataProductionReport = new HOrderDataProductionReport();
-
-			var listRO = string.Join(",", ro.Distinct().Where(s=>s.StartsWith("19")));
-			var costCalculationUri = SalesDataSettings.Endpoint + $"local-merchandiser/horders/data-production-report-by-no/{listRO}";
-			var httpResponse = await _http.GetAsync(costCalculationUri, token);
-
-			if (httpResponse.IsSuccessStatusCode)
-			{
-				var contentString = await httpResponse.Content.ReadAsStringAsync();
-				Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
-				var dataString = content.GetValueOrDefault("data").ToString();
-				var listData = JsonConvert.DeserializeObject<List<HOrderViewModel>>(dataString);
-
-				foreach (var item in ro)
-				{
-					var data = listData.SingleOrDefault(s => s.No == item);
-					if (data != null)
-					{
-						hOrderDataProductionReport.data.Add(data);
-					}
-				}
-			}
-
-			return hOrderDataProductionReport;
-		}
+		 
 
 		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
 		{
@@ -92,7 +66,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 
 			var httpResponse = await _http.SendAsync(HttpMethod.Get,costCalculationUri, token,httpContent);
 
-			var freeRO = new List<string>();
+            var freeRO = new List<string>();
 
 		if (httpResponse.IsSuccessStatusCode)
 			{
@@ -136,8 +110,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 		}
 		public async Task<GarmentMonitoringCuttingListViewModel> Handle(GetMonitoringCuttingQuery request, CancellationToken cancellationToken)
 		{
-			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
-			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
+			DateTimeOffset dateFrom = request.dateFrom.AddHours(7).ToUniversalTime();
+			DateTimeOffset dateTo = request.dateTo.AddHours(7).ToUniversalTime();
 
 			DateTimeOffset dateBalance = (from a in garmentBalanceCuttingRepository.Query.OrderByDescending(s=>s.CreatedDate)
 										   

@@ -41,7 +41,11 @@ namespace Manufactures.Controllers.Api
 
             var query = _garmentCuttingInRepository.Read(page, size, order, keyword, filter);
             var total = query.Count();
-            double totalQty = query.Sum(a => a.Items.Sum(b => b.Details.Sum(c => c.CuttingInQuantity)));
+            var DocId = query.Select(x => x.Identity);
+            var DocItemId = _garmentCuttingInItemRepository.Query.Where(x => DocId.Contains(x.CutInId)).Select( x => x.Identity);
+            var queryDetail = _garmentCuttingInDetailRepository.Query.Where( x =>  DocItemId.Contains(x.CutInItemId));
+            double totalQty = queryDetail.Sum(x => x.CuttingInQuantity);
+            //double totalQty = query.Sum(a => a.Items.Sum(b => b.Details.Sum(c => c.CuttingInQuantity)));
 
             query = query.Skip((page - 1) * size).Take(size);
 

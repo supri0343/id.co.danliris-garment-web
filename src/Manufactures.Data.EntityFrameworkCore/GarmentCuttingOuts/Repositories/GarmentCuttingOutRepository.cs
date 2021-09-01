@@ -42,5 +42,74 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingOuts.Repositories
         {
             return new GarmentCuttingOut(readModel);
         }
+
+        public IQueryable<object> ReadExecute(IQueryable<GarmentCuttingOutReadModel> query)
+        {
+            var newQuery = query.Select(x => new
+            {
+                Id = x.Identity,
+                CutOutNo = x.CutOutNo,
+                CuttingOutType = x.CuttingOutType,
+                UnitFrom = new
+                {
+                    Id = x.UnitFromId,
+                    Name = x.UnitFromName,
+                    Code = x.UnitFromCode
+                },
+                CuttingOutDate = x.CuttingOutDate,
+                RONo = x.RONo,
+                Article = x.Article,
+                Unit = new
+                {
+                    Id = x.UnitId,
+                    Name = x.UnitName,
+                    Code = x.UnitCode
+                },
+                Comodity = new
+                {
+                    Id = x.ComodityId,
+                    Code = x.ComodityCode,
+                    Name = x.ComodityName
+                },
+
+                Items = x.GarmentCuttingOutItem.Select(garmentCuttingOutItem => new {
+                    Id = garmentCuttingOutItem.Identity,
+                    CutOutId = garmentCuttingOutItem.CutOutId,
+                    CuttingInId = garmentCuttingOutItem.CuttingInId,
+                    CuttingInDetailId = garmentCuttingOutItem.CuttingInDetailId,
+                    Product = new
+                    {
+                        Id = garmentCuttingOutItem.ProductId,
+                        Code = garmentCuttingOutItem.ProductCode,
+                        Name = garmentCuttingOutItem.ProductName
+                    },
+                    DesignColor = garmentCuttingOutItem.DesignColor,
+                    TotalCuttingOut = garmentCuttingOutItem.TotalCuttingOut,
+
+                    Details = garmentCuttingOutItem.GarmentCuttingOutDetail.Select(garmentCuttingOutDetail => new {
+                        Id = garmentCuttingOutDetail.Identity,
+                        CutOutItemId = garmentCuttingOutDetail.CutOutItemId,
+                        Size = new
+                        {
+                            Id = garmentCuttingOutDetail.SizeId,
+                            Size = garmentCuttingOutDetail.SizeName
+                        },
+                        CuttingOutQuantity = garmentCuttingOutDetail.CuttingOutQuantity,
+                        CuttingOutUom = new {
+                            Id = garmentCuttingOutDetail.CuttingOutUomId,
+                            Unit = garmentCuttingOutDetail.CuttingOutUomUnit
+                        },
+                        Color = garmentCuttingOutDetail.Color,
+                        RemainingQuantity = garmentCuttingOutDetail.RemainingQuantity,
+                        BasicPrice = garmentCuttingOutDetail.BasicPrice,
+                        Price = garmentCuttingOutDetail.Price
+
+                    })
+
+                })
+
+            });
+            return newQuery;
+        }
     }
 }

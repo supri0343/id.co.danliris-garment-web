@@ -158,28 +158,29 @@ namespace Manufactures.Controllers.Api
             var query = _garmentFinishingOutRepository.Read(page, size, order, keyword, filter);
             var count = query.Count();
 
-            var garmentFinishingOutDto = _garmentFinishingOutRepository.Find(query).Select(o => new GarmentFinishingOutDto(o)).ToArray();
-            var garmentFinishingOutItemDto = _garmentFinishingOutItemRepository.Find(_garmentFinishingOutItemRepository.Query).Select(o => new GarmentFinishingOutItemDto(o)).ToList();
-            var garmentFinishingOutDetailDto = _garmentFinishingOutDetailRepository.Find(_garmentFinishingOutDetailRepository.Query).Select(o => new GarmentFinishingOutDetailDto(o)).ToList();
+            var garmentFinishingOutDto = _garmentFinishingOutRepository.ReadExecute(query);
+            //var garmentFinishingOutDto = _garmentFinishingOutRepository.Find(query).Select(o => new GarmentFinishingOutDto(o)).ToArray();
+            //var garmentFinishingOutItemDto = _garmentFinishingOutItemRepository.Find(_garmentFinishingOutItemRepository.Query).Select(o => new GarmentFinishingOutItemDto(o)).ToList();
+            //var garmentFinishingOutDetailDto = _garmentFinishingOutDetailRepository.Find(_garmentFinishingOutDetailRepository.Query).Select(o => new GarmentFinishingOutDetailDto(o)).ToList();
 
-            Parallel.ForEach(garmentFinishingOutDto, itemDto =>
-            {
-                var garmentFinishingOutItems = garmentFinishingOutItemDto.Where(x => x.FinishingOutId == itemDto.Id).OrderBy(x => x.Id).ToList();
+            //Parallel.ForEach(garmentFinishingOutDto, itemDto =>
+            //{
+            //    var garmentFinishingOutItems = garmentFinishingOutItemDto.Where(x => x.FinishingOutId == itemDto.Id).OrderBy(x => x.Id).ToList();
 
-                itemDto.Items = garmentFinishingOutItems;
+            //    itemDto.Items = garmentFinishingOutItems;
 
-                Parallel.ForEach(itemDto.Items, detailDto =>
-                {
-                    var garmentFinishingOutDetails = garmentFinishingOutDetailDto.Where(x => x.FinishingOutItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
-                    detailDto.Details = garmentFinishingOutDetails;
-                });
-            });
+            //    Parallel.ForEach(itemDto.Items, detailDto =>
+            //    {
+            //        var garmentFinishingOutDetails = garmentFinishingOutDetailDto.Where(x => x.FinishingOutItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
+            //        detailDto.Details = garmentFinishingOutDetails;
+            //    });
+            //});
 
-            if (order != "{}")
-            {
-                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                garmentFinishingOutDto = QueryHelper<GarmentFinishingOutDto>.Order(garmentFinishingOutDto.AsQueryable(), OrderDictionary).ToArray();
-            }
+            //if (order != "{}")
+            //{
+            //    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            //    garmentFinishingOutDto = QueryHelper<GarmentFinishingOutDto>.Order(garmentFinishingOutDto.AsQueryable(), OrderDictionary).ToArray();
+            //}
 
             await Task.Yield();
             return Ok(garmentFinishingOutDto, info: new

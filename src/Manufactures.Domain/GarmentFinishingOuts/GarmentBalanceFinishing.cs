@@ -25,6 +25,27 @@ namespace Manufactures.Domain.GarmentFinishingOuts
 			RemainQty = remainQty;
 			Price = price;
 			Nominal = nominal;
+            Identity = identity;
+
+            ReadModel = new GarmentBalanceFinishingReadModel(Identity)
+            {
+
+                RoJob = RoJob,
+                Article = Article,
+                UnitId = UnitId,
+                UnitCode = UnitCode,
+                UnitName = UnitName,
+                BuyerCode = BuyerCode,
+                QtyOrder = QtyOrder,
+                Style = Style,
+                Hours = Hours,
+                Stock = Stock,
+                FinishingQty = FinishingQtyPcs,
+                SewingQtyPcs = SewingQtyPcs,
+                RemainQty = RemainQty,
+                Price = Price,
+                Nominal = Nominal
+            };
 		}
 
 		public string RoJob { get; private set; }

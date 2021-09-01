@@ -31,12 +31,9 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 		private readonly IStorage _storage;
 		private readonly IGarmentSewingOutRepository garmentSewingOutRepository;
 		private readonly IGarmentSewingOutItemRepository garmentSewingOutItemRepository;
-		private readonly IGarmentLoadingRepository garmentLoadingRepository;
-		private readonly IGarmentLoadingItemRepository garmentLoadingItemRepository;
+		 
 		private readonly IGarmentPreparingRepository garmentPreparingRepository;
 		private readonly IGarmentPreparingItemRepository garmentPreparingItemRepository;
-        private readonly IGarmentFinishingOutRepository garmentFinishingOutRepository;
-        private readonly IGarmentFinishingOutItemRepository garmentFinishingOutItemRepository;
         private readonly IGarmentBalanceMonitoringProductionStockFlowRepository garmentBalanceSewingRepository;
 		private readonly IGarmentCuttingInRepository garmentCuttingInRepository;
         private readonly IGarmentSewingInRepository garmentSewingInRepository;
@@ -53,11 +50,7 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 			garmentSewingOutItemRepository = storage.GetRepository<IGarmentSewingOutItemRepository>();
 			garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
 			garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
-            garmentFinishingOutRepository = storage.GetRepository<IGarmentFinishingOutRepository>();
-            garmentFinishingOutItemRepository = storage.GetRepository<IGarmentFinishingOutItemRepository>();
-            garmentLoadingRepository = storage.GetRepository<IGarmentLoadingRepository>();
-			garmentLoadingItemRepository = storage.GetRepository<IGarmentLoadingItemRepository>();
-			garmentBalanceSewingRepository = storage.GetRepository<IGarmentBalanceMonitoringProductionStockFlowRepository>();
+            garmentBalanceSewingRepository = storage.GetRepository<IGarmentBalanceMonitoringProductionStockFlowRepository>();
 			garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
             garmentSewingInRepository = storage.GetRepository<IGarmentSewingInRepository>();
             garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
@@ -68,34 +61,7 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
             _http = serviceProvider.GetService<IHttpClientService>();
 		}
 
-        async Task<HOrderDataProductionReport> GetDataHOrder(List<string> ro, string token)
-        {
-            HOrderDataProductionReport hOrderDataProductionReport = new HOrderDataProductionReport();
-
-            var listRO = string.Join(",", ro.Distinct());
-            var costCalculationUri = SalesDataSettings.Endpoint + $"local-merchandiser/horders/data-production-report-by-no/{listRO}";
-            var httpResponse = await _http.GetAsync(costCalculationUri, token);
-
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                var contentString = await httpResponse.Content.ReadAsStringAsync();
-                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
-                var dataString = content.GetValueOrDefault("data").ToString();
-                var listData = JsonConvert.DeserializeObject<List<HOrderViewModel>>(dataString);
-
-                foreach (var item in ro)
-                {
-                    var data = listData.SingleOrDefault(s => s.No == item);
-                    if (data != null)
-                    {
-                        hOrderDataProductionReport.data.Add(data);
-                    }
-                }
-            }
-
-            return hOrderDataProductionReport;
-        }
-
+       
         public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
         {
 			CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();

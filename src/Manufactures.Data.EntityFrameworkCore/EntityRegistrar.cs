@@ -62,6 +62,8 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 			modelBuilder.ApplyConfiguration(new GarmentSewingInConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSewingInItemConfig());
+			//Enhance Jason Aug 2021
+			modelBuilder.ApplyConfiguration(new SewingInHomeListViewConfig());
 
 			modelBuilder.ApplyConfiguration(new GarmentSewingOutConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSewingOutItemConfig());

@@ -9,5 +9,6 @@ namespace Manufactures.Domain.GarmentFinishingOuts.Repositories
     {
         IQueryable<GarmentFinishingOutReadModel> Read(int page, int size, string order, string keyword, string filter);
 		IQueryable<GarmentFinishingOutReadModel> ReadColor(int page, int size, string order, string keyword, string filter);
-	}
+        IQueryable<object> ReadExecute(IQueryable<GarmentFinishingOutReadModel> model);
+    }
 }

@@ -214,27 +214,32 @@ namespace Manufactures.Tests.Controllers.Api
                }
                .AsQueryable());
 
+            //_mockLoadingRepository
+            //    .Setup(s => s.Find(It.IsAny<IQueryable<GarmentLoadingReadModel>>()))
+            //    .Returns(new List<GarmentLoading>()
+            //    {
+            //        new GarmentLoading(id, null , id, null, new UnitDepartmentId(1), null, null, "RONo",null,new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null)
+            //    });
+
+            //_mockLoadingItemRepository
+            //    .Setup(s => s.Query)
+            //    .Returns(new List<GarmentLoadingItemReadModel>()
+            //    {
+            //        new GarmentLoadingItemReadModel(id)
+            //    }.AsQueryable());
+
+            //_mockLoadingItemRepository
+            //  .Setup(s => s.Find(It.IsAny<IQueryable<GarmentLoadingItemReadModel>>()))
+            //  .Returns(new List<GarmentLoadingItem>()
+            //  {
+            //        new GarmentLoadingItem(id, id,id,new SizeId(1), "size", new ProductId(1), null, null, "design", 1,1,10,new UomId(1),null, "color",1)
+            //  });
+
             _mockLoadingRepository
-                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentLoadingReadModel>>()))
-                .Returns(new List<GarmentLoading>()
-                {
-                    new GarmentLoading(id, null , id, null, new UnitDepartmentId(1), null, null, "RONo",null,new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null)
-                });
-
-            _mockLoadingItemRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentLoadingItemReadModel>()
-                {
-                    new GarmentLoadingItemReadModel(id)
-                }.AsQueryable());
-
-            _mockLoadingItemRepository
-              .Setup(s => s.Find(It.IsAny<IQueryable<GarmentLoadingItemReadModel>>()))
-              .Returns(new List<GarmentLoadingItem>()
-              {
-                    new GarmentLoadingItem(id, id,id,new SizeId(1), "size", new ProductId(1), null, null, "design", 1,1,10,new UomId(1),null, "color",1)
-              });
-
+                .Setup(s => s.ReadExecute(It.IsAny<IQueryable<GarmentLoadingReadModel>>()))
+                .Returns(new List<object>()
+                .AsQueryable());
+                
             var orderData = new
             {
                 Article = "desc",
