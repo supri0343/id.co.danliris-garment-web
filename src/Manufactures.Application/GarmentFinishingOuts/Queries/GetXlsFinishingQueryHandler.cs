@@ -165,21 +165,22 @@ namespace Manufactures.Application.GarmentFinishingOuts.Queries
             var queryBalanceFinishing = from a in garmentBalanceFinishingRepository.Query
                                         where a.BeginingBalanceFinishingQty > 0 && a.CreatedDate < dateFrom && a.UnitId == request.unit //&& a.RoJob == "2010810"
                                         select new monitoringView { price = Convert.ToDecimal(a.BeginingBalanceFinishingPrice), buyerCode = a.BuyerCode, finishingQtyPcs = 0, remainQty = 0, stock = a.BeginingBalanceFinishingQty, sewingQtyPcs = 0, roJob = a.Ro, article = a.Article, qtyOrder = a.QtyOrder, style = a.Comodity, uomUnit = "PCS" };
-
+			var test3 = queryBalanceFinishing.ToList();
             var QueryFinishing = from a in (from aa in garmentFinishingOutRepository.Query
 											where aa.UnitId == request.unit && aa.FinishingOutDate <= dateTo && aa.FinishingOutDate > dateBalance
 											select new { aa.Identity,aa.FinishingOutDate,aa.RONo,aa.Article })
 								 join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 								 select new monitoringView { price = 0, finishingQtyPcs = a.FinishingOutDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.FinishingOutDate < dateFrom  ? -b.Quantity : 0, roJob = a.RONo, article = a.Article };
-
+			var test2 = QueryFinishing.ToList();
 			var QuerySewingOut = from a in (from aa in garmentSewingOutRepository.Query
 											where aa.UnitId == request.unit && aa.SewingOutDate <= dateTo  && aa.SewingOutDate > dateBalance&& aa.SewingTo == "FINISHING"
 
                                             select new { aa.Identity,aa.SewingOutDate,aa.RONo,aa.Article})
 								 join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SewingOutId
 								 select new monitoringView { price = 0, finishingQtyPcs = 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity : 0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate < dateFrom  ? b.Quantity : 0, roJob = a.RONo, article = a.Article };
-
+			var test = QuerySewingOut.ToList();
 			var queryNow = queryBalanceFinishing.Union(QuerySewingOut).Union(QueryFinishing);
+			var test4 = queryNow.ToList().Count();
 			var querySum = queryNow.ToList().GroupBy(x => new { x.roJob, x.article, x.uomUnit }, (key, group) => new
 			{
 
