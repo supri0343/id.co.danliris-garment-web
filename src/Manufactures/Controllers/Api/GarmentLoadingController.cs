@@ -45,16 +45,28 @@ namespace Manufactures.Controllers.Api
             var total = query.Count();
             double totalQty = query.Sum(a => a.Items.Sum(b => b.Quantity));
             query = query.Skip((page - 1) * size).Take(size);
+            var ids = query.Select(x => x.Identity).ToList();
+            var loadingItems = _garmentLoadingItemRepository.Query.Where(x => ids.Contains(x.LoadingId)).Select(loadingItem => new
+            {
+                loadingItem.ProductCode,
+                loadingItem.ProductName,
+                loadingItem.Quantity,
+                loadingItem.RemainingQuantity,
+                loadingItem.Color,
+                loadingItem.LoadingId
+            }).ToList();
             List<GarmentLoadingListDto> garmentCuttingInListDtos = _garmentLoadingRepository.Find(query).Select(loading =>
             {
-                var items = _garmentLoadingItemRepository.Query.Where(o => o.LoadingId == loading.Identity).Select(loadingItem => new
-                {
-                    loadingItem.ProductCode,
-                    loadingItem.ProductName,
-                    loadingItem.Quantity,
-                    loadingItem.RemainingQuantity,
-                    loadingItem.Color
-                }).ToList();
+                //var items = _garmentLoadingItemRepository.Query.Where(o => o.LoadingId == loading.Identity).Select(loadingItem => new
+                //{
+                //    loadingItem.ProductCode,
+                //    loadingItem.ProductName,
+                //    loadingItem.Quantity,
+                //    loadingItem.RemainingQuantity,
+                //    loadingItem.Color
+                //}).ToList();
+
+                var items = loadingItems.Where(o => o.LoadingId == loading.Identity);
 
                 return new GarmentLoadingListDto(loading)
                 {

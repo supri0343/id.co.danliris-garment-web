@@ -39,7 +39,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 		private readonly IGarmentPreparingRepository garmentPreparingRepository;
 		private readonly IGarmentPreparingItemRepository garmentPreparingItemRepository;
 		private readonly IGarmentBalanceCuttingRepository garmentBalanceCuttingRepository;
-        
+
 		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
 		{
 			CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();
@@ -78,89 +78,312 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 				var err = await httpResponse.Content.ReadAsStringAsync();
 
 			}
-			 
+			//HOrderDataProductionReport hOrderDataProductionReport = await GetDataHOrder(freeRO, token);
+
+			//Dictionary<string, string> comodities = new Dictionary<string, string>();
+			//if (hOrderDataProductionReport.data.Count > 0)
+			//{
+			//	var comodityCodes = hOrderDataProductionReport.data.Select(s => s.Kode).Distinct().ToList();
+			//	var filter = "{\"(" + string.Join(" || ", comodityCodes.Select(s => "Code==" + "\\\"" + s + "\\\"")) + ")\" : \"true\"}";
+
+			//	var masterGarmentComodityUri = MasterDataSettings.Endpoint + $"master/garment-comodities?filter=" + filter;
+			//	var garmentComodityResponse = _http.GetAsync(masterGarmentComodityUri).Result;
+			//	var garmentComodityResult = new GarmentComodityResult();
+			//	if (garmentComodityResponse.IsSuccessStatusCode)
+			//	{
+			//		garmentComodityResult = JsonConvert.DeserializeObject<GarmentComodityResult>(garmentComodityResponse.Content.ReadAsStringAsync().Result);
+			//		//comodities = garmentComodityResult.data.ToDictionary(d => d.Code, d => d.Name);
+			//		foreach (var comodity in garmentComodityResult.data)
+			//		{
+			//			comodities[comodity.Code] = comodity.Name;
+			//		}
+			//	}
+			//}
+
+			//foreach (var hOrder in hOrderDataProductionReport.data)
+			//{
+			//	costCalculationGarmentDataProductionReport.data.Add(new CostCalViewModel
+			//	{
+			//		ro = hOrder.No,
+			//		buyerCode = hOrder.Codeby,
+			//		comodityName = comodities.GetValueOrDefault(hOrder.Kode),
+			//		hours = (double)hOrder.Sh_Cut,
+			//		qtyOrder = (double)hOrder.Qty
+			//	});
+			//}
+
 			return costCalculationGarmentDataProductionReport;
 		}
+
+		//OLD VIEW MODEL
+		//class ViewFC
+		//{
+		//	public string RO { get; internal set; }
+		//	public double FC { get; internal set; }
+		//	public int Count { get; internal set; }
+		//}
+
+		//NEW VIEW MODEL
 		class ViewFC
 		{
 			public string RO { get; internal set; }
-			public double FC { get; internal set; }
-			public int Count { get; internal set; }
+			public double Total { get; internal set; }
 		}
+		//OLD VIEW MODEL
+		//class ViewBasicPrices
+		//{
+		//	public string RO { get; internal set; }
+		//	public decimal BasicPrice { get; internal set; }
+		//	public int Count { get; internal set; }
+		//}
+
 		class ViewBasicPrices
 		{
 			public string RO { get; internal set; }
-			public decimal BasicPrice { get; internal set; }
-			public int Count { get; internal set; }
+			public decimal Total { get; internal set; }
 		}
 		public async Task<MemoryStream> Handle(GetXlsCuttingQuery request, CancellationToken cancellationToken)
 		{
-			 
-			var _unitName = (from a in garmentCuttingOutRepository.Query
-							 where a.UnitId == request.unit
-							 select a.UnitName).FirstOrDefault();
-			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
+            var _unitName = (from a in garmentCuttingOutRepository.Query
+                             where a.UnitId == request.unit
+                             select a.UnitName).FirstOrDefault();
+
+            DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
 
 			DateTimeOffset dateBalance = (from a in garmentBalanceCuttingRepository.Query.OrderByDescending(s => s.CreatedDate)
 										  select a.CreatedDate).FirstOrDefault();
 
-			var QueryRoCuttingIn = (from a in garmentCuttingInRepository.Query
-									where a.UnitId == request.unit && a.CuttingInDate <= dateTo && a.CuttingInDate >= dateBalance && a.CuttingType == "Main Fabric"
-									select a.RONo).Distinct();
+			//this query does't used
+			//var QueryRoCuttingIn = (from a in garmentCuttingInRepository.Query
+			//						where a.UnitId == request.unit && a.CuttingInDate <= dateTo && a.CuttingInDate >= dateBalance && a.CuttingType == "Main Fabric"
+			//						select a.RONo).Distinct();
 
+			//OLD QUERY
+			//var sumbasicPrice = (from a in garmentPreparingRepository.Query
+			//					 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
+			//					 where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&*/
+			//					 a.UnitId == request.unit
+			//					 select new { a.RONo, b.BasicPrice })
+			//			.GroupBy(x => new { x.RONo }, (key, group) => new ViewBasicPrices
+			//			{
+			//				RO = key.RONo,
+			//				BasicPrice = Convert.ToDecimal(group.Sum(s => s.BasicPrice)),
+			//				Count = group.Count()
+			//			});
 
-			var sumbasicPrice = (from a in garmentPreparingRepository.Query
+			//NEW QUERY
+			var sumbasicPrice = (from a in (from cut in garmentPreparingRepository.Query
+											where cut.UnitId == request.unit
+											select new {
+												cut.Identity, 
+												cut.UnitId, 
+												cut.RONo
+											})
 								 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
-								 where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&*/
-								 a.UnitId == request.unit
-								 select new { a.RONo, b.BasicPrice })
+								 select new { 
+									 a.RONo, 
+									 b.BasicPrice 
+								 })
 						.GroupBy(x => new { x.RONo }, (key, group) => new ViewBasicPrices
 						{
 							RO = key.RONo,
-							BasicPrice = Convert.ToDecimal(group.Sum(s => s.BasicPrice)),
-							Count = group.Count()
+							Total = Convert.ToDecimal(group.Sum(s => s.BasicPrice) / group.Count())
+							//BasicPrice = Convert.ToDecimal(group.Sum(s => s.BasicPrice)),
+							//Count = group.Count()
 						});
 
-			var sumFCs = (from a in garmentCuttingInRepository.Query
-						  where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" &&
-						 a.UnitId == request.unit && a.CuttingInDate <= dateTo
-                          join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
-                          join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
-                          select new { a.FC, a.RONo, FCs = Convert.ToDouble(c.CuttingInQuantity * a.FC), c.CuttingInQuantity })
-                       .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
-                       {
-                           RO = key.RONo,
-                           FC = group.Sum(s => (s.FCs)),
-                           Count = group.Sum(s => s.CuttingInQuantity)
-                       });
-            var queryBalanceCutting = from a in garmentBalanceCuttingRepository.Query
-									  where a.CreatedDate < dateFrom && a.UnitId == request.unit
-									  select new monitoringView { price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RoJob select aa.BasicPrice / aa.Count).FirstOrDefault()), buyerCode = a.BuyerCode, fc = (from cost in sumFCs where cost.RO == a.RoJob select cost.FC / cost.Count).FirstOrDefault(), cuttingQtyMeter = 0, remainQty = 0, stock = a.Stock, cuttingQtyPcs = 0, roJob = a.RoJob, article = a.Article, qtyOrder = a.QtyOrder, style = a.Style, hours = a.Hours, expenditure = a.Expenditure };
+			//OLD QUERY
+			//var sumFCs = (from a in garmentCuttingInRepository.Query
+			//			  where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" &&
+			//			 a.UnitId == request.unit && a.CuttingInDate <= dateTo
+			//                       join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
+			//                       join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+			//                       select new { a.FC, a.RONo, FCs = Convert.ToDouble(c.CuttingInQuantity * a.FC), c.CuttingInQuantity })
+			//                    .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
+			//                    {
+			//                        RO = key.RONo,
+			//                        FC = group.Sum(s => (s.FCs)),
+			//                        Count = group.Sum(s => s.CuttingInQuantity)
+			//                    });
 
+			//NEW QUERY
+			//var sumFCs = (from a in (from cut in garmentCuttingInRepository.Query
+			//			  where cut.CuttingType == "Main Fabric" &&
+			//			 cut.UnitId == request.unit && cut.CuttingInDate <= dateTo
+			//			 join cuti in garmentCuttingInItemRepository.Query on cut.Identity equals cuti.CutInId
+			//			 let CuttingItemIdentity = cuti.Identity
+			//			 select new {cut.Identity, cut.FC, cut.RONo, CuttingItemIdentity })					  
+			//			 join c in garmentCuttingInDetailRepository.Query on a.CuttingItemIdentity equals c.CutInItemId
+			//			 select new { a.FC, a.RONo, FCs = Convert.ToDouble(c.CuttingInQuantity * a.FC), c.CuttingInQuantity })
+			//		   .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
+			//		   {
+			//			   RO = key.RONo,
+			//			   FC = group.Sum(s => (s.FCs)),
+			//			   Count = group.Sum(s => s.CuttingInQuantity)
+			//		   });
+			var sumFCs = (from a in (from cut in garmentCuttingInRepository.Query
+									 where cut.CuttingType == "Main Fabric" &&
+									cut.UnitId == request.unit && cut.CuttingInDate <= dateTo 
+									select new {
+										cut.Identity,
+										cut.FC,
+										cut.RONo
+									})
+						  join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
+						  join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+						  select new { 
+							  a.FC, 
+							  a.RONo, 
+							  FCs = Convert.ToDouble(c.CuttingInQuantity * a.FC), 
+							  c.CuttingInQuantity 
+						  })
+						  .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
+						  {
+							  RO = key.RONo,
+							  Total = group.Sum(s => (s.FCs)) / group.Sum(s => s.CuttingInQuantity)
+							  //FC = group.Sum(s => (s.FCs)),
+							  //Count = group.Sum(s => s.CuttingInQuantity)
+						  });
+
+			//OLD QUERY
+			//var queryBalanceCutting = from a in garmentBalanceCuttingRepository.Query
+			//						  where a.CreatedDate < dateFrom && a.UnitId == request.unit
+			//						  select new monitoringView { 
+			//							  price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RoJob select aa.BasicPrice / aa.Count).FirstOrDefault()), 
+			//							  buyerCode = a.BuyerCode, 
+			//							  fc = (from cost in sumFCs where cost.RO == a.RoJob select cost.FC / cost.Count).FirstOrDefault(), 
+			//							  cuttingQtyMeter = 0, 
+			//							  remainQty = 0, 
+			//							  stock = a.Stock, 
+			//							  cuttingQtyPcs = 0, 
+			//							  roJob = a.RoJob, 
+			//							  article = a.Article, 
+			//							  qtyOrder = a.QtyOrder, 
+			//							  style = a.Style, 
+			//							  hours = a.Hours, 
+			//							  expenditure = a.Expenditure 
+			//						  };
+
+			//NEW QUERY
+			var queryBalanceCutting = from a in garmentBalanceCuttingRepository.Query
+									  where a.CreatedDate < dateFrom && a.UnitId == request.unit
+									  select new monitoringView
+									  {
+										  price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RoJob select aa.Total).FirstOrDefault()),
+										  buyerCode = a.BuyerCode,
+										  fc = (from cost in sumFCs where cost.RO == a.RoJob select cost.Total).FirstOrDefault(),
+										  cuttingQtyMeter = 0,
+										  remainQty = 0,
+										  stock = a.Stock,
+										  cuttingQtyPcs = 0,
+										  roJob = a.RoJob,
+										  article = a.Article,
+										  qtyOrder = a.QtyOrder,
+										  style = a.Style,
+										  hours = a.Hours,
+										  expenditure = a.Expenditure
+									  };
+
+			//OLD QUERY
+			//var QueryCuttingIn = from a in (from aa in garmentCuttingInRepository.Query
+			//								where aa.UnitId == request.unit && aa.CuttingInDate <= dateTo && aa.CuttingType == "Main Fabric"
+			//								select aa)
+			//					 join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
+			//					 join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+
+			//					 select new monitoringView { buyerCode = (from buyer in garmentPreparingRepository.Query where buyer.RONo == a.RONo select buyer.BuyerCode).FirstOrDefault(), price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), fc = (from cost in sumFCs where cost.RO == a.RONo select cost.FC / cost.Count).FirstOrDefault(), cuttingQtyMeter = 0, remainQty = 0, stock = a.CuttingInDate < dateFrom && a.CuttingInDate > dateBalance ? c.CuttingInQuantity : 0, cuttingQtyPcs = a.CuttingInDate >= dateFrom ? c.CuttingInQuantity : 0, roJob = a.RONo, article = a.Article, style = (from buyer in garmentCuttingOutRepository.Query where buyer.RONo == a.RONo select buyer.ComodityName).FirstOrDefault(), expenditure = 0 };
+
+			//NEW QUERY
 			var QueryCuttingIn = from a in (from aa in garmentCuttingInRepository.Query
 											where aa.UnitId == request.unit && aa.CuttingInDate <= dateTo && aa.CuttingType == "Main Fabric"
-
-											select aa)
+											select new { 
+												aa.Identity, 
+												aa.RONo, 
+												aa.CuttingInDate, 
+												aa.Article 
+											})
 								 join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
 								 join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+								 select new monitoringView { 
+									 buyerCode = (from buyer in garmentPreparingRepository.Query where buyer.RONo == a.RONo select buyer.BuyerCode).FirstOrDefault(), 
+									 price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.Total).FirstOrDefault()), 
+									 fc = (from cost in sumFCs where cost.RO == a.RONo select cost.Total).FirstOrDefault(), 
+									 cuttingQtyMeter = 0, 
+									 remainQty = 0, 
+									 stock = a.CuttingInDate < dateFrom && a.CuttingInDate > dateBalance ? c.CuttingInQuantity : 0, 
+									 cuttingQtyPcs = a.CuttingInDate >= dateFrom ? c.CuttingInQuantity : 0, 
+									 roJob = a.RONo, 
+									 article = a.Article, 
+									 style = (from buyer in garmentCuttingOutRepository.Query where buyer.RONo == a.RONo select buyer.ComodityName).FirstOrDefault(), 
+									 expenditure = 0 
+								 };
 
-								 select new monitoringView { buyerCode = (from buyer in garmentPreparingRepository.Query where buyer.RONo == a.RONo select buyer.BuyerCode).FirstOrDefault(), price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), fc = (from cost in sumFCs where cost.RO == a.RONo select cost.FC / cost.Count).FirstOrDefault(), cuttingQtyMeter = 0, remainQty = 0, stock = a.CuttingInDate < dateFrom && a.CuttingInDate > dateBalance ? c.CuttingInQuantity : 0, cuttingQtyPcs = a.CuttingInDate >= dateFrom ? c.CuttingInQuantity : 0, roJob = a.RONo, article = a.Article, style = (from buyer in garmentCuttingOutRepository.Query where buyer.RONo == a.RONo select buyer.ComodityName).FirstOrDefault(), expenditure = 0 };
 
+			//OLD QUERY
+			//var QueryCuttingOut = from a in (from aa in garmentCuttingOutRepository.Query
+			//								 where aa.UnitFromId == request.unit && aa.CuttingOutDate <= dateTo
+
+			//								 select aa)
+			//					  join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
+
+			//					  select new monitoringView { buyerCode = (from buyer in garmentPreparingRepository.Query where buyer.RONo == a.RONo select buyer.BuyerCode).FirstOrDefault(), price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), fc = (from cost in sumFCs where cost.RO == a.RONo select cost.FC / cost.Count).FirstOrDefault(), cuttingQtyMeter = 0, remainQty = 0, stock = a.CuttingOutDate < dateFrom && a.CuttingOutDate > dateBalance ? -b.TotalCuttingOut : 0, cuttingQtyPcs = 0, roJob = a.RONo, article = a.Article, style = a.ComodityName, expenditure = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0 };
+			
+			//NEW QUERY
 			var QueryCuttingOut = from a in (from aa in garmentCuttingOutRepository.Query
 											 where aa.UnitFromId == request.unit && aa.CuttingOutDate <= dateTo
-
-											 select aa)
+											 select new { 
+												 aa.Identity, 
+												 aa.RONo.Length, 
+												 aa.ComodityName, 
+												 aa.CuttingOutDate, 
+												 aa.RONo, 
+												 aa.Article
+											 })
 								  join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
+								  select new monitoringView { 
+									  buyerCode = (from buyer in garmentPreparingRepository.Query where buyer.RONo == a.RONo select buyer.BuyerCode).FirstOrDefault(), 
+									  price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.Total).FirstOrDefault()), 
+									  fc = (from cost in sumFCs where cost.RO == a.RONo select cost.Total).FirstOrDefault(), 
+									  cuttingQtyMeter = 0, 
+									  remainQty = 0, 
+									  stock = a.CuttingOutDate < dateFrom && a.CuttingOutDate > dateBalance ? -b.TotalCuttingOut : 0, 
+									  cuttingQtyPcs = 0, 
+									  roJob = a.RONo, 
+									  article = a.Article, 
+									  style = a.ComodityName, 
+									  expenditure = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0 
+								  };
 
-								  select new monitoringView { buyerCode = (from buyer in garmentPreparingRepository.Query where buyer.RONo == a.RONo select buyer.BuyerCode).FirstOrDefault(), price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), fc = (from cost in sumFCs where cost.RO == a.RONo select cost.FC / cost.Count).FirstOrDefault(), cuttingQtyMeter = 0, remainQty = 0, stock = a.CuttingOutDate < dateFrom && a.CuttingOutDate > dateBalance ? -b.TotalCuttingOut : 0, cuttingQtyPcs = 0, roJob = a.RONo, article = a.Article, style = a.ComodityName, expenditure = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0 };
-
+			//OLD QUERY
+			//var QueryAvalComp = from a in (from aa in garmentAvalComponentRepository.Query
+			//							   where aa.UnitId == request.unit && aa.Date <= dateTo
+			//							   select aa)
+			//					join b in garmentAvalComponentItemRepository.Query on a.Identity equals b.AvalComponentId
+			//					select new monitoringView { buyerCode = (from buyer in garmentPreparingRepository.Query where buyer.RONo == a.RONo select buyer.BuyerCode).FirstOrDefault(), price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), fc = (from cost in sumFCs where cost.RO == a.RONo select cost.FC / cost.Count).FirstOrDefault(), cuttingQtyMeter = 0, remainQty = 0, stock = a.Date < dateFrom && a.Date > dateBalance ? -b.Quantity : 0, cuttingQtyPcs = 0, roJob = a.RONo, article = a.Article, style = a.ComodityName, expenditure = a.Date >= dateFrom ? b.Quantity : 0 };
+			
+			//NEW QUERY
 			var QueryAvalComp = from a in (from aa in garmentAvalComponentRepository.Query
 										   where aa.UnitId == request.unit && aa.Date <= dateTo
-
-										   select aa)
+										   select new { 
+											   aa.Identity, 
+											   aa.RONo, 
+											   aa.Date, 
+											   aa.Article, 
+											   aa.ComodityName
+										   })
 								join b in garmentAvalComponentItemRepository.Query on a.Identity equals b.AvalComponentId
-								select new monitoringView { buyerCode = (from buyer in garmentPreparingRepository.Query where buyer.RONo == a.RONo select buyer.BuyerCode).FirstOrDefault(), price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()), fc = (from cost in sumFCs where cost.RO == a.RONo select cost.FC / cost.Count).FirstOrDefault(), cuttingQtyMeter = 0, remainQty = 0, stock = a.Date < dateFrom && a.Date > dateBalance ? -b.Quantity : 0, cuttingQtyPcs = 0, roJob = a.RONo, article = a.Article, style = a.ComodityName, expenditure = a.Date >= dateFrom ? b.Quantity : 0 };
+								select new monitoringView { 
+									buyerCode = (from buyer in garmentPreparingRepository.Query where buyer.RONo == a.RONo select buyer.BuyerCode).FirstOrDefault(), 
+									price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.Total).FirstOrDefault()), 
+									fc = (from cost in sumFCs where cost.RO == a.RONo select cost.Total).FirstOrDefault(), cuttingQtyMeter = 0, remainQty = 0, 
+									stock = a.Date < dateFrom && a.Date > dateBalance ? -b.Quantity : 0, 
+									cuttingQtyPcs = 0, 
+									roJob = a.RONo, 
+									article = a.Article, 
+									style = a.ComodityName, 
+									expenditure = a.Date >= dateFrom ? b.Quantity : 0 
+								};
 
 			var queryNow = queryBalanceCutting.Union(QueryCuttingIn).Union(QueryCuttingOut).Union(QueryAvalComp);
 
@@ -185,7 +408,20 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			//}
 
 			var queryReport = from a in queryNow
-							  select new monitoringView { buyerCode = (from cost in costCalculation.data where cost.ro == a.roJob select cost.buyerCode).FirstOrDefault(), price = a.price, fc = a.fc, cuttingQtyMeter = a.cuttingQtyMeter, remainQty = a.remainQty, stock = a.stock, cuttingQtyPcs = a.cuttingQtyPcs, roJob = a.roJob, article = a.article, style = (from cost in costCalculation.data where cost.ro == a.roJob select cost.comodityName).FirstOrDefault(), expenditure = a.expenditure, hours = (from cost in costCalculation.data where cost.ro == a.roJob select cost.hours).FirstOrDefault(), qtyOrder = (from cost in costCalculation.data where cost.ro == a.roJob select cost.qtyOrder).FirstOrDefault() };
+							  select new monitoringView { 
+								  buyerCode = (from cost in costCalculation.data where cost.ro == a.roJob select cost.buyerCode).FirstOrDefault(), 
+								  price = a.price, 
+								  fc = a.fc, 
+								  cuttingQtyMeter = a.cuttingQtyMeter, 
+								  remainQty = a.remainQty, 
+								  stock = a.stock, 
+								  cuttingQtyPcs = a.cuttingQtyPcs, 
+								  roJob = a.roJob, 
+								  article = a.article, 
+								  style = (from cost in costCalculation.data where cost.ro == a.roJob select cost.comodityName).FirstOrDefault(), 
+								  expenditure = a.expenditure, hours = (from cost in costCalculation.data where cost.ro == a.roJob select cost.hours).FirstOrDefault(), 
+								  qtyOrder = (from cost in costCalculation.data where cost.ro == a.roJob select cost.qtyOrder).FirstOrDefault() 
+							  };
 			var ccc = queryReport.ToList();
 			foreach (var item in ccc)
 			{
