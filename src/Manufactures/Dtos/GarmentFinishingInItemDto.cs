@@ -1,4 +1,5 @@
 ﻿using Manufactures.Domain.GarmentFinishingIns;
+using Manufactures.Domain.GarmentFinishingIns.ReadModels;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,22 @@ namespace Manufactures.Dtos
             FinishingInId = garmentFinishingInItem.FinishingInId;
             BasicPrice = garmentFinishingInItem.BasicPrice;
             Price = garmentFinishingInItem.Price;
+        }
+
+        public GarmentFinishingInItemDto(GarmentFinishingInItemReadModel garmentFinishingInItemReadModel)
+        {
+            Id = garmentFinishingInItemReadModel.Identity;
+            Product = new Product(garmentFinishingInItemReadModel.ProductId, garmentFinishingInItemReadModel.ProductCode, garmentFinishingInItemReadModel.ProductName);
+            DesignColor = garmentFinishingInItemReadModel.DesignColor;
+            Size = new SizeValueObject(garmentFinishingInItemReadModel.SizeId, garmentFinishingInItemReadModel.SizeName);
+            Quantity = garmentFinishingInItemReadModel.Quantity;
+            Uom = new Uom(garmentFinishingInItemReadModel.UomId, garmentFinishingInItemReadModel.UomUnit);
+            Color = garmentFinishingInItemReadModel.Color;
+            RemainingQuantity = garmentFinishingInItemReadModel.RemainingQuantity;
+            SewingOutItemId = garmentFinishingInItemReadModel.SewingOutItemId;
+            FinishingInId = garmentFinishingInItemReadModel.FinishingInId;
+            BasicPrice = garmentFinishingInItemReadModel.BasicPrice;
+            Price = garmentFinishingInItemReadModel.Price;
         }
 
         public Guid Id { get; set; }

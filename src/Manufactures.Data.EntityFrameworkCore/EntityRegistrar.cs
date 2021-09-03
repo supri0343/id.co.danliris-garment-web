@@ -62,6 +62,8 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 			modelBuilder.ApplyConfiguration(new GarmentSewingInConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSewingInItemConfig());
+			//Enhance Jason Aug 2021
+			modelBuilder.ApplyConfiguration(new SewingInHomeListViewConfig());
 
 			modelBuilder.ApplyConfiguration(new GarmentSewingOutConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSewingOutItemConfig());
@@ -110,7 +112,11 @@ namespace Manufactures.Data.EntityFrameworkCore
 			modelBuilder.ApplyConfiguration(new GarmentBalanceFinishingConfig());
             modelBuilder.ApplyConfiguration(new GarmentBalanceMonitoringProductionStockFlowConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentCuttingAdjustmentConfig());
+			//Enhance Jason Aug 2021
+			modelBuilder.ApplyConfiguration(new GarmentMonitoringFinishingReportConfig());
+
+
+			modelBuilder.ApplyConfiguration(new GarmentCuttingAdjustmentConfig());
             modelBuilder.ApplyConfiguration(new GarmentCuttingAdjustmentItemConfig());
             //GARMENT SUBCON
             modelBuilder.ApplyConfiguration(new GarmentSubconContractConfig());
