@@ -4375,7 +4375,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                FinishingTransferExpenditurePrice = item.FinishingTransferExpenditurePrice,
                                MaterialUsage = item.FinishingInExpenditure * item.BasicPrice,
                                PriceUsage = item.FinishingInExpenditure * Convert.ToDouble(item.Fare)
-                           }).ToList();
+                           }).OrderBy(x=>x.Ro).ToList();
 
 
             //garmentMonitoringProductionFlow.garmentMonitorings = data.ToList();
