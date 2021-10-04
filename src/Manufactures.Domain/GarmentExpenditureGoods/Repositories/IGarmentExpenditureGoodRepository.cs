@@ -15,6 +15,8 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.Repositories
 
         double BasicPriceByRO(string Keyword = null, string Filter = "{}");
         IQueryable<object> ReadExecute(IQueryable<GarmentExpenditureGoodReadModel> query);
+
+        IQueryable<GarmentExpenditureGoodReadModel> ReadignoreFilter(int page, int size, string order, string keyword, string filter);
     }
 
 }
