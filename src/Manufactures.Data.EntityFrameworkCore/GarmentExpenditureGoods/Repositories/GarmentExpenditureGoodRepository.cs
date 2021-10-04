@@ -152,5 +152,34 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentExpenditureGoods.Reposito
         {
             return new GarmentExpenditureGood(readModel);
         }
+
+        public IQueryable<GarmentExpenditureGoodReadModel> ReadignoreFilter(int page, int size, string order, string keyword, string filter)
+        {
+            var data = Query.IgnoreQueryFilters().Where(eg=>(eg.Deleted == true && eg.DeletedBy == "L") || (eg.Deleted == false) );
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            data = QueryHelper<GarmentExpenditureGoodReadModel>.Filter(data, FilterDictionary);
+
+            List<string> SearchAttributes = new List<string>
+            {
+                "ExpenditureGoodNo",
+                "ExpenditureType",
+                "Article",
+                "RONo",
+                "UnitCode",
+                "UnitName",
+                "ContractNo",
+                "Invoice",
+                "BuyerName"
+            };
+            data = QueryHelper<GarmentExpenditureGoodReadModel>.Search(data, SearchAttributes, keyword);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            data = OrderDictionary.Count == 0 ? data.OrderByDescending(o => o.ModifiedDate) : QueryHelper<GarmentExpenditureGoodReadModel>.Order(data, OrderDictionary);
+
+            //data = data.Skip((page - 1) * size).Take(size);
+
+            return data;
+        }
     }
 }
