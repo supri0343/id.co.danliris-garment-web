@@ -295,7 +295,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 
 			var QueryDRPrepare = from a in (from data in garmentDeliveryReturnRepository.Query
 											where data.ReturnDate <= dateTo && data.UnitId == request.unit
-											select new
+                                            && data.StorageName.Contains("BAHAN BAKU")
+                                            select new
 											{
 												data.RONo,
 												data.Identity,
