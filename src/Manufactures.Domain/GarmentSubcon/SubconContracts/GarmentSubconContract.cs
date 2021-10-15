@@ -200,7 +200,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
                 ReadModel.IsUsed = Isused;
             }
         }
-        public void SetBuyerId(SupplierId SupplierId)
+        public void SetBuyerId(BuyerId SupplierId)
         {
             if (this.BuyerId != BuyerId)
             {
@@ -208,7 +208,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
                 ReadModel.BuyerId = BuyerId.Value;
             }
         }
-        public void SetBuyerCode(string SupplierCode)
+        public void SetBuyerCode(string BuyerCode)
         {
             if (this.BuyerCode != BuyerCode)
             {
@@ -216,7 +216,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
                 ReadModel.BuyerCode = BuyerCode;
             }
         }
-        public void SetBuyerName(string SupplierName)
+        public void SetBuyerName(string BuyerName)
         {
             if (this.BuyerName != BuyerName)
             {

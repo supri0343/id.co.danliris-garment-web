@@ -56,6 +56,12 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
                     Code = "test",
                     Id = 1,
                     Name = "test"
+                },
+                Buyer = new Buyer
+                {
+                    Id = 1,
+                    Code = "Buyercode",
+                    Name = "BuyerName"
                 }
 
             };
