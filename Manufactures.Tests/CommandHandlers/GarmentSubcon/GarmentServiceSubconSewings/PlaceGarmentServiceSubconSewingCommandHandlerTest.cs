@@ -8,6 +8,7 @@ using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.CommandHandlers;
 using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
 using Manufactures.Domain.GarmentSewingIns.ReadModels;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
@@ -29,6 +30,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
         private readonly Mock<IGarmentServiceSubconSewingDetailRepository> _mockServiceSubconSewingDetailRepository;
         private readonly Mock<IGarmentSewingInRepository> _mockSewingInRepository;
         private readonly Mock<IGarmentSewingInItemRepository> _mockSewingInItemRepository;
+        private readonly Mock<IGarmentPreparingRepository> _mockGarmentPreparingRepository;
 
         public PlaceGarmentServiceSubconSewingCommandHandlerTests()
         {
@@ -37,12 +39,14 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
             _mockServiceSubconSewingDetailRepository = CreateMock<IGarmentServiceSubconSewingDetailRepository>();
             _mockSewingInRepository = CreateMock<IGarmentSewingInRepository>();
             _mockSewingInItemRepository = CreateMock<IGarmentSewingInItemRepository>();
+            _mockGarmentPreparingRepository = CreateMock<IGarmentPreparingRepository>();
 
             _MockStorage.SetupStorage(_mockServiceSubconSewingRepository);
             _MockStorage.SetupStorage(_mockServiceSubconSewingItemRepository);
             _MockStorage.SetupStorage(_mockServiceSubconSewingDetailRepository);
             _MockStorage.SetupStorage(_mockSewingInRepository);
             _MockStorage.SetupStorage(_mockSewingInItemRepository);
+            _MockStorage.SetupStorage(_mockGarmentPreparingRepository);
         }
 
         private PlaceGarmentServiceSubconSewingCommandHandler CreatePlaceGarmentServiceSubconSewingCommandHandler()
@@ -61,6 +65,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentServiceSubconSewingCommand placeGarmentServiceSubconSewingCommand = new PlaceGarmentServiceSubconSewingCommand()
             {
+                Buyer = new Buyer(1, "BuyerCode", "BuyerName"),
                 Items = new List<GarmentServiceSubconSewingItemValueObject>
                 {
                     new GarmentServiceSubconSewingItemValueObject
@@ -128,6 +133,10 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
             _mockServiceSubconSewingDetailRepository
                 .Setup(s => s.Update(It.IsAny<GarmentServiceSubconSewingDetail>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconSewingDetail>()));
+
+            _mockGarmentPreparingRepository
+                .Setup(s => s.RoChecking(It.IsAny<IEnumerable<string>>()))
+                .Returns(true);
 
             _MockStorage
                 .Setup(x => x.Save())

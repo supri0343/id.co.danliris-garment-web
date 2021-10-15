@@ -19,6 +19,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels
         public DateTimeOffset SubconDate { get; internal set; }
 
         public bool IsUsed { get; internal set; }
+        public int BuyerId { get; internal set; }
+        public string BuyerCode { get; internal set; }
+        public string BuyerName { get; internal set; }
         public virtual List<GarmentServiceSubconCuttingItemReadModel> GarmentServiceSubconCuttingItem { get; internal set; }
     }
 }
