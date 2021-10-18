@@ -178,7 +178,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingSize>()));
 
             _mockGarmentPreparingRepository
-                .Setup(s => s.RoChecking(It.IsAny<IEnumerable<string>>()))
+                .Setup(s => s.RoChecking(It.IsAny<IEnumerable<string>>(), string.Empty))
                 .Returns(true);
 
             _MockStorage
@@ -309,7 +309,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingSize>()));
 
             _mockGarmentPreparingRepository
-                .Setup(s => s.RoChecking(It.IsAny<IEnumerable<string>>()))
+                .Setup(s => s.RoChecking(It.IsAny<IEnumerable<string>>(), string.Empty))
                 .Returns(true);
 
             _MockStorage
@@ -443,7 +443,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingSize>()));
 
             _mockGarmentPreparingRepository
-                .Setup(s => s.RoChecking(It.IsAny<IEnumerable<string>>()))
+                .Setup(s => s.RoChecking(It.IsAny<IEnumerable<string>>(), string.Empty))
                 .Returns(true);
 
             _MockStorage
