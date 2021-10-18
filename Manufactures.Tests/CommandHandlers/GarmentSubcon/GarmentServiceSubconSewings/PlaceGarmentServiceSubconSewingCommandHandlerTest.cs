@@ -135,7 +135,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconSewingDetail>()));
 
             _mockGarmentPreparingRepository
-                .Setup(s => s.RoChecking(It.IsAny<IEnumerable<string>>()))
+                .Setup(s => s.RoChecking(It.IsAny<IEnumerable<string>>(), string.Empty))
                 .Returns(true);
 
             _MockStorage

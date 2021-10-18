@@ -38,7 +38,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
         public async Task<GarmentServiceSubconSewing> Handle(PlaceGarmentServiceSubconSewingCommand request, CancellationToken cancellationToken)
         {
             request.Items = request.Items.ToList();
-            var collectRoNo = _garmentPreparingRepository.RoChecking(request.Items.Select(x => x.RONo));
+            var collectRoNo = _garmentPreparingRepository.RoChecking(request.Items.Select(x => x.RONo), request.Buyer.Code);
             if (!collectRoNo)
                 throw new Exception("RoNo tidak sesuai dengan data pembeli");
 
