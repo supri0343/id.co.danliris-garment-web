@@ -23,7 +23,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
             List<string> SearchAttributes = new List<string>
             {
                 "ServiceSubconSewingNo",
-                "UnitCode",
+                //"UnitCode",
             };
 
             data = QueryHelper<GarmentServiceSubconSewingReadModel>.Search(data, SearchAttributes, keyword);

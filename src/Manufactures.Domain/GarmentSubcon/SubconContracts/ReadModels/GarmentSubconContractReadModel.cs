@@ -24,5 +24,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels
         public DateTimeOffset DueDate { get; internal set; }
         public DateTimeOffset ContractDate { get; internal set; }
         public bool IsUsed { get; internal set; }
+        public int BuyerId { get; internal set; }
+        public string BuyerCode { get; internal set; }
+        public string BuyerName { get; internal set; }
     }
 }

@@ -54,6 +54,12 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconSewin
             {
                 ServiceSubconSewingDate = DateTimeOffset.Now,
                 ServiceSubconSewingNo = "SewingOutNo",
+                Buyer = new Buyer()
+                {
+                    Id = 1,
+                    Code = "Code",
+                    Name = "Name"
+                },
                 Items = new List<GarmentServiceSubconSewingItemValueObject>()
                 {
                     new GarmentServiceSubconSewingItemValueObject()

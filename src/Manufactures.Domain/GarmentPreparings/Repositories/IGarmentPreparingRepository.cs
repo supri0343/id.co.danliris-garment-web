@@ -12,5 +12,6 @@ namespace Manufactures.Domain.GarmentPreparings.Repositories
         IQueryable<GarmentPreparingReadModel> Read(string order, List<string> select, string filter);
         IQueryable<GarmentPreparingReadModel> ReadOptimized(string order, string filter, string keyword);
         IQueryable<object> ReadExecute(IQueryable<GarmentPreparingReadModel> model, string keyword);
-	}
+        bool RoChecking(IEnumerable<string> roList, string buyerCode);
+    }
 }

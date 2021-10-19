@@ -3,6 +3,7 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Repositories;
+using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +74,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
            
 
             subconCutting.SetDate(request.SubconDate.GetValueOrDefault());
+            subconCutting.SetBuyerId(new BuyerId(request.Buyer.Id));
+            subconCutting.SetBuyerCode(request.Buyer.Code);
+            subconCutting.SetBuyerName(request.Buyer.Name);
             subconCutting.Modify();
             await _garmentServiceSubconCuttingRepository.Update(subconCutting);
 

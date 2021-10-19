@@ -20,6 +20,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
         public DateTimeOffset DueDate { get;  set; }
         public DateTimeOffset ContractDate { get; set; }
         public bool IsUsed { get; set; }
+        public Buyer Buyer { get; set; }
     }
 
     public class PlaceGarmentSubconContractCommandValidator : AbstractValidator<PlaceGarmentSubconContractCommand>
@@ -28,6 +29,10 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
         {
             RuleFor(r => r.Supplier).NotNull();
             RuleFor(r => r.Supplier.Id).NotEmpty().OverridePropertyName("Supplier").When(w => w.Supplier != null);
+
+
+            RuleFor(r => r.Buyer).NotNull();
+            RuleFor(r => r.Buyer.Id).NotEmpty().OverridePropertyName("Buyer").When(w => w.Buyer != null);
 
             RuleFor(r => r.Quantity).GreaterThan(0).WithMessage("Quantity harus lebih dari 0");
             //RuleFor(r => r.ContractNo).NotNull();

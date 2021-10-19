@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentCuttingIns;
+using Manufactures.Domain.GarmentPreparings.Repositories;
 
 namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.CommandHandlers
 {
@@ -25,6 +26,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
         private readonly IGarmentCuttingInRepository _garmentCuttingInRepository;
         private readonly IGarmentCuttingInItemRepository _garmentCuttingInItemRepository;
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
+        private readonly IGarmentPreparingRepository _garmentPreparingRepository;
 
         public PlaceGarmentServiceSubconCuttingCommandHandler(IStorage storage)
         {
@@ -36,11 +38,16 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
             _garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
             _garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
+            _garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
+
         }
 
         public async Task<GarmentServiceSubconCutting> Handle(PlaceGarmentServiceSubconCuttingCommand request, CancellationToken cancellationToken)
         {
             request.Items = request.Items.Where(item => item.Details.Where(detail => detail.IsSave).Count() > 0).ToList();
+            var collectRoNo = _garmentPreparingRepository.RoChecking(request.Items.Select(x => x.RONo), request.Buyer.Code);
+            if (!collectRoNo)
+                throw new Exception("RoNo tidak sesuai dengan data pembeli");
 
             GarmentServiceSubconCutting garmentServiceSubconCutting = new GarmentServiceSubconCutting(
                 Guid.NewGuid(),
@@ -50,7 +57,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
                 request.Unit.Code,
                 request.Unit.Name,
                 request.SubconDate.GetValueOrDefault(),
-                request.IsUsed
+                request.IsUsed,
+                new BuyerId(request.Buyer.Id),
+                request.Buyer.Code,
+                request.Buyer.Name
             );
             foreach (var item in request.Items)
             {

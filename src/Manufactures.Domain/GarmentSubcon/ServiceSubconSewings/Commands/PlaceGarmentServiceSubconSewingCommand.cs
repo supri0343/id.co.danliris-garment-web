@@ -15,6 +15,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands
         public bool IsUsed { get; set; }
         public List<GarmentServiceSubconSewingItemValueObject> Items { get; set; }
         public bool IsSave { get; set; }
+        public Buyer Buyer { get; set; }
 
 
     }
@@ -27,6 +28,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands
             //RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
             RuleFor(r => r.ServiceSubconSewingDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Subcon Jasa Sewing Tidak Boleh Kosong");
             RuleFor(r => r.ServiceSubconSewingDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Subcon Jasa Sewing Tidak Boleh Lebih dari Hari Ini");
+            RuleFor(r => r.Buyer).NotNull();
+            RuleFor(r => r.Buyer.Id).NotEmpty().OverridePropertyName("Buyer").When(w => w.Buyer != null);
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
             RuleForEach(r => r.Items).SetValidator(new GarmentServiceSubconSewingItemValueObjectValidator());
