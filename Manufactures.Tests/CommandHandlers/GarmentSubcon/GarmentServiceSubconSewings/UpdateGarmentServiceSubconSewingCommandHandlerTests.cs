@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.CommandHandlers;
+using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ReadModels;
@@ -23,16 +24,19 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
         private readonly Mock<IGarmentServiceSubconSewingRepository> _mockServiceSubconSewingRepository;
         private readonly Mock<IGarmentServiceSubconSewingItemRepository> _mockServiceSubconSewingItemRepository;
         //private readonly Mock<IGarmentServiceSubconSewingDetailRepository> _mockServiceSubconSewingDetailRepository;
+        //private readonly Mock<IGarmentPreparingRepository> _mockGarmentPreparingRepository;
 
         public UpdateGarmentServiceSubconSewingCommandHandlerTests()
         {
             _mockServiceSubconSewingRepository = CreateMock<IGarmentServiceSubconSewingRepository>();
             _mockServiceSubconSewingItemRepository = CreateMock<IGarmentServiceSubconSewingItemRepository>();
-           // _mockServiceSubconSewingDetailRepository = CreateMock<IGarmentServiceSubconSewingDetailRepository>();
+            // _mockServiceSubconSewingDetailRepository = CreateMock<IGarmentServiceSubconSewingDetailRepository>();
+            //_mockGarmentPreparingRepository = CreateMock<IGarmentPreparingRepository>();
 
             _MockStorage.SetupStorage(_mockServiceSubconSewingRepository);
             _MockStorage.SetupStorage(_mockServiceSubconSewingItemRepository);
-           // _MockStorage.SetupStorage(_mockServiceSubconSewingDetailRepository);
+            //_MockStorage.SetupStorage(_mockGarmentPreparingRepository);
+            // _MockStorage.SetupStorage(_mockServiceSubconSewingDetailRepository);
         }
 
         private UpdateGarmentServiceSubconSewingCommandHandler CreateUpdateGarmentServiceSubconSewingCommandHandler()
@@ -52,6 +56,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
             CancellationToken cancellationToken = CancellationToken.None;
             UpdateGarmentServiceSubconSewingCommand UpdateGarmentServiceSubconSewingCommand = new UpdateGarmentServiceSubconSewingCommand()
             {
+                Buyer = new Buyer(1, "BuyerCode", "BuyerName"),
                 Items = new List<GarmentServiceSubconSewingItemValueObject>
                 {
                     new GarmentServiceSubconSewingItemValueObject
@@ -136,6 +141,10 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
             //_mockServiceSubconSewingDetailRepository
             //    .Setup(s => s.Update(It.IsAny<GarmentServiceSubconSewingDetail>()))
             //    .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconSewingDetail>()));
+
+            //_mockGarmentPreparingRepository
+            //    .Setup(s => s.RoChecking(It.IsAny<IEnumerable<string>>()))
+            //    .Returns(true);
 
             _MockStorage
                 .Setup(x => x.Save())

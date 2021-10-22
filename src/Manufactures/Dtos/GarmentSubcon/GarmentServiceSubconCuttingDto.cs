@@ -17,6 +17,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             Unit = new UnitDepartment(garmentServiceSubconCutting.UnitId.Value, garmentServiceSubconCutting.UnitCode, garmentServiceSubconCutting.UnitName);
             CreatedBy = garmentServiceSubconCutting.AuditTrail.CreatedBy;
             IsUsed = garmentServiceSubconCutting.IsUsed;
+            Buyer = new Buyer(garmentServiceSubconCutting.BuyerId.Value, garmentServiceSubconCutting.BuyerCode, garmentServiceSubconCutting.BuyerName);
             Items = new List<GarmentServiceSubconCuttingItemDto>();
         }
 
@@ -27,6 +28,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public DateTimeOffset SubconDate { get; set; }
         public UnitDepartment Unit { get; set; }
         public bool IsUsed { get; set; }
+        public Buyer Buyer { get; set; }
         public List<GarmentServiceSubconCuttingItemDto> Items { get; set; }
     }
 }
