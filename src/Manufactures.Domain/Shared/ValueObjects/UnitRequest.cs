@@ -5,34 +5,23 @@ using System.Text;
 
 namespace Manufactures.Domain.Shared.ValueObjects
 {
-    public class Product : ValueObject
+    public class UnitRequest : ValueObject
     {
-        public Product()
+        public UnitRequest()
         {
 
         }
 
-        public Product(int productId, string code, string name)
+        public UnitRequest(int unitRequestId, string code, string name)
         {
-            Id = productId;
+            Id = unitRequestId;
             Code = code;
             Name = name;
-        }
-
-        public Product(int productId, string code, string name, string remark)
-        {
-            Id = productId;
-            Code = code;
-            Name = name;
-            Remark = remark;
         }
 
         public int Id { get; set; }
-
-        public string Name { get; set; }
-
         public string Code { get; set; }
-        public string Remark { get; set; }
+        public string Name { get; set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
