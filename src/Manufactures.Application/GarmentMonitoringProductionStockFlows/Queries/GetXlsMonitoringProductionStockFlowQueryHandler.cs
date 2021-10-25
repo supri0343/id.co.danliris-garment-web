@@ -3784,6 +3784,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                 .Union(QueryLoadingInTransfer)
                 .AsEnumerable();
 
+            queryNow = queryNow.Where(x => Convert.ToInt32(x.Ro.Substring(0, 2)) > 19).AsEnumerable();
+
             var querySum = (from a in queryNow
                             join b in queryGroup on a.Ro equals b.Ro
                             select new
@@ -4375,7 +4377,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                FinishingTransferExpenditurePrice = item.FinishingTransferExpenditurePrice,
                                MaterialUsage = item.FinishingInExpenditure * item.BasicPrice,
                                PriceUsage = item.FinishingInExpenditure * Convert.ToDouble(item.Fare)
-                           }).ToList();
+                           }).OrderBy(x=>x.Ro).ToList();
 
 
             //garmentMonitoringProductionFlow.garmentMonitorings = data.ToList();

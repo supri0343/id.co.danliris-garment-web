@@ -20,149 +20,21 @@ namespace Manufactures.Controllers.Api
     [Route("sewing-ins")]
     public class GarmentSewingInController : ControllerApiBase
     {
+        //Enhance Jason Aug 2021
+        private readonly ISewingInHomeListViewRepository _sewingInHomeListViewRepository;
         private readonly IGarmentSewingInRepository _garmentSewingInRepository;
         private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
 
         public GarmentSewingInController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
+            _sewingInHomeListViewRepository = Storage.GetRepository<ISewingInHomeListViewRepository>();
             _garmentSewingInRepository = Storage.GetRepository<IGarmentSewingInRepository>();
             _garmentSewingInItemRepository = Storage.GetRepository<IGarmentSewingInItemRepository>();
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
-        {
-            VerifyUser();
-
-            var query = _garmentSewingInRepository.Read(page, size, order, keyword, filter);
-            var total = query.Count();
-            double totalQty = query.Sum(a => a.GarmentSewingInItem.Sum(b => b.Quantity));
-            query = query.Skip((page - 1) * size).Take(size);
-
-            var garmentSewingInDto = _garmentSewingInRepository.Find(query).Select(o => new GarmentSewingInListDto(o)).ToArray();
-            var garmentSewingInItemDto = _garmentSewingInItemRepository.Find(_garmentSewingInItemRepository.Query).Select(o => new GarmentSewingInItemDto(o)).ToList();
-            var garmentSewingInItemDtoArray = _garmentSewingInItemRepository.Find(_garmentSewingInItemRepository.Query).Select(o => new GarmentSewingInItemDto(o)).ToArray();
-
-            Parallel.ForEach(garmentSewingInDto, itemDto =>
-            {
-                var garmentSewingDOItems = garmentSewingInItemDto.Where(x => x.SewingInId == itemDto.Id).ToList();
-
-                itemDto.Items = garmentSewingDOItems;
-
-                itemDto.Items = itemDto.Items.OrderBy(x => x.Id).ToList();
-
-                itemDto.Products = itemDto.Items.Select(i => i.Product.Code).ToList();
-                itemDto.TotalQuantity = itemDto.Items.Sum(i => i.Quantity);
-                itemDto.TotalRemainingQuantity = itemDto.Items.Sum(i => i.RemainingQuantity);
-            });
-
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                garmentSewingInItemDtoArray = garmentSewingInItemDto.Where(x => x.Product.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToArray();
-                List<GarmentSewingInListDto> ListTemp = new List<GarmentSewingInListDto>();
-                foreach (var a in garmentSewingInItemDtoArray)
-                {
-                    var temp = garmentSewingInDto.Where(x => x.Id.Equals(a.SewingInId)).ToArray();
-                    foreach (var b in temp)
-                    {
-                        ListTemp.Add(b);
-                    }
-                }
-
-                var garmentSewingInDtoList = garmentSewingInDto.Where(x => x.SewingInNo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    || x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    || x.Unit.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    || x.UnitFrom.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                    ).ToList();
-
-                var i = 0;
-                foreach (var data in ListTemp)
-                {
-                    i = 0;
-                    foreach (var item in garmentSewingInDtoList)
-                    {
-                        if (data.Id == item.Id)
-                        {
-                            i++;
-                        }
-                    }
-                    if (i == 0)
-                    {
-                        garmentSewingInDtoList.Add(data);
-                    }
-                }
-                var garmentSewingInDtoListArray = garmentSewingInDtoList.ToArray();
-                if (order != "{}")
-                {
-                    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                    garmentSewingInDtoListArray = QueryHelper<GarmentSewingInListDto>.Order(garmentSewingInDtoList.AsQueryable(), OrderDictionary).ToArray();
-                }
-                else
-                {
-                    garmentSewingInDtoListArray = garmentSewingInDtoList.OrderByDescending(x => x.LastModifiedDate).ToArray();
-                }
-
-                //garmentSewingInDtoListArray = garmentSewingInDtoListArray.Take(size).Skip((page - 1) * size).ToArray();
-
-                await Task.Yield();
-                return Ok(garmentSewingInDtoListArray, info: new
-                {
-                    page,
-                    size,
-                    total,
-                    totalQty
-                });
-            }
-            else
-            {
-                //if (order != "{}")
-                //{
-                //    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                //    garmentSewingInDto = QueryHelper<GarmentSewingInListDto>.Order(garmentSewingInDto.AsQueryable(), OrderDictionary).ToArray();
-                //}
-                //else
-                //{
-                //    garmentSewingInDto = garmentSewingInDto.OrderByDescending(x => x.LastModifiedDate).ToArray();
-                //}
-
-                //garmentSewingInDto = garmentSewingInDto.Take(size).Skip((page - 1) * size).ToArray();
-
-                await Task.Yield();
-                return Ok(garmentSewingInDto, info: new
-                {
-                    page,
-                    size,
-                    total,
-                    totalQty
-                });
-            }
-            //List<GarmentSewingInListDto> garmentSewingInListDtos = _garmentSewingInRepository.Find(query).Select(sewingIn =>
-            //{
-            //    var items = _garmentSewingInItemRepository.Query.Where(o => o.SewingInId == sewingIn.Identity).Select(sewingInItem => new
-            //    {
-            //        sewingInItem.ProductCode,
-            //        sewingInItem.Quantity,
-            //    }).ToList();
-
-            //    return new GarmentSewingInListDto(sewingIn)
-            //    {
-            //        Products = items.Select(i => i.ProductCode).ToList(),
-            //        TotalQuantity = items.Sum(i => i.Quantity),
-            //    };
-            //}).ToList();
-
-            //await Task.Yield();
-            //return Ok(garmentSewingInListDtos, info: new
-            //{
-            //    page,
-            //    size,
-            //    count
-            //});
-        }
-
-        [HttpGet("optimized")]
-        public async Task<IActionResult> GetOptimized(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        //Original GET Method with Customization by Previous Developer
+        public async Task<IActionResult> Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
         {
             VerifyUser();
 
@@ -302,6 +174,261 @@ namespace Manufactures.Controllers.Api
             //    count
             //});
         }
+
+        [HttpGet("list-optimized")]
+        //Enhance Performance / Load Time on Sewing In List Page : Jason Aug 2021
+        public async Task<IActionResult> GetListOptimized(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _sewingInHomeListViewRepository.Read(page, size, order, keyword, filter);
+            var total = query.Count();
+            double totalQty = query.Sum(a => a.TotalQuantity);
+            query = query.Skip((page - 1) * size).Take(size);
+
+            List<SewingInHomeListViewDto> sewingInHomeListViewDto = _sewingInHomeListViewRepository
+                .Find(query)
+                .Select(o => new SewingInHomeListViewDto(o))
+                .ToList();
+
+            await Task.Yield();
+            return Ok(sewingInHomeListViewDto, info: new
+            {
+                page,
+                size,
+                total,
+                totalQty
+            });
+
+
+            //    List<GarmentSewingInListDto> garmentSewingInDto = _garmentSewingInRepository
+            //        .Find(query)
+            //        .Select(o => new GarmentSewingInListDto(o))
+            //        .ToList();
+
+            //    var dtoIds = garmentSewingInDto.Select(s => s.Id).ToList();
+            //    var garmentSewingInItemDto = _garmentSewingInItemRepository.Query
+            //        .Where(o => dtoIds.Contains(o.SewingInId))
+            //        .Select(s => new GarmentSewingInItemDto(s))
+            //        .ToList();
+
+            //    var itemIds = garmentSewingInItemDto.Select(s => s.Id).ToList();
+
+            //    Parallel.ForEach(garmentSewingInDto, itemDto =>
+            //    {
+            //        var garmentSewingDOItems = garmentSewingInItemDto.Where(x => x.SewingInId == itemDto.Id).ToList();
+
+            //        itemDto.Items = garmentSewingDOItems;
+
+            //        itemDto.Items = itemDto.Items.OrderBy(x => x.Id).ToList();
+
+            //        itemDto.Products = itemDto.Items.Select(i => i.Product.Code).ToList();
+            //        itemDto.TotalQuantity = itemDto.Items.Sum(i => i.Quantity);
+            //        itemDto.TotalRemainingQuantity = itemDto.Items.Sum(i => i.RemainingQuantity);
+
+            //    });
+
+            //    if (!string.IsNullOrEmpty(keyword))
+            //    {
+            //        garmentSewingInItemDto = garmentSewingInItemDto.Where(x => x.Product.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToList();
+            //        List<GarmentSewingInListDto> ListTemp = new List<GarmentSewingInListDto>();
+            //        foreach (var a in garmentSewingInItemDto)
+            //        {
+            //            var temp = garmentSewingInDto.Where(x => x.Id.Equals(a.SewingInId)).ToArray();
+            //            foreach (var b in temp)
+            //            {
+            //                ListTemp.Add(b);
+            //            }
+            //        }
+
+            //        var garmentSewingInDtoList = garmentSewingInDto.Where(x => x.SewingInNo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+            //                            || x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+            //                            || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+            //                            || x.Unit.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+            //                            || x.UnitFrom.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+            //                            ).ToList();
+
+            //        var i = 0;
+            //        foreach (var data in ListTemp)
+            //        {
+            //            i = 0;
+            //            foreach (var item in garmentSewingInDtoList)
+            //            {
+            //                if (data.Id == item.Id)
+            //                {
+            //                    i++;
+            //                }
+            //            }
+            //            if (i == 0)
+            //            {
+            //                garmentSewingInDtoList.Add(data);
+            //            }
+            //        }
+            //        var garmentSewingInDtoListArray = garmentSewingInDtoList.ToArray();
+            //        if (order != "{}")
+            //        {
+            //            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            //            garmentSewingInDtoListArray = QueryHelper<GarmentSewingInListDto>.Order(garmentSewingInDtoList.AsQueryable(), OrderDictionary).ToArray();
+            //        }
+            //        else
+            //        {
+            //            garmentSewingInDtoListArray = garmentSewingInDtoList.OrderByDescending(x => x.LastModifiedDate).ToArray();
+            //        }
+
+            //        await Task.Yield();
+            //        return Ok(garmentSewingInDtoListArray, info: new
+            //        {
+            //            page,
+            //            size,
+            //            total,
+            //            totalQty
+            //        });
+            //    }
+            //    else
+            //    {
+            //        await Task.Yield();
+            //        return Ok(garmentSewingInDto, info: new
+            //        {
+            //            page,
+            //            size,
+            //            total,
+            //            totalQty
+            //        });
+            //    }
+        }
+
+        [HttpGet("original")]
+        //Original GET Method by Previous Developer
+        //public async Task<IActionResult> GetOriginal(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        //{
+        //    VerifyUser();
+
+        //    var query = _garmentSewingInRepository.Read(page, size, order, keyword, filter);
+        //    var total = query.Count();
+        //    double totalQty = query.Sum(a => a.GarmentSewingInItem.Sum(b => b.Quantity));
+        //    query = query.Skip((page - 1) * size).Take(size);
+
+        //    var garmentSewingInDto = _garmentSewingInRepository.Find(query).Select(o => new GarmentSewingInListDto(o)).ToArray();
+        //    var garmentSewingInItemDto = _garmentSewingInItemRepository.Find(_garmentSewingInItemRepository.Query).Select(o => new GarmentSewingInItemDto(o)).ToList();
+        //    var garmentSewingInItemDtoArray = _garmentSewingInItemRepository.Find(_garmentSewingInItemRepository.Query).Select(o => new GarmentSewingInItemDto(o)).ToArray();
+
+        //    Parallel.ForEach(garmentSewingInDto, itemDto =>
+        //    {
+        //        var garmentSewingDOItems = garmentSewingInItemDto.Where(x => x.SewingInId == itemDto.Id).ToList();
+
+        //        itemDto.Items = garmentSewingDOItems;
+
+        //        itemDto.Items = itemDto.Items.OrderBy(x => x.Id).ToList();
+
+        //        itemDto.Products = itemDto.Items.Select(i => i.Product.Code).ToList();
+        //        itemDto.TotalQuantity = itemDto.Items.Sum(i => i.Quantity);
+        //        itemDto.TotalRemainingQuantity = itemDto.Items.Sum(i => i.RemainingQuantity);
+        //    });
+
+        //    if (!string.IsNullOrEmpty(keyword))
+        //    {
+        //        garmentSewingInItemDtoArray = garmentSewingInItemDto.Where(x => x.Product.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToArray();
+        //        List<GarmentSewingInListDto> ListTemp = new List<GarmentSewingInListDto>();
+        //        foreach (var a in garmentSewingInItemDtoArray)
+        //        {
+        //            var temp = garmentSewingInDto.Where(x => x.Id.Equals(a.SewingInId)).ToArray();
+        //            foreach (var b in temp)
+        //            {
+        //                ListTemp.Add(b);
+        //            }
+        //        }
+
+        //        var garmentSewingInDtoList = garmentSewingInDto.Where(x => x.SewingInNo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+        //                            || x.Article.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+        //                            || x.RONo.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+        //                            || x.Unit.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+        //                            || x.UnitFrom.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+        //                            ).ToList();
+
+        //        var i = 0;
+        //        foreach (var data in ListTemp)
+        //        {
+        //            i = 0;
+        //            foreach (var item in garmentSewingInDtoList)
+        //            {
+        //                if (data.Id == item.Id)
+        //                {
+        //                    i++;
+        //                }
+        //            }
+        //            if (i == 0)
+        //            {
+        //                garmentSewingInDtoList.Add(data);
+        //            }
+        //        }
+        //        var garmentSewingInDtoListArray = garmentSewingInDtoList.ToArray();
+        //        if (order != "{}")
+        //        {
+        //            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+        //            garmentSewingInDtoListArray = QueryHelper<GarmentSewingInListDto>.Order(garmentSewingInDtoList.AsQueryable(), OrderDictionary).ToArray();
+        //        }
+        //        else
+        //        {
+        //            garmentSewingInDtoListArray = garmentSewingInDtoList.OrderByDescending(x => x.LastModifiedDate).ToArray();
+        //        }
+
+        //        //garmentSewingInDtoListArray = garmentSewingInDtoListArray.Take(size).Skip((page - 1) * size).ToArray();
+
+        //        await Task.Yield();
+        //        return Ok(garmentSewingInDtoListArray, info: new
+        //        {
+        //            page,
+        //            size,
+        //            total,
+        //            totalQty
+        //        });
+        //    }
+        //    else
+        //    {
+        //        //if (order != "{}")
+        //        //{
+        //        //    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+        //        //    garmentSewingInDto = QueryHelper<GarmentSewingInListDto>.Order(garmentSewingInDto.AsQueryable(), OrderDictionary).ToArray();
+        //        //}
+        //        //else
+        //        //{
+        //        //    garmentSewingInDto = garmentSewingInDto.OrderByDescending(x => x.LastModifiedDate).ToArray();
+        //        //}
+
+        //        //garmentSewingInDto = garmentSewingInDto.Take(size).Skip((page - 1) * size).ToArray();
+
+        //        await Task.Yield();
+        //        return Ok(garmentSewingInDto, info: new
+        //        {
+        //            page,
+        //            size,
+        //            total,
+        //            totalQty
+        //        });
+        //    }
+        //    //List<GarmentSewingInListDto> garmentSewingInListDtos = _garmentSewingInRepository.Find(query).Select(sewingIn =>
+        //    //{
+        //    //    var items = _garmentSewingInItemRepository.Query.Where(o => o.SewingInId == sewingIn.Identity).Select(sewingInItem => new
+        //    //    {
+        //    //        sewingInItem.ProductCode,
+        //    //        sewingInItem.Quantity,
+        //    //    }).ToList();
+
+        //    //    return new GarmentSewingInListDto(sewingIn)
+        //    //    {
+        //    //        Products = items.Select(i => i.ProductCode).ToList(),
+        //    //        TotalQuantity = items.Sum(i => i.Quantity),
+        //    //    };
+        //    //}).ToList();
+
+        //    //await Task.Yield();
+        //    //return Ok(garmentSewingInListDtos, info: new
+        //    //{
+        //    //    page,
+        //    //    size,
+        //    //    count
+        //    //});
+        //}
 
         [HttpGet("get-by-ro")]
         public async Task<IActionResult> GetByRo(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")

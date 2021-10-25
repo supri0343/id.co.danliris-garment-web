@@ -13,7 +13,10 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.Repositories
 
         IQueryable<GarmentExpenditureGoodReadModel> ReadComplete(int page, int size, string order, string keyword, string filter);
 
+        double BasicPriceByRO(string Keyword = null, string Filter = "{}");
         IQueryable<object> ReadExecute(IQueryable<GarmentExpenditureGoodReadModel> query);
+
+        IQueryable<GarmentExpenditureGoodReadModel> ReadignoreFilter(int page, int size, string order, string keyword, string filter);
     }
 
 }

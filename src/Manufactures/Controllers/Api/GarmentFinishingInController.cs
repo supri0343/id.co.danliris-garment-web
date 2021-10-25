@@ -169,9 +169,17 @@ namespace Manufactures.Controllers.Api
             var query = _garmentFinishingInRepository.Read(page, size, order, keyword, filter);
             var count = query.Count();
 
-            var garmentFinishingInDto = _garmentFinishingInRepository.Find(query).Select(o => new GarmentFinishingInDto(o)).ToArray();
-            var garmentFinishingInItemDto = _garmentFinishingInItemRepository.Find(_garmentFinishingInItemRepository.Query).Select(o => new GarmentFinishingInItemDto(o)).ToList();
+            var garmentFinishingInDto = _garmentFinishingInRepository.Find(query).Select(o => new GarmentFinishingInDto(o)).ToList();
+            
+            //Enhance Jason Aug 2021
+            var finishingInIds = garmentFinishingInDto.Select(s => s.Id).ToList();
 
+            //var garmentFinishingInItemDto = _garmentFinishingInItemRepository.Find(_garmentFinishingInItemRepository.Query).Select(o => new GarmentFinishingInItemDto(o)).ToList();
+            var garmentFinishingInItemDto = _garmentFinishingInItemRepository.Query
+                .Where(w => finishingInIds.Contains(w.FinishingInId))
+                .Select(o => new GarmentFinishingInItemDto(o))
+                .OrderBy(o => o.Id).ToList();
+            
             Parallel.ForEach(garmentFinishingInDto, itemDto =>
             {
                 var garmentFinishingInItems = garmentFinishingInItemDto.Where(x => x.FinishingInId == itemDto.Id).OrderBy(x => x.Id).ToList();
@@ -182,7 +190,7 @@ namespace Manufactures.Controllers.Api
             if (order != "{}")
             {
                 Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                garmentFinishingInDto = QueryHelper<GarmentFinishingInDto>.Order(garmentFinishingInDto.AsQueryable(), OrderDictionary).ToArray();
+                garmentFinishingInDto = QueryHelper<GarmentFinishingInDto>.Order(garmentFinishingInDto.AsQueryable(), OrderDictionary).ToList();
             }
 
             await Task.Yield();

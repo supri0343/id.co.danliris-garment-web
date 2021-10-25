@@ -26,6 +26,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentSewingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconCuttings.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconSewings.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconShrinkagePanels.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentSubconContracts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLetterOuts.Cofigs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubconCuttingOuts.Configs;
@@ -62,6 +63,8 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 			modelBuilder.ApplyConfiguration(new GarmentSewingInConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSewingInItemConfig());
+			//Enhance Jason Aug 2021
+			modelBuilder.ApplyConfiguration(new SewingInHomeListViewConfig());
 
 			modelBuilder.ApplyConfiguration(new GarmentSewingOutConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSewingOutItemConfig());
@@ -110,7 +113,11 @@ namespace Manufactures.Data.EntityFrameworkCore
 			modelBuilder.ApplyConfiguration(new GarmentBalanceFinishingConfig());
             modelBuilder.ApplyConfiguration(new GarmentBalanceMonitoringProductionStockFlowConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentCuttingAdjustmentConfig());
+			//Enhance Jason Aug 2021
+			modelBuilder.ApplyConfiguration(new GarmentMonitoringFinishingReportConfig());
+
+
+			modelBuilder.ApplyConfiguration(new GarmentCuttingAdjustmentConfig());
             modelBuilder.ApplyConfiguration(new GarmentCuttingAdjustmentItemConfig());
             //GARMENT SUBCON
             modelBuilder.ApplyConfiguration(new GarmentSubconContractConfig());
@@ -126,6 +133,10 @@ namespace Manufactures.Data.EntityFrameworkCore
 
             modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutConfig());
             modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutItemConfig());
-        }
+
+			modelBuilder.ApplyConfiguration(new GarmentServiceSubconShrinkagePanelConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSubconShrinkagePanelItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSubconShrinkagePanelDetailConfig());
+		}
 	}
 }

@@ -81,7 +81,7 @@ namespace Manufactures.Controllers.Api
         {
             VerifyUser();
 
-            var query = _garmentExpenditureGoodRepository.Read(1, 75, "{}", null, "{}");
+            var query = _garmentExpenditureGoodRepository.ReadignoreFilter(1, 75, "{}", null, "{}");
             query = query.Where(x => x.RONo == RONo && x.ExpenditureType == "EXPORT").Select(x => x);
             var total = query.Count();
             double totalQty = query.Sum(a => a.Items.Sum(b => b.Quantity));
@@ -460,6 +460,16 @@ namespace Manufactures.Controllers.Api
             }
         }
 
+        [HttpGet("basic-price")]
+        public async Task<IActionResult> GetBasicPriceByRONo(string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentExpenditureGoodRepository.BasicPriceByRO(keyword, filter);
+            
+            return Ok(query);
+        }
+        
         [HttpGet("byInvoice")]
         public async Task<IActionResult> GetTraceablebyInvoice([FromBody]string invoice)
         {

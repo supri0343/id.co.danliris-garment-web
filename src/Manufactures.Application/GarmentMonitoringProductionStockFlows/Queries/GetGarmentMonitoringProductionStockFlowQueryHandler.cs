@@ -2172,6 +2172,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				.Union(QueryExpenditureGoodInTransfer)
 				.Union(QueryLoadingInTransfer)
 				.AsEnumerable();
+
+            queryNow = queryNow.Where(x => Convert.ToInt32(x.Ro.Substring(0, 2)) > 19).AsEnumerable();
             
             var querySum = (from a in queryNow
 							join b in queryGroup on a.Ro equals b.Ro
@@ -2757,7 +2759,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
             //    garment.BasicPrice = Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == garment.Ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2) * Convert.ToDouble((from cost in sumFCs where cost.RO == garment.Ro select cost.FC / cost.Count).FirstOrDefault()) == 0 ? Convert.ToDouble((from a in queryBalance.ToList() where a.Ro == garment.Ro select a.BasicPrice).FirstOrDefault()) : Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == garment.Ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2) * Convert.ToDouble((from cost in sumFCs where cost.RO == garment.Ro select cost.FC / cost.Count).FirstOrDefault());
             //}
-            garmentMonitoringProductionFlow.garmentMonitorings = dataend;
+            garmentMonitoringProductionFlow.garmentMonitorings = dataend.OrderBy(x=>x.Ro).ToList();
 			garmentMonitoringProductionFlow.count = dataend.Count();
              
            

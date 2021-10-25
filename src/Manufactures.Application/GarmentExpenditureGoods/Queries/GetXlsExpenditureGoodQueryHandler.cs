@@ -160,7 +160,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 
 			var QueryRo = (from a in garmentExpenditureGoodRepository.Query
 						   where a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) && a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo
-						   select a.RONo).Distinct();
+						   select a.RONo).Distinct().ToList();
 
 			List<string> _ro = new List<string>();
 			foreach (var item in QueryRo)
