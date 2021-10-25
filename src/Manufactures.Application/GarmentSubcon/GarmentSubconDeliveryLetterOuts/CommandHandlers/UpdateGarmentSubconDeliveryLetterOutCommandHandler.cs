@@ -59,7 +59,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     
                     if (item==null)
                     {
-                        var subconCuttingOut = _garmentCuttingOutRepository.Query.Where(x => x.Identity == subconDLItem.SubconCuttingOutId).Select(s => new GarmentSubconCuttingOut(s)).Single();
+                        var subconCuttingOut = _garmentCuttingOutRepository.Query.Where(x => x.Identity == subconDLItem.SubconId).Select(s => new GarmentSubconCuttingOut(s)).Single();
                         subconCuttingOut.SetIsUsed(false);
                         subconCuttingOut.Modify();
 
@@ -94,12 +94,12 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                             new UomId(item.UomOut.Id),
                             item.UomOut.Unit,
                             item.FabricType,
-                            item.SubconCuttingOutId,
+                            item.SubconId,
                             item.RONo,
                             item.POSerialNumber,
-                            item.SubconCuttingOutNo
+                            item.SubconNo
                         );
-                        var subconCuttingOut = _garmentCuttingOutRepository.Query.Where(x => x.Identity == item.SubconCuttingOutId).Select(s => new GarmentSubconCuttingOut(s)).Single();
+                        var subconCuttingOut = _garmentCuttingOutRepository.Query.Where(x => x.Identity == item.SubconId).Select(s => new GarmentSubconCuttingOut(s)).Single();
                         subconCuttingOut.SetIsUsed(true);
                         subconCuttingOut.Modify();
 

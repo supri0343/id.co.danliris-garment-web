@@ -139,8 +139,8 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                         Uom=new Uom(1,"UomUnit"),
                         UomOut=new Uom(1,"UomUnit"),
                         ContractQuantity=1,
-                        SubconCuttingOutId=subconCuttingOutGuid,
-                        SubconCuttingOutNo="no",
+                        SubconId=subconCuttingOutGuid,
+                        SubconNo="no",
                         POSerialNumber="poNo",
                         RONo="RONo"
                     }

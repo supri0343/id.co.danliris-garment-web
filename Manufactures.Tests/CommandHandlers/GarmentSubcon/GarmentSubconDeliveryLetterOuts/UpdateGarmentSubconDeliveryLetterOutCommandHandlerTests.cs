@@ -90,7 +90,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                .Setup(s => s.Query)
                .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
                {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON BAHAN BAKU",DateTimeOffset.Now,1,"","",1,"",false).GetReadModel()
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON BAHAN BAKU",DateTimeOffset.Now,1,"","",1,"",false,"").GetReadModel()
                }.AsQueryable());
             _mockSubconDeliveryLetterOutItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
@@ -154,10 +154,10 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                         Uom=new Uom(1,"UomUnit"),
                         UomOut=new Uom(1,"UomUnit"),
                         ContractQuantity=1,
-                        SubconCuttingOutId=subconCuttingOutGuid,
+                        SubconId=subconCuttingOutGuid,
                         RONo="ro",
                         POSerialNumber="aa",
-                        SubconCuttingOutNo="no"
+                        SubconNo="no"
                     }
                 },
             };
@@ -167,7 +167,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                .Setup(s => s.Query)
                .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
                {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON CUTTING",DateTimeOffset.Now,1,"","",1,"",false).GetReadModel()
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON CUTTING",DateTimeOffset.Now,1,"","",1,"",false,"").GetReadModel()
                }.AsQueryable());
             _mockSubconDeliveryLetterOutItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
@@ -244,10 +244,10 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                         Uom=new Uom(1,"UomUnit"),
                         UomOut=new Uom(1,"UomUnit"),
                         ContractQuantity=1,
-                        SubconCuttingOutId=subconCuttingOutGuid,
+                        SubconId=subconCuttingOutGuid,
                         RONo="ro",
                         POSerialNumber="aa",
-                        SubconCuttingOutNo="no"
+                        SubconNo="no"
                     }
                 },
             };
@@ -257,7 +257,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                .Setup(s => s.Query)
                .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
                {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON CUTTING",DateTimeOffset.Now,1,"","",1,"",false).GetReadModel()
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON CUTTING",DateTimeOffset.Now,1,"","",1,"",false,"").GetReadModel()
                }.AsQueryable());
             _mockSubconDeliveryLetterOutItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))

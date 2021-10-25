@@ -222,10 +222,10 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
                         Quantity =1,
                         SubconDeliveryLetterOutId =id,
                         ContractQuantity=1,
-                        SubconCuttingOutId=new Guid(),
+                        SubconId=new Guid(),
                         POSerialNumber="test",
                         RONo="RONo",
-                        SubconCuttingOutNo="no"
+                        SubconNo="no"
                     }
                 }
             };
@@ -300,10 +300,10 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
                         Quantity =0,
                         SubconDeliveryLetterOutId =id,
                         ContractQuantity=1,
-                        SubconCuttingOutId=new Guid(),
+                        SubconId=new Guid(),
                         POSerialNumber="test",
                         RONo="RONo",
-                        SubconCuttingOutNo="no"
+                        SubconNo="no"
                     }
                 }
             };

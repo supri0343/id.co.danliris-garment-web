@@ -15,6 +15,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
         public Guid SubconContractId { get; set; }
         public string ContractNo { get; set; }
         public string ContractType { get; set; }
+        public string ServiceType { get; set; }
         public DateTimeOffset DLDate { get; set; }
 
         public int UENId { get; set; }
@@ -73,8 +74,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
 
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.POSerialNumber).NotNull();
-            RuleFor(r => r.SubconCuttingOutId).NotNull();
-            RuleFor(r => r.SubconCuttingOutNo).NotNull();
+            RuleFor(r => r.SubconId).NotNull();
+            RuleFor(r => r.SubconNo).NotNull();
         }
     }
 }
