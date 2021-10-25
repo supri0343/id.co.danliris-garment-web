@@ -2172,6 +2172,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				.Union(QueryExpenditureGoodInTransfer)
 				.Union(QueryLoadingInTransfer)
 				.AsEnumerable();
+
+            queryNow = queryNow.Where(x => Convert.ToInt32(x.Ro.Substring(0, 2)) > 19).AsEnumerable();
             
             var querySum = (from a in queryNow
 							join b in queryGroup on a.Ro equals b.Ro
