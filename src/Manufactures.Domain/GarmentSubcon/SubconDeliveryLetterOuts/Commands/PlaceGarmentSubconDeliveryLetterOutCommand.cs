@@ -46,6 +46,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item tidak boleh kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
             RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutItemValueObjectValidator()).When(r => r.ContractType == "SUBCON BAHAN BAKU");
             RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutCuttingItemValueObjectValidator()).When(r => r.ContractType == "SUBCON CUTTING");
+            RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutServiceItemValueObjectValidator()).When(r => r.ContractType == "SUBCON JASA");
             RuleFor(r => r.TotalQty)
                  .LessThanOrEqualTo(r => r.UsedQty)
                  .WithMessage(x => $"'Jumlah Total' tidak boleh lebih dari '{x.UsedQty}'.");
@@ -74,6 +75,20 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
 
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.POSerialNumber).NotNull();
+            RuleFor(r => r.SubconId).NotNull();
+            RuleFor(r => r.SubconNo).NotNull();
+        }
+    }
+
+    public class GarmentSubconDeliveryLetterOutServiceItemValueObjectValidator: AbstractValidator<GarmentSubconDeliveryLetterOutItemValueObject>
+    {
+        public GarmentSubconDeliveryLetterOutServiceItemValueObjectValidator()
+        {
+
+            RuleFor(r => r.Quantity)
+                .GreaterThan(0)
+                .WithMessage("'Jumlah' harus lebih dari '0'.");
+
             RuleFor(r => r.SubconId).NotNull();
             RuleFor(r => r.SubconNo).NotNull();
         }
