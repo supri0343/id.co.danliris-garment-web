@@ -24,6 +24,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
         public bool IsUsed { get; set; }
         public double TotalQty { get; set; }
         public double UsedQty { get; set; }
+        public string ServiceType { get; set; }
         public List<GarmentSubconDeliveryLetterOutItemValueObject> Items { get; set; }
 
         public void SetIdentity(Guid id)

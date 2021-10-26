@@ -1,5 +1,9 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Repositories;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Repositories;
@@ -20,6 +24,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
         private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;
         private readonly IGarmentSubconDeliveryLetterOutItemRepository _garmentSubconDeliveryLetterOutItemRepository;
         private readonly IGarmentSubconCuttingOutRepository _garmentCuttingOutRepository;
+        private readonly IGarmentServiceSubconCuttingRepository _garmentSubconCuttingRepository;
+        private readonly IGarmentServiceSubconSewingRepository _garmentSubconSewingRepository;
 
         public RemoveGarmentSubconDeliveryLetterOutCommandHandler(IStorage storage)
         {
@@ -27,6 +33,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             _garmentSubconDeliveryLetterOutRepository = storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
             _garmentSubconDeliveryLetterOutItemRepository = storage.GetRepository<IGarmentSubconDeliveryLetterOutItemRepository>();
             _garmentCuttingOutRepository = storage.GetRepository<IGarmentSubconCuttingOutRepository>();
+            _garmentSubconCuttingRepository = storage.GetRepository<IGarmentServiceSubconCuttingRepository>();
+            _garmentSubconSewingRepository = storage.GetRepository<IGarmentServiceSubconSewingRepository>();
         }
 
 
@@ -39,11 +47,31 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                 subconDeliveryLetterOutItem.Remove();
                 if (subconDeliveryLetterOut.ContractType == "SUBCON CUTTING")
                 {
-                    var subconCuttingOut = _garmentCuttingOutRepository.Query.Where(x => x.Identity == subconDeliveryLetterOutItem.SubconCuttingOutId).Select(s => new GarmentSubconCuttingOut(s)).Single();
+                    var subconCuttingOut = _garmentCuttingOutRepository.Query.Where(x => x.Identity == subconDeliveryLetterOutItem.SubconId).Select(s => new GarmentSubconCuttingOut(s)).Single();
                     subconCuttingOut.SetIsUsed(false);
                     subconCuttingOut.Modify();
 
                     await _garmentCuttingOutRepository.Update(subconCuttingOut);
+                }
+                if (subconDeliveryLetterOut.ContractType == "SUBCON JASA")
+                {
+                    if (subconDeliveryLetterOut.ServiceType == "SUBCON JASA KOMPONEN")
+                    {
+                        var subconCutting = _garmentSubconCuttingRepository.Query.Where(x => x.Identity == subconDeliveryLetterOutItem.SubconId).Select(s => new GarmentServiceSubconCutting(s)).Single();
+                        subconCutting.SetIsUsed(true);
+                        subconCutting.Modify();
+
+                        await _garmentSubconCuttingRepository.Update(subconCutting);
+                    }
+                    if (subconDeliveryLetterOut.ServiceType == "SUBCON JASA GARMENT WASH")
+                    {
+                        var subconSewing = _garmentSubconSewingRepository.Query.Where(x => x.Identity == subconDeliveryLetterOutItem.SubconId).Select(s => new GarmentServiceSubconSewing(s)).Single();
+                        subconSewing.SetIsUsed(true);
+                        subconSewing.Modify();
+
+                        await _garmentSubconSewingRepository.Update(subconSewing);
+                    }
+
                 }
                 await _garmentSubconDeliveryLetterOutItemRepository.Update(subconDeliveryLetterOutItem);
             });
