@@ -38,7 +38,15 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels
             ReadModel = new GarmentServiceSubconShrinkagePanelItemReadModel(identity)
             {
                 ServiceSubconShrinkagePanelId = ServiceSubconShrinkagePanelId,
-            };
+                UnitExpenditureNo = UnitExpenditureNo,
+                ExpenditureDate = ExpenditureDate,
+                UnitSenderId = UnitSenderId.Value,
+                UnitSenderCode = UnitSenderCode,
+                UnitSenderName = UnitSenderName,
+                UnitRequestId = UnitRequestId.Value,
+                UnitRequestCode = UnitRequestCode,
+                UnitRequestName = UnitRequestName,
+        };
 
             ReadModel.AddDomainEvent(new OnGarmentServiceSubconShrinkagePanelPlaced(Identity));
         }
