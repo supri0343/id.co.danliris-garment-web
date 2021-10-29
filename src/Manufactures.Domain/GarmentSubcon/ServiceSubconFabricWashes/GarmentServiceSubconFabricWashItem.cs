@@ -38,6 +38,14 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes
             ReadModel = new GarmentServiceSubconFabricWashItemReadModel(identity)
             {
                 ServiceSubconFabricWashId = ServiceSubconFabricWashId,
+                ExpenditureDate = ExpenditureDate,
+                UnitExpenditureNo = UnitExpenditureNo,
+                UnitSenderId = UnitSenderId.Value,
+                UnitSenderCode = UnitSenderCode,
+                UnitSenderName = UnitSenderName,
+                UnitRequestId = UnitRequestId.Value,
+                UnitRequestCode = UnitRequestCode,
+                UnitRequestName = UnitRequestName
             };
 
             ReadModel.AddDomainEvent(new OnGarmentServiceSubconFabricWashPlaced(Identity));
