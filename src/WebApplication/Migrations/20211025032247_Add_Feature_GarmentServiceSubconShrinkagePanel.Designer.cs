@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20211025032247_Add_Feature_GarmentServiceSubconShrinkagePanel")]
+    partial class Add_Feature_GarmentServiceSubconShrinkagePanel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3573,12 +3575,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<Guid>("Identity")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BuyerCode");
-
-                    b.Property<int>("BuyerId");
-
-                    b.Property<string>("BuyerName");
-
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(32);
@@ -3819,12 +3815,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<Guid>("Identity")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BuyerCode");
-
-                    b.Property<int>("BuyerId");
-
-                    b.Property<string>("BuyerName");
-
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(32);
@@ -4031,12 +4021,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("BPJNo")
                         .HasMaxLength(50);
 
-                    b.Property<string>("BuyerCode");
-
-                    b.Property<int>("BuyerId");
-
-                    b.Property<string>("BuyerName");
-
                     b.Property<DateTimeOffset>("ContractDate");
 
                     b.Property<string>("ContractNo")
@@ -4148,12 +4132,12 @@ namespace DanLiris.Admin.Web.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<Guid>("SubconDeliveryLetterOutId");
+                    b.Property<Guid>("SubconCuttingOutId");
 
-                    b.Property<Guid>("SubconId");
-
-                    b.Property<string>("SubconNo")
+                    b.Property<string>("SubconCuttingOutNo")
                         .HasMaxLength(50);
+
+                    b.Property<Guid>("SubconDeliveryLetterOutId");
 
                     b.Property<int>("UENItemId");
 
@@ -4223,9 +4207,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<string>("ServiceType")
-                        .HasMaxLength(25);
 
                     b.Property<Guid>("SubconContractId");
 

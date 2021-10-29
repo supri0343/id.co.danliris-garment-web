@@ -24,5 +24,6 @@
 
   <ItemGroup>
     <Folder Include="CommandHandlers\GarmentSubcon\GarmentServiceSubconSewings\" />
+    <Folder Include="Dtos\GarmentSubcon\GarmentServiceSubconShrinkagePanels\" />
   </ItemGroup>
 </Project>
