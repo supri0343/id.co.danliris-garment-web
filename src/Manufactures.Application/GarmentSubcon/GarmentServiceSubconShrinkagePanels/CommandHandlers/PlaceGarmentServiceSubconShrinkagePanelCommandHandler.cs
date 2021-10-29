@@ -89,7 +89,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconShrinkagePa
             var year = now.ToString("yy");
             var month = now.ToString("MM");
 
-            var prefix = $"SJF{year}{month}";
+            var prefix = $"SJSK{year}{month}";
 
             var lastServiceSubconShrinkagePanelNo = _garmentServiceSubconShrinkagePanelRepository.Query.Where(w => w.ServiceSubconShrinkagePanelNo.StartsWith(prefix))
                 .OrderByDescending(o => o.ServiceSubconShrinkagePanelNo)
