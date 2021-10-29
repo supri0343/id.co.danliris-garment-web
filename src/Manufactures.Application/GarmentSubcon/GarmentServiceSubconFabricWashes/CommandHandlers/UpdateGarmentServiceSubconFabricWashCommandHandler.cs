@@ -29,8 +29,6 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
         {
             var serviceSubconFabricWash = _garmentServiceSubconFabricWashRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentServiceSubconFabricWash(o)).Single();
 
-            Dictionary<Guid, double> sewInItemToBeUpdated = new Dictionary<Guid, double>();
-
             serviceSubconFabricWash.SetServiceSubconFabricWashDate(request.ServiceSubconFabricWashDate.GetValueOrDefault());
             serviceSubconFabricWash.Modify();
             await _garmentServiceSubconFabricWashRepository.Update(serviceSubconFabricWash);
