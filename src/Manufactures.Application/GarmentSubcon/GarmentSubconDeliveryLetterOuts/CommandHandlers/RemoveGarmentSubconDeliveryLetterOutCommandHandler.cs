@@ -58,7 +58,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     if (subconDeliveryLetterOut.ServiceType == "SUBCON JASA KOMPONEN")
                     {
                         var subconCutting = _garmentSubconCuttingRepository.Query.Where(x => x.Identity == subconDeliveryLetterOutItem.SubconId).Select(s => new GarmentServiceSubconCutting(s)).Single();
-                        subconCutting.SetIsUsed(true);
+                        subconCutting.SetIsUsed(false);
                         subconCutting.Modify();
 
                         await _garmentSubconCuttingRepository.Update(subconCutting);
@@ -66,7 +66,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     if (subconDeliveryLetterOut.ServiceType == "SUBCON JASA GARMENT WASH")
                     {
                         var subconSewing = _garmentSubconSewingRepository.Query.Where(x => x.Identity == subconDeliveryLetterOutItem.SubconId).Select(s => new GarmentServiceSubconSewing(s)).Single();
-                        subconSewing.SetIsUsed(true);
+                        subconSewing.SetIsUsed(false);
                         subconSewing.Modify();
 
                         await _garmentSubconSewingRepository.Update(subconSewing);
