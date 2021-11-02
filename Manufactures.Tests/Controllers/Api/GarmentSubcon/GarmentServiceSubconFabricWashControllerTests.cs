@@ -1,4 +1,5 @@
 ﻿using Barebone.Tests;
+using FluentAssertions;
 using Manufactures.Controllers.Api.GarmentSubcon;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Commands;
@@ -8,6 +9,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -191,6 +193,64 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+        [Fact]
+        public async Task GetComplete_Return_Success()
+        {
+            var unitUnderTest = CreateGarmentServiceSubconFabricWashController();
+            Guid id = Guid.NewGuid();
+            _mockGarmentServiceSubconFabricWashRepository
+              .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+              .Returns(new List<GarmentServiceSubconFabricWashReadModel>().AsQueryable());
+
+
+            _mockGarmentServiceSubconFabricWashRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconFabricWashReadModel>>()))
+                .Returns(new List<GarmentServiceSubconFabricWash>()
+                {
+                    new GarmentServiceSubconFabricWash(id, null, DateTimeOffset.Now, false)
+                });
+
+            GarmentServiceSubconFabricWashItem garmentServiceSubconFabricWashItem = new GarmentServiceSubconFabricWashItem(id, id, null, DateTimeOffset.Now, new UnitSenderId(1), null, null, new UnitRequestId(1), null, null);
+            GarmentServiceSubconFabricWashDetail garmentServiceSubconFabricWashDetail = new GarmentServiceSubconFabricWashDetail(new Guid(), new Guid(), new ProductId(1), null, null, null, "ColorD", 1, new UomId(1), null);
+
+            _mockGarmentServiceSubconFabricWashItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconFabricWashItemReadModel>()
+                {
+                    garmentServiceSubconFabricWashItem.GetReadModel()
+                }.AsQueryable());
+
+            _mockServiceSubconFabricWashDetailRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconFabricWashDetailReadModel>() {
+                    garmentServiceSubconFabricWashDetail.GetReadModel()
+                }.AsQueryable());
+
+            _mockGarmentServiceSubconFabricWashItemRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconFabricWashItemReadModel>>()))
+                .Returns(new List<GarmentServiceSubconFabricWashItem>()
+                {
+                    new GarmentServiceSubconFabricWashItem(id, id,  null, DateTimeOffset.Now,new UnitSenderId(1),null,null, new UnitRequestId(1), null, null)
+                });
+            _mockServiceSubconFabricWashDetailRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconFabricWashDetailReadModel>>()))
+                .Returns(new List<GarmentServiceSubconFabricWashDetail>()
+                {
+                    new GarmentServiceSubconFabricWashDetail(id, id, new ProductId(1), null, null, null, "ColorD", 1, new UomId(1), null)
+                });
+
+            // Act
+            var orderData = new
+            {
+                ServiceSubconFabricWashDate = "desc",
+            };
+
+            string order = JsonConvert.SerializeObject(orderData);
+            var result = await unitUnderTest.GetComplete(1, 25, order, new List<string>(), "", "{}");
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
         }
     }
 }
