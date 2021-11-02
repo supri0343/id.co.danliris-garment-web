@@ -1,9 +1,11 @@
 ﻿using Barebone.Controllers;
+using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Repositories;
 using Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconShrinkagePanels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -122,6 +124,45 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             var order = await Mediator.Send(command);
 
             return Ok(order.Identity);
+        }
+
+        [HttpGet("complete")]
+        public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentServiceSubconShrinkagePanelRepository.Read(page, size, order, keyword, filter);
+            var count = query.Count();
+
+            var garmentServiceSubconShrinkagePanelDto = _garmentServiceSubconShrinkagePanelRepository.Find(query).Select(o => new GarmentServiceSubconShrinkagePanelDto(o)).ToArray();
+            var garmentServiceSubconShrinkagePanelItemDto = _garmentServiceSubconShrinkagePanelItemRepository.Find(_garmentServiceSubconShrinkagePanelItemRepository.Query).Select(o => new GarmentServiceSubconShrinkagePanelItemDto(o)).ToList();
+            var garmentServiceSubconShrinkagePanelDetailDto = _garmentServiceSubconShrinkagePanelDetailRepository.Find(_garmentServiceSubconShrinkagePanelDetailRepository.Query).Select(o => new GarmentServiceSubconShrinkagePanelDetailDto(o)).ToList();
+
+            Parallel.ForEach(garmentServiceSubconShrinkagePanelDto, itemDto =>
+            {
+                var garmentServiceSubconShrinkagePanelItems = garmentServiceSubconShrinkagePanelItemDto.Where(x => x.ServiceSubconShrinkagePanelId == itemDto.Id).OrderBy(x => x.Id).ToList();
+
+                itemDto.Items = garmentServiceSubconShrinkagePanelItems;
+                Parallel.ForEach(itemDto.Items, detailDto =>
+                {
+                    var garmentServiceSubconShrinkagePanelDetails = garmentServiceSubconShrinkagePanelDetailDto.Where(x => x.ServiceSubconShrinkagePanelItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
+                    detailDto.Details = garmentServiceSubconShrinkagePanelDetails;
+                });
+            });
+
+            if (order != "{}")
+            {
+                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                garmentServiceSubconShrinkagePanelDto = QueryHelper<GarmentServiceSubconShrinkagePanelDto>.Order(garmentServiceSubconShrinkagePanelDto.AsQueryable(), OrderDictionary).ToArray();
+            }
+
+            await Task.Yield();
+            return Ok(garmentServiceSubconShrinkagePanelDto, info: new
+            {
+                page,
+                size,
+                count
+            });
         }
     }
 }
