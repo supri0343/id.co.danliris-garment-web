@@ -10,8 +10,10 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.ReadModels
         public GarmentSubconCustomsOutItemReadModel(Guid identity) : base(identity)
         {
         }
-        public string SubconDLOuttNo { get; internal set; }
-        public Guid SubconDLOuttId { get; internal set; }
+        public string SubconDLOutNo { get; internal set; }
+        public Guid SubconDLOutId { get; internal set; }
         public double Quantity { get; internal set; }
+        public Guid SubconCustomsOutId { get; internal set; }
+        public virtual GarmentSubconCustomsOutReadModel GarmentSubconCustomsOut { get; internal set; }
     }
 }

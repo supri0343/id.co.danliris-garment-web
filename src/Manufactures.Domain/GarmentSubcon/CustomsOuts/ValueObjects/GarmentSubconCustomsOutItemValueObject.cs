@@ -7,8 +7,10 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.ValueObjects
 {
     public class GarmentSubconCustomsOutItemValueObject : ValueObject
     {
-        public string SubconDLOuttNo { get; set; }
-        public Guid SubconDLOuttId { get; set; }
+        public Guid Id { get; set; }
+        public string SubconDLOutNo { get; set; }
+        public Guid SubconDLOutId { get; set; }
+        public Guid SubconCustomsOutId { get; set; }
         public double Quantity { get; set; }
         public double ContractQuantity { get; set; }
         public GarmentSubconCustomsOutItemValueObject()

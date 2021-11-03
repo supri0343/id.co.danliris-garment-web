@@ -10,30 +10,34 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
     public class GarmentSubconCustomsOutItem : AggregateRoot<GarmentSubconCustomsOutItem, GarmentSubconCustomsOutItemReadModel>
     {
 
-        public string SubconDLOuttNo { get; private set; }
-        public Guid SubconDLOuttId { get; private set; }
+        public string SubconDLOutNo { get; private set; }
+        public Guid SubconDLOutId { get; private set; }
         public double Quantity { get; private set; }
+        public Guid SubconCustomsOutId { get; internal set; }
 
-        public GarmentSubconCustomsOutItem(Guid identity, string subconDLOuttNo, Guid subconDLOuttId, double quantity) : base(identity)
+        public GarmentSubconCustomsOutItem(Guid identity, Guid subconCustomsOutId, string subconDLOutNo, Guid subconDLOutId, double quantity) : base(identity)
         {
             Identity = identity;
-            SubconDLOuttNo = subconDLOuttNo;
-            SubconDLOuttId = subconDLOuttId;
+            SubconDLOutNo = subconDLOutNo;
+            SubconDLOutId = subconDLOutId;
             Quantity = quantity;
+            SubconCustomsOutId = subconCustomsOutId;
             ReadModel = new GarmentSubconCustomsOutItemReadModel(Identity)
             {
-                SubconDLOuttNo = SubconDLOuttNo,
-                SubconDLOuttId = SubconDLOuttId,
+                SubconDLOutNo = SubconDLOutNo,
+                SubconDLOutId = SubconDLOutId,
                 Quantity = Quantity,
+                SubconCustomsOutId= SubconCustomsOutId
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconCustomsOutPlaced(Identity));
         }
         public GarmentSubconCustomsOutItem(GarmentSubconCustomsOutItemReadModel readModel) : base(readModel)
         {
-            SubconDLOuttNo = readModel.SubconDLOuttNo;
-            SubconDLOuttId = readModel.SubconDLOuttId;
+            SubconDLOutNo = readModel.SubconDLOutNo;
+            SubconDLOutId = readModel.SubconDLOutId;
             Quantity = readModel.Quantity;
+            SubconCustomsOutId = readModel.SubconCustomsOutId;
         }
         public void Modify()
         {

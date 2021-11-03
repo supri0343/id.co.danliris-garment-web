@@ -12,7 +12,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
     {
         
         public string CustomsOutNo { get; private set; }
-        public DateTimeOffset CustomsOutDateDate { get; private set; }
+        public DateTimeOffset CustomsOutDate { get; private set; }
         public string CustomsOutType { get; private set; }
         public string SubconType { get; private set; }
         public Guid SubconContractId { get; private set; }
@@ -22,11 +22,11 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
         public string SupplierName { get; private set; }
         public string Remark { get; private set; }
 
-        public GarmentSubconCustomsOut(Guid identity, string customsOutNo, DateTimeOffset customsOutDateDate, string customsOutType, string subconType, Guid subconContractId, string subconContractNo, SupplierId supplierId, string supplierCode, string supplierName, string remark) : base(identity)
+        public GarmentSubconCustomsOut(Guid identity, string customsOutNo, DateTimeOffset customsOutDate, string customsOutType, string subconType, Guid subconContractId, string subconContractNo, SupplierId supplierId, string supplierCode, string supplierName, string remark) : base(identity)
         {
             Identity = identity;
             CustomsOutNo = customsOutNo;
-            CustomsOutDateDate = customsOutDateDate;
+            CustomsOutDate = customsOutDate;
             CustomsOutType = customsOutType;
             SubconType = subconType;
             SubconContractId = subconContractId;
@@ -39,7 +39,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
             ReadModel = new GarmentSubconCustomsOutReadModel(Identity)
             {
                 CustomsOutNo = CustomsOutNo,
-                CustomsOutDateDate = CustomsOutDateDate,
+                CustomsOutDate = CustomsOutDate,
                 CustomsOutType = CustomsOutType,
                 SubconContractId = SubconContractId,
                 SubconType = SubconType,
@@ -57,7 +57,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
         public GarmentSubconCustomsOut(GarmentSubconCustomsOutReadModel readModel) : base(readModel)
         {
             CustomsOutNo = readModel.CustomsOutNo;
-            CustomsOutDateDate = readModel.CustomsOutDateDate;
+            CustomsOutDate = readModel.CustomsOutDate;
             CustomsOutType = readModel.CustomsOutType;
             SubconType = readModel.SubconType;
             SubconContractNo = readModel.SubconContractNo;
@@ -78,12 +78,12 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
             return this;
         }
 
-        public void SetDate(DateTimeOffset CustomsOutDateDate)
+        public void SetDate(DateTimeOffset CustomsOutDate)
         {
-            if (this.CustomsOutDateDate != CustomsOutDateDate)
+            if (this.CustomsOutDate != CustomsOutDate)
             {
-                this.CustomsOutDateDate = CustomsOutDateDate;
-                ReadModel.CustomsOutDateDate = CustomsOutDateDate;
+                this.CustomsOutDate = CustomsOutDate;
+                ReadModel.CustomsOutDate = CustomsOutDate;
             }
         }
 

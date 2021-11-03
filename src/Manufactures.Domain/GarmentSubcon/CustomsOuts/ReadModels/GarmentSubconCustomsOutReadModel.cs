@@ -11,7 +11,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.ReadModels
         {
         }
         public string CustomsOutNo { get; internal set; }
-        public DateTimeOffset CustomsOutDateDate { get; internal set; }
+        public DateTimeOffset CustomsOutDate { get; internal set; }
         public string CustomsOutType { get; internal set; }
         public string SubconType { get; internal set; }
         public Guid SubconContractId { get; internal set; }
