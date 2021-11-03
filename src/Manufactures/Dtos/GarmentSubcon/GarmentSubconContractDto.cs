@@ -22,6 +22,8 @@ namespace Manufactures.Dtos.GarmentSubcon
             DueDate = garmentSubconContract.DueDate;
             ContractDate = garmentSubconContract.ContractDate;
             IsUsed = garmentSubconContract.IsUsed;
+            Buyer = new Buyer(garmentSubconContract.BuyerId.Value, garmentSubconContract.BuyerCode, garmentSubconContract.BuyerName);
+
         }
         public Guid Id { get; internal set; }
         public string ContractType { get;  set; }
@@ -35,6 +37,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public DateTimeOffset DueDate { get;  set; }
         public DateTimeOffset ContractDate { get; set; }
         public bool IsUsed { get; set; }
+        public Buyer Buyer { get; set; }
     }
 
 }

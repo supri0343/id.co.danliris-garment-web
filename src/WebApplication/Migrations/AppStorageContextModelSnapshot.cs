@@ -3679,6 +3679,12 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<Guid>("Identity")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("BuyerCode");
+
+                    b.Property<int>("BuyerId");
+
+                    b.Property<string>("BuyerName");
+
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(32);
@@ -3788,6 +3794,163 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasIndex("ServiceSubconCuttingDetailId");
 
                     b.ToTable("GarmentServiceSubconCuttingSizes");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.ReadModels.GarmentServiceSubconFabricWashDetailReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<string>("DesignColor")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<string>("ProductCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<string>("ProductName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ProductRemark")
+                        .HasMaxLength(1000);
+
+                    b.Property<decimal>("Quantity");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<Guid>("ServiceSubconFabricWashItemId");
+
+                    b.Property<int>("UomId");
+
+                    b.Property<string>("UomUnit")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("ServiceSubconFabricWashItemId");
+
+                    b.ToTable("GarmentServiceSubconFabricWashDetails");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.ReadModels.GarmentServiceSubconFabricWashItemReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<DateTimeOffset>("ExpenditureDate");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<Guid>("ServiceSubconFabricWashId");
+
+                    b.Property<string>("UnitExpenditureNo")
+                        .HasMaxLength(25);
+
+                    b.Property<string>("UnitRequestCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("UnitRequestId");
+
+                    b.Property<string>("UnitRequestName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("UnitSenderCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("UnitSenderId");
+
+                    b.Property<string>("UnitSenderName")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("ServiceSubconFabricWashId");
+
+                    b.ToTable("GarmentServiceSubconFabricWashItems");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.ReadModels.GarmentServiceSubconFabricWashReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<bool>("IsUsed");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<DateTimeOffset>("ServiceSubconFabricWashDate");
+
+                    b.Property<string>("ServiceSubconFabricWashNo")
+                        .HasMaxLength(25);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("ServiceSubconFabricWashNo")
+                        .IsUnique()
+                        .HasFilter("[Deleted]=(0)");
+
+                    b.ToTable("GarmentServiceSubconFabricWashes");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ReadModels.GarmentServiceSubconSewingDetailReadModel", b =>
@@ -3919,6 +4082,12 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<Guid>("Identity")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("BuyerCode");
+
+                    b.Property<int>("BuyerId");
+
+                    b.Property<string>("BuyerName");
+
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(32);
@@ -3957,6 +4126,163 @@ namespace DanLiris.Admin.Web.Migrations
                     b.ToTable("GarmentServiceSubconSewings");
                 });
 
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.ReadModels.GarmentServiceSubconShrinkagePanelDetailReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<string>("DesignColor")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<string>("ProductCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<string>("ProductName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ProductRemark")
+                        .HasMaxLength(1000);
+
+                    b.Property<decimal>("Quantity");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<Guid>("ServiceSubconShrinkagePanelItemId");
+
+                    b.Property<int>("UomId");
+
+                    b.Property<string>("UomUnit")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("ServiceSubconShrinkagePanelItemId");
+
+                    b.ToTable("GarmentServiceSubconShrinkagePanelDetails");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.ReadModels.GarmentServiceSubconShrinkagePanelItemReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<DateTimeOffset>("ExpenditureDate");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<Guid>("ServiceSubconShrinkagePanelId");
+
+                    b.Property<string>("UnitExpenditureNo")
+                        .HasMaxLength(25);
+
+                    b.Property<string>("UnitRequestCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("UnitRequestId");
+
+                    b.Property<string>("UnitRequestName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("UnitSenderCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("UnitSenderId");
+
+                    b.Property<string>("UnitSenderName")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("ServiceSubconShrinkagePanelId");
+
+                    b.ToTable("GarmentServiceSubconShrinkagePanelItems");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.ReadModels.GarmentServiceSubconShrinkagePanelReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<bool>("IsUsed");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<DateTimeOffset>("ServiceSubconShrinkagePanelDate");
+
+                    b.Property<string>("ServiceSubconShrinkagePanelNo")
+                        .HasMaxLength(25);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("ServiceSubconShrinkagePanelNo")
+                        .IsUnique()
+                        .HasFilter("[Deleted]=(0)");
+
+                    b.ToTable("GarmentServiceSubconShrinkagePanels");
+                });
+
             modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels.GarmentSubconContractReadModel", b =>
                 {
                     b.Property<Guid>("Identity")
@@ -3967,6 +4293,12 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("BPJNo")
                         .HasMaxLength(50);
+
+                    b.Property<string>("BuyerCode");
+
+                    b.Property<int>("BuyerId");
+
+                    b.Property<string>("BuyerName");
 
                     b.Property<DateTimeOffset>("ContractDate");
 
@@ -4079,12 +4411,12 @@ namespace DanLiris.Admin.Web.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<Guid>("SubconCuttingOutId");
-
-                    b.Property<string>("SubconCuttingOutNo")
-                        .HasMaxLength(50);
-
                     b.Property<Guid>("SubconDeliveryLetterOutId");
+
+                    b.Property<Guid>("SubconId");
+
+                    b.Property<string>("SubconNo")
+                        .HasMaxLength(50);
 
                     b.Property<int>("UENItemId");
 
@@ -4154,6 +4486,9 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("ServiceType")
+                        .HasMaxLength(50);
 
                     b.Property<Guid>("SubconContractId");
 
@@ -4566,6 +4901,22 @@ namespace DanLiris.Admin.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.ReadModels.GarmentServiceSubconFabricWashDetailReadModel", b =>
+                {
+                    b.HasOne("Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.ReadModels.GarmentServiceSubconFabricWashItemReadModel", "GarmentServiceSubconFabricWashItemIdentity")
+                        .WithMany("GarmentServiceSubconFabricWashDetail")
+                        .HasForeignKey("ServiceSubconFabricWashItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.ReadModels.GarmentServiceSubconFabricWashItemReadModel", b =>
+                {
+                    b.HasOne("Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.ReadModels.GarmentServiceSubconFabricWashReadModel", "GarmentServiceSubconFabricWashIdentity")
+                        .WithMany("GarmentServiceSubconFabricWashItem")
+                        .HasForeignKey("ServiceSubconFabricWashId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ReadModels.GarmentServiceSubconSewingDetailReadModel", b =>
                 {
                     b.HasOne("Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ReadModels.GarmentServiceSubconSewingItemReadModel", "GarmentServiceSubconSewingItemIdentity")
@@ -4579,6 +4930,22 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasOne("Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ReadModels.GarmentServiceSubconSewingReadModel", "GarmentServiceSubconSewingIdentity")
                         .WithMany("GarmentServiceSubconSewingItem")
                         .HasForeignKey("ServiceSubconSewingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.ReadModels.GarmentServiceSubconShrinkagePanelDetailReadModel", b =>
+                {
+                    b.HasOne("Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.ReadModels.GarmentServiceSubconShrinkagePanelItemReadModel", "GarmentServiceSubconShrinkagePanelItemIdentity")
+                        .WithMany("GarmentServiceSubconShrinkagePanelDetail")
+                        .HasForeignKey("ServiceSubconShrinkagePanelItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.ReadModels.GarmentServiceSubconShrinkagePanelItemReadModel", b =>
+                {
+                    b.HasOne("Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.ReadModels.GarmentServiceSubconShrinkagePanelReadModel", "GarmentServiceSubconShrinkagePanelIdentity")
+                        .WithMany("GarmentServiceSubconShrinkagePanelItem")
+                        .HasForeignKey("ServiceSubconShrinkagePanelId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

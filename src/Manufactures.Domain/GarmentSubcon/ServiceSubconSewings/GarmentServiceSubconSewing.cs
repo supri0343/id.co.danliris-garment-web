@@ -12,14 +12,20 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
         public string ServiceSubconSewingNo { get; private set; }
         public DateTimeOffset ServiceSubconSewingDate { get; private set; }
         public bool IsUsed { get; internal set; }
+        public BuyerId BuyerId { get; private set; }
+        public string BuyerCode { get; private set; }
+        public string BuyerName { get; private set; }
         //
-        public GarmentServiceSubconSewing(Guid identity, string serviceSubconSewingNo, DateTimeOffset serviceSubconSewingDate, bool isUsed) : base(identity)
+        public GarmentServiceSubconSewing(Guid identity, string serviceSubconSewingNo, DateTimeOffset serviceSubconSewingDate, bool isUsed, BuyerId buyerId, string buyerCode, string buyerName) : base(identity)
         {
             
             Identity = identity;
             ServiceSubconSewingNo = serviceSubconSewingNo;
             ServiceSubconSewingDate = serviceSubconSewingDate;
             IsUsed = isUsed;
+            BuyerId = buyerId;
+            BuyerCode = buyerCode;
+            BuyerName = buyerName;
 
             ReadModel = new GarmentServiceSubconSewingReadModel(Identity)
             {
@@ -28,7 +34,10 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
                 //UnitId = UnitId.Value,
                 //UnitCode = UnitCode,
                 //UnitName = UnitName,
-                IsUsed = IsUsed
+                IsUsed = IsUsed,
+                BuyerId = BuyerId.Value,
+                BuyerCode = BuyerCode,
+                BuyerName = BuyerName
             };
 
             ReadModel.AddDomainEvent(new OnGarmentServiceSubconSewingPlaced(Identity));
@@ -43,6 +52,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             //UnitCode = readModel.UnitCode;
             //UnitName = readModel.UnitName;
             IsUsed = readModel.IsUsed;
+            BuyerId = new BuyerId(readModel.BuyerId);
+            BuyerCode = readModel.BuyerCode;
+            BuyerName = readModel.BuyerName;
         }
 
         public void SetDate(DateTimeOffset ServiceSubconSewingDate)
@@ -62,6 +74,31 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
                 ReadModel.IsUsed = isUsed;
 
                 MarkModified();
+            }
+        }
+
+        public void SetBuyerId(BuyerId SupplierId)
+        {
+            if (this.BuyerId != BuyerId)
+            {
+                this.BuyerId = BuyerId;
+                ReadModel.BuyerId = BuyerId.Value;
+            }
+        }
+        public void SetBuyerCode(string BuyerCode)
+        {
+            if (this.BuyerCode != BuyerCode)
+            {
+                this.BuyerCode = BuyerCode;
+                ReadModel.BuyerCode = BuyerCode;
+            }
+        }
+        public void SetBuyerName(string BuyerName)
+        {
+            if (this.BuyerName != BuyerName)
+            {
+                this.BuyerName = BuyerName;
+                ReadModel.BuyerName = BuyerName;
             }
         }
 
