@@ -149,7 +149,6 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             await _garmentSubconDeliveryLetterOutRepository.Update(garmentSubconDeliveryLetterOut);
 
             _storage.Save();
-
             return garmentSubconDeliveryLetterOut;
         }
 
