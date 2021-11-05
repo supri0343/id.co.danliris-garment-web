@@ -27,7 +27,8 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.Commands
     {
         public PlaceGarmentSubconCustomsOutCommandValidator()
         {
-            RuleFor(r => r.SubconContractId).NotNull();
+            RuleFor(r => r.CustomsOutNo).NotNull().NotEmpty().WithMessage("No BC Keluar tidak boleh kosong");
+            RuleFor(r => r.SubconContractId).NotNull().WithMessage("No Subcon Contract tidak boleh kosong");
             RuleFor(r => r.SubconContractNo).NotNull();
             RuleFor(r => r.CustomsOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
