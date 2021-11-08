@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Repositories;
 using Manufactures.Dtos.GarmentSubcon;
+using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -227,6 +228,37 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 size,
                 count
             });
+        }
+
+        [HttpGet("get-pdf/{id}")]
+        public async Task<IActionResult> GetPdf(string id)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            //int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+            GarmentServiceSubconCuttingDto garmentServiceSubconCuttingDto = _garmentServiceSubconCuttingRepository.Find(o => o.Identity == guid).Select(subcon => new GarmentServiceSubconCuttingDto(subcon)
+            {
+                Items = _garmentServiceSubconCuttingItemRepository.Find(o => o.ServiceSubconCuttingId == subcon.Identity).Select(subconItem => new GarmentServiceSubconCuttingItemDto(subconItem)
+                {
+                    Details = _garmentServiceSubconCuttingDetailRepository.Find(o => o.ServiceSubconCuttingItemId == subconItem.Identity).Select(subconDetail => new GarmentServiceSubconCuttingDetailDto(subconDetail)
+                    {
+                        Sizes = _garmentServiceSubconCuttingSizeRepository.Find(o => o.ServiceSubconCuttingDetailId == subconDetail.Identity).Select(subconSize => new GarmentServiceSubconCuttingSizeDto(subconSize)
+                        {
+
+                        }).ToList()
+                    }).ToList()
+                }).ToList()
+            }
+            ).FirstOrDefault();
+
+            var stream = GarmentServiceSubconCuttingPDFTemplate.Generate(garmentServiceSubconCuttingDto);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentServiceSubconCuttingDto.SubconNo}.pdf"
+            };
         }
 
     }
