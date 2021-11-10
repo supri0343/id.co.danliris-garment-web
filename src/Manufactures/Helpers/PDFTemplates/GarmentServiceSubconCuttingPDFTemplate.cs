@@ -46,14 +46,14 @@ namespace Manufactures.Helpers.PDFTemplates
             tableHeader.AddCell(cellHeaderContentLeft);
 
             PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal Subcon    : " + garmentSubconCutting.SubconDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
-            cellHeaderContentCenter.AddElement(new Paragraph("No Subcon             : " + garmentSubconCutting.SubconNo, normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal Subcon  : " + garmentSubconCutting.SubconDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("No Subcon          : " + garmentSubconCutting.SubconNo, normal_font));
             tableHeader.AddCell(cellHeaderContentCenter);
 
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
             cellHeaderContentRight.AddElement(new Phrase("Jenis Subcon  :" + garmentSubconCutting.SubconType, normal_font));
             cellHeaderContentRight.AddElement(new Phrase("Unit Asal         : " + garmentSubconCutting.Unit.Name, normal_font));
-            cellHeaderContentRight.AddElement(new Phrase("Buyer             : " + garmentSubconCutting.Buyer.Name, normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("Buyer              : " + garmentSubconCutting.Buyer.Name, normal_font));
 
             tableHeader.AddCell(cellHeaderContentRight);
 
@@ -69,21 +69,23 @@ namespace Manufactures.Helpers.PDFTemplates
 
             foreach (var item in garmentSubconCutting.Items)
             {
-                GarmentSubconCuttingItemVM garmentSubconCuttingItemVM = new GarmentSubconCuttingItemVM();
-                garmentSubconCuttingItemVM.RoNo = item.RONo;
-                garmentSubconCuttingItemVM.Article = item.Article;
-                garmentSubconCuttingItemVM.Comodity = item.Comodity.Code + " - " + item.Comodity.Name;
                 foreach (var detail in item.Details)
                 {
-                    List<GarmentSubconCuttingSize> sizes = new List<GarmentSubconCuttingSize>();
-
-                    garmentSubconCuttingItemVM.DesignColor = detail.DesignColor;
                     foreach (var size in detail.Sizes)
                     {
-                        var data = itemData.FirstOrDefault(x => x.RoNo == garmentSubconCuttingItemVM.RoNo && x.DesignColor == garmentSubconCuttingItemVM.DesignColor);
+                        var data = itemData.FirstOrDefault(x => x.RoNo == item.RONo && x.DesignColor == detail.DesignColor && x.Color == size.Color);
                         if(data == null)
                         {
+                            List<GarmentSubconCuttingSize> sizes = new List<GarmentSubconCuttingSize>();
                             GarmentSubconCuttingSize garmentSubconCuttingSize = new GarmentSubconCuttingSize();
+
+                            GarmentSubconCuttingItemVM garmentSubconCuttingItemVM = new GarmentSubconCuttingItemVM();
+
+                            garmentSubconCuttingItemVM.RoNo = item.RONo;
+                            garmentSubconCuttingItemVM.Article = item.Article;
+                            garmentSubconCuttingItemVM.Comodity = item.Comodity.Code + " - " + item.Comodity.Name;
+
+                            garmentSubconCuttingItemVM.DesignColor = detail.DesignColor;
 
                             garmentSubconCuttingSize.Size = size.Size.Size;
                             garmentSubconCuttingSize.Quantity = size.Quantity;
@@ -104,8 +106,6 @@ namespace Manufactures.Helpers.PDFTemplates
 
                                 garmentSubconCuttingSize.Size = size.Size.Size;
                                 garmentSubconCuttingSize.Quantity = size.Quantity;
-                                garmentSubconCuttingItemVM.Unit = size.Uom.Unit;
-                                garmentSubconCuttingItemVM.Color = size.Color;
 
                                 listSize.Add(garmentSubconCuttingSize.Size);
                                 data.Sizes.Add(garmentSubconCuttingSize);
@@ -249,7 +249,7 @@ namespace Manufactures.Helpers.PDFTemplates
             tableSignature.AddCell(cellCenterTopNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph("Bag. Cutting\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph($"Dicetak : {DateTimeOffset.Now.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy / HH:mm:ss", new CultureInfo("id-ID"))}", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph($"\nDicetak : {DateTimeOffset.Now.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy / HH:mm:ss", new CultureInfo("id-ID"))}", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
