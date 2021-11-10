@@ -5054,7 +5054,8 @@ namespace DanLiris.Admin.Web.Migrations
                 {
                     b.HasOne("Manufactures.Domain.GarmentSubcon.SubconCustomsIns.ReadModels.GarmentSubconCustomsInReadModel", "GarmentSubconCustomsIn")
                         .WithMany("GarmentSubconCustomsInItem")
-                        .HasForeignKey("SubconCustomsInId")
+                        .HasForeignKey("SubconCustomsInId");
+                });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.ReadModels.GarmentServiceSubconShrinkagePanelDetailReadModel", b =>
                 {
