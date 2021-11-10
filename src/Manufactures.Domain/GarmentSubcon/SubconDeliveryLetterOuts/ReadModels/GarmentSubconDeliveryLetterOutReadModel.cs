@@ -15,6 +15,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels
         public Guid SubconContractId { get; internal set; }
         public string ContractNo { get; internal set; }
         public string ContractType { get; internal set; }
+        public string ServiceType { get; internal set; }
         public DateTimeOffset DLDate { get; internal set; }
 
 

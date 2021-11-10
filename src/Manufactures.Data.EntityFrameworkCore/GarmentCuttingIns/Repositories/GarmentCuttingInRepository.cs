@@ -3,6 +3,7 @@ using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Domain.GarmentCuttingIns;
 using Manufactures.Domain.GarmentCuttingIns.ReadModels;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
+using Manufactures.Domain.GarmentPreparings.ReadModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,26 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Repositories
         public IQueryable<GarmentCuttingInReadModel> Read(int page, int size, string order, string keyword, string filter)
         {
             var data = Query;
+            var buyerCode = string.Empty;
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            
+            if (FilterDictionary.ContainsKey("BuyerCode"))
+            { 
+                buyerCode = FilterDictionary.FirstOrDefault(k => k.Key == "BuyerCode").Value.ToString();
+                FilterDictionary.Remove("BuyerCode");
+            }
+
             data = QueryHelper<GarmentCuttingInReadModel>.Filter(data, FilterDictionary);
+
+            if (!string.IsNullOrEmpty(buyerCode))
+            {
+                var preparings = storageContext.Set<GarmentPreparingReadModel>();
+                var roNo = preparings.Where(x => x.BuyerCode == buyerCode)
+                    .Select(s => s.RONo).Distinct().ToList();
+
+                data = data.Where(x => roNo.Contains(x.RONo));
+            }
 
             if (!string.IsNullOrWhiteSpace(keyword))
             {

@@ -32,12 +32,12 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
 
         #region Cutting
         public string RONo { get; private set; }
-        public Guid SubconCuttingOutId { get; private set; }
+        public Guid SubconId { get; private set; }
         public string POSerialNumber { get; private set; }
-        public string SubconCuttingOutNo { get; private set; }
+        public string SubconNo { get; private set; }
 
         #endregion
-        public GarmentSubconDeliveryLetterOutItem(Guid identity, Guid subconDeliveryLetterOutId, int uENItemId, ProductId productId, string productCode, string productName, string productRemark, string designColor, double quantity, UomId uomId, string uomUnit, UomId uomOutId, string uomOutUnit, string fabricType, Guid subconCuttingOutId, string roNo, string poSerialNumber, string subconCuttingOutNo) : base(identity)
+        public GarmentSubconDeliveryLetterOutItem(Guid identity, Guid subconDeliveryLetterOutId, int uENItemId, ProductId productId, string productCode, string productName, string productRemark, string designColor, double quantity, UomId uomId, string uomUnit, UomId uomOutId, string uomOutUnit, string fabricType, Guid subconId, string roNo, string poSerialNumber, string subconNo) : base(identity)
         {
             Identity = identity;
             SubconDeliveryLetterOutId = subconDeliveryLetterOutId;
@@ -53,10 +53,10 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             UomOutId = uomOutId;
             UomOutUnit = uomOutUnit;
             FabricType = fabricType;
-            SubconCuttingOutId = subconCuttingOutId;
+            SubconId = subconId;
             RONo = roNo;
             POSerialNumber = poSerialNumber;
-            SubconCuttingOutNo = subconCuttingOutNo;
+            SubconNo = subconNo;
 
             ReadModel = new GarmentSubconDeliveryLetterOutItemReadModel(Identity)
             {
@@ -73,10 +73,10 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
                 UomOutUnit = UomOutUnit,
                 ProductRemark = ProductRemark,
                 FabricType = FabricType,
-                SubconCuttingOutId = SubconCuttingOutId,
+                SubconId = SubconId,
                 RONo = RONo,
                 POSerialNumber = POSerialNumber,
-                SubconCuttingOutNo= SubconCuttingOutNo
+                SubconNo= SubconNo
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconDeliveryLetterOutPlaced(Identity));
@@ -99,8 +99,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             UomOutUnit = readModel.UomOutUnit;
             POSerialNumber = readModel.POSerialNumber;
             RONo = readModel.RONo;
-            SubconCuttingOutId = readModel.SubconCuttingOutId;
-            SubconCuttingOutNo = readModel.SubconCuttingOutNo;
+            SubconId = readModel.SubconId;
+            SubconNo = readModel.SubconNo;
         }
 
         public void Modify()

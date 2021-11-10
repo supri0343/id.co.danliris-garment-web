@@ -30,9 +30,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels
 
         #region Cutting
         public string RONo { get; internal set; }
-        public Guid SubconCuttingOutId { get; internal set; }
+        public Guid SubconId { get; internal set; }
         public string POSerialNumber { get; internal set; }
-        public string SubconCuttingOutNo { get; internal set; }
+        public string SubconNo { get; internal set; }
 
         #endregion
         public virtual GarmentSubconDeliveryLetterOutReadModel GarmentSubconDeliveryLetterOut { get; internal set; }
