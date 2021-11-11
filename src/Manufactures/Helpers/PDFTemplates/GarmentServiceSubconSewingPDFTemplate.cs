@@ -10,9 +10,9 @@ using System.Linq;
 
 namespace Manufactures.Helpers.PDFTemplates
 {
-    public class GarmentServiceSubconCuttingPDFTemplate
+    public class GarmentServiceSubconSewingPDFTemplate
     {
-        public static MemoryStream Generate(GarmentServiceSubconCuttingDto garmentSubconCutting)
+        public static MemoryStream Generate(GarmentServiceSubconSewingDto garmentSubconSewing)
         {
             Document document = new Document(PageSize.A5.Rotate(), 10, 10, 10, 10);
             MemoryStream stream = new MemoryStream();
@@ -46,14 +46,12 @@ namespace Manufactures.Helpers.PDFTemplates
             tableHeader.AddCell(cellHeaderContentLeft);
 
             PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal Subcon  : " + garmentSubconCutting.SubconDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
-            cellHeaderContentCenter.AddElement(new Paragraph("No Subcon          : " + garmentSubconCutting.SubconNo, normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal Subcon    : " + garmentSubconSewing.ServiceSubconSewingDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("No Subcon            : " + garmentSubconSewing.ServiceSubconSewingNo, normal_font));
             tableHeader.AddCell(cellHeaderContentCenter);
 
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentRight.AddElement(new Phrase("Jenis Subcon  :" + garmentSubconCutting.SubconType, normal_font));
-            cellHeaderContentRight.AddElement(new Phrase("Unit Asal         : " + garmentSubconCutting.Unit.Name, normal_font));
-            cellHeaderContentRight.AddElement(new Phrase("Buyer              : " + garmentSubconCutting.Buyer.Name, normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("Buyer : " + garmentSubconSewing.Buyer.Name, normal_font));
 
             tableHeader.AddCell(cellHeaderContentRight);
 
@@ -63,117 +61,73 @@ namespace Manufactures.Helpers.PDFTemplates
             document.Add(tableHeader);
             #endregion
 
-            List<GarmentSubconCuttingItemVM> itemData = new List<GarmentSubconCuttingItemVM>();
-            List<string> listSize = new List<string>();
-            Dictionary<string, string> sizeData = new Dictionary<string, string>();
+            List<GarmentSubconSewingItemVM> itemData = new List<GarmentSubconSewingItemVM>();
 
-            foreach (var item in garmentSubconCutting.Items)
+            foreach (var item in garmentSubconSewing.Items)
             {
                 foreach (var detail in item.Details)
                 {
-                    foreach (var size in detail.Sizes)
+                    var data = itemData.FirstOrDefault(x =>x.RoNo == item.RONo&& x.DesignColor == detail.DesignColor);
+
+                    GarmentSubconSewingItemVM garmentSubconSewingItemVM = new GarmentSubconSewingItemVM();
+                    garmentSubconSewingItemVM.RoNo = item.RONo;
+                    garmentSubconSewingItemVM.Article = item.Article;
+                    garmentSubconSewingItemVM.Comodity = item.Comodity.Code + " - " + item.Comodity.Name;
+
+                    if (data == null)
                     {
-                        var data = itemData.FirstOrDefault(x => x.RoNo == item.RONo && x.DesignColor == detail.DesignColor && x.Color == size.Color);
-                        if(data == null)
-                        {
-                            List<GarmentSubconCuttingSize> sizes = new List<GarmentSubconCuttingSize>();
-                            GarmentSubconCuttingSize garmentSubconCuttingSize = new GarmentSubconCuttingSize();
-
-                            GarmentSubconCuttingItemVM garmentSubconCuttingItemVM = new GarmentSubconCuttingItemVM();
-
-                            garmentSubconCuttingItemVM.RoNo = item.RONo;
-                            garmentSubconCuttingItemVM.Article = item.Article;
-                            garmentSubconCuttingItemVM.Comodity = item.Comodity.Code + " - " + item.Comodity.Name;
-
-                            garmentSubconCuttingItemVM.DesignColor = detail.DesignColor;
-
-                            garmentSubconCuttingSize.Size = size.Size.Size;
-                            garmentSubconCuttingSize.Quantity = size.Quantity;
-                            garmentSubconCuttingItemVM.Unit = size.Uom.Unit;
-                            garmentSubconCuttingItemVM.Color = size.Color;
-
-                            sizes.Add(garmentSubconCuttingSize);
-                            listSize.Add(garmentSubconCuttingSize.Size);
-                            garmentSubconCuttingItemVM.Sizes = sizes;
-                            itemData.Add(garmentSubconCuttingItemVM);
-                        }
-                        else
-                        {
-                            var existingSize = data.Sizes.FirstOrDefault(x => x.Size == size.Size.Size);
-                            if (existingSize == null)
-                            {
-                                GarmentSubconCuttingSize garmentSubconCuttingSize = new GarmentSubconCuttingSize();
-
-                                garmentSubconCuttingSize.Size = size.Size.Size;
-                                garmentSubconCuttingSize.Quantity = size.Quantity;
-
-                                listSize.Add(garmentSubconCuttingSize.Size);
-                                data.Sizes.Add(garmentSubconCuttingSize);
-                            }
-                            else
-                            {
-                                existingSize.Quantity += size.Quantity;
-                            }
-                        }
+                        garmentSubconSewingItemVM.DesignColor = detail.DesignColor;
+                        garmentSubconSewingItemVM.Unit = detail.Unit.Code;
+                        garmentSubconSewingItemVM.Quantity = detail.Quantity;
+                        garmentSubconSewingItemVM.UomUnit = detail.Uom.Unit;
+                        itemData.Add(garmentSubconSewingItemVM);
+                    }
+                    else
+                    {
+                        data.Quantity += detail.Quantity;
                     }
                 }
             }
 
-            listSize.Sort();
             #region content
 
-            PdfPTable tableContent = new PdfPTable(7 + listSize.Count());
+            PdfPTable tableContent = new PdfPTable(8);
             List<float> widths = new List<float>();
             widths.Add(4f);
             widths.Add(4f);
             widths.Add(6f);
             widths.Add(4f);
-
-            foreach (var s in listSize)
-            {
-                widths.Add(2f);
-            }
-
             widths.Add(3f);
             widths.Add(3f);
             widths.Add(3f);
+            widths.Add(4f);
 
             tableContent.SetWidths(widths.ToArray());
 
             cellCenter.Phrase = new Phrase("R0", bold_font);
-            cellCenter.Rowspan = 2;
+            cellCenter.Rowspan = 1;
             tableContent.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("Artikel", bold_font);
-            cellCenter.Rowspan = 2;
+            cellCenter.Rowspan = 1;
             tableContent.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("Komoditi", bold_font);
-            cellCenter.Rowspan = 2;
-            tableContent.AddCell(cellCenter);
-            cellCenter.Phrase = new Phrase("Keterangan", bold_font);
-            cellCenter.Rowspan = 2;
-            tableContent.AddCell(cellCenter);
-            cellCenter.Phrase = new Phrase("Size", bold_font);
             cellCenter.Rowspan = 1;
-            cellCenter.Colspan = listSize.Count();
-            tableContent.AddCell(cellCenter);
-            cellCenter.Phrase = new Phrase("Jumlah", bold_font);
-            cellCenter.Colspan = 1;
-            cellCenter.Rowspan = 2;
-            tableContent.AddCell(cellCenter);
-            cellCenter.Phrase = new Phrase("Satuan", bold_font);
-            cellCenter.Rowspan = 2;
             tableContent.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("Warna", bold_font);
-            cellCenter.Rowspan = 2;
+            cellCenter.Rowspan = 1;
             tableContent.AddCell(cellCenter);
-
-            foreach (var s in listSize)
-            {
-                cellCenter.Phrase = new Phrase(s, bold_font);
-                cellCenter.Rowspan = 1;
-                cellCenter.Colspan = 1;
-                tableContent.AddCell(cellCenter);
-            }
+            cellCenter.Phrase = new Phrase("Unit", bold_font);
+            cellCenter.Rowspan = 1;
+            tableContent.AddCell(cellCenter);
+            cellCenter.Phrase = new Phrase("Jumlah", bold_font);
+            cellCenter.Rowspan = 1;
+            tableContent.AddCell(cellCenter);
+            cellCenter.Phrase = new Phrase("Satuan", bold_font);
+            cellCenter.Rowspan = 1;
+            tableContent.AddCell(cellCenter);
+            cellCenter.Phrase = new Phrase("Keterangan", bold_font);
+            cellCenter.Rowspan = 1;
+            tableContent.AddCell(cellCenter);
 
             double grandTotal = 0;
             foreach (var i in itemData)
@@ -190,40 +144,24 @@ namespace Manufactures.Helpers.PDFTemplates
                 cellCenter.Phrase = new Phrase(i.DesignColor, normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
-                double total = 0;
-                foreach (var s in listSize)
-                {
-                    var selectedSize = i.Sizes.FirstOrDefault(x => x.Size == s);
-                    if (selectedSize != null)
-                    {
-                        cellCenter.Phrase = new Phrase(selectedSize.Quantity.ToString(), normal_font);
-                        cellCenter.Rowspan = 1;
-                        tableContent.AddCell(cellCenter);
-                        total += selectedSize.Quantity;
-                        grandTotal += total;
-                    }
-                    else
-                    {
-                        cellCenter.Phrase = new Phrase("", normal_font);
-                        cellCenter.Rowspan = 1;
-                        tableContent.AddCell(cellCenter);
-                    }
-                }
-
-                cellCenter.Phrase = new Phrase(total.ToString(), normal_font);
-                cellCenter.Rowspan = 1;
-                tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase(i.Unit, normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
-                cellCenter.Phrase = new Phrase(i.Color, normal_font);
+                cellCenter.Phrase = new Phrase(i.Quantity.ToString(), normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase(i.UomUnit, normal_font);
+                cellCenter.Rowspan = 1;
+                tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase("", normal_font);
+                cellCenter.Rowspan = 1;
+                tableContent.AddCell(cellCenter);
+                grandTotal += i.Quantity;
             }
 
             cellRight.Phrase = new Phrase("TOTAL", bold_font);
             cellRight.Rowspan = 1;
-            cellRight.Colspan = 4 + listSize.Count();
+            cellRight.Colspan = 5;
             tableContent.AddCell(cellRight);
             cellCenter.Phrase = new Phrase(grandTotal.ToString(), bold_font);
             cellCenter.Rowspan = 1;
@@ -269,21 +207,14 @@ namespace Manufactures.Helpers.PDFTemplates
         }
     }
 
-    public class GarmentSubconCuttingItemVM
+    public class GarmentSubconSewingItemVM
     {
         public string RoNo { get; set; }
         public string Article { get; set; }
         public string Comodity { get; set; }
         public string DesignColor { get; set; }
         public string Unit { get; set; }
-        public string Color { get; set; }
-        public List<GarmentSubconCuttingSize> Sizes { get; set; }
-
-    }
-
-    public class GarmentSubconCuttingSize
-    {
-        public string Size { get; set; }
         public double Quantity { get; set; }
+        public string UomUnit { get; set; }
     }
 }

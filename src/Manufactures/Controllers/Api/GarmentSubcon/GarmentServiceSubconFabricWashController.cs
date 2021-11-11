@@ -3,6 +3,7 @@ using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Repositories;
 using Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconFabricWashes;
+using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -163,6 +164,32 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 size,
                 count
             });
+        }
+
+        [HttpGet("get-pdf/{id}")]
+        public async Task<IActionResult> GetPdf(string id)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            //int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+            GarmentServiceSubconFabricWashDto garmentServiceSubconFabricWashDto = _garmentServiceSubconFabricWashRepository.Find(o => o.Identity == guid).Select(subcon => new GarmentServiceSubconFabricWashDto(subcon)
+            {
+                Items = _garmentServiceSubconFabricWashItemRepository.Find(o => o.ServiceSubconFabricWashId == subcon.Identity).Select(subconItem => new GarmentServiceSubconFabricWashItemDto(subconItem)
+                {
+                    Details = _garmentServiceSubconFabricWashDetailRepository.Find(o => o.ServiceSubconFabricWashItemId == subconItem.Identity).Select(subconDetail => new GarmentServiceSubconFabricWashDetailDto(subconDetail)
+                    { }).ToList()
+                }).ToList()
+            }
+            ).FirstOrDefault();
+
+            var stream = GarmentServiceSubconFabricWashPDFTemplate.Generate(garmentServiceSubconFabricWashDto);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentServiceSubconFabricWashDto.ServiceSubconFabricWashNo}.pdf"
+            };
         }
     }
 }

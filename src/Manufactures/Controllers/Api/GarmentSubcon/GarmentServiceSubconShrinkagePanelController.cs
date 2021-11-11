@@ -3,6 +3,7 @@ using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Repositories;
 using Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconShrinkagePanels;
+using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -163,6 +164,32 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 size,
                 count
             });
+        }
+
+        [HttpGet("get-pdf/{id}")]
+        public async Task<IActionResult> GetPdf(string id)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            //int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+            GarmentServiceSubconShrinkagePanelDto garmentServiceSubconShrinkagePanelDto = _garmentServiceSubconShrinkagePanelRepository.Find(o => o.Identity == guid).Select(subcon => new GarmentServiceSubconShrinkagePanelDto(subcon)
+            {
+                Items = _garmentServiceSubconShrinkagePanelItemRepository.Find(o => o.ServiceSubconShrinkagePanelId == subcon.Identity).Select(subconItem => new GarmentServiceSubconShrinkagePanelItemDto(subconItem)
+                {
+                    Details = _garmentServiceSubconShrinkagePanelDetailRepository.Find(o => o.ServiceSubconShrinkagePanelItemId == subconItem.Identity).Select(subconDetail => new GarmentServiceSubconShrinkagePanelDetailDto(subconDetail)
+                    {}).ToList()
+                }).ToList()
+            }
+            ).FirstOrDefault();
+
+            var stream = GarmentServiceSubconShrinkagePanelPDFTemplate.Generate(garmentServiceSubconShrinkagePanelDto);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentServiceSubconShrinkagePanelDto.ServiceSubconShrinkagePanelNo}.pdf"
+            };
         }
     }
 }
