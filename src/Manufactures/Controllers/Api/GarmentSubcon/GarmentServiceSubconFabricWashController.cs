@@ -126,7 +126,6 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             return Ok(order.Identity);
         }
 
-
         [HttpGet("complete")]
         public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
         {

@@ -5049,7 +5049,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-
             modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.SubconCustomsIns.ReadModels.GarmentSubconCustomsInItemReadModel", b =>
                 {
                     b.HasOne("Manufactures.Domain.GarmentSubcon.SubconCustomsIns.ReadModels.GarmentSubconCustomsInReadModel", "GarmentSubconCustomsIn")
