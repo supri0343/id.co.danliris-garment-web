@@ -20,6 +20,8 @@ using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Repositorie
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes;
+using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
+using Manufactures.Domain.GarmentSubcon.SubconContracts;
 
 namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts.CommandHandlers
 {
@@ -33,6 +35,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
         private readonly IGarmentServiceSubconSewingRepository _garmentSubconSewingRepository;
         private readonly IGarmentServiceSubconShrinkagePanelRepository _garmentServiceSubconShrinkagePanelRepository;
         private readonly IGarmentServiceSubconFabricWashRepository _garmentServiceSubconFabricWashRepository;
+        private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
 
         public PlaceGarmentSubconDeliveryLetterOutCommandHandler(IStorage storage)
         {
@@ -44,6 +47,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             _garmentSubconSewingRepository=storage.GetRepository<IGarmentServiceSubconSewingRepository>();
             _garmentServiceSubconShrinkagePanelRepository = storage.GetRepository<IGarmentServiceSubconShrinkagePanelRepository>();
             _garmentServiceSubconFabricWashRepository = storage.GetRepository<IGarmentServiceSubconFabricWashRepository>();
+            _garmentSubconContractRepository = storage.GetRepository<IGarmentSubconContractRepository>();
         }
 
         public async Task<GarmentSubconDeliveryLetterOut> Handle(PlaceGarmentSubconDeliveryLetterOutCommand request, CancellationToken cancellationToken)
@@ -136,10 +140,15 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                 await _garmentSubconDeliveryLetterOutItemRepository.Update(garmentSubconDeliveryLetterOutItem);
             }
 
+            var subconContract = _garmentSubconContractRepository.Query.Where(x => x.Identity == garmentSubconDeliveryLetterOut.SubconContractId).Select(s => new GarmentSubconContract(s)).Single();
+            subconContract.SetIsUsed(true);
+            subconContract.Modify();
+
+            await _garmentSubconContractRepository.Update(subconContract);
+
             await _garmentSubconDeliveryLetterOutRepository.Update(garmentSubconDeliveryLetterOut);
 
             _storage.Save();
-
             return garmentSubconDeliveryLetterOut;
         }
 

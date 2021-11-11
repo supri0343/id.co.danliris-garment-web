@@ -8,6 +8,8 @@ using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Repositories;
+using Manufactures.Domain.GarmentSubcon.SubconContracts;
+using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Repositories;
@@ -32,6 +34,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
         private readonly IGarmentServiceSubconSewingRepository _garmentSubconSewingRepository;
         private readonly IGarmentServiceSubconShrinkagePanelRepository _garmentServiceSubconShrinkagePanelRepository;
         private readonly IGarmentServiceSubconFabricWashRepository _garmentServiceSubconFabricWashRepository;
+        private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
 
         public RemoveGarmentSubconDeliveryLetterOutCommandHandler(IStorage storage)
         {
@@ -43,6 +46,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             _garmentSubconSewingRepository = storage.GetRepository<IGarmentServiceSubconSewingRepository>();
             _garmentServiceSubconShrinkagePanelRepository = storage.GetRepository<IGarmentServiceSubconShrinkagePanelRepository>();
             _garmentServiceSubconFabricWashRepository = storage.GetRepository<IGarmentServiceSubconFabricWashRepository>();
+            _garmentSubconContractRepository = storage.GetRepository<IGarmentSubconContractRepository>();
         }
 
 
@@ -99,6 +103,16 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                 }
                 await _garmentSubconDeliveryLetterOutItemRepository.Update(subconDeliveryLetterOutItem);
             });
+
+            var subconDLOuts = _garmentSubconDeliveryLetterOutRepository.Query.Where(o => o.SubconContractId == subconDeliveryLetterOut.SubconContractId && o.Identity!=request.Identity).FirstOrDefault();
+            if (subconDLOuts != null)
+            {
+                var subconContract = _garmentSubconContractRepository.Query.Where(x => x.Identity == subconDeliveryLetterOut.SubconContractId).Select(s => new GarmentSubconContract(s)).Single();
+                subconContract.SetIsUsed(false);
+                subconContract.Modify();
+
+                await _garmentSubconContractRepository.Update(subconContract);
+            }
 
             subconDeliveryLetterOut.Remove();
             await _garmentSubconDeliveryLetterOutRepository.Update(subconDeliveryLetterOut);
