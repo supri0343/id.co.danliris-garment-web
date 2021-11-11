@@ -36,6 +36,14 @@ namespace Manufactures.Helpers.PDFTemplates
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
             #region Header
+            PdfPTable tableTiltle = new PdfPTable(1);
+            cellCenterNoBorder.Phrase = new Paragraph("SUBCON JASA KOMPONEN\n\n\n", bold_font);
+            tableTiltle.AddCell(cellCenterNoBorder);
+
+            PdfPCell cellTitle = new PdfPCell(tableTiltle);
+            tableTiltle.ExtendLastRow = false;
+            document.Add(tableTiltle);
+
             PdfPTable tableHeader = new PdfPTable(3);
             tableHeader.SetWidths(new float[] { 1f, 1f, 1f });
 
