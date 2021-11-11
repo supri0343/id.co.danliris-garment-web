@@ -24,6 +24,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentScrapTransactions.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingDOs.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.CustomsOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconCuttings.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconFabricWashes.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconSewings.Config;
@@ -135,6 +136,9 @@ namespace Manufactures.Data.EntityFrameworkCore
             modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutConfig());
             modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutItemConfig());
 
+            modelBuilder.ApplyConfiguration(new GarmentSubconCustomsOutConfig());
+            modelBuilder.ApplyConfiguration(new GarmentSubconCustomsOutItemConfig());
+			
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconShrinkagePanelConfig());
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconShrinkagePanelItemConfig());
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconShrinkagePanelDetailConfig());
