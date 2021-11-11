@@ -36,6 +36,14 @@ namespace Manufactures.Helpers.PDFTemplates
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
             #region Header
+            PdfPTable tableTiltle = new PdfPTable(1);
+            cellCenterNoBorder.Phrase = new Paragraph("SUBCON JASA GARMENT WASH\n\n\n", bold_font);
+            tableTiltle.AddCell(cellCenterNoBorder); 
+
+            PdfPCell cellTitle = new PdfPCell(tableTiltle);
+            tableTiltle.ExtendLastRow = false;
+            document.Add(tableTiltle);
+
             PdfPTable tableHeader = new PdfPTable(3);
             tableHeader.SetWidths(new float[] { 1f, 1f, 1f });
 
@@ -185,7 +193,7 @@ namespace Manufactures.Helpers.PDFTemplates
 
             cellCenterTopNoBorder.Phrase = new Paragraph("Penerima\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Bag. Cutting\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Bag. Sewing\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph($"\nDicetak : {DateTimeOffset.Now.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy / HH:mm:ss", new CultureInfo("id-ID"))}", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
