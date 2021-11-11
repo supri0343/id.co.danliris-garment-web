@@ -47,6 +47,12 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
                     Code = "Code",
                     Name = "Name"
                 },
+                Buyer = new Buyer
+                {
+                    Id = 1,
+                    Code = "Buyercode",
+                    Name = "BuyerName"
+                },
                 Items = new List<GarmentServiceSubconCuttingItemValueObject>()
                 {
                     new GarmentServiceSubconCuttingItemValueObject()

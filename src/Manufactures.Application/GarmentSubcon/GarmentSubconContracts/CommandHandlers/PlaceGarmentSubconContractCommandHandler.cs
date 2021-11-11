@@ -42,7 +42,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
                 request.Quantity,
                 request.DueDate,
                 request.ContractDate,
-                request.IsUsed
+                request.IsUsed,
+                new BuyerId(request.Buyer.Id),
+                request.Buyer.Code,
+                request.Buyer.Name
             );
 
             await _garmentSubconContractRepository.Update(garmentSubconContract);
