@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconShrinkagePanels.Repositories
 {
-    public class GarmentServiceSubconShrinkagePanelDetailRepository : AggregateRepostory<GarmentServiceSubconShrinkagePanelDetail, GarmentServiceSubconShrinkagePanelDetailReadModel>, IGarmentServiceSubconShrinkagePanelDetailRepository
+    public class ShrinkagePanelDetailRepository : AggregateRepostory<GarmentServiceSubconShrinkagePanelDetail, GarmentServiceSubconShrinkagePanelDetailReadModel>, IGarmentServiceSubconShrinkagePanelDetailRepository
     {
         protected override GarmentServiceSubconShrinkagePanelDetail Map(GarmentServiceSubconShrinkagePanelDetailReadModel readModel)
         {
