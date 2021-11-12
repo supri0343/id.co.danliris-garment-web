@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconShrinkagePanels.Repositories
 {
-    public class GarmentServiceSubconShrinkagePanelRepository : AggregateRepostory<GarmentServiceSubconShrinkagePanel, GarmentServiceSubconShrinkagePanelReadModel>, IGarmentServiceSubconShrinkagePanelRepository
+    public class ShrinkagePanelRepository : AggregateRepostory<GarmentServiceSubconShrinkagePanel, GarmentServiceSubconShrinkagePanelReadModel>, IGarmentServiceSubconShrinkagePanelRepository
     {
         IQueryable<GarmentServiceSubconShrinkagePanelReadModel> IGarmentServiceSubconShrinkagePanelRepository.Read(int page, int size, string order, string keyword, string filter)
         {
