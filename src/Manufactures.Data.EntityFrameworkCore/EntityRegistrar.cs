@@ -25,7 +25,9 @@ using Manufactures.Data.EntityFrameworkCore.GarmentSewingDOs.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconCuttings.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconFabricWashes.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconSewings.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconShrinkagePanels.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentSubconContracts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLetterOuts.Cofigs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubconCuttingOuts.Configs;
@@ -132,6 +134,14 @@ namespace Manufactures.Data.EntityFrameworkCore
 
             modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutConfig());
             modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutItemConfig());
-        }
+
+			modelBuilder.ApplyConfiguration(new GarmentServiceSubconShrinkagePanelConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSubconShrinkagePanelItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSubconShrinkagePanelDetailConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentServiceSubconFabricWashConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSubconFabricWashItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSubconFabricWashDetailConfig());
+		}
 	}
 }
