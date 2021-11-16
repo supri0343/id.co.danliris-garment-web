@@ -27,5 +27,13 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels
         public int BuyerId { get; internal set; }
         public string BuyerCode { get; internal set; }
         public string BuyerName { get; internal set; }
+
+        public string SubconCategory { get; internal set; }
+        public int UomId { get; internal set; }
+        public string UomUnit { get; internal set; }
+        public string SKEPNo { get; internal set; }
+        public DateTimeOffset AgreementDate { get; internal set; }
+
+        public virtual List<GarmentSubconContractItemReadModel> GarmentSubconContractItem { get; internal set; }
     }
 }

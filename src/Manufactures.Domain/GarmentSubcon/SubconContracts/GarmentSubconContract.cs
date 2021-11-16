@@ -27,6 +27,11 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
         public string BuyerCode { get; private set; }
         public string BuyerName { get; private set; }
 
+        public string SubconCategory { get; private set; }
+        public UomId UomId { get; private set; }
+        public string UomUnit { get; private set; }
+        public string SKEPNo { get; private set; }
+        public DateTimeOffset AgreementDate { get; private set; }
 
         public GarmentSubconContract(GarmentSubconContractReadModel readModel) : base(readModel)
         {
@@ -46,9 +51,14 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             BuyerId = new BuyerId(readModel.BuyerId);
             BuyerCode = readModel.BuyerCode;
             BuyerName = readModel.BuyerName;
+            SubconCategory = readModel.SubconCategory;
+            UomId = new UomId( readModel.UomId);
+            UomUnit = readModel.UomUnit;
+            SKEPNo = readModel.SKEPNo;
+            AgreementDate = readModel.AgreementDate;
         }
 
-        public GarmentSubconContract(Guid identity,string contractType, string contractNo, string agreementNo, SupplierId supplierId, string supplierCode, string supplierName, string jobType, string bPJNo, string finishedGoodType, double quantity, DateTimeOffset dueDate, DateTimeOffset contractDate, bool isUsed, BuyerId buyerId, string buyerCode, string buyerName) : base(identity)
+        public GarmentSubconContract(Guid identity, string contractType, string contractNo, string agreementNo, SupplierId supplierId, string supplierCode, string supplierName, string jobType, string bPJNo, string finishedGoodType, double quantity, DateTimeOffset dueDate, DateTimeOffset contractDate, bool isUsed, BuyerId buyerId, string buyerCode, string buyerName, string subconCategory, UomId uomId, string uomUnit, string sKEPNo, DateTimeOffset agreementDate) : base(identity)
         {
             Identity = identity;
             ContractType = contractType;
@@ -67,6 +77,11 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             BuyerId = buyerId;
             BuyerCode = buyerCode;
             BuyerName = buyerName;
+            SubconCategory = subconCategory;
+            UomId = uomId;
+            UomUnit = uomUnit;
+            SKEPNo = sKEPNo;
+            AgreementDate = agreementDate;
 
             ReadModel = new GarmentSubconContractReadModel(Identity)
             {
@@ -85,7 +100,12 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
                 IsUsed = IsUsed,
                 BuyerId = BuyerId.Value,
                 BuyerCode = BuyerCode,
-                BuyerName = BuyerName
+                BuyerName = BuyerName,
+                SubconCategory = subconCategory,
+                UomId = uomId.Value,
+                UomUnit = uomUnit,
+                SKEPNo = sKEPNo,
+                AgreementDate = agreementDate
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconContractPlaced(Identity));
@@ -224,6 +244,52 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
                 ReadModel.BuyerName = BuyerName;
             }
         }
+
+        public void SetSKEPNo(string SKEPNo)
+        {
+            if (this.SKEPNo != SKEPNo)
+            {
+                this.SKEPNo = SKEPNo;
+                ReadModel.SKEPNo = SKEPNo;
+            }
+        }
+
+        public void SetSubconCategory(string SubconCategory)
+        {
+            if (this.SubconCategory != SubconCategory)
+            {
+                this.SubconCategory = SubconCategory;
+                ReadModel.SubconCategory = SubconCategory;
+            }
+        }
+
+        public void SetUomUnit(string UomUnit)
+        {
+            if (this.UomUnit != UomUnit)
+            {
+                this.UomUnit = UomUnit;
+                ReadModel.UomUnit = UomUnit;
+            }
+        }
+
+        public void SetUomId(UomId UomId)
+        {
+            if (this.UomId != UomId)
+            {
+                this.UomId = UomId;
+                ReadModel.UomId = UomId.Value;
+            }
+        }
+
+        public void SetAgreementDate(DateTimeOffset AgreementDate)
+        {
+            if (this.AgreementDate != AgreementDate)
+            {
+                this.AgreementDate = AgreementDate;
+                ReadModel.AgreementDate = AgreementDate;
+            }
+        }
+
         public void Modify()
         {
             MarkModified();

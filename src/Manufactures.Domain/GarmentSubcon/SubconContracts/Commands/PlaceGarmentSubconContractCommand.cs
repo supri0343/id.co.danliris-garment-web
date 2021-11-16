@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Infrastructure.Domain.Commands;
+using Manufactures.Domain.GarmentSubcon.SubconContracts.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,12 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
         public DateTimeOffset ContractDate { get; set; }
         public bool IsUsed { get; set; }
         public Buyer Buyer { get; set; }
+
+        public string SubconCategory { get; set; }
+        public Uom Uom { get; set; }
+        public string SKEPNo { get; set; }
+        public DateTimeOffset AgreementDate { get; set; }
+        public List<GarmentSubconContractItemValueObject> Items { get; set; }
     }
 
     public class PlaceGarmentSubconContractCommandValidator : AbstractValidator<PlaceGarmentSubconContractCommand>
