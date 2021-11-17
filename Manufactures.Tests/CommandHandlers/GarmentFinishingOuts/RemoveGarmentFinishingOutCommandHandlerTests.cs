@@ -358,7 +358,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentFinishingOuts
             result.Should().NotBeNull();
         }
 
-        [Fact]
+        /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior_Sewing_DifferentSize()
         {
             // Arrange
@@ -476,6 +476,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentFinishingOuts
 
             // Assert
             result.Should().NotBeNull();
-        }
+        }*/
     }
 }

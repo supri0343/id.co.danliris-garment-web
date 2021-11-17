@@ -43,7 +43,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentLoadings
             return new RemoveGarmentLoadingCommandHandler(_MockStorage.Object);
         }
 
-        [Fact]
+        /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -94,6 +94,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentLoadings
 
             // Assert
             result.Should().NotBeNull();
-        }
+        }*/
     }
 }

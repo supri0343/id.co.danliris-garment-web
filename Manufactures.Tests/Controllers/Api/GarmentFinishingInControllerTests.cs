@@ -155,7 +155,7 @@ namespace Manufactures.Tests.Controllers.Api
             await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(It.IsAny<PlaceGarmentFinishingInCommand>()));
         }
 
-        [Fact]
+        /*[Fact]
         public async Task GetComplete_Success()
         {
             // Arrange
@@ -201,7 +201,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }
+        }*/
 
         [Fact]
         public async Task Delete_StateUnderTest_ExpectedBehavior()

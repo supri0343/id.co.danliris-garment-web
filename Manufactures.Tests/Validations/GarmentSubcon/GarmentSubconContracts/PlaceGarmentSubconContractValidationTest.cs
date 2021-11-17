@@ -52,7 +52,13 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconContracts
                     Id = 1,
                     Name = "test"
                 },
-                IsUsed=false
+                Buyer = new Buyer
+                {
+                    Id = 1,
+                    Code = "Buyercode",
+                    Name = "BuyerName"
+                },
+                IsUsed =false
             };
             // Action
             var validator = GetValidationRules();

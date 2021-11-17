@@ -16,6 +16,7 @@ using System.Linq.Expressions;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings;
 using System.Linq;
 using FluentAssertions;
+using Manufactures.Domain.GarmentPreparings.Repositories;
 
 namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconCuttings
 {
@@ -25,6 +26,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
         private readonly Mock<IGarmentServiceSubconCuttingItemRepository> _mockServiceSubconCuttingItemRepository;
         private readonly Mock<IGarmentServiceSubconCuttingDetailRepository> _mockServiceSubconCuttingDetailRepository;
         private readonly Mock<IGarmentServiceSubconCuttingSizeRepository> _mockServiceSubconCuttingSizeRepository;
+        //private readonly Mock<IGarmentPreparingRepository> _mockGarmentPreparingRepository;
 
         public UpdateGarmentServiceSubconCuttingCommandHandlerTests()
         {
@@ -32,11 +34,13 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
             _mockServiceSubconCuttingItemRepository = CreateMock<IGarmentServiceSubconCuttingItemRepository>();
             _mockServiceSubconCuttingDetailRepository = CreateMock<IGarmentServiceSubconCuttingDetailRepository>();
             _mockServiceSubconCuttingSizeRepository = CreateMock<IGarmentServiceSubconCuttingSizeRepository>();
+            //_mockGarmentPreparingRepository = CreateMock<IGarmentPreparingRepository>();
 
             _MockStorage.SetupStorage(_mockServiceSubconCuttingRepository);
             _MockStorage.SetupStorage(_mockServiceSubconCuttingItemRepository);
             _MockStorage.SetupStorage(_mockServiceSubconCuttingDetailRepository);
             _MockStorage.SetupStorage(_mockServiceSubconCuttingSizeRepository);
+            //_MockStorage.SetupStorage(_mockGarmentPreparingRepository);
         }
         private UpdateGarmentServiceSubconCuttingCommandHandler CreateUpdateGarmentServiceSubconCuttingCommandHandler()
         {
@@ -56,6 +60,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                 Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
                 SubconDate = DateTimeOffset.Now,
                 SubconType = "PRINT",
+                Buyer = new Buyer(1, "BuyerCode", "BuyerName"),
                 Items = new List<GarmentServiceSubconCuttingItemValueObject>
                 {
                     new GarmentServiceSubconCuttingItemValueObject
@@ -111,6 +116,10 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
             //_mockServiceSubconCuttingDetailRepository
             //    .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingDetail>()))
             //    .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingDetail>()));
+
+            //_mockGarmentPreparingRepository
+            //    .Setup(s => s.RoChecking(It.IsAny<IEnumerable<string>>()))
+            //    .Returns(true);
 
             _MockStorage
                 .Setup(x => x.Save())

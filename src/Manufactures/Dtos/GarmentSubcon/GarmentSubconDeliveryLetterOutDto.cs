@@ -25,6 +25,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             CreatedBy = garmentSubconDeliveryLetterOutList.AuditTrail.CreatedBy;
             IsUsed = garmentSubconDeliveryLetterOutList.IsUsed;
             Items = new List<GarmentSubconDeliveryLetterOutItemDto>();
+            ServiceType = garmentSubconDeliveryLetterOutList.ServiceType;
         }
 
         public Guid Id { get; set; }
@@ -43,6 +44,7 @@ namespace Manufactures.Dtos.GarmentSubcon
 
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
+        public string ServiceType { get; set; }
         public List<GarmentSubconDeliveryLetterOutItemDto> Items { get; set; }
     }
 }

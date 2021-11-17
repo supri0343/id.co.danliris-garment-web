@@ -185,7 +185,7 @@ namespace Manufactures.Tests.Queries.GarmentFinishingOuts
 			result.Should().NotBeNull();
 		}
 
-		[Fact]
+		/*[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior_Bookkeeping()
 		{
 			// Arrange
@@ -255,6 +255,6 @@ namespace Manufactures.Tests.Queries.GarmentFinishingOuts
 
 			// Assert
 			result.Should().NotBeNull();
-		}
+		}*/
 	}
 }

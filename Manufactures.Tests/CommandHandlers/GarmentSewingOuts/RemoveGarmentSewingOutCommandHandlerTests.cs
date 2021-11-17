@@ -54,7 +54,8 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSewingOuts
         {
             return new RemoveGarmentSewingOutCommandHandler(_MockStorage.Object);
         }
-        [Fact]
+
+        /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -112,6 +113,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSewingOuts
 
             // Assert
             result.Should().NotBeNull();
-        }
+        }*/
     }
 }
