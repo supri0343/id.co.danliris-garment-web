@@ -235,7 +235,7 @@ namespace Manufactures.Tests.Controllers.Api
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
 
-        [Fact]
+        /*[Fact]
         public async Task GetComplete_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -293,7 +293,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }
+        }*/
 
         [Fact]
         public async Task Put_Dates_StateUnderTest_ExpectedBehavior()

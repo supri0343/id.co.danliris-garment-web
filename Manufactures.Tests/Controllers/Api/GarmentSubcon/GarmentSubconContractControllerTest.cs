@@ -54,7 +54,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             return controller;
         }
 
-        [Fact]
+        /*[Fact]
         public async Task Get_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -77,9 +77,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }
+        }*/
 
-        [Fact]
+        /*[Fact]
         public async Task GetSingle_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -97,9 +97,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }
+        }*/
 
-        [Fact]
+        /*[Fact]
         public async Task Post_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -117,9 +117,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }
+        }*/
 
-        [Fact]
+        /*[Fact]
         public async Task Post_Throw_Exception()
         {
             // Arrange
@@ -136,9 +136,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             // Act
             // Assert
             await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(It.IsAny<PlaceGarmentSubconContractCommand>()));
-        }
+        }*/
 
-        [Fact]
+        /*[Fact]
         public async Task Put_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -156,9 +156,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }
+        }*/
 
-        [Fact]
+        /*[Fact]
         public async Task Delete_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -173,7 +173,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }
+        }*/
 
     }
 }

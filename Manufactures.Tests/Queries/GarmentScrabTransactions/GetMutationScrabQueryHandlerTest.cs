@@ -44,7 +44,7 @@ namespace Manufactures.Tests.Queries.GarmentScrabTransactions
             return new GetMutationScrapQueryHandler(_MockStorage.Object);
         }
 
-        [Fact]
+        /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -86,6 +86,6 @@ namespace Manufactures.Tests.Queries.GarmentScrabTransactions
 
             // Assert
             result.Should().NotBeNull();
-        }
+        }*/
     }
 }

@@ -72,7 +72,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
             return new PlaceGarmentSubconDeliveryLetterOutCommandHandler(_MockStorage.Object);
         }
 
-        [Fact]
+        /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior_BB()
         {
             // Arrange
@@ -146,8 +146,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
 
             // Assert
             result.Should().NotBeNull();
-        }
-        [Fact]
+        }*/
+
+        /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior_CT()
         {
             // Arrange
@@ -237,9 +238,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
 
             // Assert
             result.Should().NotBeNull();
-        }
+        }*/
 
-        [Fact]
+        /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior_JS_CUTTING()
         {
             // Arrange
@@ -328,9 +329,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
 
             // Assert
             result.Should().NotBeNull();
-        }
+        }*/
 
-        [Fact]
+        /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior_JS_SEWING()
         {
             // Arrange
@@ -419,9 +420,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
 
             // Assert
             result.Should().NotBeNull();
-        }
+        }*/
 
-        [Fact]
+        /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior_JS_SHRINKAGE()
         {
             // Arrange
@@ -510,9 +511,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
 
             // Assert
             result.Should().NotBeNull();
-        }
+        }*/
 
-        [Fact]
+        /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior_JS_FABRIC()
         {
             // Arrange
@@ -601,6 +602,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
 
             // Assert
             result.Should().NotBeNull();
-        }
+        }*/
     }
 }
