@@ -12,6 +12,7 @@ namespace Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconFabricWashes
             Id = garmentServiceSubconFabricWashList.Identity;
             ServiceSubconFabricWashNo = garmentServiceSubconFabricWashList.ServiceSubconFabricWashNo;
             ServiceSubconFabricWashDate = garmentServiceSubconFabricWashList.ServiceSubconFabricWashDate;
+            Remark = garmentServiceSubconFabricWashList.Remark;
             IsUsed = garmentServiceSubconFabricWashList.IsUsed;
             Items = new List<GarmentServiceSubconFabricWashItemDto>();
         }
@@ -19,6 +20,7 @@ namespace Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconFabricWashes
         public Guid Id { get; internal set; }
         public string ServiceSubconFabricWashNo { get; set; }
         public DateTimeOffset ServiceSubconFabricWashDate { get; set; }
+        public string Remark { get; set; }
         public bool IsUsed { get; set; }
 
         public virtual List<GarmentServiceSubconFabricWashItemDto> Items { get; internal set; }

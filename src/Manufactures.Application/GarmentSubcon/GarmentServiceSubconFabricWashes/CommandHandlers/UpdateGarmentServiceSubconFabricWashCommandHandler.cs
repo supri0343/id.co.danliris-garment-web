@@ -30,6 +30,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
             var serviceSubconFabricWash = _garmentServiceSubconFabricWashRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentServiceSubconFabricWash(o)).Single();
 
             serviceSubconFabricWash.SetServiceSubconFabricWashDate(request.ServiceSubconFabricWashDate.GetValueOrDefault());
+            serviceSubconFabricWash.SetRemark(request.Remark);
             serviceSubconFabricWash.Modify();
             await _garmentServiceSubconFabricWashRepository.Update(serviceSubconFabricWash);
 
