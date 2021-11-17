@@ -89,7 +89,8 @@ namespace Manufactures.Tests.Queries.GarmentLoadings
 		{
 			return new GetMonitoringLoadingQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
-		[Fact]
+
+		/*[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior()
 		{
 			// Arrange
@@ -183,6 +184,6 @@ namespace Manufactures.Tests.Queries.GarmentLoadings
 
 			// Assert
 			result.Should().NotBeNull();
-		}
+		}*/
 	}
 }
