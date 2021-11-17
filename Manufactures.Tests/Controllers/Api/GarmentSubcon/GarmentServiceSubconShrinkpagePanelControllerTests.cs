@@ -204,7 +204,6 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
               .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
               .Returns(new List<GarmentServiceSubconShrinkagePanelReadModel>().AsQueryable());
 
-
             _mockGarmentServiceSubconShrinkagePanelRepository
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconShrinkagePanelReadModel>>()))
                 .Returns(new List<GarmentServiceSubconShrinkagePanel>()

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Infrastructure.Domain.Commands;
+using Manufactures.Domain.GarmentSubcon.SubconContracts.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,14 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
         public DateTimeOffset DueDate { get; set; }
         public DateTimeOffset ContractDate { get; set; }
         public bool IsUsed { get; set; }
+        public Buyer Buyer { get; set; }
 
+        public string SubconCategory { get; set; }
+        public Uom Uom { get; set; }
+        public string SKEPNo { get; set; }
+        public DateTimeOffset AgreementDate { get; set; }
+
+        public List<GarmentSubconContractItemValueObject> Items { get; set; }
         public void SetIdentity(Guid id)
         {
             Identity = id;
@@ -34,6 +42,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
         {
             RuleFor(r => r.Supplier).NotNull();
             RuleFor(r => r.Supplier.Id).NotEmpty().OverridePropertyName("Supplier").When(w => w.Supplier != null);
+
+            RuleFor(r => r.Buyer).NotNull();
+            RuleFor(r => r.Buyer.Id).NotEmpty().OverridePropertyName("Buyer").When(w => w.Buyer != null);
 
             RuleFor(r => r.Quantity).GreaterThan(0).WithMessage("Quantity harus lebih dari 0");
             //RuleFor(r => r.ContractNo).NotNull();

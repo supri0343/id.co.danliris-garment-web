@@ -189,8 +189,6 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             }
             ).FirstOrDefault();
 
-            
-
             var stream = GarmentServiceSubconShrinkagePanelPDFTemplate.Generate(garmentServiceSubconShrinkagePanelDto);
 
             return new FileStreamResult(stream, "application/pdf")
@@ -198,7 +196,5 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 FileDownloadName = $"{garmentServiceSubconShrinkagePanelDto.ServiceSubconShrinkagePanelNo}.pdf"
             };
         }
-
-        
     }
 }

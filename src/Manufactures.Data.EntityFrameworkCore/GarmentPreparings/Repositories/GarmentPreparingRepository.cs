@@ -97,5 +97,11 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Repositories
             }
             return newQuery;
         }
+
+        public bool RoChecking(IEnumerable<string> roList, string buyerCode)
+        {
+            var data = Query.Where(x => roList.Contains(x.RONo) && buyerCode.Contains(x.BuyerCode)).ToList();
+            return data.Count > 0;
+        }
     }
 }

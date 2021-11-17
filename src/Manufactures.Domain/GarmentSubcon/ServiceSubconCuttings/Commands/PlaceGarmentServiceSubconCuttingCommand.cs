@@ -17,6 +17,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
         public string SubconType { get; set; }
 
         public bool IsUsed { get; set; }
+        public Buyer Buyer { get; set; }
         public List<GarmentServiceSubconCuttingItemValueObject> Items { get; set; }
     }
 
@@ -29,6 +30,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
             RuleFor(r => r.SubconDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Data Belum Ada yang dipilih").OverridePropertyName("ItemsCount").When(s => s.Items != null);
+            RuleFor(r => r.Buyer).NotNull();
+            RuleFor(r => r.Buyer.Id).NotEmpty().OverridePropertyName("Buyer").When(w => w.Buyer != null);
             RuleForEach(r => r.Items).SetValidator(new GarmentServiceSubconCuttingItemValueObjectValidator());
         }
     }

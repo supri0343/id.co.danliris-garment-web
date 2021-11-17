@@ -24,11 +24,13 @@ using Manufactures.Data.EntityFrameworkCore.GarmentScrapTransactions.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingDOs.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingOuts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.CustomsOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconCuttings.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconFabricWashes.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconSewings.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubconShrinkagePanels.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentSubconContracts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentSubconCustomsIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLetterOuts.Cofigs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubconCuttingOuts.Configs;
 using Microsoft.EntityFrameworkCore;
@@ -122,6 +124,7 @@ namespace Manufactures.Data.EntityFrameworkCore
             modelBuilder.ApplyConfiguration(new GarmentCuttingAdjustmentItemConfig());
             //GARMENT SUBCON
             modelBuilder.ApplyConfiguration(new GarmentSubconContractConfig());
+            modelBuilder.ApplyConfiguration(new GarmentSubconContractItemConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingConfig());
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingItemConfig());
@@ -135,6 +138,12 @@ namespace Manufactures.Data.EntityFrameworkCore
             modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutConfig());
             modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutItemConfig());
 
+			modelBuilder.ApplyConfiguration(new GarmentSubconCustomsInConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconCustomsInItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentSubconCustomsOutConfig());
+            modelBuilder.ApplyConfiguration(new GarmentSubconCustomsOutItemConfig());
+			
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconShrinkagePanelConfig());
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconShrinkagePanelItemConfig());
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconShrinkagePanelDetailConfig());
