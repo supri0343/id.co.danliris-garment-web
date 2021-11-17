@@ -124,6 +124,7 @@ namespace Manufactures.Data.EntityFrameworkCore
             modelBuilder.ApplyConfiguration(new GarmentCuttingAdjustmentItemConfig());
             //GARMENT SUBCON
             modelBuilder.ApplyConfiguration(new GarmentSubconContractConfig());
+            modelBuilder.ApplyConfiguration(new GarmentSubconContractItemConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingConfig());
             modelBuilder.ApplyConfiguration(new GarmentServiceSubconCuttingItemConfig());
@@ -136,7 +137,6 @@ namespace Manufactures.Data.EntityFrameworkCore
 
             modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutConfig());
             modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutItemConfig());
-
 
 			modelBuilder.ApplyConfiguration(new GarmentSubconCustomsInConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSubconCustomsInItemConfig());
