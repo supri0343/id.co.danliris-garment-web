@@ -15,6 +15,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
             builder.HasKey(e => e.Identity);
 
             builder.Property(a => a.ServiceSubconShrinkagePanelNo).HasMaxLength(25);
+            builder.Property(a => a.Remark).HasMaxLength(1000);
 
             builder.HasIndex(i => i.ServiceSubconShrinkagePanelNo).IsUnique().HasFilter("[Deleted]=(0)");
             builder.ApplyAuditTrail();

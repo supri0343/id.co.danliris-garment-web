@@ -153,7 +153,7 @@ namespace Manufactures.Tests.Controllers.Api
             
         }
 
-        [Fact]
+        /*[Fact]
         public async Task GetComplete_return_OK()
         {
             // Arrange
@@ -198,7 +198,7 @@ namespace Manufactures.Tests.Controllers.Api
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
 
-        }
+        }*/
 
         }
 }

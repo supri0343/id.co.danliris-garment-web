@@ -12,6 +12,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.ReadMod
         }
         public string ServiceSubconShrinkagePanelNo { get; internal set; }
         public DateTimeOffset ServiceSubconShrinkagePanelDate { get; internal set; }
+        public string Remark { get; internal set; }
         public bool IsUsed { get; internal set; }
 
         public virtual List<GarmentServiceSubconShrinkagePanelItemReadModel> GarmentServiceSubconShrinkagePanelItem { get; internal set; }

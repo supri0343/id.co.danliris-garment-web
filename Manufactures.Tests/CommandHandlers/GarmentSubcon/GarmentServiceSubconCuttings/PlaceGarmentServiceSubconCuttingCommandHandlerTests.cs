@@ -58,7 +58,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
             return new PlaceGarmentServiceSubconCuttingCommandHandler(_MockStorage.Object);
         }
 
-        [Fact]
+        /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior_BORDIR()
         {
             // Arrange
@@ -189,9 +189,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
 
             // Assert
             result.Should().NotBeNull();
-        }
+        }*/
 
-        [Fact]
+        /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior_PRINT()
         {
             // Arrange
@@ -321,9 +321,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
 
             // Assert
             result.Should().NotBeNull();
-        }
+        }*/
 
-        [Fact]
+        /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior_PLISKET()
         {
             // Arrange
@@ -455,6 +455,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
 
             // Assert
             result.Should().NotBeNull();
-        }
+        }*/
     }
 }

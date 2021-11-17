@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Manufactures.Helpers.PDFTemplates
 {
@@ -35,7 +37,7 @@ namespace Manufactures.Helpers.PDFTemplates
             Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Paragraph title = new Paragraph("SUBCON JASA SHRINKAGE / PANEL", bold_font);
+            Paragraph title = new Paragraph("SUBCON BB SHRINKAGE / PANEL", bold_font);
             title.Alignment = Element.ALIGN_CENTER;
             title.SpacingAfter = 10f;
             document.Add(title);
@@ -73,6 +75,7 @@ namespace Manufactures.Helpers.PDFTemplates
                     garmentSubconShrinkagePanelItemVM.ProductCode = detail.Product.Code;
                     garmentSubconShrinkagePanelItemVM.ProductName = detail.Product.Name;
                     garmentSubconShrinkagePanelItemVM.DesignColor = detail.DesignColor;
+                    garmentSubconShrinkagePanelItemVM.Composition = detail.Composition;
                     garmentSubconShrinkagePanelItemVM.Quantity = detail.Quantity;
                     garmentSubconShrinkagePanelItemVM.UomUnit = detail.Uom.Unit;
                     itemData.Add(garmentSubconShrinkagePanelItemVM);
@@ -81,11 +84,12 @@ namespace Manufactures.Helpers.PDFTemplates
 
             #region content
 
-            PdfPTable tableContent = new PdfPTable(6);
+            PdfPTable tableContent = new PdfPTable(7);
             List<float> widths = new List<float>();
             widths.Add(4f);
             widths.Add(4f);
             widths.Add(6f);
+            widths.Add(4f);
             widths.Add(4f);
             widths.Add(3f);
             widths.Add(3f);
@@ -102,6 +106,9 @@ namespace Manufactures.Helpers.PDFTemplates
             cellCenter.Rowspan = 2;
             tableContent.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("Design/Color", bold_font);
+            cellCenter.Rowspan = 2;
+            tableContent.AddCell(cellCenter);
+            cellCenter.Phrase = new Phrase("Komposisi", bold_font);
             cellCenter.Rowspan = 2;
             tableContent.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("Jumlah", bold_font);
@@ -127,6 +134,9 @@ namespace Manufactures.Helpers.PDFTemplates
                 cellCenter.Phrase = new Phrase(i.DesignColor, normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase(i.Composition, normal_font);
+                cellCenter.Rowspan = 1;
+                tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase(i.Quantity.ToString(), normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
@@ -138,7 +148,7 @@ namespace Manufactures.Helpers.PDFTemplates
 
             cellRight.Phrase = new Phrase("TOTAL", bold_font);
             cellRight.Rowspan = 1;
-            cellRight.Colspan = 4;
+            cellRight.Colspan = 5;
             tableContent.AddCell(cellRight);
             cellCenter.Phrase = new Phrase(grandTotal.ToString(), bold_font);
             cellCenter.Rowspan = 1;
@@ -195,8 +205,8 @@ namespace Manufactures.Helpers.PDFTemplates
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
         public string DesignColor { get; set; }
+        public string Composition { get; set; }
         public decimal Quantity { get; set; }
         public string UomUnit { get; set; }
-
     }
 }

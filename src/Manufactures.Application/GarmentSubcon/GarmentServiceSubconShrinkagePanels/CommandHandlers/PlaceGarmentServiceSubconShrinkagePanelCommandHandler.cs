@@ -36,6 +36,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconShrinkagePa
                 Guid.NewGuid(),
                 GenerateServiceSubconShrinkagePanelNo(request),
                 request.ServiceSubconShrinkagePanelDate.GetValueOrDefault(),
+                request.Remark,
                 request.IsUsed
             );
 
