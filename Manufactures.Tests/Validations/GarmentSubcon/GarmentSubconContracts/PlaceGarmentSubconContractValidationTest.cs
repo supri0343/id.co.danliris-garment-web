@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 using Manufactures.Domain.Shared.ValueObjects;
+using Manufactures.Domain.GarmentSubcon.SubconContracts.ValueObjects;
 
 namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconContracts
 {
@@ -45,7 +46,6 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconContracts
                 FinishedGoodType = "test",
                 JobType = "test",
                 Quantity = 1,
-                ContractDate = DateTimeOffset.Now,
                 Supplier = new Supplier
                 {
                     Code = "test",
@@ -58,7 +58,32 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconContracts
                     Code = "Buyercode",
                     Name = "BuyerName"
                 },
-                IsUsed =false
+                Uom = new Uom
+                {
+                    Id = 1,
+                    Unit = "unit"
+                },
+                SKEPNo = "no",
+                AgreementDate = DateTimeOffset.Now,
+                SubconCategory = "SUBCON",
+                ContractDate = DateTimeOffset.Now,
+                Items = new List<GarmentSubconContractItemValueObject>()
+                {
+                    new GarmentSubconContractItemValueObject
+                    {
+                        Uom=new Uom
+                        {
+                            Id=1,
+                            Unit="unit"
+                        },
+                        Product=new Product
+                        {
+                            Id=1,
+                            Name="name",
+                            Code="code"
+                        }
+                    }
+                }
             };
             // Action
             var validator = GetValidationRules();
