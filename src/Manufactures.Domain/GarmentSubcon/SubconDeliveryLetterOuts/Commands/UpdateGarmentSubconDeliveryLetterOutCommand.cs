@@ -46,7 +46,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
                 RuleFor(r => r.EPOItemId).NotNull().When(r => r.ContractType == "SUBCON BAHAN BAKU");
                 RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
                 RuleFor(r => r.Items).NotEmpty().WithMessage("Item tidak boleh kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
-                RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutItemValueObjectValidator()).When(r => r.ContractType == "SUBCON BAHAN BAKU");
+                RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutItemValueObjectValidator()).When(r => r.ContractType == "SUBCON GARMENT");
                 RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutCuttingItemValueObjectValidator()).When(r => r.ContractType == "SUBCON CUTTING");
                 RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutServiceItemValueObjectValidator()).When(r => r.ContractType == "SUBCON JASA");
                 RuleFor(r => r.TotalQty)
