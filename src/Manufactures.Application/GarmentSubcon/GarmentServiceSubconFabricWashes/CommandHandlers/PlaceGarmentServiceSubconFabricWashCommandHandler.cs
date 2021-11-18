@@ -36,6 +36,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
                 Guid.NewGuid(),
                 GenerateServiceSubconFabricWashNo(request),
                 request.ServiceSubconFabricWashDate.GetValueOrDefault(),
+                request.Remark,
                 request.IsUsed
             );
 

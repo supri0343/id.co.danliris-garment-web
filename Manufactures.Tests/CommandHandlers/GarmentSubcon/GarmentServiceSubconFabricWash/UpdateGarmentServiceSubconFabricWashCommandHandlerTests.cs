@@ -37,63 +37,63 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconF
             return new UpdateGarmentServiceSubconFabricWashCommandHandler(_MockStorage.Object);
         }
 
-        [Fact]
-        public async Task Handle_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            Guid serviceSubconFabricWashGuid = Guid.NewGuid();
-            Guid serviceSubconFabricWashItemGuid = Guid.NewGuid();
-            UpdateGarmentServiceSubconFabricWashCommandHandler unitUnderTest = CreateUpdateGarmentServiceSubconFabricWashCommandHandler();
-            CancellationToken cancellationToken = CancellationToken.None;
-            UpdateGarmentServiceSubconFabricWashCommand UpdateGarmentServiceSubconFabricWashCommand = new UpdateGarmentServiceSubconFabricWashCommand()
-            {
-                Items = new List<GarmentServiceSubconFabricWashItemValueObject>
-                {
-                    new GarmentServiceSubconFabricWashItemValueObject
-                    {
-                        UnitExpenditureNo = "unitExpenditureNo",
-                        ExpenditureDate = DateTimeOffset.Now,
-                        UnitSender = new UnitSender(1, "UnitSenderCode", "UnitSenderName"),
-                        UnitRequest = new UnitRequest(1, "UnitRequestCode", "UnitRequestName"),
-                        Details = new List<GarmentServiceSubconFabricWashDetailValueObject>
-                        {
-                            new GarmentServiceSubconFabricWashDetailValueObject
-                            {
-                                Product = new Product(1, "ProductCode", "ProductName","roductRemark"),
-                                Uom = new Uom(1, "UomUnit"),
-                                IsSave=true,
-                                Quantity=1,
-                                DesignColor= "ColorD",
-                            }
-                        }
+        //[Fact]
+        //public async Task Handle_StateUnderTest_ExpectedBehavior()
+        //{
+        //    // Arrange
+        //    Guid serviceSubconFabricWashGuid = Guid.NewGuid();
+        //    Guid serviceSubconFabricWashItemGuid = Guid.NewGuid();
+        //    UpdateGarmentServiceSubconFabricWashCommandHandler unitUnderTest = CreateUpdateGarmentServiceSubconFabricWashCommandHandler();
+        //    CancellationToken cancellationToken = CancellationToken.None;
+        //    UpdateGarmentServiceSubconFabricWashCommand UpdateGarmentServiceSubconFabricWashCommand = new UpdateGarmentServiceSubconFabricWashCommand()
+        //    {
+        //        Items = new List<GarmentServiceSubconFabricWashItemValueObject>
+        //        {
+        //            new GarmentServiceSubconFabricWashItemValueObject
+        //            {
+        //                UnitExpenditureNo = "unitExpenditureNo",
+        //                ExpenditureDate = DateTimeOffset.Now,
+        //                UnitSender = new UnitSender(1, "UnitSenderCode", "UnitSenderName"),
+        //                UnitRequest = new UnitRequest(1, "UnitRequestCode", "UnitRequestName"),
+        //                Details = new List<GarmentServiceSubconFabricWashDetailValueObject>
+        //                {
+        //                    new GarmentServiceSubconFabricWashDetailValueObject
+        //                    {
+        //                        Product = new Product(1, "ProductCode", "ProductName","roductRemark"),
+        //                        Uom = new Uom(1, "UomUnit"),
+        //                        IsSave=true,
+        //                        Quantity=1,
+        //                        DesignColor= "ColorD",
+        //                    }
+        //                }
 
-                    }
-                },
+        //            }
+        //        },
 
-            };
+        //    };
 
-            UpdateGarmentServiceSubconFabricWashCommand.SetIdentity(serviceSubconFabricWashGuid);
+        //    UpdateGarmentServiceSubconFabricWashCommand.SetIdentity(serviceSubconFabricWashGuid);
 
-            _mockServiceSubconFabricWashRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentServiceSubconFabricWashReadModel>()
-                {
-                    new GarmentServiceSubconFabricWashReadModel(serviceSubconFabricWashGuid)
-                }.AsQueryable());
+        //    _mockServiceSubconFabricWashRepository
+        //        .Setup(s => s.Query)
+        //        .Returns(new List<GarmentServiceSubconFabricWashReadModel>()
+        //        {
+        //            new GarmentServiceSubconFabricWashReadModel(serviceSubconFabricWashGuid)
+        //        }.AsQueryable());
 
-            _mockServiceSubconFabricWashRepository
-                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconFabricWash>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconFabricWash>()));
+        //    _mockServiceSubconFabricWashRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentServiceSubconFabricWash>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconFabricWash>()));
 
-            _MockStorage
-                .Setup(x => x.Save())
-                .Verifiable();
+        //    _MockStorage
+        //        .Setup(x => x.Save())
+        //        .Verifiable();
 
-            // Act
-            var result = await unitUnderTest.Handle(UpdateGarmentServiceSubconFabricWashCommand, cancellationToken);
+        //    // Act
+        //    var result = await unitUnderTest.Handle(UpdateGarmentServiceSubconFabricWashCommand, cancellationToken);
 
-            // Assert
-            result.Should().NotBeNull();
-        }
+        //    // Assert
+        //    result.Should().NotBeNull();
+        //}
     }
 }
