@@ -38,11 +38,11 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
         {
             RuleFor(r => r.SubconContractId).NotNull();
             RuleFor(r => r.ContractNo).NotNull();
-            RuleFor(r => r.UENId).NotEmpty().When(r => r.ContractType == "SUBCON BAHAN BAKU");
+            RuleFor(r => r.UENId).NotEmpty().When(r => r.SubconCategory == "SUBCON CUTTING SEWING");
             RuleFor(r => r.DLDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
-            RuleFor(r => r.UENNo).NotNull().When(r=>r.ContractType== "SUBCON BAHAN BAKU");
-            RuleFor(r => r.PONo).NotNull().When(r => r.ContractType == "SUBCON BAHAN BAKU");
-            RuleFor(r => r.EPOItemId).NotNull().When(r => r.ContractType == "SUBCON BAHAN BAKU");
+            RuleFor(r => r.UENNo).NotNull().When(r=>r.SubconCategory == "SUBCON CUTTING SEWING");
+            RuleFor(r => r.PONo).NotNull().When(r => r.SubconCategory == "SUBCON CUTTING SEWING");
+            RuleFor(r => r.EPOItemId).NotNull().When(r => r.SubconCategory == "SUBCON CUTTING SEWING");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item tidak boleh kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
             RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutItemValueObjectValidator()).When(r => r.SubconCategory == "SUBCON CUTTING SEWING");
