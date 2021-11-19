@@ -30,7 +30,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
         public GarmentSubconContractControllerTest() : base()
         {
             _mockGarmentSubconContractRepository = CreateMock<IGarmentSubconContractRepository>();
-            _mockGarmentSubconContractItemRepository= CreateMock<IGarmentSubconContractItemRepository>();
+            _mockGarmentSubconContractItemRepository = CreateMock<IGarmentSubconContractItemRepository>();
 
             _MockStorage.SetupStorage(_mockGarmentSubconContractRepository);
             _MockStorage.SetupStorage(_mockGarmentSubconContractItemRepository);
@@ -206,7 +206,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             Guid SubconDeliveryLetterOutItemGuid = Guid.NewGuid();
             GarmentSubconContractItem garmentSubconContractItem = new GarmentSubconContractItem(Guid.NewGuid(), new Guid(), new Domain.Shared.ValueObjects.ProductId(1), "code", "name", 1, new Domain.Shared.ValueObjects.UomId(1), "unit");
-            
+
             _mockGarmentSubconContractItemRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconContractItemReadModel>() {

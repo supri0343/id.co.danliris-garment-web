@@ -47,32 +47,33 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
                 AgreementNo = "test",
                 BPJNo = "test",
                 ContractNo = "test",
-                ContractType= "test",
-                DueDate=DateTimeOffset.Now,
-                FinishedGoodType= "test",
-                JobType= "test",
-                Quantity= 1,
-                Supplier=new Supplier {
-                    Code= "test",
-                    Id=1,
-                    Name= "test"
-                },
-                Buyer=new Buyer
+                ContractType = "test",
+                DueDate = DateTimeOffset.Now,
+                FinishedGoodType = "test",
+                JobType = "test",
+                Quantity = 1,
+                Supplier = new Supplier
                 {
-                    Id=1,
-                    Code="Buyercode",
+                    Code = "test",
+                    Id = 1,
+                    Name = "test"
+                },
+                Buyer = new Buyer
+                {
+                    Id = 1,
+                    Code = "Buyercode",
                     Name = "BuyerName"
                 },
-                Uom=new Uom
+                Uom = new Uom
                 {
-                    Id=1,
-                    Unit="unit"
+                    Id = 1,
+                    Unit = "unit"
                 },
-                SKEPNo="no",
-                AgreementDate=DateTimeOffset.Now,
-                SubconCategory="SUBCON",
-                ContractDate=DateTimeOffset.Now,
-                Items= new List<GarmentSubconContractItemValueObject>()
+                SKEPNo = "no",
+                AgreementDate = DateTimeOffset.Now,
+                SubconCategory = "SUBCON",
+                ContractDate = DateTimeOffset.Now,
+                Items = new List<GarmentSubconContractItemValueObject>()
                 {
                     new GarmentSubconContractItemValueObject
                     {
