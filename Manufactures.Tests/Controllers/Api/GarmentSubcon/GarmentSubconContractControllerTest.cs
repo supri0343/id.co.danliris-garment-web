@@ -30,7 +30,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
         public GarmentSubconContractControllerTest() : base()
         {
             _mockGarmentSubconContractRepository = CreateMock<IGarmentSubconContractRepository>();
-            _mockGarmentSubconContractItemRepository= CreateMock<IGarmentSubconContractItemRepository>();
+            _mockGarmentSubconContractItemRepository = CreateMock<IGarmentSubconContractItemRepository>();
 
             _MockStorage.SetupStorage(_mockGarmentSubconContractRepository);
             _MockStorage.SetupStorage(_mockGarmentSubconContractItemRepository);
@@ -58,7 +58,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             return controller;
         }
 
-        /*[Fact]
+        [Fact]
         public async Task Get_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -81,9 +81,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }*/
+        }
 
-        /*[Fact]
+        [Fact]
         public async Task GetSingle_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -108,9 +108,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }*/
+        }
 
-        /*[Fact]
+        [Fact]
         public async Task Post_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -128,9 +128,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }*/
+        }
 
-        /*[Fact]
+        [Fact]
         public async Task Post_Throw_Exception()
         {
             // Arrange
@@ -147,9 +147,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             // Act
             // Assert
             await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(It.IsAny<PlaceGarmentSubconContractCommand>()));
-        }*/
+        }
 
-        /*[Fact]
+        [Fact]
         public async Task Put_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -167,9 +167,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }*/
+        }
 
-        /*[Fact]
+        [Fact]
         public async Task Delete_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -184,7 +184,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }*/
+        }
 
         [Fact]
         public async Task GetComplete_StateUnderTest_ExpectedBehavior()
@@ -206,7 +206,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             Guid SubconDeliveryLetterOutItemGuid = Guid.NewGuid();
             GarmentSubconContractItem garmentSubconContractItem = new GarmentSubconContractItem(Guid.NewGuid(), new Guid(), new Domain.Shared.ValueObjects.ProductId(1), "code", "name", 1, new Domain.Shared.ValueObjects.UomId(1), "unit");
-            
+
             _mockGarmentSubconContractItemRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconContractItemReadModel>() {

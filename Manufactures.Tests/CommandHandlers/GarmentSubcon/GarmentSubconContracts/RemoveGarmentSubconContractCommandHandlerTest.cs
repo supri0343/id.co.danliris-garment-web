@@ -37,7 +37,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
             return new RemoveGarmentSubconContractCommandHandler(_MockStorage.Object);
         }
 
-        /*[Fact]
+        [Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -46,9 +46,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
             RemoveGarmentSubconContractCommandHandler unitUnderTest = CreateRemoveGarmentSubconContractCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
             RemoveGarmentSubconContractCommand RemoveGarmentSubconContractCommand = new RemoveGarmentSubconContractCommand(SubconContractGuid);
-            
+
             GarmentSubconContract garmentSubconContract = new GarmentSubconContract(
-                SubconContractGuid, null, null, null, new SupplierId(1), "", "", null, null, null, 1, DateTimeOffset.Now, DateTimeOffset.Now , false, new BuyerId(1),"","","",new UomId(1),"","",DateTimeOffset.Now);
+                SubconContractGuid, null, null, null, new SupplierId(1), "", "", null, null, null, 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now);
 
             _mockSubconContractRepository
                 .Setup(s => s.Query)
@@ -79,6 +79,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
 
             // Assert
             result.Should().NotBeNull();
-        }*/
+        }
     }
 }

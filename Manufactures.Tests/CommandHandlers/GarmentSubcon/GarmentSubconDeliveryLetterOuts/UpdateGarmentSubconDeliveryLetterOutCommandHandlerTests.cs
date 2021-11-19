@@ -152,7 +152,8 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
             UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
             {
                 ContractNo = "test",
-                ContractType = "SUBCON CUTTING",
+                ContractType = "SUBCON GARMENT",
+                SubconCategory= "SUBCON SEWING",
                 DLDate = DateTimeOffset.Now,
                 DLType = "RE PROSES",
                 EPOItemId = 1,
@@ -255,7 +256,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                 SubconContractId = new Guid(),
                 UENId = 1,
                 UENNo = "test",
-                ServiceType="SUBCON JASA KOMPONEN",
+                SubconCategory="SUBCON JASA KOMPONEN",
                 Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>
                 {
                     new GarmentSubconDeliveryLetterOutItemValueObject
