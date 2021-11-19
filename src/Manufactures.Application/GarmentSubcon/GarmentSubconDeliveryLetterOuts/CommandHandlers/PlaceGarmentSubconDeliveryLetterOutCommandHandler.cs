@@ -94,7 +94,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     item.POSerialNumber,
                     item.SubconNo
                 );
-                if(request.ContractType=="SUBCON CUTTING")
+                if(request.SubconCategory=="SUBCON SEWING")
                 {
                     var subconCuttingOut= _garmentCuttingOutRepository.Query.Where(x => x.Identity == item.SubconId).Select(s => new GarmentSubconCuttingOut(s)).Single();
                     subconCuttingOut.SetIsUsed(true);
@@ -102,42 +102,40 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
 
                     await _garmentCuttingOutRepository.Update(subconCuttingOut);
                 }
-                if (request.ContractType == "SUBCON JASA")
+                else if(request.SubconCategory == "SUBCON JASA KOMPONEN")
                 {
-                    if(request.ServiceType=="SUBCON JASA KOMPONEN")
-                    {
-                        var subconCutting = _garmentSubconCuttingRepository.Query.Where(x => x.Identity == item.SubconId).Select(s => new GarmentServiceSubconCutting(s)).Single();
-                        subconCutting.SetIsUsed(true);
-                        subconCutting.Modify();
+                    var subconCutting = _garmentSubconCuttingRepository.Query.Where(x => x.Identity == item.SubconId).Select(s => new GarmentServiceSubconCutting(s)).Single();
+                    subconCutting.SetIsUsed(true);
+                    subconCutting.Modify();
 
-                        await _garmentSubconCuttingRepository.Update(subconCutting);
-                    }
-                    else if (request.ServiceType == "SUBCON JASA GARMENT WASH")
-                    {
-                        var subconSewing = _garmentSubconSewingRepository.Query.Where(x => x.Identity == item.SubconId).Select(s => new GarmentServiceSubconSewing(s)).Single();
-                        subconSewing.SetIsUsed(true);
-                        subconSewing.Modify();
-
-                        await _garmentSubconSewingRepository.Update(subconSewing);
-                    }
-                    else if (request.ServiceType == "SUBCON JASA SHRINKAGE PANEL")
-                    {
-                        var subconPanel = _garmentServiceSubconShrinkagePanelRepository.Query.Where(x => x.Identity == item.SubconId).Select(s => new GarmentServiceSubconShrinkagePanel(s)).Single();
-                        subconPanel.SetIsUsed(true);
-                        subconPanel.Modify();
-
-                        await _garmentServiceSubconShrinkagePanelRepository.Update(subconPanel);
-                    }
-                    else if (request.ServiceType == "SUBCON JASA FABRIC WASH")
-                    {
-                        var subconFabric = _garmentServiceSubconFabricWashRepository.Query.Where(x => x.Identity == item.SubconId).Select(s => new GarmentServiceSubconFabricWash(s)).Single();
-                        subconFabric.SetIsUsed(true);
-                        subconFabric.Modify();
-
-                        await _garmentServiceSubconFabricWashRepository.Update(subconFabric);
-                    }
-
+                    await _garmentSubconCuttingRepository.Update(subconCutting);
                 }
+                else if (request.SubconCategory == "SUBCON JASA GARMENT WASH")
+                {
+                    var subconSewing = _garmentSubconSewingRepository.Query.Where(x => x.Identity == item.SubconId).Select(s => new GarmentServiceSubconSewing(s)).Single();
+                    subconSewing.SetIsUsed(true);
+                    subconSewing.Modify();
+
+                    await _garmentSubconSewingRepository.Update(subconSewing);
+                }
+                else if (request.SubconCategory == "SUBCON BB SHRINKAGE/PANEL")
+                {
+                    var subconPanel = _garmentServiceSubconShrinkagePanelRepository.Query.Where(x => x.Identity == item.SubconId).Select(s => new GarmentServiceSubconShrinkagePanel(s)).Single();
+                    subconPanel.SetIsUsed(true);
+                    subconPanel.Modify();
+
+                    await _garmentServiceSubconShrinkagePanelRepository.Update(subconPanel);
+                }
+                else if (request.SubconCategory == "SUBCON BB FABRIC WASH/PRINT")
+                {
+                    var subconFabric = _garmentServiceSubconFabricWashRepository.Query.Where(x => x.Identity == item.SubconId).Select(s => new GarmentServiceSubconFabricWash(s)).Single();
+                    subconFabric.SetIsUsed(true);
+                    subconFabric.Modify();
+
+                    await _garmentServiceSubconFabricWashRepository.Update(subconFabric);
+                }
+
+                
                 await _garmentSubconDeliveryLetterOutItemRepository.Update(garmentSubconDeliveryLetterOutItem);
             }
 
