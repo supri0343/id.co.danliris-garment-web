@@ -76,7 +76,7 @@ namespace Manufactures.Tests.Queries.GarmentFinishingOuts.GarmentTotalQtyForTrac
               .Setup(s => s.Query)
               .Returns(new List<GarmentFinishingInReadModel>
               {
-                    new GarmentFinishingIn(guidFinishingIn, "", "", new UnitDepartmentId(1), "","","","",new UnitDepartmentId(1),"","",DateTimeOffset.Now, new GarmentComodityId(1), "","",1,"").GetReadModel()
+                    new GarmentFinishingIn(guidFinishingIn, "", "", new UnitDepartmentId(1), "","","","",new UnitDepartmentId(1),"","",DateTimeOffset.Now, new GarmentComodityId(1), "","",1,"","").GetReadModel()
               }.AsQueryable());
 
 

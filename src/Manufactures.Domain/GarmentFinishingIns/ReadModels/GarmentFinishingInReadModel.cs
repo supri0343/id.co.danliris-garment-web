@@ -29,7 +29,8 @@ namespace Manufactures.Domain.GarmentFinishingIns.ReadModels
         public long DOId { get; internal set; }
         public string DONo { get; internal set; }
 		public string UId { get; internal set; }
-	public virtual List<GarmentFinishingInItemReadModel> Items { get; internal set; }
+        public string SubconType { get; internal set; }
+        public virtual List<GarmentFinishingInItemReadModel> Items { get; internal set; }
 
     }
 }

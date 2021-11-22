@@ -28,6 +28,7 @@ namespace Manufactures.Domain.GarmentSubconFinishingIns.Commands
 
         public object Supplier { get; set; }
         public double? TotalQuantity { get; set; }
+        public string SubconType { get; set; }
     }
 
     public class PlaceGarmentSubconFinishingInCommandValidator : AbstractValidator<PlaceGarmentSubconFinishingInCommand>

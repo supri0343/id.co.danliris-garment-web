@@ -27,8 +27,9 @@ namespace Manufactures.Domain.GarmentFinishingIns
         public DateTimeOffset FinishingInDate { get; private set; }
         public long DOId { get; private set; }
         public string DONo { get; private set; }
+        public string SubconType { get; private set; }
 
-        public GarmentFinishingIn(Guid identity, string finishingInNo, string finishingInType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset finishingInDate, GarmentComodityId comodityId, string comodityCode, string comodityName, long doId, string doNo) : base(identity)
+        public GarmentFinishingIn(Guid identity, string finishingInNo, string finishingInType, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset finishingInDate, GarmentComodityId comodityId, string comodityCode, string comodityName, long doId, string doNo, string subconType) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
 
@@ -50,6 +51,7 @@ namespace Manufactures.Domain.GarmentFinishingIns
             ComodityName = comodityName;
             DOId = doId;
             DONo = doNo;
+            SubconType = subconType;
 
             ReadModel = new GarmentFinishingInReadModel(Identity)
             {
@@ -68,7 +70,8 @@ namespace Manufactures.Domain.GarmentFinishingIns
                 ComodityCode = ComodityCode,
                 ComodityName = ComodityName,
                 DOId= DOId,
-                DONo= DONo
+                DONo= DONo,
+                SubconType = SubconType,
             };
 
             ReadModel.AddDomainEvent(new OnGarmentFinishingInPlaced(Identity));
@@ -92,6 +95,7 @@ namespace Manufactures.Domain.GarmentFinishingIns
             FinishingInType = readModel.FinishingInType;
             DOId = readModel.DOId;
             DONo = readModel.DONo;
+            SubconType = readModel.SubconType;
         }
 
         public void setDate(DateTimeOffset finishingInDate)
@@ -101,6 +105,16 @@ namespace Manufactures.Domain.GarmentFinishingIns
                 FinishingInDate = finishingInDate;
                 ReadModel.FinishingInDate = finishingInDate;
 
+                MarkModified();
+            }
+        }
+
+        public void setSubconType(string subconType)
+        {
+            if (subconType != SubconType)
+            {
+                SubconType = subconType;
+                ReadModel.SubconType = subconType;
                 MarkModified();
             }
         }

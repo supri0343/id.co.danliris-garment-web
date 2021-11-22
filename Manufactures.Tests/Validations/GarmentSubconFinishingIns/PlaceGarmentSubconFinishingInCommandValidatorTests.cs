@@ -43,7 +43,7 @@ namespace Manufactures.Tests.Validations.GarmentSubconFinishingIns
             _mockGarmentFinishingInRepository.Setup(s => s.Query)
                 .Returns(new List<GarmentFinishingInReadModel>
                 {
-                    new GarmentFinishingIn(Guid.Empty, null, null, new UnitDepartmentId(1), null, null, unitUnderTest.RONo, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null, unitUnderTest.DOId, null).GetReadModel()
+                    new GarmentFinishingIn(Guid.Empty, null, null, new UnitDepartmentId(1), null, null, unitUnderTest.RONo, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null, unitUnderTest.DOId, null, null).GetReadModel()
                 }.AsQueryable());
 
             var validator = GetValidationRules();
@@ -83,7 +83,7 @@ namespace Manufactures.Tests.Validations.GarmentSubconFinishingIns
             _mockGarmentFinishingInRepository.Setup(s => s.Query)
                 .Returns(new List<GarmentFinishingInReadModel>
                 {
-                    new GarmentFinishingIn(Guid.Empty, null, null, new UnitDepartmentId(1), null, null, "Not" + unitUnderTest.RONo, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null, unitUnderTest.DOId + 1, "Not" + unitUnderTest.DONo).GetReadModel()
+                    new GarmentFinishingIn(Guid.Empty, null, null, new UnitDepartmentId(1), null, null, "Not" + unitUnderTest.RONo, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null, unitUnderTest.DOId + 1, "Not" + unitUnderTest.DONo, null).GetReadModel()
                 }.AsQueryable());
 
             var validator = GetValidationRules();
