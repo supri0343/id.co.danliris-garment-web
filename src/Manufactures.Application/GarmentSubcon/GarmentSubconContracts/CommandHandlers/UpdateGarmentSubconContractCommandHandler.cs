@@ -17,17 +17,51 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
     {
         private readonly IStorage _storage;
         private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
+        private readonly IGarmentSubconContractItemRepository _garmentSubconContractItemRepository;
 
         public UpdateGarmentSubconContractCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentSubconContractRepository = storage.GetRepository<IGarmentSubconContractRepository>();
+            _garmentSubconContractItemRepository = storage.GetRepository<IGarmentSubconContractItemRepository>();
         }
 
         public async Task<GarmentSubconContract> Handle(UpdateGarmentSubconContractCommand request, CancellationToken cancellationToken)
         {
             var subconContract = _garmentSubconContractRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentSubconContract(o)).Single();
+            _garmentSubconContractItemRepository.Find(o => o.SubconContractId == subconContract.Identity).ForEach(async subconItem =>
+            {
+                var item = request.Items.Where(o => o.Id == subconItem.Identity).SingleOrDefault();
 
+                if (item == null)
+                {
+                    subconItem.Remove();
+                }
+                else
+                {
+                    subconItem.SetQuantity(item.Quantity);
+                    subconItem.Modify();
+                }
+                await _garmentSubconContractItemRepository.Update(subconItem);
+            });
+            foreach (var item in request.Items)
+            {
+                if (item.Id == Guid.Empty)
+                {
+                    GarmentSubconContractItem garmentSubconContractItem = new GarmentSubconContractItem(
+                        Guid.NewGuid(),
+                        subconContract.Identity,
+                        new ProductId(item.Product.Id),
+                        item.Product.Code,
+                        item.Product.Name,
+                        item.Quantity,
+                        new UomId(item.Uom.Id),
+                        item.Uom.Unit
+                    );
+                    
+                    await _garmentSubconContractItemRepository.Update(garmentSubconContractItem);
+                }
+            }
             subconContract.SetAgreementNo(request.AgreementNo);
             subconContract.SetBPJNo(request.BPJNo);
             subconContract.SetContractNo(request.ContractNo);
@@ -41,6 +75,15 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
             subconContract.SetSupplierName(request.Supplier.Name);
             subconContract.SetContractDate(request.ContractDate);
             subconContract.SetIsUsed(request.IsUsed);
+            subconContract.SetBuyerId(new BuyerId(request.Buyer.Id));
+            subconContract.SetBuyerCode(request.Buyer.Code);
+            subconContract.SetBuyerName(request.Buyer.Name);
+            subconContract.SetSKEPNo(request.SKEPNo);
+            subconContract.SetSubconCategory(request.SubconCategory);
+            subconContract.SetUomId(new UomId(request.Uom.Id));
+            subconContract.SetUomUnit(request.Uom.Unit);
+            subconContract.SetAgreementDate(request.AgreementDate);
+
             subconContract.Modify();
             await _garmentSubconContractRepository.Update(subconContract);
 

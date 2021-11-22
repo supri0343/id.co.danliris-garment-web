@@ -83,7 +83,7 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods.GarmentMutationExpe
             return new GarmentMutationExpenditureGoodQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
         }
 
-        [Fact]
+        /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior()
         {
             GarmentMutationExpenditureGoodQueryHandler unitUnderTest = CreateGetMutationQueryHandler();
@@ -179,6 +179,6 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods.GarmentMutationExpe
             // Assert
             result.Should().NotBeNull();
 
-        }
+        }*/
     }
 }

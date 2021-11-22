@@ -8,6 +8,7 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Repositories;
+using Manufactures.Domain.Shared.ValueObjects;
 
 namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.CommandHandlers
 {
@@ -70,6 +71,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
             //});
 
             serviceSubconSewing.SetDate(request.ServiceSubconSewingDate.GetValueOrDefault());
+            serviceSubconSewing.SetBuyerId(new BuyerId(request.Buyer.Id));
+            serviceSubconSewing.SetBuyerCode(request.Buyer.Code);
+            serviceSubconSewing.SetBuyerName(request.Buyer.Name);
             serviceSubconSewing.Modify();
             await _garmentServiceSubconSewingRepository.Update(serviceSubconSewing);
 

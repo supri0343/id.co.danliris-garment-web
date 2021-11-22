@@ -22,8 +22,8 @@ namespace Manufactures.Dtos.GarmentSubcon
             FabricType = garmentSubconDeliveryLetterOutItem.FabricType;
             RONo = garmentSubconDeliveryLetterOutItem.RONo;
             POSerialNumber = garmentSubconDeliveryLetterOutItem.POSerialNumber;
-            SubconCuttingOutId = garmentSubconDeliveryLetterOutItem.SubconCuttingOutId;
-            SubconCuttingOutNo = garmentSubconDeliveryLetterOutItem.SubconCuttingOutNo;
+            SubconId = garmentSubconDeliveryLetterOutItem.SubconId;
+            SubconNo = garmentSubconDeliveryLetterOutItem.SubconNo;
         }
 
         public Guid Id { get; set; }
@@ -43,9 +43,9 @@ namespace Manufactures.Dtos.GarmentSubcon
 
         #region Cutting
         public string RONo { get; set; }
-        public Guid SubconCuttingOutId { get; set; }
+        public Guid SubconId { get; set; }
         public string POSerialNumber { get; set; }
-        public string SubconCuttingOutNo { get; set; }
+        public string SubconNo { get; set; }
         #endregion
         //public double ContractQuantity { get; set; }
     }

@@ -81,7 +81,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconCuttingReadModel>>()))
                 .Returns(new List<GarmentServiceSubconCutting>()
                 {
-                    new GarmentServiceSubconCutting(ServiceSubconCuttingGuid, null, null, new UnitDepartmentId(1), null, null,  DateTimeOffset.Now, false)
+                    new GarmentServiceSubconCutting(ServiceSubconCuttingGuid, null, null, new UnitDepartmentId(1), null, null,  DateTimeOffset.Now, false, new BuyerId(1), null, null)
                 });
 
             //Guid ServiceSubconCuttingItemGuid = Guid.NewGuid();
@@ -110,7 +110,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingReadModel, bool>>>()))
                 .Returns(new List<GarmentServiceSubconCutting>()
                 {
-                    new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false)
+                    new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null)
                 });
 
             _mockGarmentServiceSubconCuttingItemRepository
@@ -150,7 +150,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentServiceSubconCuttingCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false));
+                .ReturnsAsync(new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null));
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentServiceSubconCuttingCommand>());
@@ -181,7 +181,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentServiceSubconCuttingCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false));
+                .ReturnsAsync(new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null));
 
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentServiceSubconCuttingCommand());
@@ -199,7 +199,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentServiceSubconCuttingCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false));
+                .ReturnsAsync(new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
@@ -228,7 +228,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconCuttingReadModel>>()))
                 .Returns(new List<GarmentServiceSubconCutting>()
                 {
-                    new GarmentServiceSubconCutting(ServiceSubconCuttingGuid, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false)
+                    new GarmentServiceSubconCutting(ServiceSubconCuttingGuid, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null)
                 });
 
             _mockGarmentServiceSubconCuttingItemRepository

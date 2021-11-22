@@ -189,7 +189,8 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 		{
 			return new GetXlsMonitoringProductionStockFlowQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
-		[Fact]
+
+		/*[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior_bookkeeping()
 		{
 			// Arrange
@@ -470,9 +471,9 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 
 			// Assert
 			result.Should().NotBeNull();
-		}
+		}*/
 
-		[Fact]
+		/*[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior()
 		{
 			// Arrange
@@ -763,6 +764,6 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 
 			// Assert
 			result.Should().NotBeNull();
-		}
+		}*/
 	}
 }

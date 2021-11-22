@@ -39,18 +39,19 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
             var unitUnderTest = new PlaceGarmentSubconDeliveryLetterOutCommand()
             {
                 IsUsed = true,
-                ContractNo="test",
-                ContractType= "SUBCON BAHAN BAKU",
-                DLDate=DateTimeOffset.Now,
-                DLType= "test",
-                EPOItemId=1,
-                PONo= "test",
-                Remark= "test",
-                UENId=1,
-                SubconContractId=new Guid(),
-                TotalQty=1,
-                UENNo= "test",
-                UsedQty=1,
+                ContractNo = "test",
+                ContractType = "SUBCON GARMENT",
+                SubconCategory="SUBCON CUTTING SEWING",
+                DLDate = DateTimeOffset.Now,
+                DLType = "test",
+                EPOItemId = 1,
+                PONo = "test",
+                Remark = "test",
+                UENId = 1,
+                SubconContractId = new Guid(),
+                TotalQty = 1,
+                UENNo = "test",
+                UsedQty = 1,
                 Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>()
                 {
                     new GarmentSubconDeliveryLetterOutItemValueObject()
@@ -161,6 +162,7 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
                 TotalQty = 1,
                 UENNo = "test",
                 UsedQty = 1,
+                SubconCategory= "SUBCON CUTTING SEWING",
                 Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>()
                 {
                     new GarmentSubconDeliveryLetterOutItemValueObject()
@@ -222,10 +224,10 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
                         Quantity =1,
                         SubconDeliveryLetterOutId =id,
                         ContractQuantity=1,
-                        SubconCuttingOutId=new Guid(),
+                        SubconId=new Guid(),
                         POSerialNumber="test",
                         RONo="RONo",
-                        SubconCuttingOutNo="no"
+                        SubconNo="no"
                     }
                 }
             };
@@ -291,6 +293,7 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
                 SubconContractId = new Guid(),
                 TotalQty = 1,
                 UsedQty = 1,
+                SubconCategory="SUBCON SEWING",
                 Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>()
                 {
                     new GarmentSubconDeliveryLetterOutItemValueObject()
@@ -300,10 +303,10 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
                         Quantity =0,
                         SubconDeliveryLetterOutId =id,
                         ContractQuantity=1,
-                        SubconCuttingOutId=new Guid(),
+                        SubconId=new Guid(),
                         POSerialNumber="test",
                         RONo="RONo",
-                        SubconCuttingOutNo="no"
+                        SubconNo="no"
                     }
                 }
             };

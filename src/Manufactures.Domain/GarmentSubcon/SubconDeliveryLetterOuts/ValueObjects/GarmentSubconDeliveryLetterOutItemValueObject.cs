@@ -26,9 +26,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ValueObject
 
         #region Cutting
         public string RONo { get; set; }
-        public Guid SubconCuttingOutId { get; set; }
+        public Guid SubconId { get; set; }
         public string POSerialNumber { get; set; }
-        public string SubconCuttingOutNo { get; set; }
+        public string SubconNo { get; set; }
 
         #endregion
         public GarmentSubconDeliveryLetterOutItemValueObject()

@@ -84,7 +84,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
                 var order = await Mediator.Send(command);
 
-                if(command.ContractType=="SUBCON BAHAN BAKU")
+                if(command.SubconCategory== "SUBCON CUTTING SEWING")
                     await PutGarmentUnitExpenditureNoteCreate(command.UENId);
 
                 return Ok(order.Identity);

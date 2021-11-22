@@ -15,6 +15,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels
         public Guid SubconContractId { get; internal set; }
         public string ContractNo { get; internal set; }
         public string ContractType { get; internal set; }
+        public string ServiceType { get; internal set; }
         public DateTimeOffset DLDate { get; internal set; }
 
 
@@ -26,6 +27,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels
 
         public string Remark { get; internal set; }
         public bool IsUsed { get; internal set; }
+
+        public string SubconCategory { get; internal set; }
         public virtual List<GarmentSubconDeliveryLetterOutItemReadModel> GarmentSubconDeliveryLetterOutItem { get; internal set; }
     }
 }

@@ -14,18 +14,23 @@ using Manufactures.Domain.GarmentSubcon.SubconContracts;
 using System.Linq;
 using FluentAssertions;
 using Manufactures.Domain.Shared.ValueObjects;
+using Manufactures.Domain.GarmentSubcon.SubconContracts.ValueObjects;
+using System.Linq.Expressions;
 
 namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContracts
 {
     public class UpdateGarmentSubconContractCommandHandlerTest : BaseCommandUnitTest
     {
         private readonly Mock<IGarmentSubconContractRepository> _mockSubconContractRepository;
+        private readonly Mock<IGarmentSubconContractItemRepository> _mockSubconContractItemRepository;
 
         public UpdateGarmentSubconContractCommandHandlerTest()
         {
             _mockSubconContractRepository = CreateMock<IGarmentSubconContractRepository>();
+            _mockSubconContractItemRepository = CreateMock<IGarmentSubconContractItemRepository>();
 
             _MockStorage.SetupStorage(_mockSubconContractRepository);
+            _MockStorage.SetupStorage(_mockSubconContractItemRepository);
         }
         private UpdateGarmentSubconContractCommandHandler CreateUpdateGarmentSubconContractCommandHandler()
         {
@@ -56,6 +61,38 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
                     Code = "test",
                     Id = 1,
                     Name = "test"
+                },
+                Buyer = new Buyer
+                {
+                    Id = 1,
+                    Code = "Buyercode",
+                    Name = "BuyerName"
+                },
+                Uom = new Uom
+                {
+                    Id = 1,
+                    Unit = "unit"
+                },
+                SKEPNo = "no",
+                AgreementDate = DateTimeOffset.Now,
+                SubconCategory = "SUBCON",
+                ContractDate = DateTimeOffset.Now,
+                Items = new List<GarmentSubconContractItemValueObject>()
+                {
+                    new GarmentSubconContractItemValueObject
+                    {
+                        Uom=new Uom
+                        {
+                            Id=1,
+                            Unit="unit"
+                        },
+                        Product=new Product
+                        {
+                            Id=1,
+                            Name="name",
+                            Code="code"
+                        }
+                    }
                 }
 
             };
@@ -67,9 +104,24 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
                 {
                     new GarmentSubconContractReadModel(SubconContractGuid)
                 }.AsQueryable());
+
+
+            _mockSubconContractItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractItemReadModel, bool>>>()))
+                .Returns(new List<GarmentSubconContractItem>()
+                {
+                    new GarmentSubconContractItem(Guid.Empty,SubconContractGuid,new ProductId(1),"code","name",1,new UomId(1),"unit")
+                });
+
+            _mockSubconContractItemRepository
+                .Setup(s => s.Update(It.IsAny<GarmentSubconContractItem>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentSubconContractItem>()));
+
             _mockSubconContractRepository
                 .Setup(s => s.Update(It.IsAny<GarmentSubconContract>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentSubconContract>()));
+
+
             _MockStorage
                 .Setup(x => x.Save())
                 .Verifiable();
