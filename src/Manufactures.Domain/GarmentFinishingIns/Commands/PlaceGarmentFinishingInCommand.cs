@@ -25,6 +25,7 @@ namespace Manufactures.Domain.GarmentFinishingIns.Commands
         public double Price { get; set; }
         public long DOId { get; set; }
         public string DONo { get; set; }
+        public string SubconType { get; set; }
 
     }
 

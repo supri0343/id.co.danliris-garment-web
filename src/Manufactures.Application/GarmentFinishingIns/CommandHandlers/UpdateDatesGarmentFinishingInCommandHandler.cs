@@ -35,6 +35,7 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
             foreach (var model in FinIns)
             {
                 model.setDate(request.Date);
+                model.setSubconType(request.SubconType);
                 model.Modify();
                 await _garmentFinishingInRepository.Update(model);
             }
