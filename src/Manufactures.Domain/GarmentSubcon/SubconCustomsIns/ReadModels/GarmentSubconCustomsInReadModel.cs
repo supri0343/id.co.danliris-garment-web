@@ -22,6 +22,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns.ReadModels
         public string Remark { get; internal set; }
 
         public bool IsUsed { get; internal set; }
+        public string SubconCategory { get; internal set; }
         public virtual List<GarmentSubconCustomsInItemReadModel> GarmentSubconCustomsInItem { get; internal set; }
     }
 }

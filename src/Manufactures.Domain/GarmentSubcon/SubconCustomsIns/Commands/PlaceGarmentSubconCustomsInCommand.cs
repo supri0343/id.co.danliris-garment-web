@@ -19,6 +19,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns.Commands
         public Supplier Supplier { get; set; }
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
+        public string SubconCategory { get; set; }
         public List<GarmentSubconCustomsInItemValueObject> Items { get; set; }
     }
 
@@ -30,6 +31,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns.Commands
             RuleFor(r => r.BcDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.BcType).NotNull();
             RuleFor(r => r.SubconType).NotNull();
+            RuleFor(r => r.SubconCategory).NotNull();
             RuleFor(r => r.SubconContractId).NotNull();
             RuleFor(r => r.SubconContractNo).NotNull();
             RuleFor(r => r.Supplier.Id).NotEmpty().OverridePropertyName("Supplier").When(w => w.Supplier != null);
@@ -48,6 +50,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns.Commands
             RuleFor(r => r.DoId).NotNull();
             RuleFor(r => r.DoNo).NotNull();
             RuleFor(r => r.Quantity).GreaterThan(0).WithMessage("'Jumlah' harus lebih dari '0'.");
+            RuleFor(r => r.TotalQty)
+               .LessThanOrEqualTo(r => r.RemainingQuantity)
+               .WithMessage(x => $"'Total Jumlah ' tidak boleh lebih dari '{x.RemainingQuantity}'.");
         }
     }
 }
