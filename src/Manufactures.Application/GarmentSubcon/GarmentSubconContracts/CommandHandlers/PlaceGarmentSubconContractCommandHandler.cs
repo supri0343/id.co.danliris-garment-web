@@ -17,11 +17,13 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
     {
         private readonly IStorage _storage;
         private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
+        private readonly IGarmentSubconContractItemRepository _garmentSubconContractItemRepository;
 
         public PlaceGarmentSubconContractCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentSubconContractRepository = storage.GetRepository<IGarmentSubconContractRepository>();
+            _garmentSubconContractItemRepository= storage.GetRepository<IGarmentSubconContractItemRepository>();
         }
 
         public async Task<GarmentSubconContract> Handle(PlaceGarmentSubconContractCommand request, CancellationToken cancellationToken)
@@ -45,8 +47,28 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
                 request.IsUsed,
                 new BuyerId(request.Buyer.Id),
                 request.Buyer.Code,
-                request.Buyer.Name
+                request.Buyer.Name,
+                request.SubconCategory,
+                new UomId(request.Uom.Id),
+                request.Uom.Unit,
+                request.SKEPNo,
+                request.AgreementDate
             );
+
+            foreach (var item in request.Items)
+            {
+                GarmentSubconContractItem garmentSubconContractItem = new GarmentSubconContractItem(
+                    Guid.NewGuid(),
+                    garmentSubconContract.Identity,
+                    new ProductId(item.Product.Id),
+                    item.Product.Code,
+                    item.Product.Name,
+                    item.Quantity,
+                    new UomId(item.Uom.Id),
+                    item.Uom.Unit
+                );
+                await _garmentSubconContractItemRepository.Update(garmentSubconContractItem);
+            }
 
             await _garmentSubconContractRepository.Update(garmentSubconContract);
             _storage.Save();

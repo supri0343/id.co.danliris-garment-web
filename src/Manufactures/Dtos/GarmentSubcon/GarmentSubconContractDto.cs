@@ -23,7 +23,11 @@ namespace Manufactures.Dtos.GarmentSubcon
             ContractDate = garmentSubconContract.ContractDate;
             IsUsed = garmentSubconContract.IsUsed;
             Buyer = new Buyer(garmentSubconContract.BuyerId.Value, garmentSubconContract.BuyerCode, garmentSubconContract.BuyerName);
-
+            SubconCategory = garmentSubconContract.SubconCategory;
+            Uom = new Uom(garmentSubconContract.UomId.Value, garmentSubconContract.UomUnit);
+            SKEPNo = garmentSubconContract.SKEPNo;
+            AgreementDate = garmentSubconContract.AgreementDate;
+            Items = new List<GarmentSubconContractItemDto>();
         }
         public Guid Id { get; internal set; }
         public string ContractType { get;  set; }
@@ -38,6 +42,12 @@ namespace Manufactures.Dtos.GarmentSubcon
         public DateTimeOffset ContractDate { get; set; }
         public bool IsUsed { get; set; }
         public Buyer Buyer { get; set; }
+
+        public string SubconCategory { get; set; }
+        public Uom Uom { get; set; }
+        public string SKEPNo { get; set; }
+        public DateTimeOffset AgreementDate { get; set; }
+        public List<GarmentSubconContractItemDto> Items { get; set; }
     }
 
 }
