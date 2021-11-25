@@ -20,6 +20,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes
             ServiceSubconFabricWashNo = serviceSubconFabricWashNo;
             ServiceSubconFabricWashDate = serviceSubconFabricWashDate;
             IsUsed = isUsed;
+            Remark = remark;
 
             ReadModel = new GarmentServiceSubconFabricWashReadModel(Identity)
             {
