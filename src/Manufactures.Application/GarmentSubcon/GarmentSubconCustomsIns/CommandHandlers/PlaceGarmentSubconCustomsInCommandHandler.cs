@@ -42,7 +42,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconCustomsIns.Command
                 request.Supplier.Code,
                 request.Supplier.Name,
                 request.Remark,
-                request.IsUsed
+                request.IsUsed,
+                request.SubconCategory
             );
 
             foreach (var item in request.Items)

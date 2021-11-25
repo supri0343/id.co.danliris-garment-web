@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    [Migration("20211117045705_Add_Field_Remark_GarmentServiceSubconFabricWash")]
+    [Migration("20211115053831_Add_Field_Remark_GarmentServiceSubconFabricWash")]
     partial class Add_Field_Remark_GarmentServiceSubconFabricWash
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

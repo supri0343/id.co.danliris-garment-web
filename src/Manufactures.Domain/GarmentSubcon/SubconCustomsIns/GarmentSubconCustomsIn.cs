@@ -21,8 +21,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns
         public string SupplierName { get; private set; }
         public string Remark { get; set; }
         public bool IsUsed { get; internal set; }
+        public string SubconCategory { get; private set; }
 
-        public GarmentSubconCustomsIn(Guid identity, string bcNo, DateTimeOffset bcDate, string bcType, string subconType, Guid subconContractId, string subconContractNo, SupplierId supplierId, string supplierCode, string supplierName, string remark, bool isUsed) : base(identity)
+        public GarmentSubconCustomsIn(Guid identity, string bcNo, DateTimeOffset bcDate, string bcType, string subconType, Guid subconContractId, string subconContractNo, SupplierId supplierId, string supplierCode, string supplierName, string remark, bool isUsed, string subconCategory) : base(identity)
         {
             Identity = identity;
             BcNo = bcNo;
@@ -36,6 +37,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns
             SupplierName = supplierName;
             Remark = remark;
             IsUsed = isUsed;
+            SubconCategory = subconCategory;
 
             ReadModel = new GarmentSubconCustomsInReadModel(Identity)
             {
@@ -50,6 +52,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns
                 SupplierName = SupplierName,
                 Remark = Remark,
                 IsUsed = IsUsed,
+                SubconCategory = SubconCategory,
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconCustomsInPlaced(Identity));
@@ -68,6 +71,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns
             SupplierName = readModel.SupplierName;
             Remark = readModel.Remark;
             IsUsed = readModel.IsUsed;
+            SubconCategory = readModel.SubconCategory;
         }
 
         public void SetBcDate(DateTimeOffset bcDate)
