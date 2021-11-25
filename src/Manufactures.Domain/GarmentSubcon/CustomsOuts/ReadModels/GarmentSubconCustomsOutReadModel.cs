@@ -20,6 +20,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.ReadModels
         public string SupplierCode { get; internal set; }
         public string SupplierName { get; internal set; }
         public string Remark { get; internal set; }
+        public string SubconCategory { get; internal set; }
         public virtual List<GarmentSubconCustomsOutItemReadModel> GarmentSubconCustomsOutItem { get; internal set; }
     }
 }

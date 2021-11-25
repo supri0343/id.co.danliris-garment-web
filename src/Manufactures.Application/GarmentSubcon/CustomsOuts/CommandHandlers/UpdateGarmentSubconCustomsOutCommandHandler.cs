@@ -78,6 +78,7 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
 
             subconCustomsOut.SetDate(request.CustomsOutDate);
             subconCustomsOut.SetRemark(request.Remark);
+            subconCustomsOut.SetSubconCategory(request.SubconCategory);
             subconCustomsOut.SetCustomsOutNo(request.CustomsOutNo);
             subconCustomsOut.SetCustomsOutType(request.CustomsOutType);
 

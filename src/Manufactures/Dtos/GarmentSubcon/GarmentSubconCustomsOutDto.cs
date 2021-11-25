@@ -20,6 +20,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             Supplier = new Supplier(garmentSubconCustomsOut.SupplierId.Value, garmentSubconCustomsOut.SupplierCode, garmentSubconCustomsOut.SupplierName);
             Remark = garmentSubconCustomsOut.Remark;
             CreatedBy = garmentSubconCustomsOut.AuditTrail.CreatedBy;
+            SubconCategory = garmentSubconCustomsOut.SubconCategory;
             Items = new List<GarmentSubconCustomsOutItemDto>();
         }
 
@@ -34,6 +35,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public string Remark { get; set; }
         public double TotalQty { get; set; }
         public double UsedQty { get; set; }
+        public string SubconCategory { get; set; }
         public List<GarmentSubconCustomsOutItemDto> Items { get; set; }
     }
 }

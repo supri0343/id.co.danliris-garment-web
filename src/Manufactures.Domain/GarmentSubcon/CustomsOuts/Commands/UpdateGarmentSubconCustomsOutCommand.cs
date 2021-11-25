@@ -21,6 +21,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.Commands
         public string Remark { get; set; }
         public double TotalQty { get; set; }
         public double UsedQty { get; set; }
+        public string SubconCategory { get; set; }
         public virtual List<GarmentSubconCustomsOutItemValueObject> Items { get; set; }
 
         public void SetIdentity(Guid id)
@@ -34,6 +35,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.Commands
         {
             RuleFor(r => r.SubconContractId).NotNull();
             RuleFor(r => r.SubconContractNo).NotNull();
+            RuleFor(r => r.SubconCategory).NotNull();
             RuleFor(r => r.CustomsOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item tidak boleh kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
