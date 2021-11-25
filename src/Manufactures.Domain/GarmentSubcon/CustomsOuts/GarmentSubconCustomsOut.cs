@@ -21,8 +21,9 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
         public string SupplierCode { get; private set; }
         public string SupplierName { get; private set; }
         public string Remark { get; private set; }
+        public string SubconCategory { get; private set; }
 
-        public GarmentSubconCustomsOut(Guid identity, string customsOutNo, DateTimeOffset customsOutDate, string customsOutType, string subconType, Guid subconContractId, string subconContractNo, SupplierId supplierId, string supplierCode, string supplierName, string remark) : base(identity)
+        public GarmentSubconCustomsOut(Guid identity, string customsOutNo, DateTimeOffset customsOutDate, string customsOutType, string subconType, Guid subconContractId, string subconContractNo, SupplierId supplierId, string supplierCode, string supplierName, string remark, string subconCategory) : base(identity)
         {
             Identity = identity;
             CustomsOutNo = customsOutNo;
@@ -35,6 +36,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
             SupplierCode = supplierCode;
             SupplierName = supplierName;
             Remark = remark;
+            SubconCategory = subconCategory;
 
             ReadModel = new GarmentSubconCustomsOutReadModel(Identity)
             {
@@ -47,8 +49,8 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
                 SupplierId = SupplierId.Value,
                 SupplierCode = SupplierCode,
                 SupplierName = SupplierName,
-                Remark = Remark
-
+                Remark = Remark,
+                SubconCategory = SubconCategory,
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconCustomsOutPlaced(Identity));
@@ -66,6 +68,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
             SupplierName = readModel.SupplierName;
             SupplierCode = readModel.SupplierCode;
             Remark = readModel.Remark;
+            SubconCategory = readModel.SubconCategory;
         }
 
         public void Modify()
@@ -109,6 +112,14 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
             {
                 this.CustomsOutType = CustomsOutType;
                 ReadModel.Remark = CustomsOutType;
+            }
+        }
+        public void SetSubconCategory(string subconCategory)
+        {
+            if (this.SubconCategory != subconCategory)
+            {
+                this.SubconCategory = subconCategory;
+                ReadModel.SubconCategory = subconCategory;
             }
         }
     }

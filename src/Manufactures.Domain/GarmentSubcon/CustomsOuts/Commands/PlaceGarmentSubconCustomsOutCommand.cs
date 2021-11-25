@@ -20,6 +20,8 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.Commands
         public string Remark { get;  set; }
         public double TotalQty { get; set; }
         public double UsedQty { get; set; }
+        public string SubconCategory { get; set; }
+        public double RemainingQuantity { get; set; }
         public virtual List<GarmentSubconCustomsOutItemValueObject> Items { get;  set; }
     }
 
@@ -30,13 +32,18 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.Commands
             RuleFor(r => r.CustomsOutNo).NotNull().NotEmpty().WithMessage("No BC Keluar tidak boleh kosong");
             RuleFor(r => r.SubconContractId).NotNull().WithMessage("No Subcon Contract tidak boleh kosong");
             RuleFor(r => r.SubconContractNo).NotNull();
+            RuleFor(r => r.SubconCategory).NotNull().NotEmpty().WithMessage("Kategori Subkon tidak boleh kosong");
             RuleFor(r => r.CustomsOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item tidak boleh kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
             RuleForEach(r => r.Items).SetValidator(new GarmentSubconCustomsOutItemValueObjectValidator()).When(s => s.Items != null);
-            RuleFor(r => r.TotalQty)
+            /*RuleFor(r => r.TotalQty)
                  .LessThanOrEqualTo(r => r.UsedQty)
-                 .WithMessage(x => $"'Jumlah Total' tidak boleh lebih dari '{x.UsedQty}'.");
+                 .WithMessage(x => $"'Jumlah Total' tidak boleh lebih dari '{x.UsedQty}'.");*/
+            RuleFor(r => r.TotalQty)
+                .LessThanOrEqualTo(r => r.RemainingQuantity)
+                .OverridePropertyName("ItemsCount")
+                .WithMessage(x => $"'Total Jumlah ' tidak boleh lebih dari '{x.RemainingQuantity}'.");
         }
     }
 
@@ -48,6 +55,8 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.Commands
             RuleFor(r => r.Quantity)
                 .GreaterThan(0)
                 .WithMessage("'Jumlah' harus lebih dari '0'.");
+
+
         }
     }
 }

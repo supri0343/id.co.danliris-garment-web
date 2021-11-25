@@ -54,7 +54,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.CustomsOut
             RemoveGarmentSubconCustomsOutCommand RemoveGarmentSubconCustomsOutCommand = new RemoveGarmentSubconCustomsOutCommand(SubconCustomsOutGuid);
 
             GarmentSubconCustomsOut garmentSubconCustomsOut = new GarmentSubconCustomsOut(
-                SubconCustomsOutGuid,"",DateTimeOffset.Now,"","",Guid.NewGuid(),"", new SupplierId(1), "", "", "");
+                SubconCustomsOutGuid,"",DateTimeOffset.Now,"","",Guid.NewGuid(),"", new SupplierId(1), "", "", "","");
 
             _mockSubconCustomsOutRepository
                 .Setup(s => s.Query)
