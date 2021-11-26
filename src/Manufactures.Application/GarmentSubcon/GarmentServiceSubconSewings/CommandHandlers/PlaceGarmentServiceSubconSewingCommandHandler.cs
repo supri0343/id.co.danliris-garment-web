@@ -101,7 +101,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                                     sewInItem.UomUnit,
                                     new UnitDepartmentId(sewIn.UnitId),
                                     sewIn.UnitCode,
-                                    sewIn.UnitName
+                                    sewIn.UnitName,
+                                    ""
                                 ));
                             }
                         }
@@ -133,7 +134,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                                     d.UomUnit,
                                     d.UnitId,
                                     d.UnitCode,
-                                    d.UnitName
+                                    d.UnitName,
+                                    detail.Remark
                                 );
                                 await _garmentServiceSubconSewingDetailRepository.Update(garmentServiceSubconSewingDetail);
                                 break;
@@ -155,7 +157,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                                     d.UomUnit,
                                     d.UnitId,
                                     d.UnitCode,
-                                    d.UnitName
+                                    d.UnitName,
+                                    detail.Remark
                                 );
                                 await _garmentServiceSubconSewingDetailRepository.Update(garmentServiceSubconSewingDetail);
                             }

@@ -24,8 +24,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
         public UnitDepartmentId UnitId { get; private set; }
         public string UnitCode { get; private set; }
         public string UnitName { get; private set; }
+        public string Remark { get; private set; }
 
-        public GarmentServiceSubconSewingDetail(Guid identity, Guid serviceSubconSewingItemId, Guid sewingInId, Guid sewingInItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, UnitDepartmentId unitId, string unitCode, string unitName) : base(identity)
+        public GarmentServiceSubconSewingDetail(Guid identity, Guid serviceSubconSewingItemId, Guid sewingInId, Guid sewingInItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, UnitDepartmentId unitId, string unitCode, string unitName, string remark) : base(identity)
         {
             ServiceSubconSewingItemId = serviceSubconSewingItemId;
             SewingInId = sewingInId;
@@ -40,6 +41,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             UnitId = unitId;
             UnitCode = unitCode;
             UnitName = unitName;
+            Remark = remark;
 
             ReadModel = new GarmentServiceSubconSewingDetailReadModel(identity)
             {
@@ -55,8 +57,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
                 UomUnit = UomUnit,
                 UnitId = UnitId.Value,
                 UnitCode = UnitCode,
-                UnitName = UnitName
-        };
+                UnitName = UnitName,
+                Remark = Remark,
+            };
 
             ReadModel.AddDomainEvent(new OnGarmentServiceSubconSewingPlaced(Identity));
         }
@@ -76,6 +79,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             UnitCode = readModel.UnitCode;
             UnitId = new UnitDepartmentId(readModel.UnitId);
             UnitName = readModel.UnitName;
+            Remark = readModel.Remark;
         }
 
         public void Modify()
@@ -94,6 +98,15 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             {
                 this.Quantity = Quantity;
                 ReadModel.Quantity = Quantity;
+            }
+        }
+
+        public void SetRemark(string remark)
+        {
+            if (this.Remark != remark)
+            {
+                this.Remark = remark;
+                ReadModel.Remark = remark;
             }
         }
     }
