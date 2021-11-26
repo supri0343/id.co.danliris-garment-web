@@ -91,6 +91,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                         null,
                         new UnitDepartmentId(1),
                         null,
+                        null,
                         null)
                 });
 
