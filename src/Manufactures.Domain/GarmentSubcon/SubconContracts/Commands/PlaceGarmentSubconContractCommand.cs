@@ -37,6 +37,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
             RuleFor(r => r.Supplier).NotNull();
             RuleFor(r => r.Supplier.Id).NotEmpty().OverridePropertyName("Supplier").When(w => w.Supplier != null);
 
+            RuleFor(r => r.Uom).NotNull();
+            RuleFor(r => r.Uom.Id).NotEmpty().OverridePropertyName("Uom").When(w => w.Uom != null);
 
             RuleFor(r => r.Buyer).NotNull();
             RuleFor(r => r.Buyer.Id).NotEmpty().OverridePropertyName("Buyer").When(w => w.Buyer != null);
@@ -49,6 +51,32 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
             RuleFor(r => r.FinishedGoodType).NotNull();
             RuleFor(r => r.DueDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Jatuh Tempo Tidak Boleh Kosong");
             RuleFor(r => r.ContractDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Kontrak Tidak Boleh Kosong");
+            RuleFor(r => r.AgreementDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Persetujuan Tidak Boleh Kosong");
+            RuleForEach(r => r.Items).SetValidator(new GarmentSubconContractItemValueObjectValidator()).When(r => r.Items!=null && (r.SubconCategory == "SUBCON CUTTING SEWING" || r.SubconCategory == "SUBCON SEWING" || r.SubconCategory == "SUBCON JASA KOMPONEN"));
+        }
+    }
+
+    public class GarmentSubconContractItemValueObjectValidator : AbstractValidator<GarmentSubconContractItemValueObject>
+    {
+        public GarmentSubconContractItemValueObjectValidator()
+        {
+            RuleFor(r => r.Product)
+                .NotNull()
+                .WithMessage("Barang harus diisi.");
+
+            RuleFor(r => r.Product.Id).NotEmpty().OverridePropertyName("Product").When(w => w.Product != null)
+                .WithMessage("Barang harus diisi.");
+
+            RuleFor(r => r.Uom)
+                .NotNull()
+                .WithMessage("Satuan harus diisi.");
+
+            RuleFor(r => r.Uom.Id).NotEmpty().OverridePropertyName("Uom").When(w => w.Uom != null)
+                .WithMessage("Satuan harus diisi.");
+
+            RuleFor(r => r.Quantity)
+                .GreaterThan(0)
+                .WithMessage("Jumlah harus lebih dari '0'.");
         }
     }
 }
