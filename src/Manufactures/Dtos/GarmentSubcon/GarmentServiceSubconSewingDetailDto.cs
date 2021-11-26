@@ -19,6 +19,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             Quantity = garmentServiceSubconSewingDetail.Quantity;
             Unit = new UnitDepartment(garmentServiceSubconSewingDetail.UnitId.Value, garmentServiceSubconSewingDetail.UnitCode, garmentServiceSubconSewingDetail.UnitName);
             Uom = new Uom(garmentServiceSubconSewingDetail.UomId.Value, garmentServiceSubconSewingDetail.UomUnit);
+            Remark = garmentServiceSubconSewingDetail.Remark;
         }
 
 
@@ -32,5 +33,6 @@ namespace Manufactures.Dtos.GarmentSubcon
         public SizeValueObject Size { get; set; }
         public double Quantity { get; set; }
         public Uom Uom { get; set; }
+        public string Remark { get; set; }
     }
 }
