@@ -386,6 +386,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                     request.Comodity.Code,
                     request.Comodity.Name,
                     0,
+                    null,
                     null
                 );
                 await _garmentFinishingInRepository.Update(garmentFinishingIn);

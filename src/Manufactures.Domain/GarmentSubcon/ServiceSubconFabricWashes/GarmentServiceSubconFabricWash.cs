@@ -11,9 +11,10 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes
     {
         public string ServiceSubconFabricWashNo { get; private set; }
         public DateTimeOffset ServiceSubconFabricWashDate { get; private set; }
+        public string Remark { get; private set; }
         public bool IsUsed { get; private set; }
 
-        public GarmentServiceSubconFabricWash(Guid identity, string serviceSubconFabricWashNo, DateTimeOffset serviceSubconFabricWashDate, bool isUsed) : base(identity)
+        public GarmentServiceSubconFabricWash(Guid identity, string serviceSubconFabricWashNo, DateTimeOffset serviceSubconFabricWashDate, string remark, bool isUsed) : base(identity)
         {
             Identity = identity;
             ServiceSubconFabricWashNo = serviceSubconFabricWashNo;
@@ -25,6 +26,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes
             {
                 ServiceSubconFabricWashNo = ServiceSubconFabricWashNo,
                 ServiceSubconFabricWashDate = ServiceSubconFabricWashDate,
+                Remark = Remark,
                 IsUsed = IsUsed
             };
 
@@ -35,6 +37,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes
         {
             ServiceSubconFabricWashNo = readModel.ServiceSubconFabricWashNo;
             ServiceSubconFabricWashDate = readModel.ServiceSubconFabricWashDate;
+            Remark = readModel.Remark;
             IsUsed = readModel.IsUsed;
         }
 
@@ -55,6 +58,14 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes
                 ReadModel.IsUsed = isUsed;
 
                 MarkModified();
+            }
+        }
+        public void SetRemark(string remark)
+        {
+            if (this.Remark != remark)
+            {
+                this.Remark = remark;
+                ReadModel.Remark = remark;
             }
         }
 

@@ -101,7 +101,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             });
 
             var subconDLOuts = _garmentSubconDeliveryLetterOutRepository.Query.Where(o => o.SubconContractId == subconDeliveryLetterOut.SubconContractId && o.Identity!=request.Identity).FirstOrDefault();
-            if (subconDLOuts != null)
+            if (subconDLOuts == null)
             {
                 var subconContract = _garmentSubconContractRepository.Query.Where(x => x.Identity == subconDeliveryLetterOut.SubconContractId).Select(s => new GarmentSubconContract(s)).Single();
                 subconContract.SetIsUsed(false);

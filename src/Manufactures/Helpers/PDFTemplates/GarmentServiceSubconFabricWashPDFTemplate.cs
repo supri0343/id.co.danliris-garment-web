@@ -34,7 +34,7 @@ namespace Manufactures.Helpers.PDFTemplates
             Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Paragraph title = new Paragraph("SUBCON JASA FABRIC WASH / PRINT", bold_font);
+            Paragraph title = new Paragraph("SUBCON BB FABRIC WASH / PRINT", bold_font);
             title.Alignment = Element.ALIGN_CENTER;
             title.SpacingAfter = 10f;
             document.Add(title);
@@ -152,7 +152,7 @@ namespace Manufactures.Helpers.PDFTemplates
             document.Add(tableContent);
             #endregion
 
-            Paragraph remark = new Paragraph("Keterangan : ", normal_font);
+            Paragraph remark = new Paragraph("Keterangan : " + garmentSubconFabricWash.Remark, normal_font);
             remark.SpacingAfter = 5f;
             document.Add(remark);
             #region TableSignature

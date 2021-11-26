@@ -11,19 +11,22 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels
     {
         public string ServiceSubconShrinkagePanelNo { get; private set; }
         public DateTimeOffset ServiceSubconShrinkagePanelDate { get; private set; }
+        public string Remark { get; private set; }
         public bool IsUsed { get; private set; }
 
-        public GarmentServiceSubconShrinkagePanel(Guid identity, string serviceSubconShrinkagePanelNo, DateTimeOffset serviceSubconShrinkagePanelDate, bool isUsed) : base(identity)
+        public GarmentServiceSubconShrinkagePanel(Guid identity, string serviceSubconShrinkagePanelNo, DateTimeOffset serviceSubconShrinkagePanelDate, string remark, bool isUsed) : base(identity)
         {
             Identity = identity;
             ServiceSubconShrinkagePanelNo = serviceSubconShrinkagePanelNo;
             ServiceSubconShrinkagePanelDate = serviceSubconShrinkagePanelDate;
+            Remark = remark;
             IsUsed = isUsed;
 
             ReadModel = new GarmentServiceSubconShrinkagePanelReadModel(Identity)
             {
                 ServiceSubconShrinkagePanelNo = ServiceSubconShrinkagePanelNo,
                 ServiceSubconShrinkagePanelDate = ServiceSubconShrinkagePanelDate,
+                Remark = Remark,
                 IsUsed = IsUsed
             };
 
@@ -34,6 +37,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels
         {
             ServiceSubconShrinkagePanelNo = readModel.ServiceSubconShrinkagePanelNo;
             ServiceSubconShrinkagePanelDate = readModel.ServiceSubconShrinkagePanelDate;
+            Remark = readModel.Remark;
             IsUsed = readModel.IsUsed;
         }
 
@@ -43,6 +47,17 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels
             {
                 this.ServiceSubconShrinkagePanelDate = ServiceSubconShrinkagePanelDate;
                 ReadModel.ServiceSubconShrinkagePanelDate = ServiceSubconShrinkagePanelDate;
+            }
+        }
+
+        public void SetRemark(string remark)
+        {
+            if (remark != Remark)
+            {
+                Remark = remark;
+                ReadModel.Remark = remark;
+
+                MarkModified();
             }
         }
 

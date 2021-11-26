@@ -24,5 +24,6 @@ namespace Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconShrinkagePanels
         public string DesignColor { get; set; }
         public decimal Quantity { get; set; }
         public Uom Uom { get; set; }
+        public string Composition { get; set; }
     }
 }

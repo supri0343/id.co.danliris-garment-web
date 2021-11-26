@@ -77,7 +77,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconFabricWashReadModel>>()))
                 .Returns(new List<GarmentServiceSubconFabricWash>()
                 {
-                    new GarmentServiceSubconFabricWash(serviceSubconFabricWashGuid,null,  DateTimeOffset.Now, false)
+                    new GarmentServiceSubconFabricWash(serviceSubconFabricWashGuid,null,  DateTimeOffset.Now, "",false)
                 });
 
             Guid serviceSubconFabricWashItemGuid = Guid.NewGuid();
@@ -107,7 +107,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconFabricWashReadModel, bool>>>()))
                 .Returns(new List<GarmentServiceSubconFabricWash>()
                 {
-                    new GarmentServiceSubconFabricWash(serviceSubconFabricWashGuid,null, DateTimeOffset.Now, false)
+                    new GarmentServiceSubconFabricWash(serviceSubconFabricWashGuid,null, DateTimeOffset.Now, "",false)
                 });
 
             Guid serviceSubconFabricWashItemGuid = Guid.NewGuid();
@@ -138,7 +138,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             Guid serviceSubconFabricWashGuid = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentServiceSubconFabricWashCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentServiceSubconFabricWash(serviceSubconFabricWashGuid, null, DateTimeOffset.Now, false));
+                .ReturnsAsync(new GarmentServiceSubconFabricWash(serviceSubconFabricWashGuid, null, DateTimeOffset.Now, "", false));
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentServiceSubconFabricWashCommand>());
@@ -170,7 +170,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             Guid serviceSubconFabricWashGuid = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentServiceSubconFabricWashCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentServiceSubconFabricWash(serviceSubconFabricWashGuid, null, DateTimeOffset.Now, false));
+                .ReturnsAsync(new GarmentServiceSubconFabricWash(serviceSubconFabricWashGuid, null, DateTimeOffset.Now, "", false));
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentServiceSubconFabricWashCommand());
 
@@ -186,7 +186,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             Guid serviceSubconFabricWashGuid = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentServiceSubconFabricWashCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentServiceSubconFabricWash(serviceSubconFabricWashGuid, null, DateTimeOffset.Now, false));
+                .ReturnsAsync(new GarmentServiceSubconFabricWash(serviceSubconFabricWashGuid, null, DateTimeOffset.Now, "", false));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
@@ -209,7 +209,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconFabricWashReadModel>>()))
                 .Returns(new List<GarmentServiceSubconFabricWash>()
                 {
-                    new GarmentServiceSubconFabricWash(id, null, DateTimeOffset.Now, false)
+                    new GarmentServiceSubconFabricWash(id, null, DateTimeOffset.Now, "",false)
                 });
 
             GarmentServiceSubconFabricWashItem garmentServiceSubconFabricWashItem = new GarmentServiceSubconFabricWashItem(id, id, null, DateTimeOffset.Now, new UnitSenderId(1), null, null, new UnitRequestId(1), null, null);

@@ -42,7 +42,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentFinishingIns
             UpdateDatesGarmentFinishingInCommandHandler unitUnderTest = CreateUpdateDatesGarmentFinishingInCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
             UpdateDatesGarmentFinishingInCommand UpdateGarmentFinishingInCommand = new UpdateDatesGarmentFinishingInCommand(
-                Ids, DateTimeOffset.Now);
+                Ids, DateTimeOffset.Now, "CUTTING");
 
             _mockFinishingInRepository
                 .Setup(s => s.Query)

@@ -1862,6 +1862,9 @@ namespace DanLiris.Admin.Web.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
+                    b.Property<string>("SubconType")
+                        .HasMaxLength(100);
+
                     b.Property<string>("UId");
 
                     b.Property<string>("UnitCode")
@@ -3935,6 +3938,8 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
 
+                    b.Property<string>("Remark");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
@@ -4518,6 +4523,8 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("SubconCategory");
 
                     b.Property<Guid>("SubconContractId");
 

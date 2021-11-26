@@ -1,5 +1,7 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Infrastructure.External.DanLirisClient.Microservice;
+using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Repositories;
 using Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconShrinkagePanels;
@@ -10,6 +12,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -179,7 +182,9 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 Items = _garmentServiceSubconShrinkagePanelItemRepository.Find(o => o.ServiceSubconShrinkagePanelId == subcon.Identity).Select(subconItem => new GarmentServiceSubconShrinkagePanelItemDto(subconItem)
                 {
                     Details = _garmentServiceSubconShrinkagePanelDetailRepository.Find(o => o.ServiceSubconShrinkagePanelItemId == subconItem.Identity).Select(subconDetail => new GarmentServiceSubconShrinkagePanelDetailDto(subconDetail)
-                    {}).ToList()
+                    {
+                        Composition = GetProduct(subconDetail.ProductId.Value, WorkContext.Token).data.Composition
+                    }).ToList()
                 }).ToList()
             }
             ).FirstOrDefault();

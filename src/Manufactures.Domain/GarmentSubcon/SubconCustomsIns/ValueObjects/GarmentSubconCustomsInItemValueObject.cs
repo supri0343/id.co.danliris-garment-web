@@ -14,6 +14,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns.ValueObjects
         public int DoId { get; set; }
         public string DoNo { get; set; }
         public decimal Quantity { get; set; }
+        public decimal TotalQty { get; set; }
+        public decimal RemainingQuantity { get; set; }
 
         public GarmentSubconCustomsInItemValueObject()
         {
