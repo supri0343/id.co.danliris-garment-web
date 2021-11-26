@@ -7,6 +7,7 @@ using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Repositories;
 using Manufactures.Dtos.GarmentSubcon;
+using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -25,7 +26,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         public GarmentServiceSubconSewingController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentServiceSubconSewingRepository = Storage.GetRepository<IGarmentServiceSubconSewingRepository>();
-            _garmentServiceSubconSewingDetailRepository= Storage.GetRepository<IGarmentServiceSubconSewingDetailRepository>();
+            _garmentServiceSubconSewingDetailRepository = Storage.GetRepository<IGarmentServiceSubconSewingDetailRepository>();
             _garmentServiceSubconSewingItemRepository = Storage.GetRepository<IGarmentServiceSubconSewingItemRepository>();
         }
 
@@ -36,7 +37,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             var query = _garmentServiceSubconSewingRepository.Read(page, size, order, keyword, filter);
             var total = query.Count();
-            double totalQty = query.Sum(a => a.GarmentServiceSubconSewingItem.Sum(b => b.GarmentServiceSubconSewingDetail.Sum(c=>c.Quantity)));
+            double totalQty = query.Sum(a => a.GarmentServiceSubconSewingItem.Sum(b => b.GarmentServiceSubconSewingDetail.Sum(c => c.Quantity)));
             query = query.Skip((page - 1) * size).Take(size);
 
             List<GarmentServiceSubconSewingListDto> garmentServiceSubconSewingListDtos = _garmentServiceSubconSewingRepository
@@ -86,7 +87,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
                     }).ToList()
                 }).ToList()
-                
+
             }
             ).FirstOrDefault();
 
@@ -179,7 +180,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         }
 
         [HttpGet("item")]
-        public async Task<IActionResult> GetItems(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        public async Task<IActionResult> GetItems(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
         {
             VerifyUser();
 
@@ -211,6 +212,32 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 size,
                 count
             });
+        }
+        [HttpGet("get-pdf/{id}")]
+        public async Task<IActionResult> GetPdf(string id)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            GarmentServiceSubconSewingDto garmentServiceSubconSewingDto = _garmentServiceSubconSewingRepository.Find(o => o.Identity == guid).Select(serviceSubconSewing => new GarmentServiceSubconSewingDto(serviceSubconSewing)
+            {
+                Items = _garmentServiceSubconSewingItemRepository.Find(o => o.ServiceSubconSewingId == serviceSubconSewing.Identity).Select(subconItem => new GarmentServiceSubconSewingItemDto(subconItem)
+                {
+                    Details = _garmentServiceSubconSewingDetailRepository.Find(o => o.ServiceSubconSewingItemId == subconItem.Identity).Select(subconDetail => new GarmentServiceSubconSewingDetailDto(subconDetail)
+                    {
+
+                    }).ToList()
+                }).ToList()
+
+            }
+            ).FirstOrDefault();
+            var stream = GarmentServiceSubconSewingPDFTemplate.Generate(garmentServiceSubconSewingDto);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentServiceSubconSewingDto.ServiceSubconSewingNo}.pdf"
+            };
         }
 
     }

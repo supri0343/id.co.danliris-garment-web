@@ -26,8 +26,10 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
         public string Remark { get; private set; }
 
         public bool IsUsed { get; private set; }
+        public string ServiceType { get; private set; }
+        public string SubconCategory { get; private set; }
 
-        public GarmentSubconDeliveryLetterOut(Guid identity, string dLNo, string dLType, Guid subconContractId, string contractNo, string contractType, DateTimeOffset dLDate, int uENId, string uENNo, string pONo, int ePOItemId, string remark, bool isUsed) : base(identity)
+        public GarmentSubconDeliveryLetterOut(Guid identity, string dLNo, string dLType, Guid subconContractId, string contractNo, string contractType, DateTimeOffset dLDate, int uENId, string uENNo, string pONo, int ePOItemId, string remark, bool isUsed, string serviceType, string subconCategory) : base(identity)
         {
             Identity = identity;
             DLNo = dLNo;
@@ -42,6 +44,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             EPOItemId = ePOItemId;
             Remark = remark;
             IsUsed = isUsed;
+            ServiceType = serviceType;
+            SubconCategory = subconCategory;
             ReadModel = new GarmentSubconDeliveryLetterOutReadModel(Identity)
             {
                 DLDate=DLDate,
@@ -55,8 +59,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
                 PONo=PONo,
                 EPOItemId=EPOItemId,
                 Remark=Remark,
-                IsUsed = isUsed
-
+                IsUsed = isUsed,
+                ServiceType=serviceType,
+                SubconCategory=subconCategory
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconDeliveryLetterOutPlaced(Identity));
@@ -76,6 +81,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             DLType = readModel.DLType;
             DLNo = readModel.DLNo;
             IsUsed = readModel.IsUsed;
+            ServiceType = readModel.ServiceType;
+            SubconCategory = readModel.SubconCategory;
         }
 
         public void Modify()

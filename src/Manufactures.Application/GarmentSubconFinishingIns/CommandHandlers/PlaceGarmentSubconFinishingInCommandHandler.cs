@@ -57,7 +57,8 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
                 request.Comodity.Code,
                 request.Comodity.Name,
                 request.DOId,
-                request.DONo
+                request.DONo,
+                request.SubconType
             );
 
             var comodityPrice = _garmentComodityPriceRepository

@@ -5,6 +5,7 @@ using Manufactures.Domain.GarmentSubcon.SubconContracts;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
+using Manufactures.Domain.GarmentSubcon.SubconContracts.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using Moq;
 using System;
@@ -20,11 +21,14 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
     public class PlaceGarmentSubconContractCommandHandlerTest : BaseCommandUnitTest
     {
         private readonly Mock<IGarmentSubconContractRepository> _mockSubconContractRepository;
+        private readonly Mock<IGarmentSubconContractItemRepository> _mockSubconContractItemRepository;
         public PlaceGarmentSubconContractCommandHandlerTest()
         {
             _mockSubconContractRepository = CreateMock<IGarmentSubconContractRepository>();
+            _mockSubconContractItemRepository = CreateMock<IGarmentSubconContractItemRepository>();
 
             _MockStorage.SetupStorage(_mockSubconContractRepository);
+            _MockStorage.SetupStorage(_mockSubconContractItemRepository);
         }
         private PlaceGarmentSubconContractCommandHandler CreatePlaceGarmentSubconContractCommandHandler()
         {
@@ -35,7 +39,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
         public async Task Handle_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            Guid sewingInItemGuid = Guid.NewGuid();
+            Guid subconContractGuid = Guid.NewGuid();
             PlaceGarmentSubconContractCommandHandler unitUnderTest = CreatePlaceGarmentSubconContractCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentSubconContractCommand placeGarmentSubconContractCommand = new PlaceGarmentSubconContractCommand()
@@ -43,15 +47,48 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
                 AgreementNo = "test",
                 BPJNo = "test",
                 ContractNo = "test",
-                ContractType= "test",
-                DueDate=DateTimeOffset.Now,
-                FinishedGoodType= "test",
-                JobType= "test",
-                Quantity= 1,
-                Supplier=new Supplier {
-                    Code= "test",
-                    Id=1,
-                    Name= "test"
+                ContractType = "test",
+                DueDate = DateTimeOffset.Now,
+                FinishedGoodType = "test",
+                JobType = "test",
+                Quantity = 1,
+                Supplier = new Supplier
+                {
+                    Code = "test",
+                    Id = 1,
+                    Name = "test"
+                },
+                Buyer = new Buyer
+                {
+                    Id = 1,
+                    Code = "Buyercode",
+                    Name = "BuyerName"
+                },
+                Uom = new Uom
+                {
+                    Id = 1,
+                    Unit = "unit"
+                },
+                SKEPNo = "no",
+                AgreementDate = DateTimeOffset.Now,
+                SubconCategory = "SUBCON",
+                ContractDate = DateTimeOffset.Now,
+                Items = new List<GarmentSubconContractItemValueObject>()
+                {
+                    new GarmentSubconContractItemValueObject
+                    {
+                        Uom=new Uom
+                        {
+                            Id=1,
+                            Unit="unit"
+                        },
+                        Product=new Product
+                        {
+                            Id=1,
+                            Name="name",
+                            Code="code"
+                        }
+                    }
                 }
             };
             _mockSubconContractRepository
@@ -60,6 +97,10 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
             _mockSubconContractRepository
                 .Setup(s => s.Update(It.IsAny<GarmentSubconContract>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentSubconContract>()));
+
+            _mockSubconContractItemRepository
+                .Setup(s => s.Update(It.IsAny<GarmentSubconContractItem>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentSubconContractItem>()));
 
             _MockStorage
                 .Setup(x => x.Save())

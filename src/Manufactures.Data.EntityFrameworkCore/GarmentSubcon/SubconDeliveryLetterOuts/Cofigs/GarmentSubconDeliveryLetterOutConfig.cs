@@ -21,6 +21,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLett
             builder.Property(p => p.ContractType).HasMaxLength(25);
             builder.Property(p => p.Remark).HasMaxLength(4000);
             builder.HasIndex(i => i.DLNo).IsUnique().HasFilter("[Deleted]=(0)");
+            builder.Property(p => p.ServiceType).HasMaxLength(50);
+            builder.Property(p => p.SubconCategory).HasMaxLength(50);
 
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();

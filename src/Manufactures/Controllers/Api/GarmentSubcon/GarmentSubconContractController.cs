@@ -1,9 +1,11 @@
 ﻿using Barebone.Controllers;
+using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
 using Manufactures.Dtos.GarmentSubcon;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +21,12 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
     public class GarmentSubconContractController : ControllerApiBase
     {
         private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
+        private readonly IGarmentSubconContractItemRepository _garmentSubconContractItemRepository;
 
         public GarmentSubconContractController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentSubconContractRepository = Storage.GetRepository<IGarmentSubconContractRepository>();
+            _garmentSubconContractItemRepository = Storage.GetRepository<IGarmentSubconContractItemRepository>();
         }
         [HttpGet]
         public async Task<IActionResult> Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
@@ -57,7 +61,12 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             VerifyUser();
 
             GarmentSubconContractDto garmentSubconContractDto = _garmentSubconContractRepository.Find(o => o.Identity == guid).Select(subcon => new GarmentSubconContractDto(subcon)
-            {}).FirstOrDefault();
+            {
+                Items = _garmentSubconContractItemRepository.Find(o => o.SubconContractId == subcon.Identity).Select(subconItem => new GarmentSubconContractItemDto(subconItem)
+                {
+
+                }).ToList()
+            }).FirstOrDefault();
 
             await Task.Yield();
             return Ok(garmentSubconContractDto);
@@ -119,6 +128,40 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             return Ok(order.Identity);
 
+        }
+
+        [HttpGet("complete")]
+        public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentSubconContractRepository.Read(page, size, order, keyword, filter);
+            var count = query.Count();
+
+            var garmentSubconContractDto = _garmentSubconContractRepository.Find(query).Select(o => new GarmentSubconContractDto(o)).ToArray();
+            var garmentSubconContractItemDto = _garmentSubconContractItemRepository.Find(_garmentSubconContractItemRepository.Query).Select(o => new GarmentSubconContractItemDto(o)).ToList();
+
+            Parallel.ForEach(garmentSubconContractDto, itemDto =>
+            {
+                var garmentSubconContractItems = garmentSubconContractItemDto.Where(x => x.SubconContractId == itemDto.Id).OrderBy(x => x.Id).ToList();
+
+                itemDto.Items = garmentSubconContractItems;
+
+            });
+
+            if (order != "{}")
+            {
+                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                garmentSubconContractDto = QueryHelper<GarmentSubconContractDto>.Order(garmentSubconContractDto.AsQueryable(), OrderDictionary).ToArray();
+            }
+
+            await Task.Yield();
+            return Ok(garmentSubconContractDto, info: new
+            {
+                page,
+                size,
+                count
+            });
         }
     }
 }

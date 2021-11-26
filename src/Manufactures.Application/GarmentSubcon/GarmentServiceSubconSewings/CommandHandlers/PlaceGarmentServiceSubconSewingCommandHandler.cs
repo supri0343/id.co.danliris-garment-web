@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
+using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands;
@@ -21,6 +22,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
         private readonly IGarmentServiceSubconSewingDetailRepository _garmentServiceSubconSewingDetailRepository;
         private readonly IGarmentSewingInRepository _garmentSewingInRepository;
         private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
+        private readonly IGarmentPreparingRepository _garmentPreparingRepository;
 
         public PlaceGarmentServiceSubconSewingCommandHandler(IStorage storage)
         {
@@ -30,17 +32,24 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
             _garmentSewingInRepository = storage.GetRepository<IGarmentSewingInRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
             _garmentServiceSubconSewingDetailRepository= storage.GetRepository<IGarmentServiceSubconSewingDetailRepository>();
+            _garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
         }
 
         public async Task<GarmentServiceSubconSewing> Handle(PlaceGarmentServiceSubconSewingCommand request, CancellationToken cancellationToken)
         {
             request.Items = request.Items.ToList();
+            var collectRoNo = _garmentPreparingRepository.RoChecking(request.Items.Select(x => x.RONo), request.Buyer.Code);
+            if (!collectRoNo)
+                throw new Exception("RoNo tidak sesuai dengan data pembeli");
 
             GarmentServiceSubconSewing garmentServiceSubconSewing = new GarmentServiceSubconSewing(
                 Guid.NewGuid(),
                 GenerateServiceSubconSewingNo(request),
                 request.ServiceSubconSewingDate.GetValueOrDefault(),
-                request.IsUsed
+                request.IsUsed,
+                new BuyerId(request.Buyer.Id),
+                request.Buyer.Code,
+                request.Buyer.Name
             );
 
             foreach (var item in request.Items)
@@ -92,7 +101,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                                     sewInItem.UomUnit,
                                     new UnitDepartmentId(sewIn.UnitId),
                                     sewIn.UnitCode,
-                                    sewIn.UnitName
+                                    sewIn.UnitName,
+                                    ""
                                 ));
                             }
                         }
@@ -124,7 +134,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                                     d.UomUnit,
                                     d.UnitId,
                                     d.UnitCode,
-                                    d.UnitName
+                                    d.UnitName,
+                                    detail.Remark
                                 );
                                 await _garmentServiceSubconSewingDetailRepository.Update(garmentServiceSubconSewingDetail);
                                 break;
@@ -146,7 +157,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                                     d.UomUnit,
                                     d.UnitId,
                                     d.UnitCode,
-                                    d.UnitName
+                                    d.UnitName,
+                                    detail.Remark
                                 );
                                 await _garmentServiceSubconSewingDetailRepository.Update(garmentServiceSubconSewingDetail);
                             }

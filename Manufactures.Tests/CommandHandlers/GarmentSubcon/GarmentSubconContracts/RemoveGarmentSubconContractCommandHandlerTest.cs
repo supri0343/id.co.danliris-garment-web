@@ -14,18 +14,22 @@ using Manufactures.Domain.Shared.ValueObjects;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels;
 using System.Linq;
 using FluentAssertions;
+using System.Linq.Expressions;
 
 namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContracts
 {
     public class RemoveGarmentSubconContractCommandHandlerTest : BaseCommandUnitTest
     {
         private readonly Mock<IGarmentSubconContractRepository> _mockSubconContractRepository;
+        private readonly Mock<IGarmentSubconContractItemRepository> _mockSubconContractItemRepository;
 
         public RemoveGarmentSubconContractCommandHandlerTest()
         {
             _mockSubconContractRepository = CreateMock<IGarmentSubconContractRepository>();
+            _mockSubconContractItemRepository = CreateMock<IGarmentSubconContractItemRepository>();
 
             _MockStorage.SetupStorage(_mockSubconContractRepository);
+            _MockStorage.SetupStorage(_mockSubconContractItemRepository);
         }
 
         private RemoveGarmentSubconContractCommandHandler CreateRemoveGarmentSubconContractCommandHandler()
@@ -38,12 +42,13 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
         {
             // Arrange
             Guid SubconContractGuid = Guid.NewGuid();
+            Guid SubconContractItemGuid = Guid.NewGuid();
             RemoveGarmentSubconContractCommandHandler unitUnderTest = CreateRemoveGarmentSubconContractCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
             RemoveGarmentSubconContractCommand RemoveGarmentSubconContractCommand = new RemoveGarmentSubconContractCommand(SubconContractGuid);
-            
+
             GarmentSubconContract garmentSubconContract = new GarmentSubconContract(
-                SubconContractGuid, null, null, null, new SupplierId(1), "", "", null, null, null, 1, DateTimeOffset.Now, DateTimeOffset.Now , false);
+                SubconContractGuid, null, null, null, new SupplierId(1), "", "", null, null, null, 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now);
 
             _mockSubconContractRepository
                 .Setup(s => s.Query)
@@ -56,6 +61,15 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
                 .Setup(s => s.Update(It.IsAny<GarmentSubconContract>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentSubconContract>()));
 
+            _mockSubconContractItemRepository
+               .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractItemReadModel, bool>>>()))
+               .Returns(new List<GarmentSubconContractItem>()
+               {
+                    new GarmentSubconContractItem(Guid.Empty,SubconContractGuid,new ProductId(1),"code","name",1,new UomId(1),"unit")
+               });
+            _mockSubconContractItemRepository
+                .Setup(s => s.Update(It.IsAny<GarmentSubconContractItem>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentSubconContractItem>()));
             _MockStorage
                 .Setup(x => x.Save())
                 .Verifiable();

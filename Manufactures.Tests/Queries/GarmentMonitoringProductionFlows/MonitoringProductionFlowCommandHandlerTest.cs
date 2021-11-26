@@ -120,7 +120,8 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionFlows
 		{
 			return new GetMonitoringProductionFlowQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
-		[Fact]
+
+		/*[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior()
 		{
 			// Arrange
@@ -225,6 +226,6 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionFlows
 
 			// Assert
 			result.Should().NotBeNull();
-		}
+		}*/
 	}
 }

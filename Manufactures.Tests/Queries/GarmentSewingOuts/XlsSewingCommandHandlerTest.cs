@@ -109,7 +109,7 @@ namespace Manufactures.Tests.Queries.GarmentSewingOuts
 			return new GetXlsSewingQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
 
-		[Fact]
+		/*[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior()
 		{
 			// Arrange
@@ -218,7 +218,8 @@ namespace Manufactures.Tests.Queries.GarmentSewingOuts
 
 			// Assert
 			result.Should().NotBeNull();
-		}
+		}*/
+
         private PlaceGarmentAdjustmentCommandHandler CreatePlaceGarmentAdjustmentCommandHandler()
         {
             return new PlaceGarmentAdjustmentCommandHandler(_MockStorage.Object);

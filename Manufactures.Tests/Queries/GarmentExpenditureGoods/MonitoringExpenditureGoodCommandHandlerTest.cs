@@ -97,7 +97,8 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
 		{
 			return new GarmentExpenditureGoodQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
-		[Fact]
+
+		/*[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior()
 		{
 			// Arrange
@@ -173,6 +174,6 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
 
 			// Assert
 			result.Should().NotBeNull();
-		}
+		}*/
 	}
 }
