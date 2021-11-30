@@ -591,5 +591,40 @@ namespace Manufactures.Tests.Controllers.Api
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
+
+        [Fact]
+        public async Task GetForOmzet_Success_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentExpenditureGoodController();
+
+            _mockGarmentExpenditureGoodRepository
+                .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<GarmentExpenditureGoodReadModel>().AsQueryable());
+
+            Guid ExpenditureGoodGuid = Guid.NewGuid();
+            _mockGarmentExpenditureGoodRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentExpenditureGoodReadModel>>()))
+                .Returns(new List<GarmentExpenditureGood>()
+                {
+                    new GarmentExpenditureGood(ExpenditureGoodGuid, null,null,new UnitDepartmentId(1),null,null,"RONo","article",new GarmentComodityId(1),null,null,new BuyerId(1), null, null,DateTimeOffset.Now,  null,null,0,null,false,1)
+                });
+
+            Guid ExpenditureGoodItemGuid = Guid.NewGuid();
+            GarmentExpenditureGoodItem garmentExpenditureGoodItem = new GarmentExpenditureGoodItem(ExpenditureGoodItemGuid, ExpenditureGoodGuid, new Guid(), new SizeId(1), null, 1, 0, new UomId(1), null, null, 1, 1);
+            _mockGarmentExpenditureGoodItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentExpenditureGoodItemReadModel>()
+                {
+                    garmentExpenditureGoodItem.GetReadModel()
+                }.AsQueryable());
+
+
+            // Act
+            var result = await unitUnderTest.GetExpenditureForOmzet(DateTime.Now, DateTime.Now, "", 7);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
     }
 }
