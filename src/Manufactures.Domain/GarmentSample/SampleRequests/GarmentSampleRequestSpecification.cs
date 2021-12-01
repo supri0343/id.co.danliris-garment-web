@@ -66,6 +66,22 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 ReadModel.Remark = remark;
             }
         }
+        public void SetInventory(string Inventory)
+        {
+            if (this.Inventory != Inventory)
+            {
+                this.Inventory = Inventory;
+                ReadModel.Inventory = Inventory;
+            }
+        }
+        public void SetSpecificationDetail(string SpecificationDetail)
+        {
+            if (this.SpecificationDetail != SpecificationDetail)
+            {
+                this.SpecificationDetail = SpecificationDetail;
+                ReadModel.SpecificationDetail = SpecificationDetail;
+            }
+        }
 
         public void Modify()
         {
