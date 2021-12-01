@@ -161,6 +161,90 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             }
         }
 
+        public void SetSentDate(DateTimeOffset SentDate)
+        {
+            if (this.SentDate != SentDate)
+            {
+                this.SentDate = SentDate;
+                ReadModel.SentDate = SentDate;
+            }
+        }
+
+        public void SetDate(DateTimeOffset Date)
+        {
+            if (this.Date != Date)
+            {
+                this.Date = Date;
+                ReadModel.Date = Date;
+            }
+        }
+
+        public void SetComodityId(GarmentComodityId SupplierId)
+        {
+            if (this.ComodityId != ComodityId)
+            {
+                this.ComodityId = ComodityId;
+                ReadModel.ComodityId = ComodityId.Value;
+            }
+        }
+        public void SetComodityCode(string ComodityCode)
+        {
+            if (this.ComodityCode != ComodityCode)
+            {
+                this.ComodityCode = ComodityCode;
+                ReadModel.ComodityCode = ComodityCode;
+            }
+        }
+        public void SetComodityName(string ComodityName)
+        {
+            if (this.ComodityName != ComodityName)
+            {
+                this.ComodityName = ComodityName;
+                ReadModel.ComodityName = ComodityName;
+            }
+        }
+        public void SetRONoCC(string RONoCC)
+        {
+            if (this.RONoCC != RONoCC)
+            {
+                this.RONoCC = RONoCC;
+                ReadModel.RONoCC = RONoCC;
+            }
+        }
+
+        public void SetPacking(string Packing)
+        {
+            if (this.Packing != Packing)
+            {
+                this.Packing = Packing;
+                ReadModel.Packing = Packing;
+            }
+        }
+        public void SetSampleType(string SampleType)
+        {
+            if (this.SampleType != SampleType)
+            {
+                this.SampleType = SampleType;
+                ReadModel.SampleType = SampleType;
+            }
+        }
+        public void SetPOBuyer(string POBuyer)
+        {
+            if (this.POBuyer != POBuyer)
+            {
+                this.POBuyer = POBuyer;
+                ReadModel.POBuyer = POBuyer;
+            }
+        }
+        public void SetAttached(string Attached)
+        {
+            if (this.Attached != Attached)
+            {
+                this.Attached = Attached;
+                ReadModel.Attached = Attached;
+            }
+        }
+
         public void Modify()
         {
             MarkModified();

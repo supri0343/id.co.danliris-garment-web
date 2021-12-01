@@ -71,6 +71,49 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             }
         }
 
+        public void SetColor(string Color)
+        {
+            if (this.Color != Color)
+            {
+                this.Color = Color;
+                ReadModel.Color = Color;
+            }
+        }
+
+        public void SetStyle(string Style)
+        {
+            if (this.Style != Style)
+            {
+                this.Style = Style;
+                ReadModel.Style = Style;
+            }
+        }
+
+        public void SetSizeDescription(string SizeDescription)
+        {
+            if (this.SizeDescription != SizeDescription)
+            {
+                this.SizeDescription = SizeDescription;
+                ReadModel.SizeDescription = SizeDescription;
+            }
+        }
+        public void SetSizeId(SizeId SupplierId)
+        {
+            if (this.SizeId != SizeId)
+            {
+                this.SizeId = SizeId;
+                ReadModel.SizeId = SizeId.Value;
+            }
+        }
+        public void SetSizeName(string SizeName)
+        {
+            if (this.SizeName != SizeName)
+            {
+                this.SizeName = SizeName;
+                ReadModel.SizeName = SizeName;
+            }
+        }
+
         public void Modify()
         {
             MarkModified();
