@@ -118,7 +118,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
             var month = now.ToString("MM");
             var code = request.SampleCategory=="Commercial Sample" ? "CS" : "NCS";
 
-            var prefix = $"yy";
+            var prefix = $"{year}";
 
             var lastRONo = _GarmentSampleRequestRepository.Query.Where(w => w.RONoSample.StartsWith(prefix) && w.RONoSample.EndsWith(code))
                 .OrderByDescending(o => o.RONoSample)

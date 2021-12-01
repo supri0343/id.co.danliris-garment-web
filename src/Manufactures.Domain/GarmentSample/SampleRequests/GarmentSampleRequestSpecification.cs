@@ -46,7 +46,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
 
         protected override GarmentSampleRequestSpecification GetEntity()
         {
-            throw new NotImplementedException();
+            return this;
         }
 
         public void SetQuantity(double Quantity)

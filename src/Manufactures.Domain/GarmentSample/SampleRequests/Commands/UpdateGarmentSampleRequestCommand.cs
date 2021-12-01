@@ -55,7 +55,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.Commands
             RuleFor(r => r.SampleProducts).NotEmpty().WithMessage("Detail Barang tidak boleh kosong").OverridePropertyName("SampleProductsCount").When(s => s.SampleProducts != null);
             RuleForEach(r => r.SampleProducts).SetValidator(new GarmentSampleRequestProductValueObjectValidator());
             RuleFor(r => r.SampleSpecifications).NotEmpty().OverridePropertyName("SampleSpecifications");
-            RuleFor(r => r.SampleSpecifications).NotEmpty().WithMessage("Kelengkapan Sample tidak boleh kosong").OverridePropertyName("ItemsCount").When(s => s.SampleSpecifications != null);
+            RuleFor(r => r.SampleSpecifications).NotEmpty().WithMessage("Kelengkapan Sample tidak boleh kosong").OverridePropertyName("SpecificationsCount").When(s => s.SampleSpecifications != null);
             RuleForEach(r => r.SampleSpecifications).SetValidator(new GarmentSampleRequestSpecificationValueObjectValidator());
         }
     }

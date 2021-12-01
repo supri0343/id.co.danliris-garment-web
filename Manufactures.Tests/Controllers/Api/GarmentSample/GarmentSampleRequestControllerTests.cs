@@ -249,5 +249,26 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
+
+        [Fact]
+        public async Task PostData_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSampleRequestController();
+            Guid sampleGuid = Guid.NewGuid();
+            List<string> ids = new List<string>();
+            ids.Add(sampleGuid.ToString());
+
+            PostGarmentSampleRequestCommand command = new PostGarmentSampleRequestCommand(ids, true);
+             _MockMediator
+                .Setup(s => s.Send(command, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(1);
+
+            // Act
+            var result = await unitUnderTest.postData(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
     }
 }
