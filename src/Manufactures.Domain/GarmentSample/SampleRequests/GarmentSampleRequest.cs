@@ -107,7 +107,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
 
         protected override GarmentSampleRequest GetEntity()
         {
-            throw new NotImplementedException();
+            return this;
         }
 
         public void SetIsPosted(bool IsPosted)

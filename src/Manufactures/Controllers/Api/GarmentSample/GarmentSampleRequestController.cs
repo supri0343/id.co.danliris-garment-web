@@ -163,5 +163,15 @@ namespace Manufactures.Controllers.Api.GarmentSample
             return Ok(order.Identity);
 
         }
+
+        [HttpPut("post")]
+        public async Task<IActionResult> postData([FromBody]PostGarmentSampleRequestCommand command)
+        {
+            VerifyUser();
+
+            var order = await Mediator.Send(command);
+
+            return Ok();
+        }
     }
 }
