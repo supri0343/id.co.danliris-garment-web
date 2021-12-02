@@ -21,6 +21,8 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
             POBuyer = garmentSampleRequest.POBuyer;
             IsPosted = garmentSampleRequest.IsPosted;
             IsReceived = garmentSampleRequest.IsReceived;
+            ReceivedDate = garmentSampleRequest.ReceivedDate;
+            ReceivedBy = garmentSampleRequest.ReceivedBy;
         }
 
         public Guid Id { get; set; }
@@ -37,5 +39,7 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
         public string POBuyer { get; set; }
         public bool IsPosted { get; set; }
         public bool IsReceived { get; set; }
+        public DateTimeOffset? ReceivedDate { get; set; }
+        public string ReceivedBy { get; set; }
     }
 }

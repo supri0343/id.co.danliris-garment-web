@@ -25,7 +25,9 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
             Attached = garmentSampleRequest.Attached;
             Remark = garmentSampleRequest.Remark;
             IsPosted = garmentSampleRequest.IsPosted;
-            IsPosted = garmentSampleRequest.IsPosted;
+            IsReceived = garmentSampleRequest.IsReceived;
+            ReceivedDate = garmentSampleRequest.ReceivedDate;
+            ReceivedBy = garmentSampleRequest.ReceivedBy;
             SampleProducts = new List<GarmentSampleRequestProductDto>();
             SampleSpecifications = new List<GarmentSampleRequestSpecificationDto>();
         }
@@ -49,6 +51,8 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
         public string Remark { get;  set; }
         public bool IsPosted { get;  set; }
         public bool IsReceived { get;  set; }
+        public DateTimeOffset? ReceivedDate { get; set; }
+        public string ReceivedBy { get; set; }
         public List<GarmentSampleRequestProductDto> SampleProducts { get; set; }
         public List<GarmentSampleRequestSpecificationDto> SampleSpecifications { get; set; }
     }

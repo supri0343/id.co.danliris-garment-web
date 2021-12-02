@@ -53,7 +53,9 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                 request.Attached,
                 request.Remark,
                 request.IsPosted,
-                request.IsReceived
+                request.IsReceived,
+                request.ReceivedDate,
+                request.ReceivedBy
             );
 
             foreach (var product in request.SampleProducts)
