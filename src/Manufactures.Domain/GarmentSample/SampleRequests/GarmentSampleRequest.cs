@@ -32,8 +32,10 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
         public string Remark { get; private set; }
         public bool IsPosted { get; private set; }
         public bool IsReceived { get; private set; }
+        public DateTimeOffset? ReceivedDate { get; set; }
+        public string ReceivedBy { get; set; }
 
-        public GarmentSampleRequest(Guid identity, string sampleCategory, string sampleRequestNo, string rONoSample, string rONoCC, DateTimeOffset date, BuyerId buyerId, string buyerCode, string buyerName, GarmentComodityId comodityId, string comodityCode, string comodityName, string sampleType, string packing, DateTimeOffset sentDate, string pOBuyer, string attached, string remark, bool isPosted, bool isReceived) : base(identity)
+        public GarmentSampleRequest(Guid identity, string sampleCategory, string sampleRequestNo, string rONoSample, string rONoCC, DateTimeOffset date, BuyerId buyerId, string buyerCode, string buyerName, GarmentComodityId comodityId, string comodityCode, string comodityName, string sampleType, string packing, DateTimeOffset sentDate, string pOBuyer, string attached, string remark, bool isPosted, bool isReceived, DateTimeOffset? receivedDate, string receivedBy) : base(identity)
         {
             Identity = identity;
             SampleCategory = sampleCategory;
@@ -55,6 +57,8 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             Remark = remark;
             IsPosted = isPosted;
             IsReceived = isReceived;
+            ReceivedDate = receivedDate;
+            ReceivedBy = receivedBy;
 
             ReadModel = new GarmentSampleRequestReadModel(Identity)
             {
@@ -76,7 +80,9 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 Attached = Attached,
                 Remark = Remark,
                 IsPosted = IsPosted,
-                IsReceived = IsReceived
+                IsReceived = IsReceived,
+                ReceivedDate = ReceivedDate,
+                ReceivedBy = ReceivedBy
 
             };
             ReadModel.AddDomainEvent(new OnGarmentSampleRequestPlaced(Identity));
@@ -103,6 +109,8 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             Remark = readModel.Remark;
             IsPosted = readModel.IsPosted;
             IsReceived = readModel.IsReceived;
+            ReceivedDate = readModel.ReceivedDate;
+            ReceivedBy = readModel.ReceivedBy;
         }
 
         protected override GarmentSampleRequest GetEntity()
@@ -242,6 +250,24 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             {
                 this.Attached = Attached;
                 ReadModel.Attached = Attached;
+            }
+        }
+
+        public void SetReceivedDate(DateTimeOffset ReceivedDate)
+        {
+            if (this.ReceivedDate != ReceivedDate)
+            {
+                this.ReceivedDate = ReceivedDate;
+                ReadModel.ReceivedDate = ReceivedDate;
+            }
+        }
+
+        public void SetReceivedBy(string ReceivedBy)
+        {
+            if (this.ReceivedBy != ReceivedBy)
+            {
+                this.ReceivedBy = ReceivedBy;
+                ReadModel.ReceivedBy = ReceivedBy;
             }
         }
 

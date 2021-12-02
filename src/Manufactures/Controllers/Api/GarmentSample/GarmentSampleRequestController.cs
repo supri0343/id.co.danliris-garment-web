@@ -173,5 +173,23 @@ namespace Manufactures.Controllers.Api.GarmentSample
 
             return Ok();
         }
+
+        [HttpPut("received/{id}")]
+        public async Task<IActionResult> receivedData(string id, [FromBody] ReceivedGarmentSampleRequestCommand command)
+        {
+            Guid guid = Guid.Parse(id);
+
+            command.SetIdentity(guid);
+
+            VerifyUser();
+
+            var username = WorkContext.UserName;
+            command.ReceivedDate = DateTimeOffset.Now;
+            command.ReceivedBy = username;
+
+            var order = await Mediator.Send(command);
+
+            return Ok();
+        }
     }
 }

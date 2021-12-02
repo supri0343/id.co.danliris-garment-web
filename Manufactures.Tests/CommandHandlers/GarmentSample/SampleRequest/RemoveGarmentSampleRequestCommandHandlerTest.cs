@@ -49,7 +49,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleRequest
             RemoveGarmentSampleRequestCommand RemoveGarmentSampleRequestCommand = new RemoveGarmentSampleRequestCommand(SampleRequestGuid);
 
             GarmentSampleRequest garmentSampleRequest = new GarmentSampleRequest(
-                SampleRequestGuid,null,null,null,null, DateTimeOffset.Now, new BuyerId(1), "", "", new GarmentComodityId(1),null,null,"","", DateTimeOffset.Now,"","","",false,false);
+                SampleRequestGuid,null,null,null,null, DateTimeOffset.Now, new BuyerId(1), "", "", new GarmentComodityId(1),null,null,"","", DateTimeOffset.Now,"","","",false,false, DateTimeOffset.Now, null);
 
             _mockSampleRequestRepository
                 .Setup(s => s.Query)

@@ -28,6 +28,8 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.Commands
         public string Remark { get;  set; }
         public bool IsPosted { get;  set; }
         public bool IsReceived { get;  set; }
+        public DateTimeOffset ReceivedDate { get; set; }
+        public string ReceivedBy { get; set; }
         public List<GarmentSampleRequestProductValueObject> SampleProducts { get; set; }
         public List<GarmentSampleRequestSpecificationValueObject> SampleSpecifications { get; set; }
     }
