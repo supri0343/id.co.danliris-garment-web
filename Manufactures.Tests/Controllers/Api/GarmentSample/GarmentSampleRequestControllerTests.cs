@@ -77,7 +77,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSampleRequestReadModel>>()))
                 .Returns(new List<GarmentSampleRequest>()
                 {
-                    new GarmentSampleRequest(SampleRequestGuid, null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false)
+                    new GarmentSampleRequest(SampleRequestGuid, null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false,DateTimeOffset.Now,null)
                 });
             
             var result = await unitUnderTest.Get();
@@ -96,7 +96,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestReadModel, bool>>>()))
                 .Returns(new List<GarmentSampleRequest>()
                 {
-                    new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false)
+                    new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false, DateTimeOffset.Now, null)
                 });
 
             _mockGarmentSampleRequestProductRepository
@@ -128,7 +128,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentSampleRequestCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false));
+                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false, DateTimeOffset.Now, null));
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentSampleRequestCommand>());
@@ -159,7 +159,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentSampleRequestCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false));
+                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false, DateTimeOffset.Now, null));
 
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentSampleRequestCommand());
@@ -177,7 +177,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentSampleRequestCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false));
+                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false, DateTimeOffset.Now, null));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
@@ -206,7 +206,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSampleRequestReadModel>>()))
                 .Returns(new List<GarmentSampleRequest>()
                 {
-                    new GarmentSampleRequest(SampleRequestGuid, null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false)
+                    new GarmentSampleRequest(SampleRequestGuid, null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false,DateTimeOffset.Now, null)
                 });
 
             _mockGarmentSampleRequestProductRepository
@@ -266,6 +266,23 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
 
             // Act
             var result = await unitUnderTest.postData(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task ReceivedData_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSampleRequestController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<ReceivedGarmentSampleRequestCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false, DateTimeOffset.Now, null));
+
+            // Act
+            var result = await unitUnderTest.receivedData(Guid.NewGuid().ToString(), new ReceivedGarmentSampleRequestCommand());
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));

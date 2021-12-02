@@ -28,6 +28,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleRequests.Con
             builder.Property(p => p.POBuyer).HasMaxLength(255);
             builder.Property(p => p.Remark).HasMaxLength(4000);
             builder.Property(p => p.SampleType).HasMaxLength(255);
+            builder.Property(p => p.ReceivedBy).HasMaxLength(255);
             builder.HasIndex(i => i.SampleRequestNo).IsUnique().HasFilter("[Deleted]=(0)");
 
             builder.ApplyAuditTrail();
