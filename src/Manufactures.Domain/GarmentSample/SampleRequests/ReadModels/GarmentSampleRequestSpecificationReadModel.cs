@@ -15,6 +15,8 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.ReadModels
         public string SpecificationDetail { get; internal set; }
         public double Quantity { get; internal set; }
         public string Remark { get; internal set; }
+        public int UomId { get; internal set; }
+        public string UomUnit { get; internal set; }
 
         public virtual GarmentSampleRequestReadModel GarmentSampleRequest { get; internal set; }
     }

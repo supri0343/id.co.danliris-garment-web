@@ -1,5 +1,6 @@
 ﻿using Manufactures.Domain.GarmentSample.SampleRequests;
 using System;
+using Manufactures.Domain.Shared.ValueObjects;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,6 +17,7 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
             SpecificationDetail = garmentSampleRequestSpecification.SpecificationDetail;
             Quantity = garmentSampleRequestSpecification.Quantity;
             Remark = garmentSampleRequestSpecification.Remark;
+            Uom = new Uom(garmentSampleRequestSpecification.UomId.Value, garmentSampleRequestSpecification.UomUnit);
         }
         public Guid Id { get; set; }
         public Guid SampleRequestId { get; set; }
@@ -23,5 +25,6 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
         public string SpecificationDetail { get; set; }
         public double Quantity { get; set; }
         public string Remark { get; set; }
+        public Uom Uom { get; set; }
     }
 }

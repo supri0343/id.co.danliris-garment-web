@@ -82,7 +82,9 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                     specification.Inventory,
                     specification.SpecificationDetail,
                     specification.Quantity,
-                    specification.Remark
+                    specification.Remark,
+                    new UomId(specification.Uom.Id),
+                    specification.Uom.Unit
                 );
 
                 await _garmentSampleRequestSpecificationRepository.Update(GarmentSampleRequestSpecification);

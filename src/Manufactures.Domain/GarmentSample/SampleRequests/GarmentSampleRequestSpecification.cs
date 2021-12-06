@@ -4,18 +4,21 @@ using Manufactures.Domain.GarmentSample.SampleRequests.ReadModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Manufactures.Domain.Shared.ValueObjects;
 
 namespace Manufactures.Domain.GarmentSample.SampleRequests
 {
     public class GarmentSampleRequestSpecification : AggregateRoot<GarmentSampleRequestSpecification, GarmentSampleRequestSpecificationReadModel>
     {
-        public Guid SampleRequestId { get; internal set; }
-        public string Inventory { get; internal set; }
-        public string SpecificationDetail { get; internal set; }
-        public double Quantity { get; internal set; }
-        public string Remark { get; internal set; }
+        public Guid SampleRequestId { get; private set; }
+        public string Inventory { get; private set; }
+        public string SpecificationDetail { get; private set; }
+        public double Quantity { get; private set; }
+        public string Remark { get; private set; }
+        public UomId UomId { get; private set; }
+        public string UomUnit { get; private set; }
 
-        public GarmentSampleRequestSpecification(Guid identity, Guid sampleRequestId, string inventory, string specificationDetail, double quantity, string remark) : base(identity)
+        public GarmentSampleRequestSpecification(Guid identity, Guid sampleRequestId, string inventory, string specificationDetail, double quantity, string remark, UomId uomId, string uomUnit) : base(identity)
         {
             Identity = identity;
             SampleRequestId = sampleRequestId;
@@ -23,6 +26,8 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             SpecificationDetail = specificationDetail;
             Quantity = quantity;
             Remark = remark;
+            UomId = uomId;
+            UomUnit = uomUnit;
 
             ReadModel = new GarmentSampleRequestSpecificationReadModel(Identity)
             {
@@ -30,7 +35,10 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 Inventory=Inventory,
                 SpecificationDetail=SpecificationDetail,
                 Quantity=Quantity,
-                Remark=Remark
+                Remark=Remark,
+                UomId= UomId.Value,
+                UomUnit= UomUnit
+
             };
             ReadModel.AddDomainEvent(new OnGarmentSampleRequestPlaced(Identity));
         }
@@ -42,6 +50,8 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             SpecificationDetail = readModel.SpecificationDetail;
             Quantity = readModel.Quantity;
             Remark = readModel.Remark;
+            UomId = new UomId(readModel.UomId);
+            UomUnit = readModel.UomUnit;
         }
 
         protected override GarmentSampleRequestSpecification GetEntity()
@@ -80,6 +90,22 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             {
                 this.SpecificationDetail = SpecificationDetail;
                 ReadModel.SpecificationDetail = SpecificationDetail;
+            }
+        }
+        public void SetUomId(UomId UomId)
+        {
+            if (this.UomId != UomId)
+            {
+                this.UomId = UomId;
+                ReadModel.UomId = UomId.Value;
+            }
+        }
+        public void SetUomUnit(string UomUnit)
+        {
+            if (this.UomUnit != UomUnit)
+            {
+                this.UomUnit = UomUnit;
+                ReadModel.UomUnit = UomUnit;
             }
         }
 

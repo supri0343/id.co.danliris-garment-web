@@ -44,7 +44,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.Commands
             RuleFor(r => r.Buyer.Id).NotEmpty().OverridePropertyName("Buyer").When(w => w.Buyer != null);
 
             RuleFor(r => r.SampleType).NotNull();
-            RuleFor(r => r.RONoCC).NotNull();
+            RuleFor(r => r.RONoCC).NotNull().When(s=>s.SampleCategory=="Commercial Sample");
             RuleFor(r => r.Packing).NotNull();
             RuleFor(r => r.Date).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Pembuatan Surat Sample Tidak Boleh Kosong");
             RuleFor(r => r.SentDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Kirim Tidak Boleh Kosong");
@@ -94,17 +94,17 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.Commands
                 .NotNull()
                 .WithMessage("Inventory harus diisi.");
 
-            RuleFor(r => r.SpecificationDetail)
-                .NotNull()
-                .WithMessage("Detail Spesifikasi harus diisi.");
+            //RuleFor(r => r.SpecificationDetail)
+            //    .NotNull()
+            //    .WithMessage("Detail Spesifikasi harus diisi.");
 
-            RuleFor(r => r.Remark)
-                .NotNull()
-                .WithMessage("Keterangan harus diisi.");
+            //RuleFor(r => r.Remark)
+            //    .NotNull()
+            //    .WithMessage("Keterangan harus diisi.");
 
-            RuleFor(r => r.Quantity)
-                .GreaterThan(0)
-                .WithMessage("Jumlah harus lebih dari '0'.");
+            //RuleFor(r => r.Quantity)
+            //    .GreaterThan(0)
+            //    .WithMessage("Jumlah harus lebih dari '0'.");
         }
     }
 }
