@@ -82,7 +82,12 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleRequest
                     new GarmentSampleRequestSpecificationValueObject
                     {
                         Quantity=1,
-                        Inventory="ACC"
+                        Inventory="ACC",
+                        Uom=new Uom
+                        {
+                            Id=1,
+                            Unit="u"
+                        }
                     }
                 }
 
