@@ -110,7 +110,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestSpecificationReadModel, bool>>>()))
                 .Returns(new List<GarmentSampleRequestSpecification>()
                 {
-                    new GarmentSampleRequestSpecification(Guid.NewGuid(), Guid.NewGuid(),null,null,1,null)
+                    new GarmentSampleRequestSpecification(Guid.NewGuid(), Guid.NewGuid(),null,null,1,null,new UomId(1),null)
                 });
 
             // Act
@@ -234,7 +234,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSampleRequestSpecificationReadModel>>()))
                 .Returns(new List<GarmentSampleRequestSpecification>()
                 {
-                    new GarmentSampleRequestSpecification(subconCuttingSpecificationGuid, SampleRequestProductGuid,null,null,1,null)
+                    new GarmentSampleRequestSpecification(subconCuttingSpecificationGuid, SampleRequestProductGuid,null,null,1,null,new UomId(1),null)
                 });
 
             // Act

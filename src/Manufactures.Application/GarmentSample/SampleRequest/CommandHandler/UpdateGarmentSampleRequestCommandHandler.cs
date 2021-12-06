@@ -86,6 +86,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                     spec.SetInventory(specification.Inventory);
                     spec.SetRemark(specification.Remark);
                     spec.SetSpecificationDetail(specification.SpecificationDetail);
+                    spec.SetUomId(new UomId(specification.Uom.Id));
+                    spec.SetUomUnit(specification.Uom.Unit);
                     spec.Modify();
                 }
 
@@ -100,7 +102,9 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                     specification.Inventory,
                     specification.SpecificationDetail,
                     specification.Quantity,
-                    specification.Remark
+                    specification.Remark,
+                    new UomId(specification.Uom.Id),
+                    specification.Uom.Unit
                 );
 
                 await _garmentSampleRequestSpecificationRepository.Update(GarmentSampleRequestSpecification);

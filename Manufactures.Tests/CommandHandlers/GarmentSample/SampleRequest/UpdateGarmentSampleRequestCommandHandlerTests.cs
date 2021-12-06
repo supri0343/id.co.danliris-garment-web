@@ -112,7 +112,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleRequest
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestSpecificationReadModel, bool>>>()))
                 .Returns(new List<GarmentSampleRequestSpecification>()
                 {
-                    new GarmentSampleRequestSpecification(Guid.Empty,SampleRequestGuid,null,null,1,null)
+                    new GarmentSampleRequestSpecification(Guid.Empty,SampleRequestGuid,null,null,1,null,new UomId(1),null)
                 });
 
             _mockSampleRequestSpecificationRepository

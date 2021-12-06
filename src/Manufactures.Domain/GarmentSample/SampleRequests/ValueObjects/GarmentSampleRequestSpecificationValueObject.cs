@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Manufactures.Domain.Shared.ValueObjects;
 
 namespace Manufactures.Domain.GarmentSample.SampleRequests.ValueObjects
 {
@@ -17,6 +18,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.ValueObjects
         public string SpecificationDetail { get; set; }
         public double Quantity { get; set; }
         public string Remark { get; set; }
+        public Uom Uom { get; set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

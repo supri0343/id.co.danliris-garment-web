@@ -10,15 +10,15 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
 {
     public class GarmentSampleRequestProduct : AggregateRoot<GarmentSampleRequestProduct, GarmentSampleRequestProductReadModel>
     {
-        public Guid SampleRequestId { get; internal set; }
-        public string Style { get; internal set; }
-        public string Color { get; internal set; }
+        public Guid SampleRequestId { get; private set; }
+        public string Style { get; private set; }
+        public string Color { get; private set; }
 
-        public SizeId SizeId { get; internal set; }
-        public string SizeName { get; internal set; }
+        public SizeId SizeId { get; private set; }
+        public string SizeName { get; private set; }
 
-        public string SizeDescription { get; internal set; }
-        public double Quantity { get; internal set; }
+        public string SizeDescription { get; private set; }
+        public double Quantity { get; private set; }
 
         public GarmentSampleRequestProduct(Guid identity, Guid sampleRequestId, string style, string color, SizeId sizeId, string sizeName, string sizeDescription, double quantity) : base(identity)
         {
@@ -97,7 +97,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 ReadModel.SizeDescription = SizeDescription;
             }
         }
-        public void SetSizeId(SizeId SupplierId)
+        public void SetSizeId(SizeId SizeId)
         {
             if (this.SizeId != SizeId)
             {

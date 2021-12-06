@@ -17,6 +17,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleRequests.Con
             builder.Property(p => p.Inventory).HasMaxLength(25);
             builder.Property(p => p.SpecificationDetail).HasMaxLength(500);
             builder.Property(p => p.Remark).HasMaxLength(1000);
+            builder.Property(p => p.UomUnit).HasMaxLength(50);
 
             builder.HasOne(w => w.GarmentSampleRequest)
                 .WithMany(h => h.SampleSpecification)
