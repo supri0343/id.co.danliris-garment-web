@@ -3,6 +3,7 @@ using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Domain.GarmentSample.SampleRequests.Commands;
 using Manufactures.Domain.GarmentSample.SampleRequests.Repositories;
 using Manufactures.Dtos.GarmentSample.SampleRequest;
+using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -190,6 +191,28 @@ namespace Manufactures.Controllers.Api.GarmentSample
             var order = await Mediator.Send(command);
 
             return Ok();
+        }
+
+        [HttpGet("get-pdf/{id}")]
+        public async Task<IActionResult> GetPdf(string id)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            GarmentSampleRequestDto garmentSampleRequestDto = _GarmentSampleRequestRepository.Find(o => o.Identity == guid).Select(sample => new GarmentSampleRequestDto(sample)
+            {
+                SampleProducts = _GarmentSampleRequestProductRepository.Find(o => o.SampleRequestId == sample.Identity).Select(product => new GarmentSampleRequestProductDto(product)).ToList(),
+                SampleSpecifications = _GarmentSampleRequestSpecificationRepository.Find(o => o.SampleRequestId == sample.Identity).Select(specification => new GarmentSampleRequestSpecificationDto(specification)).ToList()
+            }
+            ).FirstOrDefault();
+
+            var stream = GarmentSampleRequestPDFTemplate.Generate(garmentSampleRequestDto);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentSampleRequestDto.SampleRequestNo}.pdf"
+            };
         }
     }
 }
