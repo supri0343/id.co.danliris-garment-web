@@ -287,5 +287,41 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
+
+        [Fact]
+        public async Task GetSingle_PDF_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSampleRequestController();
+            Guid sampleRequestGuid = Guid.NewGuid();
+            _mockGarmentSampleRequestRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestReadModel, bool>>>()))
+                .Returns(new List<GarmentSampleRequest>()
+                {
+                    new GarmentSampleRequest(Guid.NewGuid(), "","","", "", DateTimeOffset.Now, new BuyerId(1), "", "", new GarmentComodityId(1), "","","","", DateTimeOffset.Now, "","","", false, false, DateTimeOffset.Now, "")
+                });
+
+            Guid sampleRequestProductGuid = Guid.NewGuid();
+            Guid sampleRequestSpecificationGuid = Guid.NewGuid();
+            _mockGarmentSampleRequestProductRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestProductReadModel, bool>>>()))
+                .Returns(new List<GarmentSampleRequestProduct>()
+                {
+                    new GarmentSampleRequestProduct(sampleRequestProductGuid, sampleRequestGuid, "", "", new SizeId(1), "","",1)
+                });
+
+            _mockGarmentSampleRequestSpecificationRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestSpecificationReadModel, bool>>>()))
+                .Returns(new List<GarmentSampleRequestSpecification>()
+                {
+                    new GarmentSampleRequestSpecification(sampleRequestSpecificationGuid, sampleRequestGuid, "", "", 1, "", new UomId(1), "")
+                });
+
+            // Act
+            var result = await unitUnderTest.GetPdf(sampleRequestGuid.ToString());
+
+            // Assert
+            Assert.NotNull(result.GetType().GetProperty("FileStream"));
+        }
     }
 }
