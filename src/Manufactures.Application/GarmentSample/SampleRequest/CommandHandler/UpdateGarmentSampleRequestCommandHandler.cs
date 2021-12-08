@@ -58,18 +58,21 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
 
             foreach (var product in request.SampleProducts)
             {
-                GarmentSampleRequestProduct GarmentSampleRequestProduct = new GarmentSampleRequestProduct(
-                    Guid.NewGuid(),
-                    SampleRequest.Identity,
-                    product.Style,
-                    product.Color,
-                    new SizeId(product.Size.Id),
-                    product.Size.Size,
-                    product.SizeDescription,
-                    product.Quantity
-                );
+                if (product.Id == Guid.Empty)
+                {
+                    GarmentSampleRequestProduct GarmentSampleRequestProduct = new GarmentSampleRequestProduct(
+                        Guid.NewGuid(),
+                        SampleRequest.Identity,
+                        product.Style,
+                        product.Color,
+                        new SizeId(product.Size.Id),
+                        product.Size.Size,
+                        product.SizeDescription,
+                        product.Quantity
+                    );
 
-                await _GarmentSampleRequestProductRepository.Update(GarmentSampleRequestProduct);
+                    await _GarmentSampleRequestProductRepository.Update(GarmentSampleRequestProduct);
+                }
             }
 
             _garmentSampleRequestSpecificationRepository.Find(o => o.SampleRequestId == SampleRequest.Identity).ForEach(async spec =>
@@ -96,18 +99,21 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
 
             foreach (var specification in request.SampleSpecifications)
             {
-                GarmentSampleRequestSpecification GarmentSampleRequestSpecification = new GarmentSampleRequestSpecification(
-                    Guid.NewGuid(),
-                    SampleRequest.Identity,
-                    specification.Inventory,
-                    specification.SpecificationDetail,
-                    specification.Quantity,
-                    specification.Remark,
-                    new UomId(specification.Uom.Id),
-                    specification.Uom.Unit
-                );
+                if (specification.Id == Guid.Empty)
+                {
+                    GarmentSampleRequestSpecification GarmentSampleRequestSpecification = new GarmentSampleRequestSpecification(
+                        Guid.NewGuid(),
+                        SampleRequest.Identity,
+                        specification.Inventory,
+                        specification.SpecificationDetail,
+                        specification.Quantity,
+                        specification.Remark,
+                        new UomId(specification.Uom.Id),
+                        specification.Uom.Unit
+                    );
 
-                await _garmentSampleRequestSpecificationRepository.Update(GarmentSampleRequestSpecification);
+                    await _garmentSampleRequestSpecificationRepository.Update(GarmentSampleRequestSpecification);
+                }
             }
 
 
