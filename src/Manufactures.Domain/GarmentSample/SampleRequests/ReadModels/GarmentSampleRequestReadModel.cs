@@ -33,6 +33,8 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.ReadModels
         public string Remark { get; internal set; }
         public bool IsPosted { get; internal set; }
         public bool IsReceived { get; internal set; }
+        public DateTimeOffset? ReceivedDate { get; internal set; }
+        public string ReceivedBy { get; internal set; }
 
         public virtual List<GarmentSampleRequestProductReadModel> SampleProduct { get; internal set; }
         public virtual List<GarmentSampleRequestSpecificationReadModel> SampleSpecification { get; internal set; }

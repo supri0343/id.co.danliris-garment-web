@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20211202023557_AddField_ReceivedDate_ReceivedBy_GarmentSampleRequest")]
+    partial class AddField_ReceivedDate_ReceivedBy_GarmentSampleRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2742,11 +2744,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("SpecificationDetail")
                         .HasMaxLength(500);
-
-                    b.Property<int>("UomId");
-
-                    b.Property<string>("UomUnit")
-                        .HasMaxLength(50);
 
                     b.HasKey("Identity");
 
