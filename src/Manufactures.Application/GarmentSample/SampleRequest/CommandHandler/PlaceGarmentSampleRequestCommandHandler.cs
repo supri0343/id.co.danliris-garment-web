@@ -78,6 +78,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
 
             foreach (var specification in request.SampleSpecifications)
             {
+
                 GarmentSampleRequestSpecification GarmentSampleRequestSpecification = new GarmentSampleRequestSpecification(
                     Guid.NewGuid(),
                     GarmentSampleRequest.Identity,
