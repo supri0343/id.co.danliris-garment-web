@@ -12,6 +12,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.ValueObjects
         {
         }
 
+        public int index { get; set; }
         public Guid Id { get; set; }
         public Guid SampleRequestId { get; set; }
         public string Inventory { get; set; }

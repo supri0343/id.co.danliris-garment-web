@@ -31,7 +31,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
         public async Task<GarmentSampleRequest> Handle(PlaceGarmentSampleRequestCommand request, CancellationToken cancellationToken)
         {
             request.SampleProducts = request.SampleProducts.ToList();
-            request.SampleSpecifications = request.SampleSpecifications.ToList();
+            request.SampleSpecifications = request.SampleSpecifications.OrderBy(r=>r.index).ToList();
 
             GarmentSampleRequest GarmentSampleRequest = new GarmentSampleRequest(
                 Guid.NewGuid(),
@@ -71,6 +71,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
 
                 await _GarmentSampleRequestProductRepository.Update(GarmentSampleRequestProduct);
             }
+
+
 
             foreach (var specification in request.SampleSpecifications)
             {
