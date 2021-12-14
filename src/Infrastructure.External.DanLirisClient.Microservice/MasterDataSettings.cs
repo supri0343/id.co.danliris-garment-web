@@ -9,5 +9,9 @@
         public static string Password { get; set; }
 
         public static string Username { get; set; }
+
+        public static string StorageAccountName { get; set; }
+
+        public static string StorageAccountKey { get; set; }
     }
 }
