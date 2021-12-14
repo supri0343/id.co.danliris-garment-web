@@ -29,6 +29,13 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleRequests.Con
             builder.Property(p => p.Remark).HasMaxLength(4000);
             builder.Property(p => p.SampleType).HasMaxLength(255);
             builder.Property(p => p.ReceivedBy).HasMaxLength(255);
+            builder.Property(p => p.RejectedBy).HasMaxLength(255);
+            builder.Property(p => p.RevisedBy).HasMaxLength(255);
+            builder.Property(p => p.RevisedReason).HasMaxLength(1000);
+            builder.Property(p => p.ImagesPath).HasMaxLength(1000);
+            builder.Property(p => p.DocumentsPath).HasMaxLength(1000);
+            builder.Property(p => p.DocumentsFileName).HasMaxLength(255);
+            builder.Property(p => p.ImagesName).HasMaxLength(255);
             builder.HasIndex(i => i.SampleRequestNo).IsUnique().HasFilter("[Deleted]=(0)");
 
             builder.ApplyAuditTrail();

@@ -10,6 +10,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
 {
     public class GarmentSampleRequestSpecification : AggregateRoot<GarmentSampleRequestSpecification, GarmentSampleRequestSpecificationReadModel>
     {
+        public int Index { get; private set; }
         public Guid SampleRequestId { get; private set; }
         public string Inventory { get; private set; }
         public string SpecificationDetail { get; private set; }
@@ -18,7 +19,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
 
-        public GarmentSampleRequestSpecification(Guid identity, Guid sampleRequestId, string inventory, string specificationDetail, double quantity, string remark, UomId uomId, string uomUnit) : base(identity)
+        public GarmentSampleRequestSpecification(Guid identity, Guid sampleRequestId, string inventory, string specificationDetail, double quantity, string remark, UomId uomId, string uomUnit, int index) : base(identity)
         {
             Identity = identity;
             SampleRequestId = sampleRequestId;
@@ -28,6 +29,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             Remark = remark;
             UomId = uomId;
             UomUnit = uomUnit;
+            Index = index;
 
             ReadModel = new GarmentSampleRequestSpecificationReadModel(Identity)
             {
@@ -37,7 +39,8 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 Quantity=Quantity,
                 Remark=Remark,
                 UomId= UomId.Value,
-                UomUnit= UomUnit
+                UomUnit= UomUnit,
+                Index=Index
 
             };
             ReadModel.AddDomainEvent(new OnGarmentSampleRequestPlaced(Identity));
@@ -52,6 +55,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             Remark = readModel.Remark;
             UomId = new UomId(readModel.UomId);
             UomUnit = readModel.UomUnit;
+            Index = readModel.Index;
         }
 
         protected override GarmentSampleRequestSpecification GetEntity()

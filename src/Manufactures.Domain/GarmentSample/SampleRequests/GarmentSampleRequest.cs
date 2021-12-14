@@ -30,14 +30,28 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
         public string POBuyer { get; private set; }
         public string Attached { get; private set; }
         public string Remark { get; private set; }
-        public bool IsPosted { get; private set; }
-        public bool IsReceived { get; private set; }
-        public DateTimeOffset? ReceivedDate { get; set; }
-        public string ReceivedBy { get; set; }
 
-        public GarmentSampleRequest(Guid identity, string sampleCategory, string sampleRequestNo, string rONoSample, string rONoCC, DateTimeOffset date, BuyerId buyerId, string buyerCode, string buyerName, GarmentComodityId comodityId, string comodityCode, string comodityName, string sampleType, string packing, DateTimeOffset sentDate, string pOBuyer, string attached, string remark, bool isPosted, bool isReceived, DateTimeOffset? receivedDate, string receivedBy) : base(identity)
+        public bool IsPosted { get; private set; }
+
+        public bool IsReceived { get; private set; }
+        public DateTimeOffset? ReceivedDate { get; private set; }
+        public string ReceivedBy { get; private set; }
+
+        public bool IsRejected { get; private set; }
+        public DateTimeOffset? RejectedDate { get; private set; }
+        public string RejectedBy { get; private set; }
+
+        public bool IsRevised { get; private set; }
+        public string RevisedBy { get; private set; }
+        public string RevisedReason { get; private set; }
+
+        public string ImagesPath { get; private set; }
+        public string DocumentsPath { get; private set; }
+        public string ImagesName { get; private set; }
+        public string DocumentsFileName { get; private set; }
+
+        public GarmentSampleRequest(Guid identity, string sampleCategory, string sampleRequestNo, string rONoSample, string rONoCC, DateTimeOffset date, BuyerId buyerId, string buyerCode, string buyerName, GarmentComodityId comodityId, string comodityCode, string comodityName, string sampleType, string packing, DateTimeOffset sentDate, string pOBuyer, string attached, string remark, bool isPosted, bool isReceived, DateTimeOffset? receivedDate, string receivedBy, bool isRejected, DateTimeOffset? rejectedDate, string rejectedBy, bool isRevised, string revisedBy, string revisedReason, string imagesPath, string documentsPath, string imagesName, string documentsFileName) : base(identity)
         {
-            Identity = identity;
             SampleCategory = sampleCategory;
             SampleRequestNo = sampleRequestNo;
             RONoSample = rONoSample;
@@ -59,13 +73,23 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             IsReceived = isReceived;
             ReceivedDate = receivedDate;
             ReceivedBy = receivedBy;
+            IsRejected = isRejected;
+            RejectedDate = rejectedDate;
+            RejectedBy = rejectedBy;
+            IsRevised = isRevised;
+            RevisedBy = revisedBy;
+            RevisedReason = revisedReason;
+            ImagesPath = imagesPath;
+            DocumentsPath = documentsPath;
+            ImagesName = imagesName;
+            DocumentsFileName = documentsFileName;
 
             ReadModel = new GarmentSampleRequestReadModel(Identity)
             {
                 SampleCategory = SampleCategory,
                 SampleRequestNo = SampleRequestNo,
                 RONoSample = RONoSample,
-                RONoCC= RONoCC,
+                RONoCC = RONoCC,
                 Date = Date,
                 BuyerId = BuyerId.Value,
                 BuyerCode = BuyerCode,
@@ -82,9 +106,18 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 IsPosted = IsPosted,
                 IsReceived = IsReceived,
                 ReceivedDate = ReceivedDate,
-                ReceivedBy = ReceivedBy
-
-            };
+                ReceivedBy = ReceivedBy,
+                IsRejected=IsRejected,
+                RejectedDate = RejectedDate,
+                RejectedBy = RejectedBy,
+                IsRevised = IsRevised,
+                RevisedBy = RevisedBy,
+                RevisedReason = RevisedReason,
+                ImagesPath = ImagesPath,
+                DocumentsPath = DocumentsPath,
+                ImagesName = ImagesName,
+                DocumentsFileName = DocumentsFileName
+        };
             ReadModel.AddDomainEvent(new OnGarmentSampleRequestPlaced(Identity));
         }
 
@@ -111,7 +144,20 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             IsReceived = readModel.IsReceived;
             ReceivedDate = readModel.ReceivedDate;
             ReceivedBy = readModel.ReceivedBy;
+            IsRejected = readModel.IsRejected;
+            RejectedDate = readModel.RejectedDate;
+            RejectedBy = readModel.RejectedBy;
+            IsRevised = readModel.IsRevised;
+            RevisedBy = readModel.RevisedBy;
+            RevisedReason = readModel.RevisedReason;
+            ImagesPath = readModel.ImagesPath;
+            DocumentsPath = readModel.DocumentsPath;
+            ImagesName = readModel.ImagesName;
+            DocumentsFileName = readModel.DocumentsFileName;
+
         }
+
+        
 
         protected override GarmentSampleRequest GetEntity()
         {

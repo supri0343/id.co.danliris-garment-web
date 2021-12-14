@@ -68,7 +68,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                         new SizeId(product.Size.Id),
                         product.Size.Size,
                         product.SizeDescription,
-                        product.Quantity
+                        product.Quantity,
+                        product.Index
                     );
 
                     await _GarmentSampleRequestProductRepository.Update(GarmentSampleRequestProduct);
@@ -109,7 +110,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                         specification.Quantity,
                         specification.Remark,
                         new UomId(specification.Uom.Id),
-                        specification.Uom.Unit
+                        specification.Uom.Unit,
+                        specification.Index
                     );
 
                     await _garmentSampleRequestSpecificationRepository.Update(GarmentSampleRequestSpecification);

@@ -29,6 +29,21 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.Commands
         public string Remark { get; set; }
         public bool IsPosted { get; set; }
         public bool IsReceived { get; set; }
+
+        public bool IsRejected { get; set; }
+        public DateTimeOffset? RejectedDate { get; set; }
+        public string RejectedBy { get; set; }
+
+        public bool IsRevised { get; set; }
+        public string RevisedBy { get; set; }
+        public string RevisedReason { get; set; }
+
+        public List<string> ImagesFile { get; set; }
+        public List<string> DocumentsFile { get; set; }
+        public string ImagesPath { get; set; }
+        public string DocumentsPath { get; set; }
+        public string ImagesName { get; set; }
+        public string DocumentsFileName { get; set; }
         public List<GarmentSampleRequestProductValueObject> SampleProducts { get; set; }
         public List<GarmentSampleRequestSpecificationValueObject> SampleSpecifications { get; set; }
         public void SetIdentity(Guid id)

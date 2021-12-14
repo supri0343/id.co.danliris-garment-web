@@ -77,7 +77,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSampleRequestReadModel>>()))
                 .Returns(new List<GarmentSampleRequest>()
                 {
-                    new GarmentSampleRequest(SampleRequestGuid, null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false,DateTimeOffset.Now,null)
+                    new GarmentSampleRequest(SampleRequestGuid, null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null,
+                    null,new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false,DateTimeOffset.Now,
+                    null,false, DateTimeOffset.Now,null,false,null,null,null,null,null,null)
                 });
             
             var result = await unitUnderTest.Get();
@@ -96,21 +98,23 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestReadModel, bool>>>()))
                 .Returns(new List<GarmentSampleRequest>()
                 {
-                    new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false, DateTimeOffset.Now, null)
+                    new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,
+                    new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false, DateTimeOffset.Now, 
+                    null,false, DateTimeOffset.Now,null,false,null,null,null,null,null,null)
                 });
 
             _mockGarmentSampleRequestProductRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestProductReadModel, bool>>>()))
                 .Returns(new List<GarmentSampleRequestProduct>()
                 {
-                    new GarmentSampleRequestProduct(Guid.NewGuid(), Guid.NewGuid(),null,null,new SizeId(1),null,null,1)
+                    new GarmentSampleRequestProduct(Guid.NewGuid(), Guid.NewGuid(),null,null,new SizeId(1),null,null,1,1)
                 });
 
             _mockGarmentSampleRequestSpecificationRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestSpecificationReadModel, bool>>>()))
                 .Returns(new List<GarmentSampleRequestSpecification>()
                 {
-                    new GarmentSampleRequestSpecification(Guid.NewGuid(), Guid.NewGuid(),null,null,1,null,new UomId(1),null)
+                    new GarmentSampleRequestSpecification(Guid.NewGuid(), Guid.NewGuid(),null,null,1,null,new UomId(1),null,1)
                 });
 
             // Act
@@ -128,7 +132,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentSampleRequestCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false, DateTimeOffset.Now, null));
+                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null,
+                null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false, DateTimeOffset.Now, 
+                null, false, DateTimeOffset.Now, null, false, null, null,  null, null, null, null));
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentSampleRequestCommand>());
@@ -159,7 +165,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentSampleRequestCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false, DateTimeOffset.Now, null));
+                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, 
+                null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false, DateTimeOffset.Now, 
+                null, false, DateTimeOffset.Now, null, false, null, null,  null, null, null, null));
 
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentSampleRequestCommand());
@@ -177,7 +185,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentSampleRequestCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false, DateTimeOffset.Now, null));
+                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,
+                new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false, DateTimeOffset.Now,
+                null, false, DateTimeOffset.Now, null, false, null, null, null, null, null, null));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
@@ -206,7 +216,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSampleRequestReadModel>>()))
                 .Returns(new List<GarmentSampleRequest>()
                 {
-                    new GarmentSampleRequest(SampleRequestGuid, null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false,DateTimeOffset.Now, null)
+                    new GarmentSampleRequest(SampleRequestGuid, null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,
+                    new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false,DateTimeOffset.Now,
+                    null,false, DateTimeOffset.Now,null,false,null,null,null,null,null,null)
                 });
 
             _mockGarmentSampleRequestProductRepository
@@ -220,7 +232,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSampleRequestProductReadModel>>()))
                 .Returns(new List<GarmentSampleRequestProduct>()
                 {
-                    new GarmentSampleRequestProduct(SampleRequestProductGuid, SampleRequestGuid,null,null,new SizeId(1),null,null,1)
+                    new GarmentSampleRequestProduct(SampleRequestProductGuid, SampleRequestGuid,null,null,new SizeId(1),null,null,1,1)
                 });
 
             _mockGarmentSampleRequestSpecificationRepository
@@ -234,7 +246,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSampleRequestSpecificationReadModel>>()))
                 .Returns(new List<GarmentSampleRequestSpecification>()
                 {
-                    new GarmentSampleRequestSpecification(subconCuttingSpecificationGuid, SampleRequestProductGuid,null,null,1,null,new UomId(1),null)
+                    new GarmentSampleRequestSpecification(subconCuttingSpecificationGuid, SampleRequestProductGuid,null,null,1,null,new UomId(1),null,1)
                 });
 
             // Act
@@ -279,7 +291,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<ReceivedGarmentSampleRequestCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false, DateTimeOffset.Now, null));
+                .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, 
+                null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false,
+                DateTimeOffset.Now, null, false, DateTimeOffset.Now, null, false,  null, null, null, null, null, null));
 
             // Act
             var result = await unitUnderTest.receivedData(Guid.NewGuid().ToString(), new ReceivedGarmentSampleRequestCommand());
@@ -298,7 +312,8 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestReadModel, bool>>>()))
                 .Returns(new List<GarmentSampleRequest>()
                 {
-                    new GarmentSampleRequest(Guid.NewGuid(), "","","", "", DateTimeOffset.Now, new BuyerId(1), "", "", new GarmentComodityId(1), "","","","", DateTimeOffset.Now, "","","", false, false, DateTimeOffset.Now, "")
+                    new GarmentSampleRequest(Guid.NewGuid(), "","","", "", DateTimeOffset.Now, new BuyerId(1), "", "", new GarmentComodityId(1), "","","","", DateTimeOffset.Now, "","","",
+                    false, false, DateTimeOffset.Now, "",false, DateTimeOffset.Now,null,false,null,null,null,null,null,null)
                 });
 
             Guid sampleRequestProductGuid = Guid.NewGuid();
@@ -307,14 +322,14 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestProductReadModel, bool>>>()))
                 .Returns(new List<GarmentSampleRequestProduct>()
                 {
-                    new GarmentSampleRequestProduct(sampleRequestProductGuid, sampleRequestGuid, "", "", new SizeId(1), "","",1)
+                    new GarmentSampleRequestProduct(sampleRequestProductGuid, sampleRequestGuid, "", "", new SizeId(1), "","",1,1)
                 });
 
             _mockGarmentSampleRequestSpecificationRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestSpecificationReadModel, bool>>>()))
                 .Returns(new List<GarmentSampleRequestSpecification>()
                 {
-                    new GarmentSampleRequestSpecification(sampleRequestSpecificationGuid, sampleRequestGuid, "", "", 1, "", new UomId(1), "")
+                    new GarmentSampleRequestSpecification(sampleRequestSpecificationGuid, sampleRequestGuid, "", "", 1, "", new UomId(1), "",1)
                 });
 
             // Act
