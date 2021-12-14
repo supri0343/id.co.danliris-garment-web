@@ -31,7 +31,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
         public async Task<GarmentSampleRequest> Handle(PlaceGarmentSampleRequestCommand request, CancellationToken cancellationToken)
         {
             request.SampleProducts = request.SampleProducts.ToList();
-            request.SampleSpecifications = request.SampleSpecifications.OrderBy(r=>r.index).ToList();
+            request.SampleSpecifications = request.SampleSpecifications.ToList();
 
             GarmentSampleRequest GarmentSampleRequest = new GarmentSampleRequest(
                 Guid.NewGuid(),
@@ -55,7 +55,18 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                 request.IsPosted,
                 request.IsReceived,
                 request.ReceivedDate,
-                request.ReceivedBy
+                request.ReceivedBy,
+                request.IsRejected,
+                request.RejectedDate,
+                request.RejectedBy,
+                request.IsRevised,
+                request.RevisedBy,
+                request.RevisedReason,
+                request.ImagesPath,
+                request.DocumentsPath,
+                request.ImagesName,
+                request.DocumentsFileName
+
             );
 
             foreach (var product in request.SampleProducts)
@@ -68,7 +79,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                     new SizeId(product.Size.Id),
                     product.Size.Size,
                     product.SizeDescription,
-                    product.Quantity
+                    product.Quantity,
+                    product.Index
                 );
 
                 await _GarmentSampleRequestProductRepository.Update(GarmentSampleRequestProduct);
@@ -87,7 +99,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                     specification.Quantity,
                     specification.Remark,
                     new UomId(specification.Uom.Id),
-                    specification.Uom.Unit
+                    specification.Uom.Unit,
+                    specification.Index
                 );
 
                 await _garmentSampleRequestSpecificationRepository.Update(GarmentSampleRequestSpecification);

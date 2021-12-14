@@ -31,10 +31,24 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.ReadModels
         public string POBuyer { get; internal set; }
         public string Attached { get; internal set; }
         public string Remark { get; internal set; }
+
         public bool IsPosted { get; internal set; }
+
         public bool IsReceived { get; internal set; }
         public DateTimeOffset? ReceivedDate { get; internal set; }
         public string ReceivedBy { get; internal set; }
+
+        public bool IsRejected { get; internal set; }
+        public DateTimeOffset? RejectedDate { get; internal set; }
+        public string RejectedBy { get; internal set; }
+
+        public bool IsRevised { get; internal set; }
+        public string RevisedBy { get; internal set; }
+        public string RevisedReason { get; internal set; }
+        public string ImagesPath { get; internal set; }
+        public string DocumentsPath { get; internal set; }
+        public string ImagesName { get; internal set; }
+        public string DocumentsFileName { get; internal set; }
 
         public virtual List<GarmentSampleRequestProductReadModel> SampleProduct { get; internal set; }
         public virtual List<GarmentSampleRequestSpecificationReadModel> SampleSpecification { get; internal set; }

@@ -17,6 +17,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.ValueObjects
 
         public string SizeDescription { get;  set; }
         public double Quantity { get;  set; }
+        public int Index { get; set; }
 
         public GarmentSampleRequestProductValueObject()
         {

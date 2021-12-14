@@ -106,7 +106,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleRequest
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestProductReadModel, bool>>>()))
                 .Returns(new List<GarmentSampleRequestProduct>()
                 {
-                    new GarmentSampleRequestProduct(Guid.Empty,SampleRequestGuid,"a","a",new SizeId(2),"code","name",1)
+                    new GarmentSampleRequestProduct(Guid.Empty,SampleRequestGuid,"a","a",new SizeId(2),"code","name",1,1)
                 });
 
             _mockSampleRequestProductRepository
@@ -117,9 +117,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleRequest
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestSpecificationReadModel, bool>>>()))
                 .Returns(new List<GarmentSampleRequestSpecification>()
                 {
-                    new GarmentSampleRequestSpecification(Guid.Empty,SampleRequestGuid,"a","a",1,"a",new UomId(2),"a"),
+                    new GarmentSampleRequestSpecification(Guid.Empty,SampleRequestGuid,"a","a",1,"a",new UomId(2),"a",1),
 
-                    new GarmentSampleRequestSpecification(Guid.Empty,SampleRequestGuid,"b","a",1,"a",new UomId(3),"a")
+                    new GarmentSampleRequestSpecification(Guid.Empty,SampleRequestGuid,"b","a",1,"a",new UomId(3),"a",2)
                 });
 
             _mockSampleRequestSpecificationRepository

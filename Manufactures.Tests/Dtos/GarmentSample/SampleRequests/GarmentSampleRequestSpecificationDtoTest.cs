@@ -13,7 +13,7 @@ namespace Manufactures.Tests.Dtos.GarmentSample.SampleRequests
         public void should_Success_Instantiate()
         {
             Guid id = Guid.NewGuid();
-            var dto = new GarmentSampleRequestSpecificationDto(new GarmentSampleRequestSpecification(id, id, "a", "a", 1, "a", new Domain.Shared.ValueObjects.UomId(1),"a"));
+            var dto = new GarmentSampleRequestSpecificationDto(new GarmentSampleRequestSpecification(id, id, "a", "a", 1, "a", new Domain.Shared.ValueObjects.UomId(1),"a",1));
 
             Assert.NotNull(dto);
             Assert.NotNull(dto.Uom);
