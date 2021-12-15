@@ -60,6 +60,9 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.Commands
             RuleFor(r => r.Buyer).NotNull();
             RuleFor(r => r.Buyer.Id).NotEmpty().OverridePropertyName("Buyer").When(w => w.Buyer != null);
 
+            RuleFor(r => r.Section).NotNull();
+            RuleFor(r => r.Section.Id).NotEmpty().OverridePropertyName("Section").When(w => w.Section != null);
+
             RuleFor(r => r.SampleType).NotNull();
             RuleFor(r => r.RONoCC).NotNull().When(s=>s.SampleCategory=="Commercial Sample");
             RuleFor(r => r.Packing).NotNull();

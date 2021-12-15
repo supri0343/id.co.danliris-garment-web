@@ -17,6 +17,7 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
             Size = new SizeValueObject(garmentSampleRequestProduct.SizeId.Value, garmentSampleRequestProduct.SizeName);
             SizeDescription = garmentSampleRequestProduct.SizeDescription;
             Quantity = garmentSampleRequestProduct.Quantity;
+            Index = garmentSampleRequestProduct.Index;
         }
         public Guid Id { get; set; }
         public Guid SampleRequestId { get; set; }
@@ -27,5 +28,6 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
 
         public string SizeDescription { get; set; }
         public double Quantity { get; set; }
+        public int Index { get; set; }
     }
 }

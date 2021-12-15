@@ -341,6 +341,24 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             }
         }
 
+        public void SetIsRejected(bool IsRejected)
+        {
+            if (this.IsRejected != IsRejected)
+            {
+                this.IsRejected = IsRejected;
+                ReadModel.IsReceived = IsRejected;
+            }
+        }
+
+        public void SetIsRevised(bool IsRevised)
+        {
+            if (this.IsRevised != IsRevised)
+            {
+                this.IsRevised = IsRevised;
+                ReadModel.IsRevised = IsRevised;
+            }
+        }
+
         public void Modify()
         {
             MarkModified();
