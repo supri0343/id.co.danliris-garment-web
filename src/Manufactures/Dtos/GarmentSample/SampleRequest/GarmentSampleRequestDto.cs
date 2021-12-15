@@ -30,6 +30,7 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
             ReceivedBy = garmentSampleRequest.ReceivedBy;
             SampleProducts = new List<GarmentSampleRequestProductDto>();
             SampleSpecifications = new List<GarmentSampleRequestSpecificationDto>();
+            Section = new SectionValueObject(garmentSampleRequest.SectionId.Value, garmentSampleRequest.SectionCode);
         }
 
         public Guid Id { get; set; }
@@ -53,6 +54,7 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
         public bool IsReceived { get;  set; }
         public DateTimeOffset? ReceivedDate { get; set; }
         public string ReceivedBy { get; set; }
+        public SectionValueObject Section { get; set; }
         public List<GarmentSampleRequestProductDto> SampleProducts { get; set; }
         public List<GarmentSampleRequestSpecificationDto> SampleSpecifications { get; set; }
     }

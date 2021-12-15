@@ -65,8 +65,9 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                 request.ImagesPath,
                 request.DocumentsPath,
                 request.ImagesName,
-                request.DocumentsFileName
-
+                request.DocumentsFileName,
+                new SectionId(request.Section.Id),
+                request.Section.Code
             );
 
             foreach (var product in request.SampleProducts)

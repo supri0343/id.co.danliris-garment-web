@@ -49,8 +49,10 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
         public string DocumentsPath { get; private set; }
         public string ImagesName { get; private set; }
         public string DocumentsFileName { get; private set; }
+        public SectionId SectionId { get; internal set; }
+        public string SectionCode { get; internal set; }
 
-        public GarmentSampleRequest(Guid identity, string sampleCategory, string sampleRequestNo, string rONoSample, string rONoCC, DateTimeOffset date, BuyerId buyerId, string buyerCode, string buyerName, GarmentComodityId comodityId, string comodityCode, string comodityName, string sampleType, string packing, DateTimeOffset sentDate, string pOBuyer, string attached, string remark, bool isPosted, bool isReceived, DateTimeOffset? receivedDate, string receivedBy, bool isRejected, DateTimeOffset? rejectedDate, string rejectedBy, bool isRevised, string revisedBy, string revisedReason, string imagesPath, string documentsPath, string imagesName, string documentsFileName) : base(identity)
+        public GarmentSampleRequest(Guid identity, string sampleCategory, string sampleRequestNo, string rONoSample, string rONoCC, DateTimeOffset date, BuyerId buyerId, string buyerCode, string buyerName, GarmentComodityId comodityId, string comodityCode, string comodityName, string sampleType, string packing, DateTimeOffset sentDate, string pOBuyer, string attached, string remark, bool isPosted, bool isReceived, DateTimeOffset? receivedDate, string receivedBy, bool isRejected, DateTimeOffset? rejectedDate, string rejectedBy, bool isRevised, string revisedBy, string revisedReason, string imagesPath, string documentsPath, string imagesName, string documentsFileName, SectionId sectionId, string sectionCode) : base(identity)
         {
             SampleCategory = sampleCategory;
             SampleRequestNo = sampleRequestNo;
@@ -83,6 +85,8 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             DocumentsPath = documentsPath;
             ImagesName = imagesName;
             DocumentsFileName = documentsFileName;
+            SectionId = sectionId;
+            SectionCode = sectionCode;
 
             ReadModel = new GarmentSampleRequestReadModel(Identity)
             {
@@ -116,7 +120,9 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 ImagesPath = ImagesPath,
                 DocumentsPath = DocumentsPath,
                 ImagesName = ImagesName,
-                DocumentsFileName = DocumentsFileName
+                DocumentsFileName = DocumentsFileName,
+                SectionId=SectionId.Value,
+                SectionCode=SectionCode
         };
             ReadModel.AddDomainEvent(new OnGarmentSampleRequestPlaced(Identity));
         }
@@ -154,7 +160,8 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             DocumentsPath = readModel.DocumentsPath;
             ImagesName = readModel.ImagesName;
             DocumentsFileName = readModel.DocumentsFileName;
-
+            SectionCode = readModel.SectionCode;
+            SectionId = new SectionId(readModel.SectionId);
         }
 
         
@@ -181,7 +188,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 ReadModel.IsReceived = IsReceived;
             }
         }
-        public void SetBuyerId(BuyerId SupplierId)
+        public void SetBuyerId(BuyerId BuyerId)
         {
             if (this.BuyerId != BuyerId)
             {
@@ -233,7 +240,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             }
         }
 
-        public void SetComodityId(GarmentComodityId SupplierId)
+        public void SetComodityId(GarmentComodityId ComodityId)
         {
             if (this.ComodityId != ComodityId)
             {
@@ -314,6 +321,23 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             {
                 this.ReceivedBy = ReceivedBy;
                 ReadModel.ReceivedBy = ReceivedBy;
+            }
+        }
+
+        public void SetSectionId(SectionId SectionId)
+        {
+            if (this.SectionId != SectionId)
+            {
+                this.SectionId = SectionId;
+                ReadModel.SectionId = SectionId.Value;
+            }
+        }
+        public void SetSectionCode(string SectionCode)
+        {
+            if (this.SectionCode != SectionCode)
+            {
+                this.SectionCode = SectionCode;
+                ReadModel.SectionCode = SectionCode;
             }
         }
 

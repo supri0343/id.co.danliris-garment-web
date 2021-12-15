@@ -65,6 +65,11 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleRequest
                     Id = 1,
                     Name = "test"
                 },
+                Section = new SectionValueObject
+                {
+                    Id = 1,
+                    Code = "A"
+                },
                 SampleProducts = new List<GarmentSampleRequestProductValueObject>()
                 {
                     new GarmentSampleRequestProductValueObject

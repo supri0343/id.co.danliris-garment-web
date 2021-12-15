@@ -133,6 +133,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
             SampleRequest.SetPOBuyer(request.POBuyer);
             SampleRequest.SetRONoCC(request.RONoCC);
             SampleRequest.SetAttached(request.Attached);
+            SampleRequest.SetSectionCode(request.Section.Code);
+            SampleRequest.SetSectionId(new SectionId(request.Section.Id));
 
             SampleRequest.Modify();
 
