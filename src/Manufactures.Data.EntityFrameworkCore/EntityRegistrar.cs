@@ -19,6 +19,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentFinishingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentLoadings.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentMonitoringProductionStockFlows.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleCuttingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SamplePreparings.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleRequests.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentScrapClassifications.Config;
@@ -160,6 +161,10 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 			modelBuilder.ApplyConfiguration(new GarmentSamplePreparingConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSamplePreparingItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSampleCuttingInConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSampleCuttingInItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSampleCuttingInDetailConfig());
 		}
 	}
 }
