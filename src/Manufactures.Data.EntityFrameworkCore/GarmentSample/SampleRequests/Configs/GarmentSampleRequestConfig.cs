@@ -36,6 +36,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleRequests.Con
             builder.Property(p => p.DocumentsPath).HasMaxLength(1000);
             builder.Property(p => p.DocumentsFileName).HasMaxLength(255);
             builder.Property(p => p.ImagesName).HasMaxLength(255);
+            builder.Property(p => p.SectionCode).HasMaxLength(25);
             builder.HasIndex(i => i.SampleRequestNo).IsUnique().HasFilter("[Deleted]=(0)");
 
             builder.ApplyAuditTrail();
