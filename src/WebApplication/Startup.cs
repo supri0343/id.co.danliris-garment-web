@@ -24,6 +24,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Microsoft.ApplicationInsights.AspNetCore;
+using Manufactures.Application.AzureUtility;
 
 namespace DanLiris.Admin.Web
 {
@@ -134,6 +135,8 @@ namespace DanLiris.Admin.Web
             RegisterCustomsDataSettings();
             RegisterEndpoint();
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddTransient<IAzureImage, AzureImage>()
+                    .AddTransient<IAzureDocument, AzureDocument>();
 
             services.AddSingleton<IMemoryCacheManager, MemoryCacheManager>()
                     .AddSingleton<ICoreClient, CoreClient>()

@@ -12,8 +12,10 @@ namespace Manufactures.Application.AzureUtility
 {
     public class AzureImage : AzureStorage, IAzureImage
     {
+        private IServiceProvider _serviceProvider;
         public AzureImage(IServiceProvider serviceProvider) : base(serviceProvider)
         {
+            _serviceProvider = serviceProvider;
         }
 
         private string getBase64File(string encoded)
@@ -35,12 +37,12 @@ namespace Manufactures.Application.AzureUtility
             return filePath[filePath.Length - 1];
         }
 
-        public string GenerateFileName(long id, DateTime _createdUtc)
+        public string GenerateFileName(Guid id, DateTime _createdUtc)
         {
             return String.Format("IMG_{0}_{1}", id, TimeStamp.Generate(_createdUtc));
         }
 
-        public string GenerateFileName(int id, DateTime _createdUtc, int index)
+        public string GenerateFileName(Guid id, DateTime _createdUtc, int index)
         {
             return String.Format("IMG_{0}_{1}_{2}", id, index, TimeStamp.Generate(_createdUtc));
         }
@@ -55,14 +57,13 @@ namespace Manufactures.Application.AzureUtility
             return null;
         }
 
-        public async Task<List<string>> DownloadMultipleImages(string moduleName, string imagesPath)
+        public async Task<List<string>> DownloadMultipleImages(string moduleName, List<string> imagesPathList)
         {
-            if (imagesPath != null)
+            if (imagesPathList.Count > 0)
             {
                 List<Task<string>> downloadTasks = new List<Task<string>>();
-                if (imagesPath != null)
+                if (imagesPathList.Count > 0)
                 {
-                    List<string> imagesPathList = JsonConvert.DeserializeObject<List<string>>(imagesPath);
                     foreach (string imagePath in imagesPathList)
                     {
                         string fileName = this.GetFileNameFromPath(imagePath);
@@ -104,13 +105,13 @@ namespace Manufactures.Application.AzureUtility
             return imageSrc;
         }
 
-        public async Task<string> UploadImage(string moduleName, long id, DateTime _createdUtc, string imageBase64)
+        public async Task<string> UploadImage(string moduleName, Guid id, DateTime _createdUtc, string imageBase64)
         {
             string imageName = this.GenerateFileName(id, _createdUtc);
             return await this.UploadBase64Image(moduleName, imageBase64, imageName);
         }
 
-        public async Task<string> UploadMultipleImage(string moduleName, int id, DateTime _createdUtc, List<string> imagesBase64, string beforeImagePaths)
+        public async Task<string> UploadMultipleImage(string moduleName, Guid id, DateTime _createdUtc, List<string> imagesBase64, List<string> beforeImagePaths)
         {
             List<Task<string>> uploadTasks = new List<Task<string>>();
 
@@ -125,8 +126,7 @@ namespace Manufactures.Application.AzureUtility
 
             if (beforeImagePaths != null)
             {
-                List<string> beforePaths = JsonConvert.DeserializeObject<List<string>>(beforeImagePaths);
-                string imagesPath = JsonConvert.SerializeObject(await this.RemoveLeftoverImage(moduleName, beforePaths, afterPaths.ToList<string>()));
+                string imagesPath = JsonConvert.SerializeObject(await this.RemoveLeftoverImage(moduleName, beforeImagePaths, afterPaths.ToList<string>()));
                 return imagesPath;
             }
 

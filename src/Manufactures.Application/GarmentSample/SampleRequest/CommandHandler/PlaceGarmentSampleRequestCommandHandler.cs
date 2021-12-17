@@ -1,5 +1,6 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
+using Manufactures.Application.AzureUtility;
 using Manufactures.Domain.GarmentSample.SampleRequests;
 using Manufactures.Domain.GarmentSample.SampleRequests.Commands;
 using Manufactures.Domain.GarmentSample.SampleRequests.Repositories;
@@ -10,6 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
 {
@@ -19,22 +22,26 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
         private readonly IGarmentSampleRequestRepository _GarmentSampleRequestRepository;
         private readonly IGarmentSampleRequestProductRepository _GarmentSampleRequestProductRepository;
         private readonly IGarmentSampleRequestSpecificationRepository _garmentSampleRequestSpecificationRepository;
+        public IAzureImage _azureImage;
+        public IAzureDocument _azureDocument;
 
-        public PlaceGarmentSampleRequestCommandHandler(IStorage storage)
+        public PlaceGarmentSampleRequestCommandHandler(IStorage storage, IServiceProvider serviceProvider)
         {
             _storage = storage;
             _GarmentSampleRequestRepository = storage.GetRepository<IGarmentSampleRequestRepository>();
             _GarmentSampleRequestProductRepository = storage.GetRepository<IGarmentSampleRequestProductRepository>();
             _garmentSampleRequestSpecificationRepository = storage.GetRepository<IGarmentSampleRequestSpecificationRepository>();
+            _azureImage = serviceProvider.GetService<IAzureImage>();
+            _azureDocument = serviceProvider.GetService<IAzureDocument>();
         }
 
         public async Task<GarmentSampleRequest> Handle(PlaceGarmentSampleRequestCommand request, CancellationToken cancellationToken)
         {
             request.SampleProducts = request.SampleProducts.ToList();
             request.SampleSpecifications = request.SampleSpecifications.ToList();
-
+            var id = Guid.NewGuid();
             GarmentSampleRequest GarmentSampleRequest = new GarmentSampleRequest(
-                Guid.NewGuid(),
+                id,
                 request.SampleCategory,
                 GenerateSampleRequestNo(request),
                 GenerateROSample(request),
@@ -62,10 +69,10 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                 request.IsRevised,
                 request.RevisedBy,
                 request.RevisedReason,
-                request.ImagesPath,
-                request.DocumentsPath,
-                request.ImagesName,
-                request.DocumentsFileName,
+                JsonConvert.SerializeObject(request.ImagesPath),
+                JsonConvert.SerializeObject(request.DocumentsPath),
+                JsonConvert.SerializeObject(request.ImagesName),
+                JsonConvert.SerializeObject(request.DocumentsFileName),
                 new SectionId(request.Section.Id),
                 request.Section.Code
             );
@@ -111,7 +118,22 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
 
             _storage.Save();
 
-            return GarmentSampleRequest;
+            var SampleRequest = _GarmentSampleRequestRepository.Query.Where(o => o.Identity == id).Select(o => new GarmentSampleRequest(o)).Single();
+            if(request.ImagesFile.Count > 0)
+            {
+                SampleRequest.SetImagesPath(await _azureImage.UploadMultipleImage(GarmentSampleRequest.GetType().Name, id, SampleRequest.AuditTrail.CreatedDate.UtcDateTime, request.ImagesFile, request.ImagesPath));
+            }
+            if(request.DocumentsFile.Count > 0)
+            {
+                SampleRequest.SetDocumentsPath(await _azureDocument.UploadMultipleFile(GarmentSampleRequest.GetType().Name, id, SampleRequest.AuditTrail.CreatedDate.UtcDateTime, request.DocumentsFile, request.DocumentsFileName, request.DocumentsPath));
+            }
+            
+            SampleRequest.Modify();
+            await _GarmentSampleRequestRepository.Update(SampleRequest);
+
+            _storage.Save();
+
+            return SampleRequest;
         }
 
         private string GenerateSampleRequestNo(PlaceGarmentSampleRequestCommand request)

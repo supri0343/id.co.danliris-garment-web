@@ -1,5 +1,6 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Application.AzureUtility;
 using Manufactures.Domain.GarmentSample.SampleRequests.Commands;
 using Manufactures.Domain.GarmentSample.SampleRequests.Repositories;
 using Manufactures.Dtos.GarmentSample.SampleRequest;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Manufactures.Controllers.Api.GarmentSample
 {
@@ -24,13 +26,16 @@ namespace Manufactures.Controllers.Api.GarmentSample
         private readonly IGarmentSampleRequestRepository _GarmentSampleRequestRepository;
         private readonly IGarmentSampleRequestProductRepository _GarmentSampleRequestProductRepository;
         private readonly IGarmentSampleRequestSpecificationRepository _GarmentSampleRequestSpecificationRepository;
+        private readonly IAzureImage _azureImage;
+        private readonly IAzureDocument _azureDocument;
 
         public GarmentSampleRequestController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _GarmentSampleRequestRepository = Storage.GetRepository<IGarmentSampleRequestRepository>();
             _GarmentSampleRequestProductRepository = Storage.GetRepository<IGarmentSampleRequestProductRepository>();
             _GarmentSampleRequestSpecificationRepository = Storage.GetRepository<IGarmentSampleRequestSpecificationRepository>();
-            
+            _azureImage = serviceProvider.GetService<IAzureImage>();
+            _azureDocument = serviceProvider.GetService<IAzureDocument>();
         }
 
         [HttpGet]
@@ -79,6 +84,13 @@ namespace Manufactures.Controllers.Api.GarmentSample
                 }).ToList()
             }
             ).FirstOrDefault();
+
+            garmentSampleRequestDto.ImagesFile = await _azureImage.DownloadMultipleImages("GarmentSampleRequest", garmentSampleRequestDto.ImagesPath);
+
+            if (garmentSampleRequestDto.DocumentsPath.Count > 0)
+            {
+                garmentSampleRequestDto.DocumentsFile = await _azureDocument.DownloadMultipleFiles("GarmentSampleRequest", garmentSampleRequestDto.DocumentsPath);
+            }
 
             await Task.Yield();
             return Ok(garmentSampleRequestDto);
