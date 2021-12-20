@@ -1,5 +1,6 @@
 ﻿using Manufactures.Domain.GarmentSample.SampleRequests;
 using Manufactures.Domain.Shared.ValueObjects;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,6 +31,10 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
             ReceivedBy = garmentSampleRequest.ReceivedBy;
             SampleProducts = new List<GarmentSampleRequestProductDto>();
             SampleSpecifications = new List<GarmentSampleRequestSpecificationDto>();
+            ImagesPath = String.IsNullOrEmpty(garmentSampleRequest.ImagesPath) ? new List<string>() : JsonConvert.DeserializeObject<List<string>>(garmentSampleRequest.ImagesPath);
+            ImagesName = String.IsNullOrEmpty(garmentSampleRequest.ImagesName) ? new List<string>() : JsonConvert.DeserializeObject<List<string>>(garmentSampleRequest.ImagesName);
+            DocumentsPath = String.IsNullOrEmpty(garmentSampleRequest.DocumentsPath) ? new List<string>() : JsonConvert.DeserializeObject<List<string>>(garmentSampleRequest.DocumentsPath);
+            DocumentsFileName = String.IsNullOrEmpty(garmentSampleRequest.DocumentsFileName) ? new List<string>() : JsonConvert.DeserializeObject<List<string>>(garmentSampleRequest.DocumentsFileName);
             Section = new SectionValueObject(garmentSampleRequest.SectionId.Value, garmentSampleRequest.SectionCode);
         }
 
@@ -54,6 +59,12 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
         public bool IsReceived { get;  set; }
         public DateTimeOffset? ReceivedDate { get; set; }
         public string ReceivedBy { get; set; }
+        public List<string> ImagesFile { get; set; }
+        public List<string> DocumentsFile { get; set; }
+        public List<string> ImagesPath { get; set; }
+        public List<string> DocumentsPath { get; set; }
+        public List<string> ImagesName { get; set; }
+        public List<string> DocumentsFileName { get; set; }
         public SectionValueObject Section { get; set; }
         public List<GarmentSampleRequestProductDto> SampleProducts { get; set; }
         public List<GarmentSampleRequestSpecificationDto> SampleSpecifications { get; set; }

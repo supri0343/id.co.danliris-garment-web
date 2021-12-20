@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Manufactures.Application.AzureUtility;
 
 namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
 {
@@ -18,13 +20,17 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
         private readonly IGarmentSampleRequestRepository _GarmentSampleRequestRepository;
         private readonly IGarmentSampleRequestProductRepository _GarmentSampleRequestProductRepository;
         private readonly IGarmentSampleRequestSpecificationRepository _garmentSampleRequestSpecificationRepository;
+        private readonly IAzureImage _azureImage;
+        private readonly IAzureDocument _azureDocument;
 
-        public RemoveGarmentSampleRequestCommandHandler(IStorage storage)
+        public RemoveGarmentSampleRequestCommandHandler(IStorage storage, IServiceProvider serviceProvider)
         {
             _storage = storage;
             _GarmentSampleRequestRepository = storage.GetRepository<IGarmentSampleRequestRepository>();
             _GarmentSampleRequestProductRepository = storage.GetRepository<IGarmentSampleRequestProductRepository>();
             _garmentSampleRequestSpecificationRepository = storage.GetRepository<IGarmentSampleRequestSpecificationRepository>();
+            _azureImage = serviceProvider.GetService<IAzureImage>();
+            _azureDocument = serviceProvider.GetService<IAzureDocument>();
         }
 
 
@@ -48,6 +54,9 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
 
             sampleRequest.Remove();
             await _GarmentSampleRequestRepository.Update(sampleRequest);
+
+            await _azureImage.RemoveMultipleImage("GarmentSampleRequest", sampleRequest.ImagesPath);
+            await _azureDocument.RemoveMultipleFile("GarmentSampleRequest", sampleRequest.DocumentsPath);
 
             _storage.Save();
 

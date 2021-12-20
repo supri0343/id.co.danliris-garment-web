@@ -9,11 +9,13 @@ namespace Barebone.Tests
         protected readonly MockRepository _MockRepository;
 
         protected readonly Mock<IStorage> _MockStorage;
+        protected readonly Mock<IServiceProvider> _MockServiceProvider;
 
         public BaseCommandUnitTest()
         {
             this._MockRepository = new MockRepository(MockBehavior.Strict);
             _MockStorage = _MockRepository.Create<IStorage>();
+            _MockServiceProvider = new Mock<IServiceProvider>();
 
         }
 
