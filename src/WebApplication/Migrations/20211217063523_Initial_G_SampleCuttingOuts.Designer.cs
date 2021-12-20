@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20211217063523_Initial_G_SampleCuttingOuts")]
+    partial class Initial_G_SampleCuttingOuts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2767,7 +2769,7 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset>("CreatedDate");
 
-                    b.Property<Guid>("CuttingOutItemId");
+                    b.Property<Guid>("CutOutItemId");
 
                     b.Property<double>("CuttingOutQuantity");
 
@@ -2805,7 +2807,7 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.HasKey("Identity");
 
-                    b.HasIndex("CuttingOutItemId");
+                    b.HasIndex("CutOutItemId");
 
                     b.ToTable("GarmentSampleCuttingOutDetails");
                 });
@@ -2821,11 +2823,11 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset>("CreatedDate");
 
+                    b.Property<Guid>("CutOutId");
+
                     b.Property<Guid>("CuttingInDetailId");
 
                     b.Property<Guid>("CuttingInId");
-
-                    b.Property<Guid>("CuttingOutId");
 
                     b.Property<bool?>("Deleted");
 
@@ -2860,7 +2862,7 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.HasKey("Identity");
 
-                    b.HasIndex("CuttingOutId");
+                    b.HasIndex("CutOutId");
 
                     b.ToTable("GarmentSampleCuttingOutItems");
                 });
@@ -3315,157 +3317,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasIndex("SampleRequestId");
 
                     b.ToTable("GarmentSampleRequestSpecifications");
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentSample.SampleSewingIns.ReadModels.GarmentSampleSewingInItemReadModel", b =>
-                {
-                    b.Property<Guid>("Identity")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<double>("BasicPrice");
-
-                    b.Property<string>("Color")
-                        .HasMaxLength(1000);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<Guid>("CuttingOutDetailId");
-
-                    b.Property<Guid>("CuttingOutItemId");
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("DesignColor")
-                        .HasMaxLength(2000);
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<double>("Price");
-
-                    b.Property<string>("ProductCode")
-                        .HasMaxLength(25);
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<string>("ProductName")
-                        .HasMaxLength(100);
-
-                    b.Property<double>("Quantity");
-
-                    b.Property<double>("RemainingQuantity");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<Guid>("SewingInId");
-
-                    b.Property<int>("SizeId");
-
-                    b.Property<string>("SizeName")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("UomId");
-
-                    b.Property<string>("UomUnit")
-                        .HasMaxLength(10);
-
-                    b.HasKey("Identity");
-
-                    b.HasIndex("SewingInId");
-
-                    b.ToTable("GarmentSampleSewingInItems");
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentSample.SampleSewingIns.ReadModels.GarmentSampleSewingInReadModel", b =>
-                {
-                    b.Property<Guid>("Identity")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Article")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("ComodityCode")
-                        .HasMaxLength(25);
-
-                    b.Property<int>("ComodityId");
-
-                    b.Property<string>("ComodityName")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<Guid>("CuttingOutId");
-
-                    b.Property<string>("CuttingOutNo")
-                        .HasMaxLength(25);
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<string>("RONo")
-                        .HasMaxLength(25);
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<string>("SewingFrom")
-                        .HasMaxLength(25);
-
-                    b.Property<DateTimeOffset>("SewingInDate");
-
-                    b.Property<string>("SewingInNo")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("UnitCode")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("UnitFromCode")
-                        .HasMaxLength(25);
-
-                    b.Property<int>("UnitFromId");
-
-                    b.Property<string>("UnitFromName")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("UnitId");
-
-                    b.Property<string>("UnitName")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Identity");
-
-                    b.HasIndex("SewingInNo")
-                        .IsUnique()
-                        .HasFilter("[Deleted]=(0)");
-
-                    b.ToTable("GarmentSampleSewingIns");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentScrapClassifications.ReadModels.GarmentScrapClassificationReadModel", b =>
@@ -5959,7 +5810,7 @@ namespace DanLiris.Admin.Web.Migrations
                 {
                     b.HasOne("Manufactures.Domain.GarmentSample.SampleCuttingOuts.ReadModels.GarmentSampleCuttingOutItemReadModel", "GarmentSampleCuttingOutItemIdentity")
                         .WithMany("GarmentSampleCuttingOutDetail")
-                        .HasForeignKey("CuttingOutItemId")
+                        .HasForeignKey("CutOutItemId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -5967,7 +5818,7 @@ namespace DanLiris.Admin.Web.Migrations
                 {
                     b.HasOne("Manufactures.Domain.GarmentSample.SampleCuttingOuts.ReadModels.GarmentSampleCuttingOutReadModel", "GarmentSampleCuttingOutIdentity")
                         .WithMany("GarmentSampleCuttingOutItem")
-                        .HasForeignKey("CuttingOutId")
+                        .HasForeignKey("CutOutId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -5992,14 +5843,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasOne("Manufactures.Domain.GarmentSample.SampleRequests.ReadModels.GarmentSampleRequestReadModel", "GarmentSampleRequest")
                         .WithMany("SampleSpecification")
                         .HasForeignKey("SampleRequestId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentSample.SampleSewingIns.ReadModels.GarmentSampleSewingInItemReadModel", b =>
-                {
-                    b.HasOne("Manufactures.Domain.GarmentSample.SampleSewingIns.ReadModels.GarmentSampleSewingInReadModel", "GarmentSampleSewingInIdentity")
-                        .WithMany("GarmentSampleSewingInItem")
-                        .HasForeignKey("SewingInId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
