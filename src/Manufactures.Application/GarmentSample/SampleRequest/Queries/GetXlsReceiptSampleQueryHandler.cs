@@ -1,22 +1,27 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Queries;
+using Infrastructure.External.DanLirisClient.Microservice;
 using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
+using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
+using Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonitoringReceiptSample;
 using Manufactures.Domain.GarmentSample.SampleRequests.Repositories;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
-using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.GarmentSectionResult;
-using Infrastructure.External.DanLirisClient.Microservice;
-using Newtonsoft.Json;
 using System.Threading;
+using System.Data;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
-namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonitoringReceiptSample
+namespace Manufactures.Application.GarmentSample.SampleRequest.Queries
 {
-    public class GetMonitoringReceiptSampleQueryHandler : IQueryHandler<GetMonitoringReceiptSampleQuery, GarmentMonitoringReceiptSampleViewModel>
+    public class GetXlsReceiptSampleQueryHandler : IQueryHandler<GetXlsReceiptSampleQuery, MemoryStream>
     {
         protected readonly IHttpClientService _http;
         private readonly IStorage _storage;
@@ -24,7 +29,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
         private readonly IGarmentSampleRequestRepository garmentSampleRequestRepository;
         private readonly IGarmentSampleRequestProductRepository garmentSampleRequestProductRepository;
 
-        public GetMonitoringReceiptSampleQueryHandler(IStorage storage, IServiceProvider serviceProvider)
+        public GetXlsReceiptSampleQueryHandler(IStorage storage, IServiceProvider serviceProvider)
         {
             _storage = storage;
             garmentSampleRequestProductRepository = storage.GetRepository<IGarmentSampleRequestProductRepository>();
@@ -77,7 +82,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
             public string garmentSectionName { get; set; }
             public DateTimeOffset sampleRequestDate { get; set; }
         }
-        public async Task<GarmentMonitoringReceiptSampleViewModel> Handle(GetMonitoringReceiptSampleQuery request, CancellationToken cancellationToken)
+        public async Task<MemoryStream> Handle(GetXlsReceiptSampleQuery request, CancellationToken cancellationToken)
         {
             DateTimeOffset receivedDateFrom = new DateTimeOffset(request.receivedDateFrom, new TimeSpan(7, 0, 0));
             DateTimeOffset receivedDateTo = new DateTimeOffset(request.receivedDateTo, new TimeSpan(7, 0, 0));
@@ -125,7 +130,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
             }
             _sectionId.Distinct();
             GarmentSectionResult garmentSectionResult = await GetSectionNameById(_sectionId, request.token);
-            
+
             GarmentMonitoringReceiptSampleViewModel sampleViewModel = new GarmentMonitoringReceiptSampleViewModel();
             List<GarmentMonitoringReceiptSampleDto> sampleDtosList = new List<GarmentMonitoringReceiptSampleDto>();
             foreach (var item in QuerySampleRequest)
@@ -150,8 +155,67 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
                 sampleDtosList.Add(receiptSampleDto);
             }
             sampleViewModel.garmentMonitorings = sampleDtosList;
-            return sampleViewModel;
+            var reportDataTable = new DataTable();
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No Surat Sample", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO Sample", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kategori Sample", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis Sample", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Article", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Color", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Size", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Keterangan Size", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Quantity", DataType = typeof(double) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl Shipment", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl Terima Surat Sample", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Md", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl Pembuatan Surat Sample", DataType = typeof(string) });
+            int counter = 5;
+
+            if (sampleViewModel.garmentMonitorings.Count > 0)
+            {
+                foreach (var report in sampleViewModel.garmentMonitorings)
+                {
+                    reportDataTable.Rows.Add(report.sampleRequestNo, report.roNoSample, report.sampleCategory, report.sampleType, report.buyer, report.style, report.color, report.sizeName, report.sizeDescription, report.quantity, report.sentDate.ToString("dd-MM-yyyy"),report.receivedDate.Value.ToString("dd-MM-yyyy") , report.garmentSectionName, report.sampleRequestDate.ToString("dd-MM-yyyy"));
+                    counter++;
+
+                }
+            }
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
+
+
+                worksheet.Cells["A" + 5 + ":N" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":N" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":N" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":N" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                worksheet.Row(1).Style.Font.Bold = true;
+                worksheet.Row(2).Style.Font.Bold = true;
+                worksheet.Row(5).Style.Font.Bold = true;
+
+                worksheet.Cells["A1"].Value = "Monitoring Penerimaan Sampel";
+                worksheet.Cells["A2"].Value = "Periode " + receivedDateFrom.ToString("dd-MM-yyyy") + " s/d " + receivedDateTo.ToString("dd-MM-yyyy");
+                worksheet.Cells["A3"].Value = "  ";
+                worksheet.Cells["A" + 1 + ":N" + 1 + ""].Merge = true;
+                worksheet.Cells["A" + 2 + ":N" + 2 + ""].Merge = true;
+                worksheet.Cells["A" + 3 + ":N" + 3 + ""].Merge = true;
+                worksheet.Cells["A" + 1 + ":N" + 3 + ""].Style.Font.Size = 15;
+                worksheet.Cells["A" + 1 + ":N" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["A" + 6 + ":I" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["K" + 6 + ":N" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["A" + 1 + ":N" + 5 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
+                worksheet.Cells["E" + 5 + ":N" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["A" + 5 + ":N" + counter + ""].AutoFitColumns();
+                var stream = new MemoryStream();
+
+                package.SaveAs(stream);
+
+                return stream;
+            }
+             
         }
-                
     }
 }
