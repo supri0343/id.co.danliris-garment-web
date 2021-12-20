@@ -31,6 +31,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             SizeName = sizeName;
             SizeDescription = sizeDescription;
             Quantity = quantity;
+            Index = index;
 
             ReadModel = new GarmentSampleRequestProductReadModel(Identity)
             {
@@ -40,7 +41,8 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 SizeId= SizeId.Value,
                 SizeName=SizeName,
                 SizeDescription=SizeDescription,
-                Quantity=Quantity
+                Quantity=Quantity,
+                Index=Index
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSampleRequestPlaced(Identity));
@@ -55,6 +57,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             SizeName = readModel.SizeName;
             SizeDescription = readModel.SizeDescription;
             Quantity = readModel.Quantity;
+            Index = readModel.Index;
         }
 
 
