@@ -84,9 +84,10 @@ namespace Manufactures.Controllers.Api.GarmentSample
                 }).ToList()
             }
             ).FirstOrDefault();
-
-            garmentSampleRequestDto.ImagesFile = await _azureImage.DownloadMultipleImages("GarmentSampleRequest", garmentSampleRequestDto.ImagesPath);
-
+            if (garmentSampleRequestDto.ImagesPath.Count > 0)
+            {
+                garmentSampleRequestDto.ImagesFile = await _azureImage.DownloadMultipleImages("GarmentSampleRequest", garmentSampleRequestDto.ImagesPath);
+            }
             if (garmentSampleRequestDto.DocumentsPath.Count > 0)
             {
                 garmentSampleRequestDto.DocumentsFile = await _azureDocument.DownloadMultipleFiles("GarmentSampleRequest", garmentSampleRequestDto.DocumentsPath);
