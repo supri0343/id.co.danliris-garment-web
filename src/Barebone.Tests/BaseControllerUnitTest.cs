@@ -31,8 +31,6 @@ namespace Barebone.Tests
             _MockServiceProvider.Setup(s => s.GetService(typeof(IStorage))).Returns(_MockStorage.Object);
             _MockServiceProvider.Setup(s => s.GetService(typeof(IWebApiContext))).Returns(new WorkContext());
             _MockServiceProvider.Setup(s => s.GetService(typeof(IMediator))).Returns(_MockMediator.Object);
-            _MockServiceProvider.Setup(s => s.GetService(typeof(IAzureImage))).Returns(_MockAzureImage.Object);
-            _MockServiceProvider.Setup(s => s.GetService(typeof(IAzureDocument))).Returns(_MockAzureDocument.Object);
 
         }
 
