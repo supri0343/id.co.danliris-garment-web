@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="GarmentSample\SamplePreparings\Queries\GetMonitoringPrepareSample\" />
     <Folder Include="GarmentScrapClassifications\Queries\" />
     <Folder Include="GarmentSubcon\GarmentServiceSubconSewings\" />
     <Folder Include="GarmentSubcon\GarmentServiceSubconSewings\CommandHandlers\" />
