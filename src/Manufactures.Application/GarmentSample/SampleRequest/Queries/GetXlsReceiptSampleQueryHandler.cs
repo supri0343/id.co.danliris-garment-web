@@ -52,11 +52,11 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries
                     Dictionary<string, object> keyValues = JsonConvert.DeserializeObject<Dictionary<string, object>>(a);
                     var b = keyValues.GetValueOrDefault("data").ToString();
 
-                    var garmentSection = JsonConvert.DeserializeObject<List<GarmentSectionViewModel>>(b);
+                    var garmentSection = JsonConvert.DeserializeObject<GarmentSectionViewModel>(b);
                     GarmentSectionViewModel garmentSectionViewModel = new GarmentSectionViewModel
                     {
-                        Id = garmentSection[0].Id,
-                        Name = garmentSection[0].Name
+                        Id = garmentSection.Id,
+                        Name = garmentSection.Name
                     };
                     sectionViewModels.Add(garmentSectionViewModel);
                 }
