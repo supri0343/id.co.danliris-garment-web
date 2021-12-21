@@ -40,10 +40,10 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.Commands
 
         public List<string> ImagesFile { get; set; }
         public List<string> DocumentsFile { get; set; }
-        public string ImagesPath { get; set; }
-        public string DocumentsPath { get; set; }
-        public string ImagesName { get; set; }
-        public string DocumentsFileName { get; set; }
+        public List<string> ImagesPath { get; set; }
+        public List<string> DocumentsPath { get; set; }
+        public List<string> ImagesName { get; set; }
+        public List<string> DocumentsFileName { get; set; }
         public SectionValueObject Section { get; set; }
         public List<GarmentSampleRequestProductValueObject> SampleProducts { get; set; }
         public List<GarmentSampleRequestSpecificationValueObject> SampleSpecifications { get; set; }

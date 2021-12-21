@@ -36,7 +36,7 @@ namespace Manufactures.Application.AzureUtility
             return filesPath[filesPath.Length - 1];
         }
 
-        public string GenerateFileName(int id, DateTime _createdUtc, int index)
+        public string GenerateFileName(Guid id, DateTime _createdUtc, int index)
         {
             return string.Format("FILE_{0}_{1}_{2}", id, index, TimeStamp.Generate(_createdUtc));
         }
@@ -51,14 +51,13 @@ namespace Manufactures.Application.AzureUtility
             return null;
         }
 
-        public async Task<List<string>> DownloadMultipleFiles(string moduleName, string filesPath)
+        public async Task<List<string>> DownloadMultipleFiles(string moduleName, List<string> filesPathList)
         {
-            if (filesPath != null)
+            if (filesPathList.Count > 0)
             {
                 List<Task<string>> downloadTasks = new List<Task<string>>();
-                if (filesPath != null)
+                if (filesPathList.Count > 0)
                 {
-                    List<string> filesPathList = JsonConvert.DeserializeObject<List<string>>(filesPath);
                     foreach (string filePath in filesPathList)
                     {
                         string fileName = GetFileNameFromPath(filePath);
@@ -100,7 +99,7 @@ namespace Manufactures.Application.AzureUtility
             return fileSrc;
         }
 
-        public async Task<string> UploadMultipleFile(string moduleName, int id, DateTime _createdUtc, List<string> filesBase64, string filesNameString, string beforeFilePaths)
+        public async Task<string> UploadMultipleFile(string moduleName, Guid id, DateTime _createdUtc, List<string> filesBase64, List<string> filesNameString, List<string> beforeFilePaths)
         {
             List<Task<string>> uploadTasks = new List<Task<string>>();
 
@@ -115,8 +114,7 @@ namespace Manufactures.Application.AzureUtility
 
             if (beforeFilePaths != null)
             {
-                List<string> beforePaths = JsonConvert.DeserializeObject<List<string>>(beforeFilePaths);
-                string filesPath = JsonConvert.SerializeObject(await RemoveLeftoverFile(moduleName, beforePaths, afterPaths.ToList()));
+                string filesPath = JsonConvert.SerializeObject(await RemoveLeftoverFile(moduleName, beforeFilePaths, afterPaths.ToList()));
                 return filesPath;
             }
 

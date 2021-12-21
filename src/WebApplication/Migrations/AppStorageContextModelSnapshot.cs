@@ -2751,6 +2751,205 @@ namespace DanLiris.Admin.Web.Migrations
                     b.ToTable("GarmentSampleCuttingIns");
                 });
 
+            modelBuilder.Entity("Manufactures.Domain.GarmentSample.SampleCuttingOuts.ReadModels.GarmentSampleCuttingOutDetailReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("BasicPrice");
+
+                    b.Property<string>("Color")
+                        .HasMaxLength(1000);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<Guid>("CuttingOutItemId");
+
+                    b.Property<double>("CuttingOutQuantity");
+
+                    b.Property<int>("CuttingOutUomId");
+
+                    b.Property<string>("CuttingOutUomUnit")
+                        .HasMaxLength(10);
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<double>("Price");
+
+                    b.Property<double>("RemainingQuantity");
+
+                    b.Property<string>("Remark");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<int>("SizeId");
+
+                    b.Property<string>("SizeName")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("CuttingOutItemId");
+
+                    b.ToTable("GarmentSampleCuttingOutDetails");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSample.SampleCuttingOuts.ReadModels.GarmentSampleCuttingOutItemReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<Guid>("CuttingInDetailId");
+
+                    b.Property<Guid>("CuttingInId");
+
+                    b.Property<Guid>("CuttingOutId");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<string>("DesignColor")
+                        .HasMaxLength(2000);
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<string>("ProductCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<string>("ProductName")
+                        .HasMaxLength(100);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<double>("TotalCuttingOut");
+
+                    b.Property<string>("UId");
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("CuttingOutId");
+
+                    b.ToTable("GarmentSampleCuttingOutItems");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSample.SampleCuttingOuts.ReadModels.GarmentSampleCuttingOutReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Article")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("ComodityCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("ComodityId");
+
+                    b.Property<string>("ComodityName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<string>("CutOutNo")
+                        .HasMaxLength(25);
+
+                    b.Property<DateTimeOffset>("CuttingOutDate");
+
+                    b.Property<string>("CuttingOutType")
+                        .HasMaxLength(25);
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<long>("EPOId");
+
+                    b.Property<long>("EPOItemId");
+
+                    b.Property<bool>("IsUsed");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<string>("POSerialNumber")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("RONo")
+                        .HasMaxLength(25);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("UId");
+
+                    b.Property<string>("UnitCode")
+                        .HasMaxLength(25);
+
+                    b.Property<string>("UnitFromCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("UnitFromId");
+
+                    b.Property<string>("UnitFromName")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("UnitId");
+
+                    b.Property<string>("UnitName")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("CutOutNo")
+                        .IsUnique()
+                        .HasFilter("[Deleted]=(0)");
+
+                    b.ToTable("GarmentSampleCuttingOuts");
+                });
+
             modelBuilder.Entity("Manufactures.Domain.GarmentSample.SamplePreparings.ReadModels.GarmentSamplePreparingItemReadModel", b =>
                 {
                     b.Property<Guid>("Identity")
@@ -3116,6 +3315,157 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasIndex("SampleRequestId");
 
                     b.ToTable("GarmentSampleRequestSpecifications");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSample.SampleSewingIns.ReadModels.GarmentSampleSewingInItemReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("BasicPrice");
+
+                    b.Property<string>("Color")
+                        .HasMaxLength(1000);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<Guid>("CuttingOutDetailId");
+
+                    b.Property<Guid>("CuttingOutItemId");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<string>("DesignColor")
+                        .HasMaxLength(2000);
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<double>("Price");
+
+                    b.Property<string>("ProductCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<string>("ProductName")
+                        .HasMaxLength(100);
+
+                    b.Property<double>("Quantity");
+
+                    b.Property<double>("RemainingQuantity");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<Guid>("SewingInId");
+
+                    b.Property<int>("SizeId");
+
+                    b.Property<string>("SizeName")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("UomId");
+
+                    b.Property<string>("UomUnit")
+                        .HasMaxLength(10);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("SewingInId");
+
+                    b.ToTable("GarmentSampleSewingInItems");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSample.SampleSewingIns.ReadModels.GarmentSampleSewingInReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Article")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("ComodityCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("ComodityId");
+
+                    b.Property<string>("ComodityName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<Guid>("CuttingOutId");
+
+                    b.Property<string>("CuttingOutNo")
+                        .HasMaxLength(25);
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<string>("RONo")
+                        .HasMaxLength(25);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("SewingFrom")
+                        .HasMaxLength(25);
+
+                    b.Property<DateTimeOffset>("SewingInDate");
+
+                    b.Property<string>("SewingInNo")
+                        .HasMaxLength(25);
+
+                    b.Property<string>("UnitCode")
+                        .HasMaxLength(25);
+
+                    b.Property<string>("UnitFromCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("UnitFromId");
+
+                    b.Property<string>("UnitFromName")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("UnitId");
+
+                    b.Property<string>("UnitName")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("SewingInNo")
+                        .IsUnique()
+                        .HasFilter("[Deleted]=(0)");
+
+                    b.ToTable("GarmentSampleSewingIns");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentScrapClassifications.ReadModels.GarmentScrapClassificationReadModel", b =>
@@ -5605,6 +5955,22 @@ namespace DanLiris.Admin.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Manufactures.Domain.GarmentSample.SampleCuttingOuts.ReadModels.GarmentSampleCuttingOutDetailReadModel", b =>
+                {
+                    b.HasOne("Manufactures.Domain.GarmentSample.SampleCuttingOuts.ReadModels.GarmentSampleCuttingOutItemReadModel", "GarmentSampleCuttingOutItemIdentity")
+                        .WithMany("GarmentSampleCuttingOutDetail")
+                        .HasForeignKey("CuttingOutItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSample.SampleCuttingOuts.ReadModels.GarmentSampleCuttingOutItemReadModel", b =>
+                {
+                    b.HasOne("Manufactures.Domain.GarmentSample.SampleCuttingOuts.ReadModels.GarmentSampleCuttingOutReadModel", "GarmentSampleCuttingOutIdentity")
+                        .WithMany("GarmentSampleCuttingOutItem")
+                        .HasForeignKey("CuttingOutId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Manufactures.Domain.GarmentSample.SamplePreparings.ReadModels.GarmentSamplePreparingItemReadModel", b =>
                 {
                     b.HasOne("Manufactures.Domain.GarmentSample.SamplePreparings.ReadModels.GarmentSamplePreparingReadModel", "GarmentSamplePreparingIdentity")
@@ -5626,6 +5992,14 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasOne("Manufactures.Domain.GarmentSample.SampleRequests.ReadModels.GarmentSampleRequestReadModel", "GarmentSampleRequest")
                         .WithMany("SampleSpecification")
                         .HasForeignKey("SampleRequestId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSample.SampleSewingIns.ReadModels.GarmentSampleSewingInItemReadModel", b =>
+                {
+                    b.HasOne("Manufactures.Domain.GarmentSample.SampleSewingIns.ReadModels.GarmentSampleSewingInReadModel", "GarmentSampleSewingInIdentity")
+                        .WithMany("GarmentSampleSewingInItem")
+                        .HasForeignKey("SewingInId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
