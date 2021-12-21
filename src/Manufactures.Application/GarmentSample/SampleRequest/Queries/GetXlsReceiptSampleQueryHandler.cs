@@ -48,15 +48,15 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries
 
                 if (httpResponse.IsSuccessStatusCode)
                 {
-                    var a = await httpResponse.Content.ReadAsStringAsync();
+                    var a = httpResponse.Content.ReadAsStringAsync().Result;
                     Dictionary<string, object> keyValues = JsonConvert.DeserializeObject<Dictionary<string, object>>(a);
-                    var b = keyValues.GetValueOrDefault("data");
+                    var b = keyValues.GetValueOrDefault("data").ToString();
 
-                    var garmentSection = JsonConvert.DeserializeObject<GarmentSectionViewModel>(keyValues.GetValueOrDefault("data").ToString());
+                    var garmentSection = JsonConvert.DeserializeObject<List<GarmentSectionViewModel>>(b);
                     GarmentSectionViewModel garmentSectionViewModel = new GarmentSectionViewModel
                     {
-                        Id = garmentSection.Id,
-                        Name = garmentSection.Name
+                        Id = garmentSection[0].Id,
+                        Name = garmentSection[0].Name
                     };
                     sectionViewModels.Add(garmentSectionViewModel);
                 }

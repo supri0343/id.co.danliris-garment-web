@@ -20,7 +20,7 @@ using Xunit;
 
 namespace Manufactures.Tests.Queries.GarmentSamplePreparing
 {
-    public class MonitoringSamplePrepareCommandHandlerTest : BaseCommandUnitTest
+    public class MonitoringReceiptSampleCommandHandlerTest : BaseCommandUnitTest
     {
         private readonly Mock<IGarmentSamplePreparingRepository> _mockGarmentPreparingRepository;
         private readonly Mock<IGarmentSamplePreparingItemRepository> _mockGarmentPreparingItemRepository;
@@ -30,7 +30,7 @@ namespace Manufactures.Tests.Queries.GarmentSamplePreparing
         protected readonly Mock<IHttpClientService> _mockhttpService;
         private Mock<IServiceProvider> serviceProviderMock;
 
-        public MonitoringSamplePrepareCommandHandlerTest()
+        public MonitoringReceiptSampleCommandHandlerTest()
         {
             _mockGarmentPreparingRepository = CreateMock<IGarmentSamplePreparingRepository>();
             _mockGarmentPreparingItemRepository = CreateMock<IGarmentSamplePreparingItemRepository>();

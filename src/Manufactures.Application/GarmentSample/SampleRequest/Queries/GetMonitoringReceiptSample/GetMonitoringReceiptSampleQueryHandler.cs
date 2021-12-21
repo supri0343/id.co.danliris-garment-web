@@ -38,16 +38,16 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
             GarmentSectionResult sectionResult = new GarmentSectionResult();
             foreach (var item in id.Distinct())
             {
-                var uri = MasterDataSettings.Endpoint + $"master/garment-sections/{item}";
-                var httpResponse = await _http.GetAsync(uri, token);
+                var uri =  MasterDataSettings.Endpoint + $"master/garment-sections/{item}";
+                var httpResponse =  await _http.GetAsync(uri, token);
 
                 if (httpResponse.IsSuccessStatusCode)
                 {
-                    var a = await httpResponse.Content.ReadAsStringAsync();
+                    var a = httpResponse.Content.ReadAsStringAsync().Result;
                     Dictionary<string, object> keyValues = JsonConvert.DeserializeObject<Dictionary<string, object>>(a);
-                    var b = keyValues.GetValueOrDefault("data");
+                    var b = keyValues.GetValueOrDefault("data").ToString();
 
-                    var garmentSection = JsonConvert.DeserializeObject<GarmentSectionViewModel>(keyValues.GetValueOrDefault("data").ToString());
+                    var garmentSection = JsonConvert.DeserializeObject<GarmentSectionViewModel>(b);
                     GarmentSectionViewModel garmentSectionViewModel = new GarmentSectionViewModel
                     {
                         Id = garmentSection.Id,
