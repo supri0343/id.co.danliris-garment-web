@@ -79,8 +79,10 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
         }
         public async Task<GarmentMonitoringReceiptSampleViewModel> Handle(GetMonitoringReceiptSampleQuery request, CancellationToken cancellationToken)
         {
-            DateTimeOffset receivedDateFrom = new DateTimeOffset(request.receivedDateFrom, new TimeSpan(7, 0, 0));
-            DateTimeOffset receivedDateTo = new DateTimeOffset(request.receivedDateTo, new TimeSpan(7, 0, 0));
+            DateTimeOffset receivedDateFrom = new DateTimeOffset(request.receivedDateFrom);
+            receivedDateFrom.AddHours(7);
+            DateTimeOffset receivedDateTo = new DateTimeOffset(request.receivedDateTo);
+            receivedDateTo = receivedDateTo.AddHours(7);
 
             var QuerySampleRequest = from a in (from aa in garmentSampleRequestRepository.Query
                                                 where aa.ReceivedDate >= receivedDateFrom && aa.ReceivedDate <= receivedDateTo
