@@ -8,6 +8,7 @@ using Manufactures.Domain.GarmentSample.SampleCuttingIns.Repositories;
 using Manufactures.Domain.GarmentSample.SamplePreparings;
 using Manufactures.Domain.GarmentSample.SamplePreparings.ReadModels;
 using Manufactures.Domain.GarmentSample.SamplePreparings.Repositories;
+using Manufactures.Domain.Shared.ValueObjects;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -80,7 +81,7 @@ namespace Manufactures.Tests.Queries.GarmentSamplePreparing
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSamplePreparingReadModel>
                 {
-                    new Domain.GarmentSample.SamplePreparings.GarmentSamplePreparing(guidPrepare,1,"",new Domain.GarmentSample.SamplePreparings.ValueObjects.UnitDepartmentId(1),"","",DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),"roNo","",true,new Domain.Shared.ValueObjects.BuyerId(1), null,null).GetReadModel()
+                    new Domain.GarmentSample.SamplePreparings.GarmentSamplePreparing(guidPrepare,1,"",new Domain.GarmentSample.SamplePreparings.ValueObjects.UnitDepartmentId(1),"","",DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified),"roNo","",true,new BuyerId(1), null,null).GetReadModel()
                 }.AsQueryable());
 
             _mockGarmentCuttingInItemRepository
