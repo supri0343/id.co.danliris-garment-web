@@ -2,6 +2,7 @@
 using Manufactures.Domain.Events.GarmentSample;
 using Manufactures.Domain.GarmentSample.SampleRequests.ReadModels;
 using Manufactures.Domain.Shared.ValueObjects;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -356,6 +357,42 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             {
                 this.IsRevised = IsRevised;
                 ReadModel.IsRevised = IsRevised;
+            }
+        }
+
+        public void SetImagesPath(string ImagesPath)
+        {
+            if (this.ImagesPath != ImagesPath)
+            {
+                this.ImagesPath = ImagesPath;
+                ReadModel.ImagesPath = ImagesPath;
+            }
+        }
+
+        public void SetDocumentsPath(string DocumentsPath)
+        {
+            if (this.DocumentsPath != DocumentsPath)
+            {
+                this.DocumentsPath = DocumentsPath;
+                ReadModel.DocumentsPath = DocumentsPath;
+            }
+        }
+
+        public void SetImagesName(List<string> ImagesName)
+        {
+            if (ImagesName.Count > 0)
+            {
+                this.ImagesName = JsonConvert.SerializeObject(ImagesName);
+                ReadModel.ImagesName = JsonConvert.SerializeObject(ImagesName);
+            }
+        }
+
+        public void SetDocumentsFileName(List<string> DocumentsFileName)
+        {
+            if (DocumentsFileName.Count > 0)
+            {
+                this.DocumentsFileName = JsonConvert.SerializeObject(DocumentsFileName);
+                ReadModel.DocumentsFileName = JsonConvert.SerializeObject(DocumentsFileName);
             }
         }
 

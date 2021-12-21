@@ -1,4 +1,6 @@
 ﻿using Barebone.Tests;
+using FluentAssertions;
+using Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMonitoringPrepareSample;
 using Manufactures.Controllers.Api.GarmentSample;
 using Manufactures.Domain.GarmentSample.SamplePreparings;
 using Manufactures.Domain.GarmentSample.SamplePreparings.Commands;
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -209,6 +212,38 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+        [Fact]
+        public async Task GetMonitoringBehavior()
+        {
+            var unitUnderTest = CreateGarmentSamplePreparingController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetMonitoringSamplePrepareQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentMonitoringSamplePrepareViewModel());
+
+            // Act
+            var result = await unitUnderTest.GetMonitoring(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task GetXLSPrepareBehavior()
+        {
+            var unitUnderTest = CreateGarmentSamplePreparingController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsSamplePrepareQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
+
+            // Act
+
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+
+            // Assert
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
         }
     }
 }
