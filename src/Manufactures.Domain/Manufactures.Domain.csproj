@@ -24,6 +24,7 @@
   <ItemGroup>
     <Folder Include="GarmentSample\SampleSewingIns\Commands\" />
     <Folder Include="GarmentSample\SampleSewingIns\ValueObjects\" />
+    <Folder Include="GarmentSample\SampleSewingOuts\ValueObjects\" />
     <Folder Include="GarmentSubcon\ServiceSubconSewings\Commands\" />
   </ItemGroup>
 
