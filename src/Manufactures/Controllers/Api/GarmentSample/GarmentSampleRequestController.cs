@@ -264,6 +264,8 @@ namespace Manufactures.Controllers.Api.GarmentSample
             var order = await Mediator.Send(command);
 
             return Ok();
+        }
+
         [HttpGet("monitoring")]
         public async Task<IActionResult> GetMonitoring( DateTime receivedDateFrom, DateTime receivedDateTo, int page = 1, int size = 25, string Order = "{}")
         {
@@ -278,6 +280,7 @@ namespace Manufactures.Controllers.Api.GarmentSample
                 viewModel.count
             });
         }
+
         [HttpGet("download")]
         public async Task<IActionResult> GetXls(int unit, DateTime receivedDateFrom, DateTime receivedDateTo, string type, int page = 1, int size = 25, string Order = "{}")
         {
