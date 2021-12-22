@@ -91,6 +91,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries
 
             var QuerySampleRequest = from a in (from aa in garmentSampleRequestRepository.Query
                                                 where aa.ReceivedDate >= receivedDateFrom && aa.ReceivedDate <= receivedDateTo
+                                                && aa.IsReceived == true && aa.IsRejected == false && aa.IsRevised == false
                                                 select new
                                                 {
                                                     aa.Identity,
@@ -135,7 +136,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries
 
             GarmentMonitoringReceiptSampleViewModel sampleViewModel = new GarmentMonitoringReceiptSampleViewModel();
             List<GarmentMonitoringReceiptSampleDto> sampleDtosList = new List<GarmentMonitoringReceiptSampleDto>();
-            foreach (var item in QuerySampleRequest)
+            foreach (var item in QuerySampleRequest.OrderByDescending(s=>s.ReceivedDate).OrderByDescending(s=>s.RoNoSample))
             {
                 GarmentMonitoringReceiptSampleDto receiptSampleDto = new GarmentMonitoringReceiptSampleDto()
                 {
