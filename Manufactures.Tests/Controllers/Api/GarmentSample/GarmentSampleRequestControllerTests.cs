@@ -88,7 +88,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 {
                     new GarmentSampleRequest(SampleRequestGuid, null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null,
                     null,new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false,DateTimeOffset.Now,
-                    null,false, DateTimeOffset.Now,null,false,null,null,null,null,null,null, new SectionId(1),null)
+                    null,false, DateTimeOffset.Now,null,null,false, DateTimeOffset.Now, null,null,null,null,null,null, new SectionId(1),null)
                 });
 
             var result = await unitUnderTest.Get();
@@ -97,49 +97,49 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
 
-       /* [Fact]
-        public async Task GetSingle_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            var unitUnderTest = CreateGarmentSampleRequestController();
+        /* [Fact]
+         public async Task GetSingle_StateUnderTest_ExpectedBehavior()
+         {
+             // Arrange
+             var unitUnderTest = CreateGarmentSampleRequestController();
 
-            _mockGarmentSampleRequestRepository
-                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestReadModel, bool>>>()))
-                .Returns(new List<GarmentSampleRequest>()
-                {
-                    new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,
-                    new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false, DateTimeOffset.Now,
-                    null,false, DateTimeOffset.Now,null,false,null,"[]","[]",null,null,null, new SectionId(1),null)
-                });
+             _mockGarmentSampleRequestRepository
+                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestReadModel, bool>>>()))
+                 .Returns(new List<GarmentSampleRequest>()
+                 {
+                     new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,
+                     new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false, DateTimeOffset.Now,
+                     null,false, DateTimeOffset.Now,null,false,null,"[]","[]",null,null,null, new SectionId(1),null)
+                 });
 
-            _mockGarmentSampleRequestProductRepository
-                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestProductReadModel, bool>>>()))
-                .Returns(new List<GarmentSampleRequestProduct>()
-                {
-                    new GarmentSampleRequestProduct(Guid.NewGuid(), Guid.NewGuid(),null,null,new SizeId(1),null,null,1,1)
-                });
+             _mockGarmentSampleRequestProductRepository
+                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestProductReadModel, bool>>>()))
+                 .Returns(new List<GarmentSampleRequestProduct>()
+                 {
+                     new GarmentSampleRequestProduct(Guid.NewGuid(), Guid.NewGuid(),null,null,new SizeId(1),null,null,1,1)
+                 });
 
-            _mockGarmentSampleRequestSpecificationRepository
-                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestSpecificationReadModel, bool>>>()))
-                .Returns(new List<GarmentSampleRequestSpecification>()
-                {
-                    new GarmentSampleRequestSpecification(Guid.NewGuid(), Guid.NewGuid(),null,null,1,null,new UomId(1),null,1)
-                });
+             _mockGarmentSampleRequestSpecificationRepository
+                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleRequestSpecificationReadModel, bool>>>()))
+                 .Returns(new List<GarmentSampleRequestSpecification>()
+                 {
+                     new GarmentSampleRequestSpecification(Guid.NewGuid(), Guid.NewGuid(),null,null,1,null,new UomId(1),null,1)
+                 });
 
-            _AzureImage
-                .Setup(s => s.DownloadMultipleImages(It.IsAny<string>(), It.IsAny<List<string>>()))
-                .ReturnsAsync(null);
+             _AzureImage
+                 .Setup(s => s.DownloadMultipleImages(It.IsAny<string>(), It.IsAny<List<string>>()))
+                 .ReturnsAsync(null);
 
-            _AzureDocument
-                .Setup(s => s.DownloadMultipleFiles(It.IsAny<string>(), It.IsAny<List<string>>()))
-                .ReturnsAsync(null);
+             _AzureDocument
+                 .Setup(s => s.DownloadMultipleFiles(It.IsAny<string>(), It.IsAny<List<string>>()))
+                 .ReturnsAsync(null);
 
-            // Act
-            var result = await unitUnderTest.Get(Guid.NewGuid().ToString());
+             // Act
+             var result = await unitUnderTest.Get(Guid.NewGuid().ToString());
 
-            // Assert
-            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }*/
+             // Assert
+             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+         }*/
 
         [Fact]
         public async Task Post_StateUnderTest_ExpectedBehavior()
@@ -151,7 +151,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentSampleRequestCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null,
                 null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false, DateTimeOffset.Now,
-                null, false, DateTimeOffset.Now, null, false, null, null, null, null, null, null, new SectionId(1), null));
+                null, false, DateTimeOffset.Now, null, null, false, DateTimeOffset.Now, null, null, null, null, null, null, new SectionId(1), null));
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentSampleRequestCommand>());
@@ -184,7 +184,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentSampleRequestCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null,
                 null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false, DateTimeOffset.Now,
-                null, false, DateTimeOffset.Now, null, false, null, null, null, null, null, null, new SectionId(1), null));
+                null, false, DateTimeOffset.Now, null, null, false, DateTimeOffset.Now, null, null, null, null, null, null, new SectionId(1), null));
 
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentSampleRequestCommand());
@@ -204,7 +204,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentSampleRequestCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,
                 new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false, DateTimeOffset.Now,
-                null, false, DateTimeOffset.Now, null, false, null, null, null, null, null, null, new SectionId(1), null));
+                null, false, DateTimeOffset.Now, null, null, false, DateTimeOffset.Now, null, null, null, null, null, null, new SectionId(1), null));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
@@ -235,7 +235,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 {
                     new GarmentSampleRequest(SampleRequestGuid, null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null, null,
                     new GarmentComodityId(1),null,null,null,null, DateTimeOffset.Now,null,null,null,false,false,DateTimeOffset.Now,
-                    null,false, DateTimeOffset.Now,null,false,null,null,null,null,null,null, new SectionId(1),null)
+                    null,false, DateTimeOffset.Now,null,null, false, DateTimeOffset.Now,null,null,null,null,null,null, new SectionId(1),null)
                 });
 
             _mockGarmentSampleRequestProductRepository
@@ -310,7 +310,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Send(It.IsAny<ReceivedGarmentSampleRequestCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GarmentSampleRequest(Guid.NewGuid(), null, null, null, null, DateTimeOffset.Now, new BuyerId(1), null,
                 null, new GarmentComodityId(1), null, null, null, null, DateTimeOffset.Now, null, null, null, false, false,
-                DateTimeOffset.Now, null, false, DateTimeOffset.Now, null, false, null, null, null, null, null, null, new SectionId(1), null));
+                DateTimeOffset.Now, null, false, DateTimeOffset.Now, null, null, false, DateTimeOffset.Now, null, null, null, null, null, null, new SectionId(1), null));
 
             // Act
             var result = await unitUnderTest.receivedData(Guid.NewGuid().ToString(), new ReceivedGarmentSampleRequestCommand());
@@ -330,7 +330,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Returns(new List<GarmentSampleRequest>()
                 {
                     new GarmentSampleRequest(Guid.NewGuid(), "","","", "", DateTimeOffset.Now, new BuyerId(1), "", "", new GarmentComodityId(1), "","","","", DateTimeOffset.Now, "","","",
-                    false, false, DateTimeOffset.Now, "",false, DateTimeOffset.Now,null,false,null,null,null,null,null,null, new SectionId(1),null)
+                    false, false, DateTimeOffset.Now, "",false, DateTimeOffset.Now,null,null,false, DateTimeOffset.Now,null,null,null,null,null,null, new SectionId(1),null)
                 });
 
             Guid sampleRequestProductGuid = Guid.NewGuid();

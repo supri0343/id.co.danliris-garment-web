@@ -227,5 +227,41 @@ namespace Manufactures.Controllers.Api.GarmentSample
                 FileDownloadName = $"{garmentSampleRequestDto.SampleRequestNo}.pdf"
             };
         }
+
+        [HttpPut("rejected/{id}")]
+        public async Task<IActionResult> rejectedData(string id, [FromBody] RejectGarmentSampleRequestCommand command)
+        {
+            Guid guid = Guid.Parse(id);
+
+            command.SetIdentity(guid);
+
+            VerifyUser();
+
+            var username = WorkContext.UserName;
+            command.RejectedDate = DateTimeOffset.Now;
+            command.RejectedBy = username;
+
+            var order = await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpPut("revised/{id}")]
+        public async Task<IActionResult> revisedData(string id, [FromBody] RevisedGarmentSampleRequestCommand command)
+        {
+            Guid guid = Guid.Parse(id);
+
+            command.SetIdentity(guid);
+
+            VerifyUser();
+
+            var username = WorkContext.UserName;
+            command.RevisedDate = DateTimeOffset.Now;
+            command.RevisedBy = username;
+
+            var order = await Mediator.Send(command);
+
+            return Ok();
+        }
     }
 }
