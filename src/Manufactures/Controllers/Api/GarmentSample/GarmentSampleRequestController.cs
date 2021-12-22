@@ -1,5 +1,6 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonitoringReceiptSample;
 using Manufactures.Application.AzureUtility;
 using Manufactures.Domain.GarmentSample.SampleRequests.Commands;
 using Manufactures.Domain.GarmentSample.SampleRequests.Repositories;
@@ -11,6 +12,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -262,6 +264,46 @@ namespace Manufactures.Controllers.Api.GarmentSample
             var order = await Mediator.Send(command);
 
             return Ok();
+        [HttpGet("monitoring")]
+        public async Task<IActionResult> GetMonitoring( DateTime receivedDateFrom, DateTime receivedDateTo, int page = 1, int size = 25, string Order = "{}")
+        {
+            VerifyUser();
+            GetMonitoringReceiptSampleQuery query = new GetMonitoringReceiptSampleQuery(page, size, Order, receivedDateFrom, receivedDateTo, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.garmentMonitorings, info: new
+            {
+                page,
+                size,
+                viewModel.count
+            });
+        }
+        [HttpGet("download")]
+        public async Task<IActionResult> GetXls(int unit, DateTime receivedDateFrom, DateTime receivedDateTo, string type, int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsReceiptSampleQuery query = new GetXlsReceiptSampleQuery(page, size, Order, receivedDateFrom, receivedDateTo, WorkContext.Token);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = "Laporan Penerimaan Sample";
+
+                if (receivedDateFrom != null) filename += " " + ((DateTime)receivedDateFrom).ToString("dd-MM-yyyy");
+
+                if (receivedDateTo != null) filename += "_" + ((DateTime)receivedDateTo).ToString("dd-MM-yyyy");
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
         }
     }
 }

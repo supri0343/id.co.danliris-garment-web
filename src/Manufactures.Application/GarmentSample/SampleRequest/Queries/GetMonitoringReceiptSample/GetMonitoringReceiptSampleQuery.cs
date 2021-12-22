@@ -14,7 +14,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
         public DateTime receivedDateFrom { get; private set; }
         public DateTime receivedDateTo { get; private set; }
 
-        public GetMonitoringReceiptSampleQuery(int page, int size, string order, int unit, DateTime receivedDateFrom, DateTime receivedDateTo, string token)
+        public GetMonitoringReceiptSampleQuery(int page, int size, string order,  DateTime receivedDateFrom, DateTime receivedDateTo, string token)
         {
             this.page = page;
             this.size = size;
