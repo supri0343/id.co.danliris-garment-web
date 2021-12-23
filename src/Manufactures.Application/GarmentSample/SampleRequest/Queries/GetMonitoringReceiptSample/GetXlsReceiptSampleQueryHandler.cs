@@ -173,7 +173,6 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Md", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl Pembuatan Surat Sample", DataType = typeof(string) });
             int counter = 5;
-
             if (sampleViewModel.garmentMonitorings.Count > 0)
             {
                 foreach (var report in sampleViewModel.garmentMonitorings)
