@@ -3,23 +3,22 @@ using Infrastructure.Domain.Queries;
 using Infrastructure.External.DanLirisClient.Microservice;
 using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
-using Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonitoringReceiptSample;
 using Manufactures.Domain.GarmentSample.SampleRequests.Repositories;
 using Newtonsoft.Json;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.GarmentSectionResult;
-using System.Threading;
-using System.Data;
-using OfficeOpenXml;
-using OfficeOpenXml.Style;
 
-namespace Manufactures.Application.GarmentSample.SampleRequest.Queries
+namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonitoringReceiptSample
 {
     public class GetXlsReceiptSampleQueryHandler : IQueryHandler<GetXlsReceiptSampleQuery, MemoryStream>
     {
@@ -136,7 +135,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries
 
             GarmentMonitoringReceiptSampleViewModel sampleViewModel = new GarmentMonitoringReceiptSampleViewModel();
             List<GarmentMonitoringReceiptSampleDto> sampleDtosList = new List<GarmentMonitoringReceiptSampleDto>();
-            foreach (var item in QuerySampleRequest.OrderByDescending(s=>s.ReceivedDate).OrderByDescending(s=>s.RoNoSample))
+            foreach (var item in QuerySampleRequest.OrderByDescending(s => s.ReceivedDate).OrderByDescending(s => s.RoNoSample))
             {
                 GarmentMonitoringReceiptSampleDto receiptSampleDto = new GarmentMonitoringReceiptSampleDto()
                 {
@@ -179,7 +178,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries
             {
                 foreach (var report in sampleViewModel.garmentMonitorings)
                 {
-                    reportDataTable.Rows.Add(report.sampleRequestNo, report.roNoSample, report.sampleCategory, report.sampleType, report.buyer, report.style, report.color, report.sizeName, report.sizeDescription, report.quantity, report.sentDate.ToString("dd-MM-yyyy"),report.receivedDate.Value.ToString("dd-MM-yyyy") , report.garmentSectionName, report.sampleRequestDate.ToString("dd-MM-yyyy"));
+                    reportDataTable.Rows.Add(report.sampleRequestNo, report.roNoSample, report.sampleCategory, report.sampleType, report.buyer, report.style, report.color, report.sizeName, report.sizeDescription, report.quantity, report.sentDate.AddHours(7).ToString("dd-MM-yyyy"), report.receivedDate.Value.ToString("dd-MM-yyyy"), report.garmentSectionName, report.sampleRequestDate.AddHours(7).ToString("dd-MM-yyyy"));
                     counter++;
 
                 }
@@ -218,7 +217,6 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries
 
                 return stream;
             }
-             
         }
     }
 }
