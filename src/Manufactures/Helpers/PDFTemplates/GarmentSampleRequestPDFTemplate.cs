@@ -35,7 +35,7 @@ namespace Manufactures.Helpers.PDFTemplates
 
             string titleCaption;
 
-            if (garmentSampleRequest.IsReceived && garmentSampleRequest.IsRevised)
+            if (garmentSampleRequest.IsReceived)
             {
                 titleCaption = "SURAT PERMINTAAN PEMBUATAN SAMPLE MARKETING";
             } else
