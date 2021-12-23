@@ -1,5 +1,6 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
+using Manufactures.Application.AzureUtility;
 using Manufactures.Domain.GarmentSample.SampleRequests;
 using Manufactures.Domain.GarmentSample.SampleRequests.Commands;
 using Manufactures.Domain.GarmentSample.SampleRequests.Repositories;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
 {
@@ -19,19 +21,25 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
         private readonly IGarmentSampleRequestRepository _GarmentSampleRequestRepository;
         private readonly IGarmentSampleRequestProductRepository _GarmentSampleRequestProductRepository;
         private readonly IGarmentSampleRequestSpecificationRepository _garmentSampleRequestSpecificationRepository;
+        private readonly IAzureImage _azureImage;
+        private readonly IAzureDocument _azureDocument;
 
-        public UpdateGarmentSampleRequestCommandHandler(IStorage storage)
+        public UpdateGarmentSampleRequestCommandHandler(IStorage storage, IServiceProvider serviceProvider)
         {
             _storage = storage;
             _GarmentSampleRequestRepository = storage.GetRepository<IGarmentSampleRequestRepository>();
             _GarmentSampleRequestProductRepository = storage.GetRepository<IGarmentSampleRequestProductRepository>();
             _garmentSampleRequestSpecificationRepository = storage.GetRepository<IGarmentSampleRequestSpecificationRepository>();
+            _azureImage = serviceProvider.GetService<IAzureImage>();
+            _azureDocument = serviceProvider.GetService<IAzureDocument>();
         }
 
         public async Task<GarmentSampleRequest> Handle(UpdateGarmentSampleRequestCommand request, CancellationToken cancellationToken)
         {
             var SampleRequest = _GarmentSampleRequestRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentSampleRequest(o)).Single();
 
+            await _azureImage.RemoveMultipleImage("GarmentSampleRequest", SampleRequest.ImagesPath);
+            await _azureDocument.RemoveMultipleFile("GarmentSampleRequest", SampleRequest.DocumentsPath);
 
             _GarmentSampleRequestProductRepository.Find(o => o.SampleRequestId == SampleRequest.Identity).ForEach(async product =>
             {
@@ -68,7 +76,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                         new SizeId(product.Size.Id),
                         product.Size.Size,
                         product.SizeDescription,
-                        product.Quantity
+                        product.Quantity,
+                        product.Index
                     );
 
                     await _GarmentSampleRequestProductRepository.Update(GarmentSampleRequestProduct);
@@ -109,7 +118,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                         specification.Quantity,
                         specification.Remark,
                         new UomId(specification.Uom.Id),
-                        specification.Uom.Unit
+                        specification.Uom.Unit,
+                        specification.Index
                     );
 
                     await _garmentSampleRequestSpecificationRepository.Update(GarmentSampleRequestSpecification);
@@ -131,6 +141,12 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
             SampleRequest.SetPOBuyer(request.POBuyer);
             SampleRequest.SetRONoCC(request.RONoCC);
             SampleRequest.SetAttached(request.Attached);
+            SampleRequest.SetSectionCode(request.Section.Code);
+            SampleRequest.SetSectionId(new SectionId(request.Section.Id));
+            SampleRequest.SetImagesName(request.ImagesName);
+            SampleRequest.SetDocumentsFileName(request.DocumentsFileName);
+            SampleRequest.SetImagesPath(await _azureImage.UploadMultipleImage("GarmentSampleRequest", SampleRequest.Identity, DateTime.UtcNow, request.ImagesFile, request.ImagesPath));
+            SampleRequest.SetDocumentsPath(await _azureDocument.UploadMultipleFile("GarmentSampleRequest", SampleRequest.Identity, DateTime.UtcNow, request.DocumentsFile, request.DocumentsFileName, request.DocumentsPath));
 
             SampleRequest.Modify();
 

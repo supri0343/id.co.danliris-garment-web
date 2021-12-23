@@ -29,6 +29,22 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.Commands
         public string Remark { get; set; }
         public bool IsPosted { get; set; }
         public bool IsReceived { get; set; }
+
+        public bool IsRejected { get; set; }
+        public DateTimeOffset? RejectedDate { get; set; }
+        public string RejectedBy { get; set; }
+
+        public bool IsRevised { get; set; }
+        public string RevisedBy { get; set; }
+        public string RevisedReason { get; set; }
+
+        public List<string> ImagesFile { get; set; }
+        public List<string> DocumentsFile { get; set; }
+        public List<string> ImagesPath { get; set; }
+        public List<string> DocumentsPath { get; set; }
+        public List<string> ImagesName { get; set; }
+        public List<string> DocumentsFileName { get; set; }
+        public SectionValueObject Section { get; set; }
         public List<GarmentSampleRequestProductValueObject> SampleProducts { get; set; }
         public List<GarmentSampleRequestSpecificationValueObject> SampleSpecifications { get; set; }
         public void SetIdentity(Guid id)
@@ -45,6 +61,9 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.Commands
 
             RuleFor(r => r.Buyer).NotNull();
             RuleFor(r => r.Buyer.Id).NotEmpty().OverridePropertyName("Buyer").When(w => w.Buyer != null);
+
+            RuleFor(r => r.Section).NotNull();
+            RuleFor(r => r.Section.Id).NotEmpty().OverridePropertyName("Section").When(w => w.Section != null);
 
             RuleFor(r => r.SampleType).NotNull();
             RuleFor(r => r.RONoCC).NotNull().When(s => s.SampleCategory == "Commercial Sample");

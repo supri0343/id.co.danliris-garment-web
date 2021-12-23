@@ -10,6 +10,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.ReadModels
         public GarmentSampleRequestProductReadModel(Guid identity) : base(identity)
         {
         }
+        public int Index { get; internal set; }
         public Guid SampleRequestId { get; internal set; }
         public string Style { get; internal set; }
         public string Color { get; internal set; }

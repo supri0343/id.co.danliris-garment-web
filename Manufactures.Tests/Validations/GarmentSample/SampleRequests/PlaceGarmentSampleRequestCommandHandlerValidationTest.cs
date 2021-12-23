@@ -63,6 +63,12 @@ namespace Manufactures.Tests.Validations.GarmentSample.SampleRequests
                 SampleRequestNo="aa",
                 SampleType="aa",
                 SentDate=DateTimeOffset.Now,
+                Section= new SectionValueObject
+                {
+
+                    Code = "test",
+                    Id = 1,
+                },
                 SampleProducts = new List<GarmentSampleRequestProductValueObject>()
                 {
                     new GarmentSampleRequestProductValueObject

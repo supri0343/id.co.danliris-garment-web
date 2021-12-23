@@ -2,6 +2,7 @@
 using Manufactures.Domain.Events.GarmentSample;
 using Manufactures.Domain.GarmentSample.SampleRequests.ReadModels;
 using Manufactures.Domain.Shared.ValueObjects;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,14 +31,32 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
         public string POBuyer { get; private set; }
         public string Attached { get; private set; }
         public string Remark { get; private set; }
-        public bool IsPosted { get; private set; }
-        public bool IsReceived { get; private set; }
-        public DateTimeOffset? ReceivedDate { get; set; }
-        public string ReceivedBy { get; set; }
 
-        public GarmentSampleRequest(Guid identity, string sampleCategory, string sampleRequestNo, string rONoSample, string rONoCC, DateTimeOffset date, BuyerId buyerId, string buyerCode, string buyerName, GarmentComodityId comodityId, string comodityCode, string comodityName, string sampleType, string packing, DateTimeOffset sentDate, string pOBuyer, string attached, string remark, bool isPosted, bool isReceived, DateTimeOffset? receivedDate, string receivedBy) : base(identity)
+        public bool IsPosted { get; private set; }
+
+        public bool IsReceived { get; private set; }
+        public DateTimeOffset? ReceivedDate { get; private set; }
+        public string ReceivedBy { get; private set; }
+
+        public bool IsRejected { get; private set; }
+        public DateTimeOffset? RejectedDate { get; private set; }
+        public string RejectedBy { get; private set; }
+        public string RejectedReason { get; private set; }
+
+        public bool IsRevised { get; private set; }
+        public DateTimeOffset? RevisedDate { get; set; }
+        public string RevisedBy { get; private set; }
+        public string RevisedReason { get; private set; }
+
+        public string ImagesPath { get; private set; }
+        public string DocumentsPath { get; private set; }
+        public string ImagesName { get; private set; }
+        public string DocumentsFileName { get; private set; }
+        public SectionId SectionId { get; internal set; }
+        public string SectionCode { get; internal set; }
+
+        public GarmentSampleRequest(Guid identity, string sampleCategory, string sampleRequestNo, string rONoSample, string rONoCC, DateTimeOffset date, BuyerId buyerId, string buyerCode, string buyerName, GarmentComodityId comodityId, string comodityCode, string comodityName, string sampleType, string packing, DateTimeOffset sentDate, string pOBuyer, string attached, string remark, bool isPosted, bool isReceived, DateTimeOffset? receivedDate, string receivedBy, bool isRejected, DateTimeOffset? rejectedDate, string rejectedBy, string rejectedReason, bool isRevised, DateTimeOffset? revisedDate, string revisedBy, string revisedReason, string imagesPath, string documentsPath, string imagesName, string documentsFileName, SectionId sectionId, string sectionCode) : base(identity)
         {
-            Identity = identity;
             SampleCategory = sampleCategory;
             SampleRequestNo = sampleRequestNo;
             RONoSample = rONoSample;
@@ -59,13 +78,27 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             IsReceived = isReceived;
             ReceivedDate = receivedDate;
             ReceivedBy = receivedBy;
+            IsRejected = isRejected;
+            RejectedDate = rejectedDate;
+            RejectedBy = rejectedBy;
+            RejectedReason = rejectedReason;
+            IsRevised = isRevised;
+            RevisedDate = revisedDate;
+            RevisedBy = revisedBy;
+            RevisedReason = revisedReason;
+            ImagesPath = imagesPath;
+            DocumentsPath = documentsPath;
+            ImagesName = imagesName;
+            DocumentsFileName = documentsFileName;
+            SectionId = sectionId;
+            SectionCode = sectionCode;
 
             ReadModel = new GarmentSampleRequestReadModel(Identity)
             {
                 SampleCategory = SampleCategory,
                 SampleRequestNo = SampleRequestNo,
                 RONoSample = RONoSample,
-                RONoCC= RONoCC,
+                RONoCC = RONoCC,
                 Date = Date,
                 BuyerId = BuyerId.Value,
                 BuyerCode = BuyerCode,
@@ -82,9 +115,22 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 IsPosted = IsPosted,
                 IsReceived = IsReceived,
                 ReceivedDate = ReceivedDate,
-                ReceivedBy = ReceivedBy
-
-            };
+                ReceivedBy = ReceivedBy,
+                IsRejected=IsRejected,
+                RejectedDate = RejectedDate,
+                RejectedBy = RejectedBy,
+                RejectedReason = RejectedReason,
+                IsRevised = IsRevised,
+                RevisedDate = RevisedDate,
+                RevisedBy = RevisedBy,
+                RevisedReason = RevisedReason,
+                ImagesPath = ImagesPath,
+                DocumentsPath = DocumentsPath,
+                ImagesName = ImagesName,
+                DocumentsFileName = DocumentsFileName,
+                SectionId=SectionId.Value,
+                SectionCode=SectionCode
+        };
             ReadModel.AddDomainEvent(new OnGarmentSampleRequestPlaced(Identity));
         }
 
@@ -111,7 +157,23 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             IsReceived = readModel.IsReceived;
             ReceivedDate = readModel.ReceivedDate;
             ReceivedBy = readModel.ReceivedBy;
+            IsRejected = readModel.IsRejected;
+            RejectedDate = readModel.RejectedDate;
+            RejectedBy = readModel.RejectedBy;
+            RejectedReason = readModel.RejectedReason;
+            IsRevised = readModel.IsRevised;
+            RevisedDate = readModel.RevisedDate;
+            RevisedBy = readModel.RevisedBy;
+            RevisedReason = readModel.RevisedReason;
+            ImagesPath = readModel.ImagesPath;
+            DocumentsPath = readModel.DocumentsPath;
+            ImagesName = readModel.ImagesName;
+            DocumentsFileName = readModel.DocumentsFileName;
+            SectionCode = readModel.SectionCode;
+            SectionId = new SectionId(readModel.SectionId);
         }
+
+        
 
         protected override GarmentSampleRequest GetEntity()
         {
@@ -135,7 +197,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 ReadModel.IsReceived = IsReceived;
             }
         }
-        public void SetBuyerId(BuyerId SupplierId)
+        public void SetBuyerId(BuyerId BuyerId)
         {
             if (this.BuyerId != BuyerId)
             {
@@ -187,7 +249,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             }
         }
 
-        public void SetComodityId(GarmentComodityId SupplierId)
+        public void SetComodityId(GarmentComodityId ComodityId)
         {
             if (this.ComodityId != ComodityId)
             {
@@ -268,6 +330,125 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             {
                 this.ReceivedBy = ReceivedBy;
                 ReadModel.ReceivedBy = ReceivedBy;
+            }
+        }
+
+        public void SetSectionId(SectionId SectionId)
+        {
+            if (this.SectionId != SectionId)
+            {
+                this.SectionId = SectionId;
+                ReadModel.SectionId = SectionId.Value;
+            }
+        }
+        public void SetSectionCode(string SectionCode)
+        {
+            if (this.SectionCode != SectionCode)
+            {
+                this.SectionCode = SectionCode;
+                ReadModel.SectionCode = SectionCode;
+            }
+        }
+
+        public void SetIsRejected(bool IsRejected)
+        {
+            if (this.IsRejected != IsRejected)
+            {
+                this.IsRejected = IsRejected;
+                ReadModel.IsRejected = IsRejected;
+            }
+        }
+
+        public void SetIsRevised(bool IsRevised)
+        {
+            if (this.IsRevised != IsRevised)
+            {
+                this.IsRevised = IsRevised;
+                ReadModel.IsRevised = IsRevised;
+            }
+        }
+
+        public void SetImagesPath(string ImagesPath)
+        {
+            if (this.ImagesPath != ImagesPath)
+            {
+                this.ImagesPath = ImagesPath;
+                ReadModel.ImagesPath = ImagesPath;
+            }
+        }
+
+        public void SetDocumentsPath(string DocumentsPath)
+        {
+            if (this.DocumentsPath != DocumentsPath)
+            {
+                this.DocumentsPath = DocumentsPath;
+                ReadModel.DocumentsPath = DocumentsPath;
+            }
+        }
+
+        public void SetImagesName(List<string> ImagesName)
+        {
+            this.ImagesName = JsonConvert.SerializeObject(ImagesName);
+            ReadModel.ImagesName = JsonConvert.SerializeObject(ImagesName);
+        }
+
+        public void SetDocumentsFileName(List<string> DocumentsFileName)
+        {
+            this.DocumentsFileName = JsonConvert.SerializeObject(DocumentsFileName);
+            ReadModel.DocumentsFileName = JsonConvert.SerializeObject(DocumentsFileName);
+        }
+
+        public void SetRejectedDate(DateTimeOffset RejectedDate)
+        {
+            if (this.RejectedDate != RejectedDate)
+            {
+                this.RejectedDate = RejectedDate;
+                ReadModel.RejectedDate = RejectedDate;
+            }
+        }
+
+        public void SetRejectedBy(string RejectedBy)
+        {
+            if (this.RejectedBy != RejectedBy)
+            {
+                this.RejectedBy = RejectedBy;
+                ReadModel.RejectedBy = RejectedBy;
+            }
+        }
+
+        public void SetRejectedReason(string RejectedReason)
+        {
+            if (this.RejectedReason != RejectedReason)
+            {
+                this.RejectedReason = RejectedReason;
+                ReadModel.RejectedReason = RejectedReason;
+            }
+        }
+
+        public void SetRevisedDate(DateTimeOffset RevisedDate)
+        {
+            if (this.RevisedDate != RevisedDate)
+            {
+                this.RevisedDate = RevisedDate;
+                ReadModel.RevisedDate = RevisedDate;
+            }
+        }
+
+        public void SetRevisedBy(string RevisedBy)
+        {
+            if (this.RevisedBy != RevisedBy)
+            {
+                this.RevisedBy = RevisedBy;
+                ReadModel.RevisedBy = RevisedBy;
+            }
+        }
+
+        public void SetRevisedReason(string RevisedReason)
+        {
+            if (this.RevisedReason != RevisedReason)
+            {
+                this.RevisedReason = RevisedReason;
+                ReadModel.RevisedReason = RevisedReason;
             }
         }
 

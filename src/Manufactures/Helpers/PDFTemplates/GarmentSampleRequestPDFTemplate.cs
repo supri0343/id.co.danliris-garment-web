@@ -33,7 +33,17 @@ namespace Manufactures.Helpers.PDFTemplates
             Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Paragraph title = new Paragraph("SURAT PERMINTAAN PEMBUATAN SAMPLE MARKETING", header_font);
+            string titleCaption;
+
+            if (garmentSampleRequest.IsReceived)
+            {
+                titleCaption = "SURAT PERMINTAAN PEMBUATAN SAMPLE MARKETING";
+            } else
+            {
+                titleCaption = "DRAFT SURAT PERMINTAAN PEMBUATAN SAMPLE MARKETING";
+            }
+
+            Paragraph title = new Paragraph(titleCaption, header_font);
             title.Alignment = Element.ALIGN_CENTER;
             title.SpacingAfter = 10f;
             document.Add(title);

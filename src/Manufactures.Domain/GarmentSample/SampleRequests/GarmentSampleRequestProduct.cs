@@ -10,6 +10,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
 {
     public class GarmentSampleRequestProduct : AggregateRoot<GarmentSampleRequestProduct, GarmentSampleRequestProductReadModel>
     {
+        public int Index { get; private set; }
         public Guid SampleRequestId { get; private set; }
         public string Style { get; private set; }
         public string Color { get; private set; }
@@ -20,7 +21,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
         public string SizeDescription { get; private set; }
         public double Quantity { get; private set; }
 
-        public GarmentSampleRequestProduct(Guid identity, Guid sampleRequestId, string style, string color, SizeId sizeId, string sizeName, string sizeDescription, double quantity) : base(identity)
+        public GarmentSampleRequestProduct(Guid identity, Guid sampleRequestId, string style, string color, SizeId sizeId, string sizeName, string sizeDescription, double quantity, int index) : base(identity)
         {
             Identity = identity;
             SampleRequestId = sampleRequestId;
@@ -30,6 +31,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             SizeName = sizeName;
             SizeDescription = sizeDescription;
             Quantity = quantity;
+            Index = index;
 
             ReadModel = new GarmentSampleRequestProductReadModel(Identity)
             {
@@ -39,7 +41,8 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 SizeId= SizeId.Value,
                 SizeName=SizeName,
                 SizeDescription=SizeDescription,
-                Quantity=Quantity
+                Quantity=Quantity,
+                Index=Index
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSampleRequestPlaced(Identity));
@@ -54,6 +57,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             SizeName = readModel.SizeName;
             SizeDescription = readModel.SizeDescription;
             Quantity = readModel.Quantity;
+            Index = readModel.Index;
         }
 
 

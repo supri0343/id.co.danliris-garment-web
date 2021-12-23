@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMonitoringPrepareSample;
 using Manufactures.Domain.GarmentSample.SamplePreparings.Commands;
 using Manufactures.Domain.GarmentSample.SamplePreparings.Repositories;
 using Manufactures.Dtos.GarmentSample.SamplePreparings;
@@ -191,6 +192,47 @@ namespace Manufactures.Controllers.Api.GarmentSample
             await Task.Yield();
 
             return Ok(rOs);
+        }
+        [HttpGet("monitoring")]
+        public async Task<IActionResult> GetMonitoring(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+        {
+            VerifyUser();
+            GetMonitoringSamplePrepareQuery query = new GetMonitoringSamplePrepareQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.garmentMonitorings, info: new
+            {
+                page,
+                size,
+                viewModel.count
+            });
+        }
+        [HttpGet("download")]
+        public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, string type, int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsSamplePrepareQuery query = new GetXlsSamplePrepareQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = "Laporan Sample Prepare";
+
+                if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+                if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
         }
     }
 }

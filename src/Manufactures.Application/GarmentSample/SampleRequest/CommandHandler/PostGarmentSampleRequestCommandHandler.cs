@@ -34,6 +34,9 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
             foreach (var model in Samples)
             {
                 model.SetIsPosted(request.Posted);
+                model.SetIsReceived(false);
+                model.SetIsRejected(false);
+                model.SetIsRevised(false);
                 model.Modify();
                 await _GarmentSampleRequestRepository.Update(model);
             }

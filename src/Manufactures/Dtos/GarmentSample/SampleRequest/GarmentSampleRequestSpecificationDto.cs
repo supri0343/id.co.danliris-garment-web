@@ -17,6 +17,7 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
             SpecificationDetail = garmentSampleRequestSpecification.SpecificationDetail;
             Quantity = garmentSampleRequestSpecification.Quantity;
             Remark = garmentSampleRequestSpecification.Remark;
+            Index = garmentSampleRequestSpecification.Index;
             Uom = new Uom(garmentSampleRequestSpecification.UomId.Value, garmentSampleRequestSpecification.UomUnit);
         }
         public Guid Id { get; set; }
@@ -26,5 +27,6 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
         public double Quantity { get; set; }
         public string Remark { get; set; }
         public Uom Uom { get; set; }
+        public int Index { get; set; }
     }
 }
