@@ -1,8 +1,10 @@
 ﻿using FluentValidation;
 using Infrastructure.Domain.Commands;
+using Manufactures.Domain.GarmentSample.SampleSewingOuts.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Manufactures.Domain.GarmentSample.SampleSewingOuts.Commands
@@ -27,7 +29,7 @@ namespace Manufactures.Domain.GarmentSample.SampleSewingOuts.Commands
 
     }
 
-    public class PlaceGarmentSewingOutCommandValidator : AbstractValidator<PlaceGarmentSampleSewingOutCommand>
+    public class PlaceGarmentSampleSewingOutCommandValidator : AbstractValidator<PlaceGarmentSampleSewingOutCommand>
     {
         public PlaceGarmentSampleSewingOutCommandValidator()
         {
@@ -50,7 +52,7 @@ namespace Manufactures.Domain.GarmentSample.SampleSewingOuts.Commands
         }
     }
 
-    class GarmentSewingOutItemValueObjectValidator : AbstractValidator<GarmentSampleSewingOutItemValueObject>
+    public class GarmentSampleSewingOutItemValueObjectValidator : AbstractValidator<GarmentSampleSewingOutItemValueObject>
     {
         public GarmentSampleSewingOutItemValueObjectValidator()
         {
@@ -71,7 +73,7 @@ namespace Manufactures.Domain.GarmentSample.SampleSewingOuts.Commands
         }
     }
 
-    class GarmentSampleSewingOutDetailValueObjectValidator : AbstractValidator<GarmentSampleSewingOutDetailValueObject>
+   public class GarmentSampleSewingOutDetailValueObjectValidator : AbstractValidator<GarmentSampleSewingOutDetailValueObject>
     {
         public GarmentSampleSewingOutDetailValueObjectValidator()
         {
