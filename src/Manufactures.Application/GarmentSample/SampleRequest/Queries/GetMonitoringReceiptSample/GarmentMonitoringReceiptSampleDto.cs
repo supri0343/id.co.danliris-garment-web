@@ -13,6 +13,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
         public Guid Id { get; internal set; }
         public string sampleRequestNo { get; internal set; }
         public string roNoSample { get; internal set; }
+        public string article { get; internal set; }
         public string sampleCategory { get; internal set; }
         public string sampleType { get; internal set; }
         public string buyer { get; internal set; }
@@ -22,7 +23,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
         public string sizeDescription { get; internal set; }
         public double quantity { get; internal set; }
         public DateTimeOffset sentDate { get; internal set; }
-        public DateTimeOffset receivedDate { get; internal set; }
+        public  DateTimeOffset ? receivedDate { get; internal set; }
         public string garmentSectionName { get; internal set; }
         public DateTimeOffset sampleRequestDate { get; internal set; }
 

@@ -65,8 +65,10 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
 
         public async Task<MemoryStream> Handle(GetXlsSamplePrepareQuery request, CancellationToken cancellationToken)
         {
-            DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
-            DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
+            DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
+            dateFrom.AddHours(7);
+            DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
+            dateTo = dateTo.AddHours(7);
 
             var QueryMutationPrepareNow = from a in (from aa in garmentPreparingRepository.Query
                                                      where aa.UnitId == request.unit && aa.ProcessDate <= dateTo

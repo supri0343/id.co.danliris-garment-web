@@ -29,6 +29,14 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
             IsReceived = garmentSampleRequest.IsReceived;
             ReceivedDate = garmentSampleRequest.ReceivedDate;
             ReceivedBy = garmentSampleRequest.ReceivedBy;
+            IsRejected = garmentSampleRequest.IsRejected;
+            RejectedDate = garmentSampleRequest.RejectedDate;
+            RejectedBy = garmentSampleRequest.RejectedBy;
+            RejectedReason = garmentSampleRequest.RejectedReason;
+            IsRevised = garmentSampleRequest.IsRevised;
+            RevisedDate = garmentSampleRequest.RevisedDate;
+            RevisedBy = garmentSampleRequest.RevisedBy;
+            RevisedReason = garmentSampleRequest.RevisedReason;
             SampleProducts = new List<GarmentSampleRequestProductDto>();
             SampleSpecifications = new List<GarmentSampleRequestSpecificationDto>();
             ImagesPath = String.IsNullOrEmpty(garmentSampleRequest.ImagesPath) ? new List<string>() : JsonConvert.DeserializeObject<List<string>>(garmentSampleRequest.ImagesPath);
@@ -59,6 +67,16 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
         public bool IsReceived { get;  set; }
         public DateTimeOffset? ReceivedDate { get; set; }
         public string ReceivedBy { get; set; }
+        public bool IsRejected { get; set; }
+        public DateTimeOffset? RejectedDate { get; set; }
+        public string RejectedBy { get; set; }
+        public string RejectedReason { get; set; }
+
+        public bool IsRevised { get; set; }
+        public DateTimeOffset? RevisedDate { get; set; }
+        public string RevisedBy { get; set; }
+        public string RevisedReason { get; set; }
+
         public List<string> ImagesFile { get; set; }
         public List<string> DocumentsFile { get; set; }
         public List<string> ImagesPath { get; set; }

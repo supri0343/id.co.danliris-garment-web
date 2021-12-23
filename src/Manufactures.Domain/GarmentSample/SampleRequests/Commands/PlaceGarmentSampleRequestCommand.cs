@@ -34,8 +34,10 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.Commands
         public bool IsRejected { get;  set; }
         public DateTimeOffset? RejectedDate { get;  set; }
         public string RejectedBy { get;  set; }
+        public string RejectedReason { get; set; }
 
         public bool IsRevised { get;  set; }
+        public DateTimeOffset? RevisedDate { get; set; }
         public string RevisedBy { get;  set; }
         public string RevisedReason { get;  set; }
 

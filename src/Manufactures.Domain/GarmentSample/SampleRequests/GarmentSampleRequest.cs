@@ -41,8 +41,10 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
         public bool IsRejected { get; private set; }
         public DateTimeOffset? RejectedDate { get; private set; }
         public string RejectedBy { get; private set; }
+        public string RejectedReason { get; private set; }
 
         public bool IsRevised { get; private set; }
+        public DateTimeOffset? RevisedDate { get; set; }
         public string RevisedBy { get; private set; }
         public string RevisedReason { get; private set; }
 
@@ -53,7 +55,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
         public SectionId SectionId { get; internal set; }
         public string SectionCode { get; internal set; }
 
-        public GarmentSampleRequest(Guid identity, string sampleCategory, string sampleRequestNo, string rONoSample, string rONoCC, DateTimeOffset date, BuyerId buyerId, string buyerCode, string buyerName, GarmentComodityId comodityId, string comodityCode, string comodityName, string sampleType, string packing, DateTimeOffset sentDate, string pOBuyer, string attached, string remark, bool isPosted, bool isReceived, DateTimeOffset? receivedDate, string receivedBy, bool isRejected, DateTimeOffset? rejectedDate, string rejectedBy, bool isRevised, string revisedBy, string revisedReason, string imagesPath, string documentsPath, string imagesName, string documentsFileName, SectionId sectionId, string sectionCode) : base(identity)
+        public GarmentSampleRequest(Guid identity, string sampleCategory, string sampleRequestNo, string rONoSample, string rONoCC, DateTimeOffset date, BuyerId buyerId, string buyerCode, string buyerName, GarmentComodityId comodityId, string comodityCode, string comodityName, string sampleType, string packing, DateTimeOffset sentDate, string pOBuyer, string attached, string remark, bool isPosted, bool isReceived, DateTimeOffset? receivedDate, string receivedBy, bool isRejected, DateTimeOffset? rejectedDate, string rejectedBy, string rejectedReason, bool isRevised, DateTimeOffset? revisedDate, string revisedBy, string revisedReason, string imagesPath, string documentsPath, string imagesName, string documentsFileName, SectionId sectionId, string sectionCode) : base(identity)
         {
             SampleCategory = sampleCategory;
             SampleRequestNo = sampleRequestNo;
@@ -79,7 +81,9 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             IsRejected = isRejected;
             RejectedDate = rejectedDate;
             RejectedBy = rejectedBy;
+            RejectedReason = rejectedReason;
             IsRevised = isRevised;
+            RevisedDate = revisedDate;
             RevisedBy = revisedBy;
             RevisedReason = revisedReason;
             ImagesPath = imagesPath;
@@ -115,7 +119,9 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 IsRejected=IsRejected,
                 RejectedDate = RejectedDate,
                 RejectedBy = RejectedBy,
+                RejectedReason = RejectedReason,
                 IsRevised = IsRevised,
+                RevisedDate = RevisedDate,
                 RevisedBy = RevisedBy,
                 RevisedReason = RevisedReason,
                 ImagesPath = ImagesPath,
@@ -154,7 +160,9 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             IsRejected = readModel.IsRejected;
             RejectedDate = readModel.RejectedDate;
             RejectedBy = readModel.RejectedBy;
+            RejectedReason = readModel.RejectedReason;
             IsRevised = readModel.IsRevised;
+            RevisedDate = readModel.RevisedDate;
             RevisedBy = readModel.RevisedBy;
             RevisedReason = readModel.RevisedReason;
             ImagesPath = readModel.ImagesPath;
@@ -347,7 +355,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             if (this.IsRejected != IsRejected)
             {
                 this.IsRejected = IsRejected;
-                ReadModel.IsReceived = IsRejected;
+                ReadModel.IsRejected = IsRejected;
             }
         }
 
@@ -393,6 +401,60 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             {
                 this.DocumentsFileName = JsonConvert.SerializeObject(DocumentsFileName);
                 ReadModel.DocumentsFileName = JsonConvert.SerializeObject(DocumentsFileName);
+            }
+        }
+
+        public void SetRejectedDate(DateTimeOffset RejectedDate)
+        {
+            if (this.RejectedDate != RejectedDate)
+            {
+                this.RejectedDate = RejectedDate;
+                ReadModel.RejectedDate = RejectedDate;
+            }
+        }
+
+        public void SetRejectedBy(string RejectedBy)
+        {
+            if (this.RejectedBy != RejectedBy)
+            {
+                this.RejectedBy = RejectedBy;
+                ReadModel.RejectedBy = RejectedBy;
+            }
+        }
+
+        public void SetRejectedReason(string RejectedReason)
+        {
+            if (this.RejectedReason != RejectedReason)
+            {
+                this.RejectedReason = RejectedReason;
+                ReadModel.RejectedReason = RejectedReason;
+            }
+        }
+
+        public void SetRevisedDate(DateTimeOffset RevisedDate)
+        {
+            if (this.RevisedDate != RevisedDate)
+            {
+                this.RevisedDate = RevisedDate;
+                ReadModel.RevisedDate = RevisedDate;
+            }
+        }
+
+        public void SetRevisedBy(string RevisedBy)
+        {
+            if (this.RevisedBy != RevisedBy)
+            {
+                this.RevisedBy = RevisedBy;
+                ReadModel.RevisedBy = RevisedBy;
+            }
+        }
+
+        public void SetRevisedReason(string RevisedReason)
+        {
+            if (this.RevisedReason != RevisedReason)
+            {
+                this.RevisedReason = RevisedReason;
+                ReadModel.RevisedReason = RevisedReason;
             }
         }
 

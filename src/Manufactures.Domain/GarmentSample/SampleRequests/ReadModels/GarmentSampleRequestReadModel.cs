@@ -41,10 +41,13 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.ReadModels
         public bool IsRejected { get; internal set; }
         public DateTimeOffset? RejectedDate { get; internal set; }
         public string RejectedBy { get; internal set; }
+        public string RejectedReason { get; internal set; }
 
         public bool IsRevised { get; internal set; }
         public string RevisedBy { get; internal set; }
+        public DateTimeOffset? RevisedDate { get; internal set; }
         public string RevisedReason { get; internal set; }
+
         public string ImagesPath { get; internal set; }
         public string DocumentsPath { get; internal set; }
         public string ImagesName { get; internal set; }
