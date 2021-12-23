@@ -229,6 +229,43 @@ namespace Manufactures.Controllers.Api.GarmentSample
                 FileDownloadName = $"{garmentSampleRequestDto.SampleRequestNo}.pdf"
             };
         }
+
+        [HttpPut("rejected/{id}")]
+        public async Task<IActionResult> rejectedData(string id, [FromBody] RejectGarmentSampleRequestCommand command)
+        {
+            Guid guid = Guid.Parse(id);
+
+            command.SetIdentity(guid);
+
+            VerifyUser();
+
+            var username = WorkContext.UserName;
+            command.RejectedDate = DateTimeOffset.Now;
+            command.RejectedBy = username;
+
+            var order = await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpPut("revised/{id}")]
+        public async Task<IActionResult> revisedData(string id, [FromBody] RevisedGarmentSampleRequestCommand command)
+        {
+            Guid guid = Guid.Parse(id);
+
+            command.SetIdentity(guid);
+
+            VerifyUser();
+
+            var username = WorkContext.UserName;
+            command.RevisedDate = DateTimeOffset.Now;
+            command.RevisedBy = username;
+
+            var order = await Mediator.Send(command);
+
+            return Ok();
+        }
+
         [HttpGet("monitoring")]
         public async Task<IActionResult> GetMonitoring( DateTime receivedDateFrom, DateTime receivedDateTo, int page = 1, int size = 25, string Order = "{}")
         {
@@ -243,6 +280,7 @@ namespace Manufactures.Controllers.Api.GarmentSample
                 viewModel.count
             });
         }
+
         [HttpGet("download")]
         public async Task<IActionResult> GetXls(int unit, DateTime receivedDateFrom, DateTime receivedDateTo, string type, int page = 1, int size = 25, string Order = "{}")
         {

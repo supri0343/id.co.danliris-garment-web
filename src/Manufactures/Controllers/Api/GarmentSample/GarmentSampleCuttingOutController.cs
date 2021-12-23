@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentSample.SampleCuttingOuts.Repositories;
 using Manufactures.Domain.GarmentSample.SampleSewingIns;
 using Manufactures.Domain.GarmentSample.SampleSewingIns.Repositories;
 using Manufactures.Dtos.GarmentSample.SampleCuttingOuts;
+using Manufactures.Helpers.PDFTemplates.GarmentSample;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -76,32 +77,32 @@ namespace Manufactures.Controllers.Api.GarmentSample
 
         }
 
-        //[HttpGet("{id}/{buyer}")]
-        //public async Task<IActionResult> GetPdf(string id, string buyer)
-        //{
-        //    Guid guid = Guid.Parse(id);
+        [HttpGet("{id}/{buyer}")]
+        public async Task<IActionResult> GetPdf(string id, string buyer)
+        {
+            Guid guid = Guid.Parse(id);
 
-        //    VerifyUser();
+            VerifyUser();
 
-        //    int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
-        //    GarmentSampleCuttingOutDto garmentCuttingOutDto = _garmentCuttingOutRepository.Find(o => o.Identity == guid).Select(cutOut => new GarmentSampleCuttingOutDto(cutOut)
-        //    {
-        //        Items = _garmentCuttingOutItemRepository.Find(o => o.CuttingOutId == cutOut.Identity).Select(cutOutItem => new GarmentSampleCuttingOutItemDto(cutOutItem)
-        //        {
-        //            Details = _garmentCuttingOutDetailRepository.Find(o => o.CuttingOutItemId == cutOutItem.Identity).Select(cutOutDetail => new GarmentSampleCuttingOutDetailDto(cutOutDetail)
-        //            {
+            int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+            GarmentSampleCuttingOutDto garmentCuttingOutDto = _garmentCuttingOutRepository.Find(o => o.Identity == guid).Select(cutOut => new GarmentSampleCuttingOutDto(cutOut)
+            {
+                Items = _garmentCuttingOutItemRepository.Find(o => o.CuttingOutId == cutOut.Identity).Select(cutOutItem => new GarmentSampleCuttingOutItemDto(cutOutItem)
+                {
+                    Details = _garmentCuttingOutDetailRepository.Find(o => o.CuttingOutItemId == cutOutItem.Identity).Select(cutOutDetail => new GarmentSampleCuttingOutDetailDto(cutOutDetail)
+                    {
 
-        //            }).ToList()
-        //        }).ToList()
-        //    }
-        //    ).FirstOrDefault();
-        //    var stream = GarmentSampleCuttingOutPDFTemplate.Generate(garmentCuttingOutDto, buyer);
+                    }).ToList()
+                }).ToList()
+            }
+            ).FirstOrDefault();
+            var stream = GarmentSampleCuttingOutPDFTemplate.Generate(garmentCuttingOutDto, buyer);
 
-        //    return new FileStreamResult(stream, "application/pdf")
-        //    {
-        //        FileDownloadName = $"{garmentCuttingOutDto.CutOutNo}.pdf"
-        //    };
-        //}
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentCuttingOutDto.CutOutNo}.pdf"
+            };
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PlaceGarmentSampleCuttingOutCommand command)
