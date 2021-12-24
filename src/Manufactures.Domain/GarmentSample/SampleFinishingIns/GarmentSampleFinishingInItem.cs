@@ -27,6 +27,8 @@ namespace Manufactures.Domain.GarmentSample.SampleFinishingIns
         public double RemainingQuantity { get; private set; }
         public double BasicPrice { get; private set; }
         public double Price { get; private set; }
+        public long DODetailId { get; private set; }
+        public Guid Identity { get; private set; }
 
         public void SetRemainingQuantity(double RemainingQuantity)
         {
@@ -37,15 +39,16 @@ namespace Manufactures.Domain.GarmentSample.SampleFinishingIns
             }
         }
 
-        public GarmentSampleFinishingInItem(Guid identity, Guid finishingInId, Guid sewingOutItemId, Guid sewingOutDetailId, Guid subconCuttingId, SizeId sizeId, string sizeName, ProductId productId, string productCode, string productName, string designColor, double quantity, double remainingQuantity, UomId uomId, string uomUnit, string color, double basicPrice, double price) : base(identity)
+        public GarmentSampleFinishingInItem(Guid identity, Guid finishingInId, Guid sewingOutItemId, Guid sewingOutDetailId, Guid subconCuttingId, SizeId sizeId, string sizeName, ProductId productId, string productCode, string productName, string designColor, double quantity, double remainingQuantity, UomId uomId, string uomUnit, string color, double basicPrice, double price,int doDetailId) : base(identity)
         {
+            Identity = identity;
             FinishingInId = finishingInId;
             SewingOutItemId = sewingOutItemId;
             SewingOutDetailId = sewingOutDetailId;
             SubconCuttingId = subconCuttingId;
             ProductId = productId;
             ProductCode = productCode;
-            ProductName = productCode;
+            ProductName = productName;
             DesignColor = designColor;
             SizeId = sizeId;
             SizeName = sizeName;
@@ -56,9 +59,11 @@ namespace Manufactures.Domain.GarmentSample.SampleFinishingIns
             RemainingQuantity = remainingQuantity;
             BasicPrice = basicPrice;
             Price = price;
+            DODetailId = doDetailId;
 
             ReadModel = new GarmentSampleFinishingInItemReadModel(Identity)
             {
+                
                 FinishingInId = FinishingInId,
                 SewingOutItemId = SewingOutItemId,
                 SewingOutDetailId = SewingOutDetailId,
@@ -75,7 +80,8 @@ namespace Manufactures.Domain.GarmentSample.SampleFinishingIns
                 Color = Color,
                 RemainingQuantity = RemainingQuantity,
                 BasicPrice = BasicPrice,
-                Price = Price
+                Price = Price,
+                DODetailId = DODetailId
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSampleFinishingInPlaced(Identity));
@@ -83,13 +89,14 @@ namespace Manufactures.Domain.GarmentSample.SampleFinishingIns
 
         public GarmentSampleFinishingInItem(GarmentSampleFinishingInItemReadModel readModel) : base(readModel)
         {
+            Identity = readModel.Identity;
             FinishingInId = readModel.FinishingInId;
             SewingOutItemId = readModel.SewingOutItemId;
             SewingOutDetailId = readModel.SewingOutDetailId;
             SubconCuttingId = readModel.SubconCuttingId;
             ProductId = new ProductId(readModel.ProductId);
             ProductCode = readModel.ProductCode;
-            ProductName = readModel.ProductCode;
+            ProductName = readModel.ProductName;
             DesignColor = readModel.DesignColor;
             SizeId = new SizeId(readModel.SizeId);
             SizeName = readModel.SizeName;
@@ -100,6 +107,7 @@ namespace Manufactures.Domain.GarmentSample.SampleFinishingIns
             RemainingQuantity = readModel.RemainingQuantity;
             BasicPrice = readModel.BasicPrice;
             Price = readModel.Price;
+            DODetailId = readModel.DODetailId;
         }
 
         public void Modify()

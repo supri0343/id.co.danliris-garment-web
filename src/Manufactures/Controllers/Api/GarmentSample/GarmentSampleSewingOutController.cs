@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentSample.SampleSewingIns.Repositories;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts.Commands;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts.Repositories;
 using Manufactures.Dtos.GarmentSample.SampleSewingOuts;
+using Manufactures.Helpers.PDFTemplates.GarmentSample;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -18,7 +19,7 @@ namespace Manufactures.Controllers.Api.GarmentSample
 {
     [ApiController]
     [Authorize]
-    [Route("sample-sewing-outs")]
+    [Route("garment-sample-sewing-outs")]
     public class GarmentSampleSewingOutController : ControllerApiBase
     {
         private readonly IGarmentSampleSewingOutRepository _garmentSewingOutRepository;
@@ -173,47 +174,47 @@ namespace Manufactures.Controllers.Api.GarmentSample
             });
         }
 
-        //[HttpGet("complete")]
-        //public async Task<IActionResult> GetComplete(int page = 1, int size = 10, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
-        //{
-        //    VerifyUser();
+        [HttpGet("complete")]
+        public async Task<IActionResult> GetComplete(int page = 1, int size = 10, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
 
-        //    var query = _garmentSewingOutRepository.Read(page, size, order, keyword, filter);
-        //    var count = query.Count();
+            var query = _garmentSewingOutRepository.Read(page, size, order, keyword, filter);
+            var count = query.Count();
 
-        //    var garmentSewingOutDto = _garmentSewingOutRepository.ReadExecute(query);
+            var garmentSewingOutDto = _garmentSewingOutRepository.ReadExecute(query);
 
-        //    //var garmentSewingOutDto = _garmentSewingOutRepository.Find(query).Select(o => new GarmentSewingOutDto(o)).ToArray();
-        //    //var garmentSewingOutItemDto = _garmentSewingOutItemRepository.Find(_garmentSewingOutItemRepository.Query).Select(o => new GarmentSewingOutItemDto(o)).ToList();
-        //    //var garmentSewingOutDetailDto = _garmentSewingOutDetailRepository.Find(_garmentSewingOutDetailRepository.Query).Select(o => new GarmentSewingOutDetailDto(o)).ToList();
+            //var garmentSewingOutDto = _garmentSewingOutRepository.Find(query).Select(o => new GarmentSewingOutDto(o)).ToArray();
+            //var garmentSewingOutItemDto = _garmentSewingOutItemRepository.Find(_garmentSewingOutItemRepository.Query).Select(o => new GarmentSewingOutItemDto(o)).ToList();
+            //var garmentSewingOutDetailDto = _garmentSewingOutDetailRepository.Find(_garmentSewingOutDetailRepository.Query).Select(o => new GarmentSewingOutDetailDto(o)).ToList();
 
-        //    //Parallel.ForEach(garmentSewingOutDto, itemDto =>
-        //    //{
-        //    //    var garmentSewingOutItems = garmentSewingOutItemDto.Where(x => x.SewingOutId == itemDto.Id).OrderBy(x => x.Id).ToList();
+            //Parallel.ForEach(garmentSewingOutDto, itemDto =>
+            //{
+            //    var garmentSewingOutItems = garmentSewingOutItemDto.Where(x => x.SewingOutId == itemDto.Id).OrderBy(x => x.Id).ToList();
 
-        //    //    itemDto.Items = garmentSewingOutItems;
+            //    itemDto.Items = garmentSewingOutItems;
 
-        //    //    Parallel.ForEach(itemDto.Items, detailDto =>
-        //    //    {
-        //    //        var garmentSewingOutDetails = garmentSewingOutDetailDto.Where(x => x.SewingOutItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
-        //    //        detailDto.Details = garmentSewingOutDetails;
-        //    //    });
-        //    //});
+            //    Parallel.ForEach(itemDto.Items, detailDto =>
+            //    {
+            //        var garmentSewingOutDetails = garmentSewingOutDetailDto.Where(x => x.SewingOutItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
+            //        detailDto.Details = garmentSewingOutDetails;
+            //    });
+            //});
 
-        //    //if (order != "{}")
-        //    //{
-        //    //    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-        //    //    garmentSewingOutDto = QueryHelper<GarmentSewingOutDto>.Order(garmentSewingOutDto.AsQueryable(), OrderDictionary).ToArray();
-        //    //}
+            //if (order != "{}")
+            //{
+            //    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            //    garmentSewingOutDto = QueryHelper<GarmentSewingOutDto>.Order(garmentSewingOutDto.AsQueryable(), OrderDictionary).ToArray();
+            //}
 
-        //    await Task.Yield();
-        //    return Ok(garmentSewingOutDto, info: new
-        //    {
-        //        page,
-        //        size,
-        //        count
-        //    });
-        //}
+            await Task.Yield();
+            return Ok(garmentSewingOutDto, info: new
+            {
+                page,
+                size,
+                count
+            });
+        }
 
         //[HttpGet("loader-by-ro")]
         //public async Task<IActionResult> GetLoaderByRO(string keyword, string filter = "{}")
@@ -241,34 +242,34 @@ namespace Manufactures.Controllers.Api.GarmentSample
         //    });
         //}
 
-        
 
-        //[HttpGet("{id}/{buyer}")]
-        //public async Task<IActionResult> GetPdf(string id, string buyer)
-        //{
-        //    Guid guid = Guid.Parse(id);
 
-        //    VerifyUser();
+        [HttpGet("{id}/{buyer}")]
+        public async Task<IActionResult> GetPdf(string id, string buyer)
+        {
+            Guid guid = Guid.Parse(id);
 
-        //    int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
-        //    GarmentSewingOutDto garmentSewingOutDto = _garmentSewingOutRepository.Find(o => o.Identity == guid).Select(sewOut => new GarmentSewingOutDto(sewOut)
-        //    {
-        //        Items = _garmentSewingOutItemRepository.Find(o => o.SewingOutId == sewOut.Identity).Select(sewOutItem => new GarmentSewingOutItemDto(sewOutItem)
-        //        {
-        //            Details = _garmentSewingOutDetailRepository.Find(o => o.SewingOutItemId == sewOutItem.Identity).Select(sewOutDetail => new GarmentSewingOutDetailDto(sewOutDetail)
-        //            {
-        //            }).ToList()
+            VerifyUser();
 
-        //        }).ToList()
-        //    }
-        //    ).FirstOrDefault();
-        //    var stream = GarmentSewingOutPDFTemplate.Generate(garmentSewingOutDto, buyer);
+            int clientTimeZoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+            GarmentSampleSewingOutDto garmentSewingOutDto = _garmentSewingOutRepository.Find(o => o.Identity == guid).Select(sewOut => new GarmentSampleSewingOutDto(sewOut)
+            {
+                Items = _garmentSewingOutItemRepository.Find(o => o.SampleSewingOutId == sewOut.Identity).Select(sewOutItem => new GarmentSampleSewingOutItemDto(sewOutItem)
+                {
+                    Details = _garmentSewingOutDetailRepository.Find(o => o.SampleSewingOutItemId == sewOutItem.Identity).Select(sewOutDetail => new GarmentSampleSewingOutDetailDto(sewOutDetail)
+                    {
+                    }).ToList()
 
-        //    return new FileStreamResult(stream, "application/pdf")
-        //    {
-        //        FileDownloadName = $"{garmentSewingOutDto.SewingOutNo}.pdf"
-        //    };
-        //}
+                }).ToList()
+            }
+            ).FirstOrDefault();
+            var stream = GarmentSampleSewingOutPDFTemplate.Generate(garmentSewingOutDto, buyer);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentSewingOutDto.SewingOutNo}.pdf"
+            };
+        }
 
         //[HttpPut("update-dates")]
         //public async Task<IActionResult> UpdateDates([FromBody]UpdateDatesGarmentSewingOutCommand command)

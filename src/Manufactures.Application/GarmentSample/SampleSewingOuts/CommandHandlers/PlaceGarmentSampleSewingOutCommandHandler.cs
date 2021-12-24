@@ -279,7 +279,7 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
 
             #endregion
 
-         
+
 
             #region Create FinishingIn
             if (request.SewingTo == "FINISHING")
@@ -331,13 +331,14 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
                                     detail.Uom.Unit,
                                     item.Color,
                                     item.BasicPrice,
-                                    item.Price
+                                    item.Price,0
                                 );
                                 await _garmentFinishingInItemRepository.Update(garmentFinishingInItem);
                             }
                         }
                         else
                         {
+                             
                             GarmentSampleFinishingInItem garmentFinishingInItem = new GarmentSampleFinishingInItem(
                                 Guid.NewGuid(),
                                 garmentFinishingIn.Identity,
@@ -356,9 +357,12 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
                                 item.Uom.Unit,
                                 item.Color,
                                 item.BasicPrice,
-                                item.Price
+                                item.Price,
+                                0
                             );
+                           
                             await _garmentFinishingInItemRepository.Update(garmentFinishingInItem);
+                                
                         }
                     }
                 }
@@ -375,13 +379,13 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
             var year = now.ToString("yy");
             var month = now.ToString("MM");
 
-            var prefix = $"SOS{request.Unit.Code.Trim()}{year}{month}";
+            var prefix = $"SO{request.Unit.Code.Trim()}{year}{month}";
 
             var lastSewOutNo = _garmentSewingOutRepository.Query.Where(w => w.SewingOutNo.StartsWith(prefix))
                 .OrderByDescending(o => o.SewingOutNo)
                 .Select(s => int.Parse(s.SewingOutNo.Replace(prefix, "")))
                 .FirstOrDefault();
-            var SewOutNo = $"{prefix}{(lastSewOutNo + 1).ToString("D5")}";
+            var SewOutNo = $"{prefix}{(lastSewOutNo + 1).ToString("D4")}";
 
             return SewOutNo;
         }
@@ -396,13 +400,13 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
             var day = now.ToString("dd");
             var unitcode = request.UnitTo.Code;
 
-            var prefix = $"FIS{unitcode}{year}{month}";
+            var prefix = $"FI{unitcode}{year}{month}";
 
             var lastFinishingInNo = _garmentFinishingInRepository.Query.Where(w => w.FinishingInNo.StartsWith(prefix))
                 .OrderByDescending(o => o.FinishingInNo)
                 .Select(s => int.Parse(s.FinishingInNo.Replace(prefix, "")))
                 .FirstOrDefault();
-            var finInNo = $"{prefix}{(lastFinishingInNo + 1).ToString("D5")}";
+            var finInNo = $"{prefix}{(lastFinishingInNo + 1).ToString("D4")}";
 
             return finInNo;
         }
