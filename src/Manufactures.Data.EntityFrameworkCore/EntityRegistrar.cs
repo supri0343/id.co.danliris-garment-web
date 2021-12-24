@@ -21,9 +21,11 @@ using Manufactures.Data.EntityFrameworkCore.GarmentMonitoringProductionStockFlow
 using Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleCuttingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleCuttingOuts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleFinishingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SamplePreparings.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleRequests.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleSewingIns.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleSewingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentScrapClassifications.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentScrapTransactions.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSewingDOs.Configs;
@@ -175,6 +177,14 @@ namespace Manufactures.Data.EntityFrameworkCore
 
             modelBuilder.ApplyConfiguration(new GarmentSampleSewingInConfig());
             modelBuilder.ApplyConfiguration(new GarmentSampleSewingInItemConfig());
+
+
+            modelBuilder.ApplyConfiguration(new GarmentSampleSewingOutConfig());
+            modelBuilder.ApplyConfiguration(new GarmentSampleSewingOutItemConfig());
+            modelBuilder.ApplyConfiguration(new GarmentSampleSewingOutDetailConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentSampleFinishingInConfig());
+            modelBuilder.ApplyConfiguration(new GarmentSampleFinishingInItemConfig());
         }
 	}
 }
