@@ -27,6 +27,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
         {
             var SampleRequest = _GarmentSampleRequestRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentSampleRequest(o)).Single();
 
+            SampleRequest.SetIsReceived(false);
             SampleRequest.SetIsRevised(request.IsRevised);
             SampleRequest.SetRevisedDate(request.RevisedDate);
             SampleRequest.SetRevisedBy(request.RevisedBy);

@@ -79,11 +79,11 @@ namespace Manufactures.Controllers.Api.GarmentSample
                 SampleProducts = _GarmentSampleRequestProductRepository.Find(o => o.SampleRequestId == sample.Identity).Select(product => new GarmentSampleRequestProductDto(product)
                 {
                    
-                }).ToList(),
+                }).OrderBy(o => o.Index).ToList(),
                 SampleSpecifications= _GarmentSampleRequestSpecificationRepository.Find(o => o.SampleRequestId == sample.Identity).Select(specification => new GarmentSampleRequestSpecificationDto(specification)
                 {
 
-                }).ToList()
+                }).OrderBy(o => o.Index).ToList()
             }
             ).FirstOrDefault();
             if (garmentSampleRequestDto.ImagesPath.Count > 0)
@@ -217,8 +217,8 @@ namespace Manufactures.Controllers.Api.GarmentSample
 
             GarmentSampleRequestDto garmentSampleRequestDto = _GarmentSampleRequestRepository.Find(o => o.Identity == guid).Select(sample => new GarmentSampleRequestDto(sample)
             {
-                SampleProducts = _GarmentSampleRequestProductRepository.Find(o => o.SampleRequestId == sample.Identity).Select(product => new GarmentSampleRequestProductDto(product)).ToList(),
-                SampleSpecifications = _GarmentSampleRequestSpecificationRepository.Find(o => o.SampleRequestId == sample.Identity).Select(specification => new GarmentSampleRequestSpecificationDto(specification)).ToList()
+                SampleProducts = _GarmentSampleRequestProductRepository.Find(o => o.SampleRequestId == sample.Identity).Select(product => new GarmentSampleRequestProductDto(product)).OrderBy(o => o.Index).ToList(),
+                SampleSpecifications = _GarmentSampleRequestSpecificationRepository.Find(o => o.SampleRequestId == sample.Identity).Select(specification => new GarmentSampleRequestSpecificationDto(specification)).OrderBy(o => o.Index).ToList()
             }
             ).FirstOrDefault();
 
