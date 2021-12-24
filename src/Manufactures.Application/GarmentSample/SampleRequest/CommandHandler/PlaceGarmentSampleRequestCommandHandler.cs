@@ -124,10 +124,16 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
             if(request.ImagesFile.Count > 0)
             {
                 SampleRequest.SetImagesPath(await _azureImage.UploadMultipleImage(GarmentSampleRequest.GetType().Name, id, SampleRequest.AuditTrail.CreatedDate.UtcDateTime, request.ImagesFile, request.ImagesPath));
+            } else
+            {
+                SampleRequest.SetImagesPath("[]");
             }
             if(request.DocumentsFile.Count > 0)
             {
                 SampleRequest.SetDocumentsPath(await _azureDocument.UploadMultipleFile(GarmentSampleRequest.GetType().Name, id, SampleRequest.AuditTrail.CreatedDate.UtcDateTime, request.DocumentsFile, request.DocumentsFileName, request.DocumentsPath));
+            } else
+            {
+                SampleRequest.SetDocumentsPath("[]");
             }
             
             SampleRequest.Modify();
