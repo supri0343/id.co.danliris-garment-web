@@ -388,20 +388,14 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
 
         public void SetImagesName(List<string> ImagesName)
         {
-            if (ImagesName.Count > 0)
-            {
-                this.ImagesName = JsonConvert.SerializeObject(ImagesName);
-                ReadModel.ImagesName = JsonConvert.SerializeObject(ImagesName);
-            }
+            this.ImagesName = JsonConvert.SerializeObject(ImagesName);
+            ReadModel.ImagesName = JsonConvert.SerializeObject(ImagesName);
         }
 
         public void SetDocumentsFileName(List<string> DocumentsFileName)
         {
-            if (DocumentsFileName.Count > 0)
-            {
-                this.DocumentsFileName = JsonConvert.SerializeObject(DocumentsFileName);
-                ReadModel.DocumentsFileName = JsonConvert.SerializeObject(DocumentsFileName);
-            }
+            this.DocumentsFileName = JsonConvert.SerializeObject(DocumentsFileName);
+            ReadModel.DocumentsFileName = JsonConvert.SerializeObject(DocumentsFileName);
         }
 
         public void SetRejectedDate(DateTimeOffset RejectedDate)

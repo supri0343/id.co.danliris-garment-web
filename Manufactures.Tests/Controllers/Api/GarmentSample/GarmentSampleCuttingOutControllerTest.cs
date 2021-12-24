@@ -199,42 +199,42 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
 
-        //[Fact]
-        //public async Task GetSingle_PDF_StateUnderTest_ExpectedBehavior()
-        //{
-        //    // Arrange
-        //    var unitUnderTest = CreateGarmentSampleCuttingOutController();
+        [Fact]
+        public async Task GetSingle_PDF_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSampleCuttingOutController();
 
-        //    Guid cuttingOutGuid = Guid.NewGuid();
-        //    _mockGarmentSampleCuttingOutRepository
-        //        .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleCuttingOutReadModel, bool>>>()))
-        //        .Returns(new List<GarmentSampleCuttingOut>()
-        //        {
-        //            new GarmentSampleCuttingOut(cuttingOutGuid,"cutOutNo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", "art", new UnitDepartmentId(1), null, null, new GarmentComodityId(1), null, null,false)
-        //        });
+            Guid cuttingOutGuid = Guid.NewGuid();
+            _mockGarmentSampleCuttingOutRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleCuttingOutReadModel, bool>>>()))
+                .Returns(new List<GarmentSampleCuttingOut>()
+                {
+                    new GarmentSampleCuttingOut(cuttingOutGuid,"cutOutNo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", "art", new UnitDepartmentId(1), null, null, new GarmentComodityId(1), null, null,false)
+                });
 
-        //    Guid cuttingOutItemGuid = Guid.NewGuid();
-        //    _mockGarmentSampleCuttingOutItemRepository
-        //        .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleCuttingOutItemReadModel, bool>>>()))
-        //        .Returns(new List<GarmentSampleCuttingOutItem>()
-        //        {
-        //            new GarmentSampleCuttingOutItem(cuttingOutItemGuid, cuttingOutGuid, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1),"productCode", "productName", "design", 1)
-        //        });
+            Guid cuttingOutItemGuid = Guid.NewGuid();
+            _mockGarmentSampleCuttingOutItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleCuttingOutItemReadModel, bool>>>()))
+                .Returns(new List<GarmentSampleCuttingOutItem>()
+                {
+                    new GarmentSampleCuttingOutItem(cuttingOutItemGuid, cuttingOutGuid, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1),"productCode", "productName", "design", 1)
+                });
 
-        //    _mockGarmentSampleCuttingOutDetailRepository
-        //        .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleCuttingOutDetailReadModel, bool>>>()))
-        //        .Returns(new List<GarmentSampleCuttingOutDetail>()
-        //        {
-        //            new GarmentSampleCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), "size", "color", 1, 1, new UomId(1), "uom", 1, 1)
-        //        });
+            _mockGarmentSampleCuttingOutDetailRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleCuttingOutDetailReadModel, bool>>>()))
+                .Returns(new List<GarmentSampleCuttingOutDetail>()
+                {
+                    new GarmentSampleCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), "size", "color", 1, 1, new UomId(1), "uom", 1, 1)
+                });
 
-        //    // Act
-        //    var result = await unitUnderTest.GetPdf(Guid.NewGuid().ToString(), "buyerCode");
+            // Act
+            var result = await unitUnderTest.GetPdf(Guid.NewGuid().ToString(), "buyerCode");
 
-        //    // Assert
-        //    //Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        //    Assert.NotNull(result.GetType().GetProperty("FileStream"));
-        //}
+            // Assert
+            //Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+            Assert.NotNull(result.GetType().GetProperty("FileStream"));
+        }
 
         [Fact]
         public async Task Post_StateUnderTest_ExpectedBehavior()
