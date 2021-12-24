@@ -80,7 +80,7 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandle
                 new GarmentComodityId(request.Comodity.Id),
                 request.Comodity.Code,
                 request.Comodity.Name,
-                request.CuttingInDate.GetValueOrDefault()
+                request.CuttingOutDate.GetValueOrDefault()
             );
 
             Dictionary<Guid, double> cuttingInDetailToBeUpdated = new Dictionary<Guid, double>();
