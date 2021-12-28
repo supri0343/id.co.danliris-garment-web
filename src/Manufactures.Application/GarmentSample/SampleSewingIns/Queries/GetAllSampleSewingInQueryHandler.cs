@@ -63,7 +63,9 @@ namespace Manufactures.Application.GarmentSample.SampleSewingIns.Queries
                 RONo = co.RONo,
                 Article = co.Article,
                 Unit = new UnitDepartment(co.UnitId, co.UnitCode, co.UnitName),
-                Comodity = new GarmentComodity(co.ComodityId, co.ComodityCode, co.ComodityName)
+                Comodity = new GarmentComodity(co.ComodityId, co.ComodityCode, co.ComodityName),
+                
+
             });
 
             //var selectedData = selectedQuery.ToList();
@@ -83,7 +85,9 @@ namespace Manufactures.Application.GarmentSample.SampleSewingIns.Queries
                     Product = new Product(coi.ProductId, coi.ProductCode, coi.ProductName),
                     DesignColor = coi.DesignColor,
                     Quantity = coi.Quantity,
-                    RemainingQuantity=coi.RemainingQuantity
+                    RemainingQuantity=coi.RemainingQuantity,
+                    Size = new SizeValueObject(coi.SizeId,coi.SizeName),
+                    Uom = new Uom(coi.UomId,coi.UomUnit)
                 }).ToList();
 
 

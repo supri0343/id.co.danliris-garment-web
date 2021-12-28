@@ -121,19 +121,19 @@ namespace Manufactures.Controllers.Api.GarmentSample
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(string id, [FromBody] UpdateGarmentSampleCuttingOutCommand command)
-        {
-            Guid guid = Guid.Parse(id);
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> Put(string id, [FromBody] UpdateGarmentSampleCuttingOutCommand command)
+        //{
+        //    Guid guid = Guid.Parse(id);
 
-            command.SetIdentity(guid);
+        //    command.SetIdentity(guid);
 
-            VerifyUser();
+        //    VerifyUser();
 
-            var order = await Mediator.Send(command);
+        //    var order = await Mediator.Send(command);
 
-            return Ok(order.Identity);
-        }
+        //    return Ok(order.Identity);
+        //}
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
