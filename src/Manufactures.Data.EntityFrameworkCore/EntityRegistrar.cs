@@ -21,6 +21,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentMonitoringProductionStockFlow
 using Manufactures.Data.EntityFrameworkCore.GarmentPreparings.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleCuttingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleCuttingOuts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleDeliveryReturns.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SamplePreparings.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleRequests.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleSewingIns.Configs;
@@ -175,6 +176,9 @@ namespace Manufactures.Data.EntityFrameworkCore
 
             modelBuilder.ApplyConfiguration(new GarmentSampleSewingInConfig());
             modelBuilder.ApplyConfiguration(new GarmentSampleSewingInItemConfig());
-        }
+
+			modelBuilder.ApplyConfiguration(new GarmentSampleDeliveryReturnConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSampleDeliveryReturnItemConfig());
+		}
 	}
 }
