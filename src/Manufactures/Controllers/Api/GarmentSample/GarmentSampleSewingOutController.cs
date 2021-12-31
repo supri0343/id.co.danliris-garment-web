@@ -1,5 +1,7 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Application.GarmentSample.SampleSewingOuts.Queries.GetGarmentSampleSewingOutsByRONo;
+using Manufactures.Application.GarmentSample.SampleSewingOuts.Queries.GetGarmentSampleSewingOutsDynamic;
 using Manufactures.Domain.GarmentSample.SampleSewingIns.Repositories;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts.Commands;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts.Repositories;
@@ -216,33 +218,31 @@ namespace Manufactures.Controllers.Api.GarmentSample
             });
         }
 
-        //[HttpGet("loader-by-ro")]
-        //public async Task<IActionResult> GetLoaderByRO(string keyword, string filter = "{}")
-        //{
-        //    VerifyUser();
+        [HttpGet("loader-by-ro")]
+        public async Task<IActionResult> GetLoaderByRO(string keyword, string filter = "{}")
+        {
+            VerifyUser();
 
-        //    var result = await Mediator.Send(new GetGarmentSampleSewingOutsByRONoQuery(keyword, filter));
+            var result = await Mediator.Send(new GetGarmentSampleSewingOutsByRONoQuery(keyword, filter));
 
-        //    return Ok(result.data);
-        //}
+            return Ok(result.data);
+        }
 
-        //[HttpGet("dynamic")]
-        //public async Task<IActionResult> GetDynamic(int page = 1, int size = 25, string order = "{}", string search = "[]", string select = null, string keyword = null, string filter = "{}")
-        //{
-        //    VerifyUser();
+        [HttpGet("dynamic")]
+        public async Task<IActionResult> GetDynamic(int page = 1, int size = 25, string order = "{}", string search = "[]", string select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
 
-        //    var result = await Mediator.Send(new GetGarmentSampleSewingOutsDynamicQuery(page, size, order, search, select, keyword, filter));
+            var result = await Mediator.Send(new GetGarmentSampleSewingOutsDynamicQuery(page, size, order, search, select, keyword, filter));
 
-        //    return Ok(result.data, info: new
-        //    {
-        //        page,
-        //        size,
-        //        count = result.data.Count,
-        //        result.total
-        //    });
-        //}
-
-
+            return Ok(result.data, info: new
+            {
+                page,
+                size,
+                count = result.data.Count,
+                result.total
+            });
+        }
 
         [HttpGet("{id}/{buyer}")]
         public async Task<IActionResult> GetPdf(string id, string buyer)
