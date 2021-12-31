@@ -49,7 +49,7 @@ namespace Manufactures.Helpers.PDFTemplates
             document.Add(title);
 
             #region Header
-            Paragraph caption = new Paragraph("FM-00-PJ-02-005 / R1", normal_font);
+            Paragraph caption = new Paragraph("", normal_font);
             caption.Alignment = Element.ALIGN_RIGHT;
             caption.SpacingAfter = 10f;
             document.Add(caption);
