@@ -351,7 +351,6 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.Queries.Monit
                 {
                     reportDataTable.Rows.Add(report.roJob, report.article, report.buyerCode, report.qtyOrder, report.style, Math.Round(report.fc), report.hours, report.cuttingQtyMeter, Math.Round(report.price, 2), report.stock, report.cuttingQtyPcs, report.expenditure, report.remainQty);
                     counter++;
-
                 }
             }
             using (var package = new ExcelPackage())
