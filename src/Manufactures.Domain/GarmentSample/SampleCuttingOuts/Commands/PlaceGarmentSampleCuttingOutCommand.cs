@@ -38,9 +38,9 @@ namespace Manufactures.Domain.GarmentSample.SampleCuttingOuts.Commands
             RuleFor(r => r.Unit).NotNull();
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
 
-           // RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
+            RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
 
-           // RuleFor(r => r.PriceSewing).GreaterThan(0).WithMessage(x => $"`Tarif komoditi Sewing '{x.Unit.Name}' belum ada`").When(w => w.Unit != null);
+            RuleFor(r => r.PriceSewing).GreaterThan(0).WithMessage(x => $"`Tarif komoditi Sewing '{x.Unit.Name}' belum ada`").When(w => w.Unit != null);
             RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.CuttingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
