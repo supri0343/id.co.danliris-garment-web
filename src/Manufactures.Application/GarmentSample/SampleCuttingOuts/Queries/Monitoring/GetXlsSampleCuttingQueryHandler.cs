@@ -330,7 +330,7 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.Queries.Monit
             var reportDataTable = new DataTable();
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO JOB", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Article", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kode Barang", DataType = typeof(string) });
+            //reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kode Barang", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kode Buyer", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Style", DataType = typeof(string) });
@@ -342,14 +342,14 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.Queries.Monit
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Hasil Potong", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Keluar", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sisa", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sisa Nominal", DataType = typeof(double) });
+            //reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sisa Nominal", DataType = typeof(double) });
             int counter = 5;
 
             if (listViewModel.garmentMonitorings.Count > 0)
             {
                 foreach (var report in listViewModel.garmentMonitorings)
                 {
-                    reportDataTable.Rows.Add(report.roJob, report.article, report.productCode, report.buyerCode, report.qtyOrder, report.style, Math.Round(report.fc), report.hours, report.cuttingQtyMeter, Math.Round(report.price, 2), report.stock, report.cuttingQtyPcs, report.expenditure, report.remainQty, report.nominal);
+                    reportDataTable.Rows.Add(report.roJob, report.article, report.buyerCode, report.qtyOrder, report.style, Math.Round(report.fc), report.hours, report.cuttingQtyMeter, Math.Round(report.price, 2), report.stock, report.cuttingQtyPcs, report.expenditure, report.remainQty);
                     counter++;
 
                 }
