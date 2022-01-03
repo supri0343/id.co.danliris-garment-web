@@ -1,6 +1,8 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandlers;
+using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.GarmentComodityPrices.ReadModels;
 using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.GarmentSample.SampleCuttingIns;
 using Manufactures.Domain.GarmentSample.SampleCuttingIns.ReadModels;
@@ -112,7 +114,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleCuttingOuts
                     new GarmentSampleCuttingInDetailReadModel(cuttingInDetailGuid)
                 }.AsQueryable());
 
-            //GarmentComodityPrice garmentComodity = new GarmentComodityPrice(
+            GarmentComodityPrice garmentComodity = new GarmentComodityPrice(
             Guid.NewGuid(),
                 true,
                 DateTimeOffset.Now,
