@@ -1,6 +1,9 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandlers;
+using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.GarmentComodityPrices.ReadModels;
+using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.GarmentSample.SampleCuttingIns;
 using Manufactures.Domain.GarmentSample.SampleCuttingIns.ReadModels;
 using Manufactures.Domain.GarmentSample.SampleCuttingIns.Repositories;
@@ -32,7 +35,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleCuttingOuts
         private readonly Mock<IGarmentSampleCuttingInDetailRepository> _mockCuttingInDetailRepository;
         private readonly Mock<IGarmentSampleSewingInRepository> _mockSewingDORepository;
         private readonly Mock<IGarmentSampleSewingInItemRepository> _mockSewingDOItemRepository;
-       // private readonly Mock<IGarmentComodityPriceRepository> _mockComodityPriceRepository;
+       private readonly Mock<IGarmentComodityPriceRepository> _mockComodityPriceRepository;
 
         public PlaceGarmentSampleCuttingOutCommandHandlerTest()
         {
@@ -42,7 +45,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleCuttingOuts
             _mockCuttingInDetailRepository = CreateMock<IGarmentSampleCuttingInDetailRepository>();
             _mockSewingDORepository = CreateMock<IGarmentSampleSewingInRepository>();
             _mockSewingDOItemRepository = CreateMock<IGarmentSampleSewingInItemRepository>();
-            //_mockComodityPriceRepository = CreateMock<IGarmentComodityPriceRepository>();
+            _mockComodityPriceRepository = CreateMock<IGarmentComodityPriceRepository>();
 
             _MockStorage.SetupStorage(_mockCuttingOutRepository);
             _MockStorage.SetupStorage(_mockCuttingOutItemRepository);
@@ -50,7 +53,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleCuttingOuts
             _MockStorage.SetupStorage(_mockCuttingInDetailRepository);
             _MockStorage.SetupStorage(_mockSewingDORepository);
             _MockStorage.SetupStorage(_mockSewingDOItemRepository);
-           // _MockStorage.SetupStorage(_mockComodityPriceRepository);
+           _MockStorage.SetupStorage(_mockComodityPriceRepository);
         }
 
         private PlaceGarmentSampleCuttingOutCommandHandler CreatePlaceGarmentSampleCuttingOutCommandHandler()
@@ -111,24 +114,24 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleCuttingOuts
                     new GarmentSampleCuttingInDetailReadModel(cuttingInDetailGuid)
                 }.AsQueryable());
 
-            //GarmentComodityPrice garmentComodity = new GarmentComodityPrice(
-            //    Guid.NewGuid(),
-            //    true,
-            //    DateTimeOffset.Now,
-            //    new UnitDepartmentId(placeGarmentSampleCuttingOutCommand.Unit.Id),
-            //    placeGarmentSampleCuttingOutCommand.Unit.Code,
-            //    placeGarmentSampleCuttingOutCommand.Unit.Name,
-            //    new GarmentComodityId(placeGarmentSampleCuttingOutCommand.Comodity.Id),
-            //    placeGarmentSampleCuttingOutCommand.Comodity.Code,
-            //    placeGarmentSampleCuttingOutCommand.Comodity.Name,
-            //    1000
-            //    );
-            //_mockComodityPriceRepository
-            //    .Setup(s => s.Query)
-            //    .Returns(new List<GarmentComodityPriceReadModel>
-            //    {
-            //        garmentComodity.GetReadModel()
-            //    }.AsQueryable());
+            GarmentComodityPrice garmentComodity = new GarmentComodityPrice(
+            Guid.NewGuid(),
+                true,
+                DateTimeOffset.Now,
+                new UnitDepartmentId(placeGarmentSampleCuttingOutCommand.Unit.Id),
+                placeGarmentSampleCuttingOutCommand.Unit.Code,
+                placeGarmentSampleCuttingOutCommand.Unit.Name,
+                new GarmentComodityId(placeGarmentSampleCuttingOutCommand.Comodity.Id),
+                placeGarmentSampleCuttingOutCommand.Comodity.Code,
+                placeGarmentSampleCuttingOutCommand.Comodity.Name,
+                1000
+                );
+            _mockComodityPriceRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentComodityPriceReadModel>
+                {
+                    garmentComodity.GetReadModel()
+                }.AsQueryable());
 
             _mockCuttingOutRepository
                 .Setup(s => s.Update(It.IsAny<GarmentSampleCuttingOut>()))

@@ -269,23 +269,23 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
             await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(It.IsAny<PlaceGarmentSampleCuttingOutCommand>()));
         }
 
-        [Fact]
-        public async Task Put_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            var unitUnderTest = CreateGarmentSampleCuttingOutController();
+        //[Fact]
+        //public async Task Put_StateUnderTest_ExpectedBehavior()
+        //{
+        //    // Arrange
+        //    var unitUnderTest = CreateGarmentSampleCuttingOutController();
 
-            Guid cuttingOutGuid = Guid.NewGuid();
-            _MockMediator
-                .Setup(s => s.Send(It.IsAny<UpdateGarmentSampleCuttingOutCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSampleCuttingOut(cuttingOutGuid, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", null, new UnitDepartmentId(1), null, null, new GarmentComodityId(1), null, null, false));
+        //    Guid cuttingOutGuid = Guid.NewGuid();
+        //    _MockMediator
+        //        .Setup(s => s.Send(It.IsAny<UpdateGarmentSampleCuttingOutCommand>(), It.IsAny<CancellationToken>()))
+        //        .ReturnsAsync(new GarmentSampleCuttingOut(cuttingOutGuid, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", null, new UnitDepartmentId(1), null, null, new GarmentComodityId(1), null, null, false));
 
-            // Act
-            var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentSampleCuttingOutCommand());
+        //    // Act
+        //    var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentSampleCuttingOutCommand());
 
-            // Assert
-            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }
+        //    // Assert
+        //    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        //}
 
         [Fact]
         public async Task Delete_Return_BadRequest()
