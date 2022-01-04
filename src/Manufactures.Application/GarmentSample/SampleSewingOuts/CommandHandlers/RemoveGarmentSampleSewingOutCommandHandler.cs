@@ -24,7 +24,6 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
         private readonly IGarmentSampleSewingOutRepository _garmentSewingOutRepository;
         private readonly IGarmentSampleSewingOutItemRepository _garmentSewingOutItemRepository;
         private readonly IGarmentSampleSewingOutDetailRepository _garmentSewingOutDetailRepository;
-        private readonly IGarmentSampleSewingInRepository _garmentSewingInRepository;
         private readonly IGarmentSampleSewingInItemRepository _garmentSewingInItemRepository;
         private readonly IGarmentSampleCuttingInRepository _garmentCuttingInRepository;
         private readonly IGarmentSampleCuttingInItemRepository _garmentCuttingInItemRepository;
@@ -38,7 +37,6 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
             _garmentSewingOutRepository = storage.GetRepository<IGarmentSampleSewingOutRepository>();
             _garmentSewingOutItemRepository = storage.GetRepository<IGarmentSampleSewingOutItemRepository>();
             _garmentSewingOutDetailRepository = storage.GetRepository<IGarmentSampleSewingOutDetailRepository>();
-            _garmentSewingInRepository = storage.GetRepository<IGarmentSampleSewingInRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSampleSewingInItemRepository>();
             _garmentCuttingInRepository = storage.GetRepository<IGarmentSampleCuttingInRepository>();
             _garmentCuttingInItemRepository = storage.GetRepository<IGarmentSampleCuttingInItemRepository>();
