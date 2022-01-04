@@ -68,7 +68,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleSewingOuts
             return new RemoveGarmentSampleSewingOutCommandHandler(_MockStorage.Object);
         }
         [Fact]
-        public async Task Handle_StateUnderTest_ExpectedBehaviorCutting()
+        public async Task Handle_StateUnderTest_ExpectedBehaviorCuttingIsDiff()
         {
 
             Guid sewingOutGuid = Guid.NewGuid();
@@ -79,9 +79,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleSewingOuts
 
 
             GarmentSampleCuttingIn garmentCuttingIn = new GarmentSampleCuttingIn(
-                  sewingOutGuid, "", "", "", "","", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, 9);
+                  sewingOutGuid, "", "", "", "", "", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, 9);
             GarmentSampleCuttingInItem garmentCuttingInItem = new GarmentSampleCuttingInItem(
-                  sewingOutGuid,sewingOutGuid,sewingOutGuid,1,"",sewingOutGuid,"");
+                  sewingOutGuid, sewingOutGuid, sewingOutGuid, 1, "", sewingOutGuid, "");
 
             _mockCuttingInRepository
                 .Setup(s => s.Query)
@@ -98,7 +98,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleSewingOuts
                }
                .AsQueryable());
             GarmentSampleSewingInItem garmentSewingInItem = new GarmentSampleSewingInItem(
-               sewingOutGuid,sewingOutGuid,sewingOutGuid,sewingOutGuid,new ProductId(1),"","","",new SizeId(1),"",9,new UomId(1),"","",19,19,19);
+               sewingOutGuid, sewingOutGuid, sewingOutGuid, sewingOutGuid, new ProductId(1), "", "", "", new SizeId(1), "", 9, new UomId(1), "", "", 19, 19, 19);
             _mockSewingInItemRepository
                .Setup(s => s.Query)
                .Returns(new List<GarmentSampleSewingInItemReadModel>()
@@ -139,7 +139,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleSewingOuts
                 {
                     garmentSewingOut.GetReadModel()
                 }.AsQueryable());
-          
+
             _mockSewingOutItemRepository
             .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleSewingOutItemReadModel, bool>>>()))
             .Returns(new List<GarmentSampleSewingOutItem>()
@@ -165,7 +165,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleSewingOuts
             _mockSewingInItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentSampleSewingInItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentSampleSewingInItem>()));
-          
+
             _MockStorage
             .Setup(x => x.Save())
             .Verifiable();
@@ -178,8 +178,119 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleSewingOuts
 
             result.Should().NotBeNull();
         }
+        //[Fact]
+        //public async Task Handle_StateUnderTest_ExpectedBehaviorCuttingIsNoDiff()
+        //{
+
+        //    Guid sewingOutGuid = Guid.NewGuid();
+        //    RemoveGarmentSampleSewingOutCommandHandler unitUnderTest = CreateRemoveGarmentSewingOutCommandHandler();
+        //    RemoveGarmentSampleSewingOutCommand removeGarmentSewingOutCommand = new RemoveGarmentSampleSewingOutCommand(sewingOutGuid);
+
+        //    CancellationToken cancellationToken = CancellationToken.None;
+
+
+        //    GarmentSampleCuttingIn garmentCuttingIn = new GarmentSampleCuttingIn(
+        //          sewingOutGuid, "", "", "", "", "", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, 9);
+        //    GarmentSampleCuttingInItem garmentCuttingInItem = new GarmentSampleCuttingInItem(
+        //          sewingOutGuid, sewingOutGuid, sewingOutGuid, 1, "", sewingOutGuid, "");
+
+        //    _mockCuttingInRepository
+        //        .Setup(s => s.Query)
+        //        .Returns(new List<GarmentSampleCuttingInReadModel>()
+        //        {
+        //            garmentCuttingIn.GetReadModel()
+        //        }.AsQueryable());
+
+        //    _mockCuttingInItemRepository
+        //       .Setup(s => s.Query)
+        //       .Returns(new List<GarmentSampleCuttingInItemReadModel>()
+        //       {
+        //           garmentCuttingInItem.GetReadModel()
+        //       }
+        //       .AsQueryable());
+        //    GarmentSampleSewingInItem garmentSewingInItem = new GarmentSampleSewingInItem(
+        //       sewingOutGuid, sewingOutGuid, sewingOutGuid, sewingOutGuid, new ProductId(1), "", "", "", new SizeId(1), "", 9, new UomId(1), "", "", 19, 19, 19);
+        //    _mockSewingInItemRepository
+        //       .Setup(s => s.Query)
+        //       .Returns(new List<GarmentSampleSewingInItemReadModel>()
+        //       {
+        //           garmentSewingInItem.GetReadModel()
+        //       }
+        //       .AsQueryable());
+
+        //    _mockCuttingInItemRepository
+        //   .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleCuttingInItemReadModel, bool>>>()))
+        //   .Returns(new List<GarmentSampleCuttingInItem>()
+        //   {
+        //       new GarmentSampleCuttingInItem(sewingOutGuid,sewingOutGuid,sewingOutGuid,1,"",sewingOutGuid,"")
+        //   });
+
+        //    _mockCuttingInDetailRepository
+        //        .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleCuttingInDetailReadModel, bool>>>()))
+        // .Returns(new List<GarmentSampleCuttingInDetail>()
+        // {
+        //        new GarmentSampleCuttingInDetail(sewingOutGuid,sewingOutGuid,sewingOutGuid,sewingOutGuid,sewingOutGuid,new ProductId(1),"","","","",10,new UomId(1),"",1,new UomId(1),"",1,12,12,2,"")
+        // });
+        //    _mockCuttingInRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSampleCuttingIn>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSampleCuttingIn>()));
+        //    _mockCuttingInItemRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSampleCuttingInItem>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSampleCuttingInItem>()));
+        //    _mockCuttingInDetailRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSampleCuttingInDetail>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSampleCuttingInDetail>()));
+
+        //    GarmentSampleSewingOut garmentSewingOut = new GarmentSampleSewingOut(
+        //        sewingOutGuid, "No", new BuyerId(1), "", "", new UnitDepartmentId(1), "", "", "CUTTING", DateTimeOffset.Now, "", "", new UnitDepartmentId(1), "", "", new GarmentComodityId(1), "", "", false);
+
+        //    _mockSewingOutRepository
+        //        .Setup(s => s.Query)
+        //        .Returns(new List<GarmentSampleSewingOutReadModel>()
+        //        {
+        //            garmentSewingOut.GetReadModel()
+        //        }.AsQueryable());
+
+        //    _mockSewingOutItemRepository
+        //    .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleSewingOutItemReadModel, bool>>>()))
+        //    .Returns(new List<GarmentSampleSewingOutItem>()
+        //    {
+        //       new GarmentSampleSewingOutItem(sewingOutGuid,sewingOutGuid,sewingOutGuid,sewingOutGuid,new ProductId(1),"","","",new SizeId(1),"",1,new UomId(1),"uomUnit","",1,10,10)
+        //    });
+
+        //    _mockSewingOutDetailRepository
+        //   .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleSewingOutDetailReadModel, bool>>>()))
+        //   .Returns(new List<GarmentSampleSewingOutDetail>()
+        //   {
+        //        new GarmentSampleSewingOutDetail(sewingOutGuid,sewingOutGuid,new SizeId(1),"",1,new UomId(1),"")
+        //   });
+        //    _mockSewingOutRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSampleSewingOut>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSampleSewingOut>()));
+        //    _mockSewingOutItemRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSampleSewingOutItem>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSampleSewingOutItem>()));
+        //    _mockSewingOutDetailRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSampleSewingOutDetail>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSampleSewingOutDetail>()));
+        //    _mockSewingInItemRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSampleSewingInItem>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSampleSewingInItem>()));
+
+        //    _MockStorage
+        //    .Setup(x => x.Save())
+        //    .Verifiable();
+
+        //    // Act
+        //    RemoveGarmentSampleSewingOutCommand request = new RemoveGarmentSampleSewingOutCommand(sewingOutGuid);
+
+        //    var result = await unitUnderTest.Handle(request, cancellationToken);
+
+
+        //    result.Should().NotBeNull();
+        //}
         [Fact]
-        public async Task Handle_StateUnderTest_ExpectedBehaviorFinishing()
+        public async Task Handle_StateUnderTest_ExpectedBehaviorFinishingIsDiff()
         {
 
             Guid sewingOutGuid = Guid.NewGuid();
@@ -198,7 +309,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleSewingOuts
                       garmentFinishingItem.GetReadModel()
                 }.AsQueryable());
             GarmentSampleFinishingIn garmentFinishing = new GarmentSampleFinishingIn(
-               sewingOutGuid,"","",new UnitDepartmentId(1),"","","","",new UnitDepartmentId(1),"","",DateTimeOffset.Now,new GarmentComodityId(1),"","",1,"","");
+               sewingOutGuid, "", "", new UnitDepartmentId(1), "", "", "", "", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, new GarmentComodityId(1), "", "", 1, "", "");
 
             _mockFinishingInRepository
                 .Setup(s => s.Query)
@@ -244,7 +355,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleSewingOuts
                 {
                     garmentSewingOut.GetReadModel()
                 }.AsQueryable());
-           
+
 
 
             _mockSewingOutItemRepository
@@ -272,8 +383,8 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleSewingOuts
             _mockSewingInItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentSampleSewingInItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentSampleSewingInItem>()));
-           
-            
+
+
             _MockStorage
             .Setup(x => x.Save())
             .Verifiable();
@@ -286,5 +397,114 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleSewingOuts
 
             result.Should().NotBeNull();
         }
+        //[Fact]
+        //public async Task Handle_StateUnderTest_ExpectedBehaviorFinishingIsNotDiff()
+        //{
+
+        //    Guid sewingOutGuid = Guid.NewGuid();
+        //    RemoveGarmentSampleSewingOutCommandHandler unitUnderTest = CreateRemoveGarmentSewingOutCommandHandler();
+        //    RemoveGarmentSampleSewingOutCommand removeGarmentSewingOutCommand = new RemoveGarmentSampleSewingOutCommand(sewingOutGuid);
+
+        //    CancellationToken cancellationToken = CancellationToken.None;
+
+        //    GarmentSampleFinishingInItem garmentFinishingItem = new GarmentSampleFinishingInItem(
+        //      sewingOutGuid, sewingOutGuid, sewingOutGuid, sewingOutGuid, sewingOutGuid, new SizeId(1), "", new ProductId(1), "", "", "", 11, 11, new UomId(1), "", "", 10, 10, 1);
+
+        //    _mockFinishingInItemRepository
+        //        .Setup(s => s.Query)
+        //        .Returns(new List<GarmentSampleFinishingInItemReadModel>()
+        //        {
+        //              garmentFinishingItem.GetReadModel()
+        //        }.AsQueryable());
+        //    GarmentSampleFinishingIn garmentFinishing = new GarmentSampleFinishingIn(
+        //       sewingOutGuid, "", "", new UnitDepartmentId(1), "", "", "", "", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, new GarmentComodityId(1), "", "", 1, "", "");
+
+        //    _mockFinishingInRepository
+        //        .Setup(s => s.Query)
+        //        .Returns(new List<GarmentSampleFinishingInReadModel>()
+        //        {
+        //             garmentFinishing.GetReadModel()
+        //        }.AsQueryable());
+
+
+        //    GarmentSampleSewingInItem garmentSewingInItem = new GarmentSampleSewingInItem(
+        //       sewingOutGuid, sewingOutGuid, sewingOutGuid, sewingOutGuid, new ProductId(1), "", "", "", new SizeId(1), "", 9, new UomId(1), "", "", 19, 19, 19);
+        //    _mockSewingInItemRepository
+        //       .Setup(s => s.Query)
+        //       .Returns(new List<GarmentSampleSewingInItemReadModel>()
+        //       {
+        //           garmentSewingInItem.GetReadModel()
+        //       }
+        //       .AsQueryable());
+
+        //    //_mockFinishingInItemRepository
+        //    //.Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleFinishingInItemReadModel, bool>>>()))
+        //    //.Returns(new List<GarmentSampleFinishingInItem>()
+        //    //{
+        //    //     new GarmentSampleFinishingInItem(sewingOutGuid,sewingOutGuid,sewingOutGuid,sewingOutGuid,sewingOutGuid,new SizeId(1),"",new ProductId(1),"","","",11,11,new UomId(1),"","",10,10,1)
+        //    //});
+
+
+        //    _mockFinishingInRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSampleFinishingIn>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSampleFinishingIn>()));
+
+        //    _mockFinishingInItemRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSampleFinishingInItem>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSampleFinishingInItem>()));
+
+
+        //    GarmentSampleSewingOut garmentSewingOut = new GarmentSampleSewingOut(
+        //        sewingOutGuid, "No", new BuyerId(1), "", "", new UnitDepartmentId(1), "", "", "FINISHING", DateTimeOffset.Now, "", "", new UnitDepartmentId(1), "", "", new GarmentComodityId(1), "", "", false);
+
+        //    _mockSewingOutRepository
+        //        .Setup(s => s.Query)
+        //        .Returns(new List<GarmentSampleSewingOutReadModel>()
+        //        {
+        //            garmentSewingOut.GetReadModel()
+        //        }.AsQueryable());
+
+
+
+        //    _mockSewingOutItemRepository
+        //    .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleSewingOutItemReadModel, bool>>>()))
+        //    .Returns(new List<GarmentSampleSewingOutItem>()
+        //    {
+        //       new GarmentSampleSewingOutItem(sewingOutGuid,sewingOutGuid,sewingOutGuid,sewingOutGuid,new ProductId(1),"","","",new SizeId(1),"",1,new UomId(1),"uomUnit","",1,10,10)
+        //    });
+
+        //    _mockSewingOutDetailRepository
+        //   .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleSewingOutDetailReadModel, bool>>>()))
+        //   .Returns(new List<GarmentSampleSewingOutDetail>()
+        //   {
+        //        new GarmentSampleSewingOutDetail(sewingOutGuid,sewingOutGuid,new SizeId(1),"",1,new UomId(1),"")
+        //   });
+        //    _mockSewingOutRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSampleSewingOut>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSampleSewingOut>()));
+        //    _mockSewingOutItemRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSampleSewingOutItem>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSampleSewingOutItem>()));
+        //    _mockSewingOutDetailRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSampleSewingOutDetail>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSampleSewingOutDetail>()));
+        //    _mockSewingInItemRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSampleSewingInItem>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSampleSewingInItem>()));
+
+
+        //    _MockStorage
+        //    .Setup(x => x.Save())
+        //    .Verifiable();
+
+        //    // Act
+        //    RemoveGarmentSampleSewingOutCommand request = new RemoveGarmentSampleSewingOutCommand(sewingOutGuid);
+
+        //    var result = await unitUnderTest.Handle(request, cancellationToken);
+
+
+        //    result.Should().NotBeNull();
+
+        //}
     }
 }

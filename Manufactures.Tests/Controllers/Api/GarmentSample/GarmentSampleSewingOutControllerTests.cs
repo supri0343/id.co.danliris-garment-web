@@ -1,5 +1,6 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
+using Manufactures.Application.GarmentSample.SampleSewingOuts.Queries.MonitoringSewing;
 using Manufactures.Controllers.Api.GarmentSample;
 using Manufactures.Domain.GarmentSample.SampleSewingIns.Repositories;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts;
@@ -13,6 +14,7 @@ using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -258,23 +260,23 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
 
-        
 
-        //[Fact]
-        //public async Task GetMonitoringBehavior()
-        //{
-        //    var unitUnderTest = CreateGarmentSewingOutController();
 
-        //    _MockMediator
-        //        .Setup(s => s.Send(It.IsAny<GetMonitoringSewingQuery>(), It.IsAny<CancellationToken>()))
-        //        .ReturnsAsync(new GarmentMonitoringSewingListViewModel());
+        [Fact]
+        public async Task GetMonitoringBehavior()
+        {
+            var unitUnderTest = CreateGarmentSewingOutController();
 
-        //    // Act
-        //    var result = await unitUnderTest.GetMonitoring(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetMonitoringSampleSewingQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentMonitoringSampleSewingListViewModel());
 
-        //    // Assert
-        //    GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
-        //}
+            // Act
+            var result = await unitUnderTest.GetMonitoring(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+        }
 
         [Fact]
         public async Task GetComplete_Return_Success()
@@ -336,26 +338,22 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
         }
 
 
-        //[Fact]
-        //public async Task GetXLSBehavior()
-        //{
-        //    var unitUnderTest = CreateGarmentSewingOutController();
+        [Fact]
+        public async Task GetXLSBehavior()
+        {
+            var unitUnderTest = CreateGarmentSewingOutController();
 
-        //    _MockMediator
-        //        .Setup(s => s.Send(It.IsAny<GetXlsSewingQuery>(), It.IsAny<CancellationToken>()))
-        //        .ReturnsAsync(new MemoryStream());
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsSampleSewingQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
 
-        //    // Act
-        //    var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+            // Act
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
 
-        //    // Assert
-        //    Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+            // Assert
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
 
-        //}
+        }
         
-       
-
-       
-
     }
 }

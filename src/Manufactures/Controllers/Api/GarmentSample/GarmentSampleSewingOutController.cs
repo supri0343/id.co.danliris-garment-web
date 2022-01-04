@@ -2,6 +2,7 @@
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentSample.SampleSewingOuts.Queries.GetGarmentSampleSewingOutsByRONo;
 using Manufactures.Application.GarmentSample.SampleSewingOuts.Queries.GetGarmentSampleSewingOutsDynamic;
+using Manufactures.Application.GarmentSample.SampleSewingOuts.Queries.MonitoringSewing;
 using Manufactures.Domain.GarmentSample.SampleSewingIns.Repositories;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts.Commands;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts.Repositories;
@@ -271,27 +272,46 @@ namespace Manufactures.Controllers.Api.GarmentSample
             };
         }
 
-        //[HttpPut("update-dates")]
-        //public async Task<IActionResult> UpdateDates([FromBody]UpdateDatesGarmentSewingOutCommand command)
-        //{
-        //    VerifyUser();
+        [HttpGet("monitoring")]
+        public async Task<IActionResult> GetMonitoring(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+        {
+            VerifyUser();
+            GetMonitoringSampleSewingQuery query = new GetMonitoringSampleSewingQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
 
-        //    if (command.Date == null || command.Date == DateTimeOffset.MinValue)
-        //        return BadRequest(new
-        //        {
-        //            code = HttpStatusCode.BadRequest,
-        //            error = "Tanggal harus diisi"
-        //        });
-        //    else if (command.Date.Date > DateTimeOffset.Now.Date)
-        //        return BadRequest(new
-        //        {
-        //            code = HttpStatusCode.BadRequest,
-        //            error = "Tanggal tidak boleh lebih dari hari ini"
-        //        });
+            return Ok(viewModel.garmentMonitorings, info: new
+            {
+                page,
+                size,
+                viewModel.count
+            });
+        }
+        [HttpGet("download")]
+        public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, string type, int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsSampleSewingQuery query = new GetXlsSampleSewingQuery(page, size, Order, unit, dateFrom, dateTo, type, WorkContext.Token);
+                byte[] xlsInBytes;
 
-        //    var order = await Mediator.Send(command);
+                var xls = await Mediator.Send(query);
 
-        //    return Ok();
-        //}
+                string filename = "Laporan Sewing Sample";
+
+                if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+                if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
     }
 }
