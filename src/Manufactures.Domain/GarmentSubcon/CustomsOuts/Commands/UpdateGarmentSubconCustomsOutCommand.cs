@@ -40,9 +40,9 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.Commands
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item tidak boleh kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
             RuleForEach(r => r.Items).SetValidator(new GarmentSubconCustomsOutItemValueObjectValidator()).When(s => s.Items != null);
-            RuleFor(r => r.TotalQty)
-                 .LessThanOrEqualTo(r => r.UsedQty)
-                 .WithMessage(x => $"'Jumlah Total' tidak boleh lebih dari '{x.UsedQty}'.");
+            //RuleFor(r => r.TotalQty)
+            //     .LessThanOrEqualTo(r => r.UsedQty)
+            //     .WithMessage(x => $"'Jumlah Total' tidak boleh lebih dari '{x.UsedQty}'.");
         }
     }
 }

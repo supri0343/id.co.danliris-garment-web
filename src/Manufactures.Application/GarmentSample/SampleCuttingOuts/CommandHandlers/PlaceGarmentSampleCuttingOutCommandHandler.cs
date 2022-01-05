@@ -14,6 +14,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Manufactures.Domain.GarmentSample.SampleCuttingIns;
+using Manufactures.Domain.GarmentComodityPrices.Repositories;
+using Manufactures.Domain.GarmentComodityPrices;
 
 namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandlers
 {
@@ -26,7 +28,7 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandle
         private readonly IGarmentSampleSewingInRepository _garmentSewingInRepository;
         private readonly IGarmentSampleSewingInItemRepository _garmentSewingInItemRepository;
         private readonly IGarmentSampleCuttingInDetailRepository _garmentCuttingInDetailRepository;
-        //private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
+        private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
 
         public PlaceGarmentSampleCuttingOutCommandHandler(IStorage storage)
         {
@@ -37,7 +39,7 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandle
             _garmentSewingInRepository = storage.GetRepository<IGarmentSampleSewingInRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSampleSewingInItemRepository>();
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentSampleCuttingInDetailRepository>();
-            // _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
+            _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
         }
 
         public async Task<GarmentSampleCuttingOut> Handle(PlaceGarmentSampleCuttingOutCommand request, CancellationToken cancellationToken)
@@ -80,7 +82,7 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandle
                 new GarmentComodityId(request.Comodity.Id),
                 request.Comodity.Code,
                 request.Comodity.Name,
-                request.CuttingInDate.GetValueOrDefault()
+                request.CuttingOutDate.GetValueOrDefault()
             );
 
             Dictionary<Guid, double> cuttingInDetailToBeUpdated = new Dictionary<Guid, double>();
@@ -126,8 +128,8 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandle
 
                     await _GarmentSampleCuttingOutDetailRepository.Update(GarmentSampleCuttingOutDetail);
 
-                    //GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && a.UnitId == request.Unit.Id && a.ComodityId == request.Comodity.Id).OrderBy(o => o.ModifiedDate).Select(s => new GarmentComodityPrice(s)).Last();
-                    //double price = (detail.BasicPrice + ((double)garmentComodityPrice.Price * 25 / 100)) * detail.CuttingOutQuantity;
+                    GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && a.UnitId == request.Unit.Id && a.ComodityId == request.Comodity.Id).OrderBy(o => o.ModifiedDate).Select(s => new GarmentComodityPrice(s)).Last();
+                    double price = (detail.BasicPrice + ((double)garmentComodityPrice.Price * 25 / 100)) * detail.CuttingOutQuantity;
                     GarmentSampleSewingInItem garmentSewingInItem = new GarmentSampleSewingInItem(
                         Guid.NewGuid(),
                         garmentSewingIn.Identity,
@@ -145,7 +147,7 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandle
                         detail.Color.ToUpper(),
                         detail.CuttingOutQuantity,
                         detail.BasicPrice,
-                        0
+                        price
                     );
 
                     await _garmentSewingInItemRepository.Update(garmentSewingInItem);

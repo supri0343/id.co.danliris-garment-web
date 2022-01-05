@@ -1,5 +1,7 @@
 ﻿using Barebone.Tests;
+using FluentAssertions;
 using Manufactures.Application.GarmentSample.SampleCuttingOuts.Queries;
+using Manufactures.Application.GarmentSample.SampleCuttingOuts.Queries.Monitoring;
 using Manufactures.Controllers.Api.GarmentSample;
 using Manufactures.Domain.GarmentSample.SampleCuttingOuts;
 using Manufactures.Domain.GarmentSample.SampleCuttingOuts.Commands;
@@ -15,6 +17,7 @@ using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -199,42 +202,42 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
         }
 
-        //[Fact]
-        //public async Task GetSingle_PDF_StateUnderTest_ExpectedBehavior()
-        //{
-        //    // Arrange
-        //    var unitUnderTest = CreateGarmentSampleCuttingOutController();
+        [Fact]
+        public async Task GetSingle_PDF_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSampleCuttingOutController();
 
-        //    Guid cuttingOutGuid = Guid.NewGuid();
-        //    _mockGarmentSampleCuttingOutRepository
-        //        .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleCuttingOutReadModel, bool>>>()))
-        //        .Returns(new List<GarmentSampleCuttingOut>()
-        //        {
-        //            new GarmentSampleCuttingOut(cuttingOutGuid,"cutOutNo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", "art", new UnitDepartmentId(1), null, null, new GarmentComodityId(1), null, null,false)
-        //        });
+            Guid cuttingOutGuid = Guid.NewGuid();
+            _mockGarmentSampleCuttingOutRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleCuttingOutReadModel, bool>>>()))
+                .Returns(new List<GarmentSampleCuttingOut>()
+                {
+                    new GarmentSampleCuttingOut(cuttingOutGuid,"cutOutNo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", "art", new UnitDepartmentId(1), null, null, new GarmentComodityId(1), null, null,false)
+                });
 
-        //    Guid cuttingOutItemGuid = Guid.NewGuid();
-        //    _mockGarmentSampleCuttingOutItemRepository
-        //        .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleCuttingOutItemReadModel, bool>>>()))
-        //        .Returns(new List<GarmentSampleCuttingOutItem>()
-        //        {
-        //            new GarmentSampleCuttingOutItem(cuttingOutItemGuid, cuttingOutGuid, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1),"productCode", "productName", "design", 1)
-        //        });
+            Guid cuttingOutItemGuid = Guid.NewGuid();
+            _mockGarmentSampleCuttingOutItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleCuttingOutItemReadModel, bool>>>()))
+                .Returns(new List<GarmentSampleCuttingOutItem>()
+                {
+                    new GarmentSampleCuttingOutItem(cuttingOutItemGuid, cuttingOutGuid, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1),"productCode", "productName", "design", 1)
+                });
 
-        //    _mockGarmentSampleCuttingOutDetailRepository
-        //        .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleCuttingOutDetailReadModel, bool>>>()))
-        //        .Returns(new List<GarmentSampleCuttingOutDetail>()
-        //        {
-        //            new GarmentSampleCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), "size", "color", 1, 1, new UomId(1), "uom", 1, 1)
-        //        });
+            _mockGarmentSampleCuttingOutDetailRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleCuttingOutDetailReadModel, bool>>>()))
+                .Returns(new List<GarmentSampleCuttingOutDetail>()
+                {
+                    new GarmentSampleCuttingOutDetail(Guid.NewGuid(), cuttingOutItemGuid, new SizeId(1), "size", "color", 1, 1, new UomId(1), "uom", 1, 1)
+                });
 
-        //    // Act
-        //    var result = await unitUnderTest.GetPdf(Guid.NewGuid().ToString(), "buyerCode");
+            // Act
+            var result = await unitUnderTest.GetPdf(Guid.NewGuid().ToString(), "buyerCode");
 
-        //    // Assert
-        //    //Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        //    Assert.NotNull(result.GetType().GetProperty("FileStream"));
-        //}
+            // Assert
+            //Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+            Assert.NotNull(result.GetType().GetProperty("FileStream"));
+        }
 
         [Fact]
         public async Task Post_StateUnderTest_ExpectedBehavior()
@@ -269,23 +272,23 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
             await Assert.ThrowsAsync<Exception>(() => unitUnderTest.Post(It.IsAny<PlaceGarmentSampleCuttingOutCommand>()));
         }
 
-        [Fact]
-        public async Task Put_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            var unitUnderTest = CreateGarmentSampleCuttingOutController();
+        //[Fact]
+        //public async Task Put_StateUnderTest_ExpectedBehavior()
+        //{
+        //    // Arrange
+        //    var unitUnderTest = CreateGarmentSampleCuttingOutController();
 
-            Guid cuttingOutGuid = Guid.NewGuid();
-            _MockMediator
-                .Setup(s => s.Send(It.IsAny<UpdateGarmentSampleCuttingOutCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSampleCuttingOut(cuttingOutGuid, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", null, new UnitDepartmentId(1), null, null, new GarmentComodityId(1), null, null, false));
+        //    Guid cuttingOutGuid = Guid.NewGuid();
+        //    _MockMediator
+        //        .Setup(s => s.Send(It.IsAny<UpdateGarmentSampleCuttingOutCommand>(), It.IsAny<CancellationToken>()))
+        //        .ReturnsAsync(new GarmentSampleCuttingOut(cuttingOutGuid, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, "RONo", null, new UnitDepartmentId(1), null, null, new GarmentComodityId(1), null, null, false));
 
-            // Act
-            var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentSampleCuttingOutCommand());
+        //    // Act
+        //    var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentSampleCuttingOutCommand());
 
-            // Assert
-            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
-        }
+        //    // Assert
+        //    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        //}
 
         [Fact]
         public async Task Delete_Return_BadRequest()
@@ -375,6 +378,53 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
             string order = JsonConvert.SerializeObject(orderData);
             var result = await unitUnderTest.GetComplete(1, 25, order, new List<string>(), "", "{}");
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task GetMonitoringBehavior()
+        {
+            var unitUnderTest = CreateGarmentSampleCuttingOutController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetSampleCuttingMonitoringQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentSampleCuttingMonitoringViewModel());
+
+            // Act
+            var result = await unitUnderTest.GetMonitoring(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task GetXLSBehavior_Throws_Exception()
+        {
+            var unitUnderTest = CreateGarmentSampleCuttingOutController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsSampleCuttingQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.InternalServerError);
+
+        }
+
+        [Fact]
+        public async Task GetXLSBehavior()
+        {
+            var unitUnderTest = CreateGarmentSampleCuttingOutController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsSampleCuttingQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
+
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+
+            // Assert
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+
         }
     }
 }
