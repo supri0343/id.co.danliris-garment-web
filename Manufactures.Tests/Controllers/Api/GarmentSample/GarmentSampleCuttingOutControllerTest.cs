@@ -1,5 +1,7 @@
 ﻿using Barebone.Tests;
+using FluentAssertions;
 using Manufactures.Application.GarmentSample.SampleCuttingOuts.Queries;
+using Manufactures.Application.GarmentSample.SampleCuttingOuts.Queries.Monitoring;
 using Manufactures.Controllers.Api.GarmentSample;
 using Manufactures.Domain.GarmentSample.SampleCuttingOuts;
 using Manufactures.Domain.GarmentSample.SampleCuttingOuts.Commands;
@@ -15,6 +17,7 @@ using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -375,6 +378,53 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
             string order = JsonConvert.SerializeObject(orderData);
             var result = await unitUnderTest.GetComplete(1, 25, order, new List<string>(), "", "{}");
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task GetMonitoringBehavior()
+        {
+            var unitUnderTest = CreateGarmentSampleCuttingOutController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetSampleCuttingMonitoringQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentSampleCuttingMonitoringViewModel());
+
+            // Act
+            var result = await unitUnderTest.GetMonitoring(1, DateTime.Now, DateTime.Now, 1, 25, "{}");
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task GetXLSBehavior_Throws_Exception()
+        {
+            var unitUnderTest = CreateGarmentSampleCuttingOutController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsSampleCuttingQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.InternalServerError);
+
+        }
+
+        [Fact]
+        public async Task GetXLSBehavior()
+        {
+            var unitUnderTest = CreateGarmentSampleCuttingOutController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsSampleCuttingQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
+
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+
+            // Assert
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+
         }
     }
 }
