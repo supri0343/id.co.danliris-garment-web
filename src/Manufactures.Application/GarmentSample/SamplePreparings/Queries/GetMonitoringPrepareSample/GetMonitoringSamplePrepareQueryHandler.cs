@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Manufactures.Domain.GarmentSample.SampleDeliveryReturns.Repositories;
+using Manufactures.Domain.GarmentSample.SampleAvalProducts.Repositories;
 
 namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMonitoringPrepareSample
 {
@@ -22,12 +24,12 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
 		private readonly IGarmentSampleCuttingInRepository garmentCuttingInRepository;
 		private readonly IGarmentSampleCuttingInItemRepository garmentCuttingInItemRepository;
 		private readonly IGarmentSampleCuttingInDetailRepository garmentCuttingInDetailRepository;
-		//private readonly IGarmentAvalProductRepository garmentAvalProductRepository;
-		//private readonly IGarmentAvalProductItemRepository garmentAvalProductItemRepository;
-		//private readonly IGarmentDeliveryReturnRepository garmentDeliveryReturnRepository;
-		//private readonly IGarmentDeliveryReturnItemRepository garmentDeliveryReturnItemRepository;
+        private readonly IGarmentSampleAvalProductRepository garmentAvalProductRepository;
+        private readonly IGarmentSampleAvalProductItemRepository garmentAvalProductItemRepository;
+        private readonly IGarmentSampleDeliveryReturnRepository garmentDeliveryReturnRepository;
+        private readonly IGarmentSampleDeliveryReturnItemRepository garmentDeliveryReturnItemRepository;
 
-		public GetMonitoringSamplePrepareQueryHandler(IStorage storage, IServiceProvider serviceProvider)
+        public GetMonitoringSamplePrepareQueryHandler(IStorage storage, IServiceProvider serviceProvider)
 		{
 			_storage = storage;
 			garmentPreparingRepository = storage.GetRepository<IGarmentSamplePreparingRepository>();
@@ -35,11 +37,11 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
 			garmentCuttingInRepository = storage.GetRepository<IGarmentSampleCuttingInRepository>();
 			garmentCuttingInItemRepository = storage.GetRepository<IGarmentSampleCuttingInItemRepository>();
 			garmentCuttingInDetailRepository = storage.GetRepository<IGarmentSampleCuttingInDetailRepository>();
-			//garmentAvalProductRepository = storage.GetRepository<IGarmentAvalProductRepository>();
-			//garmentAvalProductItemRepository = storage.GetRepository<IGarmentAvalProductItemRepository>();
-			//garmentDeliveryReturnRepository = storage.GetRepository<IGarmentDeliveryReturnRepository>();
-			//garmentDeliveryReturnItemRepository = storage.GetRepository<IGarmentDeliveryReturnItemRepository>();
-			_http = serviceProvider.GetService<IHttpClientService>();
+            garmentAvalProductRepository = storage.GetRepository<IGarmentSampleAvalProductRepository>();
+            garmentAvalProductItemRepository = storage.GetRepository<IGarmentSampleAvalProductItemRepository>();
+            garmentDeliveryReturnRepository = storage.GetRepository<IGarmentSampleDeliveryReturnRepository>();
+            garmentDeliveryReturnItemRepository = storage.GetRepository<IGarmentSampleDeliveryReturnItemRepository>();
+            _http = serviceProvider.GetService<IHttpClientService>();
 		}
 		class monitoringView
 		{
@@ -74,14 +76,14 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
                                                      {
                                                          aa.Identity,
                                                          aa.Article,
-                                                         aa.BuyerCode,
+                                                         aa.BuyerCode,aa.BuyerName,
                                                          aa.RONo,
                                                          aa.ProcessDate
                                                      })
                                           join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentSamplePreparingId
                                           select new
                                           {
-                                              Buyer = a.BuyerCode,
+                                              Buyer = a.BuyerCode +"-" + a.BuyerName,
                                               RO = a.RONo,
                                               Articles = a.Article,
                                               Id = a.Identity,
@@ -144,91 +146,91 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
                                                    productCode = e.ProductCode,
                                                    remainQty = e.RemainingQuantity
                                                }).Distinct();
-             
-            //var QueryAval = from a in (from data in garmentAvalProductRepository.Query
-            //                           where data.AvalDate <= dateTo
-            //                           select new
-            //                           {
-            //                               data.Identity,
-            //                               data.RONo,
-            //                               data.AvalDate
-            //                           })
-            //                join b in garmentAvalProductItemRepository.Query on a.Identity equals b.APId
-            //                join c in garmentPreparingItemRepository.Query on Guid.Parse(b.PreparingItemId) equals c.Identity
-            //                join d in (from data in garmentPreparingRepository.Query
-            //                           where data.UnitId == request.unit
-            //                           select new
-            //                           {
-            //                               data.Identity,
-            //                               data.RONo
-            //                           }) on c.GarmentPreparingId equals d.Identity
-            //                select new monitoringView
-            //                {
-            //                    prepareItemid = c.Identity,
-            //                    price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.Total).FirstOrDefault()),
-            //                    expenditure = 0,
-            //                    aval = a.AvalDate >= dateFrom ? b.Quantity : 0,
-            //                    uomUnit = "",
-            //                    stock = a.AvalDate < dateFrom ? -b.Quantity : 0,
-            //                    mainFabricExpenditure = 0,
-            //                    nonMainFabricExpenditure = 0,
-            //                    remark = b.DesignColor,
-            //                    receipt = 0,
-            //                    productCode = b.ProductCode,
-            //                    remainQty = 0
-            //                };
 
-            //var QueryDRPrepare = from a in (from data in garmentDeliveryReturnRepository.Query
-            //                                where data.ReturnDate <= dateTo && data.UnitId == request.unit
-            //                                && data.StorageName.Contains("BAHAN BAKU")
-            //                                select new
-            //                                {
-            //                                    data.RONo,
-            //                                    data.Identity,
-            //                                    data.ReturnDate
-            //                                })
-            //                     join b in (from bb in garmentDeliveryReturnItemRepository.Query
-            //                                where bb.PreparingItemId != "00000000-0000-0000-0000-000000000000"
-            //                                select new
-            //                                {
-            //                                    bb.PreparingItemId,
-            //                                    bb.DRId,
-            //                                    bb.Quantity,
-            //                                    bb.ProductCode,
-            //                                    bb.DesignColor
-            //                                }) on a.Identity equals b.DRId
-            //                     select new
-            //                     {
-            //                         a.RONo,
-            //                         b.PreparingItemId,
-            //                         b.Quantity,
-            //                         b.DesignColor,
-            //                         a.ReturnDate,
-            //                         b.ProductCode
-            //                     };
+            var QueryAval = from a in (from data in garmentAvalProductRepository.Query
+                                       where data.AvalDate <= dateTo
+                                       select new
+                                       {
+                                           data.Identity,
+                                           data.RONo,
+                                           data.AvalDate
+                                       })
+                            join b in garmentAvalProductItemRepository.Query on a.Identity equals b.APId
+                            join c in garmentPreparingItemRepository.Query on Guid.Parse(b.SamplePreparingItemId) equals c.Identity
+                            join d in (from data in garmentPreparingRepository.Query
+                                       where data.UnitId == request.unit
+                                       select new
+                                       {
+                                           data.Identity,
+                                           data.RONo
+                                       }) on c.GarmentSamplePreparingId equals d.Identity
+                            select new monitoringView
+                            {
+                                prepareItemid = c.Identity,
+                                //price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.Total).FirstOrDefault()),
+                                expenditure = 0,
+                                aval = a.AvalDate >= dateFrom ? b.Quantity : 0,
+                                uomUnit = "",
+                                stock = a.AvalDate < dateFrom ? -b.Quantity : 0,
+                                mainFabricExpenditure = 0,
+                                nonMainFabricExpenditure = 0,
+                                remark = b.DesignColor,
+                                receipt = 0,
+                                productCode = b.ProductCode,
+                                remainQty = 0
+                            };
 
-            //var QueryDeliveryReturn = from a in QueryDRPrepare
-            //                          join c in garmentPreparingItemRepository.Query
-            //                          on Guid.Parse(a.PreparingItemId) equals (c.Identity)
-            //                          select new monitoringView
-            //                          {
-            //                              prepareItemid = c.Identity,
-            //                              expenditure = a.ReturnDate >= dateFrom ? a.Quantity : 0,
-            //                              aval = 0,
-            //                              uomUnit = "",
-            //                              stock = a.ReturnDate < dateFrom ? -a.Quantity : 0,
-            //                              mainFabricExpenditure = 0,
-            //                              nonMainFabricExpenditure = 0,
-            //                              remark = a.DesignColor,
-            //                              receipt = 0,
-            //                              productCode = a.ProductCode,
-            //                              remainQty = 0
-            //                          };
+            var QueryDRPrepare = from a in (from data in garmentDeliveryReturnRepository.Query
+                                            where data.ReturnDate <= dateTo && data.UnitId == request.unit
+                                            && data.StorageName.Contains("BAHAN BAKU")
+                                            select new
+                                            {
+                                                data.RONo,
+                                                data.Identity,
+                                                data.ReturnDate
+                                            })
+                                 join b in (from bb in garmentDeliveryReturnItemRepository.Query
+                                            where bb.PreparingItemId != "00000000-0000-0000-0000-000000000000"
+                                            select new
+                                            {
+                                                bb.PreparingItemId,
+                                                bb.DRId,
+                                                bb.Quantity,
+                                                bb.ProductCode,
+                                                bb.DesignColor
+                                            }) on a.Identity equals b.DRId
+                                 select new
+                                 {
+                                     a.RONo,
+                                     b.PreparingItemId,
+                                     b.Quantity,
+                                     b.DesignColor,
+                                     a.ReturnDate,
+                                     b.ProductCode
+                                 };
+
+            var QueryDeliveryReturn = from a in QueryDRPrepare
+                                      join c in garmentPreparingItemRepository.Query
+                                      on Guid.Parse(a.PreparingItemId) equals (c.Identity)
+                                      select new monitoringView
+                                      {
+                                          prepareItemid = c.Identity,
+                                          expenditure = a.ReturnDate >= dateFrom ? a.Quantity : 0,
+                                          aval = 0,
+                                          uomUnit = "",
+                                          stock = a.ReturnDate < dateFrom ? -a.Quantity : 0,
+                                          mainFabricExpenditure = 0,
+                                          nonMainFabricExpenditure = 0,
+                                          remark = a.DesignColor,
+                                          receipt = 0,
+                                          productCode = a.ProductCode,
+                                          remainQty = 0
+                                      };
 
             var queryNow = from a in (QueryMutationPrepareItemNow
                             .Union(QueryCuttingDONow)
-                            //.Union(QueryAval)
-                            //.Union(QueryDeliveryReturn)
+                            .Union(QueryAval)
+                            .Union(QueryDeliveryReturn)
                             .AsEnumerable())
                            join b in QueryMutationPrepareItemsROASAL
                            on a.prepareItemid equals b.prepareitemid
@@ -267,10 +269,11 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
                     stock = Math.Round(item.stock, 2),
                     remark = item.Remark,
                     receipt = Math.Round(item.receipt, 2),
+                    deliveryReturn = Math.Round(item.drQty,2),
                     aval = Math.Round(item.Aval, 2),
                     nonMainFabricExpenditure = Math.Round(item.nonmainFabricExpenditure, 2),
                     mainFabricExpenditure = Math.Round(item.mainFabricExpenditure, 2)
-                    
+                   
                 };
                 monitoringPrepareDtos.Add(garmentMonitoringPrepareDto);
             }
