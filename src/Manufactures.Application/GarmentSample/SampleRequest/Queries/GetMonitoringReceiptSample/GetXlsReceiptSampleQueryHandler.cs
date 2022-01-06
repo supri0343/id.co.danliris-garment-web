@@ -139,7 +139,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
             {
                 GarmentMonitoringReceiptSampleDto receiptSampleDto = new GarmentMonitoringReceiptSampleDto()
                 {
-                    buyer = item.BuyerCode,
+                    buyer = item.BuyerCode + " - " + item.BuyerName,
                     color = item.Color,
                     quantity = item.Quantity,
                     receivedDate = item.ReceivedDate,
@@ -157,6 +157,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
                 sampleDtosList.Add(receiptSampleDto);
             }
             sampleViewModel.garmentMonitorings = sampleDtosList;
+
             var reportDataTable = new DataTable();
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No Surat Sample", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO Sample", DataType = typeof(string) });
@@ -173,11 +174,33 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Md", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl Pembuatan Surat Sample", DataType = typeof(string) });
             int counter = 5;
+            int idx = 1;
+            var rCount = 0;
+            Dictionary<string, string> Rowcount = new Dictionary<string, string>();
+
             if (sampleViewModel.garmentMonitorings.Count > 0)
             {
                 foreach (var report in sampleViewModel.garmentMonitorings)
                 {
-                    reportDataTable.Rows.Add(report.sampleRequestNo, report.roNoSample, report.sampleCategory, report.sampleType, report.buyer, report.style, report.color, report.sizeName, report.sizeDescription, report.quantity, report.sentDate.AddHours(7).ToString("dd-MM-yyyy"), report.receivedDate.Value.ToString("dd-MM-yyyy"), report.garmentSectionName, report.sampleRequestDate.AddHours(7).ToString("dd-MM-yyyy"));
+                    idx++;
+                    if (!Rowcount.ContainsKey(report.sampleRequestNo))
+                    {
+                        rCount = 0;
+                        var index = idx;
+                        Rowcount.Add(report.sampleRequestNo, index.ToString());
+                    }
+                    else
+                    {
+                        rCount += 1;
+                        Rowcount[report.sampleRequestNo] = Rowcount[report.sampleRequestNo] + "-" + rCount.ToString();
+                        var val = Rowcount[report.sampleRequestNo].Split("-");
+                        if ((val).Length > 0)
+                        {
+                            Rowcount[report.sampleRequestNo] = val[0] + "-" + rCount.ToString();
+                        }
+                    }
+ 
+                    reportDataTable.Rows.Add(report.sampleRequestNo, report.roNoSample, report.sampleCategory, report.sampleType, report.buyer, report.style, report.color, report.sizeName, report.sizeDescription, report.quantity, report.sentDate.AddHours(7).ToString("dd MMMM yyyy"), report.receivedDate.Value.ToString("dd MMMM yyyy"), report.garmentSectionName, report.sampleRequestDate.AddHours(7).ToString("dd MMMM yyyy"));
                     counter++;
 
                 }
@@ -211,6 +234,57 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
                 worksheet.Cells["E" + 5 + ":N" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells["A" + 5 + ":N" + counter + ""].AutoFitColumns();
                 var stream = new MemoryStream();
+                foreach (var rowMerge in Rowcount)
+                {
+                    var UnitrowNum = rowMerge.Value.Split("-");
+                    int rowNum2 = 1;
+                    int rowNum1 = Convert.ToInt32(UnitrowNum[0]);
+                    if (UnitrowNum.Length > 1)
+                    {
+                        rowNum2 = Convert.ToInt32(rowNum1) + Convert.ToInt32(UnitrowNum[1]);
+                    }
+                    else
+                    {
+                        rowNum2 = Convert.ToInt32(rowNum1);
+                    }
+
+                    worksheet.Cells[$"A{(rowNum1 + 4)}:A{(rowNum2 + 4)}"].Merge = true;
+                    worksheet.Cells[$"A{(rowNum1 + 4)}:A{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    worksheet.Cells[$"A{(rowNum1 + 4)}:A{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                    worksheet.Cells[$"B{(rowNum1 + 4)}:B{(rowNum2 + 4)}"].Merge = true;
+                    worksheet.Cells[$"B{(rowNum1 + 4)}:B{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    worksheet.Cells[$"B{(rowNum1 + 4)}:B{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                    worksheet.Cells[$"C{(rowNum1 + 4)}:C{(rowNum2 + 4)}"].Merge = true;
+                    worksheet.Cells[$"C{(rowNum1 + 4)}:C{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    worksheet.Cells[$"C{(rowNum1 + 4)}:C{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                    worksheet.Cells[$"D{(rowNum1 + 4)}:D{(rowNum2 + 4)}"].Merge = true;
+                    worksheet.Cells[$"D{(rowNum1 + 4)}:D{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    worksheet.Cells[$"D{(rowNum1 + 4)}:D{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                    worksheet.Cells[$"E{(rowNum1 + 4)}:E{(rowNum2 + 4)}"].Merge = true;
+                    worksheet.Cells[$"E{(rowNum1 + 4)}:E{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    worksheet.Cells[$"E{(rowNum1 + 4)}:E{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                    worksheet.Cells[$"K{(rowNum1 + 4)}:K{(rowNum2 + 4)}"].Merge = true;
+                    worksheet.Cells[$"K{(rowNum1 + 4)}:K{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    worksheet.Cells[$"K{(rowNum1 + 4)}:K{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                    worksheet.Cells[$"L{(rowNum1 + 4)}:L{(rowNum2 + 4)}"].Merge = true;
+                    worksheet.Cells[$"L{(rowNum1 + 4)}:L{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    worksheet.Cells[$"L{(rowNum1 + 4)}:L{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                    worksheet.Cells[$"M{(rowNum1 + 4)}:M{(rowNum2 + 4)}"].Merge = true;
+                    worksheet.Cells[$"M{(rowNum1 + 4)}:M{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    worksheet.Cells[$"M{(rowNum1 + 4)}:M{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                    worksheet.Cells[$"N{(rowNum1 + 4)}:N{(rowNum2 + 4)}"].Merge = true;
+                    worksheet.Cells[$"N{(rowNum1 + 4)}:N{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    worksheet.Cells[$"N{(rowNum1 + 4)}:N{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                }
 
                 package.SaveAs(stream);
 
