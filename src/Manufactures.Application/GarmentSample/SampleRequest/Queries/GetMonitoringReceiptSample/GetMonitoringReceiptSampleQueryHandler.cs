@@ -131,11 +131,59 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
             
             GarmentMonitoringReceiptSampleViewModel sampleViewModel = new GarmentMonitoringReceiptSampleViewModel();
             List<GarmentMonitoringReceiptSampleDto> sampleDtosList = new List<GarmentMonitoringReceiptSampleDto>();
+            var queryGrouping= from a in QuerySampleRequest
+                               group new
+                               {
+                                   SampleRequestNo = a.SampleRequestNo,
+                                   RoNoSample = a.RoNoSample,
+                                   SampleCategory = a.SampleCategory,
+                                   SampleType= a.SampleType,
+                                   BuyerCode=a.BuyerCode,
+                                   BuyerName= a.BuyerName,
+                                   SentDate= a.SentDate,
+                                   ReceivedDate = a.ReceivedDate,
+                                   SectionId = a.SectionId,
+                                   SampleRequestDate = a.SampleRequestDate
+                               }
+                                by new
+                                {
+                                    Style = a.Style,
+                                    Color = a.Color,
+                                    SizeName = a.SizeName,
+                                    SizeDescription = a.SizeDescription,
+                                    Quantity = a.Quantity
+                                    //Here you add other keys you want
+                                } into groups
+
+                               select new { grouping = groups.Key.Style,groups.Key.Style,groups.Key.Color, groups.Key.SizeName, groups.Key.SizeDescription, groups.Key.Quantity, Items = groups.ToList() };
+            //int index = 0;
+            //foreach (var item in queryGrouping)
+            // {
+            //    GarmentMonitoringReceiptSampleDto receiptSampleDto = new GarmentMonitoringReceiptSampleDto()
+            //    {
+            //        buyer =  item.Items[index].BuyerCode + " - " + item.Items[index].BuyerName,
+            //        color = item.Color,
+            //        quantity = item.Quantity,
+            //        receivedDate = item.Items[index].ReceivedDate,
+            //        roNoSample = item.Items[index].RoNoSample,
+            //        sampleCategory = item.Items[index].SampleCategory,
+            //        sampleRequestDate = item.Items[index].SampleRequestDate,
+            //        sampleRequestNo = item.Items[index].SampleRequestNo,
+            //        sampleType = item.Items[index].SampleType,
+            //        sentDate = item.Items[index].SentDate,
+            //        sizeDescription = item.SizeDescription,
+            //        style = item.Style,
+            //        sizeName = item.SizeName,
+            //        garmentSectionName = (from aa in garmentSectionResult.data where aa.Id == item.Items[index].SectionId select aa.Name).FirstOrDefault()
+            //    };
+            //    sampleDtosList.Add(receiptSampleDto);
+            //}
+
             foreach (var item in QuerySampleRequest.OrderByDescending(s => s.ReceivedDate).OrderByDescending(s => s.RoNoSample))
             {
                 GarmentMonitoringReceiptSampleDto receiptSampleDto = new GarmentMonitoringReceiptSampleDto()
                 {
-                    buyer = item.BuyerCode,
+                    buyer = item.BuyerCode + " - " + item.BuyerName,
                     color = item.Color,
                     quantity = item.Quantity,
                     receivedDate = item.ReceivedDate,
