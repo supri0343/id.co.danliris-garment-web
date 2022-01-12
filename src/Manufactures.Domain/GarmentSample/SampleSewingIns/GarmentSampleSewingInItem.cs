@@ -13,6 +13,8 @@ namespace Manufactures.Domain.GarmentSample.SampleSewingIns
         public Guid SewingInId { get; private set; }
         public Guid CuttingOutItemId { get; private set; }
         public Guid CuttingOutDetailId { get; private set; }
+        public Guid FinishingOutItemId { get; private set; }
+        public Guid FinishingOutDetailId { get; private set; }
         public ProductId ProductId { get; private set; }
         public string ProductCode { get; private set; }
         public string ProductName { get; private set; }
@@ -36,12 +38,14 @@ namespace Manufactures.Domain.GarmentSample.SampleSewingIns
             }
         }
 
-        public GarmentSampleSewingInItem(Guid identity, Guid sewingInId, Guid cuttingOutItemId, Guid cuttingOutDetailId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity, double basicPrice, double price) : base(identity)
+        public GarmentSampleSewingInItem(Guid identity, Guid sewingInId, Guid cuttingOutItemId, Guid cuttingOutDetailId, Guid finishingOutItemId, Guid finishingOutDetailId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity, double basicPrice, double price) : base(identity)
         {
             Identity = identity;
             SewingInId = sewingInId;
             CuttingOutItemId = cuttingOutItemId;
             CuttingOutDetailId = cuttingOutDetailId;
+            FinishingOutItemId = finishingOutItemId;
+            FinishingOutDetailId = finishingOutDetailId;
             ProductId = productId;
             ProductCode = productCode;
             ProductName = productName;
@@ -61,6 +65,8 @@ namespace Manufactures.Domain.GarmentSample.SampleSewingIns
                 SewingInId = SewingInId,
                 CuttingOutItemId = CuttingOutItemId,
                 CuttingOutDetailId = CuttingOutDetailId,
+                FinishingOutItemId = FinishingOutItemId,
+                FinishingOutDetailId = FinishingOutDetailId,
                 ProductId = ProductId.Value,
                 ProductCode = ProductCode,
                 ProductName = ProductName,
@@ -84,6 +90,8 @@ namespace Manufactures.Domain.GarmentSample.SampleSewingIns
             SewingInId = readModel.SewingInId;
             CuttingOutItemId = readModel.CuttingOutItemId;
             CuttingOutDetailId = readModel.CuttingOutDetailId;
+            FinishingOutItemId = readModel.FinishingOutItemId;
+            FinishingOutDetailId = readModel.FinishingOutDetailId;
             ProductId = new ProductId(readModel.ProductId);
             ProductCode = readModel.ProductCode;
             ProductName = readModel.ProductName;

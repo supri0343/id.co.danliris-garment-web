@@ -14,6 +14,8 @@ namespace Manufactures.Domain.GarmentSample.SampleSewingIns.ReadModels
         public Guid SewingInId { get; internal set; }
         public Guid CuttingOutItemId { get; internal set; }
         public Guid CuttingOutDetailId { get; internal set; }
+        public Guid FinishingOutItemId { get; internal set; }
+        public Guid FinishingOutDetailId { get; internal set; }
         public int ProductId { get; internal set; }
         public string ProductCode { get; internal set; }
         public string ProductName { get; internal set; }

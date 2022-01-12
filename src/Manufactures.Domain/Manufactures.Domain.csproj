@@ -6,8 +6,11 @@
 
   <ItemGroup>
     <Compile Remove="GarmentBalanceStockProductions\ValueObjects\**" />
+    <Compile Remove="GarmentSample\SampleSewingIns\ValueObjects\**" />
     <EmbeddedResource Remove="GarmentBalanceStockProductions\ValueObjects\**" />
+    <EmbeddedResource Remove="GarmentSample\SampleSewingIns\ValueObjects\**" />
     <None Remove="GarmentBalanceStockProductions\ValueObjects\**" />
+    <None Remove="GarmentSample\SampleSewingIns\ValueObjects\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="GarmentSample\SampleSewingIns\ValueObjects\" />
     <Folder Include="GarmentSubcon\ServiceSubconSewings\Commands\" />
   </ItemGroup>
 
