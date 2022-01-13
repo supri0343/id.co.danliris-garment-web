@@ -1,20 +1,18 @@
 ﻿using Infrastructure.Domain;
 using Manufactures.Domain.Events.GarmentSample;
-using Manufactures.Domain.GarmentSample.SampleSewingIns.ReadModels;
+using Manufactures.Domain.GarmentSample.SampleFinishingOuts.ReadModels;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Manufactures.Domain.GarmentSample.SampleSewingIns
+namespace Manufactures.Domain.GarmentSample.SampleFinishingOuts
 {
-    public class GarmentSampleSewingInItem : AggregateRoot<GarmentSampleSewingInItem, GarmentSampleSewingInItemReadModel>
+    public class GarmentSampleFinishingOutItem : AggregateRoot<GarmentSampleFinishingOutItem, GarmentSampleFinishingOutItemReadModel>
     {
-        public Guid SewingInId { get; private set; }
-        public Guid CuttingOutItemId { get; private set; }
-        public Guid CuttingOutDetailId { get; private set; }
-        public Guid FinishingOutItemId { get; private set; }
-        public Guid FinishingOutDetailId { get; private set; }
+        public Guid FinishingOutId { get; private set; }
+        public Guid FinishingInId { get; private set; }
+        public Guid FinishingInItemId { get; private set; }
         public ProductId ProductId { get; private set; }
         public string ProductCode { get; private set; }
         public string ProductName { get; private set; }
@@ -29,23 +27,14 @@ namespace Manufactures.Domain.GarmentSample.SampleSewingIns
         public double BasicPrice { get; private set; }
         public double Price { get; private set; }
 
-        public void SetRemainingQuantity(double RemainingQuantity)
+        public GarmentSampleFinishingOutItem(Guid identity, Guid finishingOutId, Guid finishingInId, Guid finishingInItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity, double basicPrice, double price) : base(identity)
         {
-            if (this.RemainingQuantity != RemainingQuantity)
-            {
-                this.RemainingQuantity = RemainingQuantity;
-                ReadModel.RemainingQuantity = RemainingQuantity;
-            }
-        }
+            //MarkTransient();
 
-        public GarmentSampleSewingInItem(Guid identity, Guid sewingInId, Guid cuttingOutItemId, Guid cuttingOutDetailId, Guid finishingOutItemId, Guid finishingOutDetailId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity, double basicPrice, double price) : base(identity)
-        {
             Identity = identity;
-            SewingInId = sewingInId;
-            CuttingOutItemId = cuttingOutItemId;
-            CuttingOutDetailId = cuttingOutDetailId;
-            FinishingOutItemId = finishingOutItemId;
-            FinishingOutDetailId = finishingOutDetailId;
+            FinishingOutId = finishingOutId;
+            FinishingInId = finishingInId;
+            FinishingInItemId = finishingInItemId;
             ProductId = productId;
             ProductCode = productCode;
             ProductName = productName;
@@ -60,13 +49,11 @@ namespace Manufactures.Domain.GarmentSample.SampleSewingIns
             BasicPrice = basicPrice;
             Price = price;
 
-            ReadModel = new GarmentSampleSewingInItemReadModel(identity)
+            ReadModel = new GarmentSampleFinishingOutItemReadModel(identity)
             {
-                SewingInId = SewingInId,
-                CuttingOutItemId = CuttingOutItemId,
-                CuttingOutDetailId = CuttingOutDetailId,
-                FinishingOutItemId = FinishingOutItemId,
-                FinishingOutDetailId = FinishingOutDetailId,
+                FinishingOutId = FinishingOutId,
+                FinishingInId = FinishingInId,
+                FinishingInItemId = FinishingInItemId,
                 ProductId = ProductId.Value,
                 ProductCode = ProductCode,
                 ProductName = ProductName,
@@ -77,21 +64,19 @@ namespace Manufactures.Domain.GarmentSample.SampleSewingIns
                 UomId = UomId.Value,
                 UomUnit = UomUnit,
                 Color = Color,
-                RemainingQuantity = RemainingQuantity,
-                BasicPrice = BasicPrice,
-                Price = Price
+                RemainingQuantity = remainingQuantity,
+                BasicPrice = basicPrice,
+                Price = price
             };
 
-            ReadModel.AddDomainEvent(new OnGarmentSampleSewingInPlaced(Identity));
+            ReadModel.AddDomainEvent(new OnGarmentSampleFinishingOutPlaced(Identity));
         }
 
-        public GarmentSampleSewingInItem(GarmentSampleSewingInItemReadModel readModel) : base(readModel)
+        public GarmentSampleFinishingOutItem(GarmentSampleFinishingOutItemReadModel readModel) : base(readModel)
         {
-            SewingInId = readModel.SewingInId;
-            CuttingOutItemId = readModel.CuttingOutItemId;
-            CuttingOutDetailId = readModel.CuttingOutDetailId;
-            FinishingOutItemId = readModel.FinishingOutItemId;
-            FinishingOutDetailId = readModel.FinishingOutDetailId;
+            FinishingOutId = readModel.FinishingOutId;
+            FinishingInId = readModel.FinishingInId;
+            FinishingInItemId = readModel.FinishingInItemId;
             ProductId = new ProductId(readModel.ProductId);
             ProductCode = readModel.ProductCode;
             ProductName = readModel.ProductName;
@@ -107,12 +92,39 @@ namespace Manufactures.Domain.GarmentSample.SampleSewingIns
             Price = readModel.Price;
         }
 
+        public void SetPrice(double Price)
+        {
+            if (this.Price != Price)
+            {
+                this.Price = Price;
+                ReadModel.Price = Price;
+            }
+        }
+
+        public void SetQuantity(double Quantity)
+        {
+            if (this.Quantity != Quantity)
+            {
+                this.Quantity = Quantity;
+                ReadModel.Quantity = Quantity;
+            }
+        }
+
+        public void SetRemainingQuantity(double RemainingQuantity)
+        {
+            if (this.RemainingQuantity != RemainingQuantity)
+            {
+                this.RemainingQuantity = RemainingQuantity;
+                ReadModel.RemainingQuantity = RemainingQuantity;
+            }
+        }
+
         public void Modify()
         {
             MarkModified();
         }
 
-        protected override GarmentSampleSewingInItem GetEntity()
+        protected override GarmentSampleFinishingOutItem GetEntity()
         {
             return this;
         }

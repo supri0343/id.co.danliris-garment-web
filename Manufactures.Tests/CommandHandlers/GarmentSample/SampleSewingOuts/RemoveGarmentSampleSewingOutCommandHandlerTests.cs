@@ -98,7 +98,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleSewingOuts
                }
                .AsQueryable());
             GarmentSampleSewingInItem garmentSewingInItem = new GarmentSampleSewingInItem(
-               sewingOutGuid, sewingOutGuid, sewingOutGuid, sewingOutGuid, new ProductId(1), "", "", "", new SizeId(1), "", 9, new UomId(1), "", "", 19, 19, 19);
+               sewingOutGuid, sewingOutGuid, sewingOutGuid, sewingOutGuid, Guid.Empty, Guid.Empty, new ProductId(1), "", "", "", new SizeId(1), "", 9, new UomId(1), "", "", 19, 19, 19);
             _mockSewingInItemRepository
                .Setup(s => s.Query)
                .Returns(new List<GarmentSampleSewingInItemReadModel>()
@@ -320,7 +320,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleSewingOuts
 
 
             GarmentSampleSewingInItem garmentSewingInItem = new GarmentSampleSewingInItem(
-               sewingOutGuid, sewingOutGuid, sewingOutGuid, sewingOutGuid, new ProductId(1), "", "", "", new SizeId(1), "", 9, new UomId(1), "", "", 19, 19, 19);
+               sewingOutGuid, sewingOutGuid, sewingOutGuid, sewingOutGuid, Guid.Empty, Guid.Empty, new ProductId(1), "", "", "", new SizeId(1), "", 9, new UomId(1), "", "", 19, 19, 19);
             _mockSewingInItemRepository
                .Setup(s => s.Query)
                .Returns(new List<GarmentSampleSewingInItemReadModel>()
