@@ -170,7 +170,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleSewingInItemReadModel, bool>>>()))
                 .Returns(new List<GarmentSampleSewingInItem>()
                 {
-                    new GarmentSampleSewingInItem(SewingInItemGuid, SewingInGuid, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1),null, 1, new UomId(1),null,null,1,0,0)
+                    new GarmentSampleSewingInItem(SewingInItemGuid, SewingInGuid, Guid.NewGuid(), Guid.NewGuid(),Guid.Empty,Guid.Empty, new ProductId(1), null, null, null, new SizeId(1),null, 1, new UomId(1),null,null,1,0,0)
                 });
 
             // Act
@@ -207,7 +207,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSampleSewingInItemReadModel>>()))
                 .Returns(new List<GarmentSampleSewingInItem>()
                 {
-                    new GarmentSampleSewingInItem(id, id, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1),null, 1, new UomId(1),null,null,1,0,0)
+                    new GarmentSampleSewingInItem(id, id, Guid.NewGuid(), Guid.NewGuid(),Guid.Empty,Guid.Empty, new ProductId(1), null, null, null, new SizeId(1),null, 1, new UomId(1),null,null,1,0,0)
                 }
                 );
 
