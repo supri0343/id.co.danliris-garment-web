@@ -2,6 +2,7 @@
 using Manufactures.Application.GarmentSample.SampleSewingIns.Queries;
 using Manufactures.Controllers.Api.GarmentSample;
 using Manufactures.Domain.GarmentSample.SampleSewingIns;
+using Manufactures.Domain.GarmentSample.SampleSewingIns.Commands;
 using Manufactures.Domain.GarmentSample.SampleSewingIns.ReadModels;
 using Manufactures.Domain.GarmentSample.SampleSewingIns.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
@@ -169,7 +170,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleSewingInItemReadModel, bool>>>()))
                 .Returns(new List<GarmentSampleSewingInItem>()
                 {
-                    new GarmentSampleSewingInItem(SewingInItemGuid, SewingInGuid, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1),null, 1, new UomId(1),null,null,1,0,0)
+                    new GarmentSampleSewingInItem(SewingInItemGuid, SewingInGuid, Guid.NewGuid(), Guid.NewGuid(),Guid.Empty,Guid.Empty, new ProductId(1), null, null, null, new SizeId(1),null, 1, new UomId(1),null,null,1,0,0)
                 });
 
             // Act
@@ -206,7 +207,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSampleSewingInItemReadModel>>()))
                 .Returns(new List<GarmentSampleSewingInItem>()
                 {
-                    new GarmentSampleSewingInItem(id, id, Guid.NewGuid(), Guid.NewGuid(), new ProductId(1), null, null, null, new SizeId(1),null, 1, new UomId(1),null,null,1,0,0)
+                    new GarmentSampleSewingInItem(id, id, Guid.NewGuid(), Guid.NewGuid(),Guid.Empty,Guid.Empty, new ProductId(1), null, null, null, new SizeId(1),null, 1, new UomId(1),null,null,1,0,0)
                 }
                 );
 
@@ -219,6 +220,53 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
             string order = JsonConvert.SerializeObject(orderData);
             var result = await unitUnderTest.GetComplete(1, 25, order, new List<string>(), "", "{}");
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Put_Dates_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSewingInController();
+            Guid sewingOutGuid = Guid.NewGuid();
+            List<string> ids = new List<string>();
+            ids.Add(sewingOutGuid.ToString());
+
+            UpdateDatesGarmentSampleSewingInCommand command = new UpdateDatesGarmentSampleSewingInCommand(ids, DateTimeOffset.Now);
+            _MockMediator
+                .Setup(s => s.Send(command, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(1);
+
+            // Act
+            var result = await unitUnderTest.UpdateDates(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Put_Dates_StateUnderTest_ExpectedBehavior_BadRequest()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSewingInController();
+            Guid sewingOutGuid = Guid.NewGuid();
+            List<string> ids = new List<string>();
+            ids.Add(sewingOutGuid.ToString());
+
+            UpdateDatesGarmentSampleSewingInCommand command = new UpdateDatesGarmentSampleSewingInCommand(ids, DateTimeOffset.Now.AddDays(3));
+
+            // Act
+            var result = await unitUnderTest.UpdateDates(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result));
+
+            UpdateDatesGarmentSampleSewingInCommand command2 = new UpdateDatesGarmentSampleSewingInCommand(ids, DateTimeOffset.MinValue);
+
+            // Act
+            var result1 = await unitUnderTest.UpdateDates(command2);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result1));
         }
     }
 }

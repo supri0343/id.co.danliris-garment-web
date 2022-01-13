@@ -83,7 +83,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleSewingOuts
                   sewingOutGuid, sewingOutGuid, sewingOutGuid, sewingOutGuid, sewingOutGuid
                   , new ProductId(1), "code", "name", "color", "fab", 9, new UomId(1), "uom", 1, new UomId(1), "uom", 1, 90, 90, 2, "");
             GarmentSampleSewingInItem garmentSewingInItem = new GarmentSampleSewingInItem(
-              sewingOutGuid, sewingOutGuid, sewingOutGuid, sewingOutGuid, new ProductId(1), "code", "name", "color", new SizeId(1), "code", 1, new UomId(1), "uom", "color", 0, 19, 19);
+              sewingOutGuid, sewingOutGuid, sewingOutGuid, sewingOutGuid, Guid.Empty, Guid.Empty, new ProductId(1), "code", "name", "color", new SizeId(1), "code", 1, new UomId(1), "uom", "color", 0, 19, 19);
             GarmentSampleSewingOut garmentSewingOut = new GarmentSampleSewingOut(
                 sewingOutGuid, "No", new BuyerId(1), "code", "name", new UnitDepartmentId(1), "code", "name", "CUTTING", DateTimeOffset.Now, "ro", "article", new UnitDepartmentId(1), " code", "name", new GarmentComodityId(1), "code", "name", true);
 

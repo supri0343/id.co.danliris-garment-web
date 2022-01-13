@@ -309,7 +309,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleSewingInItemReadModel, bool>>>()))
                .Returns(new List<GarmentSampleSewingInItem>()
                {
-                    new GarmentSampleSewingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new ProductId(1),"producCode","productName","designColor",new SizeId(1),"sizeName",5,new UomId(1),"uomUnit","color",1,1,1)
+                    new GarmentSampleSewingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),Guid.Empty,Guid.Empty, new ProductId(1),"producCode","productName","designColor",new SizeId(1),"sizeName",5,new UomId(1),"uomUnit","color",1,1,1)
                });
 
 
@@ -339,7 +339,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleSewingInItemReadModel, bool>>>()))
                .Returns(new List<GarmentSampleSewingInItem>()
                {
-                    new GarmentSampleSewingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new ProductId(1),"producCode","productName","designColor",new SizeId(1),"sizeName",1,new UomId(1),"uomUnit","color",1,1,1)
+                    new GarmentSampleSewingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),Guid.Empty,Guid.Empty, new ProductId(1),"producCode","productName","designColor",new SizeId(1),"sizeName",1,new UomId(1),"uomUnit","color",1,1,1)
                });
 
             _MockMediator
@@ -425,6 +425,53 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
             // Assert
             Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
 
+        }
+
+        [Fact]
+        public async Task Put_Dates_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSampleCuttingOutController();
+            Guid sewingOutGuid = Guid.NewGuid();
+            List<string> ids = new List<string>();
+            ids.Add(sewingOutGuid.ToString());
+
+            UpdateDatesGarmentSampleCuttingOutCommand command = new UpdateDatesGarmentSampleCuttingOutCommand(ids, DateTimeOffset.Now);
+            _MockMediator
+                .Setup(s => s.Send(command, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(1);
+
+            // Act
+            var result = await unitUnderTest.UpdateDates(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task Put_Dates_StateUnderTest_ExpectedBehavior_BadRequest()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSampleCuttingOutController();
+            Guid sewingOutGuid = Guid.NewGuid();
+            List<string> ids = new List<string>();
+            ids.Add(sewingOutGuid.ToString());
+
+            UpdateDatesGarmentSampleCuttingOutCommand command = new UpdateDatesGarmentSampleCuttingOutCommand(ids, DateTimeOffset.Now.AddDays(3));
+
+            // Act
+            var result = await unitUnderTest.UpdateDates(command);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result));
+
+            UpdateDatesGarmentSampleCuttingOutCommand command2 = new UpdateDatesGarmentSampleCuttingOutCommand(ids, DateTimeOffset.MinValue);
+
+            // Act
+            var result1 = await unitUnderTest.UpdateDates(command2);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(result1));
         }
     }
 }
