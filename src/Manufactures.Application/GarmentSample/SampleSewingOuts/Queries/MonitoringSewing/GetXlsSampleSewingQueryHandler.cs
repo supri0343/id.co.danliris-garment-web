@@ -151,25 +151,7 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.Queries.Monito
                                     QtySewingRetur = 0,
                                     QtySewingAdj = 0
                                 };
-            //var QuerySewingAdj = from a in (from aa in garmentAdjustmentRepository.Query
-            //                                where aa.AdjustmentDate >= dateBalance && aa.UnitId == request.unit && aa.AdjustmentDate <= dateTo && aa.AdjustmentType == "SEWING"
-            //                                select new { aa.RONo, aa.Identity, aa.AdjustmentDate })
-            //                     join b in garmentAdjustmentItemRepository.Query on a.Identity equals b.AdjustmentId
-            //                     select new monitoringView
-            //                     {
-            //                         price = 0,
-            //                         roJob = a.RONo,
-            //                         BeginingBalanceSewingQty = a.AdjustmentDate < dateFrom && a.AdjustmentDate > dateBalance ? -b.Quantity : 0,
-            //                         QtySewingIn = 0,
-            //                         QtySewingOut = 0,
-            //                         QtySewingInTransfer = 0,
-            //                         WipSewingOut = 0,
-            //                         WipFinishingOut = 0,
-            //                         QtySewingRetur = 0,
-            //                         QtySewingAdj = a.AdjustmentDate >= dateFrom ? b.Quantity : 0,
-            //                     };
-            //var queryNow = queryBalanceSewing.Union(QuerySewingOut).Union(QuerySewingIn).Union(QuerySewingAdj);
-            var queryNow = QuerySewingOut.Union(QuerySewingIn);
+             var queryNow = QuerySewingOut.Union(QuerySewingIn);
             var querySum = queryNow.ToList().GroupBy(x => new { x.roJob }, (key, group) => new
             {
 
@@ -278,24 +260,20 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.Queries.Monito
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kode Buyer", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Style", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Harga (M)", DataType = typeof(double) });
+            //reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Harga (M)", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Saldo Awal WIP Sewing", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sewing In (WIP Sewing)", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sewing Out (WIP Finishing)", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sewing In Transfer", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sewing Out Tranfer WIP Sewing", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sewing Out Transfer WIP Finishing", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Retur ke Cutting", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Adjs Sewing", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Saldo Akhir WIP Sewing", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nominal Saldo Akhir WIP Sewing", DataType = typeof(double) });
+            //reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nominal Saldo Akhir WIP Sewing", DataType = typeof(double) });
 
             int counter = 5;
             if (listViewModel.garmentMonitorings.Count > 0)
             {
                 foreach (var report in listViewModel.garmentMonitorings)
                 {
-                    reportDataTable.Rows.Add(report.roJob, report.article, report.buyerCode, report.qtyOrder, report.style, report.price, report.beginingBalanceSewingQty, report.qtySewingIn, report.qtySewingOut, report.qtySewingInTransfer, report.wipSewingOut, report.wipFinishingOut, report.qtySewingRetur, report.qtySewingAdj, report.endBalanceSewingQty, report.endBalanceSewingPrice);
+                    reportDataTable.Rows.Add(report.roJob, report.article, report.buyerCode, report.qtyOrder, report.style, report.beginingBalanceSewingQty, report.qtySewingIn, report.qtySewingOut, report.qtySewingRetur, report.endBalanceSewingQty);
                     counter++;
                 }
             }
@@ -303,37 +281,37 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.Queries.Monito
             {
                 var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
                 worksheet.Column(5).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Cells["D" + 6 + ":P" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                worksheet.Cells["D" + 6 + ":P" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-                worksheet.Cells["A" + 5 + ":P" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":P" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":P" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":P" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["F" + (counter) + ":P" + (counter) + ""].Style.Font.Bold = true;
-                worksheet.Cells["A" + 5 + ":P" + 5 + ""].Style.Font.Bold = true;
-                worksheet.Cells["A1"].Value = "Report Sewing "; worksheet.Cells["A" + 1 + ":P" + 1 + ""].Merge = true;
+                worksheet.Cells["D" + 6 + ":J" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                worksheet.Cells["D" + 6 + ":J" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+                worksheet.Cells["A" + 5 + ":J" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":J" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":J" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":J" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["F" + (counter) + ":J" + (counter) + ""].Style.Font.Bold = true;
+                worksheet.Cells["A" + 5 + ":J" + 5 + ""].Style.Font.Bold = true;
+                worksheet.Cells["A1"].Value = "Report Sewing "; worksheet.Cells["A" + 1 + ":J" + 1 + ""].Merge = true;
                 worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
-                worksheet.Cells["A" + 1 + ":P" + 1 + ""].Merge = true;
-                worksheet.Cells["A" + 2 + ":P" + 2 + ""].Merge = true;
-                worksheet.Cells["A" + 3 + ":P" + 3 + ""].Merge = true;
-                worksheet.Cells["A" + 1 + ":P" + 3 + ""].Style.Font.Size = 15;
-                worksheet.Cells["A" + 1 + ":P" + 5 + ""].Style.Font.Bold = true;
-                worksheet.Cells["A" + 1 + ":P" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells["A" + 1 + ":P" + 2 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Cells["A" + 1 + ":J" + 1 + ""].Merge = true;
+                worksheet.Cells["A" + 2 + ":J" + 2 + ""].Merge = true;
+                worksheet.Cells["A" + 3 + ":J" + 3 + ""].Merge = true;
+                worksheet.Cells["A" + 1 + ":J" + 3 + ""].Style.Font.Size = 15;
+                worksheet.Cells["A" + 1 + ":J" + 5 + ""].Style.Font.Bold = true;
+                worksheet.Cells["A" + 1 + ":J" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["A" + 1 + ":J" + 2 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
-                worksheet.Cells["A" + 5 + ":P" + (counter) + ""].AutoFitColumns();
+                worksheet.Cells["A" + 5 + ":J" + (counter) + ""].AutoFitColumns();
                 var stream = new MemoryStream();
-                if (request.type != "bookkeeping")
-                {
+                //if (request.type != "bookkeeping")
+                //{
+                //    worksheet.Cells["A" + (counter) + ":E" + (counter) + ""].Merge = true;
+                //    worksheet.Column(3).Hidden = true;
+                //    worksheet.Column(6).Hidden = true;
+                //    worksheet.Column(16).Hidden = true;
+                //}
+                //else
+                //{
                     worksheet.Cells["A" + (counter) + ":E" + (counter) + ""].Merge = true;
-                    worksheet.Column(3).Hidden = true;
-                    worksheet.Column(6).Hidden = true;
-                    worksheet.Column(16).Hidden = true;
-                }
-                else
-                {
-                    worksheet.Cells["A" + (counter) + ":F" + (counter) + ""].Merge = true;
-                }
+                ////}
                 package.SaveAs(stream);
 
                 return stream;
