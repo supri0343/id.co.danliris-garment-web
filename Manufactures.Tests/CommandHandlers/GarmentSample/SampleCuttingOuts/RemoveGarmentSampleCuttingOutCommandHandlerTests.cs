@@ -116,7 +116,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleCuttingOuts
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleSewingInItemReadModel, bool>>>()))
                 .Returns(new List<GarmentSampleSewingInItem>()
                 {
-                    new GarmentSampleSewingInItem(Guid.Empty, sewingDOGuid, cuttingOutDetailGuid, cuttingOutItemGuid,new ProductId(1), null, null,null, new SizeId(1), null,0,new UomId(1), null,null,0,0,0)
+                    new GarmentSampleSewingInItem(Guid.Empty, sewingDOGuid, cuttingOutDetailGuid, cuttingOutItemGuid,Guid.Empty,Guid.Empty,new ProductId(1), null, null,null, new SizeId(1), null,0,new UomId(1), null,null,0,0,0)
                 });
 
             _mockCuttingOutRepository

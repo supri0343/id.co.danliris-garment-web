@@ -309,7 +309,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleSewingInItemReadModel, bool>>>()))
                .Returns(new List<GarmentSampleSewingInItem>()
                {
-                    new GarmentSampleSewingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new ProductId(1),"producCode","productName","designColor",new SizeId(1),"sizeName",5,new UomId(1),"uomUnit","color",1,1,1)
+                    new GarmentSampleSewingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),Guid.Empty,Guid.Empty, new ProductId(1),"producCode","productName","designColor",new SizeId(1),"sizeName",5,new UomId(1),"uomUnit","color",1,1,1)
                });
 
 
@@ -339,7 +339,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleSewingInItemReadModel, bool>>>()))
                .Returns(new List<GarmentSampleSewingInItem>()
                {
-                    new GarmentSampleSewingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new ProductId(1),"producCode","productName","designColor",new SizeId(1),"sizeName",1,new UomId(1),"uomUnit","color",1,1,1)
+                    new GarmentSampleSewingInItem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),Guid.Empty,Guid.Empty, new ProductId(1),"producCode","productName","designColor",new SizeId(1),"sizeName",1,new UomId(1),"uomUnit","color",1,1,1)
                });
 
             _MockMediator
