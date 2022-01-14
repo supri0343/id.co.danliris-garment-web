@@ -183,7 +183,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         }
 
         [HttpGet("realization-report/download")]
-        public async Task<IActionResult> GetXlsWIP(string subconcontractNo, int page = 1, int size = 25, string Order = "{}")
+        public async Task<IActionResult> GetXlsReaizationReport(string subconcontractNo, int page = 1, int size = 25, string Order = "{}")
         {
             try
             {
