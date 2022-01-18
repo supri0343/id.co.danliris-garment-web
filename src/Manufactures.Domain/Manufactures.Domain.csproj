@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="GarmentSample\SampleStocks\" />
     <Folder Include="GarmentSubcon\ServiceSubconSewings\Commands\" />
   </ItemGroup>
 
