@@ -24,6 +24,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleAvalProducts.Con
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleCuttingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleCuttingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleDeliveryReturns.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleExpenditureGoods.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleFinishedGoodStocks.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleFinishingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleFinishingOuts.Configs;
@@ -208,6 +209,9 @@ namespace Manufactures.Data.EntityFrameworkCore
 
             modelBuilder.ApplyConfiguration(new GarmentSampleFinishedGoodStockConfig());
             modelBuilder.ApplyConfiguration(new GarmentSampleFinishedGoodStockHistoryConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentSampleExpenditureGoodConfig());
+            modelBuilder.ApplyConfiguration(new GarmentSampleExpenditureGoodItemConfig());
         }
 	}
 }
