@@ -192,10 +192,10 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 			return new GetGarmentMonitoringProductionStockFlowQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
 
-		/*[Fact]
+		[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior()
 		{
-			// Arrange
+			 
 			GetGarmentMonitoringProductionStockFlowQueryHandler unitUnderTest = CreateGetMonitoringProductionFlowQueryHandler();
 			CancellationToken cancellationToken = CancellationToken.None;
 
@@ -478,11 +478,10 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
                 {
                      new GarmentBalanceMonitoringProductionStocFlow("ro","buyer","article","comodityName",1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,garmentBalanceSewing).GetReadModel()
                 }.AsQueryable());
-            // Act
+            
             var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
-
-			// Assert
+			
 			result.Should().NotBeNull();
-		}*/
+		}
 	}
 }
