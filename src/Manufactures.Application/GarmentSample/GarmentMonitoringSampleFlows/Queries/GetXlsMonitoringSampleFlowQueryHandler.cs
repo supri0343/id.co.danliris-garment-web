@@ -111,8 +111,8 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleFlows.Qu
 
 		public async Task<MemoryStream> Handle(GetXlsMonitoringSampleFlowQuery request, CancellationToken cancellationToken)
 		{
-			DateTimeOffset date = new DateTimeOffset(request.date, new TimeSpan(7, 0, 0));
-
+			DateTimeOffset date = new DateTimeOffset(request.date);
+			date.AddHours(7);
 			var QueryRo = (from a in garmentCuttingOutRepository.Query
 						   join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CuttingOutId
 						   where a.UnitFromId == request.unit && a.CuttingOutDate <= date
