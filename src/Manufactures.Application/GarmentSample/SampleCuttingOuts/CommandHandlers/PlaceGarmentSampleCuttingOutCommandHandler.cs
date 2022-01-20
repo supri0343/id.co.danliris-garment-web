@@ -135,6 +135,8 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandle
                         garmentSewingIn.Identity,
                         GarmentSampleCuttingOutDetail.Identity,
                         GarmentSampleCuttingOutItem.Identity,
+                        Guid.Empty,
+                        Guid.Empty,
                         new ProductId(item.Product.Id),
                         item.Product.Code,
                         item.Product.Name,
