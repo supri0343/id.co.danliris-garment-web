@@ -268,7 +268,7 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
             var day = now.ToString("dd");
             var unitcode = request.Unit.Code;
 
-            var pre = request.ExpenditureType == "EXPORT" ? "EGE" : request.ExpenditureType == "SISA" ? "EGS" : "EGL";
+            var pre = request.ExpenditureType == "EXPORT" ? "EGE" : request.ExpenditureType == "SISA" ? "EGS" : request.ExpenditureType == "ARSIP MD" ? "EGAM" : "EGAS";
 
             var prefix = $"{pre}{unitcode}{year}{month}";
 
