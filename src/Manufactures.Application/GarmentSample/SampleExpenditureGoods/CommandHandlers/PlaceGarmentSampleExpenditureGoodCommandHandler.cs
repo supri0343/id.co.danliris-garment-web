@@ -7,6 +7,8 @@ using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Repositories;
 using Manufactures.Domain.GarmentSample.SampleFinishedGoodStocks;
 using Manufactures.Domain.GarmentSample.SampleFinishedGoodStocks.Repositories;
+using Manufactures.Domain.GarmentSample.SampleStocks;
+using Manufactures.Domain.GarmentSample.SampleStocks.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,8 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
         private readonly IGarmentSampleFinishedGoodStockRepository _GarmentSampleFinishedGoodStockRepository;
         private readonly IGarmentSampleFinishedGoodStockHistoryRepository _GarmentSampleFinishedGoodStockHistoryRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
+        private readonly IGarmentSampleStockRepository _GarmentSampleStockRepository;
+        private readonly IGarmentSampleStockHistoryRepository _GarmentSampleStockHistoryRepository;
 
         public PlaceGarmentSampleExpenditureGoodCommandHandler(IStorage storage)
         {
@@ -34,6 +38,8 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
             _GarmentSampleFinishedGoodStockRepository = storage.GetRepository<IGarmentSampleFinishedGoodStockRepository>();
             _GarmentSampleFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentSampleFinishedGoodStockHistoryRepository>();
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
+            _GarmentSampleStockRepository = storage.GetRepository<IGarmentSampleStockRepository>();
+            _GarmentSampleStockHistoryRepository = storage.GetRepository<IGarmentSampleStockHistoryRepository>();
         }
 
         public async Task<GarmentSampleExpenditureGood> Handle(PlaceGarmentSampleExpenditureGoodCommand request, CancellationToken cancellationToken)
@@ -110,6 +116,8 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
                 }
             }
 
+            int count = 1;
+            List<GarmentSampleStock> stocks = new List<GarmentSampleStock>();
             foreach (var finStock in finStockToBeUpdated)
             {
                 var keyString = finStock.Key.Split("~");
@@ -175,6 +183,74 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
                 await _GarmentSampleFinishedGoodStockRepository.Update(GarmentSampleFinishingGoodStockItem);
 
 
+                if(request.ExpenditureType== "ARSIP MD" || request.ExpenditureType == "ARSIP SAMPLE")
+                {
+                    var existStock= _GarmentSampleStockRepository.Query.Where(
+                        a => a.RONo == request.RONo 
+                        && a.Article == request.Article 
+                        && new SizeId(a.SizeId) == new SizeId(item.Size.Id) 
+                        && a.ComodityId == request.Comodity.Id 
+                        && new UomId(a.UomId) == new UomId(item.Uom.Id) 
+                        && a.ArchiveType== request.ExpenditureType
+                        ).Select(s => new GarmentSampleStock(s)).SingleOrDefault();
+
+                    if (existStock == null)
+                    {
+                        GarmentSampleStock stock = new GarmentSampleStock(
+                                        Guid.NewGuid(),
+                                        GenerateStockNo(request,count),
+                                        request.ExpenditureType,
+                                        request.RONo,
+                                        request.Article,
+                                        new GarmentComodityId(request.Comodity.Id),
+                                        request.Comodity.Code,
+                                        request.Comodity.Name,
+                                        new SizeId(item.Size.Id),
+                                        item.Size.Size,
+                                        new UomId(item.Uom.Id),
+                                        item.Uom.Unit,
+                                        qty
+                                        );
+                        count++;
+                        await _GarmentSampleStockRepository.Update(stock);
+                        stocks.Add(stock);
+                    }
+                    else
+                    {
+                        existStock.SetQuantity(existStock.Quantity+qty);
+                        existStock.Modify();
+
+                        await _GarmentSampleStockRepository.Update(existStock);
+                        var stock = stocks.Where(a => a.RONo == request.RONo 
+                                && a.Article == request.Article 
+                                && a.SizeId == new SizeId(item.Size.Id)
+                                && a.ComodityId == new GarmentComodityId( request.Comodity.Id)
+                                && a.UomId == new UomId(item.Uom.Id)
+                                && a.ArchiveType == request.ExpenditureType).SingleOrDefault();
+                        stocks.Add(existStock);
+                    }
+
+                    GarmentSampleStockHistory garmentSampleStockHistory = new GarmentSampleStockHistory(
+                                            Guid.NewGuid(),
+                                            GarmentSampleExpenditureGood.Identity,
+                                            garmentSampleExpenditureGoodItem.Identity,
+                                            "IN",
+                                            request.ExpenditureType,
+                                            GarmentSampleExpenditureGood.RONo,
+                                            GarmentSampleExpenditureGood.Article,
+                                            GarmentSampleExpenditureGood.ComodityId,
+                                            GarmentSampleExpenditureGood.ComodityCode,
+                                            GarmentSampleExpenditureGood.ComodityName,
+                                            garmentSampleExpenditureGoodItem.SizeId,
+                                            garmentSampleExpenditureGoodItem.SizeName,
+                                            garmentSampleExpenditureGoodItem.UomId,
+                                            garmentSampleExpenditureGoodItem.UomUnit,
+                                            garmentSampleExpenditureGoodItem.Quantity
+                                        );
+                    await _GarmentSampleStockHistoryRepository.Update(garmentSampleStockHistory);
+
+                }
+
             }
 
             await _GarmentSampleExpenditureGoodRepository.Update(GarmentSampleExpenditureGood);
@@ -192,7 +268,7 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
             var day = now.ToString("dd");
             var unitcode = request.Unit.Code;
 
-            var pre = request.ExpenditureType == "EXPORT" ? "EGE" : request.ExpenditureType == "SISA" ? "EGS" : "EGL";
+            var pre = request.ExpenditureType == "EXPORT" ? "EGE" : request.ExpenditureType == "SISA" ? "EGS" : request.ExpenditureType == "ARSIP MD" ? "EGAM" : "EGAS";
 
             var prefix = $"{pre}{unitcode}{year}{month}";
 
@@ -203,6 +279,23 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
             var finInNo = $"{prefix}{(lastExpenditureGoodNo + 1).ToString("D4")}";
 
             return finInNo;
+        }
+
+        private string GenerateStockNo(PlaceGarmentSampleExpenditureGoodCommand request,int count)
+        {
+            var now = DateTime.Now;
+            var year = now.ToString("yy");
+            var month = now.ToString("MM");
+
+            var prefix = $"STA{request.Unit.Code.Trim()}{year}{month}";
+
+            var lastStockNo = _GarmentSampleStockRepository.Query.Where(w => w.SampleStockNo.StartsWith(prefix))
+                .OrderByDescending(o => o.SampleStockNo)
+                .Select(s => int.Parse(s.SampleStockNo.Replace(prefix, "")))
+                .FirstOrDefault();
+            var StockNo = $"{prefix}{(lastStockNo + count).ToString("D4")}";
+
+            return StockNo;
         }
     }
 }

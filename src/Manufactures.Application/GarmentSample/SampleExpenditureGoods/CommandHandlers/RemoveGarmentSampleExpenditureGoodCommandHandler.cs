@@ -7,6 +7,8 @@ using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Repositories;
 using Manufactures.Domain.GarmentSample.SampleFinishedGoodStocks;
 using Manufactures.Domain.GarmentSample.SampleFinishedGoodStocks.Repositories;
+using Manufactures.Domain.GarmentSample.SampleStocks;
+using Manufactures.Domain.GarmentSample.SampleStocks.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,8 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
         private readonly IGarmentSampleFinishedGoodStockRepository _GarmentSampleFinishedGoodStockRepository;
         private readonly IGarmentSampleFinishedGoodStockHistoryRepository _GarmentSampleFinishedGoodStockHistoryRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
+        private readonly IGarmentSampleStockRepository _GarmentSampleStockRepository;
+        private readonly IGarmentSampleStockHistoryRepository _GarmentSampleStockHistoryRepository;
 
         public RemoveGarmentSampleExpenditureGoodCommandHandler(IStorage storage)
         {
@@ -34,6 +38,8 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
             _GarmentSampleFinishedGoodStockRepository = storage.GetRepository<IGarmentSampleFinishedGoodStockRepository>();
             _GarmentSampleFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentSampleFinishedGoodStockHistoryRepository>();
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
+            _GarmentSampleStockRepository = storage.GetRepository<IGarmentSampleStockRepository>();
+            _GarmentSampleStockHistoryRepository = storage.GetRepository<IGarmentSampleStockHistoryRepository>();
         }
 
         public async Task<GarmentSampleExpenditureGood> Handle(RemoveGarmentSampleExpenditureGoodCommand request, CancellationToken cancellationToken)
@@ -58,19 +64,41 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
                 garmentSampleFinishedGoodStockHistory.Remove();
                 await _GarmentSampleFinishedGoodStockHistoryRepository.Update(garmentSampleFinishedGoodStockHistory);
 
+                if (ExpenditureGood.ExpenditureType == "ARSIP MD" || ExpenditureGood.ExpenditureType == "ARSIP SAMPLE")
+                {
+                    GarmentSampleStockHistory garmentSampleStockHistory = _GarmentSampleStockHistoryRepository.Query.Where(a => a.ExpenditureGoodItemId == expenditureItem.Identity).Select(a => new GarmentSampleStockHistory(a)).Single();
+                    garmentSampleStockHistory.Remove();
+                    await _GarmentSampleStockHistoryRepository.Update(garmentSampleStockHistory);
+
+                    var existStock = _GarmentSampleStockRepository.Query.Where(
+                        a => a.RONo == ExpenditureGood.RONo
+                        && a.Article == ExpenditureGood.Article
+                        && new SizeId(a.SizeId) == expenditureItem.SizeId
+                        && new GarmentComodityId( a.ComodityId) == ExpenditureGood.ComodityId
+                        && new UomId(a.UomId) == expenditureItem.UomId
+                        && a.ArchiveType == ExpenditureGood.ExpenditureType
+                        ).Select(s => new GarmentSampleStock(s)).Single();
+                    var qtyStock = existStock.Quantity - expenditureItem.Quantity;
+                    existStock.SetQuantity(qtyStock);
+                    existStock.Modify();
+
+                    await _GarmentSampleStockRepository.Update(existStock);
+                }
+
                 expenditureItem.Remove();
                 await _GarmentSampleExpenditureGoodItemRepository.Update(expenditureItem);
             });
 
             foreach (var finStock in finStockToBeUpdated)
             {
-                var GarmentSampleFinishingGoodStockItem = _GarmentSampleFinishedGoodStockRepository.Query.Where(x => x.Identity == finStock.Key).Select(s => new GarmentSampleFinishedGoodStock(s)).Single();
-                var qty = GarmentSampleFinishingGoodStockItem.Quantity + finStock.Value;
-                GarmentSampleFinishingGoodStockItem.SetQuantity(qty);
-                GarmentSampleFinishingGoodStockItem.SetPrice((GarmentSampleFinishingGoodStockItem.BasicPrice + (double)garmentComodityPrice.Price) * (qty));
-                GarmentSampleFinishingGoodStockItem.Modify();
+                var GarmentSampleStockItem = _GarmentSampleFinishedGoodStockRepository.Query.Where(x => x.Identity == finStock.Key).Select(s => new GarmentSampleFinishedGoodStock(s)).Single();
+                var qty = GarmentSampleStockItem.Quantity + finStock.Value;
+                GarmentSampleStockItem.SetQuantity(qty);
+                GarmentSampleStockItem.SetPrice((GarmentSampleStockItem.BasicPrice + (double)garmentComodityPrice.Price) * (qty));
+                GarmentSampleStockItem.Modify();
 
-                await _GarmentSampleFinishedGoodStockRepository.Update(GarmentSampleFinishingGoodStockItem);
+                await _GarmentSampleFinishedGoodStockRepository.Update(GarmentSampleStockItem);
+
             }
 
             ExpenditureGood.Remove();
