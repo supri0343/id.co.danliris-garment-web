@@ -472,7 +472,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 		//			new GarmentSewingOut(guidSewingOut,"",new BuyerId(1),"","",new UnitDepartmentId(1),"","","FINISHING",DateTimeOffset.Now,"ro","",new UnitDepartmentId(1),"","",new GarmentComodityId(1),"","",true).GetReadModel()
 		//		}.AsQueryable());
 
-			 
+
 		//	_mockGarmentCuttingInDetailRepository
 		//		.Setup(s => s.Query)
 		//		.Returns(new List<GarmentCuttingInDetailReadModel>
@@ -494,12 +494,13 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 		//			new GarmentCuttingIn(guidCuttingIn,"","Main Fabric","","ro","",new UnitDepartmentId(1),"","",DateTimeOffset.Now.AddDays(-1),1).GetReadModel()
 		//		}.AsQueryable());
 
-		 
-  //          // Act
-  //          var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
+
+		//	// Act
+		//	var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
 
 		//	// Assert
 		//	result.Should().NotBeNull();
 		//}
+
 	}
 }
