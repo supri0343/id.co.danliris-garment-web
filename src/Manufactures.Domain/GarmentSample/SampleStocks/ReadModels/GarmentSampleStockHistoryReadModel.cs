@@ -24,5 +24,6 @@ namespace Manufactures.Domain.GarmentSample.SampleStocks.ReadModels
         public double Quantity { get; internal set; }
         public int UomId { get; internal set; }
         public string UomUnit { get; internal set; }
+        public string Description { get; internal set; }
     }
 }

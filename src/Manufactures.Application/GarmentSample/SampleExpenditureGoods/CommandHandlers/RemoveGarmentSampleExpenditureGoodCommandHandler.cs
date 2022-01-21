@@ -77,6 +77,7 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
                         && new GarmentComodityId( a.ComodityId) == ExpenditureGood.ComodityId
                         && new UomId(a.UomId) == expenditureItem.UomId
                         && a.ArchiveType == ExpenditureGood.ExpenditureType
+                        && a.Description== expenditureItem.Description
                         ).Select(s => new GarmentSampleStock(s)).Single();
                     var qtyStock = existStock.Quantity - expenditureItem.Quantity;
                     existStock.SetQuantity(qtyStock);

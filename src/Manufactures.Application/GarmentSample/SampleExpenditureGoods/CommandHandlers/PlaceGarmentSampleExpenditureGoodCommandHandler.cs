@@ -192,6 +192,7 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
                         && a.ComodityId == request.Comodity.Id 
                         && new UomId(a.UomId) == new UomId(item.Uom.Id) 
                         && a.ArchiveType== request.ExpenditureType
+                        && a.Description==item.Description
                         ).Select(s => new GarmentSampleStock(s)).SingleOrDefault();
 
                     if (existStock == null)
@@ -209,7 +210,8 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
                                         item.Size.Size,
                                         new UomId(item.Uom.Id),
                                         item.Uom.Unit,
-                                        qty
+                                        qty,
+                                        item.Description
                                         );
                         count++;
                         await _GarmentSampleStockRepository.Update(stock);
@@ -245,7 +247,8 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
                                             garmentSampleExpenditureGoodItem.SizeName,
                                             garmentSampleExpenditureGoodItem.UomId,
                                             garmentSampleExpenditureGoodItem.UomUnit,
-                                            garmentSampleExpenditureGoodItem.Quantity
+                                            garmentSampleExpenditureGoodItem.Quantity,
+                                            item.Description
                                         );
                     await _GarmentSampleStockHistoryRepository.Update(garmentSampleStockHistory);
 
