@@ -83,8 +83,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 			_MockStorage.SetupStorage(_mockGarmentCuttingOutDetailRepository);
 			_MockStorage.SetupStorage(_mockGarmentCuttingInRepository);
 			_MockStorage.SetupStorage(_mockGarmentCuttingInItemRepository);
-			_MockStorage.SetupStorage(_mockGarmentCuttingInDetailRepository);			
-			
+			_MockStorage.SetupStorage(_mockGarmentCuttingInDetailRepository);
 			serviceProviderMock = new Mock<IServiceProvider>();
 			_mockhttpService = CreateMock<IHttpClientService>();
 
@@ -93,16 +92,16 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 				{
 					ro="ro",
 					comodityName="",
-					buyerCode="buyer",
+					buyerCode="",
 					hours=10
 				}
 			};
-            
-            _mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpContent>()))
-             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
-            serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
-        
-    }
+			
+			_mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpContent>()))
+				.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
+			serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
+
+		}
 		private GetGarmentMonitoringProductionStockFlowQueryHandler CreateGetMonitoringProductionFlowQueryHandler()
 		{
 			return new GetGarmentMonitoringProductionStockFlowQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
@@ -111,7 +110,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 		//[Fact]
 		//public async Task Handle_StateUnderTest_ExpectedBehavior()
 		//{
-			 
+
 		//	GetGarmentMonitoringProductionStockFlowQueryHandler unitUnderTest = CreateGetMonitoringProductionFlowQueryHandler();
 		//	CancellationToken cancellationToken = CancellationToken.None;
 
@@ -124,7 +123,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 		//	Guid guidFinishingOutItem = Guid.NewGuid();
 		//	Guid guidSewingOut = Guid.NewGuid();
 		//	Guid guidSewingOutItem = Guid.NewGuid();
-		//	Guid guidSewingIn= Guid.NewGuid();
+		//	Guid guidSewingIn = Guid.NewGuid();
 		//	Guid guidSewingInItem = Guid.NewGuid();
 		//	Guid guidSewingDO = Guid.NewGuid();
 		//	Guid guidSewingDOItem = Guid.NewGuid();
@@ -137,7 +136,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 		//	Guid guidExpenditure = Guid.NewGuid();
 		//	Guid guidExpenditureReturn = Guid.NewGuid();
 		//	Guid guidAdjustmentItem = Guid.NewGuid();
-		//	GetMonitoringProductionStockFlowQuery getMonitoring = new GetMonitoringProductionStockFlowQuery(1, 25, "{}", 1,"ro", DateTime.Now.AddDays(-5),DateTime.Now, "token");
+		//	GetMonitoringProductionStockFlowQuery getMonitoring = new GetMonitoringProductionStockFlowQuery(1, 25, "{}", 1, "ro", DateTime.Now.AddDays(-5), DateTime.Now, "token");
 
 		//	_mockGarmentLoadingItemRepository
 		//		.Setup(s => s.Query)
@@ -173,7 +172,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 		//			 new GarmentCuttingOut(guidCuttingOut, "", "SEWING",new UnitDepartmentId(1),"","",DateTime.Now.AddDays(-1),"ro","article",new UnitDepartmentId(1),"","",new GarmentComodityId(1),"cm","cmo",false).GetReadModel()
 		//		}.AsQueryable());
 
-			
+
 
 		//	_mockGarmentFinishingOutItemRepository
 		//		.Setup(s => s.Query)
@@ -189,7 +188,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 		//			new GarmentFinishingOut(guidFinishingOut,"",new UnitDepartmentId(1),"","","GUDANG JADI",DateTimeOffset.Now.AddDays(-1),"ro","",new UnitDepartmentId(1),"","",new GarmentComodityId(1),"","",false).GetReadModel()
 		//		}.AsQueryable());
 
-			
+
 		//	_mockGarmentSewingOutItemRepository
 		//		.Setup(s => s.Query)
 		//		.Returns(new List<GarmentSewingOutItemReadModel>
@@ -204,7 +203,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 		//			new GarmentSewingOut(guidSewingOut,"",new BuyerId(1),"","",new UnitDepartmentId(1),"","","FINISHING",DateTimeOffset.Now,"ro","",new UnitDepartmentId(1),"","",new GarmentComodityId(1),"","",true).GetReadModel()
 		//		}.AsQueryable());
 
-		 
+
 
 		//	_mockGarmentCuttingInDetailRepository
 		//		.Setup(s => s.Query)
@@ -227,10 +226,12 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
 		//			new GarmentCuttingIn(guidCuttingIn,"","Main Fabric","","ro","",new UnitDepartmentId(1),"","",DateTimeOffset.Now.AddDays(-1),1).GetReadModel()
 		//		}.AsQueryable());
 
-			 
-  //          var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
-			
+
+		//	var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
+
 		//	result.Should().NotBeNull();
 		//}
+
+
 	}
 }
