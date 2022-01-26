@@ -1,4 +1,5 @@
 ﻿using Barebone.Controllers;
+using Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries;
 using Manufactures.Domain.GarmentSample.SampleFinishingIns.Repositories;
 using Manufactures.Domain.GarmentSample.SampleFinishingOuts.Commands;
 using Manufactures.Domain.GarmentSample.SampleFinishingOuts.Repositories;
@@ -155,28 +156,7 @@ namespace Manufactures.Controllers.Api.GarmentSample
             var count = query.Count();
 
             var GarmentSampleFinishingOutDto = _GarmentSampleFinishingOutRepository.ReadExecute(query);
-            //var GarmentSampleFinishingOutDto = _GarmentSampleFinishingOutRepository.Find(query).Select(o => new GarmentSampleFinishingOutDto(o)).ToArray();
-            //var GarmentSampleFinishingOutItemDto = _GarmentSampleFinishingOutItemRepository.Find(_GarmentSampleFinishingOutItemRepository.Query).Select(o => new GarmentSampleFinishingOutItemDto(o)).ToList();
-            //var GarmentSampleFinishingOutDetailDto = _GarmentSampleFinishingOutDetailRepository.Find(_GarmentSampleFinishingOutDetailRepository.Query).Select(o => new GarmentSampleFinishingOutDetailDto(o)).ToList();
-
-            //Parallel.ForEach(GarmentSampleFinishingOutDto, itemDto =>
-            //{
-            //    var GarmentSampleFinishingOutItems = GarmentSampleFinishingOutItemDto.Where(x => x.FinishingOutId == itemDto.Id).OrderBy(x => x.Id).ToList();
-
-            //    itemDto.Items = GarmentSampleFinishingOutItems;
-
-            //    Parallel.ForEach(itemDto.Items, detailDto =>
-            //    {
-            //        var GarmentSampleFinishingOutDetails = GarmentSampleFinishingOutDetailDto.Where(x => x.FinishingOutItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
-            //        detailDto.Details = GarmentSampleFinishingOutDetails;
-            //    });
-            //});
-
-            //if (order != "{}")
-            //{
-            //    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-            //    GarmentSampleFinishingOutDto = QueryHelper<GarmentSampleFinishingOutDto>.Order(GarmentSampleFinishingOutDto.AsQueryable(), OrderDictionary).ToArray();
-            //}
+            
 
             await Task.Yield();
             return Ok(GarmentSampleFinishingOutDto, info: new
@@ -187,47 +167,48 @@ namespace Manufactures.Controllers.Api.GarmentSample
             });
         }
 
-        //[HttpGet("monitoring")]
-        //public async Task<IActionResult> GetMonitoring(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
-        //{
-        //    VerifyUser();
-        //    GetMonitoringFinishingQuery query = new GetMonitoringFinishingQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
-        //    var viewModel = await Mediator.Send(query);
+        [HttpGet("monitoring")]
+        public async Task<IActionResult> GetMonitoring(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+        {
+            VerifyUser();
+            GetSampleFinishingMonitoringQuery query = new GetSampleFinishingMonitoringQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
 
-        //    return Ok(viewModel.garmentMonitorings, info: new
-        //    {
-        //        page,
-        //        size,
-        //        viewModel.count
-        //    });
-        //}
-        //[HttpGet("download")]
-        //public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, string type, int page = 1, int size = 25, string Order = "{}")
-        //{
-        //    try
-        //    {
-        //        VerifyUser();
-        //        GetXlsFinishingQuery query = new GetXlsFinishingQuery(page, size, Order, unit, dateFrom, dateTo, type, WorkContext.Token);
-        //        byte[] xlsInBytes;
+            return Ok(viewModel.garmentMonitorings, info: new
+            {
+                page,
+                size,
+                viewModel.count
+            });
+        }
 
-        //        var xls = await Mediator.Send(query);
+        [HttpGet("download")]
+        public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, string type, int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsSampleFinishingQuery query = new GetXlsSampleFinishingQuery(page, size, Order, unit, dateFrom, dateTo, type, WorkContext.Token);
+                byte[] xlsInBytes;
 
-        //        string filename = "Laporan Finishing";
+                var xls = await Mediator.Send(query);
 
-        //        if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+                string filename = "Laporan Finishing Sample";
 
-        //        if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
-        //        filename += ".xlsx";
+                if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
 
-        //        xlsInBytes = xls.ToArray();
-        //        var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
-        //        return file;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
-        //    }
-        //}
+                if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
 
         //[HttpGet("color")]
         //public async Task<IActionResult> GetColor(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
