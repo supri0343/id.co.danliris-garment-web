@@ -90,11 +90,11 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleExpenditureGood
 
             GarmentSampleStock garmentStock = new GarmentSampleStock(finStockGuid,"no",
                  "ARSIP SAMPLE", "roNo", "art", expenditureGood.ComodityId, expenditureGood.ComodityCode, 
-                 expenditureGood.ComodityName, new SizeId(1), null, new UomId(1), null, 1);
+                 expenditureGood.ComodityName, new SizeId(1), null, new UomId(1), null, 1, "desc");
 
             GarmentSampleStockHistory garmentStockHistory = new GarmentSampleStockHistory(Guid.NewGuid(), exGoodGuid, exGoodItemGuid, "no", "ARSIP SAMPLE", "roNo", "art",
                expenditureGood.ComodityId, expenditureGood.ComodityCode, expenditureGood.ComodityName,
-               new SizeId(1), null, new UomId(1), null, 1);
+               new SizeId(1), null, new UomId(1), null, 1, "desc");
             _mockStockRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSampleStockReadModel>
@@ -119,7 +119,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleExpenditureGood
                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSampleExpenditureGoodItemReadModel, bool>>>()))
                .Returns(new List<GarmentSampleExpenditureGoodItem>()
                {
-                    new GarmentSampleExpenditureGoodItem(exGoodItemGuid, exGoodGuid, finStockGuid,new SizeId(1), null, 1,0, new UomId(1), null,null, 1,1)
+                    new GarmentSampleExpenditureGoodItem(exGoodItemGuid, exGoodGuid, finStockGuid,new SizeId(1), null, 1,0, new UomId(1), null,"desc", 1,1)
                });
 
             //_mockExpenditureGoodItemRepository

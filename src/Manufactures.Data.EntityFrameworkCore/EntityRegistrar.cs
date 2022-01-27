@@ -216,6 +216,8 @@ namespace Manufactures.Data.EntityFrameworkCore
 
             modelBuilder.ApplyConfiguration(new GarmentSampleStockConfig());
             modelBuilder.ApplyConfiguration(new GarmentSampleStockHistoryConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentMonitoringSampleFinishingReportConfig());
         }
 	}
 }

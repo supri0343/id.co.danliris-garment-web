@@ -1,5 +1,6 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubconReport;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
 using Manufactures.Dtos.GarmentSubcon;
@@ -162,6 +163,49 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 size,
                 count
             });
+        }
+
+        [HttpGet("realization-report")]
+        public async Task<IActionResult> GetReaizationReport(string subconcontractNo, int page = 1, int size = 25, string Order = "{}")
+        {
+            VerifyUser();
+            GarmentRealizationSubconReportQuery query = new GarmentRealizationSubconReportQuery(page, size, Order, subconcontractNo, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            var model = new { IN = viewModel.garmentRealizationSubconReportDtos, Out = viewModel.garmentRealizationSubconReportDtosOUT };
+
+            return Ok(model, info: new
+            {
+                page,
+                size,
+                viewModel.count
+            });
+        }
+
+        [HttpGet("realization-report/download")]
+        public async Task<IActionResult> GetXlsReaizationReport(string subconcontractNo, int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsGarmentRealizationSubconReportQuery query = new GetXlsGarmentRealizationSubconReportQuery(page, size, Order, subconcontractNo, WorkContext.Token);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = "Laporan Realisasi Subcon ";
+
+                if (subconcontractNo != null) filename += " " + subconcontractNo;
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
         }
     }
 }

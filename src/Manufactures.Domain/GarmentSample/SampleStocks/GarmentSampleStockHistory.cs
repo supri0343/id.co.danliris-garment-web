@@ -26,8 +26,9 @@ namespace Manufactures.Domain.GarmentSample.SampleStocks
         public double Quantity { get; private set; }
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
+        public string Description { get; private set; }
 
-        public GarmentSampleStockHistory(Guid identity, Guid expenditureGoodId, Guid expenditureGoodItemId, string stockType, string archiveType, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, SizeId sizeId, string sizeName, UomId uomId, string uomUnit, double quantity) : base(identity)
+        public GarmentSampleStockHistory(Guid identity, Guid expenditureGoodId, Guid expenditureGoodItemId, string stockType, string archiveType, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, SizeId sizeId, string sizeName, UomId uomId, string uomUnit, double quantity, string description) : base(identity)
         {
             Validator.ThrowIfNull(() => rONo);
 
@@ -48,6 +49,7 @@ namespace Manufactures.Domain.GarmentSample.SampleStocks
             Quantity = quantity;
             UomId = uomId;
             UomUnit = uomUnit;
+            Description = description;
 
             ReadModel = new GarmentSampleStockHistoryReadModel(Identity)
             {
@@ -65,6 +67,7 @@ namespace Manufactures.Domain.GarmentSample.SampleStocks
                 Quantity = Quantity,
                 UomId = UomId.Value,
                 UomUnit = UomUnit,
+                Description=Description
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSampleStockPlaced(Identity));
@@ -86,6 +89,7 @@ namespace Manufactures.Domain.GarmentSample.SampleStocks
             Quantity = readModel.Quantity;
             UomUnit = readModel.UomUnit;
             UomId = new UomId(readModel.UomId);
+            Description = readModel.Description;
         }
 
         public void Modify()

@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20220121074017_Add_Description_SampleStocks")]
+    partial class Add_Description_SampleStocks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3820,51 +3822,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasFilter("[Deleted]=(0)");
 
                     b.ToTable("GarmentSampleFinishingIns");
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentSample.SampleFinishingOuts.ReadModels.GarmentMonitoringSampleFinishingReportReadModel", b =>
-                {
-                    b.Property<string>("RoJob")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(25);
-
-                    b.Property<string>("Article")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy");
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<double>("FinishingQtyPcs");
-
-                    b.Property<Guid>("Identity");
-
-                    b.Property<string>("ModifiedBy");
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<double>("RemainQty");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<double>("SewingQtyPcs");
-
-                    b.Property<double>("Stock");
-
-                    b.Property<string>("UomUnit")
-                        .HasMaxLength(50);
-
-                    b.HasKey("RoJob");
-
-                    b.ToTable("GarmentMonitoringSampleFinishingReportTemplate");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentSample.SampleFinishingOuts.ReadModels.GarmentSampleFinishingOutDetailReadModel", b =>

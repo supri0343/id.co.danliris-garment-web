@@ -1,4 +1,6 @@
 ﻿using Barebone.Tests;
+using FluentAssertions;
+using Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubconReport;
 using Manufactures.Controllers.Api.GarmentSubcon;
 using Manufactures.Domain.GarmentSubcon.SubconContracts;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Commands;
@@ -11,6 +13,7 @@ using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -230,6 +233,59 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task GetMonitoringRealizationSubconBehavior()
+        {
+            var unitUnderTest = CreateGarmentSubconContractController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GarmentRealizationSubconReportQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentRealizationSubconReportListViewModel());
+
+            // Act
+
+            var result = await unitUnderTest.GetReaizationReport("", 1, 25, "{}");
+
+
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+            // Assert
+            //Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+        }
+
+        [Fact]
+        public async Task GetXLSRealizationSubconBehavior()
+        {
+            var unitUnderTest = CreateGarmentSubconContractController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsGarmentRealizationSubconReportQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
+
+            // Act
+
+            var result = await unitUnderTest.GetXlsReaizationReport("", 1, 25, "{}");
+
+            // Assert
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+        }
+
+        [Fact]
+        public async Task GetXLSRealizationSubconReturn_InternalServerError()
+        {
+            var unitUnderTest = CreateGarmentSubconContractController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsGarmentRealizationSubconReportQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+
+            var result = await unitUnderTest.GetXlsReaizationReport("", 1, 25, "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
         }
 
     }
