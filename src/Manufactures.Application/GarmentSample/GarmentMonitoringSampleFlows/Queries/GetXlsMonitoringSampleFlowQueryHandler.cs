@@ -219,8 +219,7 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleFlows.Qu
 				};
 				monitoringDtos.Add(garmentMonitoringDto);
 			}
-		}
-			
+
 			garmentMonitoringProductionFlow.garmentMonitorings = monitoringDtos;
 			var reportDataTable = new DataTable();
 
