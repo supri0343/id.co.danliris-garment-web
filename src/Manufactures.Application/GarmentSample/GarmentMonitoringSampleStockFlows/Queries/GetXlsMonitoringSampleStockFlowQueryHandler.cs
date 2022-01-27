@@ -209,9 +209,10 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 		}
 		public async Task<MemoryStream> Handle(GetXlsMonitoringSampleStockFlowQuery request, CancellationToken cancellationToken)
 		{
-			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
-			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
-            DateTimeOffset dateFareNew = dateTo.AddDays(1);
+			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
+			dateFrom.AddHours(7);
+			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
+			dateTo = dateTo.AddHours(7); DateTimeOffset dateFareNew = dateTo.AddDays(1);
 
 
             var sumbasicPrice = (from a in (from prep in garmentPreparingRepository.Query
