@@ -183,6 +183,8 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 			public double OtherPrice { get; internal set; }
 			public double SampleQty { get; internal set; }
 			public double SamplePrice { get; internal set; }
+			public double MDQty { get; internal set; }
+			public double MDPrice { get; internal set; }
 			public double ExpenditureGoodRemainingQty { get; internal set; }
 			public double ExpenditureGoodRemainingPrice { get; internal set; }
 			public double ExpenditureGoodAdj { get; internal set; }
@@ -328,7 +330,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                        ExportPrice = 0,
                                        SampleQty = 0,
                                        SamplePrice = 0,
-                                       OtherQty = 0,
+									   MDQty = 0,
+									   MDPrice = 0,
+									   OtherQty = 0,
                                        OtherPrice = 0,
                                        QtyLoadingInTransfer = 0,
                                        PriceLoadingInTransfer = 0,
@@ -411,7 +415,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                              ExportPrice = 0,
                                              SampleQty = 0,
                                              SamplePrice = 0,
-                                             OtherQty = 0,
+											 MDQty = 0,
+											 MDPrice = 0,
+											 OtherQty = 0,
                                              OtherPrice = 0,
                                              QtyLoadingInTransfer = 0,
                                              PriceLoadingInTransfer = 0,
@@ -493,7 +499,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                                ExportPrice = 0,
                                                SampleQty = 0,
                                                SamplePrice = 0,
-                                               OtherQty = 0,
+											   MDQty = 0,
+											   MDPrice = 0,
+											   OtherQty = 0,
                                                OtherPrice = 0,
                                                QtyLoadingInTransfer = 0,
                                                PriceLoadingInTransfer = 0,
@@ -574,7 +582,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                       ExportPrice = 0,
                                       SampleQty = 0,
                                       SamplePrice = 0,
-                                      OtherQty = 0,
+									  MDQty = 0,
+									  MDPrice = 0,
+									  OtherQty = 0,
                                       OtherPrice = 0,
                                       QtyLoadingInTransfer = 0,
                                       PriceLoadingInTransfer = 0,
@@ -651,7 +661,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                           ExportPrice = 0,
                                           SampleQty = 0,
                                           SamplePrice = 0,
-                                          OtherQty = 0,
+										  MDQty = 0,
+										  MDPrice = 0,
+										  OtherQty = 0,
                                           OtherPrice = 0,
                                           QtyLoadingInTransfer = 0,
                                           PriceLoadingInTransfer = 0,
@@ -727,7 +739,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                            ExportPrice = 0,
                                            SampleQty = 0,
                                            SamplePrice = 0,
-                                           OtherQty = 0,
+										   MDQty = 0,
+										   MDPrice = 0,
+										   OtherQty = 0,
                                            OtherPrice = 0,
                                            QtyLoadingInTransfer = 0,
                                            PriceLoadingInTransfer = 0,
@@ -808,7 +822,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                      ExportPrice = 0,
                                      SampleQty = 0,
                                      SamplePrice = 0,
-                                     OtherQty = 0,
+									 MDQty = 0,
+									 MDPrice = 0,
+									 OtherQty = 0,
                                      OtherPrice = 0,
                                      QtyLoadingInTransfer = 0,
                                      PriceLoadingInTransfer = 0,
@@ -915,7 +931,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                       ExportPrice = 0,
                                       SampleQty = 0,
                                       SamplePrice = 0,
-                                      OtherQty = 0,
+									  MDQty = 0,
+									  MDPrice = 0,
+									  OtherQty = 0,
                                       OtherPrice = 0,
                                       ExpenditureGoodInTransfer = 0,
                                       ExpenditureGoodInTransferPrice = 0,
@@ -1004,7 +1022,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                         ExportPrice = 0,
                                         SampleQty = 0,
                                         SamplePrice = 0,
-                                        OtherQty = 0,
+										MDQty = 0,
+										MDPrice = 0,
+										OtherQty = 0,
                                         OtherPrice = 0,
                                         ExpenditureGoodInTransfer = 0,
                                         ExpenditureGoodInTransferPrice = 0,
@@ -1099,7 +1119,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                          ExportPrice = 0,
                                          SampleQty = 0,
                                          SamplePrice = 0,
-                                         OtherQty = 0,
+										 MDQty = 0,
+										 MDPrice = 0,
+										 OtherQty = 0,
                                          OtherPrice = 0,
                                          ExpenditureGoodInTransfer = 0,
                                          ExpenditureGoodInTransferPrice = 0,
@@ -1180,7 +1202,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                                       ExportPrice = 0,
                                                       SampleQty = 0,
                                                       SamplePrice = 0,
-                                                      OtherQty = 0,
+													  MDQty = 0,
+													  MDPrice = 0,
+													  OtherQty = 0,
                                                       OtherPrice = 0,
                                                       QtyLoadingInTransfer = 0,
                                                       PriceLoadingInTransfer = 0,
@@ -1268,7 +1292,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                            ExportPrice = 0,
                                            SampleQty = 0,
                                            SamplePrice = 0,
-                                           OtherQty = 0,
+										   MDQty = 0,
+										   MDPrice =0,
+										   OtherQty = 0,
                                            OtherPrice = 0,
                                            ExpenditureGoodInTransfer = 0,
                                            ExpenditureGoodInTransferPrice = 0,
@@ -1288,9 +1314,12 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                              BeginingBalanceExpenditureGoodPrice = a.ExpenditureDate < dateFrom   ? -b.Price : 0,
                                              ExportQty = (a.ExpenditureDate >= dateFrom && a.ExpenditureType == "EXPORT") ? b.Quantity : 0,
                                              ExportPrice = (a.ExpenditureDate >= dateFrom && a.ExpenditureType == "EXPORT") ? b.Price : 0,
-                                             SampleQty = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "LAIN-LAIN")) ? b.Quantity : 0,
-                                             SamplePrice = (a.ExpenditureDate >= dateFrom & (a.ExpenditureType == "LAIN-LAIN")) ? b.Price : 0,
-                                             OtherQty = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "SISA")) ? b.Quantity : 0,
+                                             SampleQty = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "ARSIP SAMPLE")) ? b.Quantity : 0,
+                                             SamplePrice = (a.ExpenditureDate >= dateFrom & (a.ExpenditureType == "ARSIP SAMPLE")) ? b.Price : 0,
+											 MDQuantity = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "ARSIP MD")) ? b.Quantity : 0,
+											 MDPrice = (a.ExpenditureDate >= dateFrom & (a.ExpenditureType == "ARSIP MD")) ? b.Price : 0,
+
+											 OtherQty = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "SISA")) ? b.Quantity : 0,
                                              OtherPrice = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "SISA")) ? b.Price : 0,
                                              Ro = a.RONo,
                                              
@@ -1349,7 +1378,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                              ExportPrice = group.Sum(x => x.ExportPrice),
                                              SampleQty = group.Sum(x => x.SampleQty),
                                              SamplePrice = group.Sum(x => x.SamplePrice),
-                                             OtherQty = group.Sum(x => x.OtherQty),
+											 MDQty = group.Sum(x => x.MDQuantity),
+											 MDPrice = group.Sum(x => x.MDPrice),
+											 OtherQty = group.Sum(x => x.OtherQty),
                                              OtherPrice = group.Sum(x => x.OtherPrice),
                                              Ro = key,
                                              ExpenditureGoodRetur = 0,
@@ -1459,6 +1490,8 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 								a.OtherPrice,
 								a.SampleQty,
 								a.SamplePrice,
+								a.MDQty,
+								a.MDPrice,
 								a.ExpenditureGoodAdj,
 								a.ExpenditureGoodAdjPrice,
 								a.ExpenditureGoodInTransfer,
@@ -1537,6 +1570,8 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 					otherprice = group.Sum(s => s.OtherPrice),
 					sampleQty = group.Sum(s => s.SampleQty),
 					samplePrice = group.Sum(s => s.SamplePrice),
+					mdQty = group.Sum(s => s.MDQty),
+					mdPrice = group.Sum(s => s.MDPrice),
 					expendAdj = group.Sum(s => s.ExpenditureGoodAdj),
 					expendAdjPrice = group.Sum(s => s.ExpenditureGoodAdjPrice),
 					expendRetur = group.Sum(s => s.ExpenditureGoodRetur),
@@ -1658,7 +1693,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                             ExportPrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * a.exportQty, 2),
                             SampleQty = Math.Round(a.sampleQty, 2),
                             SamplePrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * a.sampleQty, 2),
-                            OtherQty = Math.Round(a.otherqty, 2),
+							MDQty = Math.Round(a.mdQty, 2),
+							MDPrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * a.mdQty, 2),
+							OtherQty = Math.Round(a.otherqty, 2),
                             OtherPrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * a.otherqty, 2),
                             ExpenditureGoodAdj = Math.Round(a.expendAdj, 2),
                             ExpenditureGoodAdjPrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * a.expendAdj, 2),
@@ -1666,8 +1703,8 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                             ExpenditureGoodReturPrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * a.expendRetur, 2),
                             ExpenditureGoodInTransfer = Math.Round(a.expenditureInTransfer, 2),
                             ExpenditureGoodInTransferPrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * a.expenditureInTransfer, 2),
-                            EndBalanceExpenditureGood = Math.Round(a.beginingBalanceExpenditureGood + a.finishingout + a.subconout + a.expendRetur + a.expenditureInTransfer - a.exportQty - a.otherqty - a.sampleQty - a.expendAdj, 2),
-                            EndBalanceExpenditureGoodPrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * (a.beginingBalanceExpenditureGood + a.finishingout + a.subconout + a.expendRetur + a.expenditureInTransfer - a.exportQty - a.otherqty - a.sampleQty - a.expendAdj), 2),
+                            EndBalanceExpenditureGood = Math.Round(a.beginingBalanceExpenditureGood + a.finishingout + a.subconout + a.expendRetur + a.expenditureInTransfer - a.exportQty - a.otherqty - a.sampleQty - a.mdQty, 2),
+                            EndBalanceExpenditureGoodPrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * (a.beginingBalanceExpenditureGood + a.finishingout + a.subconout + a.expendRetur + a.expenditureInTransfer - a.exportQty - a.otherqty - a.sampleQty - a.mdQty), 2),
                             FareNew = a.farenew,
                             CuttingNew = Math.Round(a.farenew * Convert.ToDecimal(a.begining + a.qtyCuttingIn - a.qtycutting - a.qtyCuttingTransfer - a.qtCuttingSubkon - a.qtyavalcut - a.qtyavalsew), 2),
                             LoadingNew = Math.Round(a.farenew * Convert.ToDecimal(a.beginingloading + a.qtyLoadingIn - a.qtyloading - a.qtyLoadingAdj), 2),
@@ -1680,16 +1717,17 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
  
             var data = from a in dtos
                        where a.BeginingBalanceCuttingQty > 0 || a.QtyCuttingIn > 0 || a.QtyCuttingOut > 0 || a.QtyCuttingsubkon > 0 || a.QtyCuttingTransfer > 0 || a.EndBalancCuttingeQty > 0 ||
-                        a.BeginingBalanceLoadingQty > 0 || a.QtyLoading > 0 || a.QtyLoadingAdjs > 0 || a.QtyLoadingIn > 0 || a.QtyLoadingInTransfer > 0 || a.EndBalanceLoadingQty > 0 ||
-                        a.BeginingBalanceSewingQty > 0 || a.QtySewingAdj > 0 || a.QtySewingIn > 0 || a.QtySewingInTransfer > 0 || a.QtySewingOut > 0 || a.QtySewingRetur > 0 || a.WipSewingOut > 0 || a.WipFinishingOut > 0 || a.EndBalanceSewingQty > 0 ||
-                        a.BeginingBalanceSubconQty > 0 || a.EndBalanceSubconQty > 0 || a.SubconInQty > 0 || a.SubconOutQty > 0 || a.AvalCutting > 0 || a.AvalSewing > 0 ||
-                        a.BeginingBalanceFinishingQty > 0 || a.FinishingAdjQty > 0 || a.FinishingInExpenditure > 0 || a.FinishingInQty > 0 || a.FinishingInTransferQty > 0 || a.FinishingOutQty > 0 || a.FinishingReturQty > 0 ||
-                        a.BeginingBalanceExpenditureGood > 0 || a.ExpenditureGoodAdj > 0 || a.ExpenditureGoodInTransfer > 0 || a.ExpenditureGoodRemainingQty > 0 || a.ExpenditureGoodRetur > 0 || a.EndBalanceExpenditureGood > 0
-                       select a;
+						//a.BeginingBalanceLoadingQty > 0 || a.QtyLoading > 0 || a.QtyLoadingAdjs > 0 || a.QtyLoadingIn > 0 || a.QtyLoadingInTransfer > 0 || a.EndBalanceLoadingQty > 0 ||
+						a.BeginingBalanceSewingQty > 0 || a.QtySewingAdj > 0 || a.QtySewingIn > 0 || a.QtySewingInTransfer > 0 || a.QtySewingOut > 0 || a.QtySewingRetur > 0 || a.WipSewingOut > 0 || a.WipFinishingOut > 0 || a.EndBalanceSewingQty > 0
+						//a.BeginingBalanceSubconQty > 0 || a.EndBalanceSubconQty > 0 || a.SubconInQty > 0 || a.SubconOutQty > 0 
+						|| a.AvalCutting > 0 || a.AvalSewing > 0 ||
+						a.BeginingBalanceFinishingQty > 0 || a.FinishingAdjQty > 0 || a.FinishingInExpenditure > 0 || a.FinishingInQty > 0 || a.FinishingInTransferQty > 0 || a.FinishingOutQty > 0 || a.FinishingReturQty > 0 ||
+						a.BeginingBalanceExpenditureGood > 0 || a.ExpenditureGoodAdj > 0 || a.ExpenditureGoodInTransfer > 0 || a.ExpenditureGoodRemainingQty > 0 || a.ExpenditureGoodRetur > 0 || a.EndBalanceExpenditureGood > 0
+					   select a;
 
-            //var data2 = data.Count();
+			//var data2 = data.Count();
 
-            var roList = (from a in data
+			var roList = (from a in data
                           select a.Ro).Distinct().ToList();
 
 
@@ -1805,7 +1843,9 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                ExportPrice = item.ExportPrice,
                                SampleQty = item.SampleQty,
                                SamplePrice = item.SamplePrice,
-                               OtherQty = item.OtherQty,
+							   MDQty = item.MDQty,
+							   MDPrice = item.MDPrice,
+							   OtherQty = item.OtherQty,
                                OtherPrice = item.OtherPrice,
                                ExpenditureGoodAdj = item.ExpenditureGoodAdj,
                                ExpenditureGoodAdjPrice = item.ExpenditureGoodAdjPrice,

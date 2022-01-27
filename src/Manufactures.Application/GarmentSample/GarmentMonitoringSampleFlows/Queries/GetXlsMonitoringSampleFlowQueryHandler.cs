@@ -213,7 +213,7 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleFlows.Qu
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jumlah Order", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Ukuran", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Hasil Potong", DataType = typeof(double) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Hasil Loading", DataType = typeof(double) });
+			//reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Hasil Loading", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Hasil Sewing", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Hasil Finishing", DataType = typeof(double) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Dalam Proses", DataType = typeof(double) });
@@ -222,7 +222,7 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleFlows.Qu
 			{ 
 				foreach (var report in garmentMonitoringProductionFlow.garmentMonitorings)
 				{
-					reportDataTable.Rows.Add(report.Ro, report.BuyerCode, report.Article, report.Comodity, report.QtyOrder, report.Size, report.QtyCutting, report.QtyLoading, report.QtySewing, report.QtyFinishing, report.Wip);
+					reportDataTable.Rows.Add(report.Ro, report.BuyerCode, report.Article, report.Comodity, report.QtyOrder, report.Size, report.QtyCutting,  report.QtySewing, report.QtyFinishing, report.Wip);
 
 				}
 			}
