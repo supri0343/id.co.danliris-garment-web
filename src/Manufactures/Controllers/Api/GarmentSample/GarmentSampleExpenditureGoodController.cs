@@ -1,5 +1,6 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Application.GarmentSample.SampleExpenditureGoods.Queries;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Repositories;
 using Manufactures.Dtos.GarmentSample.SampleExpenditureGoods;
@@ -217,20 +218,7 @@ namespace Manufactures.Controllers.Api.GarmentSample
             return Ok(order.Identity);
 
         }
-        //[HttpGet("monitoring")]
-        //public async Task<IActionResult> GetMonitoring(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
-        //{
-        //    VerifyUser();
-        //    GetMonitoringExpenditureGoodQuery query = new GetMonitoringExpenditureGoodQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
-        //    var viewModel = await Mediator.Send(query);
 
-        //    return Ok(viewModel.garmentMonitorings, info: new
-        //    {
-        //        page,
-        //        size,
-        //        viewModel.count
-        //    });
-        //}
         [HttpGet("complete")]
         public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
         {
@@ -241,21 +229,6 @@ namespace Manufactures.Controllers.Api.GarmentSample
 
             var garmentExpenditureGoodDto = _garmentExpenditureGoodRepository.ReadExecute(query);
 
-            //var garmentExpenditureGoodDto = _garmentExpenditureGoodRepository.Find(query).Select(o => new GarmentSampleExpenditureGoodDto(o)).ToArray();
-            //var garmentExpenditureGoodItemDto = _garmentExpenditureGoodItemRepository.Find(_garmentExpenditureGoodItemRepository.Query).Select(o => new GarmentSampleExpenditureGoodItemDto(o)).ToList();
-
-            //Parallel.ForEach(garmentExpenditureGoodDto, itemDto =>
-            //{
-            //    var garmentExpenditureGoodItems = garmentExpenditureGoodItemDto.Where(x => x.ExpenditureGoodId == itemDto.Id).OrderBy(x => x.Id).ToList();
-
-            //    itemDto.Items = garmentExpenditureGoodItems;
-            //});
-
-            //if (order != "{}")
-            //{
-            //    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-            //    garmentExpenditureGoodDto = QueryHelper<GarmentSampleExpenditureGoodDto>.Order(garmentExpenditureGoodDto.AsQueryable(), OrderDictionary).ToArray();
-            //}
 
             await Task.Yield();
             return Ok(garmentExpenditureGoodDto, info: new
@@ -291,34 +264,49 @@ namespace Manufactures.Controllers.Api.GarmentSample
             });
         }
 
-        //[HttpGet("download")]
-        //public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, string type, int page = 1, int size = 25, string Order = "{}")
-        //{
-        //    try
-        //    {
-        //        VerifyUser();
-        //        GetXlsExpenditureGoodQuery query = new GetXlsExpenditureGoodQuery(page, size, Order, unit, dateFrom, dateTo, type, WorkContext.Token);
-        //        byte[] xlsInBytes;
+        [HttpGet("monitoring")]
+        public async Task<IActionResult> GetMonitoring(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+        {
+            VerifyUser();
+            GetMonitoringSampleExpenditureGoodQuery query = new GetMonitoringSampleExpenditureGoodQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
 
-        //        var xls = await Mediator.Send(query);
+            return Ok(viewModel.garmentMonitorings, info: new
+            {
+                page,
+                size,
+                viewModel.count
+            });
+        }
 
-        //        string filename = "Laporan Pengiriman Barang Jadi ";
+        [HttpGet("download")]
+        public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, string type, int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsSampleExpenditureGoodQuery query = new GetXlsSampleExpenditureGoodQuery(page, size, Order, unit, dateFrom, dateTo, type, WorkContext.Token);
+                byte[] xlsInBytes;
 
-        //        if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+                var xls = await Mediator.Send(query);
 
-        //        if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
-        //        filename += ".xlsx";
+                string filename = "Laporan Pengiriman Barang Jadi Sample ";
 
-        //        xlsInBytes = xls.ToArray();
-        //        var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
-        //        return file;
-        //    }
-        //    catch (Exception e)
-        //    {
+                if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
 
-        //        return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
-        //    }
-        //}
+                if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
 
         [HttpGet("{id}/{buyer}")]
         public async Task<IActionResult> GetPdf(string id, string buyer)
