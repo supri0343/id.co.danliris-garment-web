@@ -1,33 +1,17 @@
 ﻿using Barebone.Tests;
-using FluentAssertions;
 using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries;
-using Manufactures.Domain.GarmentCuttingIns;
-using Manufactures.Domain.GarmentCuttingIns.ReadModels;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
-using Manufactures.Domain.GarmentCuttingOuts;
-using Manufactures.Domain.GarmentCuttingOuts.ReadModels;
 using Manufactures.Domain.GarmentCuttingOuts.Repositories;
-using Manufactures.Domain.GarmentFinishingOuts;
-using Manufactures.Domain.GarmentFinishingOuts.ReadModels;
 using Manufactures.Domain.GarmentFinishingOuts.Repositories;
-using Manufactures.Domain.GarmentLoadings;
-using Manufactures.Domain.GarmentLoadings.ReadModels;
 using Manufactures.Domain.GarmentLoadings.Repositories;
-using Manufactures.Domain.GarmentSewingOuts;
-using Manufactures.Domain.GarmentSewingOuts.ReadModels;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
-using Manufactures.Domain.Shared.ValueObjects;
 using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.CostCalculationGarmentDataProductionReport;
  
 namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
