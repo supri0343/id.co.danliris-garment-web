@@ -16,6 +16,7 @@ using System.Text;
 using Manufactures.Domain.GarmentSample.SampleFinishingOuts.Repositories;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts.Repositories;
 using Manufactures.Domain.GarmentSample.SampleCuttingOuts.Repositories;
+using Manufactures.Domain.GarmentSample.SampleRequests.Repositories;
 
 namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleFlows.Queries
 {
@@ -32,6 +33,8 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleFlows.Qu
 		private readonly IGarmentSampleFinishingOutRepository garmentFinishingOutRepository;
 		private readonly IGarmentSampleFinishingOutItemRepository garmentFinishingOutItemRepository;
 		private readonly IGarmentSampleFinishingOutDetailRepository garmentFinishingOutDetailRepository;
+		private readonly IGarmentSampleRequestRepository garmentSampleRequestRepository;
+		private readonly IGarmentSampleRequestProductRepository garmentSampleRequestProductRepository;
 
 		public GetMonitoringSampleFlowQueryHandler(IStorage storage, IServiceProvider serviceProvider)
 		{
@@ -45,6 +48,8 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleFlows.Qu
 			garmentFinishingOutRepository = storage.GetRepository<IGarmentSampleFinishingOutRepository>();
 			garmentFinishingOutItemRepository = storage.GetRepository<IGarmentSampleFinishingOutItemRepository>();
 			garmentFinishingOutDetailRepository = storage.GetRepository<IGarmentSampleFinishingOutDetailRepository>();
+			garmentSampleRequestProductRepository = storage.GetRepository<IGarmentSampleRequestProductRepository>();
+			garmentSampleRequestRepository = storage.GetRepository<IGarmentSampleRequestRepository>();
 			_http = serviceProvider.GetService<IHttpClientService>();
 		}
 		 
@@ -179,14 +184,24 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleFlows.Qu
 			GarmentMonitoringSampleFlowListViewModel garmentMonitoringProductionFlow = new GarmentMonitoringSampleFlowListViewModel();
 			List<GarmentMonitoringSampleFlowDto> monitoringDtos = new List<GarmentMonitoringSampleFlowDto>();
 
+			var sampleRequest = (from a in garmentSampleRequestRepository.Query
+								 join b in garmentSampleRequestProductRepository.Query
+								 on a.Identity equals b.SampleRequestId select new { a.RONoSample, a.BuyerCode, b.Quantity })
+							   .GroupBy(x => new { x.RONoSample, x.BuyerCode }, (key, group) => new
+							   {
+								   ro = key.RONoSample,
+								   qtyOrder = group.Sum(s=>s.Quantity),
+								   buyer = key.BuyerCode
+
+							   });
 			foreach (var item in query)
 			{
 				GarmentMonitoringSampleFlowDto garmentMonitoringDto = new GarmentMonitoringSampleFlowDto()
 				{
 					Article = item.article,
 					Ro = item.ro,
-					BuyerCode = item.buyer,
-					QtyOrder = item.qtyOrder,
+					BuyerCode = (from a in sampleRequest where a.ro == item.ro select a.buyer).FirstOrDefault(),
+					QtyOrder = (from a in sampleRequest where a.ro == item.ro  select a.qtyOrder).FirstOrDefault(),
 					QtyCutting = item.qtycutting,
 					QtySewing = item.qtySewing,
 					QtyFinishing = item.qtyFinishing,
