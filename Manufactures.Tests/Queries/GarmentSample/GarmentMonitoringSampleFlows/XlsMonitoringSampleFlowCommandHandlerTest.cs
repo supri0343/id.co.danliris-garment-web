@@ -8,6 +8,7 @@ using Manufactures.Domain.GarmentSample.SampleCuttingOuts.Repositories;
 using Manufactures.Domain.GarmentSample.SampleFinishingOuts;
 using Manufactures.Domain.GarmentSample.SampleFinishingOuts.ReadModels;
 using Manufactures.Domain.GarmentSample.SampleFinishingOuts.Repositories;
+using Manufactures.Domain.GarmentSample.SampleRequests.ReadModels;
 using Manufactures.Domain.GarmentSample.SampleRequests.Repositories;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts.ReadModels;
@@ -120,6 +121,7 @@ namespace Manufactures.Tests.GarmentSample.Queries.GarmentMonitoringProductionFl
 			Guid guidFinishingOutItem = Guid.NewGuid();
 			Guid guidSewingOut = Guid.NewGuid();
 			Guid guidSewingOutItem = Guid.NewGuid();
+			Guid guidSampleReqId = Guid.NewGuid();
 			GetXlsMonitoringSampleFlowQuery getMonitoring = new GetXlsMonitoringSampleFlowQuery(1, 25, "{}", 1, DateTime.Now, null, "token");
 
 			_mockGarmentCuttingOutDetailRepository
