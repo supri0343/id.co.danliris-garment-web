@@ -235,17 +235,6 @@ namespace Manufactures.Controllers.Api.GarmentSample
 
             var order = await Mediator.Send(command);
 
-            var isExist = _garmentExpenditureGoodRepository.Find(o => o.Invoice == order.Invoice).SingleOrDefault();
-            if (isExist == null)
-            {
-                await SetIsSampleExpenditureGood(order.invoice, false);
-            }
-            else
-            {
-                await SetIsSampleExpenditureGood(order.invoice, true);
-            }
-
-
             return Ok(order.Identity);
 
         }
