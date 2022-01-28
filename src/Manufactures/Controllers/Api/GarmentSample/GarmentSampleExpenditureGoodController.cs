@@ -240,12 +240,11 @@ namespace Manufactures.Controllers.Api.GarmentSample
             var isExist = _garmentExpenditureGoodRepository.Find(o => o.Invoice == order.Invoice).SingleOrDefault();
             if (isExist == null)
             {
-                await SetIsSampleExpenditureGood(invoice, false);
-                await SetIsSampleExpenditureGood(command.Invoice, true);
+                await SetIsSampleExpenditureGood(order.invoice, false);
             }
             else
             {
-                await SetIsSampleExpenditureGood(command.Invoice, true);
+                await SetIsSampleExpenditureGood(order.invoice, true);
             }
 
 
