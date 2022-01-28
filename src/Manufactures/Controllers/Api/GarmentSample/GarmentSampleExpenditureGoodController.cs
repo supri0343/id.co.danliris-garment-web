@@ -1,6 +1,7 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentSample.SampleExpenditureGoods.Queries;
+using Manufactures.Application.GarmentSample.SampleExpenditureGoods.Queries.ArchiveMonitoring;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Repositories;
 using Manufactures.Dtos.GarmentSample.SampleExpenditureGoods;
@@ -352,6 +353,47 @@ namespace Manufactures.Controllers.Api.GarmentSample
             var order = await Mediator.Send(command);
 
             return Ok();
+        }
+
+        [HttpGet("archive-monitoring")]
+        public async Task<IActionResult> GetArchiveMonitoring(string type, string roNo, string comodity, int page = 1, int size = 25, string Order = "{}")
+        {
+            VerifyUser();
+            GarmentArchiveMonitoringQuery query = new GarmentArchiveMonitoringQuery(page, size, Order, type,roNo,comodity, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.garmentMonitorings, info: new
+            {
+                page,
+                size,
+                viewModel.count
+            });
+        }
+
+        [HttpGet("archive-download")]
+        public async Task<IActionResult> GetArchiveXls(string type, string roNo, string comodity,  int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                VerifyUser();
+                GarmentArchiveMonitoringXlsQuery query = new GarmentArchiveMonitoringXlsQuery(page, size, Order, type, roNo, comodity, WorkContext.Token);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = "Monitoring Arsip Sampel/MD";
+
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
         }
     }
 }
