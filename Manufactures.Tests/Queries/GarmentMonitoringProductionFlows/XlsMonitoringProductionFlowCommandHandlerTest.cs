@@ -96,8 +96,8 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionFlows
 					Kode="dd"
 				}
 			};
-			_mockhttpService.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()))
-				.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
+			_mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpContent>()))
+			.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
 			serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
 		}
 
@@ -106,7 +106,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionFlows
 			return new GetXlsMonitoringProductionFlowQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
 
-		/*[Fact]
+		[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior()
 		{
 			// Arrange
@@ -203,6 +203,6 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionFlows
 
 			// Assert
 			result.Should().NotBeNull();
-		}*/
+		}
 	}
 }

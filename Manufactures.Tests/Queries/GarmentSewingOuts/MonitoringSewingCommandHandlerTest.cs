@@ -100,16 +100,16 @@ namespace Manufactures.Tests.Queries.GarmentSewingOuts
                     hours=10
                 }
             };
-            _mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpContent>()))
-              .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
-            serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
-        }
-        private GetMonitoringSewingQueryHandler CreateGetMonitoringSewingQueryHandler()
+			_mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpContent>()))
+			   .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
+			serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
+		}
+		private GetMonitoringSewingQueryHandler CreateGetMonitoringSewingQueryHandler()
 		{
 			return new GetMonitoringSewingQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
 
-		/*[Fact]
+		[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior()
 		{
 			// Arrange
@@ -218,7 +218,7 @@ namespace Manufactures.Tests.Queries.GarmentSewingOuts
 
 			// Assert
 			result.Should().NotBeNull();
-		}*/
+		}
 
         private PlaceGarmentAdjustmentCommandHandler CreatePlaceGarmentAdjustmentCommandHandler()
         {
