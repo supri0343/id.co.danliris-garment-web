@@ -730,6 +730,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                           Ro = a.RONo,
                                           AvalSewing = a.Date >= dateFrom ? b.Quantity : 0,
                                           AvalSewingPrice = a.Date >= dateFrom ? Convert.ToDouble(b.Price) : 0,
+                                          BeginingBalanceCuttingQty = a.Date < dateFrom && a.Date > dateBalance ? -b.Quantity : 0,
+
                                       }).GroupBy(x => x.Ro, (key, group) => new monitoringView {
                                           QtySewingIn = 0,
                                           PriceSewingIn = 0,
@@ -773,7 +775,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                           FinishingReturPrice = 0,
                                           SubconOutQty = 0,
                                           SubconOutPrice = 0,
-                                          BeginingBalanceCuttingQty = 0,//a.Date < dateFrom && a.Date > dateBalance ? -b.Quantity : 0,
+                                          BeginingBalanceCuttingQty = group.Sum(x => x.BeginingBalanceCuttingQty), //0,a.Date < dateFrom && a.Date > dateBalance ? -b.Quantity : 0,
                                           BeginingBalanceCuttingPrice = 0,//a.Date < dateFrom && a.Date > dateBalance  ? -Convert.ToDouble(b.Price) : 0,
                                           Ro = key,
                                           QtyCuttingIn = 0,
@@ -805,7 +807,9 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                        {
                                            Ro = a.RONo,
                                            AvalCutting = a.Date >= dateFrom ? b.Quantity : 0,
-                                           AvalCuttingPrice = a.Date >= dateFrom ? Convert.ToDouble(b.Price) : 0
+                                           AvalCuttingPrice = a.Date >= dateFrom ? Convert.ToDouble(b.Price) : 0,
+                                           BeginingBalanceCuttingQty = a.Date < dateFrom && a.Date > dateBalance ? -b.Quantity : 0,
+                                           //BeginingBalanceCuttingPrice = a.Date < dateFrom && a.Date > dateBalance ? -Convert.ToDouble(b.Price) : 0
                                        }).GroupBy(x => x.Ro, (key, group) => new monitoringView {
                                            QtyCuttingIn = 0,
                                            PriceCuttingIn = 0,
@@ -851,8 +855,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                            FinishingReturPrice = 0,
                                            SubconOutQty = 0,
                                            SubconOutPrice = 0,
-                                           BeginingBalanceCuttingQty = 0,//a.Date < dateFrom && a.Date > dateBalance ? -b.Quantity : 0,
-                                           BeginingBalanceCuttingPrice = 0,// a.Date < dateFrom && a.Date > dateBalance ? -Convert.ToDouble(b.Price) : 0,
+                                           BeginingBalanceCuttingQty = group.Sum(x => x.BeginingBalanceCuttingQty), //0,a.Date < dateFrom && a.Date > dateBalance ? -b.Quantity : 0,
+                                           BeginingBalanceCuttingPrice = 0, //a.Date < dateFrom && a.Date > dateBalance ? -Convert.ToDouble(b.Price) : 0,
                                            Ro = key,
                                            AvalCutting = group.Sum(x=>x.AvalCutting),
                                            AvalCuttingPrice = group.Sum(x => x.AvalCuttingPrice),
@@ -2173,6 +2177,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				.Union(QueryLoadingInTransfer)
 				.AsEnumerable();
 
+            var queryNow2 = queryNow.Where(x => x.BeginingBalanceCuttingQty != 0).AsEnumerable();
+
             //queryNow = queryNow.Where(x => Convert.ToInt32(x.Ro.Substring(0, 2)) > 19).AsEnumerable();
             
             var querySum = (from a in queryNow
@@ -2390,8 +2396,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                             AvalCuttingPrice = Math.Round(((Convert.ToDouble(a.fare) * 0.25) + b.BasicPrice) * a.qtyavalcut, 2),
                             AvalSewing = Math.Round(a.qtyavalsew, 2),
                             AvalSewingPrice = Math.Round(((Convert.ToDouble(a.fare) * 0.25) + b.BasicPrice) * a.qtyavalsew, 2),
-                            EndBalancCuttingeQty = Math.Round(a.begining + a.qtyCuttingIn - a.qtycutting - a.qtyCuttingTransfer - a.qtCuttingSubkon - a.qtyavalcut /*- a.qtyavalsew*/, 2) < 0 ? 0 : Math.Round(a.begining + a.qtyCuttingIn - a.qtycutting - a.qtyCuttingTransfer - a.qtCuttingSubkon - a.qtyavalcut /*- a.qtyavalsew*/, 2),
-                            EndBalancCuttingePrice = Math.Round(((Convert.ToDouble(a.fare) * 0.25) + b.BasicPrice) * (a.begining + a.qtyCuttingIn - a.qtycutting - a.qtyCuttingTransfer - a.qtCuttingSubkon - a.qtyavalcut /*- a.qtyavalsew*/), 2) < 0 ? 0 : Math.Round(((Convert.ToDouble(a.fare) * 0.25) + b.BasicPrice) * (a.begining + a.qtyCuttingIn - a.qtycutting - a.qtyCuttingTransfer - a.qtCuttingSubkon - a.qtyavalcut /*- a.qtyavalsew*/), 2),
+                            EndBalancCuttingeQty = Math.Round(a.begining + a.qtyCuttingIn - a.qtycutting - a.qtyCuttingTransfer - a.qtCuttingSubkon - a.qtyavalcut - a.qtyavalsew, 2) < 0 ? 0 : Math.Round(a.begining + a.qtyCuttingIn - a.qtycutting - a.qtyCuttingTransfer - a.qtCuttingSubkon - a.qtyavalcut - a.qtyavalsew, 2),
+                            EndBalancCuttingePrice = Math.Round(((Convert.ToDouble(a.fare) * 0.25) + b.BasicPrice) * (a.begining + a.qtyCuttingIn - a.qtycutting - a.qtyCuttingTransfer - a.qtCuttingSubkon - a.qtyavalcut - a.qtyavalsew), 2) < 0 ? 0 : Math.Round(((Convert.ToDouble(a.fare) * 0.25) + b.BasicPrice) * (a.begining + a.qtyCuttingIn - a.qtycutting - a.qtyCuttingTransfer - a.qtCuttingSubkon - a.qtyavalcut - a.qtyavalsew), 2),
                             BeginingBalanceLoadingQty = Math.Round(a.beginingloading, 2) < 0 ? 0 : Math.Round(a.beginingloading, 2),
                             BeginingBalanceLoadingPrice = Math.Round(((Convert.ToDouble(a.fare) * 0.25) + b.BasicPrice) * a.beginingloading, 2) < 0 ? 0 : Math.Round(((Convert.ToDouble(a.fare) * 0.25) + b.BasicPrice) * a.beginingloading, 2),
                             QtyLoadingIn = Math.Round(a.qtyLoadingIn, 2),
