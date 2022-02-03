@@ -232,8 +232,15 @@ namespace Manufactures.Controllers.Api.GarmentSample
             Guid guid = Guid.Parse(id);
 
             VerifyUser();
+            var invoice = _garmentExpenditureGoodRepository.Find(o => guid == o.Identity).Select(s => s.Invoice).Single();
 
             RemoveGarmentSampleExpenditureGoodCommand command = new RemoveGarmentSampleExpenditureGoodCommand(guid);
+
+            var isExist = _garmentExpenditureGoodRepository.Find(o => o.Invoice == invoice).SingleOrDefault();
+            if (isExist == null)
+            {
+                await SetIsSampleExpenditureGood(invoice, false);
+            }
 
             var order = await Mediator.Send(command);
 
