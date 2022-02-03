@@ -90,7 +90,7 @@ namespace Manufactures.Controllers.Api
 
 				var xls = await Mediator.Send(query);
 
-				string filename = "Laporan Flow Persediaan";
+				string filename = "Laporan Flow Persediaan Sample";
 
 				if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
 
