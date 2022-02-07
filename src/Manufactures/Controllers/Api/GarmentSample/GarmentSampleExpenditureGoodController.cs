@@ -174,8 +174,6 @@ namespace Manufactures.Controllers.Api.GarmentSample
                     await SetIsSampleExpenditureGood(order.Invoice, true);
                 }
 
-                await SetIsSampleExpenditureGood(order.Invoice, true);
-
                 return Ok(order.Identity);
             }
             catch (Exception e)
@@ -196,22 +194,6 @@ namespace Manufactures.Controllers.Api.GarmentSample
             var packing = _garmentExpenditureGoodRepository.Find(o => guid == o.Identity).Select(s => new { s.Invoice, s.PackingListId }).Single();
 
             var order = await Mediator.Send(command);
-            if (invoice != command.Invoice)
-            {
-                var isExist = _garmentExpenditureGoodRepository.Find(o => o.Invoice == invoice).SingleOrDefault();
-                if (isExist == null)
-                {
-                    await SetIsSampleExpenditureGood(invoice, false);
-                    await SetIsSampleExpenditureGood(command.Invoice, true);
-                }
-                else
-                {
-                    await SetIsSampleExpenditureGood(command.Invoice, true);
-                }
-            } else
-            {
-                await SetIsSampleExpenditureGood(command.Invoice, true);
-            }
 
             if (packing.Invoice != command.Invoice)
             {
