@@ -94,10 +94,10 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
 				return new GetXlsCuttingQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 			}
 
-		/*[Fact]
+		[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior()
 		{
-			// Arrange
+			//Arrange
 			GetXlsCuttingQueryHandler unitUnderTest = CreateGetXlsCuttingQueryHandler();
 			CancellationToken cancellationToken = CancellationToken.None;
 
@@ -112,7 +112,7 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
 			Guid guidCuttingOutItem = Guid.NewGuid();
 			Guid guidCuttingOutDetail = Guid.NewGuid();
 
-			GetXlsCuttingQuery getMonitoring = new GetXlsCuttingQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2),"", "token");
+			GetXlsCuttingQuery getMonitoring = new GetXlsCuttingQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "", "token");
 
 
 
@@ -178,24 +178,25 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
 				{
 					 new GarmentPreparingItem(guidGarmentPreparingItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidGarmentPreparing,null).GetReadModel()
 				}.AsQueryable());
-            var garmentBalanceCutting = Guid.NewGuid();
-            _mockGarmentBalanceCuttingRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentBalanceCuttingReadModel>
-                {
-                     new GarmentBalanceCutting(garmentBalanceCutting,"ro","article",1,"unitCode","unitName","buyerCode",1,"comodityName",2,1,1,2,2,9,9,100,100).GetReadModel()
-                }.AsQueryable());
-            // Act
-            var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
+			var garmentBalanceCutting = Guid.NewGuid();
+			_mockGarmentBalanceCuttingRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentBalanceCuttingReadModel>
+				{
+					 new GarmentBalanceCutting(garmentBalanceCutting,"ro","article",1,"unitCode","unitName","buyerCode",1,"comodityName",2,1,1,2,2,9,9,100,100).GetReadModel()
+				}.AsQueryable());
+			// Act
+			var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
 
 			// Assert
-			result.Should().NotBeNull();
-		}*/
 
-		/*[Fact]
+			result.Should().NotBeNull();
+		}
+
+		[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior_bookkeeping()
 		{
-			// Arrange
+			 //Arrange
 			GetXlsCuttingQueryHandler unitUnderTest = CreateGetXlsCuttingQueryHandler();
 			CancellationToken cancellationToken = CancellationToken.None;
 
@@ -286,11 +287,11 @@ namespace Manufactures.Tests.Queries.GarmentCuttingOuts
                      new GarmentBalanceCutting(garmentBalanceCutting,"ro","article",1,"unitCode","unitName","buyerCode",1,"comodityName",2,1,1,2,2,9,9,100,100).GetReadModel()
                 }.AsQueryable());
 
-            // Act
+             //Act
             var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
 
 			// Assert
 			result.Should().NotBeNull();
-		}*/
+		}
 	}
 }

@@ -142,8 +142,10 @@ namespace Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing
 		}
 		public async Task<MemoryStream> Handle(GetXlsSewingQuery request, CancellationToken cancellationToken)
 		{
-			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
-			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
+			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
+			dateFrom.AddHours(7);
+			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
+			dateTo = dateTo.AddHours(7);
 			DateTimeOffset dateBalance = (from a in garmentBalanceSewingRepository.Query.OrderByDescending(s => s.CreatedDate)
 										  select a.CreatedDate).FirstOrDefault();
 			var QueryRoSewingOut = (from a in garmentSewingOutRepository.Query
