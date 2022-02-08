@@ -53,9 +53,9 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentRealizationSubcon
 
         }
 
-        private GarmentRealizationSubconReportQueryHandler CreateGetPrepareTraceableQueryHandler()
+        private GarmentSubconContactReportQueryHandler CreateGetPrepareTraceableQueryHandler()
         {
-            return new GarmentRealizationSubconReportQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
+            return new GarmentSubconContactReportQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
         }
 
         //[Fact]

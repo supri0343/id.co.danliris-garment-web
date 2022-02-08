@@ -241,8 +241,8 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             var unitUnderTest = CreateGarmentSubconContractController();
 
             _MockMediator
-                .Setup(s => s.Send(It.IsAny<GarmentRealizationSubconReportQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentRealizationSubconReportListViewModel());
+                .Setup(s => s.Send(It.IsAny<GarmentSubconContactReportQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentSubconContactReportListViewModel());
 
             // Act
 
