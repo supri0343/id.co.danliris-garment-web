@@ -2,9 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Manufactures.Domain.GarmentSubcon.CustomsOuts.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
-using Manufactures.Domain.GarmentSubcon.SubconCustomsIns.Repositories;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconContactReport;
 using Barebone.Tests;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubconReport;
@@ -23,40 +21,27 @@ using Xunit;
 
 namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentRealizationSubcon
 {
-    public class GarmentRealizationSubconQueryHandlerTest : BaseCommandUnitTest
+    public class GarmentSubconContractQueryHandlerTest : BaseCommandUnitTest
     {
-        private readonly Mock<IGarmentSubconCustomsInRepository> _mockgarmentSubconCustomsInRepository;
-        private readonly Mock<IGarmentSubconCustomsInItemRepository> _mockgarmentSubconCustomsInItemRepository;
-        private readonly Mock<IGarmentSubconCustomsOutRepository> _mockgarmentSubconCustomsOutRepository;
-        private readonly Mock<IGarmentSubconCustomsOutItemRepository> _mockgarmentSubconCustomsOutItemRepository;
         private readonly Mock<IGarmentSubconContractRepository> _mockgarmentSubconContractRepository;
-        private readonly Mock<IGarmentSubconContractItemRepository> _mockgarmentSubconContractItemRepository;
+
 
         private Mock<IServiceProvider> serviceProviderMock;
 
-        public GarmentRealizationSubconQueryHandlerTest()
+        public GarmentSubconContractQueryHandlerTest()
         {
-            _mockgarmentSubconCustomsInRepository = CreateMock<IGarmentSubconCustomsInRepository>();
-            _mockgarmentSubconCustomsInItemRepository = CreateMock<IGarmentSubconCustomsInItemRepository>();
-            _mockgarmentSubconCustomsOutRepository = CreateMock<IGarmentSubconCustomsOutRepository>();
-            _mockgarmentSubconCustomsOutItemRepository = CreateMock<IGarmentSubconCustomsOutItemRepository>();
+            
             _mockgarmentSubconContractRepository = CreateMock<IGarmentSubconContractRepository>();
-            _mockgarmentSubconContractItemRepository = CreateMock<IGarmentSubconContractItemRepository>();
 
-            _MockStorage.SetupStorage(_mockgarmentSubconCustomsInRepository);
-            _MockStorage.SetupStorage(_mockgarmentSubconCustomsInItemRepository);
-            _MockStorage.SetupStorage(_mockgarmentSubconCustomsOutRepository);
-            _MockStorage.SetupStorage(_mockgarmentSubconCustomsOutItemRepository);
             _MockStorage.SetupStorage(_mockgarmentSubconContractRepository);
-            _MockStorage.SetupStorage(_mockgarmentSubconContractItemRepository);
-
+           
             serviceProviderMock = new Mock<IServiceProvider>();
 
         }
 
-        private GarmentRealizationSubconReportQueryHandler CreateGetPrepareTraceableQueryHandler()
+        private GarmentSubconContactReportQueryHandler CreateGetPrepareTraceableQueryHandler()
         {
-            return new GarmentRealizationSubconReportQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
+            return new GarmentSubconContactReportQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
         }
 
         //[Fact]

@@ -10,18 +10,16 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconContactRep
         public int page { get; private set; }
         public int size { get; private set; }
         public string order { get; private set; }
-        public string token { get; private set; }
         public int supplierNo { get; private set; }
         public string contractType { get; private set; }
         public DateTime dateFrom { get; private set; }
         public DateTime dateTo { get; private set; }
 
-        public GarmentSubconContactReportQuery(int page, int size, string order, string token, int supplierNo, string contractType, DateTime dateFrom, DateTime dateTo)
+        public GarmentSubconContactReportQuery(int page, int size, string order, int supplierNo, string contractType, DateTime dateFrom, DateTime dateTo)
         {
             this.page = page;
             this.size = size;
             this.order = order;
-            this.token = token;
             this.supplierNo = supplierNo;
             this.contractType = contractType;
             this.dateFrom = dateFrom;

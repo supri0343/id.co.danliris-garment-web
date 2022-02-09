@@ -211,10 +211,10 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         }
 
         [HttpGet("subcon-contract-report")]
-        public async Task<IActionResult> GetSubconContractReport(int supplierNo, string contractType, DateTime dateFrom, DateTime dateTo, string token, int page = 1, int size = 25, string order = "{ }")
+        public async Task<IActionResult> GetSubconContractReport(int supplierNo, string contractType, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string order = "{ }")
         {
             VerifyUser();
-            GarmentSubconContactReportQuery query = new GarmentSubconContactReportQuery(page, size,order, WorkContext.Token, supplierNo, contractType, dateFrom, dateTo);
+            GarmentSubconContactReportQuery query = new GarmentSubconContactReportQuery(page, size,order, supplierNo, contractType, dateFrom, dateTo);
             var viewModel = await Mediator.Send(query);
 
            
@@ -229,12 +229,12 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         }
 
         [HttpGet("subcon-contract-report/download")]
-        public async Task<IActionResult> GetXlsSubconContractReport(int supplierNo, string contractType, DateTime dateFrom, DateTime dateTo, string token, int page = 1, int size = 25, string order = "{ }")
+        public async Task<IActionResult> GetXlsSubconContractReport(int supplierNo, string contractType, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string order = "{ }")
         {
             try
             {
                 VerifyUser();
-                GetXlsGarmentSubconContractReporQuery query = new GetXlsGarmentSubconContractReporQuery(page, size, order, WorkContext.Token, supplierNo, contractType, dateFrom, dateTo);
+                GetXlsGarmentSubconContractReporQuery query = new GetXlsGarmentSubconContractReporQuery(page, size, order, supplierNo, contractType, dateFrom, dateTo);
                 byte[] xlsInBytes;
 
                 var xls = await Mediator.Send(query);
