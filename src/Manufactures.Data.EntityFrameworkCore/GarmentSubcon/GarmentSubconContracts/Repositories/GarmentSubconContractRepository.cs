@@ -42,6 +42,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentSubconContr
             return data;
         }
 
+        
+
         protected override GarmentSubconContract Map(GarmentSubconContractReadModel readModel)
         {
             return new GarmentSubconContract(readModel);
