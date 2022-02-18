@@ -221,7 +221,10 @@ namespace Manufactures.Controllers.Api.GarmentSample
                 SampleSpecifications = _GarmentSampleRequestSpecificationRepository.Find(o => o.SampleRequestId == sample.Identity).Select(specification => new GarmentSampleRequestSpecificationDto(specification)).OrderBy(o => o.Index).ToList()
             }
             ).FirstOrDefault();
-
+            if (garmentSampleRequestDto.ImagesPath.Count > 0)
+            {
+                garmentSampleRequestDto.ImagesFile = await _azureImage.DownloadMultipleImages("GarmentSampleRequest", garmentSampleRequestDto.ImagesPath);
+            }
             var stream = GarmentSampleRequestPDFTemplate.Generate(garmentSampleRequestDto);
 
             return new FileStreamResult(stream, "application/pdf")
