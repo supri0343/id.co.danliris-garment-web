@@ -62,7 +62,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
 
             var prefix = $"{code}/{day}{month}{year}/";
 
-            var lastSampleRequestNo = _GarmentSampleRequestRepository.Query.Where(w => w.SampleRequestNo.StartsWith(prefix))
+            var lastSampleRequestNo = _GarmentSampleRequestRepository.Query.Where(w => w.SampleRequestNo.StartsWith(prefix) && w.SampleRequestNo!=null)
                 .OrderByDescending(o => o.SampleRequestNo)
                 .Select(s => int.Parse(s.SampleRequestNo.Replace(prefix, "")))
                 .FirstOrDefault();
