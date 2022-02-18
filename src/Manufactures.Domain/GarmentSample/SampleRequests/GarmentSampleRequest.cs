@@ -179,6 +179,14 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
         {
             return this;
         }
+        public void SetSampleRequestNo(string SampleRequestNo)
+        {
+            if (this.SampleRequestNo != SampleRequestNo)
+            {
+                this.SampleRequestNo = SampleRequestNo;
+                ReadModel.SampleRequestNo = SampleRequestNo;
+            }
+        }
 
         public void SetIsPosted(bool IsPosted)
         {
@@ -213,6 +221,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 ReadModel.BuyerCode = BuyerCode;
             }
         }
+
         public void SetBuyerName(string BuyerName)
         {
             if (this.BuyerName != BuyerName)
