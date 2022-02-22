@@ -214,14 +214,17 @@ namespace Manufactures.Controllers.Api.GarmentSample
             Guid guid = Guid.Parse(id);
 
             VerifyUser();
-
+            
             GarmentSampleRequestDto garmentSampleRequestDto = _GarmentSampleRequestRepository.Find(o => o.Identity == guid).Select(sample => new GarmentSampleRequestDto(sample)
             {
                 SampleProducts = _GarmentSampleRequestProductRepository.Find(o => o.SampleRequestId == sample.Identity).Select(product => new GarmentSampleRequestProductDto(product)).OrderBy(o => o.Index).ToList(),
                 SampleSpecifications = _GarmentSampleRequestSpecificationRepository.Find(o => o.SampleRequestId == sample.Identity).Select(specification => new GarmentSampleRequestSpecificationDto(specification)).OrderBy(o => o.Index).ToList()
             }
             ).FirstOrDefault();
-
+            if (garmentSampleRequestDto.ImagesPath.Count > 0)
+            {
+                garmentSampleRequestDto.ImagesFile = await _azureImage.DownloadMultipleImages("GarmentSampleRequest", garmentSampleRequestDto.ImagesPath);
+            }
             var stream = GarmentSampleRequestPDFTemplate.Generate(garmentSampleRequestDto);
 
             return new FileStreamResult(stream, "application/pdf")
