@@ -12,6 +12,7 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
         public GarmentSampleRequestDto(GarmentSampleRequest garmentSampleRequest)
         {
             Id = garmentSampleRequest.Identity;
+            CreatedBy = garmentSampleRequest.CreatedBy;
             SampleCategory = garmentSampleRequest.SampleCategory;
             SampleRequestNo = garmentSampleRequest.SampleRequestNo;
             RONoSample = garmentSampleRequest.RONoSample;
@@ -47,6 +48,7 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
         }
 
         public Guid Id { get; set; }
+        public string CreatedBy { get; set; }
         public string SampleCategory { get;  set; }
         public string SampleRequestNo { get;  set; }
         public string RONoSample { get; internal set; }

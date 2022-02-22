@@ -362,7 +362,7 @@ namespace Manufactures.Helpers.PDFTemplates
             tableSignature.AddCell(cellCenterTopNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph(""); //new Paragraph("Mengetahui,\n\n\n\n\n\n\n\nKasie / Kabag Penjualan", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Dibuat,\n\n\n\n\n\n\n\nPenjualan", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Dibuat,\n\n\n\n\n\n\n\n( "+ garmentSampleRequest.CreatedBy +" )\nPenjualan", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
 
             PdfPCell cellSignature = new PdfPCell(tableSignature);
