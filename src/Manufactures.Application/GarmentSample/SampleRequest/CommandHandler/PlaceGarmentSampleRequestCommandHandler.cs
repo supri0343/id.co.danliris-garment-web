@@ -43,7 +43,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
             GarmentSampleRequest GarmentSampleRequest = new GarmentSampleRequest(
                 id,
                 request.SampleCategory,
-                GenerateSampleRequestNo(request),
+                //GenerateSampleRequestNo(request),
+                "",
                 GenerateROSample(request),
                 request.RONoCC,
                 request.Date,
@@ -144,23 +145,6 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
             return SampleRequest;
         }
 
-        private string GenerateSampleRequestNo(PlaceGarmentSampleRequestCommand request)
-        {
-            var now = DateTime.Now;
-            var year = now.ToString("yyyy");
-            var month = now.ToString("MM");
-            var code = request.Buyer.Code;
-
-            var prefix = $"{code}/{month}{year}/";
-
-            var lastSampleRequestNo = _GarmentSampleRequestRepository.Query.Where(w => w.SampleRequestNo.StartsWith(prefix))
-                .OrderByDescending(o => o.SampleRequestNo)
-                .Select(s => int.Parse(s.SampleRequestNo.Replace(prefix, "")))
-                .FirstOrDefault();
-            var SampleRequestNo = $"{prefix}{(lastSampleRequestNo + 1).ToString("D3")}";
-
-            return SampleRequestNo;
-        }
 
         private string GenerateROSample(PlaceGarmentSampleRequestCommand request)
         {

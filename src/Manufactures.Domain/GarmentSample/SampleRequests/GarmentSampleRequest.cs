@@ -12,6 +12,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
     public class GarmentSampleRequest : AggregateRoot<GarmentSampleRequest, GarmentSampleRequestReadModel>
     {
         public string SampleCategory { get; private set; }
+        public string CreatedBy { get; private set; }
         public string SampleRequestNo { get; private set; }
         public string RONoSample { get; internal set; }
         public string RONoCC { get; internal set; }
@@ -171,6 +172,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             DocumentsFileName = readModel.DocumentsFileName;
             SectionCode = readModel.SectionCode;
             SectionId = new SectionId(readModel.SectionId);
+            CreatedBy = readModel.CreatedBy;
         }
 
         
@@ -178,6 +180,14 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
         protected override GarmentSampleRequest GetEntity()
         {
             return this;
+        }
+        public void SetSampleRequestNo(string SampleRequestNo)
+        {
+            if (this.SampleRequestNo != SampleRequestNo)
+            {
+                this.SampleRequestNo = SampleRequestNo;
+                ReadModel.SampleRequestNo = SampleRequestNo;
+            }
         }
 
         public void SetIsPosted(bool IsPosted)
@@ -213,6 +223,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 ReadModel.BuyerCode = BuyerCode;
             }
         }
+
         public void SetBuyerName(string BuyerName)
         {
             if (this.BuyerName != BuyerName)

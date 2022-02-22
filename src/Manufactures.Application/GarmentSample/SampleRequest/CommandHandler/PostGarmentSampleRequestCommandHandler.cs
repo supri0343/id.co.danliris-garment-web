@@ -30,19 +30,45 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                 guids.Add(Guid.Parse(id));
             }
             var Samples = _GarmentSampleRequestRepository.Query.Where(a => guids.Contains(a.Identity)).Select(a => new GarmentSampleRequest(a)).ToList();
-
+            int count = 0;
             foreach (var model in Samples)
             {
+                count++;
                 model.SetIsPosted(request.Posted);
                 model.SetIsReceived(false);
                 model.SetIsRejected(false);
                 model.SetIsRevised(false);
+                if (String.IsNullOrEmpty(model.SampleRequestNo))
+                {
+                    count++;
+                    model.SetSampleRequestNo(GenerateSampleRequestNo(model, count));
+                }
                 model.Modify();
                 await _GarmentSampleRequestRepository.Update(model);
             }
             _storage.Save();
 
             return guids.Count();
+        }
+
+
+        private string GenerateSampleRequestNo(GarmentSampleRequest request,int count)
+        {
+            var now = DateTime.Now;
+            var day = now.ToString("dd");
+            var year = now.ToString("yyyy");
+            var month = now.ToString("MM");
+            var code = request.BuyerCode;
+
+            var prefix = $"{code}/{day}{month}{year}/";
+
+            var lastSampleRequestNo = _GarmentSampleRequestRepository.Query.Where(w => w.SampleRequestNo.StartsWith(prefix) && w.SampleRequestNo!=null)
+                .OrderByDescending(o => o.SampleRequestNo)
+                .Select(s => int.Parse(s.SampleRequestNo.Replace(prefix, "")))
+                .FirstOrDefault();
+            var SampleRequestNo = $"{prefix}{(lastSampleRequestNo + count).ToString("D3")}";
+
+            return SampleRequestNo;
         }
     }
 }
