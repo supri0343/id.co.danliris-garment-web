@@ -21,9 +21,9 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             PdfPCell cellJustifyNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_JUSTIFIED };
             PdfPCell cellJustifyAllNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_JUSTIFIED_ALL };
 
-            PdfPCell cellCenter = new PdfPCell() { Border = Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE, Padding = 5 };
-            PdfPCell cellRight = new PdfPCell() { Border = Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT, VerticalAlignment = Element.ALIGN_MIDDLE, Padding = 5 };
-            PdfPCell cellLeft = new PdfPCell() { Border = Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_LEFT, VerticalAlignment = Element.ALIGN_MIDDLE, Padding = 5 };
+            PdfPCell cellCenter = new PdfPCell() { Border = Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_TOP, Padding = 5 };
+            PdfPCell cellRight = new PdfPCell() { Border = Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT, VerticalAlignment = Element.ALIGN_TOP, Padding = 5 };
+            PdfPCell cellLeft = new PdfPCell() { Border = Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_LEFT, VerticalAlignment = Element.ALIGN_TOP, Padding = 5 };
 
 
             Font header_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
@@ -267,19 +267,30 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 int indexItem = 0;
                 foreach ( var DLItem in garmentSubconDLOut.Items)
                 {
-                    foreach(var item in DLItem.SubconCutting.Items)
+                    var cols = DLItem.SubconCutting.Items.Count;
+                    foreach (var item in DLItem.SubconCutting.Items)
                     {
-                        cellCenter.Phrase = new Phrase((indexItem + 1).ToString(), normal_font);
-                        tableContent.AddCell(cellCenter);
-                        indexItem++;
+                        if (cols > 0)
+                        {
+                            cellCenter.Phrase = new Phrase((indexItem + 1).ToString(), normal_font);
+                            cellCenter.Rowspan = cols;
+                            cellCenter.VerticalAlignment = Element.ALIGN_TOP;
+                            tableContent.AddCell(cellCenter);
+                            indexItem++;
 
-                        cellLeft.Phrase = new Phrase(DLItem.RONo, normal_font);
-                        tableContent.AddCell(cellLeft);
+                            cellLeft.Phrase = new Phrase(DLItem.RONo, normal_font);
+                            cellLeft.Rowspan = cols;
+                            cellCenter.VerticalAlignment = Element.ALIGN_TOP;
+                            tableContent.AddCell(cellLeft);
 
-                        cellLeft.Phrase = new Phrase(DLItem.POSerialNumber, normal_font);
-                        tableContent.AddCell(cellLeft);
+                            cellLeft.Phrase = new Phrase(DLItem.POSerialNumber, normal_font);
+                            tableContent.AddCell(cellLeft);
+                            cols =0;
+                        }
+                        
 
                         cellLeft.Phrase = new Phrase(item.DesignColor, normal_font);
+                        cellLeft.Rowspan = 1;
                         tableContent.AddCell(cellLeft);
 
                         cellRight.Phrase = new Phrase($"{item.TotalCuttingOut}", normal_font);
