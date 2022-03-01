@@ -14,7 +14,7 @@ namespace Manufactures.Tests.Helpers
         public void Generate_Return_Success()
         {
             Guid id = Guid.NewGuid();
-            var dto = new GarmentSubconDeliveryLetterOutDto(new GarmentSubconDeliveryLetterOut(id, null, null, id, "", "", DateTimeOffset.Now, 1, "", "", 1, "", false, "", "SUBCON SEWING"));
+            var dto = new GarmentSubconDeliveryLetterOutDto(new GarmentSubconDeliveryLetterOut(id, null, null, id, "", "", DateTimeOffset.Now, 1, "", "", 1, "", false, "", "SUBCON CUTTING SEWING"));
 
             var garmentSubconDLOutItem = new GarmentSubconDeliveryLetterOutItem(id, id, 1, new Domain.Shared.ValueObjects.ProductId(1), "code", "name", "remark", "color", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", new Domain.Shared.ValueObjects.UomId(1), "unit", "fabType", new Guid(), "", "", "");
             var items = new List<GarmentSubconDeliveryLetterOutItemDto>()
