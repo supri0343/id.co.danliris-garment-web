@@ -264,30 +264,34 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase("Satuan", bold_font);
                 tableContent.AddCell(cellCenter);
-
-                for (int indexItem = 0; indexItem < garmentSubconDLOut.Items.Count; indexItem++)
+                int indexItem = 0;
+                foreach ( var DLItem in garmentSubconDLOut.Items)
                 {
-                    GarmentSubconDeliveryLetterOutItemDto item = garmentSubconDLOut.Items[indexItem];
+                    foreach(var item in DLItem.SubconCutting.Items)
+                    {
+                        cellCenter.Phrase = new Phrase((indexItem + 1).ToString(), normal_font);
+                        tableContent.AddCell(cellCenter);
+                        indexItem++;
 
-                    cellCenter.Phrase = new Phrase((indexItem + 1).ToString(), normal_font);
-                    tableContent.AddCell(cellCenter);
+                        cellLeft.Phrase = new Phrase(DLItem.RONo, normal_font);
+                        tableContent.AddCell(cellLeft);
 
-                    cellLeft.Phrase = new Phrase(item.RONo, normal_font);
-                    tableContent.AddCell(cellLeft);
+                        cellLeft.Phrase = new Phrase(DLItem.POSerialNumber, normal_font);
+                        tableContent.AddCell(cellLeft);
 
-                    cellLeft.Phrase = new Phrase(item.POSerialNumber, normal_font);
-                    tableContent.AddCell(cellLeft);
+                        cellLeft.Phrase = new Phrase(item.DesignColor, normal_font);
+                        tableContent.AddCell(cellLeft);
 
-                    cellLeft.Phrase = new Phrase(item.DesignColor, normal_font);
-                    tableContent.AddCell(cellLeft);
+                        cellRight.Phrase = new Phrase($"{item.TotalCuttingOut}", normal_font);
+                        tableContent.AddCell(cellRight);
 
-                    cellRight.Phrase = new Phrase($"{item.Quantity}", normal_font);
-                    tableContent.AddCell(cellRight);
+                        cellLeft.Phrase = new Phrase("PCS", normal_font);
+                        tableContent.AddCell(cellLeft);
 
-                    cellLeft.Phrase = new Phrase("PCS", normal_font);
-                    tableContent.AddCell(cellLeft);
+                        total += item.TotalCuttingOut;
+                    }
 
-                    total += item.Quantity;
+                    
                 }
                 cellLeft.Phrase = new Phrase("TOTAL", bold_font);
                 cellLeft.Colspan = 4;
