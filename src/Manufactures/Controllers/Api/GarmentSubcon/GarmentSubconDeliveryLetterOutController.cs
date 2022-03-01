@@ -163,7 +163,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             RemoveGarmentSubconDeliveryLetterOutCommand command = new RemoveGarmentSubconDeliveryLetterOutCommand(guid);
             var order = await Mediator.Send(command);
-            if(garmentSubconDeliveryLetterOut.ContractType== "SUBCON CUTTING SEWING")
+            if(garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON CUTTING SEWING")
                 await PutGarmentUnitExpenditureNoteDelete(garmentSubconDeliveryLetterOut.UENId); 
 
             return Ok(order.Identity);
