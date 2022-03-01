@@ -1,9 +1,11 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Repositories;
 using Manufactures.Dtos.GarmentSubcon;
+using Manufactures.Helpers.PDFTemplates.GarmentSubcon;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -22,11 +24,13 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
     {
         private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;
         private readonly IGarmentSubconDeliveryLetterOutItemRepository _garmentSubconDeliveryLetterOutItemRepository;
+        private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
 
         public GarmentSubconDeliveryLetterOutController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentSubconDeliveryLetterOutRepository = Storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
             _garmentSubconDeliveryLetterOutItemRepository = Storage.GetRepository<IGarmentSubconDeliveryLetterOutItemRepository>();
+            _garmentSubconContractRepository = Storage.GetRepository<IGarmentSubconContractRepository>();
         }
 
         [HttpGet]
@@ -157,6 +161,30 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 await PutGarmentUnitExpenditureNoteDelete(garmentSubconDeliveryLetterOut.UENId); 
 
             return Ok(order.Identity);
+        }
+
+        [HttpGet("get-pdf/{id}")]
+        public async Task<IActionResult> GetPdf(string id)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            GarmentSubconDeliveryLetterOutDto garmentSubconDeliveryLetterOutDto = _garmentSubconDeliveryLetterOutRepository.Find(o => o.Identity == guid).Select(subcon => new GarmentSubconDeliveryLetterOutDto(subcon)
+            {
+                Items = _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subcon.Identity).Select(subconItem => new GarmentSubconDeliveryLetterOutItemDto(subconItem)
+                {
+
+                }).ToList()
+            }
+            ).FirstOrDefault();
+            var supplier = _garmentSubconContractRepository.Find(a => a.Identity == garmentSubconDeliveryLetterOutDto.SubconContractId).Select(a => a.SupplierName).FirstOrDefault();
+            var stream = GarmentSubconDeliveryLetterOutPDFTemplate.Generate(garmentSubconDeliveryLetterOutDto, supplier);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentSubconDeliveryLetterOutDto.DLNo}.pdf"
+            };
         }
     }
 }
