@@ -213,7 +213,7 @@ namespace Manufactures.Controllers.Api.GarmentSample
             try
             {
                 VerifyUser();
-                GetXlsSamplePrepareQuery query = new GetXlsSamplePrepareQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+                GetXlsSamplePrepareQuery query = new GetXlsSamplePrepareQuery(type,page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
                 byte[] xlsInBytes;
 
                 var xls = await Mediator.Send(query);

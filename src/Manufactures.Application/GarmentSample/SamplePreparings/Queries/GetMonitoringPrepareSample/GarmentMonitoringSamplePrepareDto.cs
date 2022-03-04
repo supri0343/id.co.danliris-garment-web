@@ -25,7 +25,8 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
 		public double deliveryReturn { get; internal set; }
 		public double aval { get; internal set; }
 		public double remainQty { get; internal set; }
-
+		public double nominal { get; internal set; }
+		public decimal price { get; internal set; }
 		public GarmentMonitoringSamplePrepareDto(GarmentMonitoringSamplePrepareDto garmentMonitoringPrepareSampleDto)
 		{
 			Id = garmentMonitoringPrepareSampleDto.Id;
