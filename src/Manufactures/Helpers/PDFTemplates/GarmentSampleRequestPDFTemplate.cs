@@ -255,16 +255,16 @@ namespace Manufactures.Helpers.PDFTemplates
 
             foreach (var i in specifications)
             {
-                cellCenter.Phrase = new Phrase(i.Inventory, normal_font);
-                tableContent2.AddCell(cellCenter);
-                cellCenter.Phrase = new Phrase(i.SpecificationDetail, normal_font);
-                tableContent2.AddCell(cellCenter);
+                cellLeft.Phrase = new Phrase(i.Inventory, normal_font);
+                tableContent2.AddCell(cellLeft);
+                cellLeft.Phrase = new Phrase(i.SpecificationDetail, normal_font);
+                tableContent2.AddCell(cellLeft);
                 cellCenter.Phrase = new Phrase(i.Quantity.ToString(), normal_font);
                 tableContent2.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase(i.Uom, normal_font);
                 tableContent2.AddCell(cellCenter);
-                cellCenter.Phrase = new Phrase(i.Remark, normal_font);
-                tableContent2.AddCell(cellCenter);
+                cellLeft.Phrase = new Phrase(i.Remark, normal_font);
+                tableContent2.AddCell(cellLeft);
             }
 
             PdfPCell cellContent2 = new PdfPCell(tableContent2); // dont remove
@@ -273,15 +273,99 @@ namespace Manufactures.Helpers.PDFTemplates
             document.Add(tableContent2);
             #endregion
 
+            #region IMAGE
+            var countImage = 0;
+            byte[] image;
+            if (garmentSampleRequest.ImagesFile != null)
+            {
+                foreach (var index in garmentSampleRequest.ImagesFile)
+                {
+                    countImage++;
+                }
+
+
+                if (countImage != 0)
+                {
+                    if (countImage > 5)
+                    {
+                        countImage = 5;
+                    }
+
+                    PdfPTable table_image = new PdfPTable(countImage);
+                    float[] image_widths = new float[countImage];
+
+                    for (var i = 0; i < countImage; i++)
+                    {
+                        image_widths.SetValue(5f, i);
+                    }
+
+                    if (countImage != 0)
+                    {
+                        table_image.SetWidths(image_widths);
+                    }
+
+                    table_image.TotalWidth = 570f;
+
+                    foreach (var imageFromRo in garmentSampleRequest.ImagesFile)
+                    {
+                        try
+                        {
+                            image = Convert.FromBase64String(Base64.GetBase64File(imageFromRo));
+                        }
+                        catch (Exception)
+                        {
+                            //var webClient = new WebClient();
+                            //roImage = webClient.DownloadData("https://bateeqstorage.blob.core.windows.net/other/no-image.jpg");
+                            image = Convert.FromBase64String("/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA0NDQ0ODQ4QEA4UFhMWFB4bGRkbHi0gIiAiIC1EKjIqKjIqRDxJOzc7STxsVUtLVWx9aWNpfZeHh5e+tb75+f8BDQ0NDQ4NDhAQDhQWExYUHhsZGRseLSAiICIgLUQqMioqMipEPEk7NztJPGxVS0tVbH1pY2l9l4eHl761vvn5///CABEIAAoACgMBIgACEQEDEQH/xAAVAAEBAAAAAAAAAAAAAAAAAAAAB//aAAgBAQAAAACnD//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIQAAAAf//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMQAAAAf//EABQQAQAAAAAAAAAAAAAAAAAAACD/2gAIAQEAAT8AH//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Af//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Af//Z");
+                        }
+
+                        Image images = Image.GetInstance(imgb: image);
+
+                        if (images.Width > 60)
+                        {
+                            float percentage = 0.0f;
+                            percentage = 60 / images.Width;
+                            images.ScalePercent(percentage * 100);
+                        }
+
+                        PdfPCell imageCell = new PdfPCell(images);
+                        imageCell.Border = 0;
+                        table_image.AddCell(imageCell);
+                    }
+
+                    PdfPCell cell_image = new PdfPCell()
+                    {
+                        Border = Rectangle.NO_BORDER,
+                        HorizontalAlignment = Element.ALIGN_LEFT,
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        Padding = 2,
+                    };
+
+                    foreach (var name in garmentSampleRequest.ImagesName)
+                    {
+                        cell_image.Phrase = new Phrase(name, normal_font);
+                        table_image.AddCell(cell_image);
+                    }
+
+                    table_image.LockedWidth = true;
+                    table_image.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table_image.SpacingBefore = 5f;
+                    table_image.ExtendLastRow = false;
+                    document.Add(table_image);
+                }
+            }
+            
+            #endregion
+
             #region TableSignature
 
             PdfPTable tableSignature = new PdfPTable(3);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Diterima,\n\n\n\n\n\n\n\nKoordinator Sample", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("");// new Paragraph("Diterima,\n\n\n\n\n\n\n\nKoordinator Sample", normal_font);
             cellCenterTopNoBorder.HorizontalAlignment = Element.ALIGN_CENTER;
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Mengetahui,\n\n\n\n\n\n\n\nKasie / Kabag Penjualan", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph(""); //new Paragraph("Mengetahui,\n\n\n\n\n\n\n\nKasie / Kabag Penjualan", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Dibuat,\n\n\n\n\n\n\n\nPenjualan", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Dibuat,\n\n\n\n\n\n\n\n( "+ garmentSampleRequest.CreatedBy +" )\nPenjualan", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
 
             PdfPCell cellSignature = new PdfPCell(tableSignature);

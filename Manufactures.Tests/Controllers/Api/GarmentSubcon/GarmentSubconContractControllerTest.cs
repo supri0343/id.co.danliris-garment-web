@@ -1,5 +1,6 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
+using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconContactReport;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubconReport;
 using Manufactures.Controllers.Api.GarmentSubcon;
 using Manufactures.Domain.GarmentSubcon.SubconContracts;
@@ -255,7 +256,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
         }
 
         [Fact]
-        public async Task GetXLSRealizationSubconBehavior()
+        public async Task GetXLSSubconReportBehavior()
         {
             var unitUnderTest = CreateGarmentSubconContractController();
 
@@ -287,6 +288,60 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             // Assert
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
         }
+
+        [Fact]
+        public async Task GetMonitoringSubconContractBehavior()
+        {
+            var unitUnderTest = CreateGarmentSubconContractController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GarmentSubconContactReportQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentSubconContactReportListViewModel());
+
+            // Act
+
+            var result = await unitUnderTest.GetSubconContractReport(It.IsAny<int>(),"", It.IsAny<DateTime>(), It.IsAny<DateTime>(), 1, 25, "{}");
+
+
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+            // Assert
+            //Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+        }
+
+        [Fact]
+        public async Task GetXLSubconContractBehavior()
+        {
+            var unitUnderTest = CreateGarmentSubconContractController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsGarmentSubconContractReporQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
+
+            // Act
+
+            var result = await unitUnderTest.GetXlsSubconContractReport(It.IsAny<int>(), "", It.IsAny<DateTime>(), It.IsAny<DateTime>(), 1, 25, "{}");
+
+            // Assert
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+        }
+
+        [Fact]
+        public async Task GetXLSSubconContractReturn_InternalServerError()
+        {
+            var unitUnderTest = CreateGarmentSubconContractController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsGarmentSubconContractReporQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+
+            var result = await unitUnderTest.GetXlsSubconContractReport(It.IsAny<int>(), "", It.IsAny<DateTime>(), It.IsAny<DateTime>(), 1, 25, "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+        }
+
 
     }
 }
