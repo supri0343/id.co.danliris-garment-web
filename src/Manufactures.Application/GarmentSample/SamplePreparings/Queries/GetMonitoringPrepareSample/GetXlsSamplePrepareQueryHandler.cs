@@ -68,15 +68,39 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
             public decimal price { get; set; }
             public Guid prepareItemid { get; set; }
         }
+		class ViewBasicPrices
+		{
+			public string RO { get; internal set; }
+			public decimal Total { get; internal set; }
+		}
 
-        public async Task<MemoryStream> Handle(GetXlsSamplePrepareQuery request, CancellationToken cancellationToken)
+		public async Task<MemoryStream> Handle(GetXlsSamplePrepareQuery request, CancellationToken cancellationToken)
         {
             DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
             dateFrom.AddHours(7);
             DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
             dateTo = dateTo.AddHours(7);
-
-            var QueryMutationPrepareNow = from a in (from aa in garmentPreparingRepository.Query
+			var sumbasicPrice = (from a in (from aa in garmentPreparingRepository.Query
+											where aa.UnitId == request.unit
+											select new
+											{
+												aa.Identity,
+												aa.RONo
+											})
+								 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentSamplePreparingId
+								 select new
+								 {
+									 a.RONo,
+									 b.BasicPrice
+								 })
+				   .GroupBy(x => new { x.RONo }, (key, group) => new ViewBasicPrices
+				   {
+					   RO = key.RONo,
+					   Total = Convert.ToDecimal(group.Sum(s => s.BasicPrice) / group.Count())
+					   //BasicPrice = Convert.ToDecimal(group.Sum(s => s.BasicPrice)),
+					   //Count = group.Count()
+				   });
+			var QueryMutationPrepareNow = from a in (from aa in garmentPreparingRepository.Query
                                                      where aa.UnitId == request.unit && aa.ProcessDate <= dateTo
                                                      select new
                                                      {
@@ -107,8 +131,10 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
                                                        roJob = a.RO,
                                                        buyerCode = a.Buyer,
                                                        prepareitemid = b.Identity,
-                                                       roasal = b.ROSource
-                                                   });
+                                                       roasal = b.ROSource,
+													   price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RO select aa.Total).FirstOrDefault())
+
+												   });
 
 
             var QueryCuttingDONow = from a in (from data in garmentCuttingInRepository.Query
@@ -134,8 +160,10 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
                                         remark = c.DesignColor,
                                         receipt = 0,
                                         productCode = c.ProductCode,
-                                        remainQty = 0
-                                    };
+                                        remainQty = 0,
+										price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.Total).FirstOrDefault())
+
+									};
 
             var QueryMutationPrepareItemNow = (from d in QueryMutationPrepareNow
                                                join e in garmentPreparingItemRepository.Query on d.Id equals e.GarmentSamplePreparingId
@@ -150,8 +178,10 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
                                                    remark = e.DesignColor,
                                                    receipt = (d.Processdate >= dateFrom ? e.Quantity : 0),
                                                    productCode = e.ProductCode,
-                                                   remainQty = e.RemainingQuantity
-                                               }).Distinct();
+                                                   remainQty = e.RemainingQuantity,
+												   price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == d.RO select aa.Total).FirstOrDefault())
+
+											   }).Distinct();
 
             var QueryAval = from a in (from data in garmentAvalProductRepository.Query
                                        where data.AvalDate <= dateTo
@@ -183,8 +213,10 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
                                 remark = b.DesignColor,
                                 receipt = 0,
                                 productCode = b.ProductCode,
-                                remainQty = 0
-                            };
+                                remainQty = 0,
+								price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.Total).FirstOrDefault())
+
+							};
 
             var QueryDRPrepare = from a in (from data in garmentDeliveryReturnRepository.Query
                                             where data.ReturnDate <= dateTo && data.UnitId == request.unit
@@ -230,8 +262,10 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
                                           remark = a.DesignColor,
                                           receipt = 0,
                                           productCode = a.ProductCode,
-                                          remainQty = 0
-                                      };
+                                          remainQty = 0,
+										  price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.Total).FirstOrDefault())
+
+									  };
 
             var queryNow = from a in (QueryMutationPrepareItemNow
                             .Union(QueryCuttingDONow)
@@ -243,7 +277,7 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
                            select new { a, b };
 
 
-            var querySum = queryNow.GroupBy(x => new { x.b.roasal, x.b.roJob, x.b.article, x.b.buyerCode, x.a.productCode, x.a.remark }, (key, group) => new
+            var querySum = queryNow.GroupBy(x => new { x.b.price,x.b.roasal, x.b.roJob, x.b.article, x.b.buyerCode, x.a.productCode, x.a.remark }, (key, group) => new
             {
                 ROAsal = key.roasal,
                 ROJob = key.roJob,
@@ -252,6 +286,7 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
                 Article = key.article,
                 buyer = key.buyerCode,
                 Remark = key.remark,
+				price = key.price,
                 mainFabricExpenditure = group.Sum(s => s.a.mainFabricExpenditure),
                 nonmainFabricExpenditure = group.Sum(s => s.a.nonMainFabricExpenditure),
                 receipt = group.Sum(s => s.a.receipt),
@@ -278,9 +313,12 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
                     deliveryReturn = Math.Round(item.drQty, 2),
                     aval = Math.Round(item.Aval, 2),
                     nonMainFabricExpenditure = Math.Round(item.nonmainFabricExpenditure, 2),
-                    mainFabricExpenditure = Math.Round(item.mainFabricExpenditure, 2)
+                    mainFabricExpenditure = Math.Round(item.mainFabricExpenditure, 2),
+					price = Math.Round(item.price, 2),
+					nominal = (item.stock + item.receipt - item.nonmainFabricExpenditure - item.mainFabricExpenditure - item.Aval - item.drQty) * Convert.ToDouble(item.price)
 
-                };
+
+				};
                 monitoringPrepareDtos.Add(garmentMonitoringPrepareDto);
             }
             var datas = from aa in monitoringPrepareDtos
@@ -334,21 +372,23 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Asal Barang", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Keterangan Barang", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Stock Awal", DataType = typeof(double) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Harga (M)", DataType = typeof(double) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Stock Awal", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Masuk", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Keluar Ke Cutting(MAIN FABRIC)", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Keluar Ke Cutting(NON MAIN FABRIC)", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG Keluar ke Gudang", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Aval", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sisa", DataType = typeof(double) });
-            int counter = 5;
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nominal Sisa", DataType = typeof(double) });
+			int counter = 5;
 
 
             if (garmentMonitoringPrepareViewModel.garmentMonitorings.Count > 0)
             {
                 foreach (var report in garmentMonitoringPrepareViewModel.garmentMonitorings)
                 {
-                    reportDataTable.Rows.Add(report.roNo, report.article,  report.productCode, report.uomUnit, report.roSource, report.remark, report.stock, report.receipt, report.mainFabricExpenditure, report.nonMainFabricExpenditure, report.deliveryReturn, report.aval, report.remainQty);
+                    reportDataTable.Rows.Add(report.roNo, report.article,  report.productCode, report.uomUnit, report.roSource, report.remark, report.price,report.stock, report.receipt, report.mainFabricExpenditure, report.nonMainFabricExpenditure, report.deliveryReturn, report.aval, report.remainQty,report.nominal);
                     counter++;
 
                 }
@@ -373,30 +413,45 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
                 worksheet.Column(14).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                 worksheet.Cells["N" + 2 + ":N" + counter + ""].Style.Numberformat.Format = "#,##0.00";
                 worksheet.Column(15).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                worksheet.Cells["A" + 5 + ":M" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":M" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":M" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":M" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["O" + 2 + ":O" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Cells["A" + 5 + ":O" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":O" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":O" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":O" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                worksheet.Cells["H" + (counter) + ":O" + (counter) + ""].Style.Font.Bold = true;
-                worksheet.Cells["A" + 1 + ":M" + 1 + ""].Style.Font.Bold = true;
+				worksheet.Cells["H" + (counter) + ":O" + (counter) + ""].Style.Font.Bold = true;
+                worksheet.Cells["A" + 1 + ":O" + 1 + ""].Style.Font.Bold = true;
                 worksheet.Row(5).Style.Font.Bold = true;
                 worksheet.Row(counter).Style.Font.Bold = true;
                 worksheet.Cells["A1"].Value = "Report Prepare";
                 worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
                 worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
-                worksheet.Cells["A" + 1 + ":M" + 1 + ""].Merge = true;
-                worksheet.Cells["A" + 2 + ":M" + 2 + ""].Merge = true;
-                worksheet.Cells["A" + 3 + ":M" + 3 + ""].Merge = true;
-                worksheet.Cells["A" + 1 + ":M" + 3 + ""].Style.Font.Size = 15;
-                worksheet.Cells["A" + 1 + ":M" + 3 + ""].Style.Font.Bold = true;
-                worksheet.Cells["A" + 1 + ":M" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells["A" + 1 + ":M" + 5 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Cells["A" + 1 + ":O" + 1 + ""].Merge = true;
+                worksheet.Cells["A" + 2 + ":O" + 2 + ""].Merge = true;
+                worksheet.Cells["A" + 3 + ":O" + 3 + ""].Merge = true;
+                worksheet.Cells["A" + 1 + ":O" + 3 + ""].Style.Font.Size = 15;
+                worksheet.Cells["A" + 1 + ":O" + 3 + ""].Style.Font.Bold = true;
+                worksheet.Cells["A" + 1 + ":O" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["A" + 1 + ":O" + 5 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
-                worksheet.Cells["E" + 5 + ":M" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["E" + 5 + ":O" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 var stream = new MemoryStream();
-                
-                package.SaveAs(stream);
+				if (request.type != "bookkeeping")
+				{
+
+					worksheet.Column(3).Hidden = true;
+					worksheet.Column(8).Hidden = true;
+					worksheet.Cells["A" + (counter) + ":F" + (counter) + ""].Merge = true;
+					worksheet.Cells["A" + (counter) + ":F" + (counter) + ""].Style.Font.Bold = true;
+				}
+				else
+				{
+
+					worksheet.Cells["A" + (counter) + ":G" + (counter) + ""].Merge = true;
+					worksheet.Cells["A" + (counter) + ":G" + (counter) + ""].Style.Font.Bold = true;
+
+				}
+				package.SaveAs(stream);
 
                 return stream;
             }
