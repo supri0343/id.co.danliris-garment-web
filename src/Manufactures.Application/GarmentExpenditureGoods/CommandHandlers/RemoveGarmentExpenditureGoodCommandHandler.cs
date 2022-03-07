@@ -25,8 +25,9 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
         private readonly IGarmentFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
         private readonly IGarmentFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
+		private readonly IGarmentExpenditureGoodInvoiceRelationRepository _garmentExpenditureGoodInvoiceRelationRepository;
 
-        public RemoveGarmentExpenditureGoodCommandHandler(IStorage storage)
+		public RemoveGarmentExpenditureGoodCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentExpenditureGoodRepository = storage.GetRepository<IGarmentExpenditureGoodRepository>();
@@ -34,12 +35,15 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
             _garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentFinishedGoodStockRepository>();
             _garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentFinishedGoodStockHistoryRepository>();
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
-        }
+			_garmentExpenditureGoodInvoiceRelationRepository = storage.GetRepository<IGarmentExpenditureGoodInvoiceRelationRepository>();
 
-        public async Task<GarmentExpenditureGood> Handle(RemoveGarmentExpenditureGoodCommand request, CancellationToken cancellationToken)
+		}
+
+		public async Task<GarmentExpenditureGood> Handle(RemoveGarmentExpenditureGoodCommand request, CancellationToken cancellationToken)
         {
             var ExpenditureGood = _garmentExpenditureGoodRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentExpenditureGood(o)).Single();
-            GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && new UnitDepartmentId(a.UnitId) == ExpenditureGood.UnitId && new GarmentComodityId(a.ComodityId) == ExpenditureGood.ComodityId).Select(s => new GarmentComodityPrice(s)).Single();
+			var invoiceRelation = _garmentExpenditureGoodInvoiceRelationRepository.Query.Where(o => o.ExpenditureGoodId == ExpenditureGood.Identity).Select(o => new GarmentExpenditureGoodInvoiceRelation(o)).Single();
+			GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && new UnitDepartmentId(a.UnitId) == ExpenditureGood.UnitId && new GarmentComodityId(a.ComodityId) == ExpenditureGood.ComodityId).Select(s => new GarmentComodityPrice(s)).Single();
 
             Dictionary<Guid, double> finStockToBeUpdated = new Dictionary<Guid, double>();
 
@@ -72,7 +76,11 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
 
                 await _garmentFinishedGoodStockRepository.Update(garmentFinishingGoodStockItem);
             }
-
+			if (invoiceRelation != null)
+			{
+				invoiceRelation.Remove();
+				await _garmentExpenditureGoodInvoiceRelationRepository.Update(invoiceRelation);
+			}
             ExpenditureGood.Remove();
             await _garmentExpenditureGoodRepository.Update(ExpenditureGood);
 
