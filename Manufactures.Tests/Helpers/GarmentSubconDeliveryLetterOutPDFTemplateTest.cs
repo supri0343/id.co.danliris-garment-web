@@ -1,4 +1,6 @@
 ﻿using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
+using Manufactures.Domain.GarmentSubconCuttingOuts;
+using Manufactures.Dtos;
 using Manufactures.Dtos.GarmentSubcon;
 using Manufactures.Helpers.PDFTemplates.GarmentSubcon;
 using System;
@@ -34,7 +36,7 @@ namespace Manufactures.Tests.Helpers
             Guid id = Guid.NewGuid();
             var dto = new GarmentSubconDeliveryLetterOutDto(new GarmentSubconDeliveryLetterOut(id, null, null, id, "", "", DateTimeOffset.Now, 1, "", "", 1, "", false, "", "SUBCON JASA KOMPONEN"));
 
-            var garmentSubconDLOutItem = new GarmentSubconDeliveryLetterOutItem(id, id, 1, new Domain.Shared.ValueObjects.ProductId(1), "code", "name", "remark", "color", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", new Domain.Shared.ValueObjects.UomId(1), "unit", "fabType", new Guid(), "", "", "");
+            var garmentSubconDLOutItem = new GarmentSubconDeliveryLetterOutItem(id, id, 1, new Domain.Shared.ValueObjects.ProductId(1), "code", "name", "remark", "color", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", new Domain.Shared.ValueObjects.UomId(1), "unit", "fabType", new Guid(), "", "", "22PL0012");
             var items = new List<GarmentSubconDeliveryLetterOutItemDto>()
             {
                 new GarmentSubconDeliveryLetterOutItemDto(garmentSubconDLOutItem)
@@ -81,6 +83,37 @@ namespace Manufactures.Tests.Helpers
 
             Assert.NotNull(result);
         }
-        
+
+        [Fact]
+        public void Generate_Return_SUBCON_SEWING_Success()
+        {
+            Guid id = Guid.NewGuid();
+            var dto = new GarmentSubconDeliveryLetterOutDto(new GarmentSubconDeliveryLetterOut(id, null, null, id, "", "", DateTimeOffset.Now, 1, "", "", 1, "", false, "", "SUBCON SEWING"));
+            
+            var garmentSubconDLOutItem = new GarmentSubconDeliveryLetterOutItem(id, id, 1, new Domain.Shared.ValueObjects.ProductId(1), "code", "name", "remark", "color", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", new Domain.Shared.ValueObjects.UomId(1), "unit", "fabType", new Guid(), "", "", "");
+            GarmentSubconDeliveryLetterOutItemDto itemDto = new GarmentSubconDeliveryLetterOutItemDto(garmentSubconDLOutItem);
+            var subconCuttingDto= new GarmentSubconCuttingOutDto(new GarmentSubconCuttingOut(id, "cutOutNo", "cuttingOutType", new Domain.Shared.ValueObjects.UnitDepartmentId(1), "unitFromCode", "unitFromName", DateTimeOffset.Now, "roNo", "article", new Domain.Shared.ValueObjects.GarmentComodityId(1), "comodityCode", "comodityName", 1, 1, "", false));
+            var subconCuttingItem = new GarmentSubconCuttingOutItem(id, id, id, id, new Domain.Shared.ValueObjects.ProductId(1), "", "", "", 10);
+            var subconCuttingItems = new List<GarmentSubconCuttingOutItemDto>()
+            {
+                new GarmentSubconCuttingOutItemDto(subconCuttingItem)
+            };
+            subconCuttingDto.GetType().GetProperty("Items").SetValue(subconCuttingDto, subconCuttingItems);
+            itemDto.SubconCutting = subconCuttingDto;
+
+
+            var items = new List<GarmentSubconDeliveryLetterOutItemDto>()
+            {
+                itemDto
+            };
+
+            
+            dto.GetType().GetProperty("Items").SetValue(dto, items);
+
+            var result = GarmentSubconDeliveryLetterOutPDFTemplate.Generate(dto, "Supplier");
+
+            Assert.NotNull(result);
+        }
+
     }
 }
