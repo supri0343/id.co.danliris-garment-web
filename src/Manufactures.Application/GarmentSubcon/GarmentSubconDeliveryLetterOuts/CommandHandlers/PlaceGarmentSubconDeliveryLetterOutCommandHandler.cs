@@ -157,7 +157,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             var year = now.ToString("yy");
             var month = now.ToString("MM");
             var code = request.DLType == "PROSES" ? "" : "/R";
-            var type = request.ContractType == "SUBCON BAHAN BAKU" ? "BB" : request.ContractType == "SUBCON CUTTING" ? "CT" : "JS";
+            var type = request.ContractType == "SUBCON BAHAN BAKU" ? "BB" : request.ContractType == "SUBCON CUTTING" ? "CT" : request.ContractType == "SUBCON GARMENT" ? "SG":"JS";
 
             var prefix = $"SJK/{type}/{year}{month}";
 

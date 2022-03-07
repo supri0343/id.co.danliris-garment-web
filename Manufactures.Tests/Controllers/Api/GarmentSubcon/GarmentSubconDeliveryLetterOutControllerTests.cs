@@ -19,6 +19,12 @@ using System.Threading.Tasks;
 using Xunit;
 using Manufactures.Domain.Shared.ValueObjects;
 using Newtonsoft.Json;
+using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
+using Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels;
+using Manufactures.Domain.GarmentSubcon.SubconContracts;
+using Manufactures.Domain.GarmentSubconCuttingOuts.Repositories;
+using Manufactures.Domain.GarmentCuttingOuts.ReadModels;
+using Manufactures.Domain.GarmentSubconCuttingOuts;
 
 namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 {
@@ -26,14 +32,23 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
     {
         private Mock<IGarmentSubconDeliveryLetterOutRepository> _mockGarmentSubconDeliveryLetterOutRepository;
         private Mock<IGarmentSubconDeliveryLetterOutItemRepository> _mockGarmentSubconDeliveryLetterOutItemRepository;
+        private Mock<IGarmentSubconContractRepository> _mockGarmentSubconContractRepository;
+        private readonly Mock<IGarmentSubconCuttingOutRepository> _mockSubconCuttingOutRepository;
+        private readonly Mock<IGarmentSubconCuttingOutItemRepository> _mockSubconCuttingOutItemRepository;
 
         public GarmentSubconDeliveryLetterOutControllerTests() : base()
         {
             _mockGarmentSubconDeliveryLetterOutRepository = CreateMock<IGarmentSubconDeliveryLetterOutRepository>();
             _mockGarmentSubconDeliveryLetterOutItemRepository = CreateMock<IGarmentSubconDeliveryLetterOutItemRepository>();
+            _mockGarmentSubconContractRepository = CreateMock<IGarmentSubconContractRepository>();
+            _mockSubconCuttingOutRepository = CreateMock<IGarmentSubconCuttingOutRepository>();
+            _mockSubconCuttingOutItemRepository = CreateMock<IGarmentSubconCuttingOutItemRepository>();
 
             _MockStorage.SetupStorage(_mockGarmentSubconDeliveryLetterOutRepository);
             _MockStorage.SetupStorage(_mockGarmentSubconDeliveryLetterOutItemRepository);
+            _MockStorage.SetupStorage(_mockGarmentSubconContractRepository);
+            _MockStorage.SetupStorage(_mockSubconCuttingOutRepository);
+            _MockStorage.SetupStorage(_mockSubconCuttingOutItemRepository);
 
         }
 
@@ -244,6 +259,62 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
+        }
+
+        [Fact]
+        public async Task GetSingle_PDF_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var unitUnderTest = CreateGarmentSubconDeliveryLetterOutController();
+            Guid SubconDeliveryLetterOutGuid = Guid.NewGuid();
+            Guid SubconContractGuid = Guid.NewGuid();
+            Guid SubconCuttingGuid = Guid.NewGuid();
+            _mockGarmentSubconDeliveryLetterOutRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutReadModel, bool>>>()))
+                .Returns(new List<GarmentSubconDeliveryLetterOut>()
+                {
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid, null,null,SubconContractGuid,"","",DateTimeOffset.Now,1,"","",1,"", false,"","")
+                });
+
+            Guid SubconDeliveryLetterOutItemGuid = Guid.NewGuid();
+            
+            _mockGarmentSubconDeliveryLetterOutItemRepository
+                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
+                 .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
+                 {
+                    new GarmentSubconDeliveryLetterOutItem(SubconDeliveryLetterOutItemGuid,SubconDeliveryLetterOutGuid,1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit",new Domain.Shared.ValueObjects.UomId(1),"unit","fabType",SubconCuttingGuid,"","","")
+                 });
+
+            _mockGarmentSubconContractRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractReadModel, bool>>>()))
+                .Returns(new List<GarmentSubconContract>()
+                {
+                    new GarmentSubconContract(SubconContractGuid, "","","", new SupplierId(1),"","","","","",1,DateTimeOffset.Now,DateTimeOffset.Now,false,new BuyerId(1),"","","",new UomId(1),"","",DateTimeOffset.Now)
+                });
+
+
+            _mockSubconCuttingOutRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutReadModel, bool>>>()))
+                .Returns(new List<GarmentSubconCuttingOut>()
+                {
+                    new GarmentSubconCuttingOut(SubconCuttingGuid, null, null,new UnitDepartmentId(1),null,null,DateTimeOffset.Now, "RONo", null, new GarmentComodityId(1) , null, null, 1,1,null,false)
+                });
+
+            _mockSubconCuttingOutItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentCuttingOutItemReadModel, bool>>>()))
+                .Returns(new List<GarmentSubconCuttingOutItem>()
+                {
+                    new GarmentSubconCuttingOutItem(Guid.NewGuid(), SubconCuttingGuid, Guid.NewGuid(), SubconCuttingGuid, new ProductId(1), null, null, null, 0)
+                });
+            //_mockSewingInItemRepository
+            //    .Setup(s => s.Query)
+            //    .Returns(new List<GarmentSewingInItemReadModel>().AsQueryable());
+
+            // Act
+            var result = await unitUnderTest.GetPdf(Guid.NewGuid().ToString());
+
+            // Assert
+            Assert.NotNull(result.GetType().GetProperty("FileStream"));
         }
 
     }
