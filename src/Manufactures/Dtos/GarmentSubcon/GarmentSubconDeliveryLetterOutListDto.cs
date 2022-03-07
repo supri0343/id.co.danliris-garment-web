@@ -21,6 +21,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             IsUsed = garmentSubconDeliveryLetterOutList.IsUsed;
             ServiceType = garmentSubconDeliveryLetterOutList.ServiceType;
             SubconCategory = garmentSubconDeliveryLetterOutList.SubconCategory;
+            SubconContractId = garmentSubconDeliveryLetterOutList.SubconContractId;
         }
 
         public Guid Id { get; set; }
@@ -35,5 +36,6 @@ namespace Manufactures.Dtos.GarmentSubcon
         public bool IsUsed { get; set; }
         public string ServiceType { get; set; }
         public string SubconCategory { get; set; }
+        public Guid SubconContractId { get; set; }
     }
 }

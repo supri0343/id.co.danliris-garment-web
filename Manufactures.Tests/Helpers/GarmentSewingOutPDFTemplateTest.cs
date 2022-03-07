@@ -28,5 +28,5 @@ namespace Manufactures.Tests.Helpers
             
             Assert.NotNull(result);
         }
-        }
+    }
 }

@@ -40,11 +40,66 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleRequest
             List<string> SampleRequestGuids = new List<string>() { SampleRequestGuid.ToString() };
             PostGarmentSampleRequestCommandHandler unitUnderTest = CreatePostGarmentSampleRequestCommandHandler();
             CancellationToken cancellationToken = CancellationToken.None;
-            PostGarmentSampleRequestCommand RemoveGarmentSampleRequestCommand = new PostGarmentSampleRequestCommand(SampleRequestGuids, true);
+            PostGarmentSampleRequestCommand PostGarmentSampleRequestCommand = new PostGarmentSampleRequestCommand(SampleRequestGuids, true);
 
-            GarmentSampleRequest garmentSampleRequest = new GarmentSampleRequest(
-                SampleRequestGuid, null, null, null, null, DateTimeOffset.Now, new BuyerId(1), "", "", new GarmentComodityId(1), null, null, "", "", DateTimeOffset.Now, "", "", "", false,
+            var now = DateTime.Now;
+            var day = now.ToString("dd");
+            var year = now.ToString("yyyy");
+            var month = now.ToString("MM");
+            var prefix = $"AA/{day}{month}{year}/";
+            //GarmentSampleRequest garmentSampleRequest = new GarmentSampleRequest(
+            //    SampleRequestGuid, null, null, null, null, DateTimeOffset.Now, new BuyerId(1), "AA", "", new GarmentComodityId(1), null, null, "", "", DateTimeOffset.Now, "", "", "", false,
+            //    false, DateTimeOffset.Now, null, false, DateTimeOffset.Now, null, null, false, DateTimeOffset.Now, null, null, null, null, null, null, new SectionId(1), null);
+            GarmentSampleRequest garmentSampleRequest1 = new GarmentSampleRequest(
+                SampleRequestGuid, null, $"AA/{day}{month}{year}/001", null, null, DateTimeOffset.Now, new BuyerId(1), "AA", "", new GarmentComodityId(1), null, null, "", "", DateTimeOffset.Now, "", "", "", false,
                 false, DateTimeOffset.Now, null, false, DateTimeOffset.Now, null, null, false, DateTimeOffset.Now, null, null, null, null, null, null, new SectionId(1), null);
+
+            _mockSampleRequestRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSampleRequestReadModel>()
+                {
+                    garmentSampleRequest1.GetReadModel()
+                }.AsQueryable());
+
+            _mockSampleRequestRepository
+                .Setup(s => s.Update(It.IsAny<GarmentSampleRequest>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentSampleRequest>()));
+
+            _MockStorage
+                .Setup(x => x.Save())
+                .Verifiable();
+
+            // Act
+            var result = await unitUnderTest.Handle(PostGarmentSampleRequestCommand, cancellationToken);
+
+            // Assert
+            result.Should().BeGreaterThan(0);
+        }
+
+        [Fact]
+        public async Task Handle_StateUnderTest1_ExpectedBehavior()
+        {
+            // Arrange
+            Guid SampleRequestGuid = Guid.NewGuid();
+            List<string> SampleRequestGuids = new List<string>() { SampleRequestGuid.ToString() };
+            PostGarmentSampleRequestCommandHandler unitUnderTest = CreatePostGarmentSampleRequestCommandHandler();
+            CancellationToken cancellationToken = CancellationToken.None;
+            PostGarmentSampleRequestCommand PostGarmentSampleRequestCommand = new PostGarmentSampleRequestCommand(SampleRequestGuids, true);
+
+            var now = DateTime.Now;
+            var day = now.ToString("dd");
+            var year = now.ToString("yyyy");
+            var month = now.ToString("MM");
+            var prefix = $"AA/{day}{month}{year}/";
+            GarmentSampleRequest garmentSampleRequest = new GarmentSampleRequest(
+                SampleRequestGuid, null, "", null, null, DateTimeOffset.Now, new BuyerId(1), "AA", "", new GarmentComodityId(1), null, null, "", "", DateTimeOffset.Now, "", "", "", false,
+                false, DateTimeOffset.Now, null, false, DateTimeOffset.Now, null, null, false, DateTimeOffset.Now, null, null, null, null, null, null, new SectionId(1), null);
+            //GarmentSampleRequest garmentSampleRequest1 = new GarmentSampleRequest(
+            //    SampleRequestGuid, null, $"AA/{day}{month}{year}/001", null, null, DateTimeOffset.Now, new BuyerId(1), "AA", "", new GarmentComodityId(1), null, null, "", "", DateTimeOffset.Now, "", "", "", false,
+            //    false, DateTimeOffset.Now, null, false, DateTimeOffset.Now, null, null, false, DateTimeOffset.Now, null, null, null, null, null, null, new SectionId(1), null);
+            _mockSampleRequestRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSampleRequestReadModel>().AsQueryable());
 
             _mockSampleRequestRepository
                 .Setup(s => s.Query)
@@ -62,7 +117,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleRequest
                 .Verifiable();
 
             // Act
-            var result = await unitUnderTest.Handle(RemoveGarmentSampleRequestCommand, cancellationToken);
+            var result = await unitUnderTest.Handle(PostGarmentSampleRequestCommand, cancellationToken);
 
             // Assert
             result.Should().BeGreaterThan(0);
