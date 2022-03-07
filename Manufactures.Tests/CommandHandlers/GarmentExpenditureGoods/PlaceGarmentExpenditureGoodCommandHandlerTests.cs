@@ -31,6 +31,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoods
         private readonly Mock<IGarmentFinishedGoodStockRepository> _mockFinishedGoodStockRepository;
         private readonly Mock<IGarmentFinishedGoodStockHistoryRepository> _mockFinishedGoodStockHistoryRepository;
         private readonly Mock<IGarmentComodityPriceRepository> _mockComodityPriceRepository;
+		private readonly Mock<IGarmentExpenditureGoodInvoiceRelationRepository> _mockInvoiceRelationRepository;
 
         public PlaceGarmentExpenditureGoodCommandHandlerTests()
         {
@@ -39,12 +40,15 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoods
             _mockFinishedGoodStockRepository = CreateMock<IGarmentFinishedGoodStockRepository>();
             _mockFinishedGoodStockHistoryRepository = CreateMock<IGarmentFinishedGoodStockHistoryRepository>();
             _mockComodityPriceRepository = CreateMock<IGarmentComodityPriceRepository>();
+			_mockInvoiceRelationRepository = CreateMock<IGarmentExpenditureGoodInvoiceRelationRepository>();
 
-            _MockStorage.SetupStorage(_mockExpenditureGoodRepository);
+
+			_MockStorage.SetupStorage(_mockExpenditureGoodRepository);
             _MockStorage.SetupStorage(_mockExpenditureGoodItemRepository);
             _MockStorage.SetupStorage(_mockFinishedGoodStockRepository);
             _MockStorage.SetupStorage(_mockFinishedGoodStockHistoryRepository);
-            _MockStorage.SetupStorage(_mockComodityPriceRepository);
+			_MockStorage.SetupStorage(_mockInvoiceRelationRepository);
+			_MockStorage.SetupStorage(_mockComodityPriceRepository);
         }
         private PlaceGarmentExpenditureGoodCommandHandler CreatePlaceGarmentExpenditureGoodCommandHandler()
         {
@@ -66,6 +70,8 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoods
                 Comodity = new GarmentComodity(1, "ComoCode", "ComoName"),
                 Buyer = new Buyer(1, "buyerCode", "buyerName"),
                 ExpenditureDate = DateTimeOffset.Now,
+				Invoice ="Invoice",
+				InvoiceId = 1,
                 Items = new List<GarmentExpenditureGoodItemValueObject>
                 {
                     new GarmentExpenditureGoodItemValueObject
@@ -132,8 +138,11 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoods
                 .Setup(s => s.Update(It.IsAny<GarmentFinishedGoodStockHistory>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentFinishedGoodStockHistory>()));
 
+			 _mockInvoiceRelationRepository
+				 .Setup(s => s.Update(It.IsAny<GarmentExpenditureGoodInvoiceRelation>()))
+				.Returns(Task.FromResult(It.IsAny<GarmentExpenditureGoodInvoiceRelation>()));
 
-            _MockStorage
+			_MockStorage
                 .Setup(x => x.Save())
                 .Verifiable();
 

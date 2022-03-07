@@ -26,7 +26,8 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.Commands
         public string Description { get; set; }
         public bool IsReceived { get; set; }
         public List<GarmentExpenditureGoodItemValueObject> Items { get; set; }
-        public void SetIdentity(Guid id)
+		public int InvoiceId { get; set; }
+		public void SetIdentity(Guid id)
         {
             Identity = id;
         }
