@@ -27,5 +27,60 @@ namespace Manufactures.Tests.Helpers
 
             Assert.NotNull(result);
         }
+
+        [Fact]
+        public void Generate_Return_SUBCON_JASA_KOMPONEN_Success()
+        {
+            Guid id = Guid.NewGuid();
+            var dto = new GarmentSubconDeliveryLetterOutDto(new GarmentSubconDeliveryLetterOut(id, null, null, id, "", "", DateTimeOffset.Now, 1, "", "", 1, "", false, "", "SUBCON JASA KOMPONEN"));
+
+            var garmentSubconDLOutItem = new GarmentSubconDeliveryLetterOutItem(id, id, 1, new Domain.Shared.ValueObjects.ProductId(1), "code", "name", "remark", "color", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", new Domain.Shared.ValueObjects.UomId(1), "unit", "fabType", new Guid(), "", "", "");
+            var items = new List<GarmentSubconDeliveryLetterOutItemDto>()
+            {
+                new GarmentSubconDeliveryLetterOutItemDto(garmentSubconDLOutItem)
+            };
+            dto.GetType().GetProperty("Items").SetValue(dto, items);
+
+            var result = GarmentSubconDeliveryLetterOutPDFTemplate.Generate(dto, "Supplier");
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Generate_Return_SUBCON_JASA_GARMENT_WASH_Success()
+        {
+            Guid id = Guid.NewGuid();
+            var dto = new GarmentSubconDeliveryLetterOutDto(new GarmentSubconDeliveryLetterOut(id, null, null, id, "", "", DateTimeOffset.Now, 1, "", "", 1, "", false, "", "SUBCON JASA GARMENT WASH"));
+
+            var garmentSubconDLOutItem = new GarmentSubconDeliveryLetterOutItem(id, id, 1, new Domain.Shared.ValueObjects.ProductId(1), "code", "name", "remark", "color", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", new Domain.Shared.ValueObjects.UomId(1), "unit", "fabType", new Guid(), "", "", "");
+            var items = new List<GarmentSubconDeliveryLetterOutItemDto>()
+            {
+                new GarmentSubconDeliveryLetterOutItemDto(garmentSubconDLOutItem)
+            };
+            dto.GetType().GetProperty("Items").SetValue(dto, items);
+
+            var result = GarmentSubconDeliveryLetterOutPDFTemplate.Generate(dto, "Supplier");
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Generate_Return_SUBCON_BB_FABRIC_WASH_PRINT_Success()
+        {
+            Guid id = Guid.NewGuid();
+            var dto = new GarmentSubconDeliveryLetterOutDto(new GarmentSubconDeliveryLetterOut(id, null, null, id, "", "", DateTimeOffset.Now, 1, "", "", 1, "", false, "", "SUBCON BB FABRIC WASH/PRINT"));
+
+            var garmentSubconDLOutItem = new GarmentSubconDeliveryLetterOutItem(id, id, 1, new Domain.Shared.ValueObjects.ProductId(1), "code", "name", "remark", "color", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", new Domain.Shared.ValueObjects.UomId(1), "unit", "fabType", new Guid(), "", "", "");
+            var items = new List<GarmentSubconDeliveryLetterOutItemDto>()
+            {
+                new GarmentSubconDeliveryLetterOutItemDto(garmentSubconDLOutItem)
+            };
+            dto.GetType().GetProperty("Items").SetValue(dto, items);
+
+            var result = GarmentSubconDeliveryLetterOutPDFTemplate.Generate(dto, "Supplier");
+
+            Assert.NotNull(result);
+        }
+        
     }
 }
