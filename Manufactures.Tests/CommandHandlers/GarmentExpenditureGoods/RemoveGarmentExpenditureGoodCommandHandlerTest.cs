@@ -31,21 +31,23 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoods
         private readonly Mock<IGarmentFinishedGoodStockRepository> _mockFinishedGoodStockRepository;
         private readonly Mock<IGarmentFinishedGoodStockHistoryRepository> _mockFinishedGoodStockHistoryRepository;
         private readonly Mock<IGarmentComodityPriceRepository> _mockComodityPriceRepository;
-
-        public RemoveGarmentExpenditureGoodCommandHandlerTest()
+		private readonly Mock<IGarmentExpenditureGoodInvoiceRelationRepository> _mockInvoiceRelationRepository;
+		public RemoveGarmentExpenditureGoodCommandHandlerTest()
         {
             _mockExpenditureGoodRepository = CreateMock<IGarmentExpenditureGoodRepository>();
             _mockExpenditureGoodItemRepository = CreateMock<IGarmentExpenditureGoodItemRepository>();
             _mockFinishedGoodStockRepository = CreateMock<IGarmentFinishedGoodStockRepository>();
             _mockFinishedGoodStockHistoryRepository = CreateMock<IGarmentFinishedGoodStockHistoryRepository>();
             _mockComodityPriceRepository = CreateMock<IGarmentComodityPriceRepository>();
-           
-            _MockStorage.SetupStorage(_mockExpenditureGoodRepository);
+			_mockInvoiceRelationRepository = CreateMock<IGarmentExpenditureGoodInvoiceRelationRepository>();
+
+			_MockStorage.SetupStorage(_mockExpenditureGoodRepository);
             _MockStorage.SetupStorage(_mockExpenditureGoodItemRepository);
             _MockStorage.SetupStorage(_mockFinishedGoodStockRepository);
             _MockStorage.SetupStorage(_mockFinishedGoodStockHistoryRepository);
             _MockStorage.SetupStorage(_mockComodityPriceRepository);
-        }
+			_MockStorage.SetupStorage(_mockInvoiceRelationRepository);
+		}
 
         private RemoveGarmentExpenditureGoodCommandHandler CreateRemoveGarmentExpenditureGoodCommandHandler()
         {
@@ -147,7 +149,20 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoods
                 .Setup(s => s.Update(It.IsAny<GarmentFinishedGoodStockHistory>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentFinishedGoodStockHistory>()));
 
-            _MockStorage
+			GarmentExpenditureGoodInvoiceRelation invoiceRelation = new GarmentExpenditureGoodInvoiceRelation(Guid.NewGuid(), expenditureGood.Identity,expenditureGood.ExpenditureGoodNo,"unit","ro",10,expenditureGood.PackingListId,1,expenditureGood.Invoice);
+
+			_mockInvoiceRelationRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentExpenditureGoodInvoiceRelationReadModel>
+				{
+					invoiceRelation.GetReadModel()
+				}.AsQueryable());
+
+			_mockInvoiceRelationRepository
+				 .Setup(s => s.Update(It.IsAny<GarmentExpenditureGoodInvoiceRelation>()))
+				 .Returns(Task.FromResult(It.IsAny<GarmentExpenditureGoodInvoiceRelation>()));
+
+			_MockStorage
                 .Setup(x => x.Save())
                 .Verifiable();
 
