@@ -23,7 +23,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSample.SamplePreparings.C
             builder.Property(o => o.RONo)
                .HasMaxLength(100);
             builder.Property(o => o.Article)
-               .HasMaxLength(500);
+               .HasMaxLength(1000);
             builder.Property(o => o.BuyerCode)
                .HasMaxLength(100);
             builder.Property(o => o.BuyerName)
