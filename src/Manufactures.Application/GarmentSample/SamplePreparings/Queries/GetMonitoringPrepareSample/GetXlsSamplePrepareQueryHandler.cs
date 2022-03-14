@@ -342,6 +342,7 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
                 avals += item.aval;
                 mainFabric += item.mainFabricExpenditure;
                 nonMainFabric += item.nonMainFabricExpenditure;
+				nominals += item.nominal;
             }
             GarmentMonitoringSamplePrepareDto garmentMonitoringPrepareDtos = new GarmentMonitoringSamplePrepareDto()
             {
@@ -357,7 +358,8 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
                 aval = avals,
                 nonMainFabricExpenditure = nonMainFabric,
                 mainFabricExpenditure = mainFabric,
-                deliveryReturn=expenditure
+                deliveryReturn=expenditure,
+				nominal = nominals
 
             };
             monitoringPrepareDtos.Add(garmentMonitoringPrepareDtos);
