@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20220315014749_updateArticleLength")]
+    partial class updateArticleLength
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1408,6 +1410,62 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasFilter("[Deleted]=(0)");
 
                     b.ToTable("GarmentExpenditureGoodReturns");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentExpenditureGoods.ReadModels.GarmentExpenditureGoodInvoiceRelationReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<Guid>("ExpenditureGoodId");
+
+                    b.Property<string>("ExpenditureGoodNo")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("InvoiceId");
+
+                    b.Property<string>("InvoiceNo")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<int>("PackingListId");
+
+                    b.Property<double>("Qty");
+
+                    b.Property<string>("RONo")
+                        .HasMaxLength(25);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("UnitCode")
+                        .HasMaxLength(25);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("ExpenditureGoodNo")
+                        .IsUnique()
+                        .HasFilter("[Deleted]=(0)");
+
+                    b.ToTable("GarmentExpenditureGoodInvoiceRelations");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentExpenditureGoods.ReadModels.GarmentExpenditureGoodItemReadModel", b =>
