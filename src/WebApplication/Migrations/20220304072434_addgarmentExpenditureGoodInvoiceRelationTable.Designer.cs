@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20220304072434_addgarmentExpenditureGoodInvoiceRelationTable")]
+    partial class addgarmentExpenditureGoodInvoiceRelationTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2693,7 +2695,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(50);
 
                     b.Property<string>("ComodityCode")
                         .HasMaxLength(25);
@@ -2825,7 +2827,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(100);
 
                     b.Property<DateTimeOffset?>("AvalDate");
 
@@ -3004,7 +3006,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(50);
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -3181,7 +3183,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(50);
 
                     b.Property<string>("ComodityCode")
                         .HasMaxLength(25);
@@ -3331,7 +3333,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(100);
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -3468,7 +3470,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(50);
 
                     b.Property<string>("BuyerCode")
                         .HasMaxLength(25);
@@ -3646,7 +3648,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(50);
 
                     b.Property<double>("BasicPrice");
 
@@ -3801,7 +3803,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(50);
 
                     b.Property<string>("ComodityCode")
                         .HasMaxLength(25);
@@ -4050,7 +4052,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(50);
 
                     b.Property<string>("ComodityCode")
                         .HasMaxLength(25);
@@ -4195,7 +4197,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(500);
 
                     b.Property<string>("BuyerCode")
                         .HasMaxLength(100);
@@ -4573,7 +4575,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(50);
 
                     b.Property<string>("ComodityCode")
                         .HasMaxLength(25);
@@ -4773,7 +4775,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(50);
 
                     b.Property<string>("BuyerCode")
                         .HasMaxLength(25);
@@ -4932,7 +4934,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(25);
 
                     b.Property<string>("Article")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(50);
 
                     b.Property<string>("ComodityCode")
                         .HasMaxLength(25);

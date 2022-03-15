@@ -90,10 +90,10 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 			return new GetMonitoringPrepareQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
 
-		/*[Fact]
+		[Fact]
 		public async Task Handle_StateUnderTest_ExpectedBehavior()
 		{
-			// Arrange
+			 
 			GetMonitoringPrepareQueryHandler unitUnderTest = CreateGetMonitoringPrepareQueryHandler();
 			CancellationToken cancellationToken = CancellationToken.None;
 
@@ -168,11 +168,11 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 					 new GarmentDeliveryReturn(guidDeliveryReturn, "", "", "", 1, "", 1, guidPrepare.ToString(), DateTimeOffset.Now, "", new Domain.GarmentDeliveryReturns.ValueObjects.UnitDepartmentId(1), "", "", new Domain.GarmentDeliveryReturns.ValueObjects.StorageId(1), "", "", true).GetReadModel()
 				}.AsQueryable());
 
-			// Act
+			 
 			var result = await unitUnderTest.Handle(getXlsPrepareQuery, cancellationToken);
 
-			// Assert
+			 
 			result.Should().NotBeNull();
-		}*/
+		}
 	}
 }
