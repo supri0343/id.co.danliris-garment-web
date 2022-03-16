@@ -17,7 +17,7 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
         public DateTime dateFrom { get; private set; }
         public DateTime dateTo { get; private set; }
 
-        public GetXlsSamplePrepareQuery(int page, int size, string order, int unit, DateTime dateFrom, DateTime dateTo,string token)
+        public GetXlsSamplePrepareQuery(string type,int page, int size, string order, int unit, DateTime dateFrom, DateTime dateTo,string token)
         {
             this.page = page;
             this.size = size;
@@ -26,6 +26,7 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.Queries.GetMon
             this.dateFrom = dateFrom;
             this.dateTo = dateTo;
             this.token = token;
+			this.type = type;
         }
     }
 }
