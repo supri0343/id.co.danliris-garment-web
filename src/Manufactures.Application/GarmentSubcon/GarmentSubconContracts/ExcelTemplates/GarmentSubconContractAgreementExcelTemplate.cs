@@ -54,13 +54,13 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.ExcelTem
                 sheet.Cells[$"B13"].Value = "Dengan Hormat,";
 
                 sheet.Cells[$"B15:K15"].Merge = true;
-                sheet.Cells[$"B15"].Value = "Sesuai dengan persetujuan order bordir kami, maka bersama ini kami kirimkan surat kontrak";
+                sheet.Cells[$"B15"].Value = "Sesuai dengan persetujuan order ..... kami, maka bersama ini kami kirimkan surat kontrak";
                 sheet.Cells[$"B16:K16"].Merge = true;
                 sheet.Cells[$"B16"].Value = "dengan ketentuan dan syarat-syarat dibawah ini:";
                 sheet.Cells[$"B18:K18"].Merge = true;
                 sheet.Cells[$"B18"].Value = "PT. Dan Liris, selanjutnya disebut PIHAK PERTAMA akan mengirimkan potongan garment";
                 sheet.Cells[$"B19:K19"].Merge = true;
-                sheet.Cells[$"B19"].Value = "kepada Naga Mas Bordir dengan ketentuan sbb:";
+                sheet.Cells[$"B19"].Value = $"kepada {dto.Supplier.Name} dengan ketentuan sbb:";
 
                 sheet.Cells[$"B20:C20"].Merge = true;
                 sheet.Cells[$"B20"].Value = "Material";
@@ -71,7 +71,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.ExcelTem
                 sheet.Cells[$"D21:K21"].Merge = true;
                 sheet.Cells[$"D21"].Value = $": {dto.Quantity} {dto.Uom.Unit}";
                 sheet.Cells[$"B22:C22"].Merge = true;
-                sheet.Cells[$"B22"].Value = "Ongkos Bordir";
+                sheet.Cells[$"B22"].Value = "Ongkos .....";
                 sheet.Cells[$"D22:K22"].Merge = true;
                 sheet.Cells[$"D22"].Value = ":";
                 sheet.Cells[$"B23:C23"].Merge = true;
@@ -85,7 +85,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.ExcelTem
                 sheet.Cells[$"B25:K25"].Merge = true;
                 sheet.Cells[$"B25"].Value = $"{dto.Supplier.Name}, selanjutnya disebut PIHAK KEDUA menggunakan potongan garment tersebut";
                 sheet.Cells[$"B26:K26"].Merge = true;
-                sheet.Cells[$"B26"].Value = "diatas untuk di bordir, dan selanjutnya dikirim kembali ke PT. Dan Liris dengan ketentuan";
+                sheet.Cells[$"B26"].Value = "diatas untuk di ....., dan selanjutnya dikirim kembali ke PT. Dan Liris dengan ketentuan";
                 sheet.Cells[$"B27:K27"].Merge = true;
                 sheet.Cells[$"B27"].Value = "sebagai berikut:";
 
@@ -373,12 +373,12 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.ExcelTem
                 sheet.Cells[$"A{row}"].Value = "1";
                 sheet.Cells[$"A{row}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
                 sheet.Cells[$"B{row}:N{row}"].Merge = true;
-                sheet.Cells[$"B{row}"].Value = "Sebelum PIHAK KEDUA mengirimkan barang ke PIHAK PERTAMA, baranag harus dicek terlebih dahulu oleh PIHAK PERTAMA";
+                sheet.Cells[$"B{row}"].Value = "Sebelum PIHAK KEDUA mengirimkan barang ke PIHAK PERTAMA, barang harus dicek terlebih dahulu oleh PIHAK PERTAMA";
                 row++;
                 sheet.Cells[$"A{row}"].Value = "2";
                 sheet.Cells[$"A{row}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
                 sheet.Cells[$"B{row}:N{row}"].Merge = true;
-                sheet.Cells[$"B{row}"].Value = "Komplain atau klaim dari PIHAK PERTAMA kepada PIHAK KEDUA karena adanya Barang Riject, dilakukan dalam waktu";
+                sheet.Cells[$"B{row}"].Value = "Komplain atau klaim dari PIHAK PERTAMA kepada PIHAK KEDUA karena adanya Barang Reject, dilakukan dalam waktu";
                 row++;
                 sheet.Cells[$"B{row}:N{row}"].Merge = true;
                 sheet.Cells[$"B{row}"].Value = "4 hari kerja setelah Barang diterima oleh PIHAK PERTAMA";
