@@ -276,8 +276,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.ExcelTem
 
                 if(dto.Items !=null && dto.Items.Count > 0)
                 {
-                    var material = dto.Items.Where(a=>a.Product.Name=="FABRIC" || a.Product.Name=="INTERLINING").ToList();
-                    var acc = dto.Items.Where(a => a.Product.Name != "FABRIC" && a.Product.Name != "INTERLINING").ToList();
+                    var material = dto.Items.Where(a=>a.Product.Name=="FABRIC" || a.Product.Name=="INTERLINING").OrderBy(a=>a.Product.Name).ToList();
+                    var acc = dto.Items.Where(a => a.Product.Name != "FABRIC" && a.Product.Name != "INTERLINING").OrderBy(a => a.Product.Name).ToList();
                     if (material != null)
                     {
                         foreach(var m in material)
