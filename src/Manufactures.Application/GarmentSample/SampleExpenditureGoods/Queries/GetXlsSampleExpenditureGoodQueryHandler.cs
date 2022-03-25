@@ -112,11 +112,12 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.Queries
         }
         public async Task<MemoryStream> Handle(GetXlsSampleExpenditureGoodQuery request, CancellationToken cancellationToken)
         {
-            DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
-            DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
+			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
+			dateFrom.AddHours(7);
+			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
+			dateTo = dateTo.AddHours(7);
 
-
-            var QueryRo = (from a in garmentExpenditureGoodRepository.Query
+			var QueryRo = (from a in garmentExpenditureGoodRepository.Query
                            where a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) && a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo
                            select a.RONo).Distinct().ToList();
 
@@ -263,9 +264,9 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.Queries
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "COLOUR", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NAMA", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "UNIT", DataType = typeof(string) });
-            //reportDataTable.Columns.Add(new DataColumn() { ColumnName = "HARGA (PCS)", DataType = typeof(decimal) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "HARGA (PCS)", DataType = typeof(decimal) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "QTY", DataType = typeof(double) });
-            //reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NOMINAL", DataType = typeof(double) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NOMINAL", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "INVOICE", DataType = typeof(string) });
             int counter = 5;
             if (listViewModel.garmentMonitorings.Count > 0)
@@ -276,7 +277,7 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.Queries
                     string pebDate = report.pebDate.GetValueOrDefault() == new DateTime(1970, 1, 1) || report.pebDate.GetValueOrDefault().ToString("dd MMM yyyy") == "01 Jan 0001" ? "-" : report.pebDate.GetValueOrDefault().ToString("dd MMM yyy");
                     //Console.WriteLine(pebDate);
                     reportDataTable.Rows.Add(report.expenditureGoodNo, report.expenditureGoodType, report.expenditureDate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMM yyy"), pebDate,
-                    report.roNo, report.buyerArticle, report.colour, report.name, report.unitname, report.qty, report.invoice);
+                    report.roNo, report.buyerArticle, report.colour, report.name, report.unitname,report.price, report.qty,report.nominal, report.invoice);
                     counter++;
                     //Console.WriteLine(counter);
                 }
@@ -284,40 +285,40 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.Queries
             using (var package = new ExcelPackage())
             {
                 var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
-                worksheet.Cells["A" + 5 + ":K" + 5 + ""].Style.Font.Bold = true;
-                worksheet.Cells["A1"].Value = "Report Barang Jadi "; worksheet.Cells["A" + 1 + ":K" + 1 + ""].Merge = true;
-                worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
-                worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
-                worksheet.Cells["A" + 1 + ":K" + 1 + ""].Merge = true;
-                worksheet.Cells["A" + 2 + ":K" + 2 + ""].Merge = true;
-                worksheet.Cells["A" + 3 + ":K" + 3 + ""].Merge = true;
-                worksheet.Cells["A" + 1 + ":K" + 3 + ""].Style.Font.Size = 15;
-                worksheet.Cells["A" + 1 + ":K" + 5 + ""].Style.Font.Bold = true;
-                worksheet.Cells["A" + 1 + ":K" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells["A" + 1 + ":K" + 5 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
-                worksheet.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                worksheet.Cells["I" + 2 + ":K" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-                worksheet.Column(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                worksheet.Cells["J" + 2 + ":J" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-                worksheet.Cells["A" + 5 + ":K" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":K" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":K" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":K" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["I" + (counter) + ":J" + (counter) + ""].Style.Font.Bold = true;
-                worksheet.Cells["A" + 5 + ":L" + 5 + ""].Style.Font.Bold = true;
-                var stream = new MemoryStream();
-                if (request.type != "bookkeeping")
-                {
-                    worksheet.Cells["A" + (counter) + ":I" + (counter) + ""].Merge = true;
+				worksheet.Cells["A" + 5 + ":L" + 5 + ""].Style.Font.Bold = true;
+				worksheet.Cells["A1"].Value = "Report Barang Jadi "; worksheet.Cells["A" + 1 + ":L" + 1 + ""].Merge = true;
+				worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
+				worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
+				worksheet.Cells["A" + 1 + ":L" + 1 + ""].Merge = true;
+				worksheet.Cells["A" + 2 + ":L" + 2 + ""].Merge = true;
+				worksheet.Cells["A" + 3 + ":L" + 3 + ""].Merge = true;
+				worksheet.Cells["A" + 1 + ":L" + 3 + ""].Style.Font.Size = 15;
+				worksheet.Cells["A" + 1 + ":L" + 5 + ""].Style.Font.Bold = true;
+				worksheet.Cells["A" + 1 + ":L" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+				worksheet.Cells["A" + 1 + ":L" + 5 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+				worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
+				worksheet.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["I" + 2 + ":K" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Column(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				worksheet.Cells["J" + 2 + ":J" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+				worksheet.Cells["A" + 5 + ":L" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":L" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":L" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["A" + 5 + ":L" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+				worksheet.Cells["I" + (counter) + ":J" + (counter) + ""].Style.Font.Bold = true;
+				worksheet.Cells["A" + 5 + ":L" + 5 + ""].Style.Font.Bold = true;
+				var stream = new MemoryStream();
+				if (request.type != "bookkeeping")
+				{
+					worksheet.Cells["A" + (counter) + ":I" + (counter) + ""].Merge = true;
 
-                    worksheet.Column(9).Hidden = true;
-                }
-                else
-                {
-                    worksheet.Cells["A" + (counter) + ":H" + (counter) + ""].Merge = true;
-                }
-                package.SaveAs(stream);
+					worksheet.Column(9).Hidden = true;
+				}
+				else
+				{
+					worksheet.Cells["A" + (counter) + ":H" + (counter) + ""].Merge = true;
+				}
+				package.SaveAs(stream);
 
                 return stream;
             }
