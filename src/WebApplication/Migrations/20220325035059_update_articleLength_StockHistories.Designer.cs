@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20220325035059_update_articleLength_StockHistories")]
+    partial class update_articleLength_StockHistories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -4417,9 +4419,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("SampleRequestNo")
                         .HasMaxLength(30);
-
-                    b.Property<string>("SampleTo")
-                        .HasMaxLength(50);
 
                     b.Property<string>("SampleType")
                         .HasMaxLength(255);
