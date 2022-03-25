@@ -158,7 +158,7 @@ namespace Manufactures.Tests.Queries.GarmentSample.SampleSewingOuts
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSampleRequestReadModel>
                 {
-                    new Manufactures.Domain.GarmentSample.SampleRequests.GarmentSampleRequest(guidSewingOutItem,"","","ro","",DateTimeOffset.Now,new Domain.Shared.ValueObjects.BuyerId(1),"","",new Domain.Shared.ValueObjects.GarmentComodityId(1),"","","","",DateTimeOffset.Now,"","","",true,true,DateTimeOffset.Now,"",false,null,"","",false,null,"","","","","","",new Domain.Shared.ValueObjects.SectionId(1),"").GetReadModel()
+                    new Manufactures.Domain.GarmentSample.SampleRequests.GarmentSampleRequest(guidSewingOutItem,"","","ro","",DateTimeOffset.Now,new Domain.Shared.ValueObjects.BuyerId(1),"","",new Domain.Shared.ValueObjects.GarmentComodityId(1),"","","","",DateTimeOffset.Now,"","","",true,true,DateTimeOffset.Now,"",false,null,"","",false,null,"","","","","","",new Domain.Shared.ValueObjects.SectionId(1),"",null).GetReadModel()
                 }.AsQueryable());
 
 			var guidGarmentSamplePreparing = Guid.NewGuid();
@@ -260,7 +260,7 @@ namespace Manufactures.Tests.Queries.GarmentSample.SampleSewingOuts
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentSampleRequestReadModel>
 				{
-					new Manufactures.Domain.GarmentSample.SampleRequests.GarmentSampleRequest(guidSewingOutItem,"","","ro","",DateTimeOffset.Now,new BuyerId(1),"","",new GarmentComodityId(1),"","","","",DateTimeOffset.Now,"","","",true,true,DateTimeOffset.Now,"",false,null,"","",false,null,"","","","","","",new SectionId(1),"").GetReadModel()
+					new Manufactures.Domain.GarmentSample.SampleRequests.GarmentSampleRequest(guidSewingOutItem,"","","ro","",DateTimeOffset.Now,new BuyerId(1),"","",new GarmentComodityId(1),"","","","",DateTimeOffset.Now,"","","",true,true,DateTimeOffset.Now,"",false,null,"","",false,null,"","","","","","",new SectionId(1),"",null).GetReadModel()
 				}.AsQueryable());
 			var guidGarmentSamplePreparing = Guid.NewGuid();
 			_mockGarmentSamplePreparingRepository
