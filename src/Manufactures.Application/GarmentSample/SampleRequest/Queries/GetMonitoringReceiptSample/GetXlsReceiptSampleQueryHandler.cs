@@ -80,6 +80,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
             public DateTimeOffset receivedDate { get; set; }
             public string garmentSectionName { get; set; }
             public DateTimeOffset sampleRequestDate { get; set; }
+            public string sampleTo { get; set; }
         }
         public async Task<MemoryStream> Handle(GetXlsReceiptSampleQuery request, CancellationToken cancellationToken)
         {
@@ -103,7 +104,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
                                                     aa.SentDate,
                                                     aa.ReceivedDate,
                                                     aa.Date,
-                                                    aa.SectionId
+                                                    aa.SectionId,
+                                                    aa.SampleTo
                                                 })
                                      join b in garmentSampleRequestProductRepository.Query on a.Identity equals b.SampleRequestId
                                      select new
@@ -122,7 +124,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
                                          SentDate = a.SentDate,
                                          ReceivedDate = a.ReceivedDate,
                                          SampleRequestDate = a.Date,
-                                         SectionId = a.SectionId
+                                         SectionId = a.SectionId,
+                                         a.SampleTo
                                      };
             List<int> _sectionId = new List<int>();
             foreach (var item in QuerySampleRequest)
@@ -152,6 +155,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
                     sizeDescription = item.SizeDescription,
                     style = item.Style,
                     sizeName = item.SizeName,
+                    sampleTo=item.SampleTo,
                     garmentSectionName = (from aa in garmentSectionResult.data where aa.Id == item.SectionId select aa.Name).FirstOrDefault()
                 };
                 sampleDtosList.Add(receiptSampleDto);
@@ -162,6 +166,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No Surat Sample", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO Sample", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kategori Sample", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tipe Sample", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis Sample", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Article", DataType = typeof(string) });
@@ -200,7 +205,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
                         }
                     }
  
-                    reportDataTable.Rows.Add(report.sampleRequestNo, report.roNoSample, report.sampleCategory, report.sampleType, report.buyer, report.style, report.color, report.sizeName, report.sizeDescription, report.quantity, report.sentDate.AddHours(7).ToString("dd MMMM yyyy"), report.receivedDate.Value.ToString("dd MMMM yyyy"), report.garmentSectionName, report.sampleRequestDate.AddHours(7).ToString("dd MMMM yyyy"));
+                    reportDataTable.Rows.Add(report.sampleRequestNo, report.roNoSample, report.sampleCategory, report.sampleTo, report.sampleType, report.buyer, report.style, report.color, report.sizeName, report.sizeDescription, report.quantity, report.sentDate.AddHours(7).ToString("dd MMMM yyyy"), report.receivedDate.Value.ToString("dd MMMM yyyy"), report.garmentSectionName, report.sampleRequestDate.AddHours(7).ToString("dd MMMM yyyy"));
                     counter++;
 
                 }
@@ -210,10 +215,10 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
                 var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
 
 
-                worksheet.Cells["A" + 5 + ":N" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":N" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":N" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":N" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":O" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":O" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":O" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":O" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                 worksheet.Row(1).Style.Font.Bold = true;
                 worksheet.Row(2).Style.Font.Bold = true;
@@ -222,17 +227,17 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
                 worksheet.Cells["A1"].Value = "Monitoring Penerimaan Sampel";
                 worksheet.Cells["A2"].Value = "Periode " + receivedDateFrom.ToString("dd-MM-yyyy") + " s/d " + receivedDateTo.ToString("dd-MM-yyyy");
                 worksheet.Cells["A3"].Value = "  ";
-                worksheet.Cells["A" + 1 + ":N" + 1 + ""].Merge = true;
-                worksheet.Cells["A" + 2 + ":N" + 2 + ""].Merge = true;
-                worksheet.Cells["A" + 3 + ":N" + 3 + ""].Merge = true;
-                worksheet.Cells["A" + 1 + ":N" + 3 + ""].Style.Font.Size = 15;
-                worksheet.Cells["A" + 1 + ":N" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells["A" + 6 + ":I" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells["K" + 6 + ":N" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells["A" + 1 + ":N" + 5 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Cells["A" + 1 + ":O" + 1 + ""].Merge = true;
+                worksheet.Cells["A" + 2 + ":O" + 2 + ""].Merge = true;
+                worksheet.Cells["A" + 3 + ":O" + 3 + ""].Merge = true;
+                worksheet.Cells["A" + 1 + ":O" + 3 + ""].Style.Font.Size = 15;
+                worksheet.Cells["A" + 1 + ":O" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["A" + 6 + ":J" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["L" + 6 + ":O" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["A" + 1 + ":O" + 5 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
-                worksheet.Cells["E" + 5 + ":N" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells["A" + 5 + ":N" + counter + ""].AutoFitColumns();
+                worksheet.Cells["E" + 5 + ":O" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["A" + 5 + ":O" + counter + ""].AutoFitColumns();
                 var stream = new MemoryStream();
                 foreach (var rowMerge in Rowcount)
                 {
@@ -267,6 +272,10 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
                     worksheet.Cells[$"E{(rowNum1 + 4)}:E{(rowNum2 + 4)}"].Merge = true;
                     worksheet.Cells[$"E{(rowNum1 + 4)}:E{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     worksheet.Cells[$"E{(rowNum1 + 4)}:E{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                    worksheet.Cells[$"F{(rowNum1 + 4)}:F{(rowNum2 + 4)}"].Merge = true;
+                    worksheet.Cells[$"F{(rowNum1 + 4)}:F{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    worksheet.Cells[$"F{(rowNum1 + 4)}:F{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
                     worksheet.Cells[$"K{(rowNum1 + 4)}:K{(rowNum2 + 4)}"].Merge = true;
                     worksheet.Cells[$"K{(rowNum1 + 4)}:K{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;

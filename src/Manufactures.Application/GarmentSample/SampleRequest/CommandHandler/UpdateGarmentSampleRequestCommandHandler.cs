@@ -147,7 +147,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
             SampleRequest.SetDocumentsFileName(request.DocumentsFileName);
             SampleRequest.SetImagesPath(await _azureImage.UploadMultipleImage("GarmentSampleRequest", SampleRequest.Identity, DateTime.UtcNow, request.ImagesFile, request.ImagesPath));
             SampleRequest.SetDocumentsPath(await _azureDocument.UploadMultipleFile("GarmentSampleRequest", SampleRequest.Identity, DateTime.UtcNow, request.DocumentsFile, request.DocumentsFileName, request.DocumentsPath));
-
+            SampleRequest.SetSampleTo(request.SampleTo);
             SampleRequest.Modify();
 
             await _GarmentSampleRequestRepository.Update(SampleRequest);
