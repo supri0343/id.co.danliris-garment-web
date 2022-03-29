@@ -224,7 +224,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
                 worksheet.Row(2).Style.Font.Bold = true;
                 worksheet.Row(5).Style.Font.Bold = true;
 
-                worksheet.Cells["A1"].Value = "Monitoring Penerimaan Sampel";
+                worksheet.Cells["A1"].Value = "Monitoring Penerimaan Sample";
                 worksheet.Cells["A2"].Value = "Periode " + receivedDateFrom.ToString("dd-MM-yyyy") + " s/d " + receivedDateTo.ToString("dd-MM-yyyy");
                 worksheet.Cells["A3"].Value = "  ";
                 worksheet.Cells["A" + 1 + ":O" + 1 + ""].Merge = true;
