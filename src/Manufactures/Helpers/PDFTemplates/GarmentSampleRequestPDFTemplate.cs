@@ -81,6 +81,11 @@ namespace Manufactures.Helpers.PDFTemplates
             cellLeftNoBorder.Phrase = new Phrase(": " + garmentSampleRequest.SampleCategory, normal_font);
             tableHeader.AddCell(cellLeftNoBorder);
 
+            cellLeftNoBorder.Phrase = new Phrase("Tipe Sample", normal_font);
+            tableHeader.AddCell(cellLeftNoBorder);
+            cellLeftNoBorder.Phrase = new Phrase(": " + garmentSampleRequest.SampleTo, normal_font);
+            tableHeader.AddCell(cellLeftNoBorder);
+
             cellLeftNoBorder.Phrase = new Phrase("Tanggal Surat Sample", normal_font);
             tableHeader.AddCell(cellLeftNoBorder);
             cellLeftNoBorder.Phrase = new Phrase(": " + garmentSampleRequest.Date.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), normal_font);

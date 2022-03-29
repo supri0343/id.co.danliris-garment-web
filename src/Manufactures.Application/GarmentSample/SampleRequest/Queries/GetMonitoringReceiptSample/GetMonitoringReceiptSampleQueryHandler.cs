@@ -99,7 +99,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
                                                     aa.SentDate,
                                                     aa.ReceivedDate,
                                                     aa.Date,
-                                                    aa.SectionId
+                                                    aa.SectionId,
+                                                    aa.SampleTo
                                                 })
                                      join b in garmentSampleRequestProductRepository.Query on a.Identity equals b.SampleRequestId
                                      select new
@@ -118,7 +119,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
                                          SentDate = a.SentDate,
                                          ReceivedDate = a.ReceivedDate,
                                          SampleRequestDate = a.Date,
-                                         SectionId = a.SectionId
+                                         SectionId = a.SectionId,
+                                         a.SampleTo
                                      };
             List<int> _sectionId = new List<int>();
             foreach (var item in QuerySampleRequest)
@@ -196,6 +198,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
                     sizeDescription = item.SizeDescription,
                     style = item.Style,
                     sizeName = item.SizeName,
+                    sampleTo=item.SampleTo,
                     garmentSectionName = (from aa in garmentSectionResult.data where aa.Id == item.SectionId select aa.Name).FirstOrDefault()
                 };
                 sampleDtosList.Add(receiptSampleDto);

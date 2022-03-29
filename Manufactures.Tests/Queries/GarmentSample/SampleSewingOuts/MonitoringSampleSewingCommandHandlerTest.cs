@@ -160,7 +160,7 @@ namespace Manufactures.Tests.Queries.GarmentSample.SampleSewingOuts
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentSampleRequestReadModel>
 				{
-					new Manufactures.Domain.GarmentSample.SampleRequests.GarmentSampleRequest(guidSewingOutItem,"","","ro","",DateTimeOffset.Now,new Domain.Shared.ValueObjects.BuyerId(1),"","",new Domain.Shared.ValueObjects.GarmentComodityId(1),"","","","",DateTimeOffset.Now,"","","",true,true,DateTimeOffset.Now,"",false,null,"","",false,null,"","","","","","",new Domain.Shared.ValueObjects.SectionId(1),"").GetReadModel()
+					new Manufactures.Domain.GarmentSample.SampleRequests.GarmentSampleRequest(guidSewingOutItem,"","","ro","",DateTimeOffset.Now,new Domain.Shared.ValueObjects.BuyerId(1),"","",new Domain.Shared.ValueObjects.GarmentComodityId(1),"","","","",DateTimeOffset.Now,"","","",true,true,DateTimeOffset.Now,"",false,null,"","",false,null,"","","","","","",new Domain.Shared.ValueObjects.SectionId(1),"",null).GetReadModel()
 				}.AsQueryable());
 
 			var guidGarmentSamplePreparing = Guid.NewGuid();
@@ -178,8 +178,45 @@ namespace Manufactures.Tests.Queries.GarmentSample.SampleSewingOuts
 				{
 					 new GarmentSamplePreparingItem(guidGarmentSamplePreparing, 0, new Domain.GarmentSample.SamplePreparings.ValueObjects.ProductId(1), null, null, null, 0, new Domain.GarmentSample.SamplePreparings.ValueObjects.UomId(1), null, null, 0, 0, Guid.Empty,null).GetReadModel()
 				}.AsQueryable());
-			// Act
-			var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
+            _mockGarmentSewingInRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSampleSewingInReadModel>
+                {
+                    new GarmentSampleSewingIn(guidSewingOut,"","",new Guid(),"",new UnitDepartmentId(1),"","",new UnitDepartmentId(1),"","","rono","article",new GarmentComodityId(1),"","",DateTimeOffset.Now).GetReadModel()
+                }.AsQueryable());
+            _mockGarmentSewingInItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSampleSewingInItemReadModel>
+                {
+                    new GarmentSampleSewingInItem(new Guid(),guidSewingOut,new Guid(),new Guid(),Guid.Empty,Guid.Empty,new ProductId(1),"","","",new SizeId(1),"",1,new UomId(1),"","",1,1,1).GetReadModel()
+                }.AsQueryable());
+            _mockGarmentSampleRequestProductRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSampleRequestProductReadModel>
+                {
+                    new GarmentSampleRequestProduct(guidSewingOutItem,guidSewingOutItem,"","",new SizeId(1),"","", 100,1).GetReadModel()
+                }.AsQueryable());
+            _mockGarmentSampleRequestRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSampleRequestReadModel>
+                {
+                    new Manufactures.Domain.GarmentSample.SampleRequests.GarmentSampleRequest(guidSewingOutItem,"","","ro","",DateTimeOffset.Now,new BuyerId(1),"","",new GarmentComodityId(1),"","","","",DateTimeOffset.Now,"","","",true,true,DateTimeOffset.Now,"",false,null,"","",false,null,"","","","","","",new SectionId(1),"", null).GetReadModel()
+                }.AsQueryable());
+            //var garmentadjustmentId = Guid.NewGuid();
+            //  _mockGarmentAdjustmentRepository
+            //      .Setup(s => s.Query)
+            //      .Returns(new List<GarmentAdjustmentReadModel>
+            //      {
+            //           new GarmentAdjustment(garmentadjustmentId,"no","type","ro","article",new UnitDepartmentId(1),"unitcode","unitname",DateTimeOffset.Now,new GarmentComodityId(1),"comoditycode","comodityname","").GetReadModel()
+            //      }.AsQueryable());
+            //  _mockGarmentAdjustmentItemRepository
+            //     .Setup(s => s.Query)
+            //     .Returns(new List<GarmentAdjustmentItemReadModel>
+            //     {
+            //           new GarmentAdjustmentItem(new Guid(),new Guid(),new Guid(),new Guid(),new Guid(),new Guid(),new SizeId(1),"sizeName",new ProductId(1),"productCode","productName","",1,1,new UomId(1),"uom","color",10).GetReadModel()
+            //     }.AsQueryable());
+            // Act
+            var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
 
 			// Assert
 			result.Should().NotBeNull();

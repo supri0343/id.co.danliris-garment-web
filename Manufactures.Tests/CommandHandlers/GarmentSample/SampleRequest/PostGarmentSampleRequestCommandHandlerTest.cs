@@ -52,7 +52,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleRequest
             //    false, DateTimeOffset.Now, null, false, DateTimeOffset.Now, null, null, false, DateTimeOffset.Now, null, null, null, null, null, null, new SectionId(1), null);
             GarmentSampleRequest garmentSampleRequest1 = new GarmentSampleRequest(
                 SampleRequestGuid, null, $"AA/{day}{month}{year}/001", null, null, DateTimeOffset.Now, new BuyerId(1), "AA", "", new GarmentComodityId(1), null, null, "", "", DateTimeOffset.Now, "", "", "", false,
-                false, DateTimeOffset.Now, null, false, DateTimeOffset.Now, null, null, false, DateTimeOffset.Now, null, null, null, null, null, null, new SectionId(1), null);
+                false, DateTimeOffset.Now, null, false, DateTimeOffset.Now, null, null, false, DateTimeOffset.Now, null, null, null, null, null, null, new SectionId(1), null, null);
 
             _mockSampleRequestRepository
                 .Setup(s => s.Query)
@@ -93,7 +93,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.SampleRequest
             var prefix = $"AA/{day}{month}{year}/";
             GarmentSampleRequest garmentSampleRequest = new GarmentSampleRequest(
                 SampleRequestGuid, null, "", null, null, DateTimeOffset.Now, new BuyerId(1), "AA", "", new GarmentComodityId(1), null, null, "", "", DateTimeOffset.Now, "", "", "", false,
-                false, DateTimeOffset.Now, null, false, DateTimeOffset.Now, null, null, false, DateTimeOffset.Now, null, null, null, null, null, null, new SectionId(1), null);
+                false, DateTimeOffset.Now, null, false, DateTimeOffset.Now, null, null, false, DateTimeOffset.Now, null, null, null, null, null, null, new SectionId(1), null, null);
             //GarmentSampleRequest garmentSampleRequest1 = new GarmentSampleRequest(
             //    SampleRequestGuid, null, $"AA/{day}{month}{year}/001", null, null, DateTimeOffset.Now, new BuyerId(1), "AA", "", new GarmentComodityId(1), null, null, "", "", DateTimeOffset.Now, "", "", "", false,
             //    false, DateTimeOffset.Now, null, false, DateTimeOffset.Now, null, null, false, DateTimeOffset.Now, null, null, null, null, null, null, new SectionId(1), null);
