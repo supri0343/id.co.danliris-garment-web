@@ -19,7 +19,7 @@ using Manufactures.Domain.GarmentSample.SampleRequests.Repositories;
 
 namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.Queries
 {
-    class GarmentSampleExpenditureGoodQueryHandler : IQueryHandler<GetMonitoringSampleExpenditureGoodQuery, GarmentMonitoringSampleExpenditureGoodListViewModel>
+    public class GarmentSampleExpenditureGoodQueryHandler : IQueryHandler<GetMonitoringSampleExpenditureGoodQuery, GarmentMonitoringSampleExpenditureGoodListViewModel>
     {
         private readonly IStorage _storage;
         protected readonly IHttpClientService _http;
