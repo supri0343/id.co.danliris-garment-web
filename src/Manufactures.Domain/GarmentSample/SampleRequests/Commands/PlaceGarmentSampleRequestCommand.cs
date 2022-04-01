@@ -48,6 +48,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.Commands
         public List<string> ImagesName { get;  set; }
         public List<string> DocumentsFileName { get;  set; }
         public SectionValueObject Section { get; set; }
+        public string SampleTo { get; set; }
 
         public List<GarmentSampleRequestProductValueObject> SampleProducts { get; set; }
         public List<GarmentSampleRequestSpecificationValueObject> SampleSpecifications { get; set; }

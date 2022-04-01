@@ -26,6 +26,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
         public  DateTimeOffset ? receivedDate { get; internal set; }
         public string garmentSectionName { get; internal set; }
         public DateTimeOffset sampleRequestDate { get; internal set; }
+        public string sampleTo { get; internal set; }
 
         public GarmentMonitoringReceiptSampleDto(GarmentMonitoringReceiptSampleDto garmentMonitoringReceiptSampleDto)
         {
@@ -44,7 +45,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.Queries.GetMonito
             receivedDate = garmentMonitoringReceiptSampleDto.receivedDate;
             sampleRequestDate = garmentMonitoringReceiptSampleDto.sampleRequestDate;
             garmentSectionName = garmentMonitoringReceiptSampleDto.garmentSectionName;
-
+            sampleTo = garmentMonitoringReceiptSampleDto.sampleTo;
         }
     }
 }

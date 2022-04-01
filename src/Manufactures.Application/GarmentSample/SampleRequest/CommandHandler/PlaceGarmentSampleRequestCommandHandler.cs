@@ -77,7 +77,8 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                 JsonConvert.SerializeObject(request.ImagesName),
                 JsonConvert.SerializeObject(request.DocumentsFileName),
                 new SectionId(request.Section.Id),
-                request.Section.Code
+                request.Section.Code,
+                request.SampleTo
             );
 
             foreach (var product in request.SampleProducts)
