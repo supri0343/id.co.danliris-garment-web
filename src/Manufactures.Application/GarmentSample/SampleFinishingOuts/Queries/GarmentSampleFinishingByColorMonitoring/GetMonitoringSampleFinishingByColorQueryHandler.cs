@@ -14,9 +14,9 @@ using System.Threading;
 using System.Linq;
 using Manufactures.Domain.GarmentSample.SampleRequests.Repositories;
 
-namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
+namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries.GarmentSampleFinishingByColorMonitoring
 {
-    public class GetMonitoringSampleFinishingQueryHandler : IQueryHandler<GetSampleFinishingMonitoringQuery, GarmentSampleFinishingMonitoringListViewModel>
+    public class GetMonitoringSampleFinishingByColorQueryHandler : IQueryHandler<GetSampleFinishingByColorMonitoringQuery, GarmentSampleFinishingByColorMonitoringListViewModel>
     {
         protected readonly IHttpClientService _http;
         private readonly IStorage _storage;
@@ -28,12 +28,11 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
         private readonly IGarmentSamplePreparingItemRepository garmentPreparingItemRepository;
         private readonly IGarmentSampleCuttingInRepository garmentCuttingInRepository;
         private readonly IGarmentSampleCuttingInItemRepository garmentCuttingInItemRepository;
-        private readonly IGarmentSampleCuttingInDetailRepository garmentCuttingInDetailRepository;
-        private readonly IGarmentSampleFinishingMonitoringReportRepository garmentMonitoringFinishingReportRepository;
+        private readonly IGarmentSampleCuttingInDetailRepository garmentCuttingInDetailRepository; 
         private readonly IGarmentSampleRequestRepository GarmentSampleRequestRepository;
         private readonly IGarmentSampleRequestProductRepository GarmentSampleRequestProductRepository;
 
-        public GetMonitoringSampleFinishingQueryHandler(IStorage storage, IServiceProvider serviceProvider)
+        public GetMonitoringSampleFinishingByColorQueryHandler(IStorage storage, IServiceProvider serviceProvider)
         {
             _storage = storage;
             garmentSewingOutRepository = storage.GetRepository<IGarmentSampleSewingOutRepository>();
@@ -45,7 +44,7 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
             garmentCuttingInRepository = storage.GetRepository<IGarmentSampleCuttingInRepository>();
             garmentCuttingInItemRepository = storage.GetRepository<IGarmentSampleCuttingInItemRepository>();
             garmentCuttingInDetailRepository = storage.GetRepository<IGarmentSampleCuttingInDetailRepository>();
-            garmentMonitoringFinishingReportRepository = storage.GetRepository<IGarmentSampleFinishingMonitoringReportRepository>();
+             
             _http = serviceProvider.GetService<IHttpClientService>();
             GarmentSampleRequestRepository = storage.GetRepository<IGarmentSampleRequestRepository>();
             GarmentSampleRequestProductRepository = storage.GetRepository<IGarmentSampleRequestProductRepository>();
@@ -59,7 +58,8 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
             public double qtyOrder { get; internal set; }
             public double stock { get; internal set; }
             public string style { get; internal set; }
-            public double sewingQtyPcs { get; internal set; }
+			public string color { get; internal set; }
+			public double sewingQtyPcs { get; internal set; }
             public double finishingQtyPcs { get; internal set; }
             public string uomUnit { get; internal set; }
             public double remainQty { get; internal set; }
@@ -81,7 +81,7 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
             //Enhance Jason Aug 2021
             public double AvgFC { get; set; }
         }
-        public async Task<GarmentSampleFinishingMonitoringListViewModel> Handle(GetSampleFinishingMonitoringQuery request, CancellationToken cancellationToken)
+        public async Task<GarmentSampleFinishingByColorMonitoringListViewModel> Handle(GetSampleFinishingByColorMonitoringQuery request, CancellationToken cancellationToken)
         {
             DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
             dateFrom.AddHours(7);
@@ -115,38 +115,54 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
 						   Count = group.Sum(s => s.CuttingInQuantity),
 						   AvgFC = group.Sum(s => (s.FCs)) / group.Sum(s => s.CuttingInQuantity)
 					   });
-			GarmentSampleFinishingMonitoringListViewModel listViewModel = new GarmentSampleFinishingMonitoringListViewModel();
-			List<GarmentSampleFinishingMonitoringDto> monitoringDtos = new List<GarmentSampleFinishingMonitoringDto>();
+			GarmentSampleFinishingByColorMonitoringListViewModel listViewModel = new GarmentSampleFinishingByColorMonitoringListViewModel();
+			List<GarmentSampleFinishingByColorMonitoringDto> monitoringDtos = new List<GarmentSampleFinishingByColorMonitoringDto>();
 
 			var QueryFinishing = from a in (from aa in garmentFinishingOutRepository.Query
 											where aa.UnitId == request.unit && aa.FinishingOutDate <= dateTo
 											select new { aa.Identity, aa.FinishingOutDate, aa.RONo, aa.Article })
 								 join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
-								 select new monitoringView { price = 0, finishingQtyPcs = a.FinishingOutDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.FinishingOutDate < dateFrom ? -b.Quantity : 0, roJob = a.RONo, article = a.Article };
+								 select new monitoringView { color = b.Color,price = 0, finishingQtyPcs = a.FinishingOutDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.FinishingOutDate < dateFrom ? -b.Quantity : 0, roJob = a.RONo, article = a.Article };
 			var QuerySewingOut = from a in (from aa in garmentSewingOutRepository.Query
 											where aa.UnitId == request.unit && aa.SewingOutDate <= dateTo && aa.SewingTo == "FINISHING"
 
 											select new { aa.Identity, aa.SewingOutDate, aa.RONo, aa.Article })
 								 join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SampleSewingOutId
-								 select new monitoringView { price = 0, finishingQtyPcs = 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity : 0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate < dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article };
+								 select new monitoringView { color = b.Color, price = 0, finishingQtyPcs = 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity : 0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate < dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article };
 			var queryNow = QuerySewingOut.Union(QueryFinishing);
-			var querySum = queryNow.ToList().GroupBy(x => new { x.roJob, x.article, x.uomUnit }, (key, group) => new
+			var querySum = queryNow.ToList().GroupBy(x => new { x.roJob, x.article, x.uomUnit ,x.color}, (key, group) => new
 			{
 
 				RoJob = key.roJob,
+				color = key.color,
 				Stock = group.Sum(s => s.stock),
 				UomUnit = key.uomUnit,
 				Article = key.article,
 				SewingQtyPcs = group.Sum(s => s.sewingQtyPcs),
 				Finishing = group.Sum(s => s.finishingQtyPcs)
 			}).OrderBy(s => s.RoJob);
+
+			var querySumTotal = from p in querySum
+					group p by 1 into g
+			select new GarmentSampleFinishingByColorMonitoringDto
+			{
+				color ="",
+				roJob = "TOTAL",
+				uomUnit = "",
+				article = "",
+				stock = g.Sum(s => s.Stock),
+				sewingOutQtyPcs = g.Sum(s => s.SewingQtyPcs),
+				finishingOutQtyPcs = g.Sum(s => s.Finishing)
+			};
+			 
 			foreach (var item in querySum)
 			{
-				GarmentSampleFinishingMonitoringDto dto = new GarmentSampleFinishingMonitoringDto
+				GarmentSampleFinishingByColorMonitoringDto dto = new GarmentSampleFinishingByColorMonitoringDto
 				{
 					roJob = item.RoJob,
 					article = item.Article,
 					uomUnit = item.UomUnit,
+					color= item.color,
 					sewingOutQtyPcs = item.SewingQtyPcs,
 					finishingOutQtyPcs = item.Finishing,
 					stock = item.Stock,
@@ -154,6 +170,22 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
 				};
 				monitoringDtos.Add(dto);
 			}
+			foreach (var item in querySumTotal)
+			{
+				GarmentSampleFinishingByColorMonitoringDto dto = new GarmentSampleFinishingByColorMonitoringDto
+				{
+					roJob = item.roJob,
+					article = item.article,
+					uomUnit = item.uomUnit,
+					color = item.color,
+					sewingOutQtyPcs = item.sewingOutQtyPcs,
+					finishingOutQtyPcs = item.finishingOutQtyPcs,
+					stock = item.stock,
+					remainQty = item.stock + item.sewingOutQtyPcs - item.finishingOutQtyPcs
+				};
+				monitoringDtos.Add(dto);
+			}
+
 			listViewModel.garmentMonitorings = monitoringDtos;
 			var data = from a in monitoringDtos
 					   where a.stock > 0 || a.sewingOutQtyPcs > 0 || a.finishingOutQtyPcs > 0 || a.remainQty > 0

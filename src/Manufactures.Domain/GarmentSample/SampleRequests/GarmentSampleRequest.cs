@@ -55,8 +55,9 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
         public string DocumentsFileName { get; private set; }
         public SectionId SectionId { get; internal set; }
         public string SectionCode { get; internal set; }
+        public string SampleTo { get; private set; }
 
-        public GarmentSampleRequest(Guid identity, string sampleCategory, string sampleRequestNo, string rONoSample, string rONoCC, DateTimeOffset date, BuyerId buyerId, string buyerCode, string buyerName, GarmentComodityId comodityId, string comodityCode, string comodityName, string sampleType, string packing, DateTimeOffset sentDate, string pOBuyer, string attached, string remark, bool isPosted, bool isReceived, DateTimeOffset? receivedDate, string receivedBy, bool isRejected, DateTimeOffset? rejectedDate, string rejectedBy, string rejectedReason, bool isRevised, DateTimeOffset? revisedDate, string revisedBy, string revisedReason, string imagesPath, string documentsPath, string imagesName, string documentsFileName, SectionId sectionId, string sectionCode) : base(identity)
+        public GarmentSampleRequest(Guid identity, string sampleCategory, string sampleRequestNo, string rONoSample, string rONoCC, DateTimeOffset date, BuyerId buyerId, string buyerCode, string buyerName, GarmentComodityId comodityId, string comodityCode, string comodityName, string sampleType, string packing, DateTimeOffset sentDate, string pOBuyer, string attached, string remark, bool isPosted, bool isReceived, DateTimeOffset? receivedDate, string receivedBy, bool isRejected, DateTimeOffset? rejectedDate, string rejectedBy, string rejectedReason, bool isRevised, DateTimeOffset? revisedDate, string revisedBy, string revisedReason, string imagesPath, string documentsPath, string imagesName, string documentsFileName, SectionId sectionId, string sectionCode, string sampleTo) : base(identity)
         {
             SampleCategory = sampleCategory;
             SampleRequestNo = sampleRequestNo;
@@ -93,6 +94,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             DocumentsFileName = documentsFileName;
             SectionId = sectionId;
             SectionCode = sectionCode;
+            SampleTo = sampleTo;
 
             ReadModel = new GarmentSampleRequestReadModel(Identity)
             {
@@ -130,7 +132,8 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 ImagesName = ImagesName,
                 DocumentsFileName = DocumentsFileName,
                 SectionId=SectionId.Value,
-                SectionCode=SectionCode
+                SectionCode=SectionCode,
+                SampleTo=SampleTo
         };
             ReadModel.AddDomainEvent(new OnGarmentSampleRequestPlaced(Identity));
         }
@@ -173,6 +176,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             SectionCode = readModel.SectionCode;
             SectionId = new SectionId(readModel.SectionId);
             CreatedBy = readModel.CreatedBy;
+            SampleTo = readModel.SampleTo;
         }
 
         
@@ -221,6 +225,15 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             {
                 this.BuyerCode = BuyerCode;
                 ReadModel.BuyerCode = BuyerCode;
+            }
+        }
+
+        public void SetSampleTo(string SampleTo)
+        {
+            if (this.SampleTo != SampleTo)
+            {
+                this.SampleTo = SampleTo;
+                ReadModel.SampleTo = SampleTo;
             }
         }
 
