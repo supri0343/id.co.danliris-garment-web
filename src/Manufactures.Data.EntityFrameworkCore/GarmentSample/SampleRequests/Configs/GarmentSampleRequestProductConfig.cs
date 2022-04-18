@@ -15,6 +15,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleRequests.Con
             builder.HasKey(e => e.Identity);
 
             builder.Property(p => p.Color).HasMaxLength(500);
+            builder.Property(p => p.Fabric).HasMaxLength(500);
             builder.Property(p => p.SizeDescription).HasMaxLength(500);
             builder.Property(p => p.Style).HasMaxLength(255);
             builder.Property(a => a.SizeName).HasMaxLength(50);

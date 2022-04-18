@@ -88,6 +88,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                     GarmentSampleRequest.Identity,
                     product.Style,
                     product.Color,
+                    product.Fabric,
                     new SizeId(product.Size.Id),
                     product.Size.Size,
                     product.SizeDescription,

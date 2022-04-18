@@ -14,6 +14,7 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
             SampleRequestId = garmentSampleRequestProduct.SampleRequestId;
             Style = garmentSampleRequestProduct.Style;
             Color = garmentSampleRequestProduct.Color;
+            Fabric = garmentSampleRequestProduct.Fabric;
             Size = new SizeValueObject(garmentSampleRequestProduct.SizeId.Value, garmentSampleRequestProduct.SizeName);
             SizeDescription = garmentSampleRequestProduct.SizeDescription;
             Quantity = garmentSampleRequestProduct.Quantity;
@@ -23,6 +24,8 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
         public Guid SampleRequestId { get; set; }
         public string Style { get; set; }
         public string Color { get; set; }
+
+        public string Fabric { get; set; }
 
         public SizeValueObject Size { get; set; }
 

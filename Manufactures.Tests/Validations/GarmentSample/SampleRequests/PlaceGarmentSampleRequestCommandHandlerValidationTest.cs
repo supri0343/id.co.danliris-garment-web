@@ -81,7 +81,8 @@ namespace Manufactures.Tests.Validations.GarmentSample.SampleRequests
                        },
                        Color="aa",
                        SizeDescription="aa",
-                       Style="aa"
+                       Style="aa",
+                       Fabric = "aa"
                     }
                 },
                 SampleSpecifications = new List<GarmentSampleRequestSpecificationValueObject>()

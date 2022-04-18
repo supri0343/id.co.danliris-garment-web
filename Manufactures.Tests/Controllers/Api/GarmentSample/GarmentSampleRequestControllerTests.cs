@@ -252,7 +252,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSample
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSampleRequestProductReadModel>>()))
                 .Returns(new List<GarmentSampleRequestProduct>()
                 {
-                    new GarmentSampleRequestProduct(SampleRequestProductGuid, SampleRequestGuid,null,null,new SizeId(1),null,null,1,1)
+                    new GarmentSampleRequestProduct(SampleRequestProductGuid, SampleRequestGuid,null,null,null,new SizeId(1),null,null,1,1)
                 });
 
             _mockGarmentSampleRequestSpecificationRepository
