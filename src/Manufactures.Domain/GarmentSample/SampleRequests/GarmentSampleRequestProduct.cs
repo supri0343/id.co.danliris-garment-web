@@ -15,18 +15,21 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
         public string Style { get; private set; }
         public string Color { get; private set; }
 
+        public string Fabric { get; private set; }
+
         public SizeId SizeId { get; private set; }
         public string SizeName { get; private set; }
 
         public string SizeDescription { get; private set; }
         public double Quantity { get; private set; }
 
-        public GarmentSampleRequestProduct(Guid identity, Guid sampleRequestId, string style, string color, SizeId sizeId, string sizeName, string sizeDescription, double quantity, int index) : base(identity)
+        public GarmentSampleRequestProduct(Guid identity, Guid sampleRequestId, string style, string color, string fabric, SizeId sizeId, string sizeName, string sizeDescription, double quantity, int index) : base(identity)
         {
             Identity = identity;
             SampleRequestId = sampleRequestId;
             Style = style;
             Color = color;
+            Fabric = fabric;
             SizeId = sizeId;
             SizeName = sizeName;
             SizeDescription = sizeDescription;
@@ -38,6 +41,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
                 SampleRequestId=SampleRequestId,
                 Style=Style,
                 Color=Color,
+                Fabric = Fabric,
                 SizeId= SizeId.Value,
                 SizeName=SizeName,
                 SizeDescription=SizeDescription,
@@ -53,6 +57,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             SampleRequestId = readModel.SampleRequestId;
             Style = readModel.Style;
             Color = readModel.Color;
+            Fabric = readModel.Fabric;
             SizeId = new SizeId(readModel.SizeId);
             SizeName = readModel.SizeName;
             SizeDescription = readModel.SizeDescription;
@@ -81,6 +86,14 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests
             {
                 this.Color = Color;
                 ReadModel.Color = Color;
+            }
+        }
+        public void SetFabric(string Fabric)
+        {
+            if (this.Fabric != Fabric)
+            {
+                this.Fabric = Fabric;
+                ReadModel.Fabric = Fabric;
             }
         }
 
