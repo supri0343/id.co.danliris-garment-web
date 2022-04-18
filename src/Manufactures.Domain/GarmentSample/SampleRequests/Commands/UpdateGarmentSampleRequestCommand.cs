@@ -37,6 +37,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.Commands
         public bool IsRevised { get; set; }
         public string RevisedBy { get; set; }
         public string RevisedReason { get; set; }
+        public string SampleTo { get; set; }
 
         public List<string> ImagesFile { get; set; }
         public List<string> DocumentsFile { get; set; }

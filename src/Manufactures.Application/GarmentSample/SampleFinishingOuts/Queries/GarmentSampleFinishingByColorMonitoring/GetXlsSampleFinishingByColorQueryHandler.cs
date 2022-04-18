@@ -18,9 +18,9 @@ using System.Data;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 
-namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
+namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries.GarmentSampleFinishingByColorMonitoring
 {
-    public class GetXlsSampleFinishingQueryHandler : IQueryHandler<GetXlsSampleFinishingQuery, MemoryStream>
+    public class GetXlsSampleFinishingByColorQueryHandler : IQueryHandler<GetXlsSampleFinishingByColorQuery, MemoryStream>
     {
         protected readonly IHttpClientService _http;
         private readonly IStorage _storage;
@@ -33,10 +33,9 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
         private readonly IGarmentSampleCuttingInRepository garmentCuttingInRepository;
         private readonly IGarmentSampleCuttingInItemRepository garmentCuttingInItemRepository;
         private readonly IGarmentSampleCuttingInDetailRepository garmentCuttingInDetailRepository;
-        private readonly IGarmentSampleFinishingMonitoringReportRepository garmentMonitoringFinishingReportRepository;
         private readonly IGarmentSampleRequestRepository GarmentSampleRequestRepository;
         private readonly IGarmentSampleRequestProductRepository GarmentSampleRequestProductRepository;
-        public GetXlsSampleFinishingQueryHandler(IStorage storage, IServiceProvider serviceProvider)
+        public GetXlsSampleFinishingByColorQueryHandler(IStorage storage, IServiceProvider serviceProvider)
         {
             _storage = storage;
             garmentSewingOutRepository = storage.GetRepository<IGarmentSampleSewingOutRepository>();
@@ -48,7 +47,6 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
             garmentCuttingInRepository = storage.GetRepository<IGarmentSampleCuttingInRepository>();
             garmentCuttingInItemRepository = storage.GetRepository<IGarmentSampleCuttingInItemRepository>();
             garmentCuttingInDetailRepository = storage.GetRepository<IGarmentSampleCuttingInDetailRepository>();
-            garmentMonitoringFinishingReportRepository = storage.GetRepository<IGarmentSampleFinishingMonitoringReportRepository>();
             _http = serviceProvider.GetService<IHttpClientService>();
             GarmentSampleRequestRepository = storage.GetRepository<IGarmentSampleRequestRepository>();
             GarmentSampleRequestProductRepository = storage.GetRepository<IGarmentSampleRequestProductRepository>();
@@ -67,7 +65,8 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
             public string uomUnit { get; internal set; }
             public double remainQty { get; internal set; }
             public decimal price { get; internal set; }
-        }
+			public string color { get; internal set; }
+		}
         class ViewBasicPrices
         {
             public string RO { get; internal set; }
@@ -81,7 +80,7 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
             public int Count { get; internal set; }
 			public double AvgFC { get; set; }
 		}
-        public async Task<MemoryStream> Handle(GetXlsSampleFinishingQuery request, CancellationToken cancellationToken)
+        public async Task<MemoryStream> Handle(GetXlsSampleFinishingByColorQuery request, CancellationToken cancellationToken)
         {
             DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
             dateFrom.AddHours(7);
@@ -118,38 +117,52 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
                            Count = group.Sum(s => s.CuttingInQuantity),
 						   AvgFC = group.Sum(s => (s.FCs)) / group.Sum(s => s.CuttingInQuantity)
 					   });
-            GarmentSampleFinishingMonitoringListViewModel listViewModel = new GarmentSampleFinishingMonitoringListViewModel();
-            List<GarmentSampleFinishingMonitoringDto> monitoringDtos = new List<GarmentSampleFinishingMonitoringDto>();
+			GarmentSampleFinishingByColorMonitoringListViewModel listViewModel = new GarmentSampleFinishingByColorMonitoringListViewModel();
+            List<GarmentSampleFinishingByColorMonitoringDto> monitoringDtos = new List<GarmentSampleFinishingByColorMonitoringDto>();
 
             var QueryFinishing = from a in (from aa in garmentFinishingOutRepository.Query
                                             where aa.UnitId == request.unit && aa.FinishingOutDate <= dateTo 
                                             select new { aa.Identity, aa.FinishingOutDate, aa.RONo, aa.Article })
                                  join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
-                                 select new monitoringView { price = 0, finishingQtyPcs = a.FinishingOutDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.FinishingOutDate < dateFrom ? -b.Quantity : 0, roJob = a.RONo, article = a.Article };
+                                 select new monitoringView { color = b.Color, price = 0, finishingQtyPcs = a.FinishingOutDate >= dateFrom ? b.Quantity : 0, sewingQtyPcs = 0, uomUnit = "PCS", remainQty = 0, stock = a.FinishingOutDate < dateFrom ? -b.Quantity : 0, roJob = a.RONo, article = a.Article };
             var QuerySewingOut = from a in (from aa in garmentSewingOutRepository.Query
                                             where aa.UnitId == request.unit && aa.SewingOutDate <= dateTo && aa.SewingTo == "FINISHING"
 
                                             select new { aa.Identity, aa.SewingOutDate, aa.RONo, aa.Article })
                                  join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SampleSewingOutId
-                                 select new monitoringView { price = 0, finishingQtyPcs = 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity : 0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate < dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article };
+                                 select new monitoringView { color = b.Color, price = 0, finishingQtyPcs = 0, sewingQtyPcs = a.SewingOutDate >= dateFrom ? b.Quantity : 0, uomUnit = "PCS", remainQty = 0, stock = a.SewingOutDate < dateFrom ? b.Quantity : 0, roJob = a.RONo, article = a.Article };
             var queryNow = QuerySewingOut.Union(QueryFinishing);
-            var querySum = queryNow.ToList().GroupBy(x => new { x.roJob, x.article, x.uomUnit }, (key, group) => new
+            var querySum = queryNow.ToList().GroupBy(x => new { x.roJob, x.article, x.uomUnit ,x.color}, (key, group) => new
             {
 
                 RoJob = key.roJob,
+				color = key.color,
                 Stock = group.Sum(s => s.stock),
                 UomUnit = key.uomUnit,
                 Article = key.article,
                 SewingQtyPcs = group.Sum(s => s.sewingQtyPcs),
                 Finishing = group.Sum(s => s.finishingQtyPcs)
             }).OrderBy(s => s.RoJob);
-            foreach (var item in querySum)
+			var querySumTotal = from p in querySum
+								group p by 1 into g
+								select new GarmentSampleFinishingByColorMonitoringDto
+								{
+									color = "",
+									roJob = "TOTAL",
+									uomUnit = "",
+									article = "",
+									stock = g.Sum(s => s.Stock),
+									sewingOutQtyPcs = g.Sum(s => s.SewingQtyPcs),
+									finishingOutQtyPcs = g.Sum(s => s.Finishing)
+								};
+			foreach (var item in querySum)
             {
-                GarmentSampleFinishingMonitoringDto dto = new GarmentSampleFinishingMonitoringDto
-                {
+				GarmentSampleFinishingByColorMonitoringDto dto = new GarmentSampleFinishingByColorMonitoringDto
+				{
                     roJob = item.RoJob,
                     article = item.Article,
                     uomUnit = item.UomUnit,
+					color= item.color,
                     sewingOutQtyPcs = item.SewingQtyPcs,
                     finishingOutQtyPcs = item.Finishing,
                     stock = item.Stock,
@@ -157,7 +170,23 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
                 };
                 monitoringDtos.Add(dto);
             }
-            listViewModel.garmentMonitorings = monitoringDtos;
+			foreach (var item in querySumTotal)
+			{
+				GarmentSampleFinishingByColorMonitoringDto dto = new GarmentSampleFinishingByColorMonitoringDto
+				{
+					roJob = item.roJob,
+					article = item.article,
+					uomUnit = item.uomUnit,
+					color = item.color,
+					sewingOutQtyPcs = item.sewingOutQtyPcs,
+					finishingOutQtyPcs = item.finishingOutQtyPcs,
+					stock = item.stock,
+					remainQty = item.stock + item.sewingOutQtyPcs - item.finishingOutQtyPcs
+				};
+				monitoringDtos.Add(dto);
+			}
+
+			listViewModel.garmentMonitorings = monitoringDtos;
             var data = from a in monitoringDtos
                        where a.stock > 0 || a.sewingOutQtyPcs > 0 || a.finishingOutQtyPcs > 0 || a.remainQty > 0
                        select a;
@@ -172,11 +201,7 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
                              s.BuyerCode,
                              Quantity = GarmentSampleRequestProductRepository.Query.Where(p => s.Identity == p.SampleRequestId).Sum(a => a.Quantity)
                          };
-
-            double stocks = 0;
-            double finishing = 0;
-            double sewingOutQtyPcs = 0;
-            decimal nominals = 0;
+ 
 
             foreach (var garment in data)
             {
@@ -185,90 +210,122 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
 				garment.price =  Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == garment.roJob select aa.BasicPrice / aa.Count).FirstOrDefault()), 2) * Convert.ToDouble((from cost in sumFCs where cost.RO == garment.roJob select cost.FC / cost.Count).FirstOrDefault());
 				garment.nominal = Math.Round((Convert.ToDouble(garment.stock + garment.sewingOutQtyPcs - garment.finishingOutQtyPcs)) * garment.price, 2);
 				garment.qtyOrder = (from sr in sample where sr.RONoSample == garment.roJob select sr.Quantity).FirstOrDefault();
-                stocks += garment.stock;
-                finishing += garment.finishingOutQtyPcs;
-                sewingOutQtyPcs += garment.sewingOutQtyPcs;
-				nominals += Math.Round((Convert.ToDecimal(garment.stock + garment.sewingOutQtyPcs - garment.finishingOutQtyPcs)) * Convert.ToDecimal(garment.price), 2);
+
 			}
 			monitoringDtos = data.ToList();
-            GarmentSampleFinishingMonitoringDto dtos = new GarmentSampleFinishingMonitoringDto
-            {
-                roJob = "",
-                article = "",
-                buyerCode = "",
-                uomUnit = "",
-                qtyOrder = 0,
-                sewingOutQtyPcs = sewingOutQtyPcs,
-                finishingOutQtyPcs = finishing,
-                stock = stocks,
-                style = "",
-                price = 0,
-                remainQty = stocks + sewingOutQtyPcs - finishing,
-                nominal = Convert.ToDouble( nominals)
-
-            };
-            monitoringDtos.Add(dtos);
+             
             listViewModel.garmentMonitorings = monitoringDtos;
             var reportDataTable = new DataTable();
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO JOB", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Article", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kode Buyer", DataType = typeof(string) });
+           
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Style", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Harga(M)", DataType = typeof(decimal) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Color", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Stock Awal", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Masuk", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Barang Keluar", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sisa", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nominal Sisa", DataType = typeof(decimal) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sisa", DataType = typeof(double) }); 
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
             int counter = 5;
-            if (listViewModel.garmentMonitorings.Count > 0)
-            {
-                foreach (var report in listViewModel.garmentMonitorings)
-                {
-                    reportDataTable.Rows.Add(report.roJob, report.article, report.buyerCode, report.qtyOrder, report.style,report.price, report.stock, report.sewingOutQtyPcs, report.finishingOutQtyPcs, report.remainQty,report.nominal, report.uomUnit);
-                    counter++;
-                }
-            }
-            using (var package = new ExcelPackage())
+			int idx = 1;
+			var rCount = 0;
+			Dictionary<string, string> Rowcount = new Dictionary<string, string>();
+
+			if (listViewModel.garmentMonitorings.Count > 0)
+			{
+				foreach (var report in listViewModel.garmentMonitorings )
+				{
+					idx++;
+					if (!Rowcount.ContainsKey(report.roJob))
+					{
+						rCount = 0;
+						var index = idx;
+						Rowcount.Add(report.roJob, index.ToString());
+					}
+					else
+					{
+						rCount += 1;
+						Rowcount[report.roJob] = Rowcount[report.roJob] + "-" + rCount.ToString();
+						var val = Rowcount[report.roJob].Split("-");
+						if ((val).Length > 0)
+						{
+							Rowcount[report.roJob] = val[0] + "-" + rCount.ToString();
+						}
+					}
+
+					reportDataTable.Rows.Add(report.roJob, report.article, report.qtyOrder, report.style, report.color, report.stock, report.sewingOutQtyPcs, report.finishingOutQtyPcs, report.remainQty, report.uomUnit);
+					counter++;
+				}
+			}
+			using (var package = new ExcelPackage())
             {
                 var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
-                worksheet.Cells["A" + 5 + ":L" + 5 + ""].Style.Font.Bold = true;
-                worksheet.Cells["A1"].Value = "Report Finishing "; worksheet.Cells["A" + 1 + ":L" + 1 + ""].Merge = true;
+                worksheet.Cells["A" + 5 + ":J" + 5 + ""].Style.Font.Bold = true;
+                worksheet.Cells["A1"].Value = "Report Finishing By Color "; worksheet.Cells["A" + 1 + ":J" + 1 + ""].Merge = true;
                 worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
                 worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
-                worksheet.Cells["A" + 1 + ":L" + 1 + ""].Merge = true;
-                worksheet.Cells["A" + 2 + ":L" + 2 + ""].Merge = true;
-                worksheet.Cells["A" + 3 + ":L" + 3 + ""].Merge = true;
-                worksheet.Cells["A" + 1 + ":L" + 3 + ""].Style.Font.Size = 15;
-                worksheet.Cells["A" + 1 + ":L" + 5 + ""].Style.Font.Bold = true;
-                worksheet.Cells["A" + 1 + ":L" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells["A" + 1 + ":L" + 5 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Cells["A" + 1 + ":J" + 1 + ""].Merge = true;
+                worksheet.Cells["A" + 2 + ":J" + 2 + ""].Merge = true;
+                worksheet.Cells["A" + 3 + ":J" + 3 + ""].Merge = true;
+                worksheet.Cells["A" + 1 + ":J" + 3 + ""].Style.Font.Size = 15;
+                worksheet.Cells["A" + 1 + ":J" + 5 + ""].Style.Font.Bold = true;
+                worksheet.Cells["A" + 1 + ":J" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["A" + 1 + ":J" + 5 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
                 worksheet.Cells["D" + 2 + ":D" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                 worksheet.Cells["D" + 2 + ":D" + counter + ""].Style.Numberformat.Format = "#,##0.00";
                 worksheet.Cells["F" + 6 + ":k" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                 worksheet.Cells["F" + 6 + ":k" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-                worksheet.Cells["A" + 5 + ":L" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":L" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":L" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 5 + ":L" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["F" + (counter) + ":L" + (counter) + ""].Style.Font.Bold = true;
-                worksheet.Cells["A" + 1 + ":L" + 1 + ""].Style.Font.Bold = true;
+                worksheet.Cells["A" + 5 + ":J" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":J" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":J" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":J" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["F" + (counter) + ":J" + (counter) + ""].Style.Font.Bold = true;
+                worksheet.Cells["A" + 1 + ":J" + 1 + ""].Style.Font.Bold = true;
 
-                var stream = new MemoryStream();
-                if (request.type != "bookkeeping")
-                {
-                    worksheet.Cells["A" + (counter) + ":E" + (counter) + ""].Merge = true;
-                    worksheet.Column(3).Hidden = true;
-                    worksheet.Column(6).Hidden = true;
-                }
-                else
-                {
-                    worksheet.Cells["A" + (counter) + ":F" + (counter) + ""].Merge = true;
-                }
-                package.SaveAs(stream);
+				if (worksheet.Cells["A" + (counter)].Value.ToString() == "TOTAL")
+				{
+					worksheet.Cells["A" + (counter) + ":J" + (counter) + ""].Style.Font.Bold = true;
+					worksheet.Cells["A" + (counter) + ":E" + (counter) + ""].Merge = true;
+				}
+				worksheet.Cells["A" + 5 + ":J" + (counter) + ""].AutoFitColumns();
+
+				var stream = new MemoryStream();
+
+				foreach (var rowMerge in Rowcount)
+				{
+					var UnitrowNum = rowMerge.Value.Split("-");
+					int rowNum2 = 1;
+					int rowNum1 = Convert.ToInt32(UnitrowNum[0]);
+					if (UnitrowNum.Length > 1 && UnitrowNum.Length < Rowcount.Count() )
+					{
+						rowNum2 = Convert.ToInt32(rowNum1) + Convert.ToInt32(UnitrowNum[1]);
+					
+
+					worksheet.Cells[$"A{(rowNum1 + 4)}:A{(rowNum2 + 4)}"].Merge = true;
+					worksheet.Cells[$"A{(rowNum1 + 4)}:A{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+					worksheet.Cells[$"A{(rowNum1 + 4)}:A{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+					worksheet.Cells[$"B{(rowNum1 + 4)}:B{(rowNum2 + 4)}"].Merge = true;
+					worksheet.Cells[$"B{(rowNum1 + 4)}:B{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+					worksheet.Cells[$"B{(rowNum1 + 4)}:B{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+					worksheet.Cells[$"C{(rowNum1 + 4)}:C{(rowNum2 + 4)}"].Merge = true;
+					worksheet.Cells[$"C{(rowNum1 + 4)}:C{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+					worksheet.Cells[$"C{(rowNum1 + 4)}:C{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+					worksheet.Cells[$"D{(rowNum1 + 4)}:D{(rowNum2 + 4)}"].Merge = true;
+					worksheet.Cells[$"D{(rowNum1 + 4)}:D{(rowNum2 + 4)}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+					worksheet.Cells[$"D{(rowNum1 + 4)}:D{(rowNum2 + 4)}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+					
+
+					}
+
+				}
+
+				package.SaveAs(stream);
 
                 return stream;
             }

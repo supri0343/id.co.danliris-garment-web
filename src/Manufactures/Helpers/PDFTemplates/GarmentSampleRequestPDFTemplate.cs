@@ -37,10 +37,10 @@ namespace Manufactures.Helpers.PDFTemplates
 
             if (garmentSampleRequest.IsReceived)
             {
-                titleCaption = "SURAT PERMINTAAN PEMBUATAN SAMPLE MARKETING";
+                titleCaption = "SURAT PERMINTAAN PEMBUATAN SAMPLE";
             } else
             {
-                titleCaption = "DRAFT SURAT PERMINTAAN PEMBUATAN SAMPLE MARKETING";
+                titleCaption = "DRAFT SURAT PERMINTAAN PEMBUATAN SAMPLE";
             }
 
             Paragraph title = new Paragraph(titleCaption, header_font);
@@ -79,6 +79,11 @@ namespace Manufactures.Helpers.PDFTemplates
             cellLeftNoBorder.Phrase = new Phrase("Kategori Sample", normal_font);
             tableHeader.AddCell(cellLeftNoBorder);
             cellLeftNoBorder.Phrase = new Phrase(": " + garmentSampleRequest.SampleCategory, normal_font);
+            tableHeader.AddCell(cellLeftNoBorder);
+
+            cellLeftNoBorder.Phrase = new Phrase("Tipe Sample", normal_font);
+            tableHeader.AddCell(cellLeftNoBorder);
+            cellLeftNoBorder.Phrase = new Phrase(": " + garmentSampleRequest.SampleTo, normal_font);
             tableHeader.AddCell(cellLeftNoBorder);
 
             cellLeftNoBorder.Phrase = new Phrase("Tanggal Surat Sample", normal_font);

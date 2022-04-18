@@ -45,6 +45,7 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
             DocumentsPath = String.IsNullOrEmpty(garmentSampleRequest.DocumentsPath) ? new List<string>() : JsonConvert.DeserializeObject<List<string>>(garmentSampleRequest.DocumentsPath);
             DocumentsFileName = String.IsNullOrEmpty(garmentSampleRequest.DocumentsFileName) ? new List<string>() : JsonConvert.DeserializeObject<List<string>>(garmentSampleRequest.DocumentsFileName);
             Section = new SectionValueObject(garmentSampleRequest.SectionId.Value, garmentSampleRequest.SectionCode);
+            SampleTo = garmentSampleRequest.SampleTo;
         }
 
         public Guid Id { get; set; }
@@ -88,5 +89,6 @@ namespace Manufactures.Dtos.GarmentSample.SampleRequest
         public SectionValueObject Section { get; set; }
         public List<GarmentSampleRequestProductDto> SampleProducts { get; set; }
         public List<GarmentSampleRequestSpecificationDto> SampleSpecifications { get; set; }
+        public string SampleTo { get; set; }
     }
 }

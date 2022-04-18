@@ -54,6 +54,7 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.ReadModels
         public string DocumentsFileName { get; internal set; }
         public int SectionId { get; internal set; }
         public string SectionCode { get; internal set; }
+        public string SampleTo { get; internal set; }
 
         public virtual List<GarmentSampleRequestProductReadModel> SampleProduct { get; internal set; }
         public virtual List<GarmentSampleRequestSpecificationReadModel> SampleSpecification { get; internal set; }

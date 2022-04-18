@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
+namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries.GarmentSampleFinishingByColorMonitoring
 {
-    public class GarmentSampleFinishingMonitoringDto
-    {
-        public GarmentSampleFinishingMonitoringDto()
+    public class GarmentSampleFinishingByColorMonitoringDto
+	{
+        public GarmentSampleFinishingByColorMonitoringDto()
         {
         }
 
@@ -19,10 +19,12 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
         public double finishingOutQtyPcs { get; internal set; }
         public string uomUnit { get; internal set; }
         public string style { get; internal set; }
-        public double remainQty { get; internal set; }
+		public string color { get; internal set; }
+		public double remainQty { get; internal set; }
         public double price { get; internal set; }
         public double nominal { get; internal set; }
-        public GarmentSampleFinishingMonitoringDto(GarmentSampleFinishingMonitoringDto garmentMonitoring)
+		 
+		public GarmentSampleFinishingByColorMonitoringDto(GarmentSampleFinishingByColorMonitoringDto garmentMonitoring)
         {
 
             roJob = garmentMonitoring.roJob;
@@ -37,6 +39,7 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries
             price = garmentMonitoring.price;
             buyerCode = garmentMonitoring.buyerCode;
             nominal = garmentMonitoring.nominal;
+			color = garmentMonitoring.color;
         }
     }
 }
