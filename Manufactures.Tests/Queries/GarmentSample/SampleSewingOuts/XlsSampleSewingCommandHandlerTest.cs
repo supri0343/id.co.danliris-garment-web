@@ -152,7 +152,7 @@ namespace Manufactures.Tests.Queries.GarmentSample.SampleSewingOuts
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSampleRequestProductReadModel>
                 {
-                    new GarmentSampleRequestProduct(guidSewingOutItem,guidSewingOutItem,"","",new Domain.Shared.ValueObjects.SizeId(1),"","", 100,1).GetReadModel()
+                    new GarmentSampleRequestProduct(guidSewingOutItem,guidSewingOutItem,"","","",new Domain.Shared.ValueObjects.SizeId(1),"","", 100,1).GetReadModel()
                 }.AsQueryable());
             _mockGarmentSampleRequestRepository
                 .Setup(s => s.Query)
@@ -254,7 +254,7 @@ namespace Manufactures.Tests.Queries.GarmentSample.SampleSewingOuts
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentSampleRequestProductReadModel>
 				{
-					new GarmentSampleRequestProduct(guidSewingOutItem,guidSewingOutItem,"","",new SizeId(1),"","", 100,1).GetReadModel()
+					new GarmentSampleRequestProduct(guidSewingOutItem,guidSewingOutItem,"","","",new SizeId(1),"","", 100,1).GetReadModel()
 				}.AsQueryable());
 			_mockGarmentSampleRequestRepository
 				.Setup(s => s.Query)

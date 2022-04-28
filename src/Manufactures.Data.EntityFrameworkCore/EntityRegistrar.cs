@@ -29,6 +29,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleFinishedGoodStoc
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleFinishingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleFinishingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SamplePreparings.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleReceiptFromBuyers.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleRequests.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleSewingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleSewingOuts.Configs;
@@ -214,7 +215,10 @@ namespace Manufactures.Data.EntityFrameworkCore
             modelBuilder.ApplyConfiguration(new GarmentSampleExpenditureGoodConfig());
             modelBuilder.ApplyConfiguration(new GarmentSampleExpenditureGoodItemConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentSampleStockConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSampleReceiptFromBuyerConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSampleReceiptFromBuyerItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSampleStockConfig());
             modelBuilder.ApplyConfiguration(new GarmentSampleStockHistoryConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentMonitoringSampleFinishingReportConfig());

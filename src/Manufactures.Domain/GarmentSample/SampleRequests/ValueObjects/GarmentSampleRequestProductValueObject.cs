@@ -13,6 +13,8 @@ namespace Manufactures.Domain.GarmentSample.SampleRequests.ValueObjects
         public string Style { get;  set; }
         public string Color { get;  set; }
 
+        public string Fabric { get; set; }
+
         public SizeValueObject Size { get;  set; }
 
         public string SizeDescription { get;  set; }
