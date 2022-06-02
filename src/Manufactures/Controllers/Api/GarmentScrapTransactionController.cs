@@ -1,4 +1,6 @@
 ﻿using Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationScrap;
+using Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationScrap.TCKecil;
+using Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationScrap.SampahSapuan;
 using Manufactures.Domain.GarmentScrapSources.Commands;
 using Manufactures.Domain.GarmentScrapSources.Repositories;
 using Manufactures.Dtos;
@@ -8,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Manufactures.Controllers.Api
@@ -132,5 +135,161 @@ namespace Manufactures.Controllers.Api
 
             return Ok(viewModel.garmentMonitorings);
         }
-    }
+
+		[HttpGet("tc_kecil_IN")]
+		public async Task<IActionResult> GetTCKecilIN(DateTime dateFrom, DateTime dateTo)
+		{
+			VerifyUser();
+			 TCKecil_In_Query query = new TCKecil_In_Query(dateFrom, dateTo, WorkContext.Token);
+			var viewModel = await Mediator.Send(query);
+
+			return Ok(viewModel.scrapDtos);
+		}
+
+		[HttpGet("tc_kecil_IN/download")]
+		public async Task<IActionResult> GetXls(DateTime dateFrom, DateTime dateTo)
+		{
+			try
+			{
+				VerifyUser();
+				GetXlsTCKecil_in_Query query = new GetXlsTCKecil_in_Query(dateFrom, dateTo, WorkContext.Token);
+				byte[] xlsInBytes;
+
+				var xls = await Mediator.Send(query);
+
+				string filename = "Laporan Monitoring Pemasukan Aval TC Kecil ";
+
+				if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+				if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+				filename += ".xlsx";
+
+				xlsInBytes = xls.ToArray();
+				var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+				return file;
+			}
+			catch (Exception e)
+			{
+
+				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+			}
+		}
+
+		[HttpGet("tc_kecil_out")]
+		public async Task<IActionResult> GetTCKecilout(DateTime dateFrom, DateTime dateTo)
+		{
+			VerifyUser();
+			TCKecil_Out_Query query = new TCKecil_Out_Query(dateFrom, dateTo, WorkContext.Token);
+			var viewModel = await Mediator.Send(query);
+
+			return Ok(viewModel.scrapDtos);
+		}
+
+		[HttpGet("tc_kecil_out/download")]
+		public async Task<IActionResult> GetXlsTCKecilOut(DateTime dateFrom, DateTime dateTo)
+		{
+			try
+			{
+				VerifyUser();
+				GetXlsTCKecil_Out_Query query = new GetXlsTCKecil_Out_Query(dateFrom, dateTo, WorkContext.Token);
+				byte[] xlsInBytes;
+
+				var xls = await Mediator.Send(query);
+
+				string filename = "Laporan Monitoring Pengeluaran Aval TC Kecil ";
+
+				if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+				if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+				filename += ".xlsx";
+
+				xlsInBytes = xls.ToArray();
+				var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+				return file;
+			}
+			catch (Exception e)
+			{
+
+				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+			}
+		}
+
+		[HttpGet("sapuan_IN")]
+		public async Task<IActionResult> GetSapuanIN(DateTime dateFrom, DateTime dateTo)
+		{
+			VerifyUser();
+			Sapuan_In_Query query = new Sapuan_In_Query(dateFrom, dateTo, WorkContext.Token);
+			var viewModel = await Mediator.Send(query);
+
+			return Ok(viewModel.scrapDtos);
+		}
+
+		[HttpGet("sapuan_IN/download")]
+		public async Task<IActionResult> GetXlsSapuanIn(DateTime dateFrom, DateTime dateTo)
+		{
+			try
+			{
+				VerifyUser();
+				GetXlsSapuan_in_Query query = new GetXlsSapuan_in_Query(dateFrom, dateTo, WorkContext.Token);
+				byte[] xlsInBytes;
+
+				var xls = await Mediator.Send(query);
+
+				string filename = "Laporan Monitoring Pemasukan Aval Sampah Sapuan ";
+
+				if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+				if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+				filename += ".xlsx";
+
+				xlsInBytes = xls.ToArray();
+				var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+				return file;
+			}
+			catch (Exception e)
+			{
+
+				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+			}
+		}
+
+		[HttpGet("sapuan_out")]
+		public async Task<IActionResult> GetSapuanOut(DateTime dateFrom, DateTime dateTo)
+		{
+			VerifyUser();
+			Sapuan_Out_Query query = new Sapuan_Out_Query(dateFrom, dateTo, WorkContext.Token);
+			var viewModel = await Mediator.Send(query);
+
+			return Ok(viewModel.scrapDtos);
+		}
+
+		[HttpGet("sapuan_out/download")]
+		public async Task<IActionResult> GetXlsSapuanOut(DateTime dateFrom, DateTime dateTo)
+		{
+			try
+			{
+				VerifyUser();
+				GetXlsSapuan_Out_Query query = new GetXlsSapuan_Out_Query(dateFrom, dateTo, WorkContext.Token);
+				byte[] xlsInBytes;
+
+				var xls = await Mediator.Send(query);
+
+				string filename = "Laporan Monitoring Pengeluaran Aval Sampah Sapuan ";
+
+				if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+				if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+				filename += ".xlsx";
+
+				xlsInBytes = xls.ToArray();
+				var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+				return file;
+			}
+			catch (Exception e)
+			{
+
+				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+			}
+		}
+	}
 }
