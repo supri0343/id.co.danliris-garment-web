@@ -184,7 +184,13 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 			public double SamplePrice { get; internal set; }
 			public double MDQty { get; internal set; }
 			public double MDPrice { get; internal set; }
-			public double ExpenditureGoodRemainingQty { get; internal set; }
+
+            public double LocalQty { get; internal set; }
+            public double LocalPrice { get; internal set; }
+            public double NCSQty { get; internal set; }
+            public double NCSPrice { get; internal set; }
+
+            public double ExpenditureGoodRemainingQty { get; internal set; }
 			public double ExpenditureGoodRemainingPrice { get; internal set; }
 			public double ExpenditureGoodAdj { get; internal set; }
 			public double ExpenditureGoodAdjPrice { get; internal set; }
@@ -326,7 +332,11 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 									   SamplePrice = 0,
 									   MDQty = 0,
 									   MDPrice = 0,
-									   OtherQty = 0,
+                                       LocalQty = 0,
+                                       LocalPrice = 0,
+                                       NCSQty = 0,
+                                       NCSPrice = 0,
+                                       OtherQty = 0,
 									   OtherPrice = 0,
 									   QtyLoadingInTransfer = 0,
 									   PriceLoadingInTransfer = 0,
@@ -411,7 +421,11 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 											 SamplePrice = 0,
 											 MDQty = 0,
 											 MDPrice = 0,
-											 OtherQty = 0,
+                                             LocalQty = 0,
+                                             LocalPrice = 0,
+                                             NCSQty = 0,
+                                             NCSPrice = 0,
+                                             OtherQty = 0,
 											 OtherPrice = 0,
 											 QtyLoadingInTransfer = 0,
 											 PriceLoadingInTransfer = 0,
@@ -496,7 +510,11 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 											   SamplePrice = 0,
 											   MDQty = 0,
 											   MDPrice = 0,
-											   OtherQty = 0,
+                                               LocalQty = 0,
+                                               LocalPrice = 0,
+                                               NCSQty = 0,
+                                               NCSPrice = 0,
+                                               OtherQty = 0,
 											   OtherPrice = 0,
 											   QtyLoadingInTransfer = 0,
 											   PriceLoadingInTransfer = 0,
@@ -579,7 +597,11 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 									  SamplePrice = 0,
 									  MDQty = 0,
 									  MDPrice = 0,
-									  OtherQty = 0,
+                                      LocalQty = 0,
+                                      LocalPrice = 0,
+                                      NCSQty = 0,
+                                      NCSPrice = 0,
+                                      OtherQty = 0,
 									  OtherPrice = 0,
 									  QtyLoadingInTransfer = 0,
 									  PriceLoadingInTransfer = 0,
@@ -659,7 +681,11 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 										   SamplePrice = 0,
 										   MDQty = 0,
 										   MDPrice = 0,
-										   OtherQty = 0,
+                                           LocalQty = 0,
+                                           LocalPrice = 0,
+                                           NCSQty = 0,
+                                           NCSPrice = 0,
+                                           OtherQty = 0,
 										   OtherPrice = 0,
 										   QtyLoadingInTransfer = 0,
 										   PriceLoadingInTransfer = 0,
@@ -738,7 +764,11 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 											SamplePrice = 0,
 											MDQty = 0,
 											MDPrice = 0,
-											OtherQty = 0,
+                                            LocalQty = 0,
+                                            LocalPrice = 0,
+                                            NCSQty = 0,
+                                            NCSPrice = 0,
+                                            OtherQty = 0,
 											OtherPrice = 0,
 											QtyLoadingInTransfer = 0,
 											PriceLoadingInTransfer = 0,
@@ -821,7 +851,11 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 									 SamplePrice = 0,
 									 MDQty = 0,
 									 MDPrice = 0,
-									 OtherQty = 0,
+                                     LocalQty = 0,
+                                     LocalPrice = 0,
+                                     NCSQty = 0,
+                                     NCSPrice = 0,
+                                     OtherQty = 0,
 									 OtherPrice = 0,
 									 QtyLoadingInTransfer = 0,
 									 PriceLoadingInTransfer = 0,
@@ -931,7 +965,11 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 									  SamplePrice = 0,
 									  MDQty = 0,
 									  MDPrice = 0,
-									  OtherQty = 0,
+                                      LocalQty = 0,
+                                      LocalPrice = 0,
+                                      NCSQty = 0,
+                                      NCSPrice = 0,
+                                      OtherQty = 0,
 									  OtherPrice = 0,
 									  ExpenditureGoodInTransfer = 0,
 									  ExpenditureGoodInTransferPrice = 0,
@@ -1023,7 +1061,11 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 										SamplePrice = 0,
 										MDQty = 0,
 										MDPrice = 0,
-										OtherQty = 0,
+                                        LocalQty = 0,
+                                        LocalPrice = 0,
+                                        NCSQty = 0,
+                                        NCSPrice = 0,
+                                        OtherQty = 0,
 										OtherPrice = 0,
 										ExpenditureGoodInTransfer = 0,
 										ExpenditureGoodInTransferPrice = 0,
@@ -1121,7 +1163,11 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 										 SamplePrice = 0,
 										 MDQty = 0,
 										 MDPrice = 0,
-										 OtherQty = 0,
+                                         LocalQty = 0,
+                                         LocalPrice = 0,
+                                         NCSQty = 0,
+                                         NCSPrice = 0,
+                                         OtherQty = 0,
 										 OtherPrice = 0,
 										 ExpenditureGoodInTransfer = 0,
 										 ExpenditureGoodInTransferPrice = 0,
@@ -1205,7 +1251,11 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 													  SamplePrice = 0,
 													  MDQty = 0,
 													  MDPrice = 0,
-													  OtherQty = 0,
+                                                      LocalQty = 0,
+                                                      LocalPrice = 0,
+                                                      NCSQty = 0,
+                                                      NCSPrice = 0,
+                                                      OtherQty = 0,
 													  OtherPrice = 0,
 													  QtyLoadingInTransfer = 0,
 													  PriceLoadingInTransfer = 0,
@@ -1296,7 +1346,11 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 										   SamplePrice = 0,
 										   MDQty = 0,
 										   MDPrice = 0,
-										   OtherQty = 0,
+                                           LocalQty = 0,
+                                           LocalPrice = 0,
+                                           NCSQty = 0,
+                                           NCSPrice = 0,
+                                           OtherQty = 0,
 										   OtherPrice = 0,
 										   ExpenditureGoodInTransfer = 0,
 										   ExpenditureGoodInTransferPrice = 0,
@@ -1321,7 +1375,12 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 											 MDQuantity = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "ARSIP MD")) ? b.Quantity : 0,
 											 MDPrice = (a.ExpenditureDate >= dateFrom & (a.ExpenditureType == "ARSIP MD")) ? b.Price : 0,
 
-											 OtherQty = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "SISA")) ? b.Quantity : 0,
+                                             LocalQty = (a.ExpenditureDate >= dateFrom && a.ExpenditureType == "PENGIRIMAN LOKAL") ? b.Quantity : 0,
+                                             LocalPrice = (a.ExpenditureDate >= dateFrom && a.ExpenditureType == "PENGIRIMAN LOKAL") ? b.Price : 0,
+                                             NCSQty = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "EXPORT (NON COMMERCIAL SAMPLE)")) ? b.Quantity : 0,
+                                             NCSPrice = (a.ExpenditureDate >= dateFrom & (a.ExpenditureType == "EXPORT (NON COMMERCIAL SAMPLE)")) ? b.Price : 0,
+
+                                             OtherQty = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "SISA")) ? b.Quantity : 0,
 											 OtherPrice = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "SISA")) ? b.Price : 0,
 											 Ro = a.RONo,
 
@@ -1383,7 +1442,13 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 											 SamplePrice = group.Sum(x => x.SamplePrice),
 											 MDQty = group.Sum(x => x.MDQuantity),
 											 MDPrice = group.Sum(x => x.MDPrice),
-											 OtherQty = group.Sum(x => x.OtherQty),
+
+                                             LocalQty = group.Sum(x => x.LocalQty),
+                                             LocalPrice = group.Sum(x => x.LocalPrice),
+                                             NCSQty = group.Sum(x => x.NCSQty),
+                                             NCSPrice = group.Sum(x => x.NCSPrice),
+
+                                             OtherQty = group.Sum(x => x.OtherQty),
 											 OtherPrice = group.Sum(x => x.OtherPrice),
 											 Ro = key,
 											 ExpenditureGoodRetur = 0,
@@ -1495,7 +1560,11 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 								a.SamplePrice,
 								a.MDQty,
 								a.MDPrice,
-								a.ExpenditureGoodAdj,
+                                a.LocalQty,
+                                a.LocalPrice,
+                                a.NCSQty,
+                                a.NCSPrice,
+                                a.ExpenditureGoodAdj,
 								a.ExpenditureGoodAdjPrice,
 								a.ExpenditureGoodInTransfer,
 								a.ExpenditureGoodInTransferPrice,
@@ -1575,7 +1644,13 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 					samplePrice = group.Sum(s => s.SamplePrice),
 					mdQty = group.Sum(s => s.MDQty),
 					mdPrice = group.Sum(s => s.MDPrice),
-					expendAdj = group.Sum(s => s.ExpenditureGoodAdj),
+
+                    lclQty = group.Sum(s => s.LocalQty),
+                    lclPrice = group.Sum(s => s.LocalPrice),
+                    ncsQty = group.Sum(s => s.NCSQty),
+                    ncsPrice = group.Sum(s => s.NCSPrice),
+
+                    expendAdj = group.Sum(s => s.ExpenditureGoodAdj),
 					expendAdjPrice = group.Sum(s => s.ExpenditureGoodAdjPrice),
 					expendRetur = group.Sum(s => s.ExpenditureGoodRetur),
 					expendReturPrice = group.Sum(s => s.ExpenditureGoodReturPrice),
@@ -1643,11 +1718,13 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 								 ExportQty = Math.Round(a.exportQty, 2),
 								 SampleQty = Math.Round(a.sampleQty, 2),
 								 MDQty = Math.Round(a.mdQty, 2),
-								 OtherQty = Math.Round(a.otherqty, 2),
+                                 LocalQty = Math.Round(a.lclQty, 2),
+                                 NCSQty = Math.Round(a.ncsQty, 2),
+                                 OtherQty = Math.Round(a.otherqty, 2),
 								 ExpenditureGoodAdj = Math.Round(a.expendAdj, 2),
 								 ExpenditureGoodRetur = Math.Round(a.expendRetur, 2),
 								 ExpenditureGoodInTransfer = Math.Round(a.expenditureInTransfer, 2),
-								 EndBalanceExpenditureGood = Math.Round(a.beginingBalanceExpenditureGood + a.finishingout + a.subconout + a.expendRetur + a.expenditureInTransfer - a.exportQty - a.otherqty - a.sampleQty - a.mdQty, 2),
+								 EndBalanceExpenditureGood = Math.Round(a.beginingBalanceExpenditureGood + a.finishingout + a.subconout + a.expendRetur + a.expenditureInTransfer - a.exportQty - a.otherqty - a.sampleQty - a.mdQty - a.lclQty - a.ncsQty, 2),
 
 							 }).ToList();
 
@@ -1738,7 +1815,14 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 							SamplePrice = Math.Round(((Convert.ToDouble(a.Fare)) + Convert.ToDouble(a.BasicPrice)) * a.SampleQty, 2),
 							MDQty = Math.Round(a.MDQty, 2),
 							MDPrice = Math.Round(((Convert.ToDouble(a.Fare)) + Convert.ToDouble(a.BasicPrice)) * a.MDQty, 2),
-							OtherQty = Math.Round(a.OtherQty, 2),
+
+                            LocalQty = Math.Round(a.LocalQty, 2),
+                            LocalPrice = Math.Round(((Convert.ToDouble(a.Fare)) + Convert.ToDouble(a.BasicPrice)) * a.LocalQty, 2),
+
+                            NCSQty = Math.Round(a.NCSQty, 2),
+                            NCSPrice = Math.Round(((Convert.ToDouble(a.Fare)) + Convert.ToDouble(a.BasicPrice)) * a.NCSQty, 2),
+
+                            OtherQty = Math.Round(a.OtherQty, 2),
 							OtherPrice = Math.Round(((Convert.ToDouble(a.Fare)) + Convert.ToDouble(a.BasicPrice)) * a.OtherQty, 2),
 							ExpenditureGoodAdj = Math.Round(a.ExpenditureGoodAdj, 2),
 							ExpenditureGoodAdjPrice = Math.Round(((Convert.ToDouble(a.Fare)) + Convert.ToDouble(a.BasicPrice)) * a.ExpenditureGoodAdj, 2),
@@ -1888,7 +1972,13 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 							   SamplePrice = item.SamplePrice,
 							   MDQty = item.MDQty,
 							   MDPrice = item.MDPrice,
-							   OtherQty = item.OtherQty,
+
+                               LocalQty = item.LocalQty,
+                               LocalPrice = item.LocalPrice,
+                               NCSQty = item.NCSQty,
+                               NCSPrice = item.NCSPrice,
+
+                               OtherQty = item.OtherQty,
 							   OtherPrice = item.OtherPrice,
 							   ExpenditureGoodAdj = item.ExpenditureGoodAdj,
 							   ExpenditureGoodAdjPrice = item.ExpenditureGoodAdjPrice,
@@ -2213,7 +2303,13 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                 OtherPrice = dataend.Sum(x => x.OtherPrice),
 				MDQty = dataend.Sum(x => x.MDQty),
 				MDPrice = dataend.Sum(x => x.MDPrice),
-				ExpenditureGoodAdj = dataend.Sum(x => x.ExpenditureGoodAdj),
+
+                LocalQty = dataend.Sum(x => x.LocalQty),
+                LocalPrice = dataend.Sum(x => x.LocalPrice),
+                NCSQty = dataend.Sum(x => x.NCSQty),
+                NCSPrice = dataend.Sum(x => x.NCSPrice),
+
+                ExpenditureGoodAdj = dataend.Sum(x => x.ExpenditureGoodAdj),
                 ExpenditureGoodAdjPrice = dataend.Sum(x => x.ExpenditureGoodAdjPrice),
                 ExpenditureGoodRetur = dataend.Sum(x => x.ExpenditureGoodRetur),
                 ExpenditureGoodReturPrice = dataend.Sum(x => x.ExpenditureGoodReturPrice),
@@ -2281,16 +2377,18 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI5", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI6", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI7", DataType = typeof(string) });
-				//reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI8", DataType = typeof(string) });
-				//reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI9", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI8", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI9", DataType = typeof(string) });
+                //reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI8", DataType = typeof(string) });
+                //reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI9", DataType = typeof(string) });
 
-				reportDataTable.Rows.Add("", "", "", "",
+                reportDataTable.Rows.Add("", "", "", "",
 				"Saldo Awal WIP Cutting", "Cutting In (WIP Cutting)", "Cutting Out / HP",  "Aval Komponen dari Cutting", "Aval Komponen dari Sewing", "Saldo Akhir WIP Cutting",
 				
 				"Saldo Awal WIP Sewing", "Sewing In (WIP Sewing)", "Sewing Out (WIP Finishing)",  "Retur ke Cutting",  "Saldo Akhir WIP Sewing",
 				"Saldo Awal WIP Finishing", "Finishing In (WIP Finishing)", "Finishing Out (WIP BJ)", "Retur ke Sewing", "Saldo Akhir WIP Finishing",
-				"Saldo Awal Barang jadi", "Barang Jadi In/ (WIP BJ)",  "Pengiriman Export", "Pengiriman Gudang Sisa", "Pengiriman Arsip Sample", "Pengiriman Arsip MD", "Saldo Akhir Barang Jadi"
-				);
+                "Saldo Awal Barang Jadi", "Barang Jadi In/ (WIP BJ)", "Pengiriman Export", "Pengiriman Gudang Sisa", "Pengiriman Arsip Sample", "Pengiriman Arsip MD", "Pengiriman Lokal", "Pengiriman Export NCS", "Saldo Akhir Barang Jadi"
+                );
 			}
 			else
 			{
@@ -2347,19 +2445,24 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI12", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI13", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI14", DataType = typeof(string) });
-				
-				reportDataTable.Rows.Add("", "", "", "", "", "",  
+
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI15", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI16", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI17", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI18", DataType = typeof(string) });
+
+                reportDataTable.Rows.Add("", "", "", "", "", "",  
 									"Saldo Awal WIP Cutting","", "Cutting In (WIP Cutting)","", "Cutting Out","",  "Aval Komponen dari Cutting","", "Aval Komponen dari Sewing","", "Saldo Akhir WIP Cutting","",
 									"Saldo Awal WIP Sewing","", "Sewing In (WIP Sewing)","", "Sewing Out (WIP Finishing)","", "Retur ke Cutting","", "Saldo Akhir WIP Sewing","",
 									"Saldo Awal WIP Finishing","", "Finishing In (WIP Finishing)","", "Finishing Out (WIP BJ)", "", "Retur ke Sewing", "",  "Saldo Akhir WIP Finishing","",
-									"Saldo Awal Barang jadi","", "Barang Jadi In/ (WIP BJ)","", "Pengiriman Export", "", "Pengiriman Gudang Sisa", "", "Pengiriman Arsip Sample", "", "Pengiriman Arsip Md", "","Saldo Akhir Barang Jadi",""
-								 );
+                                    "Saldo Awal Barang Jadi", "", "Barang Jadi In/ (WIP BJ)", "", "Pengiriman Export", "", "Pengiriman Gudang Sisa", "", "Pengiriman Arsip Sample", "", "Pengiriman Arsip Md", "", "Pengiriman Lokal", "", "Pengiriman Export NCS", "", "Saldo Akhir Barang Jadi", ""
+                                 );
 				reportDataTable.Rows.Add("", "", "", "", "", "", 
 									"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga",
 									"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga",
 									"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga",
-									"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga"
-								);
+                                    "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga"
+                                );
 				
 			}
 			int counter = 6;
@@ -2372,7 +2475,7 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 					report.BeginingBalanceCuttingQty, report.QtyCuttingIn, report.QtyCuttingOut, report.AvalCutting, report.AvalSewing, report.EndBalancCuttingeQty,
 					report.BeginingBalanceSewingQty, report.QtySewingIn, report.QtySewingOut,  report.QtySewingRetur,  report.EndBalanceSewingQty,
 					report.BeginingBalanceFinishingQty, report.FinishingInQty, report.FinishingOutQty,  report.FinishingReturQty, report.EndBalanceFinishingQty,
-					report.BeginingBalanceExpenditureGood, report.FinishingInExpenditure,  report.ExportQty, report.OtherQty, report.SampleQty, report.MDQty, report.EndBalanceExpenditureGood);
+					report.BeginingBalanceExpenditureGood, report.FinishingInExpenditure,  report.ExportQty, report.OtherQty, report.SampleQty, report.MDQty, report.LocalQty, report.NCSQty, report.EndBalanceExpenditureGood);
 					counter++;
 				}
 				else
@@ -2381,7 +2484,7 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 					report.BeginingBalanceCuttingQty,report.BeginingBalanceCuttingPrice, report.QtyCuttingIn,report.PriceCuttingIn ,report.QtyCuttingOut, report.PriceCuttingOut,report.AvalCutting,report.AvalCuttingPrice, report.AvalSewing,report.AvalSewingPrice, report.EndBalancCuttingeQty,report.EndBalancCuttingePrice,
 					report.BeginingBalanceSewingQty,report.BeginingBalanceSewingPrice, report.QtySewingIn,report.PriceSewingIn, report.QtySewingOut,report.PriceSewingOut, report.QtySewingRetur,report.PriceSewingRetur, report.EndBalanceSewingQty,report.EndBalanceSewingPrice,
 					report.BeginingBalanceFinishingQty,report.BeginingBalanceFinishingPrice, report.FinishingInQty,report.FinishingInPrice, report.FinishingOutQty,report.FinishingOutPrice, report.FinishingReturQty, report.FinishingReturPrice,report.EndBalanceFinishingQty,report.EndBalanceFinishingPrice,
-					report.BeginingBalanceExpenditureGood,report.BeginingBalanceExpenditureGoodPrice, report.FinishingInExpenditure,report.FinishingInExpenditurepPrice, report.ExportQty,report.ExportPrice, report.OtherQty,report.OtherPrice, report.SampleQty,report.SamplePrice, report.MDQty,report.MDPrice, report.EndBalanceExpenditureGood,report.EndBalanceExpenditureGoodPrice);
+					report.BeginingBalanceExpenditureGood,report.BeginingBalanceExpenditureGoodPrice, report.FinishingInExpenditure,report.FinishingInExpenditurepPrice, report.ExportQty,report.ExportPrice, report.OtherQty,report.OtherPrice, report.SampleQty,report.SamplePrice, report.MDQty,report.MDPrice, report.LocalQty, report.LocalPrice, report.NCSQty, report.NCSPrice, report.EndBalanceExpenditureGood,report.EndBalanceExpenditureGoodPrice);
 					 
 					counter++;
 				}
@@ -2399,30 +2502,30 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 					
 					worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
 					worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
-					worksheet.Cells["A" + 1 + ":AA" + 1 + ""].Merge = true;
-					worksheet.Cells["A" + 2 + ":AA" + 2 + ""].Merge = true;
-					worksheet.Cells["A" + 3 + ":AA" + 3 + ""].Merge = true;
-					worksheet.Cells["A" + 1 + ":AA" + 3 + ""].Style.Font.Size = 15;
-					worksheet.Cells["A" + 1 + ":AA" + 3 + ""].Style.Font.Bold = true;
-					worksheet.Cells["A" + 1 + ":AA" + 6 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-					worksheet.Cells["A" + 1 + ":AA" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+					worksheet.Cells["A" + 1 + ":AC" + 1 + ""].Merge = true;
+					worksheet.Cells["A" + 2 + ":AC" + 2 + ""].Merge = true;
+					worksheet.Cells["A" + 3 + ":AC" + 3 + ""].Merge = true;
+					worksheet.Cells["A" + 1 + ":AC" + 3 + ""].Style.Font.Size = 15;
+					worksheet.Cells["A" + 1 + ":AC" + 3 + ""].Style.Font.Bold = true;
+					worksheet.Cells["A" + 1 + ":AC" + 6 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					worksheet.Cells["A" + 1 + ":AC" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 					worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
-					worksheet.Cells["E" + 5 + ":AA" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					worksheet.Cells["E" + 5 + ":AC" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
 					worksheet.Cells["E" + 5 + ":J" + 5 + ""].Merge = true;
 					worksheet.Cells["K" + 5 + ":O" + 5 + ""].Merge = true;
 					worksheet.Cells["P" + 5 + ":T" + 5 + ""].Merge = true;
-					worksheet.Cells["U" + 5 + ":AA" + 5 + ""].Merge = true;
+					worksheet.Cells["U" + 5 + ":AC" + 5 + ""].Merge = true;
 				 
 					worksheet.Cells["A" + counter + ":D" + counter + ""].Merge = true;
-					worksheet.Cells["A" + 5 + ":AA"  +6 + ""].Style.Font.Bold = true;
-					worksheet.Cells["E" + 6 + ":AA" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-					worksheet.Cells["A" + 5 + ":AA" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":AA" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":AA" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":AA" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + counter + ":AA" + counter + ""].Style.Font.Bold = true;
-                    foreach (var cell in worksheet.Cells["D" + 7 + ":AA" + (counter + 1) + ""])
+					worksheet.Cells["A" + 5 + ":AC" + 6 + ""].Style.Font.Bold = true;
+					worksheet.Cells["E" + 6 + ":AC" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+					worksheet.Cells["A" + 5 + ":AC" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":AC" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":AC" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":AC" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + counter + ":AC" + counter + ""].Style.Font.Bold = true;
+                    foreach (var cell in worksheet.Cells["D" + 7 + ":AC" + (counter + 1) + ""])
                     {
                         cell.Value = Convert.ToDecimal(cell.Value);
                     }
@@ -2433,19 +2536,19 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 					worksheet.Cells["A1"].Value = "Report Produksi"; 
 					worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
 					worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
-					worksheet.Cells["A" + 1 + ":AZ" + 1 + ""].Merge = true;
-					worksheet.Cells["A" + 2 + ":AZ" + 2 + ""].Merge = true;
-					worksheet.Cells["A" + 3 + ":AZ" + 3 + ""].Merge = true;
-					worksheet.Cells["A" + 1 + ":AZ" + 3 + ""].Style.Font.Size = 15;
-					worksheet.Cells["A" + 1 + ":AZ" + 3 + ""].Style.Font.Bold = true;
-					worksheet.Cells["A" + 1 + ":AZ" + 3 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-					worksheet.Cells["A" + 1 + ":AZ" + 3 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+					worksheet.Cells["A" + 1 + ":BD" + 1 + ""].Merge = true;
+					worksheet.Cells["A" + 2 + ":BD" + 2 + ""].Merge = true;
+					worksheet.Cells["A" + 3 + ":BD" + 3 + ""].Merge = true;
+					worksheet.Cells["A" + 1 + ":BD" + 3 + ""].Style.Font.Size = 15;
+					worksheet.Cells["A" + 1 + ":BD" + 3 + ""].Style.Font.Bold = true;
+					worksheet.Cells["A" + 1 + ":BD" + 3 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					worksheet.Cells["A" + 1 + ":BD" + 3 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 					worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
 					worksheet.Cells["E" + 5 + ":L" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 					worksheet.Cells["G" + 5 + ":R" + 5 + ""].Merge = true;
 					worksheet.Cells["S" + 5 + ":AB" + 5 + ""].Merge = true;
 					worksheet.Cells["AC" + 5 + ":AL" + 5 + ""].Merge = true;
-					worksheet.Cells["AM" + 5 + ":AZ" + 5 + ""].Merge = true;
+					worksheet.Cells["AM" + 5 + ":BD" + 5 + ""].Merge = true;
 					
 					worksheet.Cells["G" + 6 + ":H" + 6 + ""].Merge = true;
 					worksheet.Cells["I" + 6 + ":J" + 6 + ""].Merge = true;
@@ -2470,21 +2573,22 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 					worksheet.Cells["AU" + 6 + ":AV" + 6 + ""].Merge = true;
 					worksheet.Cells["AW" + 6 + ":AX" + 6 + ""].Merge = true;
 					worksheet.Cells["AY" + 6 + ":AZ" + 6 + ""].Merge = true;
-				 
+                    worksheet.Cells["BA" + 6 + ":BB" + 6 + ""].Merge = true;
+                    worksheet.Cells["BC" + 6 + ":BD" + 6 + ""].Merge = true;
 
 
-					worksheet.Cells["A" + (counter + 1) + ":F" + (counter + 1) + ""].Merge = true;
-					worksheet.Cells["A" + 5 + ":AZ" + 7 + ""].Style.Font.Bold = true;
-					worksheet.Cells["A" + (counter + 1) + ":AZ" + (counter + 1) + ""].Style.Font.Bold = true;
-					worksheet.Cells["A" + 5 + ":AZ" + 7 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-					worksheet.Cells["A" + 5 + ":AZ" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-					worksheet.Cells["E" + 8 + ":AZ" + (counter + 1) + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    worksheet.Cells["A" + (counter + 1) + ":F" + (counter + 1) + ""].Merge = true;
+					worksheet.Cells["A" + 5 + ":BD" + 7 + ""].Style.Font.Bold = true;
+					worksheet.Cells["A" + (counter + 1) + ":BD" + (counter + 1) + ""].Style.Font.Bold = true;
+					worksheet.Cells["A" + 5 + ":BD" + 7 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					worksheet.Cells["A" + 5 + ":BD" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+					worksheet.Cells["E" + 8 + ":BD" + (counter + 1) + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 					
-					worksheet.Cells["A" + 5 + ":AZ" + (counter + 1) + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":AZ" + (counter + 1) + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":AZ" + (counter + 1) + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":AZ" + (counter + 1) + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    foreach (var cell in worksheet.Cells["E" + 8 + ":AZ" + (counter + 1) + ""])
+					worksheet.Cells["A" + 5 + ":BD" + (counter + 1) + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":BD" + (counter + 1) + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":BD" + (counter + 1) + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":BD" + (counter + 1) + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    foreach (var cell in worksheet.Cells["E" + 8 + ":BD" + (counter + 1) + ""])
                     {
                         cell.Value = Convert.ToDecimal(cell.Value);
                     }
