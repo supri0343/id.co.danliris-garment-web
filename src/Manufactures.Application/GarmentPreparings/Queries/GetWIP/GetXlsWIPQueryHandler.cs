@@ -122,7 +122,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
 
         public async Task<MemoryStream> Handle(GetXlsWIPQuery request, CancellationToken cancellationToken)
         {
-            DateTimeOffset dateFrom = new DateTimeOffset(request.Date, new TimeSpan(7, 0, 0));
+            DateTimeOffset dateFrom = new DateTimeOffset(request.Date.AddHours(7));
             GarmentWIPListViewModel listViewModel = new GarmentWIPListViewModel();
             List<GarmentWIPDto> monitoringDtos = new List<GarmentWIPDto>();
             var FactPreparePreparing = from a in (from aa in garmentPreparingRepository.Query
