@@ -126,7 +126,7 @@ namespace Manufactures.Tests.Queries.GarmentPreparings.WIP
             return new GetWIPQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
         }
 
-        /*[Fact]
+        [Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior()
         {
             GetWIPQueryHandler unitUnderTest = CreateGetWIPQueryHandler();
@@ -154,7 +154,7 @@ namespace Manufactures.Tests.Queries.GarmentPreparings.WIP
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentPreparingItemReadModel>
                 {
-                    new Domain.GarmentPreparings.GarmentPreparingItem(guidPreparingItem, 1, new Domain.GarmentPreparings.ValueObjects.ProductId(1), "", "", "", 0, new Domain.GarmentPreparings.ValueObjects.UomId(1), "", "", 0, 50, guidPreparing,null).GetReadModel()
+                    new Domain.GarmentPreparings.GarmentPreparingItem(guidPreparingItem, 1, new Domain.GarmentPreparings.ValueObjects.ProductId(1), "1", "", "", 1, new Domain.GarmentPreparings.ValueObjects.UomId(1), "", "", 0, 50, guidPreparing,null).GetReadModel()
                 }.AsQueryable());
 
             _mockGarmentPreparingRepository
@@ -245,6 +245,6 @@ namespace Manufactures.Tests.Queries.GarmentPreparings.WIP
             // Assert
             result.Should().NotBeNull();
 
-        }*/
+        }
     }
 }
