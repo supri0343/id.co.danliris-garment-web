@@ -127,7 +127,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 			dateTo = dateTo.AddHours(7);
 
 			var QueryMutationPrepareNow = from a in (from aa in garmentPreparingRepository.Query
-													 where aa.UnitId == request.unit && aa.ProcessDate <= dateTo
+													 where aa.UnitId == request.unit && aa.ProcessDate.Value.AddHours(7) <= dateTo
 													 select new
 													 {
 														 aa.Identity,

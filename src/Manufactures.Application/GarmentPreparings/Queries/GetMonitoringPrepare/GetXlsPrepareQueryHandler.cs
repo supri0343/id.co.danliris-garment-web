@@ -128,7 +128,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
 			dateTo = dateTo.AddHours(7);
 			var QueryMutationPrepareNow = from a in (from aa in garmentPreparingRepository.Query
-													 where aa.UnitId == request.unit && aa.ProcessDate <= dateTo
+													 where aa.UnitId == request.unit && aa.ProcessDate.Value.AddHours(7) <= dateTo
 													 select new
 													 {
 														 aa.Identity,
