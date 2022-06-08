@@ -121,9 +121,9 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 		}
 		public async Task<GarmentMonitoringPrepareListViewModel> Handle(GetMonitoringPrepareQuery request, CancellationToken cancellationToken)
 		{
-			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
+			DateTime dateFrom = (request.dateFrom);
 			dateFrom.AddHours(7);
-			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
+			DateTime dateTo = (request.dateTo);
 			dateTo = dateTo.AddHours(7);
 
 			var QueryMutationPrepareNow = from a in (from aa in garmentPreparingRepository.Query
