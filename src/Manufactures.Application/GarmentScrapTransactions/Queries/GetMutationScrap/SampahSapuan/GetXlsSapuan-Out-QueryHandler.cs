@@ -116,9 +116,12 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
                 worksheet.Cells["A" + 1 + ":F" + 1 + ""].Merge = true;
                 worksheet.Cells["A" + 2 + ":F" + 2 + ""].Merge = true;
                 worksheet.Cells["A" + 1 + ":F" + 4 + ""].Style.Font.Bold = true;
-                worksheet.Cells["F" + 5 + ":F" + (4 + countdata) + ""].Merge = true;
-                worksheet.Cells["F" + 5 + ":F" + (4 + countdata) + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
 
+                if(countdata > 0)
+                {
+                    worksheet.Cells["F" + 5 + ":F" + (4 + countdata) + ""].Merge = true;
+                    worksheet.Cells["F" + 5 + ":F" + (4 + countdata) + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                }
 
                 worksheet.Cells.AutoFitColumns();
 
