@@ -24,8 +24,6 @@ namespace Manufactures.Tests.Queries.GarmentScrabTransactions
     {
         private readonly Mock<IGarmentScrapTransactionRepository> _mockGarmentScrapTransactionRepository;
         private readonly Mock<IGarmentScrapTransactionItemRepository> _mockGarmentScrapTransactionItemRepository;
-        //protected readonly Mock<IHttpClientService> _mockhttpService;
-        //private Mock<IServiceProvider> serviceProviderMock;
 
         public XlsTCKecil_InCommandHandler()
         {
@@ -33,89 +31,51 @@ namespace Manufactures.Tests.Queries.GarmentScrabTransactions
             _mockGarmentScrapTransactionItemRepository = CreateMock<IGarmentScrapTransactionItemRepository>();
             _MockStorage.SetupStorage(_mockGarmentScrapTransactionRepository);
             _MockStorage.SetupStorage(_mockGarmentScrapTransactionItemRepository);
-
-            //serviceProviderMock = new Mock<IServiceProvider>();
-            //_mockhttpService = CreateMock<IHttpClientService>();
-
-            //List<ScrapListViewModel> scrapListViewModels = new List<ScrapListViewModel>
-            //{
-            //    new ScrapListViewModel
-            //    {
-            //        count = 1,
-            //        scrapDtos = new List<ScrapDto>
-            //        {
-            //            new ScrapDto()
-            //            {
-            //                TransactionNo = "no1",
-            //                TransactionDate = DateTimeOffset.Now,
-            //                ScrapSourceName = "test",
-            //                Quantity = 1,
-            //                UomUnit = "Uom",
-            //            },
-            //            new ScrapDto()
-            //            {
-            //                TransactionNo = "no2",
-            //                TransactionDate = DateTimeOffset.Now,
-            //                ScrapSourceName = "test",
-            //                Quantity = 2,
-            //                UomUnit = "Uom",
-            //            },
-            //            new ScrapDto()
-            //            {
-            //                TransactionNo = "no3",
-            //                TransactionDate = DateTimeOffset.Now,
-            //                ScrapSourceName = "test",
-            //                Quantity = 3,
-            //                UomUnit = "Uom",
-            //            },
-            //        }
-            //    }
-            //};
-
-            //_mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpContent>()))
-            //    .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(scrapListViewModels) + "}") });
-            //serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
-        }
+       }
 
         private GetXlsTCKecil_in_QueryHandler CreateGetXlsTCKecil_in_QueryHandler()
         {
             return new GetXlsTCKecil_in_QueryHandler(_MockStorage.Object);
         }
 
-        //[Fact]
-        //public async Task Handle_StateUnderTest_ExpectedBehavior()
-        //{
-        //    // Arrage
-        //    GetXlsTCKecil_in_QueryHandler unitUnderTest = CreateGetXlsTCKecil_in_QueryHandler();
-        //    CancellationToken cancellationToken = CancellationToken.None;
+        [Fact]
+        public async Task Handle_StateUnderTest_ExpectedBehavior()
+        {
+            // arrage
+            GetXlsTCKecil_in_QueryHandler unitundertest = CreateGetXlsTCKecil_in_QueryHandler();
+            CancellationToken cancellationtoken = CancellationToken.None;
 
-        //    Guid guidScrapTransaction = Guid.NewGuid();
-        //    Guid guidScrapTransactionItem = Guid.NewGuid();
-        //    Guid guidScrapClassification = Guid.NewGuid();
-        //    Guid guidScrapSource = Guid.NewGuid();
-        //    Guid guidScrapDest = Guid.NewGuid();
+            Guid guidScrapTransaction = Guid.NewGuid();
+            Guid guidScrapTransactionItem = Guid.NewGuid();
+            Guid guidScrapClassification = Guid.NewGuid();
+            Guid guidScrapSource = Guid.NewGuid();
+            Guid guidScrapDest = Guid.NewGuid();
 
-        //    _mockGarmentScrapTransactionItemRepository
-        //        .Setup(s => s.Query)
-        //        .Returns(new List<GarmentScrapTransactionItemReadModel>
-        //        {
-        //            new GarmentScrapTransactionItem(guidScrapTransactionItem, guidScrapTransaction, guidScrapClassification, "class01", 20, 1, "", "").GetReadModel()
-        //        }.AsQueryable());
+            _mockGarmentScrapTransactionItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentScrapTransactionItemReadModel>
+                {
+                    new GarmentScrapTransactionItem(guidScrapTransactionItem, guidScrapTransaction, guidScrapClassification, "AVAL TC KECIL", 20, 1, "23", null).GetReadModel(),
+                    new GarmentScrapTransactionItem(guidScrapTransactionItem, guidScrapTransaction, guidScrapClassification, "AVAL TC KECIL", 20, 1, "23", null).GetReadModel(),
+                    new GarmentScrapTransactionItem(guidScrapTransactionItem, guidScrapTransaction, guidScrapClassification, "AVAL TC KECIL", 20, 1, "23", null).GetReadModel(),
+                    new GarmentScrapTransactionItem(guidScrapTransactionItem, guidScrapTransaction, guidScrapClassification, "AVAL TC KECIL", 20, 1, "23", null).GetReadModel(),
 
-        //    _mockGarmentScrapTransactionRepository
-        //        .Setup(s => s.Query)
-        //        .Returns(new List<GarmentScrapTransactionReadModel>
-        //        {
-        //            new GarmentScrapTransaction(guidScrapTransaction, "", "IN", DateTimeOffset.Now, guidScrapSource, "", guidScrapDest, "" ).GetReadModel()
-        //        }.AsQueryable());
+                }.AsQueryable());
 
-        //    GetXlsTCKecil_in_Query xlstckecil_in = new GetXlsTCKecil_in_Query(DateTime.UtcNow, DateTime.UtcNow, "token");
+            _mockGarmentScrapTransactionRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentScrapTransactionReadModel>
+                {
+                    new GarmentScrapTransaction(guidScrapTransaction, "1", "IN", DateTimeOffset.Now, guidScrapSource, "GUDANG AVAL", guidScrapDest, "GUDANG AVAL").GetReadModel()
+                }.AsQueryable());
 
-        //    // Act
-        //    var result = await unitUnderTest.Handle(xlstckecil_in, cancellationToken);
+            GetXlsTCKecil_in_Query xlstckecil_in = new GetXlsTCKecil_in_Query(DateTime.UtcNow, DateTime.UtcNow, "token");
 
-        //    // Assert
-        //    result.Should().NotBeNull();
-        //}
+            // act
+            var result = await unitundertest.Handle(xlstckecil_in, cancellationtoken);
+
+            // assert
+            result.Should().NotBeNull();
+        }
     }
 }

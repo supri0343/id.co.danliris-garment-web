@@ -46,22 +46,21 @@ namespace Manufactures.Tests.Queries.GarmentScrabTransactions
             Guid guidScrapSource = Guid.NewGuid();
             Guid guidScrapDest = Guid.NewGuid();
 
+            TCKecil_In_Query tckecil_in = new TCKecil_In_Query(DateTime.UtcNow, DateTime.UtcNow, "token");
+
             _mockGarmentScrapTransactionItemRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentScrapTransactionItemReadModel>
                 {
-                    new GarmentScrapTransactionItem(guidScrapTransactionItem, guidScrapTransaction, guidScrapClassification, "class01", 20, 1, "", "").GetReadModel()
+                    new GarmentScrapTransactionItem(guidScrapTransactionItem, guidScrapTransaction, guidScrapClassification, "AVAL TC KECIL", 20, 1, "23", null).GetReadModel(),
                 }.AsQueryable());
 
             _mockGarmentScrapTransactionRepository
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentScrapTransactionReadModel>
                 {
-                    new GarmentScrapTransaction(guidScrapTransaction, "", "IN", DateTimeOffset.Now, guidScrapSource, "", guidScrapDest, "" ).GetReadModel()
+                    new GarmentScrapTransaction(guidScrapTransaction, "1", "IN", DateTimeOffset.Now, guidScrapSource, "GUDANG AVAL", guidScrapDest, "GUDANG AVAL").GetReadModel()
                 }.AsQueryable());
-
-            
-            TCKecil_In_Query tckecil_in = new TCKecil_In_Query(DateTime.UtcNow, DateTime.UtcNow.AddDays(2), "token");
 
             // Act
             var result = await unitUnderTest.Handle(tckecil_in, cancellationToken);
