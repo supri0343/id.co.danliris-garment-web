@@ -122,7 +122,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 		public async Task<GarmentMonitoringPrepareListViewModel> Handle(GetMonitoringPrepareQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
-			dateFrom.AddHours(7);
+			//dateFrom.AddHours(7);
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
 			dateTo = dateTo.AddHours(7);
 
@@ -268,7 +268,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 												   mainFabricExpenditure = 0,
 												   nonMainFabricExpenditure = 0,
 												   remark = e.DesignColor,
-												   receipt = (d.Processdate >= dateFrom ? e.Quantity : 0),
+												   receipt = (d.Processdate.Value.AddHours(7) >= dateFrom ? e.Quantity : 0),
 												   productCode = e.ProductCode,
 												   remainQty = e.RemainingQuantity
 											   }).Distinct();
