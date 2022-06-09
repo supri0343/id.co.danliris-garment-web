@@ -264,7 +264,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 												   prepareItemid = e.Identity,
 												   price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == d.RO select aa.Total).FirstOrDefault()),
 												   uomUnit = "",
-												   stock = d.Processdate < dateFrom ? e.Quantity : 0,
+												   stock = d.Processdate.Value.AddHours(7) < dateFrom ? e.Quantity : 0,
 												   mainFabricExpenditure = 0,
 												   nonMainFabricExpenditure = 0,
 												   remark = e.DesignColor,
