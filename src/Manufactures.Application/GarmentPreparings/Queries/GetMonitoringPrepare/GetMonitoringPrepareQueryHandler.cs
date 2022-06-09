@@ -230,7 +230,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 
 			//NEW QUERY
 			var QueryCuttingDONow = from a in (from data in garmentCuttingInRepository.Query
-											   where data.UnitId == request.unit && data.CuttingInDate <= dateTo
+											   where data.UnitId == request.unit && data.CuttingInDate.AddHours(7) <= dateTo
 											   select new
 											   {
 												   data.RONo,
@@ -247,7 +247,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 										expenditure = 0,
 										aval = 0,
 										uomUnit = "",
-										stock = a.CuttingInDate < dateFrom ? -c.PreparingQuantity : 0,
+										stock = a.CuttingInDate.AddHours(7) < dateFrom ? -c.PreparingQuantity : 0,
 										nonMainFabricExpenditure = a.CuttingType == "Non Main Fabric" && (a.CuttingInDate >= dateFrom) ? c.PreparingQuantity : 0,
 										mainFabricExpenditure = a.CuttingType == "Main Fabric" && (a.CuttingInDate >= dateFrom) ? c.PreparingQuantity : 0,
 										remark = c.DesignColor,
