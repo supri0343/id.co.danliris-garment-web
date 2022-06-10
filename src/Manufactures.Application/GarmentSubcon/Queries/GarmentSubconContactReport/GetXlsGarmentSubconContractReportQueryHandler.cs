@@ -77,8 +77,8 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconContactRep
             List<GarmentSubconContactReportDto> monitorincontact = new List<GarmentSubconContactReportDto>();
 
             var result = from a in garmentSubconContractRepository.Query
-                         where a.SupplierId == request.supplierNo
-                         && a.ContractType == request.contractType
+                         where a.SupplierId == (request.supplierNo != 0 ? request.supplierNo : a.SupplierId)
+                         && a.ContractType == (string.IsNullOrWhiteSpace(request.contractType) ? a.ContractType : request.contractType)
                          && a.ContractDate >= request.dateFrom.Date
                          && a.ContractDate <= request.dateTo.Date
                          select new monitoringViewTemp
