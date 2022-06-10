@@ -192,15 +192,22 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconContactRep
                 worksheet.Cells["A2"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells["A2"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
-                var buyer = (from a in garmentSubconContractRepository.Query
-                             where a.SupplierId == request.supplierNo
-                             && a.Deleted == false
-                             && a.ContractType == request.contractType
-                             && a.ContractDate >= request.dateFrom.Date
-                             && a.ContractDate <= request.dateTo.Date
-                             select a).FirstOrDefault();
+                //var buyer = (from a in garmentSubconContractRepository.Query
+                //             where a.SupplierId == request.supplierNo
+                //             && a.Deleted == false
+                //             && a.ContractType == request.contractType
+                //             && a.ContractDate >= request.dateFrom.Date
+                //             && a.ContractDate <= request.dateTo.Date
+                //             select a).FirstOrDefault();
 
-                worksheet.Cells[$"A3:{col}3"].Value = buyer.SupplierName;
+                if (request.supplierNo != null)
+                {
+                    worksheet.Cells[$"A3:{col}3"].Value = listViewModel.garmentSubconContactReportDto.Select(x=> x.SupplierName);
+                }
+                else
+                {
+                    worksheet.Cells[$"A3:{col}3"].Value = "";
+                }
                 worksheet.Cells[$"A3:{col}3"].Merge = true;
                 worksheet.Cells["A3"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells["A3"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
