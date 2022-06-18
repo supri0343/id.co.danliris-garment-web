@@ -1,4 +1,5 @@
 ﻿using Barebone.Controllers;
+using Manufactures.Application.GarmentFinishingOuts.Queries.GetTotalQuantityTraceable;
 using Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries;
 using Manufactures.Application.GarmentSample.SampleFinishingOuts.Queries.GarmentSampleFinishingByColorMonitoring;
 using Manufactures.Domain.GarmentSample.SampleFinishingIns.Repositories;
@@ -14,6 +15,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Manufactures.Application.GarmentFinishingOuts.Queries.GetTotalQuantitySampleTraceable;
 
 namespace Manufactures.Controllers.Api.GarmentSample
 {
@@ -101,6 +103,17 @@ namespace Manufactures.Controllers.Api.GarmentSample
 
             await Task.Yield();
             return Ok(GarmentSampleFinishingOutDto);
+        }
+
+        [HttpGet("traceable-by-ro")]
+        public async Task<IActionResult> GetTraceablebyRONo([FromBody] string RONo)
+        {
+            VerifyUser();
+
+            GetTotalQuantitySampleTraceableQuery query = new GetTotalQuantitySampleTraceableQuery(RONo, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.garmentTotalQtyTraceables);
         }
 
         [HttpPost]
