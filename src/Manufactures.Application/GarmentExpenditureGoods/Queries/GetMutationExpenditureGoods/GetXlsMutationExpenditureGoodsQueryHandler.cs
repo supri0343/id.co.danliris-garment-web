@@ -20,6 +20,9 @@ using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using System.IO;
 using System.Data;
 using OfficeOpenXml;
+using Manufactures.Domain.GarmentSample.SampleCuttingOuts.Repositories;
+using Manufactures.Domain.GarmentSample.SampleFinishingOuts.Repositories;
+using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Repositories;
 
 namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationExpenditureGoods
 {
@@ -36,6 +39,12 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
         private readonly IGarmentFinishingOutRepository garmentFinishingOutRepository;
         private readonly IGarmentFinishingOutItemRepository garmentFinishingOutItemRepository;
         private readonly IGarmentCuttingOutRepository garmentCuttingOutRepository;
+        private readonly IGarmentSampleCuttingOutRepository garmentSampleCuttingOutRepository;
+        private readonly IGarmentSampleCuttingOutItemRepository garmentSampleCuttingOutItemRepository;
+        private readonly IGarmentSampleFinishingOutRepository garmentSampleFinishingOutRepository;
+        private readonly IGarmentSampleFinishingOutItemRepository garmentSampleFinishingOutItemRepository;
+        private readonly IGarmentSampleExpenditureGoodRepository garmentSampleExpenditureGoodRepository;
+        private readonly IGarmentSampleExpenditureGoodItemRepository garmentSampleExpenditureGoodItemRepository;
 
         public GetXlsMutationExpenditureGoodsQueryHandler(IStorage storage, IServiceProvider serviceProvider)
         {
@@ -50,6 +59,12 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
             garmentCuttingOutRepository = storage.GetRepository<IGarmentCuttingOutRepository>();
             garmentExpenditureGoodReturnRepository = storage.GetRepository<IGarmentExpenditureGoodReturnRepository>();
             garmentExpenditureGoodReturnItemRepository = storage.GetRepository<IGarmentExpenditureGoodReturnItemRepository>();
+            garmentSampleCuttingOutRepository = storage.GetRepository<IGarmentSampleCuttingOutRepository>();
+            garmentSampleCuttingOutItemRepository = storage.GetRepository<IGarmentSampleCuttingOutItemRepository>();
+            garmentSampleFinishingOutRepository = storage.GetRepository<IGarmentSampleFinishingOutRepository>();
+            garmentSampleFinishingOutItemRepository = storage.GetRepository<IGarmentSampleFinishingOutItemRepository>();
+            garmentSampleExpenditureGoodRepository = storage.GetRepository<IGarmentSampleExpenditureGoodRepository>();
+            garmentSampleExpenditureGoodItemRepository = storage.GetRepository<IGarmentSampleExpenditureGoodItemRepository>();
 
         }
 
@@ -73,6 +88,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
             DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
             DateTimeOffset dateBalance = (from a in garmentBalanceMonitoringProductionStockFlowRepository.Query
                                           select a.CreatedDate).FirstOrDefault();
+            DateTimeOffset dateBalanceSample = new DateTimeOffset(2020, 08, 30, 0, 0, 0, new TimeSpan(7, 0, 0));
 
             var querybalance = from a in (from aa in garmentBalanceMonitoringProductionStockFlowRepository.Query
                                           where aa.CreatedDate < dateFrom
@@ -146,8 +162,50 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                  Retur = 0,
                              };
 
+            var cuttingSample = from a in (from aa in garmentSampleCuttingOutRepository.Query
+                                           where aa.CuttingOutDate >= dateBalanceSample && aa.CuttingOutDate <= dateTo
+                                           select aa)
+                                join b in garmentSampleCuttingOutItemRepository.Query on a.Identity equals b.CuttingOutId
+                                select new mutationView
+                                {
+                                    SaldoQtyFin = a.CuttingOutDate < dateFrom && a.CuttingOutDate > dateBalanceSample ? b.TotalCuttingOut : 0,
+                                    AdjFin = 0,
+                                    ComodityCode = a.ComodityCode,
+                                    QtyExpend = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0,
+                                    QtyFin = 0,
+                                    Retur = 0,
+                                };
 
-            var queryNow = adjust.Union(querybalance).Union(returexpend).Union(finishingbarangjadi).Union(factexpend).AsEnumerable();
+            var finishingSample = from a in (from aa in garmentSampleFinishingOutRepository.Query
+                                             where aa.FinishingOutDate >= dateBalanceSample && aa.FinishingOutDate <= dateTo
+                                             && aa.FinishingTo == "GUDANG JADI"
+                                             select aa)
+                                  join b in garmentSampleFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
+                                  select new mutationView
+                                  {
+                                      SaldoQtyFin = a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalanceSample ? b.Quantity : 0,
+                                      AdjFin = 0,
+                                      ComodityCode = a.ComodityCode,
+                                      QtyExpend = 0,
+                                      QtyFin = a.FinishingOutDate >= dateFrom ? b.Quantity : 0,
+                                      Retur = 0,
+                                  };
+
+            var expenditureGoodSample = from a in (from aa in garmentSampleExpenditureGoodRepository.Query
+                                                   where aa.ExpenditureDate >= dateBalanceSample && aa.ExpenditureDate <= dateTo
+                                                   select aa)
+                                        join b in garmentSampleExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
+                                        select new mutationView
+                                        {
+                                            SaldoQtyFin = a.ExpenditureDate < dateFrom && a.ExpenditureDate > dateBalanceSample ? -b.Quantity : 0,
+                                            AdjFin = 0,
+                                            ComodityCode = a.ComodityCode,
+                                            QtyExpend = a.ExpenditureDate >= dateFrom ? b.Quantity : 0,
+                                            QtyFin = 0,
+                                            Retur = 0,
+                                        };
+
+            var queryNow = adjust.Union(querybalance).Union(returexpend).Union(finishingbarangjadi).Union(factexpend).Union(cuttingSample).Union(finishingSample).Union(expenditureGoodSample).AsEnumerable();
 
             var mutationTemp = queryNow.GroupBy(x => new { x.ComodityCode }, (key, group) => new
             {
