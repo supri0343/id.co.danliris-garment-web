@@ -1,4 +1,6 @@
 ﻿using Barebone.Controllers;
+using Manufactures.Application.GarmentCuttingOuts.Queries.GetCuttingOutForTraceable;
+using Manufactures.Application.GarmentSample.SampleCuttingOuts.Queries.GetSampleCuttingOutForTraceable;
 using Manufactures.Application.GarmentSample.SampleCuttingOuts.Queries.Monitoring;
 using Manufactures.Domain.GarmentSample.SampleCuttingOuts.Commands;
 using Manufactures.Domain.GarmentSample.SampleCuttingOuts.Repositories;
@@ -254,6 +256,19 @@ namespace Manufactures.Controllers.Api.GarmentSample
             var order = await Mediator.Send(command);
 
             return Ok();
+        }
+
+        [HttpGet("for-traceable")]
+        public async Task<IActionResult> GetForTraceable([FromBody] string RONo)
+        {
+            VerifyUser();
+
+            var ros = RONo.Contains(",") ? RONo.Split(",").ToList() : new List<string> { RONo };
+
+            GetSampleCuttingOutForTraceableQuery query = new GetSampleCuttingOutForTraceableQuery(ros, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.data);
         }
     }
 }
