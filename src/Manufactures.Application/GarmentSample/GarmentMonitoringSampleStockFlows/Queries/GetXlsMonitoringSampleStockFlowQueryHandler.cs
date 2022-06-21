@@ -191,6 +191,7 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
             public double NCSPrice { get; internal set; }
 
             public double ExpenditureGoodRemainingQty { get; internal set; }
+
             public double ExpenditureGoodRemainingPrice { get; internal set; }
             public double ExpenditureGoodAdj { get; internal set; }
             public double ExpenditureGoodAdjPrice { get; internal set; }
@@ -219,7 +220,6 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
             dateFrom.AddHours(7);
             DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
             dateTo = dateTo.AddHours(7); DateTimeOffset dateFareNew = dateTo.AddDays(1);
-
 
             var sumbasicPrice = (from a in (from prep in garmentPreparingRepository.Query
                                             where (request.ro == null || (request.ro != null && request.ro != "" && prep.RONo == request.ro))
@@ -607,6 +607,7 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                       NCSQty = 0,
                                       NCSPrice = 0,
                                       OtherQty = 0,
+
                                       OtherPrice = 0,
                                       QtyLoadingInTransfer = 0,
                                       PriceLoadingInTransfer = 0,
@@ -1379,7 +1380,6 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                              SamplePrice = (a.ExpenditureDate >= dateFrom & (a.ExpenditureType == "ARSIP SAMPLE")) ? b.Price : 0,
                                              MDQuantity = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "ARSIP MD")) ? b.Quantity : 0,
                                              MDPrice = (a.ExpenditureDate >= dateFrom & (a.ExpenditureType == "ARSIP MD")) ? b.Price : 0,
-
                                              LocalQty = (a.ExpenditureDate >= dateFrom && a.ExpenditureType == "PENGIRIMAN LOKAL") ? b.Quantity : 0,
                                              LocalPrice = (a.ExpenditureDate >= dateFrom && a.ExpenditureType == "PENGIRIMAN LOKAL") ? b.Price : 0,
                                              NCSQty = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "EXPORT (NON COMMERCIAL SAMPLE)")) ? b.Quantity : 0,
@@ -1447,7 +1447,6 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                              SamplePrice = group.Sum(x => x.SamplePrice),
                                              MDQty = group.Sum(x => x.MDQuantity),
                                              MDPrice = group.Sum(x => x.MDPrice),
-
                                              LocalQty = group.Sum(x => x.LocalQty),
                                              LocalPrice = group.Sum(x => x.LocalPrice),
                                              NCSQty = group.Sum(x => x.NCSQty),
@@ -1649,12 +1648,10 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                     samplePrice = group.Sum(s => s.SamplePrice),
                     mdQty = group.Sum(s => s.MDQty),
                     mdPrice = group.Sum(s => s.MDPrice),
-
                     lclQty = group.Sum(s => s.LocalQty),
                     lclPrice = group.Sum(s => s.LocalPrice),
                     ncsQty = group.Sum(s => s.NCSQty),
                     ncsPrice = group.Sum(s => s.NCSPrice),
-
                     expendAdj = group.Sum(s => s.ExpenditureGoodAdj),
                     expendAdjPrice = group.Sum(s => s.ExpenditureGoodAdjPrice),
                     expendRetur = group.Sum(s => s.ExpenditureGoodRetur),
@@ -2388,8 +2385,8 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                 //reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI9", DataType = typeof(string) });
 
                 reportDataTable.Rows.Add("", "", "", "",
-                "Saldo Awal WIP Cutting", "Cutting In (WIP Cutting)", "Cutting Out / HP", "Aval Komponen dari Cutting", "Aval Komponen dari Sewing", "Saldo Akhir WIP Cutting",
 
+                "Saldo Awal WIP Cutting", "Cutting In (WIP Cutting)", "Cutting Out / HP", "Aval Komponen dari Cutting", "Aval Komponen dari Sewing", "Saldo Akhir WIP Cutting",
                 "Saldo Awal WIP Sewing", "Sewing In (WIP Sewing)", "Sewing Out (WIP Finishing)", "Retur ke Cutting", "Saldo Akhir WIP Sewing",
                 "Saldo Awal WIP Finishing", "Finishing In (WIP Finishing)", "Finishing Out (WIP BJ)", "Retur ke Sewing", "Saldo Akhir WIP Finishing",
                 "Saldo Awal Barang Jadi", "Barang Jadi In/ (WIP BJ)", "Pengiriman Export", "Pengiriman Gudang Sisa", "Pengiriman Arsip Sample", "Pengiriman Arsip MD", "Pengiriman Lokal", "Pengiriman Export NCS", "Saldo Akhir Barang Jadi"
@@ -2450,7 +2447,6 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                 reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI12", DataType = typeof(string) });
                 reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI13", DataType = typeof(string) });
                 reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI14", DataType = typeof(string) });
-
                 reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI15", DataType = typeof(string) });
                 reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI16", DataType = typeof(string) });
                 reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI17", DataType = typeof(string) });

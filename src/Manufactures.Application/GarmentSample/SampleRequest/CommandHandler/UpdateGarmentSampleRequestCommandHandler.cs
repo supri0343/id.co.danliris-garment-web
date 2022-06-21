@@ -52,6 +52,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                 else
                 {
                     product.SetColor(item.Color);
+                    product.SetFabric(item.Fabric);
                     product.SetQuantity(item.Quantity);
                     product.SetSizeDescription(item.SizeDescription);
                     product.SetSizeId(new SizeId(item.Size.Id));
@@ -73,6 +74,7 @@ namespace Manufactures.Application.GarmentSample.SampleRequest.CommandHandler
                         SampleRequest.Identity,
                         product.Style,
                         product.Color,
+                        product.Fabric,
                         new SizeId(product.Size.Id),
                         product.Size.Size,
                         product.SizeDescription,

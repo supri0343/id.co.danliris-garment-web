@@ -109,8 +109,13 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 
         public double FinishingInExpenditure { get; internal set; }
 		public double FinishingInExpenditurepPrice { get; internal set; }
-		
-		public double ExpenditureGoodRemainingQty { get; internal set; }
+
+        public double LocalQty { get; internal set; }
+        public double LocalPrice { get; internal set; }
+        public double NCSQty { get; internal set; }
+        public double NCSPrice { get; internal set; }
+
+        public double ExpenditureGoodRemainingQty { get; internal set; }
 		public double ExpenditureGoodRemainingPrice { get; internal set; }
 		public double ExpenditureGoodInTransfer { get; internal set; }
 		public double ExpenditureGoodInTransferPrice { get; internal set; }
@@ -132,6 +137,7 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 		{
 			 
 			this.Ro = flowDto.Ro;
+			this.BasicPrice = flowDto.BasicPrice;
 			this.BuyerCode = flowDto.BuyerCode;
 			this.Article = flowDto.Article;
 			this.Comodity = flowDto.Comodity;

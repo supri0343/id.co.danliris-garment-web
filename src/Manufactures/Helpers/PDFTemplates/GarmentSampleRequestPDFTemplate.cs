@@ -37,10 +37,10 @@ namespace Manufactures.Helpers.PDFTemplates
 
             if (garmentSampleRequest.IsReceived)
             {
-                titleCaption = "SURAT PERMINTAAN PEMBUATAN SAMPLE MARKETING";
+                titleCaption = "SURAT PERMINTAAN PEMBUATAN SAMPLE";
             } else
             {
-                titleCaption = "DRAFT SURAT PERMINTAAN PEMBUATAN SAMPLE MARKETING";
+                titleCaption = "DRAFT SURAT PERMINTAAN PEMBUATAN SAMPLE";
             }
 
             Paragraph title = new Paragraph(titleCaption, header_font);
@@ -170,6 +170,7 @@ namespace Manufactures.Helpers.PDFTemplates
                 garmentSampleRequestProductVM.Style = product.Style;
                 garmentSampleRequestProductVM.Size = product.Size.Size;
                 garmentSampleRequestProductVM.Color = product.Color;
+                garmentSampleRequestProductVM.Fabric = product.Fabric;
                 garmentSampleRequestProductVM.SizeDescription = product.SizeDescription;
                 garmentSampleRequestProductVM.Quantity = product.Quantity;
                 products.Add(garmentSampleRequestProductVM);
@@ -191,7 +192,7 @@ namespace Manufactures.Helpers.PDFTemplates
             detailBarang.SpacingAfter = 10f;
             document.Add(detailBarang);
 
-            PdfPTable tableContent = new PdfPTable(5);
+            PdfPTable tableContent = new PdfPTable(6);
             List<float> widths2 = new List<float>();
             widths2.Add(1f);
             widths2.Add(1f);
@@ -199,13 +200,23 @@ namespace Manufactures.Helpers.PDFTemplates
             widths2.Add(1f);
             widths2.Add(1f);
 
-            tableContent.SetWidths(widths2.ToArray());
+            List<float> widths3 = new List<float>();
+            widths3.Add(1f);
+            widths3.Add(1f);
+            widths3.Add(1f);
+            widths3.Add(1f);
+            widths3.Add(1f);
+            widths3.Add(1f);
+
+            tableContent.SetWidths(widths3.ToArray());
 
             cellCenter.Phrase = new Phrase("Style", bold_font);
             tableContent.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("Size", bold_font);
             tableContent.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("Colour", bold_font); 
+            tableContent.AddCell(cellCenter);
+            cellCenter.Phrase = new Phrase("Fabric", bold_font);
             tableContent.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("Keterangan Size", bold_font);
             tableContent.AddCell(cellCenter);
@@ -221,6 +232,8 @@ namespace Manufactures.Helpers.PDFTemplates
                 tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase(i.Color, normal_font);
                 tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase(i.Fabric, normal_font);
+                tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase(i.SizeDescription, normal_font);
                 tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase(i.Quantity.ToString(), normal_font);
@@ -229,7 +242,7 @@ namespace Manufactures.Helpers.PDFTemplates
             }
 
             cellRight.Phrase = new Phrase("TOTAL", bold_font);
-            cellRight.Colspan = 4;
+            cellRight.Colspan = 5;
             tableContent.AddCell(cellRight);
             cellCenter.Phrase = new Phrase(grandTotal.ToString(), bold_font);
             tableContent.AddCell(cellCenter);
@@ -392,6 +405,8 @@ namespace Manufactures.Helpers.PDFTemplates
     {
         public string Style { get; set; }
         public string Color { get; set; }
+
+        public string Fabric { get; set; }
         public string Size { get; set; }
         public string SizeDescription { get; set; }
         public double Quantity { get; set; }

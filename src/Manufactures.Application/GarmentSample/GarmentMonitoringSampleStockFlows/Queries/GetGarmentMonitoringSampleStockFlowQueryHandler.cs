@@ -226,7 +226,6 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
             DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
             dateTo = dateTo.AddHours(7); DateTimeOffset dateFareNew = dateTo.AddDays(1);
 
-
             var sumbasicPrice = (from a in (from prep in garmentPreparingRepository.Query
                                             where (request.ro == null || (request.ro != null && request.ro != "" && prep.RONo == request.ro))
                                             select new { prep.RONo, prep.Identity })
@@ -1455,6 +1454,7 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                              ExportPrice = group.Sum(x => x.ExportPrice),
                                              SampleQty = group.Sum(x => x.SampleQty),
                                              SamplePrice = group.Sum(x => x.SamplePrice),
+
                                              MDQty = group.Sum(x => x.MDQuantity),
                                              MDPrice = group.Sum(x => x.MDPrice),
 
@@ -1659,7 +1659,6 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                     samplePrice = group.Sum(s => s.SamplePrice),
                     mdQty = group.Sum(s => s.MDQty),
                     mdPrice = group.Sum(s => s.MDPrice),
-
                     lclQty = group.Sum(s => s.LocalQty),
                     lclPrice = group.Sum(s => s.LocalPrice),
                     ncsQty = group.Sum(s => s.NCSQty),
@@ -1681,8 +1680,67 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 
             GarmentMonitoringSampleStockFlowListViewModel garmentMonitoringSampleFlow = new GarmentMonitoringSampleStockFlowListViewModel();
             List<GarmentMonitoringSampleStockFlowDto> monitoringDtos = new List<GarmentMonitoringSampleStockFlowDto>();
-
             var ros = querySum.Select(x => x.ro).Distinct().ToArray();
+		 
+
+			var dtosPrice = (from a in querySum
+					
+						select new GarmentMonitoringSampleStockFlowDto
+						{
+							Article = a.article,
+							Ro = a.ro,
+							FC = Math.Round(Convert.ToDouble(a.fc), 2),
+							Fare = a.fare,
+							BasicPrice = Math.Round(Convert.ToDouble((from aa in sumbasicPrice where aa.RO == a.ro select aa.BasicPrice / aa.Count).FirstOrDefault()), 2) * Convert.ToDouble((from cost in sumFCs where cost.RO == a.ro select cost.FC / cost.Count).FirstOrDefault()),
+							BeginingBalanceCuttingQty = a.begining < 0 ? 0 : a.begining,
+							QtyCuttingTransfer = Math.Round(a.qtyCuttingTransfer, 2),
+							QtyCuttingsubkon = Math.Round(a.qtCuttingSubkon, 2),
+							QtyCuttingIn = Math.Round(a.qtyCuttingIn, 2),
+							QtyCuttingOut = Math.Round(a.qtycutting, 2),
+							Comodity = a.comodity,
+							AvalCutting = Math.Round(a.qtyavalcut, 2),
+							AvalSewing = Math.Round(a.qtyavalsew, 2),
+							EndBalancCuttingeQty = Math.Round(a.begining + a.qtyCuttingIn - a.qtycutting - a.qtyCuttingTransfer - a.qtCuttingSubkon - a.qtyavalcut - a.qtyavalsew, 2) < 0 ? 0 : Math.Round(a.begining + a.qtyCuttingIn - a.qtycutting - a.qtyCuttingTransfer - a.qtCuttingSubkon - a.qtyavalcut - a.qtyavalsew, 2),
+							BeginingBalanceLoadingQty = Math.Round(a.beginingloading, 2) < 0 ? 0 : Math.Round(a.beginingloading, 2),
+							QtyLoadingIn = Math.Round(a.qtyLoadingIn, 2),
+							QtyLoadingInTransfer = Math.Round(a.qtyloadingInTransfer, 2),
+							QtyLoading = Math.Round(a.qtyloading, 2),
+							QtyLoadingAdjs = Math.Round(a.qtyLoadingAdj, 2),
+							EndBalanceLoadingQty = (Math.Round(a.beginingloading + a.qtyLoadingIn + a.qtyloadingInTransfer - a.qtyloading - a.qtyLoadingAdj, 2)) < 0 ? 0 : (Math.Round(a.beginingloading + a.qtyLoadingIn + a.qtyloadingInTransfer - a.qtyloading - a.qtyLoadingAdj, 2)),
+							BeginingBalanceSewingQty = Math.Round(a.beginingSewing, 2),
+							QtySewingIn = Math.Round(a.sewingIn, 2),
+							QtySewingOut = Math.Round(a.sewingout, 2),
+							QtySewingInTransfer = Math.Round(a.sewingintransfer, 2),
+							QtySewingRetur = Math.Round(a.sewingretur, 2),
+							WipSewingOut = Math.Round(a.wipsewing, 2),
+							WipFinishingOut = Math.Round(a.wipfinishing, 2),
+							QtySewingAdj = Math.Round(a.sewingadj, 2),
+							EndBalanceSewingQty = Math.Round(a.beginingSewing + a.sewingIn - a.sewingout + a.sewingintransfer - a.wipsewing - a.wipfinishing - a.sewingretur - a.sewingadj, 2),
+							BeginingBalanceFinishingQty = Math.Round(a.beginingbalanceFinishing, 2),
+							FinishingInExpenditure = Math.Round(a.finishingout + a.subconout, 2),
+							FinishingInQty = Math.Round(a.finishingin, 2),
+							FinishingOutQty = Math.Round(a.finishingout, 2),
+							BeginingBalanceSubconQty = Math.Round(a.beginingbalancesubcon, 2),
+							SubconInQty = Math.Round(a.subconIn, 2),
+							SubconOutQty = Math.Round(a.subconout, 2),
+							EndBalanceSubconQty = Math.Round(a.beginingbalancesubcon + a.subconIn - a.subconout, 2),
+							FinishingInTransferQty = Math.Round(a.finishingintransfer, 2),
+							FinishingReturQty = Math.Round(a.finishinigretur, 2),
+							FinishingAdjQty = Math.Round(a.finishingadj, 2),
+							BeginingBalanceExpenditureGood = Math.Round(a.beginingBalanceExpenditureGood, 2),
+							EndBalanceFinishingQty = Math.Round(a.beginingbalanceFinishing + a.finishingin + a.finishingintransfer - a.finishingout - a.finishingadj - a.finishinigretur, 2),
+							ExportQty = Math.Round(a.exportQty, 2),
+							SampleQty = Math.Round(a.sampleQty, 2),
+							MDQty = Math.Round(a.mdQty, 2),
+                            LocalQty = Math.Round(a.lclQty, 2),
+                            NCSQty = Math.Round(a.ncsQty, 2),
+                            OtherQty = Math.Round(a.otherqty, 2),
+							ExpenditureGoodAdj = Math.Round(a.expendAdj, 2),
+							ExpenditureGoodRetur = Math.Round(a.expendRetur, 2),
+							ExpenditureGoodInTransfer = Math.Round(a.expenditureInTransfer, 2),
+							EndBalanceExpenditureGood = Math.Round(a.beginingBalanceExpenditureGood + a.finishingout + a.subconout + a.expendRetur + a.expenditureInTransfer - a.exportQty - a.otherqty - a.sampleQty - a.mdQty - a.lclQty - a.ncsQty, 2),
+							
+								}).ToList();
 
 
             var dtosPrice = (from a in querySum
@@ -1746,7 +1804,6 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 
 
             var dtos = (from a in dtosPrice
-
                         select new GarmentMonitoringSampleStockFlowDto
                         {
                             Article = a.Article,
@@ -1832,7 +1889,6 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                             SamplePrice = Math.Round(((Convert.ToDouble(a.Fare)) + Convert.ToDouble(a.BasicPrice)) * a.SampleQty, 2),
                             MDQty = Math.Round(a.MDQty, 2),
                             MDPrice = Math.Round(((Convert.ToDouble(a.Fare)) + Convert.ToDouble(a.BasicPrice)) * a.MDQty, 2),
-
                             LocalQty = Math.Round(a.LocalQty, 2),
                             LocalPrice = Math.Round(((Convert.ToDouble(a.Fare)) + Convert.ToDouble(a.BasicPrice)) * a.LocalQty, 2),
 
@@ -1989,7 +2045,6 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                                SamplePrice = item.SamplePrice,
                                MDQty = item.MDQty,
                                MDPrice = item.MDPrice,
-
                                LocalQty = item.LocalQty,
                                LocalPrice = item.LocalPrice,
                                NCSQty = item.NCSQty,

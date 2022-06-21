@@ -2,6 +2,8 @@
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentSubcon.GarmentSubconContracts.ExcelTemplates;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubconReport;
+using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconContactReport;
+using Manufactures.Domain.GarmentSubcon.SubconContracts;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
@@ -56,6 +58,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             });
         }
 
+       
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
@@ -209,7 +212,6 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
-        
         [HttpGet("xls/{id}")]
         public async Task<IActionResult> GetXls(string id)
         {

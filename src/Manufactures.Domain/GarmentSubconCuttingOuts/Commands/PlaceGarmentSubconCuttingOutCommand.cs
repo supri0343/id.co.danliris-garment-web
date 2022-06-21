@@ -43,10 +43,10 @@ namespace Manufactures.Domain.GarmentSubconCuttingOuts.Commands
             RuleFor(r => r.CuttingOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.CuttingOutDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.CuttingOutDate).NotNull().GreaterThan(r => r.CuttingInDate.GetValueOrDefault().Date).WithMessage(r => $"Tanggal Tidak Boleh Kurang dari tanggal {r.CuttingInDate.GetValueOrDefault().ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"))}");
-
-            RuleFor(r => r.TotalQty)
-               .LessThanOrEqualTo(r => r.PlanPORemainingQuantity)
-               .WithMessage(x => $"'Total Jumlah Potong' tidak boleh lebih dari '{x.PlanPORemainingQuantity}'.");
+			//29april 2022 , permintaan user kustanti, karena buyer JJ dihilangkan validasi 
+            //RuleFor(r => r.TotalQty)
+            //   .LessThanOrEqualTo(r => r.PlanPORemainingQuantity)
+            //   .WithMessage(x => $"'Total Jumlah Potong' tidak boleh lebih dari '{x.PlanPORemainingQuantity}'.");
 
             RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
             RuleFor(r => r.Article).NotNull();

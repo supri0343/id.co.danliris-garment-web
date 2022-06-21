@@ -5,6 +5,7 @@ using System.Text;
 using Manufactures.Domain.GarmentSubcon.CustomsOuts.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconCustomsIns.Repositories;
+using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconContactReport;
 using Barebone.Tests;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubconReport;
 using System.Threading.Tasks;

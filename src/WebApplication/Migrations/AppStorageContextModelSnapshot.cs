@@ -3511,7 +3511,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(25);
 
                     b.Property<string>("ExpenditureType")
-                        .HasMaxLength(25);
+                        .HasMaxLength(75);
 
                     b.Property<string>("Invoice")
                         .HasMaxLength(50);
@@ -4275,6 +4275,9 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(32);
 
                     b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<string>("Fabric")
+                        .HasMaxLength(500);
 
                     b.Property<int>("Index");
 
