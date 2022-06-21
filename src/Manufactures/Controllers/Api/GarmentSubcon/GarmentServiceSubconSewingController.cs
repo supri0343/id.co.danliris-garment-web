@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconGarmentWashReport;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Repositories;
 using Manufactures.Dtos.GarmentSubcon;
@@ -238,6 +240,28 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             {
                 FileDownloadName = $"{garmentServiceSubconSewingDto.ServiceSubconSewingNo}.pdf"
             };
+        }
+
+        [HttpGet("download")]
+        public async Task<IActionResult> GetXlsSubconGarmentWashReport(int supplierNo, string contractType, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string order = "{ }")
+        {
+            try
+            {
+                GetXlsGarmentSubconGarmentWashReporQuery query = new GetXlsGarmentSubconGarmentWashReporQuery(page, size, order, dateFrom, dateTo);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = String.Format("Laporan SubCon Jasa Garment Wash.xlsx");
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
         }
 
     }

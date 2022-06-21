@@ -103,8 +103,13 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 		public double MDPrice { get; internal set; }
 		public double FinishingInExpenditure { get; internal set; }
 		public double FinishingInExpenditurepPrice { get; internal set; }
-		
-		public double ExpenditureGoodRemainingQty { get; internal set; }
+
+        public double LocalQty { get; internal set; }
+        public double LocalPrice { get; internal set; }
+        public double NCSQty { get; internal set; }
+        public double NCSPrice { get; internal set; }
+
+        public double ExpenditureGoodRemainingQty { get; internal set; }
 		public double ExpenditureGoodRemainingPrice { get; internal set; }
 		public double ExpenditureGoodInTransfer { get; internal set; }
 		public double ExpenditureGoodInTransferPrice { get; internal set; }
