@@ -2,6 +2,7 @@
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Infrastructure.External.DanLirisClient.Microservice;
 using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
+using Manufactures.Application.GarmentSubcon.GarmentServiceSubconShrinkagePanels.ExcelTemplates;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Repositories;
 using Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconShrinkagePanels;
@@ -12,6 +13,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -196,5 +198,35 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 FileDownloadName = $"{garmentServiceSubconShrinkagePanelDto.ServiceSubconShrinkagePanelNo}.pdf"
             };
         }
+
+        [HttpGet("getXls")]
+        public async Task<IActionResult> GetXls(DateTime dateFrom, DateTime dateTo, string token)
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsSubconServiceSubconShrinkagePanelsQuery query = new GetXlsSubconServiceSubconShrinkagePanelsQuery(dateFrom, dateTo, token);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = "Laporan Subcon Shrinkage BB";
+
+                if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+                if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch(Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
     }
 }
