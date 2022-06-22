@@ -165,7 +165,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No. Subcon Jasa", DataType = typeof(string) });
             //reportDataTable.Columns.Add(new DataColumn() { ColumnName = "anggal Subcon BB Fabric Wash / Print", DataType = typeof(DateTimeOffset) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No. Bon Pengeluaran Unit", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tanggal Pengeluaran", DataType = typeof(DateTimeOffset) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tanggal Pengeluaran", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Asal Unit", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Asal Gudang", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kode Barang", DataType = typeof(string) });
@@ -216,8 +216,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
                         }
                     }
 
-                    //var expenditureDate = item.expendituredate.ToString("dd MMM yyyy");
-                    reportDataTable.Rows.Add(item.ServiceSubconFabricWashNo, item.unitExpenditureNo, item.expendituredate, item.unitSenderCode, item.unitSenderName, item.productCode, item.productName, item.designColor, item.uomUnit, item.quantity);
+                    var expenditureDate = item.expendituredate.ToString("dd MMM yyyy");
+                    //var dateExpenditure = item.expendituredate.HasValue ? item.expendituredate.GetValueOrDefault().ToString("dd/MM/yyyy") : string.Empty;
+                    reportDataTable.Rows.Add(item.ServiceSubconFabricWashNo, item.unitExpenditureNo, expenditureDate, item.unitSenderCode, item.unitSenderName, item.productCode, item.productName, item.designColor, item.uomUnit, item.quantity);
                 }
 
 
