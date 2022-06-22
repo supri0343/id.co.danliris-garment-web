@@ -145,7 +145,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
             {
                 serviceSubconFabricWashNo = "",
                 //serviceSubconFabricWashDate = DateTimeOffset.UtcNow,
-                //unitExpenditureNo = "",
+                unitExpenditureNo = "",
                 expendituredate = DateTimeOffset.UtcNow,
                 unitSenderCode = "",
                 unitSenderName = "",
@@ -174,59 +174,167 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Design/Color", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jumlah", DataType = typeof(double) });
-            
-            int counter = 4;
 
-            if (garmentServiceSubconFabricWashListViewModel.serviceSubconFabricWashes.Count > 0)
-            {
-                foreach (var report in garmentServiceSubconFabricWashListViewModel.serviceSubconFabricWashes)
+            //int counter = 4;
+
+            //if (garmentServiceSubconFabricWashListViewModel.serviceSubconFabricWashes.Count > 0)
+            //{
+            //    foreach (var report in garmentServiceSubconFabricWashListViewModel.serviceSubconFabricWashes)
+            //    {
+            //        //string ServiceSubconFabricWashDate = report.serviceSubconFabricWashDate.GetValueOrDefault() == new DateTime(1970, 1, 1) || report.serviceSubconFabricWashDate.GetValueOrDefault().ToString("dd MMM yyyy") == "01 Jan 0001" ? "-" : report.serviceSubconFabricWashDate.GetValueOrDefault().ToString("dd MMM yyy");
+            //        reportDataTable.Rows.Add(report.serviceSubconFabricWashNo, /*report.serviceSubconFabricWashDate,*/ report.unitExpenditureNo, report.expendituredate, report.unitSenderCode, report.unitSenderName, report.productCode, report.productName, /*report.productRemark,*/ report.designcolor, report.uomUnit, report.quantity);
+            //        counter++;
+
+            //    }
+            //}
+
+            var index = 1;
+            int idx = 1;
+            var rCount = 0;
+            Dictionary<string, string> Rowcount = new Dictionary<string, string>();
+
+            if (Query.ToArray().Count() == 0)
+                reportDataTable.Rows.Add("", "", "", "", "", "", "", "", "", 0);
+            else
+                foreach (var item in Query)
                 {
-                    //string ServiceSubconFabricWashDate = report.serviceSubconFabricWashDate.GetValueOrDefault() == new DateTime(1970, 1, 1) || report.serviceSubconFabricWashDate.GetValueOrDefault().ToString("dd MMM yyyy") == "01 Jan 0001" ? "-" : report.serviceSubconFabricWashDate.GetValueOrDefault().ToString("dd MMM yyy");
-                    reportDataTable.Rows.Add(report.serviceSubconFabricWashNo, /*report.serviceSubconFabricWashDate,*/ report.unitExpenditureNo, report.expendituredate, report.unitSenderCode, report.unitSenderName, report.productCode, report.productName, /*report.productRemark,*/ report.designcolor, report.uomUnit, report.quantity);
-                    counter++;
+                    idx++;
+                    if (!Rowcount.ContainsKey(item.ServiceSubconFabricWashNo))
+                    {
+                        rCount = 0;
+                        var index1 = idx;
+                        Rowcount.Add(item.ServiceSubconFabricWashNo, index1.ToString());
+                    }
+                    else
+                    {
+                        rCount += 1;
+                        Rowcount[item.ServiceSubconFabricWashNo] = Rowcount[item.ServiceSubconFabricWashNo] + "-" + rCount.ToString();
+                        var val = Rowcount[item.ServiceSubconFabricWashNo].Split("-");
+                        if ((val).Length > 0)
+                        {
+                            Rowcount[item.ServiceSubconFabricWashNo] = val[0] + "-" + rCount.ToString();
+                        }
+                    }
 
+                    //var expenditureDate = item.expendituredate.ToString("dd MMM yyyy");
+                    reportDataTable.Rows.Add(item.ServiceSubconFabricWashNo, item.unitExpenditureNo, item.expendituredate, item.unitSenderCode, item.unitSenderName, item.productCode, item.productName, item.designColor, item.uomUnit, item.quantity);
                 }
-            }
-            using (var package = new ExcelPackage())
+
+
+            //using (var package = new ExcelPackage())
+            //{
+            //    var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
+
+            //    worksheet.Cells["A" + 4 + ":J" + 4 + ""].Style.Font.Bold = true;
+            //    worksheet.Cells["A1"].Value = "Laporan  Subcon Fabric Wash "; worksheet.Cells["A" + 1 + ":J" + 1 + ""].Merge = true;
+            //    worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
+            //    //worksheet.Cells["A3"].Value = "Konfeksi " + ;
+            //    worksheet.Cells["A" + 1 + ":J" + 1 + ""].Merge = true;
+            //    worksheet.Cells["A" + 2 + ":J" + 2 + ""].Merge = true;
+            //    worksheet.Cells["A" + 3 + ":J" + 3 + ""].Merge = true;
+            //    worksheet.Cells["A" + 1 + ":J" + 4 + ""].Style.Font.Bold = true;
+            //    worksheet.Cells["A" + 1 + ":J" + 4 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            //    worksheet.Cells["A" + 1 + ":J" + 4 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            //    worksheet.Cells.AutoFitColumns();
+            //    worksheet.Cells["A4"].LoadFromDataTable(reportDataTable, true);
+            //    worksheet.Cells["G" + 2 + ":I" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+            //    worksheet.Cells["J" + 2 + ":J" + counter + ""].Style.Numberformat.Format = "#,##0.00";
+            //    worksheet.Cells["J" + counter + ":J" + counter + ""].Style.Font.Bold = true;
+            //    worksheet.Cells["A" + counter].Value = "T O T A L";
+            //    worksheet.Cells["A" + counter].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            //    worksheet.Cells["A" + counter].Style.Font.Bold = true;
+            //    worksheet.Cells["A" + counter + ":I" + counter + ""].Merge = true;
+            //    worksheet.Cells["A" + 4 + ":J" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+            //    worksheet.Cells["A" + 4 + ":J" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+            //    worksheet.Cells["A" + 4 + ":J" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+            //    worksheet.Cells["A" + 4 + ":J" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+            //    worksheet.Cells["G" + (counter) + ":I" + (counter) + ""].Style.Font.Bold = true;
+            //    worksheet.Cells["A" + 4 + ":J" + 4 + ""].Style.Font.Bold = true;
+
+            ExcelPackage package = new ExcelPackage();
+            var worksheet = package.Workbook.Worksheets.Add("Sheet1");
+
+            var countdata = Query.Count();
+
+            worksheet.Cells["A" + 1 + ":J" + 4 + ""].Style.Font.Bold = true;
+            worksheet.Cells["A1"].Value = "Laporan  Subcon Fabric Wash";
+            worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
+            worksheet.Cells["A" + 1 + ":J" + 1 + ""].Merge = true;
+            worksheet.Cells["A" + 2 + ":J" + 2 + ""].Merge = true;
+            worksheet.Cells["A" + 1 + ":J" + 4 + ""].Style.Font.Bold = true;
+            
+
+            if (countdata > 0)
             {
-                var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
+                worksheet.Cells["I" + 5 + ":I" + (4 + countdata) + ""].Merge = true;
+                worksheet.Cells["I" + 5 + ":I" + (4 + countdata) + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
 
-                worksheet.Cells["A" + 4 + ":J" + 4 + ""].Style.Font.Bold = true;
-                worksheet.Cells["A1"].Value = "Laporan  Subcon Fabric Wash "; worksheet.Cells["A" + 1 + ":J" + 1 + ""].Merge = true;
-                worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
-                //worksheet.Cells["A3"].Value = "Konfeksi " + ;
-                worksheet.Cells["A" + 1 + ":J" + 1 + ""].Merge = true;
-                worksheet.Cells["A" + 2 + ":J" + 2 + ""].Merge = true;
-                worksheet.Cells["A" + 3 + ":J" + 3 + ""].Merge = true;
-                //worksheet.Cells["A" + 1 + ":L" + 2 + ""].Style.Font.Size = 15;
-                worksheet.Cells["A" + 1 + ":J" + 4 + ""].Style.Font.Bold = true;
-                worksheet.Cells["A" + 1 + ":J" + 4 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Cells["A" + 1 + ":J" + 4 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Cells["A4"].LoadFromDataTable(reportDataTable, true);
-                //worksheet.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                worksheet.Cells["G" + 2 + ":I" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-                //worksheet.Column(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                worksheet.Cells["J" + 2 + ":J" + counter + ""].Style.Numberformat.Format = "#,##0.00";
-                worksheet.Cells["J" + counter + ":J" + counter + ""].Style.Font.Bold = true;
-                worksheet.Cells["A" + counter].Value = "T O T A L";
-                worksheet.Cells["A" + counter].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                worksheet.Cells["A" + counter].Style.Font.Bold = true;
-                worksheet.Cells["A" + counter + ":I" + counter + ""].Merge = true;
-                worksheet.Cells["A" + 4 + ":J" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 4 + ":J" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 4 + ":J" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 4 + ":J" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["G" + (counter) + ":I" + (counter) + ""].Style.Font.Bold = true;
-                worksheet.Cells["A" + 4 + ":J" + 4 + ""].Style.Font.Bold = true;
-                var stream = new MemoryStream();
+                worksheet.Cells[$"A{(5 + countdata)}:F{(5 + countdata)}"].Merge = true;
+                worksheet.Cells[$"A{(5 + countdata)}:J{(5 + countdata)}"].Style.Font.Bold = true;
+                //ADD SUMMARY OF QUANTITY
+                worksheet.Cells[$"A{(5 + countdata)}"].Value = "TOTAL";
+                worksheet.Cells[$"J{(5 + countdata)}"].Formula = "SUM(" + worksheet.Cells["J" + 5 + ":J" + (4 + countdata) + ""].Address + ")";
+                worksheet.Calculate();
+                
+            }
 
+            worksheet.Cells.AutoFitColumns();
+            worksheet.Cells["A4"].LoadFromDataTable(reportDataTable, true);
+            //worksheet.Cells["A" + 4 + ":J" + countdata + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+            //worksheet.Cells["A" + 4 + ":J" + countdata + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+            //worksheet.Cells["A" + 4 + ":J" + countdata + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+            //worksheet.Cells["A" + 4 + ":J" + countdata + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+            //worksheet.Cells["A" + 4 + ":J" + 4 + ""].Style.Font.Bold = true;
 
-                //var stream = new MemoryStream();
+            foreach (var a in Rowcount)
+            {
+                var UnitrowNum = a.Value.Split("-");
+                int rowNum2 = 1;
+                int rowNum1 = Convert.ToInt32(UnitrowNum[0]);
+                if (UnitrowNum.Length > 1)
+                {
+                    rowNum2 = Convert.ToInt32(rowNum1) + Convert.ToInt32(UnitrowNum[1]);
+                }
+                else
+                {
+                    rowNum2 = Convert.ToInt32(rowNum1);
+                }
+
+                worksheet.Cells[$"A{(rowNum1 + 3)}:A{(rowNum2) + 3}"].Merge = true;
+                worksheet.Cells[$"A{(rowNum1 + 3)}:A{(rowNum2) + 3}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells[$"A{(rowNum1 + 3)}:A{(rowNum2) + 3}"].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+
+                worksheet.Cells[$"B{(rowNum1 + 3)}:B{(rowNum2) + 3}"].Merge = true;
+                worksheet.Cells[$"B{(rowNum1 + 3)}:B{(rowNum2) + 3}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells[$"B{(rowNum1 + 3)}:B{(rowNum2) + 3}"].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+
+                worksheet.Cells[$"C{(rowNum1 + 3)}:C{(rowNum2) + 3}"].Merge = true;
+                worksheet.Cells[$"C{(rowNum1 + 3)}:C{(rowNum2) + 3}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells[$"C{(rowNum1 + 3)}:C{(rowNum2) + 3}"].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+
+                worksheet.Cells[$"D{(rowNum1 + 3)}:D{(rowNum2) + 3}"].Merge = true;
+                worksheet.Cells[$"D{(rowNum1 + 3)}:D{(rowNum2) + 3}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells[$"D{(rowNum1 + 3)}:D{(rowNum2) + 3}"].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+
+                worksheet.Cells[$"E{(rowNum1 + 3)}:E{(rowNum2) + 3}"].Merge = true;
+                worksheet.Cells[$"E{(rowNum1 + 3)}:E{(rowNum2) + 3}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells[$"E{(rowNum1 + 3)}:E{(rowNum2) + 3}"].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+
+                worksheet.Cells[$"F{(rowNum1 + 3)}:F{(rowNum2) + 3}"].Merge = true;
+                worksheet.Cells[$"F{(rowNum1 + 3)}:F{(rowNum2) + 3}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells[$"F{(rowNum1 + 3)}:F{(rowNum2) + 3}"].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+
+                worksheet.Cells[$"G{(rowNum1 + 3)}:G{(rowNum2) + 3}"].Merge = true;
+                worksheet.Cells[$"G{(rowNum1 + 3)}:G{(rowNum2) + 3}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells[$"G{(rowNum1 + 3)}:G{(rowNum2) + 3}"].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+            }
+
+            var stream = new MemoryStream();
 
                 package.SaveAs(stream);
 
                 return stream;
-            }
+            //}
         }
 	}
 }
