@@ -2,6 +2,7 @@
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Repositories;
+using Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashes.Queries;
 using Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconFabricWashes;
 using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
@@ -190,6 +191,34 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             {
                 FileDownloadName = $"{garmentServiceSubconFabricWashDto.ServiceSubconFabricWashNo}.pdf"
             };
+        }
+
+        [HttpGet("download")]
+        public async Task<IActionResult> GetXls(DateTime dateFrom, DateTime dateTo, string type, int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsServiceSubconFabricWashQuery query = new GetXlsServiceSubconFabricWashQuery(page, size, Order, dateFrom, dateTo, type, WorkContext.Token);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = "Laporan SUBCON BB - FABRIC WASH / PRINT";
+
+                if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+                if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }
