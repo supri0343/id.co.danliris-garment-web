@@ -150,7 +150,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCutting
                              FabricType = (from UEN in gmtExpNoteReport.data where UEN.UENId == a.UENId select UEN.FabricType).FirstOrDefault(),
                              QtyUEN = (from UEN in gmtExpNoteReport.data where UEN.UENId == a.UENId select UEN.Quntity).FirstOrDefault(),
                              UomUEN = (from UEN in gmtExpNoteReport.data where UEN.UENId == a.UENId select UEN.UOMUnit).FirstOrDefault(),
-                         }).ToList();
+                         }).ToList().OrderBy(x => x.DLNo).ThenBy(x => x.UENNo);
 
                           //.GroupBy(x => new {
                           //    x.DLType,
