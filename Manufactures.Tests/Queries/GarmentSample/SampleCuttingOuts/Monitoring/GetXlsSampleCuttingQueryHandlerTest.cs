@@ -185,13 +185,13 @@ namespace Manufactures.Tests.Queries.GarmentSample.SampleCuttingOuts.Monitoring
 			.Setup(s => s.Query)
 			.Returns(new List<GarmentSampleRequestProductReadModel>
 			{
-				new Domain.GarmentSample.SampleRequests.GarmentSampleRequestProduct (guidSampleReqId,guidSampleReqId,"","","",new Domain.Shared.ValueObjects.SizeId(1),"","",10,1).GetReadModel()
+				new Domain.GarmentSample.SampleRequests.GarmentSampleRequestProduct (guidSampleReqId,guidSampleReqId,"","",new Domain.Shared.ValueObjects.SizeId(1),"","",10,1).GetReadModel()
 			}.AsQueryable());
 			_mockGarmentSampleRequestRepository
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentSampleRequestReadModel>
 				{
-				new Domain.GarmentSample.SampleRequests.GarmentSampleRequest (guidSampleReqId,"","","ro","ro",DateTimeOffset.Now,new Domain.Shared.ValueObjects.BuyerId(1),"","",new Domain.Shared.ValueObjects.GarmentComodityId(1),"","","","",DateTimeOffset.Now,"","","",true,true,DateTimeOffset.Now,"",false,DateTimeOffset.Now,"","",false,DateTimeOffset.Now,"","","","","","",new Domain.Shared.ValueObjects.SectionId(1),"",null).GetReadModel()
+				new Domain.GarmentSample.SampleRequests.GarmentSampleRequest (guidSampleReqId,"","","ro","ro",DateTimeOffset.Now,new Domain.Shared.ValueObjects.BuyerId(1),"","",new Domain.Shared.ValueObjects.GarmentComodityId(1),"","","","",DateTimeOffset.Now,"","","",true,true,DateTimeOffset.Now,"",false,DateTimeOffset.Now,"","",false,DateTimeOffset.Now,"","","","","","",new Domain.Shared.ValueObjects.SectionId(1),"","").GetReadModel()
 				}.AsQueryable());
 
 			// Act
