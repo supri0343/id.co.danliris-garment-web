@@ -243,7 +243,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         }
 
         [HttpGet("download")]
-        public async Task<IActionResult> GetXlsSubconGarmentWashReport(int supplierNo, string contractType, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string order = "{ }")
+        public async Task<IActionResult> GetXlsSubconGarmentWashReport(DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string order = "{ }")
         {
             try
             {

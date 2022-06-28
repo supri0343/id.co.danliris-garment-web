@@ -1,5 +1,10 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOComponentServiceReport;
+using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCuttingSewingReport;
+using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOGarmentWashReport;
+using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMaterialReport;
+using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOSewingReport;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands;
@@ -14,6 +19,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -194,6 +200,116 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             {
                 FileDownloadName = $"{garmentSubconDeliveryLetterOutDto.DLNo}.pdf"
             };
+        }
+        //
+        [HttpGet("raw-material/download")]
+        public async Task<IActionResult> GetXlsSubconDLORawMaterialReport(DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string order = "{ }")
+        {
+            try
+            {
+                GetXlsGarmentSubconDLORawMaterialReportQuery query = new GetXlsGarmentSubconDLORawMaterialReportQuery(page, size, order, dateFrom, dateTo);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = String.Format("Laporan SJ SubCon Bahan Baku.xlsx");
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+        //
+        [HttpGet("service-component/download")]
+        public async Task<IActionResult> GetXlsSubconDLOComponentServiceReport(DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string order = "{ }")
+        {
+            try
+            {
+                GetXlsGarmentSubconDLOComponentServiceReportQuery query = new GetXlsGarmentSubconDLOComponentServiceReportQuery(page, size, order, dateFrom, dateTo);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = String.Format("Laporan SJ SubCon Jasa Komponen.xlsx");
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+        //
+        [HttpGet("service-garment-wash/download")]
+        public async Task<IActionResult> GetXlsSubconDLOGarmentWashReport(DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string order = "{ }")
+        {
+            try
+            {
+                GetXlsGarmentSubconDLOGarmentWashReportQuery query = new GetXlsGarmentSubconDLOGarmentWashReportQuery(page, size, order, dateFrom, dateTo);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = String.Format("Laporan SubCon Jasa Garment Wash.xlsx");
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+        //
+        [HttpGet("garment-cutting-sewing/download")]
+        public async Task<IActionResult> GetXlsSubconDLOCuttingSewingReport(DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string order = "{ }")
+        {
+            try
+            {
+                GetXlsGarmentSubconDLOCuttingSewingReportQuery query = new GetXlsGarmentSubconDLOCuttingSewingReportQuery(page, size, order, dateFrom, dateTo);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = String.Format("Laporan SubCon Jasa Garment Cutting Sewing.xlsx");
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+        //
+        [HttpGet("garment-sewing/download")]
+        public async Task<IActionResult> GetXlsSubconDLOSewingReport(DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string order = "{ }")
+        {
+            try
+            {
+                GetXlsGarmentSubconDLOSewingReportQuery query = new GetXlsGarmentSubconDLOSewingReportQuery(page, size, order, dateFrom, dateTo);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = String.Format("Laporan SubCon Jasa Garment Sewing.xlsx");
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
         }
     }
 }
