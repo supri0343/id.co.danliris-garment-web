@@ -48,7 +48,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconShrinkagePa
             var query = (from a in _garmentServiceSubconShrinkagePanelRepository.Query
                          join b in _garmentServiceSubconShrinkagePanelItemRepository.Query on a.Identity equals b.ServiceSubconShrinkagePanelId
                          join c in _garmentServiceSubconShrinkagePanelDetailRepository.Query on b.Identity equals c.ServiceSubconShrinkagePanelItemId
-                         where a.ServiceSubconShrinkagePanelDate > dateFrom && a.ServiceSubconShrinkagePanelDate < dateTo
+                         where a.Deleted == false && a.ServiceSubconShrinkagePanelDate >= dateFrom && a.ServiceSubconShrinkagePanelDate <= dateTo
                          select new subconView
                          {
                              noBon = a.ServiceSubconShrinkagePanelNo,
