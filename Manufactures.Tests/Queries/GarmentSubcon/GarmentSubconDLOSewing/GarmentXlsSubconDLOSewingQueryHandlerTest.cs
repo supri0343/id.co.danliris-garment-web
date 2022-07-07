@@ -22,7 +22,10 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOSewing
     public class GarmentXlsSubconDLOGarmentWashQueryHandlerTest : BaseCommandUnitTest
     {
         private readonly Mock<IGarmentSubconDeliveryLetterOutRepository> _mockgarmentSubconDeliveryLetterOutRepository;
+        private readonly Mock<IGarmentSubconDeliveryLetterOutItemRepository> _mockgarmentSubconDeliveryLetterOutItemRepository;
         private readonly Mock<IGarmentCuttingOutRepository> _mockgarmentCuttingOutRepository;
+        private readonly Mock<IGarmentCuttingOutItemRepository> _mockgarmentCuttingOutItemRepository;
+        private readonly Mock<IGarmentCuttingOutDetailRepository> _mockgarmentCuttingOutDetailRepository;
 
         private Mock<IServiceProvider> serviceProviderMock;
 
@@ -30,99 +33,87 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOSewing
         {
 
             _mockgarmentSubconDeliveryLetterOutRepository = CreateMock<IGarmentSubconDeliveryLetterOutRepository>();
+            _mockgarmentSubconDeliveryLetterOutItemRepository = CreateMock<IGarmentSubconDeliveryLetterOutItemRepository>();
             _mockgarmentCuttingOutRepository = CreateMock<IGarmentCuttingOutRepository>();
+            _mockgarmentCuttingOutItemRepository = CreateMock<IGarmentCuttingOutItemRepository>();
+            _mockgarmentCuttingOutDetailRepository = CreateMock<IGarmentCuttingOutDetailRepository>();
 
             _MockStorage.SetupStorage(_mockgarmentSubconDeliveryLetterOutRepository);
+            _MockStorage.SetupStorage(_mockgarmentSubconDeliveryLetterOutItemRepository);
             _MockStorage.SetupStorage(_mockgarmentCuttingOutRepository);
+            _MockStorage.SetupStorage(_mockgarmentCuttingOutItemRepository);
+            _MockStorage.SetupStorage(_mockgarmentCuttingOutDetailRepository);
 
             serviceProviderMock = new Mock<IServiceProvider>();
 
         }
 
-        private GetXlsGarmentSubconDLOSewingReportQueryHandler CreateGetPrepareTraceableQueryHandler()
+        private GetXlsGarmentSubconDLOSewingReportQueryHandler CreateGetXlsGarmentSubconDLOSewingReportQueryHandler()
         {
             return new GetXlsGarmentSubconDLOSewingReportQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
         }
 
-        //[Fact]
-        //public async Task Handle_StateUnderTest_ExpectedBehavior()
-        //{
-        //    GetXlsGarmentRealizationSubconReportQueryHandler unitUnderTest = CreateGetPrepareTraceableQueryHandler();
-        //    CancellationToken cancellationToken = CancellationToken.None;
+        [Fact]
+        public async Task Handle_StateUnderTest_ExpectedBehavior()
+        {
+            GetXlsGarmentSubconDLOSewingReportQueryHandler unitUnderTest = CreateGetXlsGarmentSubconDLOSewingReportQueryHandler();
+            CancellationToken cancellationToken = CancellationToken.None;
 
 
-        //    Guid guidSubconCustomsIn = Guid.NewGuid();
-        //    Guid guidSubconCustomsInItem = Guid.NewGuid();
-        //    Guid guidSubconCustomsInItem2 = Guid.NewGuid();
-        //    Guid guidSubconCustomsOut = Guid.NewGuid();
-        //    Guid guidSubconCustomsOutItem = Guid.NewGuid();
-        //    Guid guidSubconCustomsOutItem2 = Guid.NewGuid();
-        //    Guid guidSubconContract = Guid.NewGuid();
-        //    Guid guidSubconContract2 = Guid.NewGuid();
-        //    Guid guidSubconContractItem = Guid.NewGuid();
-        //    Guid guidSubconContractItem2 = Guid.NewGuid();
+            Guid guidSubconDLO = Guid.NewGuid();
+            Guid guidSubonDLOItem = Guid.NewGuid();
+            Guid guidCuttingOut = Guid.NewGuid();
+            Guid guidCuttingOutItem = Guid.NewGuid();
+            Guid guidCuttingOutDetail = Guid.NewGuid();
 
 
-        //    GetXlsGarmentRealizationSubconReportQuery getMonitoring = new GetXlsGarmentRealizationSubconReportQuery(1, 25, "", "subconcontract", "token");
-        //    GetXlsGarmentRealizationSubconReportQuery getMonitoring2 = new GetXlsGarmentRealizationSubconReportQuery(1, 25, "", "subconcontract2", "token");
+            GetXlsGarmentSubconDLOSewingReportQuery getMonitoring = new GetXlsGarmentSubconDLOSewingReportQuery(1, 25, "", DateTime.Now, DateTime.Now.AddDays(2));
 
 
-        //    _mockgarmentSubconContractRepository
-        //        .Setup(s => s.Query)
-        //        .Returns(new List<GarmentSubconContractReadModel>
-        //        {
-        //                new GarmentSubconContract(guidSubconContract, "contractType", "subconcontract", "agreementNo", new SupplierId (1), "supplierCode", "supplierName", "jobType", "bPJNo", "finishedGoodType", 12, DateTimeOffset.Now, DateTimeOffset.Now, true, new BuyerId(1), "buyerCode", "buyerName", "subconCategory", new UomId(1), "uomUnit", "sKEPNo", DateTimeOffset.Now).GetReadModel(),
-        //                new GarmentSubconContract(guidSubconContract2, "contractType", "subconcontract2", "agreementNo", new SupplierId (1), "supplierCode", "supplierName", "jobType", "bPJNo", "finishedGoodType", 12, DateTimeOffset.Now, DateTimeOffset.Now, true, new BuyerId(1), "buyerCode", "buyerName", "subconCategory2", new UomId(1), "uomUnit", "sKEPNo", DateTimeOffset.Now).GetReadModel(),
+            _mockgarmentSubconDeliveryLetterOutRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>
+                {
+                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", Guid.Empty, "contractNo", "contractType", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "subconCategory" ).GetReadModel()
 
-        //        }.AsQueryable());
+                }.AsQueryable());
 
-        //    _mockgarmentSubconContractItemRepository
-        //         .Setup(s => s.Query)
-        //        .Returns(new List<GarmentSubconContractItemReadModel>
-        //        {
-        //            new GarmentSubconContractItem(guidSubconContractItem, guidSubconContract,new ProductId(1), "productCode", "productName", 21,new UomId(1), "uomUnit").GetReadModel(),
-        //            new GarmentSubconContractItem(guidSubconContractItem2, guidSubconContract2,new ProductId(1), "productCode", "productName", 21,new UomId(1), "uomUnit").GetReadModel()
-        //        }.AsQueryable());
+            _mockgarmentSubconDeliveryLetterOutItemRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentSubconDeliveryLetterOutItemReadModel>
+                {
+                    new GarmentSubconDeliveryLetterOutItem(guidSubonDLOItem, guidSubconDLO, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 1, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", Guid.Empty, "roNo", "poSerialNumber", "subconNo").GetReadModel()
+                }.AsQueryable());
 
-        //    _mockgarmentSubconCustomsInRepository
-        //         .Setup(s => s.Query)
-        //        .Returns(new List<GarmentSubconCustomsInReadModel>
-        //        {
-        //            new GarmentSubconCustomsIn(guidSubconCustomsIn, "bcNo", DateTimeOffset.Now, "bcType", "subconType", guidSubconContract, "subconcontract", new SupplierId(1), "supplierCode", "supplierName", "remark", true, "subconCategory").GetReadModel()
+            _mockgarmentCuttingOutRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingOutReadModel>
+                {
+                    new GarmentCuttingOut(guidCuttingOut, "cutOutNo", "cuttingOutType", new UnitDepartmentId(1), "unitFromCode", "unitFromName", DateTimeOffset.Now, "rONo", "article", new UnitDepartmentId(1), "untCode", "unitName", new GarmentComodityId(1), "comodityCode", "comodityName", true).GetReadModel()
 
-        //        }.AsQueryable());
+                }.AsQueryable());
 
-        //    _mockgarmentSubconCustomsInItemRepository
-        //         .Setup(s => s.Query)
-        //        .Returns(new List<GarmentSubconCustomsInItemReadModel>
-        //        {
-        //            new GarmentSubconCustomsInItem(guidSubconCustomsInItem, guidSubconCustomsIn, new SupplierId(1), "supplierCode", "supplierName", 1, "doNo", 2).GetReadModel(),
-        //            new GarmentSubconCustomsInItem(guidSubconCustomsInItem2, guidSubconCustomsIn, new SupplierId(1), "supplierCode", "supplierName", 1, "doNo", 2).GetReadModel()
-        //        }.AsQueryable());
+            _mockgarmentCuttingOutItemRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingOutItemReadModel>
+                {
+                    new GarmentCuttingOutItem(guidCuttingOutItem, Guid.Empty, Guid.Empty, guidCuttingOut, new ProductId(1), "productCode", "productName", "designColor", 2).GetReadModel()
+                }.AsQueryable());
 
-        //    _mockgarmentSubconCustomsOutRepository
-        //         .Setup(s => s.Query)
-        //        .Returns(new List<GarmentSubconCustomsOutReadModel>
-        //        {
-        //            new GarmentSubconCustomsOut(guidSubconCustomsOut, "customsOutNo", DateTimeOffset.Now, "customsOutType", "subconType", guidSubconContract2, "subconcontract2", new SupplierId(1), "supplierCode", "supplierName", "remark", "subconCategory").GetReadModel()
-        //        }.AsQueryable());
-
-        //    _mockgarmentSubconCustomsOutItemRepository
-        //         .Setup(s => s.Query)
-        //        .Returns(new List<GarmentSubconCustomsOutItemReadModel>
-        //        {
-        //            new GarmentSubconCustomsOutItem(guidSubconCustomsOutItem, guidSubconCustomsOut, "subconDLOutNo", Guid.NewGuid(), 2).GetReadModel(),
-        //            new GarmentSubconCustomsOutItem(guidSubconCustomsOutItem2, guidSubconCustomsOut, "subconDLOutNo", Guid.NewGuid(), 2).GetReadModel()
-        //        }.AsQueryable());
+            _mockgarmentCuttingOutDetailRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingOutDetailReadModel>
+                {
+                    new GarmentCuttingOutDetail(guidCuttingOutDetail, guidCuttingOutItem, new SizeId(1), "sizeName", "color", 2, 2, new UomId(1), "cuttingOutUomUnit", 1, 1).GetReadModel()
+                }.AsQueryable());
 
 
-        //    var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
-        //    var result2 = await unitUnderTest.Handle(getMonitoring2, cancellationToken);
 
-        //    // Assert
-        //    result.Should().NotBeNull();
-        //    result2.Should().NotBeNull();
+            var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
 
-        //}
+            // Assert
+            result.Should().NotBeNull();
+
+        }
     }
 }

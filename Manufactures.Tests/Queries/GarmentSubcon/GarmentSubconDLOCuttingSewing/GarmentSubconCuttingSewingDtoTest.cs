@@ -1,18 +1,18 @@
-﻿using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMaterialReport;
+﻿using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCuttingSewingReport;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLORawMaterialSewing
+namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOCuttingSewing
 {
-    public class GarmentSubconDLORawMaterialDtoTest
+    public class GarmentSubconDLOCuttingSewingDtoTest
     {
         [Fact]
         public void ShouldSucces_Instantiate()
         {
-            GarmentSubconDLORawMaterialReportDto realizationSubconReportDto = new GarmentSubconDLORawMaterialReportDto();
-            GarmentSubconDLORawMaterialReportDto dto = new GarmentSubconDLORawMaterialReportDto(realizationSubconReportDto);
+            GarmentSubconDLOCuttingSewingReportDto CuttingSewingSubconReportDto = new GarmentSubconDLOCuttingSewingReportDto();
+            GarmentSubconDLOCuttingSewingReportDto dto = new GarmentSubconDLOCuttingSewingReportDto(CuttingSewingSubconReportDto);
             Assert.NotNull(dto);
 
         }

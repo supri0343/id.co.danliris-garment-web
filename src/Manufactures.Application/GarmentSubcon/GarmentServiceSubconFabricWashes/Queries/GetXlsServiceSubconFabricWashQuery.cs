@@ -15,7 +15,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
 		public DateTime dateFrom { get; private set; }
 		public DateTime dateTo { get; private set; }
 
-		public GetXlsServiceSubconFabricWashQuery(int page, int size, string order, DateTime dateFrom, DateTime dateTo, string token, string serviceSubconFabricWashNo)
+		public GetXlsServiceSubconFabricWashQuery(int page, int size, string order, DateTime dateFrom, DateTime dateTo, string token)
 		{
 			this.page = page;
 			this.size = size;
