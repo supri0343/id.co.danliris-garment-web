@@ -67,7 +67,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOGarmentWash
             Guid guidSubconSewingDetail = Guid.NewGuid();
 
 
-            GetXlsGarmentSubconDLOGarmentWashReportQuery getMonitoring = new GetXlsGarmentSubconDLOGarmentWashReportQuery(1, 25, "", DateTime.Now, DateTime.Now.AddDays(2));
+            GetXlsGarmentSubconDLOGarmentWashReportQuery getMonitoring = new GetXlsGarmentSubconDLOGarmentWashReportQuery(1, 25, "", DateTime.Now.AddDays(-1), DateTime.Now.AddDays(2));
 
 
             _mockgarmentSubconDeliveryLetterOutRepository

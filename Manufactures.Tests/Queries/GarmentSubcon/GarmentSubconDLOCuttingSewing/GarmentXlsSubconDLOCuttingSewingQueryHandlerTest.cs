@@ -77,7 +77,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOCuttingSewing
 
 				Guid guidDeliveryLetterOut = Guid.NewGuid();
 				Guid guidDeliveryLetterOutItem = Guid.NewGuid();
-				GetXlsGarmentSubconDLOCuttingSewingReportQuery getMonitoring = new GetXlsGarmentSubconDLOCuttingSewingReportQuery(1, 25, "{}", DateTime.Now.AddDays(-2), DateTime.Now.AddDays(2));
+				GetXlsGarmentSubconDLOCuttingSewingReportQuery getMonitoring = new GetXlsGarmentSubconDLOCuttingSewingReportQuery(1, 25, "{}", DateTime.Now.AddDays(-1), DateTime.Now.AddDays(2));
 
 
 				_mockgarmentSubconDeliveryLetterOutItemRepository

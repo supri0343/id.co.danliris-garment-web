@@ -71,7 +71,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOComponent
             Guid guidSubconCuttingSize = Guid.NewGuid();
 
 
-            GetXlsGarmentSubconDLOComponentServiceReportQuery getMonitoring = new GetXlsGarmentSubconDLOComponentServiceReportQuery(1, 25, "{}", DateTime.Now, DateTime.Now.AddDays(2));
+            GetXlsGarmentSubconDLOComponentServiceReportQuery getMonitoring = new GetXlsGarmentSubconDLOComponentServiceReportQuery(1, 25, "{}", DateTime.Now.AddDays(-1), DateTime.Now.AddDays(2));
             //GetXlsGarmentRealizationSubconReportQuery getMonitoring2 = new GetXlsGarmentRealizationSubconReportQuery(1, 25, "", "subconcontract2", "token");
 
 
