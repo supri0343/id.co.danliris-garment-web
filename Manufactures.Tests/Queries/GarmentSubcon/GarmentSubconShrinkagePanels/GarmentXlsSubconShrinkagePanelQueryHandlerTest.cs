@@ -80,7 +80,53 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentServiceSubconShrinkage
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconShrinkagePanelDetailReadModel>
                 {
-                    new GarmentServiceSubconShrinkagePanelDetail(guidSubconShrinkagePanelDetail, guidSubconShrinkagePanel, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit").GetReadModel()
+                    new GarmentServiceSubconShrinkagePanelDetail(guidSubconShrinkagePanelDetail, guidSubconShrinkagePanelItem, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit").GetReadModel()
+                }.AsQueryable());
+
+            var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
+
+            // Assert
+            result.Should().NotBeNull();
+
+        }
+
+        [Fact]
+        public async Task Handle_StateUnderTest_Expected()
+        {
+            GetXlsServiceSubconShrinkagePanelsQueryHandler unitUnderTest = CreateGetXlsServiceSubconShrinkagePanelsQueryHandler();
+            CancellationToken cancellationToken = CancellationToken.None;
+
+
+            Guid guidSubconShrinkagePanel = Guid.NewGuid();
+            Guid guidSubconShrinkagePanelItem = Guid.NewGuid();
+            Guid guidSubconShrinkagePanelDetail = Guid.NewGuid();
+
+
+            GetXlsSubconServiceSubconShrinkagePanelsQuery getMonitoring = new GetXlsSubconServiceSubconShrinkagePanelsQuery(DateTime.Now.AddDays(2), DateTime.Now,  "token");
+
+
+
+
+            _mockgarmentSubconShrinkagePanelRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconShrinkagePanelReadModel>
+                {
+                    new GarmentServiceSubconShrinkagePanel(guidSubconShrinkagePanel, "serviceSubconShrinkagePanelNo", DateTimeOffset.Now, "remark", true).GetReadModel()
+
+                }.AsQueryable());
+
+            _mockgarmentSubconShrikagePanelItemRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconShrinkagePanelItemReadModel>
+                {
+                    new GarmentServiceSubconShrinkagePanelItem(guidSubconShrinkagePanelItem, guidSubconShrinkagePanel, "unitExpenditureNo", DateTimeOffset.Now, new UnitSenderId(1), "unitSenderCode", "unitSenderName", new UnitRequestId(1), "unitRequestCode", "unitRequestName").GetReadModel()
+                }.AsQueryable());
+
+            _mockgarmentSubconShrinkagePanelDetailRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconShrinkagePanelDetailReadModel>
+                {
+                    new GarmentServiceSubconShrinkagePanelDetail(guidSubconShrinkagePanelDetail, guidSubconShrinkagePanelItem, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit").GetReadModel()
                 }.AsQueryable());
 
             var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);

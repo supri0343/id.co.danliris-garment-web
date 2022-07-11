@@ -74,7 +74,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOSewing
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>
                 {
-                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", Guid.Empty, "contractNo", "contractType", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "subconCategory" ).GetReadModel()
+                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", Guid.Empty, "contractNo", "SUBCON GARMENT", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON SEWING" ).GetReadModel()
 
                 }.AsQueryable());
 
@@ -82,7 +82,70 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOSewing
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutItemReadModel>
                 {
-                    new GarmentSubconDeliveryLetterOutItem(guidSubonDLOItem, guidSubconDLO, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 1, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", Guid.Empty, "roNo", "poSerialNumber", "subconNo").GetReadModel()
+                    new GarmentSubconDeliveryLetterOutItem(guidSubonDLOItem, guidSubconDLO, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 1, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidCuttingOut, "roNo", "poSerialNumber", "subconNo").GetReadModel()
+                }.AsQueryable());
+
+            _mockgarmentCuttingOutRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingOutReadModel>
+                {
+                    new GarmentCuttingOut(guidCuttingOut, "cutOutNo", "cuttingOutType", new UnitDepartmentId(1), "unitFromCode", "unitFromName", DateTimeOffset.Now, "rONo", "article", new UnitDepartmentId(1), "untCode", "unitName", new GarmentComodityId(1), "comodityCode", "comodityName", true).GetReadModel()
+
+                }.AsQueryable());
+
+            _mockgarmentCuttingOutItemRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingOutItemReadModel>
+                {
+                    new GarmentCuttingOutItem(guidCuttingOutItem, Guid.Empty, Guid.Empty, guidCuttingOut, new ProductId(1), "productCode", "productName", "designColor", 2).GetReadModel()
+                }.AsQueryable());
+
+            _mockgarmentCuttingOutDetailRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentCuttingOutDetailReadModel>
+                {
+                    new GarmentCuttingOutDetail(guidCuttingOutDetail, guidCuttingOutItem, new SizeId(1), "sizeName", "color", 2, 2, new UomId(1), "cuttingOutUomUnit", 1, 1).GetReadModel()
+                }.AsQueryable());
+
+
+
+            var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
+
+            // Assert
+            result.Should().NotBeNull();
+
+        }
+
+        [Fact]
+        public async Task Handle_StateUnderTest_Expected()
+        {
+            GetXlsGarmentSubconDLOSewingReportQueryHandler unitUnderTest = CreateGetXlsGarmentSubconDLOSewingReportQueryHandler();
+            CancellationToken cancellationToken = CancellationToken.None;
+
+
+            Guid guidSubconDLO = Guid.NewGuid();
+            Guid guidSubonDLOItem = Guid.NewGuid();
+            Guid guidCuttingOut = Guid.NewGuid();
+            Guid guidCuttingOutItem = Guid.NewGuid();
+            Guid guidCuttingOutDetail = Guid.NewGuid();
+
+
+            GetXlsGarmentSubconDLOSewingReportQuery getMonitoring = new GetXlsGarmentSubconDLOSewingReportQuery(1, 25, "", DateTime.Now.AddDays(2), DateTime.Now);
+
+
+            _mockgarmentSubconDeliveryLetterOutRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>
+                {
+                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", Guid.Empty, "contractNo", "SUBCON GARMENT", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON SEWING" ).GetReadModel()
+
+                }.AsQueryable());
+
+            _mockgarmentSubconDeliveryLetterOutItemRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentSubconDeliveryLetterOutItemReadModel>
+                {
+                    new GarmentSubconDeliveryLetterOutItem(guidSubonDLOItem, guidSubconDLO, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 1, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidCuttingOut, "roNo", "poSerialNumber", "subconNo").GetReadModel()
                 }.AsQueryable());
 
             _mockgarmentCuttingOutRepository

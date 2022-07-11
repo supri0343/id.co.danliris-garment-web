@@ -73,7 +73,9 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLORawMaterial
 
 
             Guid guidSubconDLO = Guid.NewGuid();
+            Guid guidSubconDLO2 = Guid.NewGuid();
             Guid guidSubconDLOItem = Guid.NewGuid();
+            Guid guidSubconDLOItem2 = Guid.NewGuid();
             Guid guidSubconShrinkagePanel = Guid.NewGuid();
             Guid guidSubconShrinkagePanelItem = Guid.NewGuid();
             Guid guidSubconShrinkagePanelDetail = Guid.NewGuid();
@@ -82,22 +84,24 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLORawMaterial
             Guid guidSubconFabricWashDetail = Guid.NewGuid();
 
 
-            GetXlsGarmentSubconDLORawMaterialReportQuery getMonitoring = new GetXlsGarmentSubconDLORawMaterialReportQuery(1, 25, "", DateTime.Now, DateTime.Now.AddDays(2));
+            GetXlsGarmentSubconDLORawMaterialReportQuery getMonitoring = new GetXlsGarmentSubconDLORawMaterialReportQuery(1, 25, "", DateTime.Now.AddDays(-2), DateTime.Now.AddDays(2));
 
 
             _mockgarmentSubconDeliveryLetterOutRepository
                  .Setup(s => s.Query)
                  .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>
                  {
-                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", new Guid(), "contractNo", "contractType", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "subconCategory").GetReadModel(),
-
+                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", new Guid(), "contractNo", "SUBCON BAHAN BAKU", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON BB SHRINKAGE/PANEL").GetReadModel(),
+                         new GarmentSubconDeliveryLetterOut(guidSubconDLO2, "dLNo", "dLType", new Guid(), "contractNo", "SUBCON BAHAN BAKU", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON BB FABRIC WASH/PRINT").GetReadModel(),
                  }.AsQueryable());
 
             _mockgarmentSubconDeliveryLetterOutItemRepository
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutItemReadModel>
-                {
-                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem, guidSubconDLO, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", new Guid(), "roNo", "poSerialNumber", "subconNo").GetReadModel()
+                {   
+                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem, guidSubconDLO, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconShrinkagePanel, "roNo", "poSerialNumber", "subconNo").GetReadModel(),
+                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem, guidSubconDLO2, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconShrinkagePanel, "roNo", "poSerialNumber", "subconNo").GetReadModel()
+
                 }.AsQueryable());
 
             _mockgarmentSubconShrinkagePanelRepository
@@ -119,28 +123,117 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLORawMaterial
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconShrinkagePanelDetailReadModel>
                 {
-                    new GarmentServiceSubconShrinkagePanelDetail(guidSubconShrinkagePanelDetail, guidSubconShrinkagePanel, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit").GetReadModel()
+                    new GarmentServiceSubconShrinkagePanelDetail(guidSubconShrinkagePanelDetail, guidSubconShrinkagePanelItem, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit").GetReadModel()
                 }.AsQueryable());
 
             _mockgarmentSubconFabricWashRepository
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconFabricWashReadModel>
                 {
-                    new GarmentServiceSubconFabricWash(guidSubconFabricWash, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true).GetReadModel()
+                    new GarmentServiceSubconFabricWash(guidSubconShrinkagePanel, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true).GetReadModel()
                 }.AsQueryable());
 
             _mockgarmentSubconFabricWashItemRepository
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconFabricWashItemReadModel>
                 {
-                    new GarmentServiceSubconFabricWashItem(guidSubconFabricWashItem, guidSubconFabricWash, "unitExpenditureNo", DateTimeOffset.Now, new UnitSenderId(1), "unitSenderCode", "unitSenderName", new UnitRequestId(1), "unitRequestCode", "unitRequestName").GetReadModel()
+                    new GarmentServiceSubconFabricWashItem(guidSubconFabricWashItem, guidSubconShrinkagePanel, "unitExpenditureNo", DateTimeOffset.Now, new UnitSenderId(1), "unitSenderCode", "unitSenderName", new UnitRequestId(1), "unitRequestCode", "unitRequestName").GetReadModel()
                 }.AsQueryable());
 
             _mockgarmentSubconFabricWashDetailRepository
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconFabricWashDetailReadModel>
                 {
-                    new GarmentServiceSubconFabricWashDetail(guidSubconFabricWashItem, guidSubconFabricWash, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uom" ).GetReadModel()
+                    new GarmentServiceSubconFabricWashDetail(guidSubconFabricWashItem, guidSubconFabricWashItem, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uom" ).GetReadModel()
+                }.AsQueryable());
+
+            var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
+
+            // Assert
+            result.Should().NotBeNull();
+
+        }
+
+        [Fact]
+        public async Task Handle_StateUnderTest_UnExpectedBehavior()
+        {
+            GetXlsGarmentSubconDLORawMaterialReportQueryHandler unitUnderTest = CreateGetXlsGarmentSubconDLORawMaterialReportQueryHandler();
+            CancellationToken cancellationToken = CancellationToken.None;
+
+
+            Guid guidSubconDLO = Guid.NewGuid();
+            Guid guidSubconDLO2 = Guid.NewGuid();
+            Guid guidSubconDLOItem = Guid.NewGuid();
+            Guid guidSubconDLOItem2 = Guid.NewGuid();
+            Guid guidSubconShrinkagePanel = Guid.NewGuid();
+            Guid guidSubconShrinkagePanelItem = Guid.NewGuid();
+            Guid guidSubconShrinkagePanelDetail = Guid.NewGuid();
+            Guid guidSubconFabricWash = Guid.NewGuid();
+            Guid guidSubconFabricWashItem = Guid.NewGuid();
+            Guid guidSubconFabricWashDetail = Guid.NewGuid();
+
+
+            GetXlsGarmentSubconDLORawMaterialReportQuery getMonitoring = new GetXlsGarmentSubconDLORawMaterialReportQuery(1, 25, "", DateTime.Now.AddDays(2), DateTime.Now);
+
+
+            _mockgarmentSubconDeliveryLetterOutRepository
+                 .Setup(s => s.Query)
+                 .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>
+                 {
+                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", new Guid(), "contractNo", "SUBCON BAHAN BAKU", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON BB SHRINKAGE/PANEL").GetReadModel(),
+                         new GarmentSubconDeliveryLetterOut(guidSubconDLO2, "dLNo", "dLType", new Guid(), "contractNo", "SUBCON BAHAN BAKU", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON BB FABRIC WASH/PRINT").GetReadModel(),
+                 }.AsQueryable());
+
+            _mockgarmentSubconDeliveryLetterOutItemRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentSubconDeliveryLetterOutItemReadModel>
+                {
+                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem, guidSubconDLO, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconShrinkagePanel, "roNo", "poSerialNumber", "subconNo").GetReadModel(),
+                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem, guidSubconDLO2, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconShrinkagePanel, "roNo", "poSerialNumber", "subconNo").GetReadModel()
+
+                }.AsQueryable());
+
+            _mockgarmentSubconShrinkagePanelRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconShrinkagePanelReadModel>
+                {
+                    new GarmentServiceSubconShrinkagePanel(guidSubconShrinkagePanel, "serviceSubconShrinkagePanelNo", DateTimeOffset.Now, "remark", true).GetReadModel()
+
+                }.AsQueryable());
+
+            _mockgarmentSubconShrikagePanelItemRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconShrinkagePanelItemReadModel>
+                {
+                    new GarmentServiceSubconShrinkagePanelItem(guidSubconShrinkagePanelItem, guidSubconShrinkagePanel, "unitExpenditureNo", DateTimeOffset.Now, new UnitSenderId(1), "unitSenderCode", "unitSenderName", new UnitRequestId(1), "unitRequestCode", "unitRequestName").GetReadModel()
+                }.AsQueryable());
+
+            _mockgarmentSubconShrinkagePanelDetailRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconShrinkagePanelDetailReadModel>
+                {
+                    new GarmentServiceSubconShrinkagePanelDetail(guidSubconShrinkagePanelDetail, guidSubconShrinkagePanelItem, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit").GetReadModel()
+                }.AsQueryable());
+
+            _mockgarmentSubconFabricWashRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconFabricWashReadModel>
+                {
+                    new GarmentServiceSubconFabricWash(guidSubconShrinkagePanel, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true).GetReadModel()
+                }.AsQueryable());
+
+            _mockgarmentSubconFabricWashItemRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconFabricWashItemReadModel>
+                {
+                    new GarmentServiceSubconFabricWashItem(guidSubconFabricWashItem, guidSubconShrinkagePanel, "unitExpenditureNo", DateTimeOffset.Now, new UnitSenderId(1), "unitSenderCode", "unitSenderName", new UnitRequestId(1), "unitRequestCode", "unitRequestName").GetReadModel()
+                }.AsQueryable());
+
+            _mockgarmentSubconFabricWashDetailRepository
+                 .Setup(s => s.Query)
+                .Returns(new List<GarmentServiceSubconFabricWashDetailReadModel>
+                {
+                    new GarmentServiceSubconFabricWashDetail(guidSubconFabricWashItem, guidSubconFabricWashItem, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uom" ).GetReadModel()
                 }.AsQueryable());
 
             var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);

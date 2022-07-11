@@ -110,10 +110,11 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCutting
         {
             var QueryUEN = (from a in garmentSubconDeliveryLetterOutRepository.Query
                            join b in garmentSubconDeliveryLetterOutItemRepository.Query on a.Identity equals b.SubconDeliveryLetterOutId
-                           where a.Deleted == false && b.Deleted == false
-                           && a.DLDate.AddHours(7).Date >= request.dateFrom
-                           && a.DLDate.AddHours(7).Date <= request.dateTo.Date && a.UENId != null
-                           && a.ContractType == "SUBCON GARMENT" && a.SubconCategory == "SUBCON CUTTING SEWING"
+                            //where a.Deleted == false && b.Deleted == false
+                            where
+                            a.DLDate.AddHours(7).Date >= request.dateFrom
+                            && a.DLDate.AddHours(7).Date <= request.dateTo.Date && a.UENId != null
+                            && a.ContractType == "SUBCON GARMENT" && a.SubconCategory == "SUBCON CUTTING SEWING"
                            select a.UENId).Distinct();
             List<int> _uen = new List<int>();
             foreach (var item in QueryUEN)

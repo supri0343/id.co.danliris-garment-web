@@ -82,9 +82,10 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMate
                           join c in garmentServiceSubconShrinkagePanelRepository.Query on b.SubconId equals c.Identity
                           join d in garmentServiceSubconShrinkagePanelItemRepository.Query on c.Identity equals d.ServiceSubconShrinkagePanelId
                           join e in garmentServiceSubconShrinkagePanelDetailRepository.Query on d.Identity equals e.ServiceSubconShrinkagePanelItemId
-                          where a.Deleted == false && b.Deleted == false 
-                          && c.Deleted == false && d.Deleted == false && e.Deleted == false
-                          && a.DLDate.AddHours(7).Date >= request.dateFrom
+                          //where a.Deleted == false && b.Deleted == false 
+                          //&& c.Deleted == false && d.Deleted == false && e.Deleted == false
+                          where
+                          a.DLDate.AddHours(7).Date >= request.dateFrom
                           && a.DLDate.AddHours(7).Date <= request.dateTo.Date
                           && a.ContractType == "SUBCON BAHAN BAKU" && a.SubconCategory == "SUBCON BB SHRINKAGE/PANEL"
 
@@ -150,11 +151,12 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMate
                          join c in garmentServiceSubconFabricWashRepository.Query on b.SubconId equals c.Identity
                          join d in garmentServiceSubconFabricWashItemRepository.Query on c.Identity equals d.ServiceSubconFabricWashId
                          join e in garmentServiceSubconFabricWashDetailRepository.Query on d.Identity equals e.ServiceSubconFabricWashItemId
-                         where a.Deleted == false && b.Deleted == false
-                         && c.Deleted == false && d.Deleted == false && e.Deleted == false
-                         && a.DLDate.AddHours(7).Date >= request.dateFrom
-                         && a.DLDate.AddHours(7).Date <= request.dateTo.Date
-                         && a.ContractType == "SUBCON BAHAN BAKU" && a.SubconCategory == "SUBCON BB FABRIC WASH/PRINT"
+                          //where a.Deleted == false && b.Deleted == false
+                          //&& c.Deleted == false && d.Deleted == false && e.Deleted == false
+                         where
+                          a.DLDate.AddHours(7).Date >= request.dateFrom
+                          && a.DLDate.AddHours(7).Date <= request.dateTo.Date
+                          && a.ContractType == "SUBCON BAHAN BAKU" && a.SubconCategory == "SUBCON BB FABRIC WASH/PRINT"
 
                           select new monitoringViewTemp
                          {

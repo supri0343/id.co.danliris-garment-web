@@ -74,9 +74,10 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOSewingR
                           join c in garmentCuttingOutRepository.Query on b.SubconId equals c.Identity
                           join d in garmentCuttingOutItemRepository.Query on c.Identity equals d.CutOutId
                           join e in garmentCuttingOutDetailRepository.Query on d.Identity equals e.CutOutItemId
-                          where a.Deleted == false && b.Deleted == false && c.Deleted == false
-                          && d.Deleted == false && e.Deleted == false
-                          && a.DLDate.AddHours(7).Date >= request.dateFrom
+                          //where a.Deleted == false && b.Deleted == false && c.Deleted == false
+                          //&& d.Deleted == false && e.Deleted == false
+                          where
+                          a.DLDate.AddHours(7).Date >= request.dateFrom
                           && a.DLDate.AddHours(7).Date <= request.dateTo.Date
                           && a.ContractType == "SUBCON GARMENT" && a.SubconCategory == "SUBCON SEWING"
 
