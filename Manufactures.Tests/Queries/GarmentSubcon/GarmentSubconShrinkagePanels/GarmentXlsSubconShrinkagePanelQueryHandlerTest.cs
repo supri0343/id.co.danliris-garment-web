@@ -56,7 +56,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentServiceSubconShrinkage
             Guid guidSubconShrinkagePanelDetail = Guid.NewGuid();
 
 
-            GetXlsSubconServiceSubconShrinkagePanelsQuery getMonitoring = new GetXlsSubconServiceSubconShrinkagePanelsQuery(DateTime.Now, DateTime.Now.AddDays(2), "token");
+            GetXlsSubconServiceSubconShrinkagePanelsQuery getMonitoring = new GetXlsSubconServiceSubconShrinkagePanelsQuery(DateTime.Now.AddDays(-1), DateTime.Now.AddDays(2), "token");
 
 
 
