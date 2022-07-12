@@ -69,14 +69,16 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOGarment
 
         public async Task<MemoryStream> Handle(GetXlsGarmentSubconDLOGarmentWashReportQuery request, CancellationToken cancellationToken)
         {
+
              var Query = (from a in garmentSubconDeliveryLetterOutRepository.Query
                           join b in garmentSubconDeliveryLetterOutItemRepository.Query on a.Identity equals b.SubconDeliveryLetterOutId
                           join c in garmentSubconSewingRepository.Query on b.SubconId equals c.Identity
                           join d in garmentSubconSewingItemRepository.Query on c.Identity equals d.ServiceSubconSewingId
                           join e in garmentSubconSewingDetailRepository.Query on d.Identity equals e.ServiceSubconSewingItemId
-                          where a.Deleted == false && b.Deleted == false && c.Deleted == false
-                          && d.Deleted == false && e.Deleted == false
-                          && a.DLDate.AddHours(7).Date >= request.dateFrom
+                          //where a.Deleted == false && b.Deleted == false && c.Deleted == false
+                          //&& d.Deleted == false && e.Deleted == false
+                          where
+                           a.DLDate.AddHours(7).Date >= request.dateFrom
                           && a.DLDate.AddHours(7).Date <= request.dateTo.Date
                           && a.ContractType == "SUBCON JASA" && a.SubconCategory == "SUBCON JASA GARMENT WASH"
 

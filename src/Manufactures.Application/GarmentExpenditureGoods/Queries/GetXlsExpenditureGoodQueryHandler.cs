@@ -24,7 +24,7 @@ using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using System.Net.Http;
 using System.Text;
 using System.Globalization;
-using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Repositories;
+//using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Repositories;
 
 namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 {
@@ -39,7 +39,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 		private readonly IGarmentCuttingInRepository garmentCuttingInRepository;
         private readonly IGarmentCuttingInItemRepository garmentCuttingInItemRepository;
         private readonly IGarmentCuttingInDetailRepository garmentCuttingInDetailRepository;
-		private readonly IGarmentServiceSubconCuttingRepository garmentServiceSubconCuttingRepository;
+		//private readonly IGarmentServiceSubconCuttingRepository garmentServiceSubconCuttingRepository;
 
 		public GetXlsExpenditureGoodQueryHandler(IStorage storage, IServiceProvider serviceProvider)
 		{
@@ -51,7 +51,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
             garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
             garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
-			garmentServiceSubconCuttingRepository = storage.GetRepository<IGarmentServiceSubconCuttingRepository>();
+			//garmentServiceSubconCuttingRepository = storage.GetRepository<IGarmentServiceSubconCuttingRepository>();
 			_http = serviceProvider.GetService<IHttpClientService>();
 		}
 

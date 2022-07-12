@@ -1,5 +1,6 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
+using Manufactures.Application.GarmentSubcon.GarmentServiceSubconShrinkagePanels.ExcelTemplates;
 using Manufactures.Controllers.Api.GarmentSubcon;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Commands;
@@ -12,6 +13,7 @@ using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -251,6 +253,40 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task GetXLSBehavior()
+        {
+            var unitUnderTest = CreateGarmentServiceSubconShrinkagePanelController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsSubconServiceSubconShrinkagePanelsQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
+
+            // Act
+            var result = await unitUnderTest.GetXls(DateTime.Now, DateTime.Now, "token");
+
+            // Assert
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+
+        }
+
+        [Fact]
+        public async Task GetXLS_Return_InternalServerError()
+        {
+            var unitUnderTest = CreateGarmentServiceSubconShrinkagePanelController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsSubconServiceSubconShrinkagePanelsQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+            var result = await unitUnderTest.GetXls(DateTime.Now, DateTime.Now, "token");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+
         }
     }
 }
