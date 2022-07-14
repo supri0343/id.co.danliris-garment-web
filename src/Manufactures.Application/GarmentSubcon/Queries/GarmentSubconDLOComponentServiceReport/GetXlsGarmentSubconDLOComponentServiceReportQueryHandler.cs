@@ -80,9 +80,10 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCompone
                           join d in garmentServiceSubconCuttingItemRepository.Query on c.Identity equals d.ServiceSubconCuttingId
                           join e in garmentServiceSubconCuttingDetailRepository.Query on d.Identity equals e.ServiceSubconCuttingItemId
                           join f in garmentServiceSubconCuttingSizeRepository.Query on e.Identity equals f.ServiceSubconCuttingDetailId
-                          where a.Deleted == false && b.Deleted == false && c.Deleted == false
-                          && d.Deleted == false && e.Deleted == false && f.Deleted == false
-                          && a.DLDate.AddHours(7).Date >= request.dateFrom
+                          //where a.Deleted == false && b.Deleted == false && c.Deleted == false
+                          //&& d.Deleted == false && e.Deleted == false && f.Deleted == false
+                          where
+                          a.DLDate.AddHours(7).Date >= request.dateFrom
                           && a.DLDate.AddHours(7).Date <= request.dateTo.Date
                           && a.ContractType == "SUBCON JASA" && a.SubconCategory == "SUBCON JASA KOMPONEN"
 

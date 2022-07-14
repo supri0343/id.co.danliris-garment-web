@@ -110,10 +110,11 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCutting
         {
             var QueryUEN = (from a in garmentSubconDeliveryLetterOutRepository.Query
                            join b in garmentSubconDeliveryLetterOutItemRepository.Query on a.Identity equals b.SubconDeliveryLetterOutId
-                           where a.Deleted == false && b.Deleted == false
-                           && a.DLDate.AddHours(7).Date >= request.dateFrom
-                           && a.DLDate.AddHours(7).Date <= request.dateTo.Date && a.UENId != null
-                           && a.ContractType == "SUBCON GARMENT" && a.SubconCategory == "SUBCON CUTTING SEWING"
+                            //where a.Deleted == false && b.Deleted == false
+                            where
+                            a.DLDate.AddHours(7).Date >= request.dateFrom
+                            && a.DLDate.AddHours(7).Date <= request.dateTo.Date && a.UENId != null
+                            && a.ContractType == "SUBCON GARMENT" && a.SubconCategory == "SUBCON CUTTING SEWING"
                            select a.UENId).Distinct();
             List<int> _uen = new List<int>();
             foreach (var item in QueryUEN)
@@ -124,8 +125,9 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCutting
 
             var Query = (from a in garmentSubconDeliveryLetterOutRepository.Query
                          join b in garmentSubconDeliveryLetterOutItemRepository.Query on a.Identity equals b.SubconDeliveryLetterOutId
-                         where a.Deleted == false && b.Deleted == false
-                         && a.DLDate.AddHours(7).Date >= request.dateFrom
+                         //where a.Deleted == false && b.Deleted == false
+                         where
+                         a.DLDate.AddHours(7).Date >= request.dateFrom
                          && a.DLDate.AddHours(7).Date <= request.dateTo.Date
                          //&& a.ContractType == "SUBCON GARMENT" && a.SubconCategory == "SUBCON CUTTING SEWING"                   
                          select new monitoringViewTemp
@@ -249,9 +251,9 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCutting
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis Fabric", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Colour", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Qty Bon", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan Bon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Qty Keluar", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan Keluar", DataType = typeof(string) });
 
             var index = 1;
             int idx = 1;
