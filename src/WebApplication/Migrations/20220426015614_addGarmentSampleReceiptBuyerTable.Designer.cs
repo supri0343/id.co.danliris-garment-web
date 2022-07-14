@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20220426015614_addGarmentSampleReceiptBuyerTable")]
+    partial class addGarmentSampleReceiptBuyerTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -4273,7 +4275,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("ComodityCode")
                         .HasMaxLength(50);
 
-                    b.Property<int>("ComodityId");
+                    b.Property<string>("ComodityId");
 
                     b.Property<string>("ComodityName")
                         .HasMaxLength(100);
@@ -4349,9 +4351,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset>("ReceiptDate");
 
-                    b.Property<string>("ReceiptNo")
-                        .HasMaxLength(25);
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
@@ -4360,8 +4359,7 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.HasKey("Identity");
 
-                    b.HasIndex("ReceiptNo")
-                        .IsUnique()
+                    b.HasIndex("Identity")
                         .HasFilter("[Deleted]=(0)");
 
                     b.ToTable("GarmentSampleReceiptFromBuyers");
@@ -4387,9 +4385,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(32);
 
                     b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("Fabric")
-                        .HasMaxLength(500);
 
                     b.Property<int>("Index");
 
