@@ -58,7 +58,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.ExcelTem
                 sheet.Cells[$"B16:K16"].Merge = true;
                 sheet.Cells[$"B16"].Value = "dengan ketentuan dan syarat-syarat dibawah ini:";
                 sheet.Cells[$"B18:K18"].Merge = true;
-                sheet.Cells[$"B18"].Value = "PT. Dan Liris, selanjutnya disebut PIHAK PERTAMA akan mengirimkan potongan garment";
+                sheet.Cells[$"B18"].Value = "PT. Dan Liris, selanjutnya disebut PIHAK PERTAMA akan mengirimkan";
                 sheet.Cells[$"B19:K19"].Merge = true;
                 sheet.Cells[$"B19"].Value = $"kepada {dto.Supplier.Name} dengan ketentuan sbb:";
 
@@ -83,7 +83,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.ExcelTem
 
                 #region detail2
                 sheet.Cells[$"B25:K25"].Merge = true;
-                sheet.Cells[$"B25"].Value = $"{dto.Supplier.Name}, selanjutnya disebut PIHAK KEDUA menggunakan potongan garment tersebut";
+                sheet.Cells[$"B25"].Value = $"{dto.Supplier.Name}, selanjutnya disebut PIHAK KEDUA menggunakan tersebut";
                 sheet.Cells[$"B26:K26"].Merge = true;
                 sheet.Cells[$"B26"].Value = "diatas untuk di ....., dan selanjutnya dikirim kembali ke PT. Dan Liris dengan ketentuan";
                 sheet.Cells[$"B27:K27"].Merge = true;
