@@ -249,9 +249,9 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCutting
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis Fabric", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Colour", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Qty Bon", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan Bon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Qty Keluar", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan Keluar", DataType = typeof(string) });
 
             var index = 1;
             int idx = 1;

@@ -42,13 +42,13 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconShrinkagePa
 
         public async Task<MemoryStream> Handle(GetXlsSubconServiceSubconShrinkagePanelsQuery request, CancellationToken cancellationToken)
         {
-            DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
-            DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
+            DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom.AddHours(7));
+            DateTimeOffset dateTo = new DateTimeOffset(request.dateTo.AddHours(7));
 
             var query = (from a in _garmentServiceSubconShrinkagePanelRepository.Query
                          join b in _garmentServiceSubconShrinkagePanelItemRepository.Query on a.Identity equals b.ServiceSubconShrinkagePanelId
                          join c in _garmentServiceSubconShrinkagePanelDetailRepository.Query on b.Identity equals c.ServiceSubconShrinkagePanelItemId
-                         where a.ServiceSubconShrinkagePanelDate > dateFrom && a.ServiceSubconShrinkagePanelDate < dateTo
+                         where /*a.Deleted == false &&*/ a.ServiceSubconShrinkagePanelDate >= dateFrom && a.ServiceSubconShrinkagePanelDate <= dateTo
                          select new subconView
                          {
                              noBon = a.ServiceSubconShrinkagePanelNo,

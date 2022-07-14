@@ -213,7 +213,6 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMate
                              uomUnit = key.UomUnit
                          }).ToList();
 
-
             var Query = Query1.Union(Query2).OrderBy(x => x.contractType).ThenBy(x => x.subConCategory).ThenBy(x => x.dlNo).ThenBy(x => x.contractNo).ThenBy(x => x.subConNo);
 
             GarmentSubconDLORawMaterialReportListViewModel listViewModel = new GarmentSubconDLORawMaterialReportListViewModel();
@@ -410,7 +409,6 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMate
                     //worksheet.Cells[$"O{(rowNum1 + 3)}:O{(rowNum2) + 3}"].Merge = true;
                     //worksheet.Cells[$"O{(rowNum1 + 3)}:O{(rowNum2) + 3}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     //worksheet.Cells[$"O{(rowNum1 + 3)}:O{(rowNum2) + 3}"].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
-
                 }
 
                 var stream = new MemoryStream();

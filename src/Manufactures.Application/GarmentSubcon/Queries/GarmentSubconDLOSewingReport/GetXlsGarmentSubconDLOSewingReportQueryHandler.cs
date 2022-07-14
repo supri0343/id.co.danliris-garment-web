@@ -144,7 +144,6 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOSewingR
                               uomUnit = key.UomUnit
                           }).ToList().OrderBy(x => x.dlNo).ThenBy(x => x.subConNo);
 
-
             GarmentSubconDLOSewingReportListViewModel listViewModel = new GarmentSubconDLOSewingReportListViewModel();
             List<GarmentSubconDLOSewingReportDto> rekapgarmentsewing = new List<GarmentSubconDLOSewingReportDto>();
 
@@ -351,7 +350,6 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOSewingR
                     //worksheet.Cells[$"Q{(rowNum1 + 3)}:Q{(rowNum2) + 3}"].Merge = true;
                     //worksheet.Cells[$"Q{(rowNum1 + 3)}:Q{(rowNum2) + 3}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     //worksheet.Cells[$"Q{(rowNum1 + 3)}:Q{(rowNum2) + 3}"].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
-
                 }
 
                 var stream = new MemoryStream();

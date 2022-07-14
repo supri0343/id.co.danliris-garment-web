@@ -67,10 +67,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
                                       join b in garmentServiceSubconFabricWashItemRepository.Query on a.Identity equals b.ServiceSubconFabricWashId
                           join c in garmentServiceSubconFabricWashDetailRepository.Query on b.Identity equals c.ServiceSubconFabricWashItemId
                           where
-                                      a.Deleted == false
-                                      && b.Deleted == false
-                                      && c.Deleted == false
-                                      && a.ServiceSubconFabricWashDate >= dateFrom
+                                      //a.Deleted == false
+                                      //&& b.Deleted == false
+                                      //&& c.Deleted == false
+                                       a.ServiceSubconFabricWashDate >= dateFrom
                                       && a.ServiceSubconFabricWashDate <= dateTo
                           select new ServiceSubconFabricWashView
                           {

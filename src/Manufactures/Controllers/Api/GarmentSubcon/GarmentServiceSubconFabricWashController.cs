@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace Manufactures.Controllers.Api.GarmentSubcon
 {
@@ -194,12 +195,12 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         }
 
         [HttpGet("download")]
-        public async Task<IActionResult> GetXls(DateTime dateFrom, DateTime dateTo, string type, int page = 1, int size = 25, string Order = "{}")
+        public async Task<IActionResult> GetXls(DateTime dateFrom, DateTime dateTo, string token, int page = 1, int size = 25, string Order = "{}")
         {
             try
             {
                 VerifyUser();
-                GetXlsServiceSubconFabricWashQuery query = new GetXlsServiceSubconFabricWashQuery(page, size, Order, dateFrom, dateTo, type, WorkContext.Token);
+                GetXlsServiceSubconFabricWashQuery query = new GetXlsServiceSubconFabricWashQuery(page, size, Order, dateFrom, dateTo, token);
                 byte[] xlsInBytes;
 
                 var xls = await Mediator.Send(query);
@@ -217,7 +218,8 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             }
             catch (Exception e)
             {
-                throw e;
+                //throw e;
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
     }

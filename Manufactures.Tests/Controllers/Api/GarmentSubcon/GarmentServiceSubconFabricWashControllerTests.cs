@@ -1,5 +1,6 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
+using Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashes.Queries;
 using Manufactures.Controllers.Api.GarmentSubcon;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Commands;
@@ -12,6 +13,7 @@ using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -252,6 +254,40 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task GetXLSBehavior()
+        {
+            var unitUnderTest = CreateGarmentServiceSubconFabricWashController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsServiceSubconFabricWashQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
+
+            // Act
+            var result = await unitUnderTest.GetXls(DateTime.Now, DateTime.Now, "token", 1, 25, "{}");
+
+            // Assert
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+
+        }
+
+        [Fact]
+        public async Task GetXLS_Return_InternalServerError()
+        {
+            var unitUnderTest = CreateGarmentServiceSubconFabricWashController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsServiceSubconFabricWashQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+            var result = await unitUnderTest.GetXls(DateTime.Now, DateTime.Now, "token", 1, 25, "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+
         }
     }
 }
