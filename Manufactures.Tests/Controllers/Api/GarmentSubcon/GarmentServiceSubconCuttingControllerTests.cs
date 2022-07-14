@@ -20,6 +20,8 @@ using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands;
 using System.Threading;
 using Newtonsoft.Json;
 using FluentAssertions;
+using Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Queries;
+using System.IO;
 
 namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 {
@@ -351,7 +353,40 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             // Assert
             GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
         }
+        //
+        [Fact]
+        public async Task GetXLSubconCuttingBehavior()
+        {
+            var unitUnderTest = CreateGarmentServiceSubconCuttingController();
 
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsServiceSubconCuttingQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
+
+            // Act
+
+            var result = await unitUnderTest.GetXlsMutation(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>(), 25, "{}");
+
+            // Assert
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+        }
+
+        [Fact]
+        public async Task GetXLSSubconCuttingReturn_InternalServerError()
+        {
+            var unitUnderTest = CreateGarmentServiceSubconCuttingController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsServiceSubconCuttingQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+
+            var result = await unitUnderTest.GetXlsMutation(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>(), 25, "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+        }
 
     }
 }
