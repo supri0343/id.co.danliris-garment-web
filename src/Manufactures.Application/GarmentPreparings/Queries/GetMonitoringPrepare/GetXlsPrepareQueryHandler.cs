@@ -228,6 +228,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 											   })
 									join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
 									join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+									join d in garmentPreparingItemRepository.Query on c.PreparingItemId equals d.Identity
 									select new monitoringView
 									{
 										prepareItemid = c.PreparingItemId,
@@ -238,7 +239,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 										stock = a.CuttingInDate.AddHours(7) < dateFrom ? -c.PreparingQuantity : 0,
 										nonMainFabricExpenditure = a.CuttingType == "Non Main Fabric" && (a.CuttingInDate >= dateFrom) ? c.PreparingQuantity : 0,
 										mainFabricExpenditure = a.CuttingType == "Main Fabric" && (a.CuttingInDate >= dateFrom) ? c.PreparingQuantity : 0,
-										remark = c.DesignColor,
+										remark = d.DesignColor,
 										receipt = 0,
 										productCode = c.ProductCode,
 										remainQty = 0
@@ -288,7 +289,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 								stock = a.AvalDate < dateFrom ? -b.Quantity : 0,
 								mainFabricExpenditure = 0,
 								nonMainFabricExpenditure = 0,
-								remark = b.DesignColor,
+								remark = c.DesignColor,
 								receipt = 0,
 								productCode = b.ProductCode,
 								remainQty = 0
@@ -338,18 +339,18 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 										  stock = a.ReturnDate < dateFrom ? -a.Quantity : 0,
 										  mainFabricExpenditure = 0,
 										  nonMainFabricExpenditure = 0,
-										  remark = a.DesignColor,
+										  remark = c.DesignColor,
 										  receipt = 0,
 										  productCode = a.ProductCode,
 										  remainQty = 0
 									  };
 
-			var queryNow = from a in (QueryMutationPrepareItemNow
+			var queryNow = (from a in (QueryMutationPrepareItemNow
 							.Union(QueryCuttingDONow)
 							.Union(QueryAval)
 							.Union(QueryDeliveryReturn).AsEnumerable())
 						   join b in QueryMutationPrepareItemsROASAL on a.prepareItemid equals b.prepareitemid
-						   select new { a, b };
+						   select new { a, b }).Distinct();
 
 
 

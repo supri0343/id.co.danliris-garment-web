@@ -376,14 +376,14 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 										  remainQty = 0
 									  };
 
-			var queryNow = from a in (QueryMutationPrepareItemNow
+			var queryNow = (from a in (QueryMutationPrepareItemNow
 							.Union(QueryCuttingDONow)
 							.Union(QueryAval)
 							.Union(QueryDeliveryReturn)
 							.AsEnumerable())
 						   join b in QueryMutationPrepareItemsROASAL
 						   on a.prepareItemid equals b.prepareitemid
-						   select new { a, b };
+						   select new { a, b }).Distinct();
 
 
 			var querySum = queryNow.GroupBy(x => new { x.a.price, x.b.roasal, x.b.roJob, x.b.article, x.b.buyerCode, x.a.productCode, x.a.remark }, (key, group) => new
