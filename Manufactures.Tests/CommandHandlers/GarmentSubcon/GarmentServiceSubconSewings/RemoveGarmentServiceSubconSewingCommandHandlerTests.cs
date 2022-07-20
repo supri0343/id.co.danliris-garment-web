@@ -71,6 +71,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                         null,
                         new BuyerId(1),
                         null,
+                        null,
+                        new UnitDepartmentId(1),
+                        null,
                         null)
                 });
             _mockServiceSubconSewingDetailRepository
@@ -90,6 +93,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconS
                         new UomId(1),
                         null,
                         new UnitDepartmentId(1),
+                        null,
                         null,
                         null,
                         null)
