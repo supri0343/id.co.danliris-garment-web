@@ -20,6 +20,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             Unit = new UnitDepartment(garmentServiceSubconSewingDetail.UnitId.Value, garmentServiceSubconSewingDetail.UnitCode, garmentServiceSubconSewingDetail.UnitName);
             Uom = new Uom(garmentServiceSubconSewingDetail.UomId.Value, garmentServiceSubconSewingDetail.UomUnit);
             Remark = garmentServiceSubconSewingDetail.Remark;
+            Color = garmentServiceSubconSewingDetail.Color;
         }
 
 
@@ -34,5 +35,6 @@ namespace Manufactures.Dtos.GarmentSubcon
         public double Quantity { get; set; }
         public Uom Uom { get; set; }
         public string Remark { get; set; }
+        public string Color { get; set; }
     }
 }
