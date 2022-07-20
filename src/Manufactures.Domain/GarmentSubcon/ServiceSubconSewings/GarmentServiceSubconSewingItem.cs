@@ -18,8 +18,13 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
         public BuyerId BuyerId { get; private set; }
         public string BuyerCode { get; private set; }
         public string BuyerName { get; private set; }
+        
+        public UnitDepartmentId UnitId { get; private set; }
+        public string UnitCode { get; private set; }
+        public string UnitName { get; private set; }
 
-        public GarmentServiceSubconSewingItem(Guid identity, Guid serviceSubconSewingId, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, BuyerId buyerId, string buyerCode, string buyerName) : base(identity)
+
+        public GarmentServiceSubconSewingItem(Guid identity, Guid serviceSubconSewingId, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, BuyerId buyerId, string buyerCode, string buyerName, UnitDepartmentId unitId, string unitCode, string unitName) : base(identity)
         {
             Identity = identity;
             ServiceSubconSewingId = serviceSubconSewingId;
@@ -31,6 +36,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             BuyerCode = buyerCode;
             BuyerId = buyerId;
             BuyerName = buyerName;
+            UnitId = unitId;
+            UnitName = unitName;
+            UnitCode = unitCode;
 
             ReadModel = new GarmentServiceSubconSewingItemReadModel(identity)
             {
@@ -42,7 +50,12 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
                 ComodityName = ComodityName,
                 BuyerCode = BuyerCode,
                 BuyerId = BuyerId.Value,
-                BuyerName = BuyerName
+                BuyerName = BuyerName,
+                UnitId = UnitId.Value,
+                UnitCode = UnitCode,
+                UnitName = UnitName
+                
+                
             };
 
             ReadModel.AddDomainEvent(new OnGarmentServiceSubconSewingPlaced(Identity));
@@ -60,6 +73,10 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             BuyerCode = readModel.BuyerCode;
             BuyerId = new BuyerId(readModel.BuyerId);
             BuyerName = readModel.BuyerName;
+            UnitId = new UnitDepartmentId(readModel.UnitId);
+            UnitCode = readModel.UnitCode;
+            UnitName = readModel.UnitName;
+            
         }
 
         public void Modify()
