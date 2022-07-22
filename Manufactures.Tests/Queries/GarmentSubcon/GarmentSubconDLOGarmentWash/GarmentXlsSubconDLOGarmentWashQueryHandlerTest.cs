@@ -97,14 +97,14 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOGarmentWash
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconSewingItemReadModel>
                 {
-                    new GarmentServiceSubconSewingItem(guidSubconSewingItem, guidSubconSewing, "rONo", "article", new GarmentComodityId(1), "comodityCode", "comodityName", new BuyerId(1), "buyerCode", "buyerName").GetReadModel()
+                    new GarmentServiceSubconSewingItem(guidSubconSewingItem, guidSubconSewing, "rONo", "article", new GarmentComodityId(1), "comodityCode", "comodityName", new BuyerId(1), "buyerCode", "buyerName",  new UnitDepartmentId(1), "unitName", "unitCode").GetReadModel()
                 }.AsQueryable());
 
             _mockgarmentSubconSewingDetailRepository
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconSewingDetailReadModel>
                 {
-                    new GarmentServiceSubconSewingDetail(guidSubconSewingDetail, guidSubconSewingItem, Guid.Empty, Guid.Empty, new ProductId(1), "productCode", "productName", "designColor", 2, new UomId(1), "uomUnit", new UnitDepartmentId(1), "unitCode", "unitName", "remark").GetReadModel()
+                    new GarmentServiceSubconSewingDetail(guidSubconSewingDetail, guidSubconSewingItem, Guid.Empty, Guid.Empty, new ProductId(1), "productCode", "productName", "designColor", 2, new UomId(1), "uomUnit", new UnitDepartmentId(1), "unitCode", "unitName", "remark", "color").GetReadModel()
                 }.AsQueryable());
 
 
@@ -159,14 +159,14 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOGarmentWash
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconSewingItemReadModel>
                 {
-                    new GarmentServiceSubconSewingItem(guidSubconSewingItem, guidSubconSewing, "rONo", "article", new GarmentComodityId(1), "comodityCode", "comodityName", new BuyerId(1), "buyerCode", "buyerName").GetReadModel()
+                    new GarmentServiceSubconSewingItem(guidSubconSewingItem, guidSubconSewing, "rONo", "article", new GarmentComodityId(1), "comodityCode", "comodityName", new BuyerId(1), "buyerCode", "buyerName",new UnitDepartmentId(1), "unitCode", "unitName").GetReadModel()
                 }.AsQueryable());
 
             _mockgarmentSubconSewingDetailRepository
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconSewingDetailReadModel>
                 {
-                    new GarmentServiceSubconSewingDetail(guidSubconSewingItem, guidSubconSewingItem, Guid.Empty, Guid.Empty, new ProductId(1), "productCode", "productName", "designColor", 2, new UomId(1), "uomUnit", new UnitDepartmentId(1), "unitCode", "unitName", "remark").GetReadModel()
+                    new GarmentServiceSubconSewingDetail(guidSubconSewingItem, guidSubconSewingItem, Guid.Empty, Guid.Empty, new ProductId(1), "productCode", "productName", "designColor", 2, new UomId(1), "uomUnit", new UnitDepartmentId(1), "unitCode", "unitName", "remark", "color").GetReadModel()
                 }.AsQueryable());
 
 

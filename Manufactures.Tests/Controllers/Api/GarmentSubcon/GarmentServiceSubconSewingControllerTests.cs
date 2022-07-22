@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -8,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Barebone.Tests;
 using FluentAssertions;
+using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconGarmentWashReport;
 using Manufactures.Controllers.Api.GarmentSubcon;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands;
@@ -82,7 +84,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             Guid sewingInItemGuid = Guid.NewGuid();
             Guid sewingInGuid = Guid.NewGuid();
             Guid serviceSubconSewingItemGuid = Guid.NewGuid();
-            GarmentServiceSubconSewingItem garmentServiceSubconSewingItem = new GarmentServiceSubconSewingItem(serviceSubconSewingItemGuid, serviceSubconSewingGuid, null, null, new GarmentComodityId(1), null, null, new BuyerId(1), null, null);
+            GarmentServiceSubconSewingItem garmentServiceSubconSewingItem = new GarmentServiceSubconSewingItem(serviceSubconSewingItemGuid, serviceSubconSewingGuid, null, null, new GarmentComodityId(1), null, null, new BuyerId(1), null, null, new UnitDepartmentId(1), null, null);
 
             _mockGarmentServiceSubconSewingItemRepository
                 .Setup(s => s.Query)
@@ -118,13 +120,13 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconSewingItemReadModel, bool>>>()))
                 .Returns(new List<GarmentServiceSubconSewingItem>()
                 {
-                    new GarmentServiceSubconSewingItem(serviceSubconSewingItemGuid, serviceSubconSewingGuid, null, null,new GarmentComodityId(1),null,null, new BuyerId(1), null, null)
+                    new GarmentServiceSubconSewingItem(serviceSubconSewingItemGuid, serviceSubconSewingGuid, null, null,new GarmentComodityId(1),null,null, new BuyerId(1), null, null, new UnitDepartmentId(1), null, null)
                 });
             _mockServiceSubconSewingDetailRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconSewingDetailReadModel, bool>>>()))
                 .Returns(new List<GarmentServiceSubconSewingDetail>()
                 {
-                    new GarmentServiceSubconSewingDetail(serviceSubconSewingItemGuid, serviceSubconSewingItemGuid,  new Guid(), new Guid(), new ProductId(1), null, null, "ColorD", 1, new UomId(1), null, new UnitDepartmentId(1), null, null, null)
+                    new GarmentServiceSubconSewingDetail(serviceSubconSewingItemGuid, serviceSubconSewingItemGuid,  new Guid(), new Guid(), new ProductId(1), null, null, "ColorD", 1, new UomId(1), null, new UnitDepartmentId(1), null, null, null, null)
                 });
             // Act
             var result = await unitUnderTest.Get(Guid.NewGuid().ToString());
@@ -215,8 +217,8 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                     new GarmentServiceSubconSewing(id, null, DateTimeOffset.Now, false, new BuyerId(1), null, null)
                 });
 
-            GarmentServiceSubconSewingItem garmentServiceSubconSewingItem = new GarmentServiceSubconSewingItem(id, id,  null, null,new GarmentComodityId(1),null, null, new BuyerId(1), null, null);
-            GarmentServiceSubconSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSubconSewingDetail(new Guid(), new Guid(), new Guid(), new Guid(), new ProductId(1), null, null, "ColorD", 1, new UomId(1), null, new UnitDepartmentId(1), null, null, null);
+            GarmentServiceSubconSewingItem garmentServiceSubconSewingItem = new GarmentServiceSubconSewingItem(id, id,  null, null,new GarmentComodityId(1),null, null, new BuyerId(1), null, null, new UnitDepartmentId(1), null, null);
+            GarmentServiceSubconSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSubconSewingDetail(new Guid(), new Guid(), new Guid(), new Guid(), new ProductId(1), null, null, "ColorD", 1, new UomId(1), null, new UnitDepartmentId(1), null, null, null, null);
             //id, id, new ProductId(1), null, null, null, new SizeId(1), null, 1, new UomId(1),
             _mockGarmentServiceSubconSewingItemRepository
                 .Setup(s => s.Query)
@@ -235,13 +237,13 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconSewingItemReadModel>>()))
                 .Returns(new List<GarmentServiceSubconSewingItem>()
                 {
-                    new GarmentServiceSubconSewingItem(id, id,  null, null,new GarmentComodityId(1),null,null, new BuyerId(1), null, null)
+                    new GarmentServiceSubconSewingItem(id, id,  null, null,new GarmentComodityId(1),null,null, new BuyerId(1), null, null,  new UnitDepartmentId(1), null, null)
                 });
             _mockServiceSubconSewingDetailRepository
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconSewingDetailReadModel>>()))
                 .Returns(new List<GarmentServiceSubconSewingDetail>()
                 {
-                    new GarmentServiceSubconSewingDetail(id, id,  new Guid(), new Guid(), new ProductId(1), null, null, "ColorD", 1, new UomId(1), null, new UnitDepartmentId(1), null, null, null)
+                    new GarmentServiceSubconSewingDetail(id, id,  new Guid(), new Guid(), new ProductId(1), null, null, "ColorD", 1, new UomId(1), null, new UnitDepartmentId(1), null, null, null, null)
                 });
 
             // Act
@@ -265,8 +267,8 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             _mockGarmentServiceSubconSewingItemRepository
               .Setup(s => s.ReadItem(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
               .Returns(new List<GarmentServiceSubconSewingItemReadModel>().AsQueryable());
-            GarmentServiceSubconSewingItem garmentServiceSubconSewingItem = new GarmentServiceSubconSewingItem(id, id, null, null, new GarmentComodityId(1), null, null, new BuyerId(1), null, null);
-            GarmentServiceSubconSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSubconSewingDetail(new Guid(), new Guid(), new Guid(), new Guid(), new ProductId(1), null, null, "ColorD", 1, new UomId(1), null, new UnitDepartmentId(1), null, null, null);
+            GarmentServiceSubconSewingItem garmentServiceSubconSewingItem = new GarmentServiceSubconSewingItem(id, id, null, null, new GarmentComodityId(1), null, null, new BuyerId(1), null, null, new UnitDepartmentId(1), null, null);
+            GarmentServiceSubconSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSubconSewingDetail(new Guid(), new Guid(), new Guid(), new Guid(), new ProductId(1), null, null, "ColorD", 1, new UomId(1), null, new UnitDepartmentId(1), null, null, null, null);
             //id, id, new ProductId(1), null, null, null, new SizeId(1), null, 1, new UomId(1),
             _mockGarmentServiceSubconSewingItemRepository
                 .Setup(s => s.Query)
@@ -285,13 +287,13 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconSewingItemReadModel>>()))
                 .Returns(new List<GarmentServiceSubconSewingItem>()
                 {
-                    new GarmentServiceSubconSewingItem(id, id,  null, null,new GarmentComodityId(1),null,null, new BuyerId(1), null, null)
+                    new GarmentServiceSubconSewingItem(id, id,  null, null,new GarmentComodityId(1),null,null, new BuyerId(1), null, null,  new UnitDepartmentId(1), null, null)
                 });
             _mockServiceSubconSewingDetailRepository
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconSewingDetailReadModel>>()))
                 .Returns(new List<GarmentServiceSubconSewingDetail>()
                 {
-                    new GarmentServiceSubconSewingDetail(id, id,  new Guid(), new Guid(), new ProductId(1), null, null, "ColorD", 1, new UomId(1), null, new UnitDepartmentId(1), null, null, null)
+                    new GarmentServiceSubconSewingDetail(id, id,  new Guid(), new Guid(), new ProductId(1), null, null, "ColorD", 1, new UomId(1), null, new UnitDepartmentId(1), null, null, null, null)
                 });
 
             // Act
@@ -305,6 +307,40 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             // Assert
             GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+        }
+        //
+        [Fact]
+        public async Task GetXLSubconSewingBehavior()
+        {
+            var unitUnderTest = CreateGarmentServiceSubconSewingController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsGarmentSubconGarmentWashReporQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
+
+            // Act
+
+            var result = await unitUnderTest.GetXlsSubconGarmentWashReport(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>(), 25, "{}");
+
+            // Assert
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+        }
+
+        [Fact]
+        public async Task GetXLSSubconSewingReturn_InternalServerError()
+        {
+            var unitUnderTest = CreateGarmentServiceSubconSewingController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsGarmentSubconGarmentWashReporQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+
+            var result = await unitUnderTest.GetXlsSubconGarmentWashReport(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>(), 25, "{}");
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
         }
     }
 }

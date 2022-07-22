@@ -26,6 +26,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ReadModels
         public string UnitCode { get; internal set; }
         public string UnitName { get; internal set; }
         public string Remark { get; internal set; }
+        public string Color { get; internal set; }
 
         public virtual GarmentServiceSubconSewingItemReadModel GarmentServiceSubconSewingItemIdentity { get; internal set; }
     }

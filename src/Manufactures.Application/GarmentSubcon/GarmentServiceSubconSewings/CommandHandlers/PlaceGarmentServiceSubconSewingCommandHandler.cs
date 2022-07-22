@@ -64,7 +64,11 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                     item.Comodity.Name,
                     new BuyerId(item.Buyer.Id),
                     item.Buyer.Code,
-                    item.Buyer.Name
+                    item.Buyer.Name,
+                    new UnitDepartmentId(item.Unit.Id),
+                    item.Unit.Code,
+                    item.Unit.Name
+                    
                 );
                 //item.Id = garmentServiceSubconSewingItem.Identity;
 
@@ -102,7 +106,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                                     new UnitDepartmentId(sewIn.UnitId),
                                     sewIn.UnitCode,
                                     sewIn.UnitName,
+                                    "",
                                     ""
+
                                 ));
                             }
                         }
@@ -137,7 +143,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                                         d.UnitId,
                                         d.UnitCode,
                                         d.UnitName,
-                                        detail.Remark
+                                        detail.Remark,
+                                        detail.Color
                                     );
                                     await _garmentServiceSubconSewingDetailRepository.Update(garmentServiceSubconSewingDetail);
                                     break;
@@ -160,7 +167,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                                         d.UnitId,
                                         d.UnitCode,
                                         d.UnitName,
-                                        detail.Remark
+                                        detail.Remark,
+                                        detail.Color
                                     );
                                     await _garmentServiceSubconSewingDetailRepository.Update(garmentServiceSubconSewingDetail);
                                 }
