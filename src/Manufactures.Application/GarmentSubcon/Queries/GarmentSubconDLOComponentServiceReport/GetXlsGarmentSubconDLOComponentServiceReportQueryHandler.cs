@@ -156,7 +156,6 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCompone
                               uomUnit = key.UomUnit
                           }).ToList().OrderBy(x => x.dlNo).ThenBy(x => x.subConNo);
 
-
             GarmentSubconDLOComponentServiceReportListViewModel listViewModel = new GarmentSubconDLOComponentServiceReportListViewModel();
             List<GarmentSubconDLOComponentServiceReportDto> rekapcomponentservice = new List<GarmentSubconDLOComponentServiceReportDto>();
 

@@ -64,7 +64,11 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                     item.Comodity.Name,
                     new BuyerId(item.Buyer.Id),
                     item.Buyer.Code,
-                    item.Buyer.Name
+                    item.Buyer.Name,
+                    new UnitDepartmentId(item.Unit.Id),
+                    item.Unit.Code,
+                    item.Unit.Name
+                    
                 );
                 //item.Id = garmentServiceSubconSewingItem.Identity;
 
@@ -102,7 +106,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                                     new UnitDepartmentId(sewIn.UnitId),
                                     sewIn.UnitCode,
                                     sewIn.UnitName,
+                                    "",
                                     ""
+
                                 ));
                             }
                         }
@@ -115,55 +121,59 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                     {
                         var sewInDetail = SewingInDetails.Where(y => y.DesignColor == detail.DesignColor && y.UnitId== new UnitDepartmentId(detail.Unit.Id)).ToList();
                         var qty = detail.Quantity;
-                        foreach (var d in sewInDetail)
+                        if(sewInDetail.ToArray().Count() != 0)
                         {
-                            var qtyRemains = d.Quantity - qty;
-                            if (qtyRemains >= 0)
+                            foreach (var d in sewInDetail)
                             {
-                                GarmentServiceSubconSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSubconSewingDetail(
-                                    Guid.NewGuid(),
-                                    garmentServiceSubconSewingItem.Identity,
-                                    d.SewingInId,
-                                    d.SewingInItemId,
-                                    d.ProductId,
-                                    d.ProductCode,
-                                    d.ProductName,
-                                    d.DesignColor,
-                                    qty,
-                                    d.UomId,
-                                    d.UomUnit,
-                                    d.UnitId,
-                                    d.UnitCode,
-                                    d.UnitName,
-                                    detail.Remark
-                                );
-                                await _garmentServiceSubconSewingDetailRepository.Update(garmentServiceSubconSewingDetail);
-                                break;
-                            }
-                            else if (qtyRemains < 0)
-                            {
-                                qty -= d.Quantity;
-                                GarmentServiceSubconSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSubconSewingDetail(
-                                    Guid.NewGuid(),
-                                    garmentServiceSubconSewingItem.Identity,
-                                    d.SewingInId,
-                                    d.SewingInItemId,
-                                    d.ProductId,
-                                    d.ProductCode,
-                                    d.ProductName,
-                                    d.DesignColor,
-                                    d.Quantity,
-                                    d.UomId,
-                                    d.UomUnit,
-                                    d.UnitId,
-                                    d.UnitCode,
-                                    d.UnitName,
-                                    detail.Remark
-                                );
-                                await _garmentServiceSubconSewingDetailRepository.Update(garmentServiceSubconSewingDetail);
+                                var qtyRemains = d.Quantity - qty;
+                                if (qtyRemains >= 0)
+                                {
+                                    GarmentServiceSubconSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSubconSewingDetail(
+                                        Guid.NewGuid(),
+                                        garmentServiceSubconSewingItem.Identity,
+                                        d.SewingInId,
+                                        d.SewingInItemId,
+                                        d.ProductId,
+                                        d.ProductCode,
+                                        d.ProductName,
+                                        d.DesignColor,
+                                        qty,
+                                        d.UomId,
+                                        d.UomUnit,
+                                        d.UnitId,
+                                        d.UnitCode,
+                                        d.UnitName,
+                                        detail.Remark,
+                                        detail.Color
+                                    );
+                                    await _garmentServiceSubconSewingDetailRepository.Update(garmentServiceSubconSewingDetail);
+                                    break;
+                                }
+                                else if (qtyRemains < 0)
+                                {
+                                    qty -= d.Quantity;
+                                    GarmentServiceSubconSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSubconSewingDetail(
+                                        Guid.NewGuid(),
+                                        garmentServiceSubconSewingItem.Identity,
+                                        d.SewingInId,
+                                        d.SewingInItemId,
+                                        d.ProductId,
+                                        d.ProductCode,
+                                        d.ProductName,
+                                        d.DesignColor,
+                                        d.Quantity,
+                                        d.UomId,
+                                        d.UomUnit,
+                                        d.UnitId,
+                                        d.UnitCode,
+                                        d.UnitName,
+                                        detail.Remark,
+                                        detail.Color
+                                    );
+                                    await _garmentServiceSubconSewingDetailRepository.Update(garmentServiceSubconSewingDetail);
+                                }
                             }
                         }
-
                     }
                 }
                 await _garmentServiceSubconSewingItemRepository.Update(garmentServiceSubconSewingItem);
