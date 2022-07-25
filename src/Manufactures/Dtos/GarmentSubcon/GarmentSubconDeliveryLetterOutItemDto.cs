@@ -47,6 +47,8 @@ namespace Manufactures.Dtos.GarmentSubcon
         public string POSerialNumber { get; set; }
         public string SubconNo { get; set; }
         public GarmentSubconCuttingOutDto SubconCutting { get; set; }
+        public GarmentServiceSubconSewingDto SubconSewing { get; set; }
+        public GarmentServiceSubconSewingDetailDto SubconSewingDetail { get; set; }
         #endregion
         //public double ContractQuantity { get; set; }
     }

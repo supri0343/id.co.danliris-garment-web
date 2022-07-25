@@ -5,6 +5,7 @@ using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCuttingSewi
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOGarmentWashReport;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMaterialReport;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOSewingReport;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands;
@@ -35,7 +36,9 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
         private readonly IGarmentSubconCuttingOutRepository _garmentCuttingOutRepository;
         private readonly IGarmentSubconCuttingOutItemRepository _garmentCuttingOutItemRepository;
-
+        private readonly IGarmentServiceSubconSewingRepository _garmentServiceSubconSewingRepository;
+        private readonly IGarmentServiceSubconSewingItemRepository _garmentServiceSubconSewingItemRepository;
+        private readonly IGarmentServiceSubconSewingDetailRepository _garmentServiceSubconSewingDetailRepository;
         public GarmentSubconDeliveryLetterOutController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentSubconDeliveryLetterOutRepository = Storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
@@ -43,6 +46,9 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             _garmentSubconContractRepository = Storage.GetRepository<IGarmentSubconContractRepository>();
             _garmentCuttingOutRepository = Storage.GetRepository<IGarmentSubconCuttingOutRepository>();
             _garmentCuttingOutItemRepository = Storage.GetRepository<IGarmentSubconCuttingOutItemRepository>();
+            _garmentServiceSubconSewingRepository = Storage.GetRepository<IGarmentServiceSubconSewingRepository>();
+            _garmentServiceSubconSewingItemRepository = Storage.GetRepository<IGarmentServiceSubconSewingItemRepository>();
+            _garmentServiceSubconSewingDetailRepository = Storage.GetRepository<IGarmentServiceSubconSewingDetailRepository>();
         }
 
         [HttpGet]
@@ -190,7 +196,14 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                     {
                         Items = _garmentCuttingOutItemRepository.Find(o => o.CutOutId == cutOut.Identity).Select(cutOutItem => new GarmentSubconCuttingOutItemDto(cutOutItem)
                         {}).ToList()
+                    }).FirstOrDefault(),
+
+                    SubconSewing = _garmentServiceSubconSewingRepository.Find(o => o.Identity == subconItem.SubconId).Select(sSewing => new GarmentServiceSubconSewingDto(sSewing)
+                    {
+                        Items = _garmentServiceSubconSewingItemRepository.Find(o => o.ServiceSubconSewingId == sSewing.Identity).Select(sSewingItem => new GarmentServiceSubconSewingItemDto(sSewingItem)
+                        {}).ToList()
                     }).FirstOrDefault()
+
                 }).ToList()
             }).FirstOrDefault();
             var supplier = _garmentSubconContractRepository.Find(a => a.Identity == garmentSubconDeliveryLetterOutDto.SubconContractId).Select(a => a.SupplierName).FirstOrDefault();
