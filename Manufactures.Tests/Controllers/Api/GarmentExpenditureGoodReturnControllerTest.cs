@@ -75,7 +75,7 @@ namespace Manufactures.Tests.Controllers.Api
                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentExpenditureGoodReturnReadModel>>()))
                .Returns(new List<GarmentExpenditureGoodReturn>()
                {
-                    new GarmentExpenditureGoodReturn(id,"returNo","returType",new UnitDepartmentId(1),"unitCode","unitName","roNo","article",new GarmentComodityId(1),"comodityCode","comodityName",new BuyerId(1),"buyerCode","buyerName",DateTimeOffset.Now,"invoice","returDesc")
+                    new GarmentExpenditureGoodReturn(id,"returNo","returType","expenditureno","dono","urnno","bcno","bctype",new UnitDepartmentId(1),"unitCode","unitName","roNo","article",new GarmentComodityId(1),"comodityCode","comodityName",new BuyerId(1),"buyerCode","buyerName",DateTimeOffset.Now,"invoice","returDesc")
                });
 
             GarmentExpenditureGoodReturnItem goodReturnItem = new GarmentExpenditureGoodReturnItem(id, id, id, id, id, new SizeId(1), "sizeName", 1, new UomId(1), "uomUnit", "description", 1, 1);
@@ -105,7 +105,7 @@ namespace Manufactures.Tests.Controllers.Api
               .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentExpenditureGoodReturnReadModel,bool>>>()))
               .Returns(new List<GarmentExpenditureGoodReturn>()
               {
-                    new GarmentExpenditureGoodReturn(id,"returNo","returType",new UnitDepartmentId(1),"unitCode","unitName","roNo","article",new GarmentComodityId(1),"comodityCode","comodityName",new BuyerId(1),"buyerCode","buyerName",DateTimeOffset.Now,"invoice","returDesc")
+                    new GarmentExpenditureGoodReturn(id,"returNo","returType","expenditureno","dono","urnno","bcno","bctype",new UnitDepartmentId(1),"unitCode","unitName","roNo","article",new GarmentComodityId(1),"comodityCode","comodityName",new BuyerId(1),"buyerCode","buyerName",DateTimeOffset.Now,"invoice","returDesc")
               });
 
             _mockGarmentExpenditureGoodReturnItemRepository
@@ -132,7 +132,7 @@ namespace Manufactures.Tests.Controllers.Api
             Guid id = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentExpenditureGoodReturnCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new  GarmentExpenditureGoodReturn(id, "returNo", "returType", new UnitDepartmentId(1), "unitCode", "unitName", "roNo", "article", new GarmentComodityId(1), "comodityCode", "comodityName", new BuyerId(1), "buyerCode", "buyerName", DateTimeOffset.Now, "invoice", "returDesc"));
+                .ReturnsAsync(new  GarmentExpenditureGoodReturn(id, "returNo", "returType", "expenditureno", "dono", "urnno", "bcno", "bctype", new UnitDepartmentId(1), "unitCode", "unitName", "roNo", "article", new GarmentComodityId(1), "comodityCode", "comodityName", new BuyerId(1), "buyerCode", "buyerName", DateTimeOffset.Now, "invoice", "returDesc"));
 
             // Act
             var command = new PlaceGarmentExpenditureGoodReturnCommand();
@@ -167,7 +167,7 @@ namespace Manufactures.Tests.Controllers.Api
             Guid id = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentExpenditureGoodReturnCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentExpenditureGoodReturn(id, "returNo", "returType", new UnitDepartmentId(1), "unitCode", "unitName", "roNo", "article", new GarmentComodityId(1), "comodityCode", "comodityName", new BuyerId(1), "buyerCode", "buyerName", DateTimeOffset.Now, "invoice", "returDesc"));
+                .ReturnsAsync(new GarmentExpenditureGoodReturn(id, "returNo", "returType", "expenditureno", "dono", "urnno", "bcno", "bctype", new UnitDepartmentId(1), "unitCode", "unitName", "roNo", "article", new GarmentComodityId(1), "comodityCode", "comodityName", new BuyerId(1), "buyerCode", "buyerName", DateTimeOffset.Now, "invoice", "returDesc"));
 
             // Act
         
@@ -193,7 +193,7 @@ namespace Manufactures.Tests.Controllers.Api
               .Setup(s => s.Find(It.IsAny<IQueryable<GarmentExpenditureGoodReturnReadModel>>()))
               .Returns(new List<GarmentExpenditureGoodReturn>()
               {
-                    new GarmentExpenditureGoodReturn(id,"returNo","returType",new UnitDepartmentId(1),"unitCode","unitName","roNo","article",new GarmentComodityId(1),"comodityCode","comodityName",new BuyerId(1),"buyerCode","buyerName",DateTimeOffset.Now,"invoice","returDesc")
+                    new GarmentExpenditureGoodReturn(id,"returNo","returType","expenditureno","dono","urnno","bcno","bctype",new UnitDepartmentId(1),"unitCode","unitName","roNo","article",new GarmentComodityId(1),"comodityCode","comodityName",new BuyerId(1),"buyerCode","buyerName",DateTimeOffset.Now,"invoice","returDesc")
               });
 
             _mockGarmentExpenditureGoodReturnItemRepository

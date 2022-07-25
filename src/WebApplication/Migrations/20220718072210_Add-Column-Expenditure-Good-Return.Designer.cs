@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20220718072210_Add-Column-Expenditure-Good-Return")]
+    partial class AddColumnExpenditureGoodReturn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -6421,8 +6423,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<Guid>("Identity")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Color");
-
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(32);
@@ -6537,12 +6537,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<Guid>("ServiceSubconSewingId");
-
-                    b.Property<string>("UnitCode");
-
-                    b.Property<int>("UnitId");
-
-                    b.Property<string>("UnitName");
 
                     b.HasKey("Identity");
 
