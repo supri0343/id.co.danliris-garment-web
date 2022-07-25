@@ -72,6 +72,12 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoodReturns
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentExpenditureGoodReturnCommand placeGarmentExpenditureGoodReturnCommand = new PlaceGarmentExpenditureGoodReturnCommand()
             {
+                ExpenditureNo = "ExpenditureNo",
+                DONo = "DONo",
+                URNNo = "URNNo",
+                BCNo = "BCNo",
+                BCType = "BCType",
+                Invoice = "Invoice",
                 RONo = "RONo",
                 Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
                 Article = "Article",
