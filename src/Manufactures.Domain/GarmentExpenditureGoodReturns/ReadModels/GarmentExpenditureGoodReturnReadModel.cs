@@ -16,6 +16,11 @@ namespace Manufactures.Domain.GarmentExpenditureGoodReturns.ReadModels
         public string UnitCode { get; internal set; }
         public string UnitName { get; internal set; }
         public string ReturType { get; internal set; }
+        public string ExpenditureNo { get; internal set; }
+        public string DONo { get; internal set; }
+        public string BCNo { get; internal set; }
+        public string BCType { get; internal set; }
+        public string URNNo { get; internal set; }
         public string RONo { get; internal set; }
         public string Article { get; internal set; }
         public int ComodityId { get; internal set; }
