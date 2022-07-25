@@ -25,8 +25,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
         public string UnitCode { get; private set; }
         public string UnitName { get; private set; }
         public string Remark { get; private set; }
+        public string Color { get; private set; }
 
-        public GarmentServiceSubconSewingDetail(Guid identity, Guid serviceSubconSewingItemId, Guid sewingInId, Guid sewingInItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, UnitDepartmentId unitId, string unitCode, string unitName, string remark) : base(identity)
+        public GarmentServiceSubconSewingDetail(Guid identity, Guid serviceSubconSewingItemId, Guid sewingInId, Guid sewingInItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, UnitDepartmentId unitId, string unitCode, string unitName, string remark, string color) : base(identity)
         {
             ServiceSubconSewingItemId = serviceSubconSewingItemId;
             SewingInId = sewingInId;
@@ -42,6 +43,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             UnitCode = unitCode;
             UnitName = unitName;
             Remark = remark;
+            Color = color;
 
             ReadModel = new GarmentServiceSubconSewingDetailReadModel(identity)
             {
@@ -59,6 +61,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
                 UnitCode = UnitCode,
                 UnitName = UnitName,
                 Remark = Remark,
+                Color = Color
             };
 
             ReadModel.AddDomainEvent(new OnGarmentServiceSubconSewingPlaced(Identity));
@@ -80,6 +83,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             UnitId = new UnitDepartmentId(readModel.UnitId);
             UnitName = readModel.UnitName;
             Remark = readModel.Remark;
+            Color = readModel.Color;
         }
 
         public void Modify()

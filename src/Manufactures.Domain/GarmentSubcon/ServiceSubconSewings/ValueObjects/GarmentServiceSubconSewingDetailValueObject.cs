@@ -21,6 +21,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ValueObjects
         public double SewingInQuantity { get; set; }
         public double TotalQuantity { get; set; }
         public string Remark { get; set; }
+        public string Color { get; set; }
         protected override IEnumerable<object> GetAtomicValues()
         {
             throw new NotImplementedException();

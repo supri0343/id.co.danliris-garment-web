@@ -15,6 +15,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             Article = garmentServiceSubconSewingItem.Article;
             Comodity = new GarmentComodity(garmentServiceSubconSewingItem.ComodityId.Value, garmentServiceSubconSewingItem.ComodityCode, garmentServiceSubconSewingItem.ComodityName);
             Buyer = new Buyer(garmentServiceSubconSewingItem.BuyerId.Value, garmentServiceSubconSewingItem.BuyerCode, garmentServiceSubconSewingItem.BuyerName);
+            Unit = new UnitDepartment(garmentServiceSubconSewingItem.UnitId.Value, garmentServiceSubconSewingItem.UnitCode, garmentServiceSubconSewingItem.UnitName);
 
             Details = new List<GarmentServiceSubconSewingDetailDto>();
         }
@@ -25,6 +26,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public string RONo { get; set; }
         public string Article { get; set; }
         public GarmentComodity Comodity { get; set; }
+        public UnitDepartment Unit { get; set; }
         public virtual List<GarmentServiceSubconSewingDetailDto> Details { get; internal set; }
     }
 }

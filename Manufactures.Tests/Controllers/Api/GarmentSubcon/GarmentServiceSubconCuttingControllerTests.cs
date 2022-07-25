@@ -387,6 +387,5 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             // Assert
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
         }
-
     }
 }

@@ -85,9 +85,12 @@ namespace Manufactures.Helpers.PDFTemplates
                     if (data == null)
                     {
                         garmentSubconSewingItemVM.DesignColor = detail.DesignColor;
+                        garmentSubconSewingItemVM.Color = detail.Color;
                         garmentSubconSewingItemVM.Unit = detail.Unit.Code;
                         garmentSubconSewingItemVM.Quantity = detail.Quantity;
                         garmentSubconSewingItemVM.UomUnit = detail.Uom.Unit;
+                        garmentSubconSewingItemVM.Remark = detail.Remark;
+                        garmentSubconSewingItemVM.UnitName = item.Unit.Name;
                         itemData.Add(garmentSubconSewingItemVM);
                     }
                     else
@@ -99,8 +102,9 @@ namespace Manufactures.Helpers.PDFTemplates
 
             #region content
 
-            PdfPTable tableContent = new PdfPTable(8);
+            PdfPTable tableContent = new PdfPTable(9);
             List<float> widths = new List<float>();
+            widths.Add(4f);
             widths.Add(4f);
             widths.Add(4f);
             widths.Add(6f);
@@ -113,6 +117,9 @@ namespace Manufactures.Helpers.PDFTemplates
             tableContent.SetWidths(widths.ToArray());
 
             cellCenter.Phrase = new Phrase("R0", bold_font);
+            cellCenter.Rowspan = 1;
+            tableContent.AddCell(cellCenter);
+            cellCenter.Phrase = new Phrase("Area", bold_font);
             cellCenter.Rowspan = 1;
             tableContent.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("Artikel", bold_font);
@@ -143,13 +150,16 @@ namespace Manufactures.Helpers.PDFTemplates
                 cellCenter.Phrase = new Phrase(i.RoNo, normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase(i.UnitName, normal_font);
+                cellCenter.Rowspan = 1;
+                tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase(i.Article, normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase(i.Comodity, normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
-                cellCenter.Phrase = new Phrase(i.DesignColor, normal_font);
+                cellCenter.Phrase = new Phrase(i.Color, normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase(i.Unit, normal_font);
@@ -161,7 +171,7 @@ namespace Manufactures.Helpers.PDFTemplates
                 cellCenter.Phrase = new Phrase(i.UomUnit, normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
-                cellCenter.Phrase = new Phrase("", normal_font);
+                cellCenter.Phrase = new Phrase(i.Remark, normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
                 grandTotal += i.Quantity;
@@ -224,5 +234,8 @@ namespace Manufactures.Helpers.PDFTemplates
         public string Unit { get; set; }
         public double Quantity { get; set; }
         public string UomUnit { get; set; }
+        public string Remark { get; set; }
+        public string UnitName { get; set; }
+        public string Color { get; set; }
     }
 }
