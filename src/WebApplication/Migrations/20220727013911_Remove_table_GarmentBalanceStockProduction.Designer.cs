@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20220727013911_Remove_table_GarmentBalanceStockProduction")]
+    partial class Remove_table_GarmentBalanceStockProduction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1277,12 +1279,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("Article")
                         .HasMaxLength(50);
 
-                    b.Property<string>("BCNo")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("BCType")
-                        .HasMaxLength(50);
-
                     b.Property<string>("BuyerCode")
                         .HasMaxLength(25);
 
@@ -1307,18 +1303,12 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset>("CreatedDate");
 
-                    b.Property<string>("DONo")
-                        .HasMaxLength(50);
-
                     b.Property<bool?>("Deleted");
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(32);
 
                     b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("ExpenditureNo")
-                        .HasMaxLength(50);
 
                     b.Property<string>("Invoice")
                         .HasMaxLength(50);
@@ -1347,9 +1337,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("UId");
-
-                    b.Property<string>("URNNo")
-                        .HasMaxLength(50);
 
                     b.Property<string>("UnitCode")
                         .HasMaxLength(25);
