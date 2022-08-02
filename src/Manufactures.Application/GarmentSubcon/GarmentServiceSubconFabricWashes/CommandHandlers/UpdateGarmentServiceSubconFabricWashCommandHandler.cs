@@ -34,6 +34,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
 
             serviceSubconFabricWash.SetServiceSubconFabricWashDate(request.ServiceSubconFabricWashDate.GetValueOrDefault());
             serviceSubconFabricWash.SetRemark(request.Remark);
+            serviceSubconFabricWash.SetQtyPacking(request.QtyPacking);
+            serviceSubconFabricWash.SetUomUnit(request.UomUnit);
             serviceSubconFabricWash.Modify();
             var existingItem = _garmentServiceSubconFabricWashItemRepository.Find(o => o.ServiceSubconFabricWashId == serviceSubconFabricWash.Identity);
 
