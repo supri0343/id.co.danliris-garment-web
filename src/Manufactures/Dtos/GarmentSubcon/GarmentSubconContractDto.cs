@@ -27,6 +27,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             Uom = new Uom(garmentSubconContract.UomId.Value, garmentSubconContract.UomUnit);
             SKEPNo = garmentSubconContract.SKEPNo;
             AgreementDate = garmentSubconContract.AgreementDate;
+            CIF = garmentSubconContract.CIF;
             Items = new List<GarmentSubconContractItemDto>();
         }
         public Guid Id { get; internal set; }
@@ -47,6 +48,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public Uom Uom { get; set; }
         public string SKEPNo { get; set; }
         public DateTimeOffset AgreementDate { get; set; }
+        public int CIF { get; set; }
         public List<GarmentSubconContractItemDto> Items { get; set; }
     }
 

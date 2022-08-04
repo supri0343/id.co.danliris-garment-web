@@ -15,7 +15,8 @@ namespace Manufactures.Dtos.GarmentSubcon
             Product = new Product(garmentSubconContractItem.ProductId.Value, garmentSubconContractItem.ProductCode, garmentSubconContractItem.ProductName);
             Quantity = garmentSubconContractItem.Quantity;
             Uom = new Uom(garmentSubconContractItem.UomId.Value, garmentSubconContractItem.UomUnit);
-            
+            CIFItem = garmentSubconContractItem.CIFItem;
+
         }
 
         public Guid Id { get; set; }
@@ -25,6 +26,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public double Quantity { get; set; }
 
         public Uom Uom { get; set; }
+        public int CIFItem { get; set; }
     }
 }
 

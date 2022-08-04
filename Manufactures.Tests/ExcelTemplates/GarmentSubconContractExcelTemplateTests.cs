@@ -15,7 +15,7 @@ namespace Manufactures.Tests.ExcelTemplates
         {
             // var department = new UnitDepartmentId(1);
             var id = Guid.NewGuid();
-            var subconContract = new GarmentSubconContract(id, "", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now);
+            var subconContract = new GarmentSubconContract(id, "", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now, 1);
 
             GarmentSubconContractExcelDto dto = new GarmentSubconContractExcelDto(subconContract);
             
@@ -28,10 +28,10 @@ namespace Manufactures.Tests.ExcelTemplates
         {
             // var department = new UnitDepartmentId(1);
             var id = Guid.NewGuid();
-            var subconContract = new GarmentSubconContract(id, "SUBCON GARMENT", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now);
+            var subconContract = new GarmentSubconContract(id, "SUBCON GARMENT", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now, 0);
 
             GarmentSubconContractExcelDto dto = new GarmentSubconContractExcelDto(subconContract);
-            var subconContractItem = new GarmentSubconContractItemExcelDto(new GarmentSubconContractItem(id, id, new Domain.Shared.ValueObjects.ProductId(1), "code", "FABRIC", 1, new Domain.Shared.ValueObjects.UomId(1), "unit"));
+            var subconContractItem = new GarmentSubconContractItemExcelDto(new GarmentSubconContractItem(id, id, new Domain.Shared.ValueObjects.ProductId(1), "code", "FABRIC", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", 1));
             
             var items = new List<GarmentSubconContractItemExcelDto>()
             {
@@ -49,7 +49,7 @@ namespace Manufactures.Tests.ExcelTemplates
         {
             // var department = new UnitDepartmentId(1);
             var id = Guid.NewGuid();
-            var subconContract = new GarmentSubconContract(id, "SUBCON GARMENT", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now);
+            var subconContract = new GarmentSubconContract(id, "SUBCON GARMENT", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now, 1);
 
             GarmentSubconContractExcelDto dto = new GarmentSubconContractExcelDto(subconContract);
             
@@ -62,10 +62,10 @@ namespace Manufactures.Tests.ExcelTemplates
         {
             // var department = new UnitDepartmentId(1);
             var id = Guid.NewGuid();
-            var subconContract = new GarmentSubconContract(id, "SUBCON GARMENT", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now);
+            var subconContract = new GarmentSubconContract(id, "SUBCON GARMENT", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now, 0);
 
             GarmentSubconContractExcelDto dto = new GarmentSubconContractExcelDto(subconContract);
-            var subconContractItem = new GarmentSubconContractItemExcelDto(new GarmentSubconContractItem(id, id, new Domain.Shared.ValueObjects.ProductId(1), "code", "BUTTON", 1, new Domain.Shared.ValueObjects.UomId(1), "unit"));
+            var subconContractItem = new GarmentSubconContractItemExcelDto(new GarmentSubconContractItem(id, id, new Domain.Shared.ValueObjects.ProductId(1), "code", "BUTTON", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", 1));
 
             var items = new List<GarmentSubconContractItemExcelDto>()
             {

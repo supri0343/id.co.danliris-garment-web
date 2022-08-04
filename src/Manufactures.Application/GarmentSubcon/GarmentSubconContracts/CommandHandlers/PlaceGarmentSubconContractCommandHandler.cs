@@ -52,7 +52,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
                 new UomId(request.Uom.Id),
                 request.Uom.Unit,
                 request.SKEPNo,
-                request.AgreementDate
+                request.AgreementDate,
+                request.CIF
             );
 
             foreach (var item in request.Items)
@@ -65,7 +66,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
                     item.Product.Name,
                     item.Quantity,
                     new UomId(item.Uom.Id),
-                    item.Uom.Unit
+                    item.Uom.Unit,
+                    item.CIFItem
                 );
                 await _garmentSubconContractItemRepository.Update(garmentSubconContractItem);
             }
