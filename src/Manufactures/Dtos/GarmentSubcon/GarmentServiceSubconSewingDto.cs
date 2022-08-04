@@ -15,6 +15,8 @@ namespace Manufactures.Dtos.GarmentSubcon
             ServiceSubconSewingDate = garmentServiceSubconSewingList.ServiceSubconSewingDate;
             IsUsed = garmentServiceSubconSewingList.IsUsed;
             Buyer = new Buyer(garmentServiceSubconSewingList.BuyerId.Value, garmentServiceSubconSewingList.BuyerCode, garmentServiceSubconSewingList.BuyerName);
+            QtyPacking = garmentServiceSubconSewingList.QtyPacking;
+            UomUnit = garmentServiceSubconSewingList.UomUnit;
             Items = new List<GarmentServiceSubconSewingItemDto>();
         }
 
@@ -25,6 +27,8 @@ namespace Manufactures.Dtos.GarmentSubcon
         public DateTimeOffset ServiceSubconSewingDate { get; set; }
         public bool IsUsed { get; set; }
         public Buyer Buyer { get; set; }
+        public int QtyPacking { get; set; }
+        public string UomUnit { get; set; }
 
         public virtual List<GarmentServiceSubconSewingItemDto> Items { get; internal set; }
     }
