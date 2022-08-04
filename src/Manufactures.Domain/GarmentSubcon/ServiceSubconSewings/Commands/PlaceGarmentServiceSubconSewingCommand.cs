@@ -16,6 +16,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands
         public List<GarmentServiceSubconSewingItemValueObject> Items { get; set; }
         public bool IsSave { get; set; }
         public Buyer Buyer { get; set; }
+        public int QtyPacking { get; set; }
+        public string UomUnit { get; set; }
 
 
     }

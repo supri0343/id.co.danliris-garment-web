@@ -162,8 +162,10 @@ namespace Manufactures.Helpers.PDFTemplates
             tableContent.SpacingAfter = 20f;
             document.Add(tableContent);
             #endregion
-
-            Paragraph remark = new Paragraph("Keterangan : ", normal_font);
+            Paragraph qtyUomPacking = new Paragraph("Jumlah Kemasan : " + garmentSubconShrinkagePanel.QtyPacking + "      " + "Satuan Kemasan : " + garmentSubconShrinkagePanel.UomUnit, normal_font);
+            qtyUomPacking.SpacingAfter = 5f;
+            document.Add(qtyUomPacking);
+            Paragraph remark = new Paragraph("Keterangan : " , normal_font);
             remark.SpacingAfter = 5f;
             document.Add(remark);
             #region TableSignature

@@ -37,7 +37,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconShrinkagePa
                 GenerateServiceSubconShrinkagePanelNo(request),
                 request.ServiceSubconShrinkagePanelDate.GetValueOrDefault(),
                 request.Remark,
-                request.IsUsed
+                request.IsUsed,
+                request.QtyPacking,
+                request.UomUnit
             );
 
             foreach (var item in request.Items)

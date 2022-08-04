@@ -17,6 +17,11 @@ namespace Manufactures.Domain.GarmentExpenditureGoodReturns
         public string UnitCode { get; private set; }
         public string UnitName { get; private set; }
         public string ReturType { get; private set; }
+        public string ExpenditureNo { get; private set; }
+        public string DONo { get; private set; }
+        public string URNNo { get; private set; }
+        public string BCNo { get; private set; }
+        public string BCType { get; private set; }
         public string RONo { get; private set; }
         public string Article { get; private set; }
         public GarmentComodityId ComodityId { get; private set; }
@@ -29,7 +34,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoodReturns
         public string Invoice { get; private set; }
         public string ReturDesc { get; private set; }
 
-        public GarmentExpenditureGoodReturn(Guid identity, string returNo, string returType, UnitDepartmentId unitId, string unitCode, string unitName, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, BuyerId buyerId, string buyerCode, string buyerName, DateTimeOffset returDate, string invoice, string returDesc) : base(identity)
+        public GarmentExpenditureGoodReturn(Guid identity, string returNo, string returType, string expenditureNo, string doNo, string urnNo, string bcNo, string bcType, UnitDepartmentId unitId, string unitCode, string unitName, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, BuyerId buyerId, string buyerCode, string buyerName, DateTimeOffset returDate, string invoice, string returDesc) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
 
@@ -37,6 +42,11 @@ namespace Manufactures.Domain.GarmentExpenditureGoodReturns
             ReturNo = returNo;
             Identity = identity;
             ReturType = returType;
+            ExpenditureNo = expenditureNo;
+            DONo = doNo;
+            URNNo = urnNo;
+            BCNo = bcNo;
+            BCType = bcType;
             UnitId = unitId;
             UnitCode = unitCode;
             UnitName = unitName;
@@ -57,6 +67,11 @@ namespace Manufactures.Domain.GarmentExpenditureGoodReturns
                 ReturNo = ReturNo,
                 ReturType = ReturType,
                 ReturDate = ReturDate,
+                ExpenditureNo = ExpenditureNo,
+                DONo = DONo,
+                URNNo = urnNo,
+                BCNo = BCNo,
+                BCType = BCType,
                 RONo = RONo,
                 Article = Article,
                 UnitId = UnitId.Value,
@@ -78,6 +93,11 @@ namespace Manufactures.Domain.GarmentExpenditureGoodReturns
         public GarmentExpenditureGoodReturn(GarmentExpenditureGoodReturnReadModel readModel) : base(readModel)
         {
             ReturNo = readModel.ReturNo;
+            ExpenditureNo = readModel.ExpenditureNo;
+            DONo = readModel.DONo;
+            URNNo = readModel.URNNo;
+            BCNo = readModel.BCNo;
+            BCType = readModel.BCType;
             RONo = readModel.RONo;
             Article = readModel.Article;
             UnitId = new UnitDepartmentId(readModel.UnitId);

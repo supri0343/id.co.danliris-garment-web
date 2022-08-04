@@ -15,6 +15,11 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentExpenditureGoodReturns.Co
             builder.HasKey(e => e.Identity);
 
             builder.Property(a => a.ReturNo).HasMaxLength(25);
+            builder.Property(a => a.ExpenditureNo).HasMaxLength(50);
+            builder.Property(a => a.DONo).HasMaxLength(50);
+            builder.Property(a => a.URNNo).HasMaxLength(50);
+            builder.Property(a => a.BCNo).HasMaxLength(50);
+            builder.Property(a => a.BCType).HasMaxLength(50);
             builder.Property(a => a.RONo).HasMaxLength(25);
             builder.Property(a => a.Article).HasMaxLength(50);
             builder.Property(a => a.UnitCode).HasMaxLength(25);
