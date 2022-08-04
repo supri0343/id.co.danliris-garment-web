@@ -14,6 +14,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Command
         public DateTimeOffset? ServiceSubconShrinkagePanelDate { get; set; }
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
+        public int QtyPacking { get; set; }
+        public string UomUnit { get; set; }
         public List<GarmentServiceSubconShrinkagePanelItemValueObject> Items { get; set; }
         public bool IsSave { get; set; }
     }
