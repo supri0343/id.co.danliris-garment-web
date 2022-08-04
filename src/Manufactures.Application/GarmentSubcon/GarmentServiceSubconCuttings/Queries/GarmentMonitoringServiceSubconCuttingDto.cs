@@ -23,6 +23,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Qu
         public double quantity { get; internal set; }
         public string uomUnit { get; internal set; }
         public string color { get; internal set; }
+        public string uomUnitPacking { get; internal set; }
+        public int qtyPacking { get; internal set; }
 
         public GarmentMonitoringServiceSubconCuttingDto(GarmentMonitoringServiceSubconCuttingDto garmentMonitoring)
         {
@@ -41,6 +43,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Qu
             quantity = garmentMonitoring.quantity;
             uomUnit = garmentMonitoring.uomUnit;
             color = garmentMonitoring.color;
+            uomUnitPacking = garmentMonitoring.uomUnitPacking;
+            qtyPacking = garmentMonitoring.qtyPacking;
         }
 
     }

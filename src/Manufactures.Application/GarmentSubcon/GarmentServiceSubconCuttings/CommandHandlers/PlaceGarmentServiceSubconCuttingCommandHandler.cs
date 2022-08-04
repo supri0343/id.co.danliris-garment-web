@@ -60,7 +60,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
                 request.IsUsed,
                 new BuyerId(request.Buyer.Id),
                 request.Buyer.Code,
-                request.Buyer.Name
+                request.Buyer.Name,
+                new UomId(request.Uom.Id),
+                request.Uom.Unit,
+                request.QtyPacking
             );
             foreach (var item in request.Items)
             {

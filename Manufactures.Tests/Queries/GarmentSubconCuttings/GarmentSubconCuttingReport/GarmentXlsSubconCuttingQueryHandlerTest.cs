@@ -65,7 +65,7 @@ namespace Manufactures.Tests.Queries.GarmentSubconCuttings.GarmentSubconCuttingR
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconCuttingReadModel>
                 {
-                        new GarmentServiceSubconCutting(guidSubconCutting, "SJCB001", "SCCuttingType", new UnitDepartmentId (1), "UnitCode", "UnitName", DateTimeOffset.Now, false, new BuyerId (1), "BuyerCode", "BuyerName").GetReadModel()
+                        new GarmentServiceSubconCutting(guidSubconCutting, "SJCB001", "SCCuttingType", new UnitDepartmentId (1), "UnitCode", "UnitName", DateTimeOffset.Now, false, new BuyerId (1), "BuyerCode", "BuyerName", new UomId(1), "uomUnit", 1).GetReadModel()
      
                 }.AsQueryable());
 
