@@ -49,7 +49,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                 request.IsUsed,
                 new BuyerId(request.Buyer.Id),
                 request.Buyer.Code,
-                request.Buyer.Name
+                request.Buyer.Name,
+                request.QtyPacking,
+                request.UomUnit
             );
 
             foreach (var item in request.Items)
