@@ -17,6 +17,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ReadModels
         public int BuyerId { get; internal set; }
         public string BuyerCode { get; internal set; }
         public string BuyerName { get; internal set; }
+        public int QtyPacking { get; internal set; }
+        public string UomUnit { get; internal set; }
         public virtual List<GarmentServiceSubconSewingItemReadModel> GarmentServiceSubconSewingItem { get; internal set; }
 
     }

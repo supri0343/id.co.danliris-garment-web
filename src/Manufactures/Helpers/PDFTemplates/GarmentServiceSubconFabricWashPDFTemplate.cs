@@ -151,7 +151,9 @@ namespace Manufactures.Helpers.PDFTemplates
             tableContent.SpacingAfter = 20f;
             document.Add(tableContent);
             #endregion
-
+            Paragraph qtyPacking = new Paragraph("Jumlah Kemasan : " + garmentSubconFabricWash.QtyPacking + "         "  + "Satuan Kemasan : " + garmentSubconFabricWash.UomUnit, normal_font);
+            qtyPacking.SpacingAfter = 5f;
+            document.Add(qtyPacking);
             Paragraph remark = new Paragraph("Keterangan : " + garmentSubconFabricWash.Remark, normal_font);
             remark.SpacingAfter = 5f;
             document.Add(remark);

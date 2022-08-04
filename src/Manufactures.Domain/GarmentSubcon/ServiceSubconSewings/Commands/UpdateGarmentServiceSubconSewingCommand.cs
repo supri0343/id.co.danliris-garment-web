@@ -15,6 +15,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands
         public DateTimeOffset? ServiceSubconSewingDate { get; set; }
         public bool IsUsed { get; set; }
         public Buyer Buyer { get; set; }
+        public int QtyPacking { get; set; }
+        public string UomUnit { get; set; }
         public List<GarmentServiceSubconSewingItemValueObject> Items { get; set; }
 
         public void SetIdentity(Guid id)

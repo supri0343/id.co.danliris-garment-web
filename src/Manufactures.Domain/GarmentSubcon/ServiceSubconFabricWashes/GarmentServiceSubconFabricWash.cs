@@ -13,21 +13,27 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes
         public DateTimeOffset ServiceSubconFabricWashDate { get; private set; }
         public string Remark { get; private set; }
         public bool IsUsed { get; private set; }
+        public int QtyPacking { get; private set; }
+        public string UomUnit { get; private set; }
 
-        public GarmentServiceSubconFabricWash(Guid identity, string serviceSubconFabricWashNo, DateTimeOffset serviceSubconFabricWashDate, string remark, bool isUsed) : base(identity)
+        public GarmentServiceSubconFabricWash(Guid identity, string serviceSubconFabricWashNo, DateTimeOffset serviceSubconFabricWashDate, string remark, bool isUsed, int qtyPacking, string uomUnit) : base(identity)
         {
             Identity = identity;
             ServiceSubconFabricWashNo = serviceSubconFabricWashNo;
             ServiceSubconFabricWashDate = serviceSubconFabricWashDate;
             IsUsed = isUsed;
             Remark = remark;
+            QtyPacking = qtyPacking;
+            UomUnit = uomUnit;
 
             ReadModel = new GarmentServiceSubconFabricWashReadModel(Identity)
             {
                 ServiceSubconFabricWashNo = ServiceSubconFabricWashNo,
                 ServiceSubconFabricWashDate = ServiceSubconFabricWashDate,
                 Remark = Remark,
-                IsUsed = IsUsed
+                IsUsed = IsUsed,
+                QtyPacking = QtyPacking,
+                UomUnit = UomUnit
             };
 
             ReadModel.AddDomainEvent(new OnGarmentServiceSubconFabricWashPlaced(Identity));
@@ -39,6 +45,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes
             ServiceSubconFabricWashDate = readModel.ServiceSubconFabricWashDate;
             Remark = readModel.Remark;
             IsUsed = readModel.IsUsed;
+            QtyPacking = readModel.QtyPacking;
+            UomUnit = readModel.UomUnit;
         }
 
         public void SetServiceSubconFabricWashDate(DateTimeOffset ServiceSubconFabricWashDate)
@@ -66,6 +74,24 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes
             {
                 this.Remark = remark;
                 ReadModel.Remark = remark;
+            }
+        }
+
+        public void SetQtyPacking(int qtyPacking)
+        {
+            if (this.QtyPacking != qtyPacking)
+            {
+                this.QtyPacking = qtyPacking;
+                ReadModel.QtyPacking = qtyPacking;
+            }
+        }
+
+        public void SetUomUnit(string uomUnit)
+        {
+            if (this.UomUnit != uomUnit)
+            {
+                this.UomUnit = uomUnit;
+                ReadModel.UomUnit = UomUnit;
             }
         }
 
