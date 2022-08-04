@@ -77,6 +77,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
             subconCutting.SetBuyerId(new BuyerId(request.Buyer.Id));
             subconCutting.SetBuyerCode(request.Buyer.Code);
             subconCutting.SetBuyerName(request.Buyer.Name);
+            subconCutting.SetUomId(new UomId(request.Uom.Id));
+            subconCutting.SetUomUnit(request.Uom.Unit);
+            subconCutting.SetQtyPacking(request.QtyPacking);
             subconCutting.Modify();
             await _garmentServiceSubconCuttingRepository.Update(subconCutting);
 
