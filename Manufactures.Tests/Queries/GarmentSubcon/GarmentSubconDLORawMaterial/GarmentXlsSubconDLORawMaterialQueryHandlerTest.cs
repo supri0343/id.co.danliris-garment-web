@@ -108,7 +108,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLORawMaterial
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconShrinkagePanelReadModel>
                 {
-                    new GarmentServiceSubconShrinkagePanel(guidSubconShrinkagePanel, "serviceSubconShrinkagePanelNo", DateTimeOffset.Now, "remark", true).GetReadModel()
+                    new GarmentServiceSubconShrinkagePanel(guidSubconShrinkagePanel, "serviceSubconShrinkagePanelNo", DateTimeOffset.Now, "remark", true, 0, null).GetReadModel()
 
                 }.AsQueryable());
 
@@ -130,7 +130,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLORawMaterial
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconFabricWashReadModel>
                 {
-                    new GarmentServiceSubconFabricWash(guidSubconShrinkagePanel, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true).GetReadModel()
+                    new GarmentServiceSubconFabricWash(guidSubconShrinkagePanel, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true, 0, null).GetReadModel()
                 }.AsQueryable());
 
             _mockgarmentSubconFabricWashItemRepository
@@ -197,7 +197,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLORawMaterial
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconShrinkagePanelReadModel>
                 {
-                    new GarmentServiceSubconShrinkagePanel(guidSubconShrinkagePanel, "serviceSubconShrinkagePanelNo", DateTimeOffset.Now, "remark", true).GetReadModel()
+                    new GarmentServiceSubconShrinkagePanel(guidSubconShrinkagePanel, "serviceSubconShrinkagePanelNo", DateTimeOffset.Now, "remark", true, 0, null).GetReadModel()
 
                 }.AsQueryable());
 
@@ -219,7 +219,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLORawMaterial
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconFabricWashReadModel>
                 {
-                    new GarmentServiceSubconFabricWash(guidSubconShrinkagePanel, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true).GetReadModel()
+                    new GarmentServiceSubconFabricWash(guidSubconShrinkagePanel, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true, 0, null).GetReadModel()
                 }.AsQueryable());
 
             _mockgarmentSubconFabricWashItemRepository
