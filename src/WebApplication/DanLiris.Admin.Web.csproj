@@ -10,6 +10,8 @@
     <Compile Remove="Migrations\20190627061508_CuttingTypeMax.cs" />
     <Compile Remove="Migrations\20190910065535_Initial_Loading.cs" />
     <Compile Remove="Migrations\20190910065535_Initial_Loading.Designer.cs" />
+    <Compile Remove="Migrations\20220728163929_add-colomn-uom-qty-packing-subcon-service-cutting.cs" />
+    <Compile Remove="Migrations\20220728163929_add-colomn-uom-qty-packing-subcon-service-cutting.Designer.cs" />
   </ItemGroup>
 
   <!--<ItemGroup>

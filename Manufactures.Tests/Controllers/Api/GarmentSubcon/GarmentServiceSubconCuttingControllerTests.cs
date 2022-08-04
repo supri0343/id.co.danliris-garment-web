@@ -83,7 +83,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconCuttingReadModel>>()))
                 .Returns(new List<GarmentServiceSubconCutting>()
                 {
-                    new GarmentServiceSubconCutting(ServiceSubconCuttingGuid, null, null, new UnitDepartmentId(1), null, null,  DateTimeOffset.Now, false, new BuyerId(1), null, null)
+                    new GarmentServiceSubconCutting(ServiceSubconCuttingGuid, null, null, new UnitDepartmentId(1), null, null,  DateTimeOffset.Now, false, new BuyerId(1), null, null, new UomId(1), null, 0)
                 });
 
             //Guid ServiceSubconCuttingItemGuid = Guid.NewGuid();
@@ -112,7 +112,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingReadModel, bool>>>()))
                 .Returns(new List<GarmentServiceSubconCutting>()
                 {
-                    new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null)
+                    new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null, new UomId(1), null, 0)
                 });
 
             _mockGarmentServiceSubconCuttingItemRepository
@@ -152,7 +152,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentServiceSubconCuttingCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null));
+                .ReturnsAsync(new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null, new UomId(1), null, 1));
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentServiceSubconCuttingCommand>());
@@ -183,7 +183,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentServiceSubconCuttingCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null));
+                .ReturnsAsync(new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null, new UomId(1), null, 0));
 
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentServiceSubconCuttingCommand());
@@ -201,7 +201,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentServiceSubconCuttingCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null));
+                .ReturnsAsync(new GarmentServiceSubconCutting(Guid.NewGuid(), null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null, new UomId(1), null, 0));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
@@ -230,7 +230,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentServiceSubconCuttingReadModel>>()))
                 .Returns(new List<GarmentServiceSubconCutting>()
                 {
-                    new GarmentServiceSubconCutting(ServiceSubconCuttingGuid, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null)
+                    new GarmentServiceSubconCutting(ServiceSubconCuttingGuid, null, null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, false, new BuyerId(1), null, null, new UomId(1), null, 0)
                 });
 
             _mockGarmentServiceSubconCuttingItemRepository
