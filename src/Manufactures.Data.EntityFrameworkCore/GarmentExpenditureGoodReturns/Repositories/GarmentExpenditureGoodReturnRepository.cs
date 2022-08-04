@@ -23,6 +23,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentExpenditureGoodReturns.Re
             List<string> SearchAttributes = new List<string>
             {
                 "ReturNo",
+                "ExpenditureNo",
+                "URNNo",
                 "ReturType",
                 "Article",
                 "RONo",

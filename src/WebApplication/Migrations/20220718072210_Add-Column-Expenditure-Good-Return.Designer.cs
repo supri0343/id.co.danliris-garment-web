@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20220718072210_Add-Column-Expenditure-Good-Return")]
+    partial class AddColumnExpenditureGoodReturn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -418,6 +420,63 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasKey("Identity");
 
                     b.ToTable("GarmentAvalProducts");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentBalanceStockProductions.ReadModels.GarmentBalanceStockProductionReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ArticleNo")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ComodityName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<double>("FC");
+
+                    b.Property<double>("Hours");
+
+                    b.Property<Guid>("Id");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<decimal>("OTL");
+
+                    b.Property<DateTimeOffset>("Periode");
+
+                    b.Property<double>("QtyOrder");
+
+                    b.Property<string>("RO")
+                        .HasMaxLength(25);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("Type");
+
+                    b.Property<decimal>("Wage");
+
+                    b.HasKey("Identity");
+
+                    b.ToTable("GarmentBalanceStockProductions");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentComodityPrices.ReadModels.GarmentComodityPriceReadModel", b =>
@@ -6109,8 +6168,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
 
-                    b.Property<int>("QtyPacking");
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
@@ -6129,10 +6186,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("UnitName")
                         .HasMaxLength(100);
-
-                    b.Property<int>("UomId");
-
-                    b.Property<string>("UomUnit");
 
                     b.HasKey("Identity");
 
@@ -6345,8 +6398,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
 
-                    b.Property<int>("QtyPacking");
-
                     b.Property<string>("Remark");
 
                     b.Property<byte[]>("RowVersion")
@@ -6357,10 +6408,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("ServiceSubconFabricWashNo")
                         .HasMaxLength(25);
-
-                    b.Property<int>("UomId");
-
-                    b.Property<string>("UomUnit");
 
                     b.HasKey("Identity");
 
@@ -6375,8 +6422,6 @@ namespace DanLiris.Admin.Web.Migrations
                 {
                     b.Property<Guid>("Identity")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Color");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -6493,12 +6538,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<Guid>("ServiceSubconSewingId");
 
-                    b.Property<string>("UnitCode");
-
-                    b.Property<int>("UnitId");
-
-                    b.Property<string>("UnitName");
-
                     b.HasKey("Identity");
 
                     b.HasIndex("ServiceSubconSewingId");
@@ -6537,8 +6576,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
 
-                    b.Property<int>("QtyPacking");
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
@@ -6547,10 +6584,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("ServiceSubconSewingNo")
                         .HasMaxLength(25);
-
-                    b.Property<int>("UomId");
-
-                    b.Property<string>("UomUnit");
 
                     b.HasKey("Identity");
 
@@ -6700,8 +6733,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
 
-                    b.Property<int>("QtyPacking");
-
                     b.Property<string>("Remark")
                         .HasMaxLength(1000);
 
@@ -6713,10 +6744,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("ServiceSubconShrinkagePanelNo")
                         .HasMaxLength(25);
-
-                    b.Property<int>("UomId");
-
-                    b.Property<string>("UomUnit");
 
                     b.HasKey("Identity");
 

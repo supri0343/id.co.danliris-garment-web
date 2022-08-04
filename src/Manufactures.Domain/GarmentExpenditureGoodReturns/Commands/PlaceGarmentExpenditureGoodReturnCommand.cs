@@ -16,6 +16,11 @@ namespace Manufactures.Domain.GarmentReturGoodReturns.Commands
         public string ReturGoodNo { get; set; }
         public UnitDepartment Unit { get; set; }
         public string ReturType { get; set; }
+        public string ExpenditureNo { get; set; }
+        public string DONo { get; set; }
+        public string URNNo { get; set; }
+        public string BCNo { get; set; }
+        public string BCType { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }
         public GarmentComodity Comodity { get; set; }
@@ -34,6 +39,11 @@ namespace Manufactures.Domain.GarmentReturGoodReturns.Commands
         {
             RuleFor(r => r.Unit).NotNull();
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
+            RuleFor(r => r.ExpenditureNo).NotNull();
+            RuleFor(r => r.DONo).NotNull();
+            RuleFor(r => r.URNNo).NotNull();
+            RuleFor(r => r.BCNo).NotNull();
+            RuleFor(r => r.BCType).NotNull();
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.ReturDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Tidak Boleh Kosong");
             RuleFor(r => r.ReturDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Tidak Boleh Lebih dari Hari Ini");

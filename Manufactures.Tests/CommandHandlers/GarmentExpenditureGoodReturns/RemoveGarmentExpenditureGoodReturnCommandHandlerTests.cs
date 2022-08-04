@@ -72,7 +72,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoodReturns
             RemoveGarmentExpenditureGoodReturnCommand RemoveGarmentFinishingOutCommand = new RemoveGarmentExpenditureGoodReturnCommand(returId);
 
             GarmentExpenditureGoodReturn expenditureGoodReturn = new GarmentExpenditureGoodReturn(
-                returId, "no","export", new UnitDepartmentId(1), "uCode", "Uname", "roNo","art", new GarmentComodityId(1),
+                returId, "no","export", "expenditureno", "dono", "urnno", "bcno", "bctype", new UnitDepartmentId(1), "uCode", "Uname", "roNo","art", new GarmentComodityId(1),
                 "cCode", "cName", new BuyerId(1),"nam","bCode", DateTimeOffset.Now,"inv",null);
 
             GarmentFinishedGoodStock garmentFinishedGoodStock = new GarmentFinishedGoodStock(finStockGuid,

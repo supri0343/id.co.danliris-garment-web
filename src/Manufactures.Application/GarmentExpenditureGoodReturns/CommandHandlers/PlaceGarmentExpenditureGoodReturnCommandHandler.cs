@@ -52,6 +52,11 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
                 Guid.NewGuid(),
                 GenerateExpenditureGoodReturnNo(request),
                 request.ReturType,
+                request.ExpenditureNo,
+                request.DONo,
+                request.URNNo,
+                request.BCNo,
+                request.BCType,
                 new UnitDepartmentId(request.Unit.Id),
                 request.Unit.Code,
                 request.Unit.Name,
@@ -76,7 +81,8 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
             {
                 if (item.isSave)
                 {
-                    var garmentexGood = _garmentExpenditureGoodRepository.Query.Where(x=>x.UnitId==request.Unit.Id && x.RONo==request.RONo).OrderBy(a => a.CreatedDate).ToList();
+                    //var garmentexGood = _garmentExpenditureGoodRepository.Query.Where(x=>x.UnitId==request.Unit.Id && x.RONo==request.RONo).OrderBy(a => a.CreatedDate).ToList();
+                    var garmentexGood = _garmentExpenditureGoodRepository.Query.Where(x => x.UnitId == request.Unit.Id && x.ExpenditureGoodNo == request.ExpenditureNo).OrderBy(a => a.CreatedDate).ToList();
                     var garmentexGoodItem = _garmentExpenditureGoodItemRepository.Query.Where(x => x.SizeId == item.Size.Id && x.UomId == item.Uom.Id && (x.Quantity- x.ReturQuantity) > 0 && x.Description==item.Description).OrderBy(a => a.CreatedDate).ToList();
                     var join = (from a in garmentexGoodItem join b in garmentexGood on a.ExpenditureGoodId equals b.Identity select a).ToList();
                     double qty = item.Quantity;
