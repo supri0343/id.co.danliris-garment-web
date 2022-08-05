@@ -31,6 +31,9 @@ using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMaterial
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOSewingReport;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOGarmentWashReport;
 using System.IO;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Repositories;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ReadModels;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
 
 namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 {
@@ -41,6 +44,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
         private Mock<IGarmentSubconContractRepository> _mockGarmentSubconContractRepository;
         private readonly Mock<IGarmentSubconCuttingOutRepository> _mockSubconCuttingOutRepository;
         private readonly Mock<IGarmentSubconCuttingOutItemRepository> _mockSubconCuttingOutItemRepository;
+        private readonly Mock<IGarmentServiceSubconSewingRepository> _mockGarmentServiceSubconSewingRepository;
+        private readonly Mock<IGarmentServiceSubconSewingItemRepository> _mockGarmentServiceSubconSewingItemRepository;
+        private readonly Mock<IGarmentServiceSubconSewingDetailRepository> _mockGarmentServiceSubconSewingDetailRepository;
 
         public GarmentSubconDeliveryLetterOutControllerTests() : base()
         {
@@ -49,12 +55,19 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             _mockGarmentSubconContractRepository = CreateMock<IGarmentSubconContractRepository>();
             _mockSubconCuttingOutRepository = CreateMock<IGarmentSubconCuttingOutRepository>();
             _mockSubconCuttingOutItemRepository = CreateMock<IGarmentSubconCuttingOutItemRepository>();
+            _mockGarmentServiceSubconSewingRepository = CreateMock<IGarmentServiceSubconSewingRepository>();
+            _mockGarmentServiceSubconSewingItemRepository = CreateMock<IGarmentServiceSubconSewingItemRepository>();
+            _mockGarmentServiceSubconSewingDetailRepository = CreateMock<IGarmentServiceSubconSewingDetailRepository>();
 
             _MockStorage.SetupStorage(_mockGarmentSubconDeliveryLetterOutRepository);
             _MockStorage.SetupStorage(_mockGarmentSubconDeliveryLetterOutItemRepository);
             _MockStorage.SetupStorage(_mockGarmentSubconContractRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingOutRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingOutItemRepository);
+            _MockStorage.SetupStorage(_mockGarmentServiceSubconSewingRepository);
+            _MockStorage.SetupStorage(_mockGarmentServiceSubconSewingItemRepository);
+            _MockStorage.SetupStorage(_mockGarmentServiceSubconSewingDetailRepository);
+
 
         }
 
@@ -312,6 +325,21 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 {
                     new GarmentSubconCuttingOutItem(Guid.NewGuid(), SubconCuttingGuid, Guid.NewGuid(), SubconCuttingGuid, new ProductId(1), null, null, null, 0)
                 });
+
+            _mockGarmentServiceSubconSewingRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconSewingReadModel, bool>>>()))
+                .Returns(new List<GarmentServiceSubconSewing>()
+                {
+                    new GarmentServiceSubconSewing(SubconDeliveryLetterOutItemGuid, "",DateTimeOffset.Now,true, new BuyerId(1),"","",1,"")
+                });
+
+            _mockGarmentServiceSubconSewingItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconSewingItemReadModel, bool>>>()))
+                .Returns(new List<GarmentServiceSubconSewingItem>()
+                {
+                    new GarmentServiceSubconSewingItem(SubconCuttingGuid, SubconDeliveryLetterOutItemGuid,"","",new GarmentComodityId(1),"","",new BuyerId(1),"","",new UnitDepartmentId(1),"","")
+                });
+
             //_mockSewingInItemRepository
             //    .Setup(s => s.Query)
             //    .Returns(new List<GarmentSewingInItemReadModel>().AsQueryable());

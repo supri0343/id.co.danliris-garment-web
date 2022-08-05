@@ -74,6 +74,11 @@ namespace Manufactures.Tests.Validations.GarmentExpenditureGoodReturns
                 ReturGoodNo = "ReturGoodNo",
                 ReturType = "ReturType",
                 RONo = "RONo",
+                ExpenditureNo ="ExNo",
+                DONo = "DONo123",
+                URNNo ="UrnNo123",
+                BCNo ="BCNo123",
+                BCType ="3.0",
                 Unit = new UnitDepartment()
                 {
                     Id = 1,
