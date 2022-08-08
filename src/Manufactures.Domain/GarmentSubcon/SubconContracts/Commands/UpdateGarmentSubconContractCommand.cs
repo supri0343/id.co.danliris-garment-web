@@ -28,7 +28,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
         public Uom Uom { get; set; }
         public string SKEPNo { get; set; }
         public DateTimeOffset AgreementDate { get; set; }
-
+        public int CIF { get; set; }
         public List<GarmentSubconContractItemValueObject> Items { get; set; }
         public void SetIdentity(Guid id)
         {

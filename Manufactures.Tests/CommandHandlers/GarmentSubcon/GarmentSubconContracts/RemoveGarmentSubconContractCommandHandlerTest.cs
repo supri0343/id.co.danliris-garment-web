@@ -48,7 +48,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
             RemoveGarmentSubconContractCommand RemoveGarmentSubconContractCommand = new RemoveGarmentSubconContractCommand(SubconContractGuid);
 
             GarmentSubconContract garmentSubconContract = new GarmentSubconContract(
-                SubconContractGuid, null, null, null, new SupplierId(1), "", "", null, null, null, 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now);
+                SubconContractGuid, null, null, null, new SupplierId(1), "", "", null, null, null, 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now, 0);
 
             _mockSubconContractRepository
                 .Setup(s => s.Query)
@@ -65,7 +65,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractItemReadModel, bool>>>()))
                .Returns(new List<GarmentSubconContractItem>()
                {
-                    new GarmentSubconContractItem(Guid.Empty,SubconContractGuid,new ProductId(1),"code","name",1,new UomId(1),"unit")
+                    new GarmentSubconContractItem(Guid.Empty,SubconContractGuid,new ProductId(1),"code","name",1,new UomId(1),"unit",1)
                });
             _mockSubconContractItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentSubconContractItem>()))

@@ -61,6 +61,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                 SubconDate = DateTimeOffset.Now,
                 SubconType = "PRINT",
                 Buyer = new Buyer(1, "BuyerCode", "BuyerName"),
+                Uom = new Uom(1, "UomUnit"),
                 Items = new List<GarmentServiceSubconCuttingItemValueObject>
                 {
                     new GarmentServiceSubconCuttingItemValueObject

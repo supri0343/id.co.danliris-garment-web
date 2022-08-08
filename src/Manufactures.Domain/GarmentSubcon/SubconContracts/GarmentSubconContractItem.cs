@@ -21,8 +21,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
 
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
+        public int CIFItem { get; private set; }
 
-        public GarmentSubconContractItem(Guid identity, Guid subconContractId, ProductId productId, string productCode, string productName, double quantity, UomId uomId, string uomUnit) : base(identity)
+        public GarmentSubconContractItem(Guid identity, Guid subconContractId, ProductId productId, string productCode, string productName, double quantity, UomId uomId, string uomUnit, int cifItem) : base(identity)
         {
             Identity = identity;
             SubconContractId = subconContractId;
@@ -32,6 +33,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             Quantity = quantity;
             UomId = uomId;
             UomUnit = uomUnit;
+            CIFItem = cifItem;
 
             ReadModel = new GarmentSubconContractItemReadModel(Identity)
             {
@@ -41,7 +43,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
                 UomUnit = uomUnit,
                 ProductId = ProductId.Value,
                 ProductCode = ProductCode,
-                ProductName = ProductName
+                ProductName = ProductName,
+                CIFItem = CIFItem,
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconContractPlaced(Identity));
@@ -56,6 +59,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             Quantity = readModel.Quantity;
             UomUnit = readModel.UomUnit;
             UomId = new UomId(readModel.UomId);
+            CIFItem = readModel.CIFItem;
         }
         public void SetQuantity(double Quantity)
         {
@@ -63,6 +67,14 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             {
                 this.Quantity = Quantity;
                 ReadModel.Quantity = Quantity;
+            }
+        }
+        public void SetCIFItem(int CIFItem)
+        {
+            if (this.CIFItem != CIFItem)
+            {
+                this.CIFItem = CIFItem;
+                ReadModel.CIFItem = CIFItem;
             }
         }
         public void Modify()
