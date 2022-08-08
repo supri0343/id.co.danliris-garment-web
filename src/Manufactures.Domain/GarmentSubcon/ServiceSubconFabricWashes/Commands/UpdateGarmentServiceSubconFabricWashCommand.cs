@@ -14,6 +14,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Commands
         public DateTimeOffset? ServiceSubconFabricWashDate { get; set; }
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
+        public int QtyPacking { get; set; }
+        public string UomUnit { get; set; }
         public List<GarmentServiceSubconFabricWashItemValueObject> Items { get; set; }
 
         public void SetIdentity(Guid id)

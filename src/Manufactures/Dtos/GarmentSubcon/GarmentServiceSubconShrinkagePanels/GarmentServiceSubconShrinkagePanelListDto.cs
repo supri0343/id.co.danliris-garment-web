@@ -15,6 +15,8 @@ namespace Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconShrinkagePanels
             Remark = garmentServiceSubconShrinkagePanelList.Remark;
             CreatedBy = garmentServiceSubconShrinkagePanelList.AuditTrail.CreatedBy;
             IsUsed = garmentServiceSubconShrinkagePanelList.IsUsed;
+            QtyPacking = garmentServiceSubconShrinkagePanelList.QtyPacking;
+            UomUnit = garmentServiceSubconShrinkagePanelList.UomUnit;
             Items = new List<GarmentServiceSubconShrinkagePanelItemDto>();
         }
 
@@ -23,6 +25,8 @@ namespace Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconShrinkagePanels
         public DateTimeOffset ServiceSubconShrinkagePanelDate { get; set; }
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
+        public int QtyPacking { get; set; }
+        public string UomUnit { get; set; }
         public List<GarmentServiceSubconShrinkagePanelItemDto> Items { get; set; }
     }
 }

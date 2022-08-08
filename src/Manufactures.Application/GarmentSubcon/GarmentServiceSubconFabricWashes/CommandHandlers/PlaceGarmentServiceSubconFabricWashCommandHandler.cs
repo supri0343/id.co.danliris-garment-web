@@ -37,7 +37,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
                 GenerateServiceSubconFabricWashNo(request),
                 request.ServiceSubconFabricWashDate.GetValueOrDefault(),
                 request.Remark,
-                request.IsUsed
+                request.IsUsed,
+                request.QtyPacking,
+                request.UomUnit
             );
 
             foreach (var item in request.Items)

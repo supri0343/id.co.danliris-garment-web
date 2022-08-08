@@ -15,8 +15,10 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
         public BuyerId BuyerId { get; private set; }
         public string BuyerCode { get; private set; }
         public string BuyerName { get; private set; }
+        public int QtyPacking { get; private set; }
+        public string UomUnit { get; private set; }
         //
-        public GarmentServiceSubconSewing(Guid identity, string serviceSubconSewingNo, DateTimeOffset serviceSubconSewingDate, bool isUsed, BuyerId buyerId, string buyerCode, string buyerName) : base(identity)
+        public GarmentServiceSubconSewing(Guid identity, string serviceSubconSewingNo, DateTimeOffset serviceSubconSewingDate, bool isUsed, BuyerId buyerId, string buyerCode, string buyerName, int qtyPacking, string uomUnit) : base(identity)
         {
             
             Identity = identity;
@@ -26,6 +28,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             BuyerId = buyerId;
             BuyerCode = buyerCode;
             BuyerName = buyerName;
+            QtyPacking = qtyPacking;
+            UomUnit = uomUnit;
 
             ReadModel = new GarmentServiceSubconSewingReadModel(Identity)
             {
@@ -37,7 +41,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
                 IsUsed = IsUsed,
                 BuyerId = BuyerId.Value,
                 BuyerCode = BuyerCode,
-                BuyerName = BuyerName
+                BuyerName = BuyerName,
+                QtyPacking = QtyPacking,
+                UomUnit = UomUnit
             };
 
             ReadModel.AddDomainEvent(new OnGarmentServiceSubconSewingPlaced(Identity));
@@ -55,6 +61,8 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             BuyerId = new BuyerId(readModel.BuyerId);
             BuyerCode = readModel.BuyerCode;
             BuyerName = readModel.BuyerName;
+            QtyPacking = readModel.QtyPacking;
+            UomUnit = readModel.UomUnit;
         }
 
         public void SetDate(DateTimeOffset ServiceSubconSewingDate)
@@ -99,6 +107,23 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             {
                 this.BuyerName = BuyerName;
                 ReadModel.BuyerName = BuyerName;
+            }
+        }
+
+        public void SetQtyPacking(int qtyPacking)
+        {
+            if (this.QtyPacking != qtyPacking)
+            {
+                this.QtyPacking = qtyPacking;
+                ReadModel.QtyPacking = qtyPacking;
+            }
+        }
+        public void SetUomUnit(string uomUnit)
+        {
+            if(this.UomUnit != uomUnit)
+            {
+                this.UomUnit = uomUnit;
+                ReadModel.UomUnit = uomUnit;
             }
         }
 

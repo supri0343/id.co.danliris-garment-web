@@ -196,7 +196,9 @@ namespace Manufactures.Helpers.PDFTemplates
             tableContent.SpacingAfter = 20f;
             document.Add(tableContent);
             #endregion
-
+            Paragraph qtyUomPacking = new Paragraph("Jumlah Kemasan : " + garmentSubconSewing.QtyPacking + "      " + "Satuan Kemasan : " + garmentSubconSewing.UomUnit, normal_font);
+            qtyUomPacking.SpacingAfter = 5f;
+            document.Add(qtyUomPacking);
             #region TableSignature
 
             PdfPTable tableSignature = new PdfPTable(2);
