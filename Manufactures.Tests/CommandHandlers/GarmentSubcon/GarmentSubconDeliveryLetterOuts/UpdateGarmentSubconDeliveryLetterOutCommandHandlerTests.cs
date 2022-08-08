@@ -293,7 +293,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                     new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",subconCuttingOutGuid,"","","")
                 });
 
-            GarmentServiceSubconCutting garmentSubconCutting = new GarmentServiceSubconCutting(subconGuid, "no", "BORDIR", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, false, new BuyerId(1), "", "");
+            GarmentServiceSubconCutting garmentSubconCutting = new GarmentServiceSubconCutting(subconGuid, "no", "BORDIR", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, false, new BuyerId(1), "", "", new UomId(1), "UomUnit", 1);
 
             _mockSubconCuttingRepository
                 .Setup(s => s.Query)
