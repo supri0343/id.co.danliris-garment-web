@@ -31,6 +31,7 @@ using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMaterial
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOSewingReport;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOGarmentWashReport;
 using System.IO;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Repositories;
 
 namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 {
@@ -41,6 +42,9 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
         private Mock<IGarmentSubconContractRepository> _mockGarmentSubconContractRepository;
         private readonly Mock<IGarmentSubconCuttingOutRepository> _mockSubconCuttingOutRepository;
         private readonly Mock<IGarmentSubconCuttingOutItemRepository> _mockSubconCuttingOutItemRepository;
+        private readonly Mock<IGarmentServiceSubconSewingRepository> _mockSubconSewingRepository;
+        private readonly Mock<IGarmentServiceSubconSewingItemRepository> _mockSubconSewingItemRepository;
+        private readonly Mock<IGarmentServiceSubconSewingDetailRepository> _mockSubconSewingDetailRepository;
 
         public GarmentSubconDeliveryLetterOutControllerTests() : base()
         {
@@ -49,12 +53,18 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             _mockGarmentSubconContractRepository = CreateMock<IGarmentSubconContractRepository>();
             _mockSubconCuttingOutRepository = CreateMock<IGarmentSubconCuttingOutRepository>();
             _mockSubconCuttingOutItemRepository = CreateMock<IGarmentSubconCuttingOutItemRepository>();
+            _mockSubconSewingRepository = CreateMock<IGarmentServiceSubconSewingRepository>();
+            _mockSubconSewingItemRepository = CreateMock<IGarmentServiceSubconSewingItemRepository>();
+            _mockSubconSewingDetailRepository = CreateMock<IGarmentServiceSubconSewingDetailRepository>();
 
             _MockStorage.SetupStorage(_mockGarmentSubconDeliveryLetterOutRepository);
             _MockStorage.SetupStorage(_mockGarmentSubconDeliveryLetterOutItemRepository);
             _MockStorage.SetupStorage(_mockGarmentSubconContractRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingOutRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingOutItemRepository);
+            _MockStorage.SetupStorage(_mockSubconSewingRepository);
+            _MockStorage.SetupStorage(_mockSubconSewingItemRepository);
+            _MockStorage.SetupStorage(_mockSubconSewingDetailRepository);
 
         }
 
