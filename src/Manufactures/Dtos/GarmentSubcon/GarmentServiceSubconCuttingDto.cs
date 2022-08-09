@@ -18,6 +18,8 @@ namespace Manufactures.Dtos.GarmentSubcon
             CreatedBy = garmentServiceSubconCutting.AuditTrail.CreatedBy;
             IsUsed = garmentServiceSubconCutting.IsUsed;
             Buyer = new Buyer(garmentServiceSubconCutting.BuyerId.Value, garmentServiceSubconCutting.BuyerCode, garmentServiceSubconCutting.BuyerName);
+            Uom = new Uom(garmentServiceSubconCutting.UomId.Value, garmentServiceSubconCutting.UomUnit);
+            QtyPacking = garmentServiceSubconCutting.QtyPacking;
             Items = new List<GarmentServiceSubconCuttingItemDto>();
         }
 
@@ -29,6 +31,8 @@ namespace Manufactures.Dtos.GarmentSubcon
         public UnitDepartment Unit { get; set; }
         public bool IsUsed { get; set; }
         public Buyer Buyer { get; set; }
+        public Uom Uom { get; set; }
+        public int QtyPacking {get; set;}
         public List<GarmentServiceSubconCuttingItemDto> Items { get; set; }
     }
 }

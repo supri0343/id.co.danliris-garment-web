@@ -41,6 +41,12 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentServiceSubconCutti
                 IsUsed = true,
                 SubconDate = DateTimeOffset.Now,
                 SubconNo = "CuttingOutNo",
+                Uom = new Uom()
+                {
+                    Id = 1,
+                    Unit = "Unit"
+                },
+                QtyPacking = 1,
                 Unit = new UnitDepartment()
                 {
                     Id = 1,

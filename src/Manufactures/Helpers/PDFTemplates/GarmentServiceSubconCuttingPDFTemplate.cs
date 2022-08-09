@@ -59,9 +59,11 @@ namespace Manufactures.Helpers.PDFTemplates
             tableHeader.AddCell(cellHeaderContentCenter);
 
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentRight.AddElement(new Phrase("Jenis Subcon  :" + garmentSubconCutting.SubconType, normal_font));
-            cellHeaderContentRight.AddElement(new Phrase("Unit Asal         : " + garmentSubconCutting.Unit.Name, normal_font));
-            cellHeaderContentRight.AddElement(new Phrase("Buyer              : " + garmentSubconCutting.Buyer.Name, normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("Jenis Subcon           : " + garmentSubconCutting.SubconType, normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("Unit Asal                  : " + garmentSubconCutting.Unit.Name, normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("Buyer                       : " + garmentSubconCutting.Buyer.Name, normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("Jumlah Kemasan     : " + garmentSubconCutting.QtyPacking, normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("Satuan Kemasan     : " + garmentSubconCutting.Uom.Unit, normal_font));
 
             tableHeader.AddCell(cellHeaderContentRight);
 
