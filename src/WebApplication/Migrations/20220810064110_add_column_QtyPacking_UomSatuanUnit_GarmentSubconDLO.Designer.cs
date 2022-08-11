@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20220810064110_add_column_QtyPacking_UomSatuanUnit_GarmentSubconDLO")]
+    partial class add_column_QtyPacking_UomSatuanUnit_GarmentSubconDLO
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -6221,8 +6223,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset?>("ModifiedDate");
 
-                    b.Property<int>("QtyPacking");
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
@@ -6241,10 +6241,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("UnitName")
                         .HasMaxLength(100);
-
-                    b.Property<int>("UomId");
-
-                    b.Property<string>("UomUnit");
 
                     b.HasKey("Identity");
 
@@ -6470,8 +6466,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("ServiceSubconFabricWashNo")
                         .HasMaxLength(25);
 
-                    b.Property<int>("UomId");
-
                     b.Property<string>("UomUnit");
 
                     b.HasKey("Identity");
@@ -6660,8 +6654,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("ServiceSubconSewingNo")
                         .HasMaxLength(25);
 
-                    b.Property<int>("UomId");
-
                     b.Property<string>("UomUnit");
 
                     b.HasKey("Identity");
@@ -6825,8 +6817,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("ServiceSubconShrinkagePanelNo")
                         .HasMaxLength(25);
-
-                    b.Property<int>("UomId");
 
                     b.Property<string>("UomUnit");
 
