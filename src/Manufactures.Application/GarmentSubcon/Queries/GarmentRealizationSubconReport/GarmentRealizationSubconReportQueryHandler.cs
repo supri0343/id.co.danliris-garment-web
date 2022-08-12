@@ -51,6 +51,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
             public string subconNo { get; set; }
             public string bpjNo { get; set; }
             public DateTimeOffset dueDate { get; set; }
+            public double subconContractQuantity { get; set; }
         }
 
         public async Task<GarmentRealizationSubconReportListViewModel> Handle(GarmentRealizationSubconReportQuery request, CancellationToken cancellationToken)
@@ -72,7 +73,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
                                   jobtype = c.JobType,
                                   subconNo = c.ContractNo,
                                   bpjNo = c.BPJNo,
-                                  dueDate = c.DueDate
+                                  subconContractQuantity = c.Quantity,
                               };
 
             var QueryKeluar2 = from a in garmentSubconContractRepository.Query
@@ -85,7 +86,8 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
                                    jobtype = b.ProductCode + "-" + b.ProductName,
                                    subconNo = a.ContractNo,
                                    bpjNo = a.BPJNo,
-                                   dueDate = a.DueDate
+                                   dueDate = a.DueDate,
+                                   subconContractQuantity = a.Quantity
                                };
 
             var QueryKeluar3 = QueryKeluar.Union(QueryKeluar2).AsEnumerable();
@@ -103,7 +105,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
                                  jobtype = c.JobType,
                                  subconNo = c.ContractNo,
                                  bpjNo = c.BPJNo,
-                                 dueDate = c.DueDate
+                                 dueDate = c.DueDate,
                              };
 
             foreach (var i in QueryKeluar3)
@@ -117,7 +119,8 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
                     jobType = i.jobtype,
                     subconNo = i.subconNo,
                     bpjNo = i.bpjNo,
-                    dueDate = i.dueDate
+                    dueDate = i.dueDate,
+                    subconContractQuantity = i.subconContractQuantity,
                 };
 
                 monitoringDtosOut.Add(dto);
@@ -134,7 +137,8 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
                     jobType = i.jobtype,
                     subconNo = i.subconNo,
                     bpjNo = i.bpjNo,
-                    dueDate = i.dueDate
+                    dueDate = i.dueDate,
+                    subconContractQuantity = i.subconContractQuantity,
                 };
 
                 monitoringDtos.Add(dto);
