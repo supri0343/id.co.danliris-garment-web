@@ -112,7 +112,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoodReturns
                     new GarmentFinishedGoodStockReadModel(finStockGuid)
                 }.AsQueryable());
 
-            GarmentExpenditureGood garmentExpenditureGood = new GarmentExpenditureGood(exGoodGuid,"no",null,
+            GarmentExpenditureGood garmentExpenditureGood = new GarmentExpenditureGood(exGoodGuid, placeGarmentExpenditureGoodReturnCommand.ExpenditureNo, null,
                 new UnitDepartmentId(placeGarmentExpenditureGoodReturnCommand.Unit.Id), null,null, placeGarmentExpenditureGoodReturnCommand.RONo,null,new GarmentComodityId(1),
                 null,null,new BuyerId(1),null,null,DateTimeOffset.Now,null,null,0,null,false,0);
 

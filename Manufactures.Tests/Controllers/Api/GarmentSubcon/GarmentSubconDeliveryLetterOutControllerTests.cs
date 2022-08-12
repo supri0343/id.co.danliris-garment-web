@@ -32,6 +32,8 @@ using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOSewingRepor
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOGarmentWashReport;
 using System.IO;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Repositories;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.ReadModels;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
 
 namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 {
@@ -42,9 +44,10 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
         private Mock<IGarmentSubconContractRepository> _mockGarmentSubconContractRepository;
         private readonly Mock<IGarmentSubconCuttingOutRepository> _mockSubconCuttingOutRepository;
         private readonly Mock<IGarmentSubconCuttingOutItemRepository> _mockSubconCuttingOutItemRepository;
-        private readonly Mock<IGarmentServiceSubconSewingRepository> _mockSubconSewingRepository;
-        private readonly Mock<IGarmentServiceSubconSewingItemRepository> _mockSubconSewingItemRepository;
-        private readonly Mock<IGarmentServiceSubconSewingDetailRepository> _mockSubconSewingDetailRepository;
+
+        private readonly Mock<IGarmentServiceSubconSewingRepository> _mockGarmentServiceSubconSewingRepository;
+        private readonly Mock<IGarmentServiceSubconSewingItemRepository> _mockGarmentServiceSubconSewingItemRepository;
+        private readonly Mock<IGarmentServiceSubconSewingDetailRepository> _mockGarmentServiceSubconSewingDetailRepository;
 
         public GarmentSubconDeliveryLetterOutControllerTests() : base()
         {
@@ -53,18 +56,21 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             _mockGarmentSubconContractRepository = CreateMock<IGarmentSubconContractRepository>();
             _mockSubconCuttingOutRepository = CreateMock<IGarmentSubconCuttingOutRepository>();
             _mockSubconCuttingOutItemRepository = CreateMock<IGarmentSubconCuttingOutItemRepository>();
-            _mockSubconSewingRepository = CreateMock<IGarmentServiceSubconSewingRepository>();
-            _mockSubconSewingItemRepository = CreateMock<IGarmentServiceSubconSewingItemRepository>();
-            _mockSubconSewingDetailRepository = CreateMock<IGarmentServiceSubconSewingDetailRepository>();
+
+            _mockGarmentServiceSubconSewingRepository = CreateMock<IGarmentServiceSubconSewingRepository>();
+            _mockGarmentServiceSubconSewingItemRepository = CreateMock<IGarmentServiceSubconSewingItemRepository>();
+            _mockGarmentServiceSubconSewingDetailRepository = CreateMock<IGarmentServiceSubconSewingDetailRepository>();
 
             _MockStorage.SetupStorage(_mockGarmentSubconDeliveryLetterOutRepository);
             _MockStorage.SetupStorage(_mockGarmentSubconDeliveryLetterOutItemRepository);
             _MockStorage.SetupStorage(_mockGarmentSubconContractRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingOutRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingOutItemRepository);
-            _MockStorage.SetupStorage(_mockSubconSewingRepository);
-            _MockStorage.SetupStorage(_mockSubconSewingItemRepository);
-            _MockStorage.SetupStorage(_mockSubconSewingDetailRepository);
+
+            _MockStorage.SetupStorage(_mockGarmentServiceSubconSewingRepository);
+            _MockStorage.SetupStorage(_mockGarmentServiceSubconSewingItemRepository);
+            _MockStorage.SetupStorage(_mockGarmentServiceSubconSewingDetailRepository);
+
 
         }
 
@@ -141,7 +147,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
                 {
-                    new GarmentSubconDeliveryLetterOutItem(Guid.NewGuid(),new Guid(),1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit",new Domain.Shared.ValueObjects.UomId(1),"unit","fabType",new Guid(),"","","")
+                    new GarmentSubconDeliveryLetterOutItem(Guid.NewGuid(),new Guid(),1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit",new Domain.Shared.ValueObjects.UomId(1),"unit","fabType",new Guid(),"","","","",1)
                 });
 
 
@@ -250,7 +256,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 });
 
             Guid SubconDeliveryLetterOutItemGuid = Guid.NewGuid();
-            GarmentSubconDeliveryLetterOutItem garmentSubconDeliveryLetterOutItem = new GarmentSubconDeliveryLetterOutItem(Guid.NewGuid(), SubconDeliveryLetterOutGuid, 1, new Domain.Shared.ValueObjects.ProductId(1), "code", "name", "remark", "color", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", new Domain.Shared.ValueObjects.UomId(1), "unit", "fabType", new Guid(), "", "", "");
+            GarmentSubconDeliveryLetterOutItem garmentSubconDeliveryLetterOutItem = new GarmentSubconDeliveryLetterOutItem(Guid.NewGuid(), SubconDeliveryLetterOutGuid, 1, new Domain.Shared.ValueObjects.ProductId(1), "code", "name", "remark", "color", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", new Domain.Shared.ValueObjects.UomId(1), "unit", "fabType", new Guid(), "", "", "",  "", 1);
 
             _mockGarmentSubconDeliveryLetterOutItemRepository
                 .Setup(s => s.Query)
@@ -262,7 +268,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconDeliveryLetterOutItemReadModel>>()))
                 .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
                 {
-                    new GarmentSubconDeliveryLetterOutItem(Guid.NewGuid(),SubconDeliveryLetterOutGuid,1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit",new Domain.Shared.ValueObjects.UomId(1),"unit","fabType",new Guid(),"","","")
+                    new GarmentSubconDeliveryLetterOutItem(Guid.NewGuid(),SubconDeliveryLetterOutGuid,1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit",new Domain.Shared.ValueObjects.UomId(1),"unit","fabType",new Guid(),"","","", "",1)
                 });
             var orderData = new
             {
@@ -298,7 +304,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                  .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
                  .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
                  {
-                    new GarmentSubconDeliveryLetterOutItem(SubconDeliveryLetterOutItemGuid,SubconDeliveryLetterOutGuid,1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit",new Domain.Shared.ValueObjects.UomId(1),"unit","fabType",SubconCuttingGuid,"","","")
+                    new GarmentSubconDeliveryLetterOutItem(SubconDeliveryLetterOutItemGuid,SubconDeliveryLetterOutGuid,1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit",new Domain.Shared.ValueObjects.UomId(1),"unit","fabType",SubconCuttingGuid,"","","", "",1)
                  });
 
             _mockGarmentSubconContractRepository
@@ -322,6 +328,21 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 {
                     new GarmentSubconCuttingOutItem(Guid.NewGuid(), SubconCuttingGuid, Guid.NewGuid(), SubconCuttingGuid, new ProductId(1), null, null, null, 0)
                 });
+
+            _mockGarmentServiceSubconSewingRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconSewingReadModel, bool>>>()))
+                .Returns(new List<GarmentServiceSubconSewing>()
+                {
+                    new GarmentServiceSubconSewing(SubconDeliveryLetterOutItemGuid, "",DateTimeOffset.Now,true, new BuyerId(1),"","",1,"")
+                });
+
+            _mockGarmentServiceSubconSewingItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconSewingItemReadModel, bool>>>()))
+                .Returns(new List<GarmentServiceSubconSewingItem>()
+                {
+                    new GarmentServiceSubconSewingItem(SubconCuttingGuid, SubconDeliveryLetterOutItemGuid,"","",new GarmentComodityId(1),"","",new BuyerId(1),"","",new UnitDepartmentId(1),"","")
+                });
+
             //_mockSewingInItemRepository
             //    .Setup(s => s.Query)
             //    .Returns(new List<GarmentSewingInItemReadModel>().AsQueryable());
