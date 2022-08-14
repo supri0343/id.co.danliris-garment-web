@@ -67,6 +67,18 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 .Select(subcon => new GarmentSubconDeliveryLetterOutListDto(subcon))
                 .ToList();
 
+            var garmentdeliveryLetterOutItemDto = _garmentSubconDeliveryLetterOutItemRepository.
+                Find(_garmentSubconDeliveryLetterOutItemRepository.Query).
+                Select(o => new GarmentSubconDeliveryLetterOutItemDto(o))
+                .ToList();
+
+            Parallel.ForEach(garmentSubconDeliveryLetterOutListDtos, dto =>
+            {
+                var currentItems = garmentdeliveryLetterOutItemDto.Where(s => s.SubconDeliveryLetterOutId == dto.Id).ToList();
+                dto.Items = currentItems;
+
+            });
+
             await Task.Yield();
             return Ok(garmentSubconDeliveryLetterOutListDtos, info: new
             {

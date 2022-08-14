@@ -19,9 +19,18 @@ namespace Manufactures.Domain.Shared.ValueObjects
             Name = name;
         }
 
+        public Supplier(int supplierId, string code, string name,string address)
+        {
+            Id = supplierId;
+            Code = code;
+            Name = name;
+            Address = address;
+        }
+
         public int Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
+        public string Address { get; set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
