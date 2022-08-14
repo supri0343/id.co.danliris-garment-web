@@ -6,17 +6,17 @@ namespace DanLiris.Admin.Web.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "UomId",
-                table: "GarmentServiceSubconShrinkagePanels");
+            //migrationBuilder.DropColumn(
+            //    name: "UomId",
+            //    table: "GarmentServiceSubconShrinkagePanels");
 
-            migrationBuilder.DropColumn(
-                name: "UomId",
-                table: "GarmentServiceSubconSewings");
+            //migrationBuilder.DropColumn(
+            //    name: "UomId",
+            //    table: "GarmentServiceSubconSewings");
 
-            migrationBuilder.DropColumn(
-                name: "UomId",
-                table: "GarmentServiceSubconFabricWashes");
+            //migrationBuilder.DropColumn(
+            //    name: "UomId",
+            //    table: "GarmentServiceSubconFabricWashes");
 
             migrationBuilder.AddColumn<int>(
                 name: "CIF",
@@ -33,19 +33,19 @@ namespace DanLiris.Admin.Web.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "CIF",
-                table: "GarmentSubconContracts");
+            //migrationBuilder.DropColumn(
+            //    name: "CIF",
+            //    table: "GarmentSubconContracts");
 
-            migrationBuilder.DropColumn(
-                name: "CIFItem",
-                table: "GarmentSubconContractItems");
+            //migrationBuilder.DropColumn(
+            //    name: "CIFItem",
+            //    table: "GarmentSubconContractItems");
 
-            migrationBuilder.AddColumn<int>(
-                name: "UomId",
-                table: "GarmentServiceSubconShrinkagePanels",
-                nullable: false,
-                defaultValue: 0);
+            //migrationBuilder.AddColumn<int>(
+            //    name: "UomId",
+            //    table: "GarmentServiceSubconShrinkagePanels",
+            //    nullable: false,
+            //    defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "UomId",

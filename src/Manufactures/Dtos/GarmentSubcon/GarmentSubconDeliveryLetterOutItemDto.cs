@@ -13,8 +13,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             Id = garmentSubconDeliveryLetterOutItem.Identity;
             SubconDeliveryLetterOutId = garmentSubconDeliveryLetterOutItem.SubconDeliveryLetterOutId;
             UENItemId = garmentSubconDeliveryLetterOutItem.UENItemId;
-            Product = new Product(garmentSubconDeliveryLetterOutItem.ProductId.Value, garmentSubconDeliveryLetterOutItem.ProductCode, garmentSubconDeliveryLetterOutItem.ProductName);
-            ProductRemark = garmentSubconDeliveryLetterOutItem.ProductRemark;
+            Product = new Product(garmentSubconDeliveryLetterOutItem.ProductId.Value, garmentSubconDeliveryLetterOutItem.ProductCode, garmentSubconDeliveryLetterOutItem.ProductName, garmentSubconDeliveryLetterOutItem.ProductRemark);
             DesignColor = garmentSubconDeliveryLetterOutItem.DesignColor;
             Quantity = garmentSubconDeliveryLetterOutItem.Quantity;
             Uom = new Uom(garmentSubconDeliveryLetterOutItem.UomId.Value, garmentSubconDeliveryLetterOutItem.UomUnit);

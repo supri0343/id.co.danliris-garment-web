@@ -47,6 +47,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentSubconContracts
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentSubconCustomsIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLetterOuts.Cofigs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubconCuttingOuts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.InvoicePackingList.Configs;
 using Microsoft.EntityFrameworkCore;
 
 namespace Manufactures.Data.EntityFrameworkCore
@@ -221,7 +222,10 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 			modelBuilder.ApplyConfiguration(new GarmentExpenditureGoodInvoiceRelationConfig());
 
-			
+			modelBuilder.ApplyConfiguration(new SubconInvoicePackingListConfig());
+			modelBuilder.ApplyConfiguration(new SubconInvoicePackingListItemConfig());
+
+
 
 		}
 	}
