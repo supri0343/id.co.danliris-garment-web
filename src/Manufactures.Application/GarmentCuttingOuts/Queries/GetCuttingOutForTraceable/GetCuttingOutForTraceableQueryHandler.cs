@@ -35,15 +35,18 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries.GetCuttingOutForTr
                           select new
                           {
                               RoNo = a.RONo,
-                              Qty = c.CuttingOutQuantity
-                          }).GroupBy(x => x.RoNo, (key, group) => new
+                              Qty = c.CuttingOutQuantity,
+                              CuttingOutType = a.CuttingOutType
+                          }).GroupBy(x => new { x.RoNo, x.CuttingOutType },(key, group) => new
                           {
-                              Rono = key,
-                              Qty = group.Sum(x => x.Qty)
+                              Rono = key.RoNo,
+                              CuttingOutType = key.CuttingOutType,
+                              Qty = group.Sum(x => x.Qty),
                           });
 
             var selectedData = cutOut.Select(x => new GetCuttingOutForTraceableDto
             {
+                CuttingOutType = x.CuttingOutType,
                 RONo = x.Rono,
                 TotalCuttingOutQuantity = x.Qty
             }).ToList();
