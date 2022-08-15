@@ -44,6 +44,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
         private Mock<IGarmentSubconContractRepository> _mockGarmentSubconContractRepository;
         private readonly Mock<IGarmentSubconCuttingOutRepository> _mockSubconCuttingOutRepository;
         private readonly Mock<IGarmentSubconCuttingOutItemRepository> _mockSubconCuttingOutItemRepository;
+
         private readonly Mock<IGarmentServiceSubconSewingRepository> _mockGarmentServiceSubconSewingRepository;
         private readonly Mock<IGarmentServiceSubconSewingItemRepository> _mockGarmentServiceSubconSewingItemRepository;
         private readonly Mock<IGarmentServiceSubconSewingDetailRepository> _mockGarmentServiceSubconSewingDetailRepository;
@@ -55,6 +56,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             _mockGarmentSubconContractRepository = CreateMock<IGarmentSubconContractRepository>();
             _mockSubconCuttingOutRepository = CreateMock<IGarmentSubconCuttingOutRepository>();
             _mockSubconCuttingOutItemRepository = CreateMock<IGarmentSubconCuttingOutItemRepository>();
+
             _mockGarmentServiceSubconSewingRepository = CreateMock<IGarmentServiceSubconSewingRepository>();
             _mockGarmentServiceSubconSewingItemRepository = CreateMock<IGarmentServiceSubconSewingItemRepository>();
             _mockGarmentServiceSubconSewingDetailRepository = CreateMock<IGarmentServiceSubconSewingDetailRepository>();
@@ -64,6 +66,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             _MockStorage.SetupStorage(_mockGarmentSubconContractRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingOutRepository);
             _MockStorage.SetupStorage(_mockSubconCuttingOutItemRepository);
+
             _MockStorage.SetupStorage(_mockGarmentServiceSubconSewingRepository);
             _MockStorage.SetupStorage(_mockGarmentServiceSubconSewingItemRepository);
             _MockStorage.SetupStorage(_mockGarmentServiceSubconSewingDetailRepository);
@@ -308,7 +311,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconContract>()
                 {
-                    new GarmentSubconContract(SubconContractGuid, "","","", new SupplierId(1),"","","","","",1,DateTimeOffset.Now,DateTimeOffset.Now,false,new BuyerId(1),"","","",new UomId(1),"","",DateTimeOffset.Now)
+                    new GarmentSubconContract(SubconContractGuid, "","","", new SupplierId(1),"","","","","",1,DateTimeOffset.Now,DateTimeOffset.Now,false,new BuyerId(1),"","","",new UomId(1),"","",DateTimeOffset.Now, 1)
                 });
 
 

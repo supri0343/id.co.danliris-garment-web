@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20220804090831_update-column-cif-cifitem-table-subcon-contract")]
+    partial class updatecolumncifcifitemtablesubconcontract
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -7140,8 +7142,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("ProductRemark")
                         .HasMaxLength(2000);
 
-                    b.Property<int>("QtyPacking");
-
                     b.Property<double>("Quantity");
 
                     b.Property<string>("RONo")
@@ -7166,10 +7166,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("UomOutUnit")
                         .HasMaxLength(50);
-
-                    b.Property<int>("UomSatuanId");
-
-                    b.Property<string>("UomSatuanUnit");
 
                     b.Property<string>("UomUnit")
                         .HasMaxLength(50);

@@ -312,17 +312,17 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
                     worksheet.Cells[$"A{12 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Kesimpulan";
                     worksheet.Cells[$"A{13 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Pengeluaran dan pemasukan barang tersebut diatas";
                     worksheet.Cells[$"A{14 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Sesuai dengan BC. 261 dengan BC. 262";
-                    worksheet.Cells[$"A{15 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Ijin Subkon = ";
+                    worksheet.Cells[$"A{15 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Izin Subkon = ";
                     worksheet.Cells[$"B{15 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = buyer.Quantity;
                     worksheet.Cells[$"A{16 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Realisasi = ";
                     worksheet.Cells[$"B{16 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = listViewModel.garmentRealizationSubconReportDtosOUT.Sum(x => x.quantityOut);
                     worksheet.Cells[$"A{17 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Sisa = ";
                     worksheet.Cells[$"B{17 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = buyer.Quantity - listViewModel.garmentRealizationSubconReportDtosOUT.Sum(x => x.quantityOut);
-                    worksheet.Cells[$"J{12 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = string.Format("Sukoharjo, {0}",DateTimeOffset.Now.ToString("dd MMM yyyy", new CultureInfo("id-ID")));
-                    worksheet.Cells[$"J{13 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Mengetahui";
-                    worksheet.Cells[$"J{13 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[$"J{13 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    worksheet.Cells[$"J{14 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Pemeriksa Bea dan Cukai Pertama/Ahli Pertama";
+                    worksheet.Cells[$"I{20 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = string.Format("Sukoharjo, {0}", DateTimeOffset.Now.ToString("dd MMM yyyy", new CultureInfo("id-ID")));
+                    worksheet.Cells[$"I{21 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Mengetahui";
+                    worksheet.Cells[$"I{21 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[$"I{21 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    worksheet.Cells[$"I{22 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Pemeriksa Bea dan Cukai Pertama/Ahli Pertama";
                 }
                 else
                 {
@@ -336,20 +336,26 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
                     worksheet.Cells[$"A{12 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Kesimpulan";
                     worksheet.Cells[$"A{13 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Pengeluaran dan pemasukan barang tersebut diatas";
                     worksheet.Cells[$"A{14 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Sesuai dengan BC. 261 dengan BC. 262";
-                    worksheet.Cells[$"A{15 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Ijin Subkon = ";
+                    worksheet.Cells[$"A{15 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Izin Subkon (total barang subcon) = ";
                     worksheet.Cells[$"B{15 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = buyer.Quantity;
-                    worksheet.Cells[$"A{16 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Realisasi = ";
+                    worksheet.Cells[$"A{16 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Realisasi barang keluar = ";
                     worksheet.Cells[$"B{16 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = listViewModel.garmentRealizationSubconReportDtosOUT.Sum(x => x.quantityOut);
-                    worksheet.Cells[$"A{17 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Sisa = ";
+                    worksheet.Cells[$"A{17 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Sisa barang belum keluar = ";
                     worksheet.Cells[$"B{17 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = buyer.Quantity - listViewModel.garmentRealizationSubconReportDtosOUT.Sum(x => x.quantityOut);
-                    worksheet.Cells[$"J{12 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = string.Format("Sukoharjo, {0}", DateTimeOffset.Now.ToString("dd MMM yyyy", new CultureInfo("id-ID")));
-                    worksheet.Cells[$"J{13 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Mengetahui";
-                    worksheet.Cells[$"J{13 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[$"J{13 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    worksheet.Cells[$"J{14 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Pemeriksa Bea dan Cukai Pertama/Ahli Pertama";
+                    worksheet.Cells[$"I{20 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = string.Format("Sukoharjo, {0}", DateTimeOffset.Now.ToString("dd MMM yyyy", new CultureInfo("id-ID")));
+                    worksheet.Cells[$"I{21 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Mengetahui";
+                    worksheet.Cells[$"I{21 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[$"I{21 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    worksheet.Cells[$"I{22 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Pemeriksa Bea dan Cukai Pertama/Ahli Pertama";
                 }
 
-
+                worksheet.Cells[$"I15"].Value = "Sesuai dengan BC.262";
+                worksheet.Cells[$"I16"].Value = "Barang Keluar = ";
+                worksheet.Cells[$"J16"].Value = listViewModel.garmentRealizationSubconReportDtosOUT.Sum(x => x.quantityOut);
+                worksheet.Cells[$"I17"].Value = "Realisasi Barang Masuk = ";
+                worksheet.Cells[$"J17"].Value = listViewModel.garmentRealizationSubconReportDtos.Sum(x => x.quantityOut);
+                worksheet.Cells[$"I18"].Value = "Sisa barang yang belum masuk = ";
+                worksheet.Cells[$"J18"].Value = listViewModel.garmentRealizationSubconReportDtosOUT.Sum(b => b.quantityOut) - listViewModel.garmentRealizationSubconReportDtos.Sum(a => a.quantityOut);
 
                 var stream = new MemoryStream();
 

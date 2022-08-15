@@ -32,6 +32,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
         public string UomUnit { get; private set; }
         public string SKEPNo { get; private set; }
         public DateTimeOffset AgreementDate { get; private set; }
+        public int CIF { get; private set; }
 
         public GarmentSubconContract(GarmentSubconContractReadModel readModel) : base(readModel)
         {
@@ -56,9 +57,10 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             UomUnit = readModel.UomUnit;
             SKEPNo = readModel.SKEPNo;
             AgreementDate = readModel.AgreementDate;
+            CIF = readModel.CIF;
         }
 
-        public GarmentSubconContract(Guid identity, string contractType, string contractNo, string agreementNo, SupplierId supplierId, string supplierCode, string supplierName, string jobType, string bPJNo, string finishedGoodType, double quantity, DateTimeOffset dueDate, DateTimeOffset contractDate, bool isUsed, BuyerId buyerId, string buyerCode, string buyerName, string subconCategory, UomId uomId, string uomUnit, string sKEPNo, DateTimeOffset agreementDate) : base(identity)
+        public GarmentSubconContract(Guid identity, string contractType, string contractNo, string agreementNo, SupplierId supplierId, string supplierCode, string supplierName, string jobType, string bPJNo, string finishedGoodType, double quantity, DateTimeOffset dueDate, DateTimeOffset contractDate, bool isUsed, BuyerId buyerId, string buyerCode, string buyerName, string subconCategory, UomId uomId, string uomUnit, string sKEPNo, DateTimeOffset agreementDate, int cif) : base(identity)
         {
             Identity = identity;
             ContractType = contractType;
@@ -82,6 +84,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             UomUnit = uomUnit;
             SKEPNo = sKEPNo;
             AgreementDate = agreementDate;
+            CIF = cif;
 
             ReadModel = new GarmentSubconContractReadModel(Identity)
             {
@@ -105,7 +108,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
                 UomId = uomId.Value,
                 UomUnit = uomUnit,
                 SKEPNo = sKEPNo,
-                AgreementDate = agreementDate
+                AgreementDate = agreementDate,
+                CIF = cif,
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconContractPlaced(Identity));
@@ -287,6 +291,15 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             {
                 this.AgreementDate = AgreementDate;
                 ReadModel.AgreementDate = AgreementDate;
+            }
+        }
+
+        public void SetCIF(int CIF)
+        {
+            if (this.CIF != CIF)
+            {
+                this.CIF = CIF;
+                ReadModel.CIF = CIF;
             }
         }
 

@@ -27,6 +27,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
         public Uom Uom { get; set; }
         public string SKEPNo { get; set; }
         public DateTimeOffset AgreementDate { get; set; }
+        public int CIF { get; set; }
         public List<GarmentSubconContractItemValueObject> Items { get; set; }
     }
 
@@ -77,6 +78,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
             RuleFor(r => r.Quantity)
                 .GreaterThan(0)
                 .WithMessage("Jumlah harus lebih dari '0'.");
+
         }
     }
 }

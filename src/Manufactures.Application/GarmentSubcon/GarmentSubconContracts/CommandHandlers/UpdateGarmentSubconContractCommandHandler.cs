@@ -39,6 +39,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
                 }
                 else
                 {
+                    subconItem.SetCIFItem(item.CIFItem);
                     subconItem.SetQuantity(item.Quantity);
                     subconItem.Modify();
                 }
@@ -56,7 +57,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
                         item.Product.Name,
                         item.Quantity,
                         new UomId(item.Uom.Id),
-                        item.Uom.Unit
+                        item.Uom.Unit,
+                        item.CIFItem
                     );
                     
                     await _garmentSubconContractItemRepository.Update(garmentSubconContractItem);
@@ -83,6 +85,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
             subconContract.SetUomId(new UomId(request.Uom.Id));
             subconContract.SetUomUnit(request.Uom.Unit);
             subconContract.SetAgreementDate(request.AgreementDate);
+            subconContract.SetCIF(request.CIF);
 
             subconContract.Modify();
             await _garmentSubconContractRepository.Update(subconContract);

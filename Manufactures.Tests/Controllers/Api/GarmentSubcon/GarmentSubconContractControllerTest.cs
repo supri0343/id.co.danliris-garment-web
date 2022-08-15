@@ -77,7 +77,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconContractReadModel>>()))
                 .Returns(new List<GarmentSubconContract>()
                 {
-                    new GarmentSubconContract(SubconContractGuid, "","","", new SupplierId(1),"","","","","",1,DateTimeOffset.Now,DateTimeOffset.Now,false,new BuyerId(1),"","","",new UomId(1),"","",DateTimeOffset.Now)
+                    new GarmentSubconContract(SubconContractGuid, "","","", new SupplierId(1),"","","","","",1,DateTimeOffset.Now,DateTimeOffset.Now,false,new BuyerId(1),"","","",new UomId(1),"","",DateTimeOffset.Now, 1)
                 });
 
             // Act
@@ -97,14 +97,14 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconContract>()
                 {
-                    new GarmentSubconContract(SubconContractGuid, "","","", new SupplierId(1),"","","","","",1,DateTimeOffset.Now,DateTimeOffset.Now,false,new BuyerId(1),"","","",new UomId(1),"","",DateTimeOffset.Now)
+                    new GarmentSubconContract(SubconContractGuid, "","","", new SupplierId(1),"","","","","",1,DateTimeOffset.Now,DateTimeOffset.Now,false,new BuyerId(1),"","","",new UomId(1),"","",DateTimeOffset.Now, 1)
                 });
 
             _mockGarmentSubconContractItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractItemReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconContractItem>()
                 {
-                    new GarmentSubconContractItem(Guid.NewGuid(),new Guid(),new Domain.Shared.ValueObjects.ProductId(1),"code","name",1,new Domain.Shared.ValueObjects.UomId(1),"unit")
+                    new GarmentSubconContractItem(Guid.NewGuid(),new Guid(),new Domain.Shared.ValueObjects.ProductId(1),"code","name",1,new Domain.Shared.ValueObjects.UomId(1),"unit", 1)
                 });
 
             // Act
@@ -125,7 +125,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             //    .Returns(new List<GarmentSubconContract>());
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentSubconContractCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSubconContract(SubconContractGuid, "", "a ", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now));
+                .ReturnsAsync(new GarmentSubconContract(SubconContractGuid, "", "a ", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now, 1));
 
             // Act
             var result = await unitUnderTest.Post(It.IsAny<PlaceGarmentSubconContractCommand>());
@@ -164,7 +164,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             //    .Returns(new List<GarmentSubconContract>());
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentSubconContractCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSubconContract(SubconContractGuid, "", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now));
+                .ReturnsAsync(new GarmentSubconContract(SubconContractGuid, "", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now, 1));
 
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentSubconContractCommand());
@@ -181,7 +181,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             Guid SubconContractGuid = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentSubconContractCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSubconContract(SubconContractGuid, "", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now));
+                .ReturnsAsync(new GarmentSubconContract(SubconContractGuid, "", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now, 1));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
@@ -205,11 +205,11 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconContractReadModel>>()))
                 .Returns(new List<GarmentSubconContract>()
                 {
-                    new GarmentSubconContract(SubconContractGuid, "","","", new SupplierId(1),"","","","","",1,DateTimeOffset.Now,DateTimeOffset.Now,false,new BuyerId(1),"","","",new UomId(1),"","",DateTimeOffset.Now)
+                    new GarmentSubconContract(SubconContractGuid, "","","", new SupplierId(1),"","","","","",1,DateTimeOffset.Now,DateTimeOffset.Now,false,new BuyerId(1),"","","",new UomId(1),"","",DateTimeOffset.Now, 1)
                 });
 
             Guid SubconDeliveryLetterOutItemGuid = Guid.NewGuid();
-            GarmentSubconContractItem garmentSubconContractItem = new GarmentSubconContractItem(Guid.NewGuid(), new Guid(), new Domain.Shared.ValueObjects.ProductId(1), "code", "name", 1, new Domain.Shared.ValueObjects.UomId(1), "unit");
+            GarmentSubconContractItem garmentSubconContractItem = new GarmentSubconContractItem(Guid.NewGuid(), new Guid(), new Domain.Shared.ValueObjects.ProductId(1), "code", "name", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", 1);
 
             _mockGarmentSubconContractItemRepository
                 .Setup(s => s.Query)
@@ -221,7 +221,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconContractItemReadModel>>()))
                 .Returns(new List<GarmentSubconContractItem>()
                 {
-                    new GarmentSubconContractItem(Guid.NewGuid(), new Guid(), new Domain.Shared.ValueObjects.ProductId(1), "code", "name", 1, new Domain.Shared.ValueObjects.UomId(1), "unit")
+                    new GarmentSubconContractItem(Guid.NewGuid(), new Guid(), new Domain.Shared.ValueObjects.ProductId(1), "code", "name", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", 1)
         });
             var orderData = new
             {

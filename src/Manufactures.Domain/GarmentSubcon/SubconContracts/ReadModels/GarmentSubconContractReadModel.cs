@@ -33,6 +33,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels
         public string UomUnit { get; internal set; }
         public string SKEPNo { get; internal set; }
         public DateTimeOffset AgreementDate { get; internal set; }
+        public int CIF { get; internal set; }
 
         public virtual List<GarmentSubconContractItemReadModel> GarmentSubconContractItem { get; internal set; }
     }
