@@ -2,6 +2,7 @@
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentFinishingOuts.Queries;
 using Manufactures.Application.GarmentFinishingOuts.Queries.GetTotalQuantityTraceable;
+using Manufactures.Application.GarmentReport.ForTraceableIn.Queries;
 using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentFinishingOuts.Commands;
 using Manufactures.Domain.GarmentFinishingOuts.Repositories;
@@ -328,6 +329,28 @@ namespace Manufactures.Controllers.Api
             var viewModel = await Mediator.Send(query);
 
             return Ok(viewModel.garmentTotalQtyTraceables);
+        }
+
+        [HttpGet("for-traceable-full-garment")]
+        public async Task<IActionResult> ForTraceableFullGarment([FromBody] string UENItemID)
+        {
+            VerifyUser();
+
+            ForTraceableInQuery query = new ForTraceableInQuery(UENItemID, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.data);
+        }
+
+        [HttpGet("for-traceable-full-garment-sample")]
+        public async Task<IActionResult> ForTraceableFullGarmentSample([FromBody] string UENItemID)
+        {
+            VerifyUser();
+
+            ForTraceableInSampleQuery query = new ForTraceableInSampleQuery(UENItemID, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.data);
         }
 
     }
