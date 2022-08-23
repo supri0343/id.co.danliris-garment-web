@@ -18,6 +18,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
         public string subconNo { get; internal set; }
         public string bpjNo { get; internal set; }
         public DateTimeOffset dueDate { get; internal set; }
+        public double subconContractQuantity { get; internal set; }
         //public DateTimeOffset bcDateIn { get; internal set; }
         //public string quantityIn { get; internal set; }
         //public string uomIn { get; internal set; }
@@ -32,6 +33,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
             subconNo = garmentRealizationSubconReportDto.subconNo;
             bpjNo = garmentRealizationSubconReportDto.bpjNo;
             dueDate = garmentRealizationSubconReportDto.dueDate;
+            subconContractQuantity = garmentRealizationSubconReportDto.subconContractQuantity;
         }
     }
 }
