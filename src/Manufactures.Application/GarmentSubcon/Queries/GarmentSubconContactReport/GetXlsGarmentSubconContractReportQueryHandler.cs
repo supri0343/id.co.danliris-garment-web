@@ -61,9 +61,9 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconContactRep
             public DateTimeOffset DueDate { get; set; }
             public DateTimeOffset ContractDate { get; set; }
             public bool IsUsed { get; set; }
-            public int BuyerId { get; set; }
-            public string BuyerCode { get; set; }
-            public string BuyerName { get; set; }
+            //public int BuyerId { get; set; }
+            //public string BuyerCode { get; set; }
+            //public string BuyerName { get; set; }
             public string SubconCategory { get; set; }
             public int UomId { get; set; }
             public string UomUnit { get; set; }
@@ -96,9 +96,6 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconContactRep
                              DueDate = a.DueDate,
                              ContractDate = a.ContractDate,
                              IsUsed = a.IsUsed,
-                             BuyerId = a.BuyerId,
-                             BuyerName = a.BuyerName,
-                             BuyerCode = a.BuyerCode,
                              SubconCategory = a.SubconCategory,
                              UomId = a.UomId,
                              UomUnit = a.UomUnit,
@@ -123,9 +120,9 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconContactRep
                     DueDate = i.DueDate,
                     ContractDate = i.ContractDate,
                     IsUsed = i.IsUsed,
-                    BuyerId = i.BuyerId,
-                    BuyerName = i.BuyerName,
-                    BuyerCode = i.BuyerCode,
+                    //BuyerId = i.BuyerId,
+                    //BuyerName = i.BuyerName,
+                    //BuyerCode = i.BuyerCode,
                     SubconCategory = i.SubconCategory,
                     UomId = i.UomId,
                     UomUnit = i.UomUnit,

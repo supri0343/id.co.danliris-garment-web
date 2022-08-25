@@ -52,12 +52,12 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconContracts
                     Id = 1,
                     Name = "test"
                 },
-                Buyer = new Buyer
-                {
-                    Id = 1,
-                    Code = "Buyercode",
-                    Name = "BuyerName"
-                },
+                //Buyer = new Buyer
+                //{
+                //    Id = 1,
+                //    Code = "Buyercode",
+                //    Name = "BuyerName"
+                //},
                 Uom = new Uom
                 {
                     Id = 1,
