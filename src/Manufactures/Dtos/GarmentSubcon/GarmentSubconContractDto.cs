@@ -51,7 +51,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public Uom Uom { get; set; }
         public string SKEPNo { get; set; }
         public DateTimeOffset AgreementDate { get; set; }
-        public int CIF { get; set; }
+        public double CIF { get; set; }
         public string CreatedBy { get; set; }
         public double NettWeight { get; set; }
         public double GrossWeight { get; set; }

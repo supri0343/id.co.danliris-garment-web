@@ -17,7 +17,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels
         public int ProductId { get; internal set; }
         public string ProductCode { get; internal set; }
         public string ProductName { get; internal set; }
-        public int CIFItem { get; internal set; }
+        public double CIFItem { get; internal set; }
 
         public virtual GarmentSubconContractReadModel GarmentSubconContract { get; internal set; }
     }
