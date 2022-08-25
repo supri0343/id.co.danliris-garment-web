@@ -32,7 +32,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
         public string UomUnit { get; private set; }
         public string SKEPNo { get; private set; }
         public DateTimeOffset AgreementDate { get; private set; }
-        public int CIF { get; private set; }
+        public double CIF { get; private set; }
         public string CreatedBy { get; private set; }
         public double NettWeight { get; private set; }
         public double GrossWeight { get; private set; }
@@ -66,7 +66,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             GrossWeight = readModel.GrossWeight;
         }
 
-        public GarmentSubconContract(Guid identity, string contractType, string contractNo, string agreementNo, SupplierId supplierId, string supplierCode, string supplierName, string jobType, string bPJNo, string finishedGoodType, double quantity, DateTimeOffset dueDate, DateTimeOffset contractDate, bool isUsed, /*BuyerId buyerId, string buyerCode, string buyerName,*/ string subconCategory, UomId uomId, string uomUnit, string sKEPNo, DateTimeOffset agreementDate, int cif, double nettWeight, double grossWeight) : base(identity)
+        public GarmentSubconContract(Guid identity, string contractType, string contractNo, string agreementNo, SupplierId supplierId, string supplierCode, string supplierName, string jobType, string bPJNo, string finishedGoodType, double quantity, DateTimeOffset dueDate, DateTimeOffset contractDate, bool isUsed, /*BuyerId buyerId, string buyerCode, string buyerName,*/ string subconCategory, UomId uomId, string uomUnit, string sKEPNo, DateTimeOffset agreementDate, double cif, double nettWeight, double grossWeight) : base(identity)
         {
             Identity = identity;
             ContractType = contractType;
@@ -117,7 +117,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
                 UomUnit = uomUnit,
                 SKEPNo = sKEPNo,
                 AgreementDate = agreementDate,
-                CIF = cif,
+                CIF = CIF,
                 NettWeight = NettWeight,
                 GrossWeight = GrossWeight
             };
@@ -304,7 +304,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             }
         }
 
-        public void SetCIF(int CIF)
+        public void SetCIF(double CIF)
         {
             if (this.CIF != CIF)
             {
