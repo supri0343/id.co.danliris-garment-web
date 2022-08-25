@@ -23,9 +23,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
         public DateTimeOffset DueDate { get; private set; }
         public DateTimeOffset ContractDate { get; private set; }
         public bool IsUsed { get; private set; }
-        public BuyerId BuyerId { get; private set; }
-        public string BuyerCode { get; private set; }
-        public string BuyerName { get; private set; }
+        //public BuyerId BuyerId { get; private set; }
+        //public string BuyerCode { get; private set; }
+        //public string BuyerName { get; private set; }
 
         public string SubconCategory { get; private set; }
         public UomId UomId { get; private set; }
@@ -33,6 +33,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
         public string SKEPNo { get; private set; }
         public DateTimeOffset AgreementDate { get; private set; }
         public int CIF { get; private set; }
+        public string CreatedBy { get; private set; }
+        public double NettWeight { get; private set; }
+        public double GrossWeight { get; private set; }
 
         public GarmentSubconContract(GarmentSubconContractReadModel readModel) : base(readModel)
         {
@@ -49,18 +52,21 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             DueDate = readModel.DueDate;
             ContractDate = readModel.ContractDate;
             IsUsed = readModel.IsUsed;
-            BuyerId = new BuyerId(readModel.BuyerId);
-            BuyerCode = readModel.BuyerCode;
-            BuyerName = readModel.BuyerName;
+            //BuyerId = new BuyerId(readModel.BuyerId);
+            //BuyerCode = readModel.BuyerCode;
+            //BuyerName = readModel.BuyerName;
             SubconCategory = readModel.SubconCategory;
             UomId = new UomId( readModel.UomId);
             UomUnit = readModel.UomUnit;
             SKEPNo = readModel.SKEPNo;
             AgreementDate = readModel.AgreementDate;
             CIF = readModel.CIF;
+            CreatedBy = readModel.CreatedBy;
+            NettWeight = readModel.NettWeight;
+            GrossWeight = readModel.GrossWeight;
         }
 
-        public GarmentSubconContract(Guid identity, string contractType, string contractNo, string agreementNo, SupplierId supplierId, string supplierCode, string supplierName, string jobType, string bPJNo, string finishedGoodType, double quantity, DateTimeOffset dueDate, DateTimeOffset contractDate, bool isUsed, BuyerId buyerId, string buyerCode, string buyerName, string subconCategory, UomId uomId, string uomUnit, string sKEPNo, DateTimeOffset agreementDate, int cif) : base(identity)
+        public GarmentSubconContract(Guid identity, string contractType, string contractNo, string agreementNo, SupplierId supplierId, string supplierCode, string supplierName, string jobType, string bPJNo, string finishedGoodType, double quantity, DateTimeOffset dueDate, DateTimeOffset contractDate, bool isUsed, /*BuyerId buyerId, string buyerCode, string buyerName,*/ string subconCategory, UomId uomId, string uomUnit, string sKEPNo, DateTimeOffset agreementDate, int cif, double nettWeight, double grossWeight) : base(identity)
         {
             Identity = identity;
             ContractType = contractType;
@@ -76,15 +82,17 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             DueDate = dueDate;
             ContractDate = contractDate;
             IsUsed = isUsed;
-            BuyerId = buyerId;
-            BuyerCode = buyerCode;
-            BuyerName = buyerName;
+            //BuyerId = buyerId;
+            //BuyerCode = buyerCode;
+            //BuyerName = buyerName;
             SubconCategory = subconCategory;
             UomId = uomId;
             UomUnit = uomUnit;
             SKEPNo = sKEPNo;
             AgreementDate = agreementDate;
             CIF = cif;
+            NettWeight = nettWeight;
+            GrossWeight = grossWeight;
 
             ReadModel = new GarmentSubconContractReadModel(Identity)
             {
@@ -101,15 +109,17 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
                 DueDate = DueDate,
                 ContractDate = ContractDate,
                 IsUsed = IsUsed,
-                BuyerId = BuyerId.Value,
-                BuyerCode = BuyerCode,
-                BuyerName = BuyerName,
+                //BuyerId = BuyerId.Value,
+                //BuyerCode = BuyerCode,
+                //BuyerName = BuyerName,
                 SubconCategory = subconCategory,
                 UomId = uomId.Value,
                 UomUnit = uomUnit,
                 SKEPNo = sKEPNo,
                 AgreementDate = agreementDate,
                 CIF = cif,
+                NettWeight = NettWeight,
+                GrossWeight = GrossWeight
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconContractPlaced(Identity));
@@ -224,30 +234,30 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
                 ReadModel.IsUsed = Isused;
             }
         }
-        public void SetBuyerId(BuyerId SupplierId)
-        {
-            if (this.BuyerId != BuyerId)
-            {
-                this.BuyerId = BuyerId;
-                ReadModel.BuyerId = BuyerId.Value;
-            }
-        }
-        public void SetBuyerCode(string BuyerCode)
-        {
-            if (this.BuyerCode != BuyerCode)
-            {
-                this.BuyerCode = BuyerCode;
-                ReadModel.BuyerCode = BuyerCode;
-            }
-        }
-        public void SetBuyerName(string BuyerName)
-        {
-            if (this.BuyerName != BuyerName)
-            {
-                this.BuyerName = BuyerName;
-                ReadModel.BuyerName = BuyerName;
-            }
-        }
+        //public void SetBuyerId(BuyerId SupplierId)
+        //{
+        //    if (this.BuyerId != BuyerId)
+        //    {
+        //        this.BuyerId = BuyerId;
+        //        ReadModel.BuyerId = BuyerId.Value;
+        //    }
+        //}
+        //public void SetBuyerCode(string BuyerCode)
+        //{
+        //    if (this.BuyerCode != BuyerCode)
+        //    {
+        //        this.BuyerCode = BuyerCode;
+        //        ReadModel.BuyerCode = BuyerCode;
+        //    }
+        //}
+        //public void SetBuyerName(string BuyerName)
+        //{
+        //    if (this.BuyerName != BuyerName)
+        //    {
+        //        this.BuyerName = BuyerName;
+        //        ReadModel.BuyerName = BuyerName;
+        //    }
+        //}
 
         public void SetSKEPNo(string SKEPNo)
         {
@@ -300,6 +310,24 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             {
                 this.CIF = CIF;
                 ReadModel.CIF = CIF;
+            }
+        }
+
+        public void SetNettWeight(double NettWeight)
+        {
+            if (this.NettWeight != NettWeight)
+            {
+                this.NettWeight = NettWeight;
+                ReadModel.NettWeight = NettWeight;
+            }
+        }
+
+        public void SetGrossWeight(double GrossWeight)
+        {
+            if (this.GrossWeight != GrossWeight)
+            {
+                this.GrossWeight = GrossWeight;
+                ReadModel.GrossWeight = GrossWeight;
             }
         }
 

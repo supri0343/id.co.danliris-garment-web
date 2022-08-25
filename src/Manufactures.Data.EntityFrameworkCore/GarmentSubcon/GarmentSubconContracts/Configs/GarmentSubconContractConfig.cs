@@ -25,8 +25,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentSubconContr
             builder.Property(a => a.SubconCategory).HasMaxLength(50);
             builder.Property(a => a.SKEPNo).HasMaxLength(50);
             builder.Property(p => p.UomUnit).HasMaxLength(50);
-            builder.Property(a => a.BuyerName).HasMaxLength(255);
-            builder.Property(a => a.BuyerCode).HasMaxLength(25);
+            //builder.Property(a => a.BuyerName).HasMaxLength(255);
+            //builder.Property(a => a.BuyerCode).HasMaxLength(25);
 
             builder.HasIndex(i => i.ContractNo).IsUnique().HasFilter("[Deleted]=(0)");
 

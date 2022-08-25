@@ -77,16 +77,17 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
             subconContract.SetSupplierName(request.Supplier.Name);
             subconContract.SetContractDate(request.ContractDate);
             subconContract.SetIsUsed(request.IsUsed);
-            subconContract.SetBuyerId(new BuyerId(request.Buyer.Id));
-            subconContract.SetBuyerCode(request.Buyer.Code);
-            subconContract.SetBuyerName(request.Buyer.Name);
+            //subconContract.SetBuyerId(new BuyerId(request.Buyer.Id));
+            //subconContract.SetBuyerCode(request.Buyer.Code);
+            //subconContract.SetBuyerName(request.Buyer.Name);
             subconContract.SetSKEPNo(request.SKEPNo);
             subconContract.SetSubconCategory(request.SubconCategory);
             subconContract.SetUomId(new UomId(request.Uom.Id));
             subconContract.SetUomUnit(request.Uom.Unit);
             subconContract.SetAgreementDate(request.AgreementDate);
             subconContract.SetCIF(request.CIF);
-
+            subconContract.SetNettWeight(request.NettWeight);
+            subconContract.SetGrossWeight(request.GrossWeight);
             subconContract.Modify();
             await _garmentSubconContractRepository.Update(subconContract);
 

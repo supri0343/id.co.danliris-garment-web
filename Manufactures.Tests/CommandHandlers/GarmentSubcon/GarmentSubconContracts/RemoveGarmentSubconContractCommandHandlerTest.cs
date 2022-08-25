@@ -48,7 +48,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
             RemoveGarmentSubconContractCommand RemoveGarmentSubconContractCommand = new RemoveGarmentSubconContractCommand(SubconContractGuid);
 
             GarmentSubconContract garmentSubconContract = new GarmentSubconContract(
-                SubconContractGuid, null, null, null, new SupplierId(1), "", "", null, null, null, 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "", "", new UomId(1), "", "", DateTimeOffset.Now, 0);
+                SubconContractGuid, null, null, null, new SupplierId(1), "", "", null, null, null, 1, DateTimeOffset.Now, DateTimeOffset.Now, false,  "", new UomId(1), "", "", DateTimeOffset.Now, 0/*,""*/,1,1);
 
             _mockSubconContractRepository
                 .Setup(s => s.Query)
