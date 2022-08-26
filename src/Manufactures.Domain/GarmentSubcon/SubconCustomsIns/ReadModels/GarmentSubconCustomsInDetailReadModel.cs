@@ -11,11 +11,11 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns.ReadModels
         {
         }
 
-        public int SubconCustomsOutId { get; internal set; }
+        public Guid SubconCustomsInItemId { get; internal set; }
+        public Guid SubconCustomsOutId { get; internal set; }
         public string CustomsOutNo { get; internal set; }
         public decimal CustomsOutQty { get; internal set; }
 
-        public Guid SubconCustomsInItemId { get; internal set; }
         public virtual GarmentSubconCustomsInItemReadModel GarmentSubconCustomsInItem { get; internal set; }
     }
 }

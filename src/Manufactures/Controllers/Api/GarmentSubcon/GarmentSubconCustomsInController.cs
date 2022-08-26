@@ -21,11 +21,13 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
     {
         private readonly IGarmentSubconCustomsInRepository _garmentSubconCustomsInRepository;
         private readonly IGarmentSubconCustomsInItemRepository _garmentSubconCustomsInItemRepository;
+        private readonly IGarmentSubconCustomsInDetailRepository _garmentSubconCustomsInDetailRepository;
 
         public GarmentSubconCustomsInController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentSubconCustomsInRepository = Storage.GetRepository<IGarmentSubconCustomsInRepository>();
             _garmentSubconCustomsInItemRepository = Storage.GetRepository<IGarmentSubconCustomsInItemRepository>();
+            _garmentSubconCustomsInDetailRepository = Storage.GetRepository<IGarmentSubconCustomsInDetailRepository>();
         }
 
         [HttpGet]
@@ -50,6 +52,10 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 .ToList();
 
             var itemIds = items.Select(s => s.Identity).ToList();
+            var details = _garmentSubconCustomsInDetailRepository.Query
+                .Where(o => itemIds.Contains(o.SubconCustomsInItemId))
+                .Select(s => new { s.Identity, s.SubconCustomsOutId })
+                .ToList();
 
             await Task.Yield();
             return Ok(garmentSubconCustomsInListDtos, info: new
@@ -71,7 +77,10 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             GarmentSubconCustomsInDto garmentSubconCustomsInDto = _garmentSubconCustomsInRepository.Find(o => o.Identity == guid).Select(subconCustomsIn => new GarmentSubconCustomsInDto(subconCustomsIn)
             {
                 Items = _garmentSubconCustomsInItemRepository.Find(o => o.SubconCustomsInId == subconCustomsIn.Identity).Select(subconCustomsInItem => new GarmentSubconCustomsInItemDto(subconCustomsInItem)
-                { }).ToList()
+                {
+                    Details = _garmentSubconCustomsInDetailRepository.Find(o => o.SubconCustomsInItemId == subconCustomsInItem.Identity).Select(subconCustomsInDetail => new GarmentSubconCustomsInDetailDto(subconCustomsInDetail)
+                    { }).ToList()
+                }).ToList()
 
             }
             ).FirstOrDefault();
@@ -135,12 +144,18 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             var garmentSubconCustomsInDto = _garmentSubconCustomsInRepository.Find(query).Select(o => new GarmentSubconCustomsInDto(o)).ToArray();
             var garmentSubconCustomsInItemDto = _garmentSubconCustomsInItemRepository.Find(_garmentSubconCustomsInItemRepository.Query).Select(o => new GarmentSubconCustomsInItemDto(o)).ToList();
+            var garmentSubconCustomsInDetailDto = _garmentSubconCustomsInDetailRepository.Find(_garmentSubconCustomsInDetailRepository.Query).Select(o => new GarmentSubconCustomsInDetailDto(o)).ToList();
 
             Parallel.ForEach(garmentSubconCustomsInDto, itemDto =>
             {
                 var garmentSubconCustomsInItems = garmentSubconCustomsInItemDto.Where(x => x.SubconCustomsInId == itemDto.Id).OrderBy(x => x.Id).ToList();
 
                 itemDto.Items = garmentSubconCustomsInItems;
+                Parallel.ForEach(itemDto.Items, detailDto =>
+                {
+                    var garmentCustomInDetails = garmentSubconCustomsInDetailDto.Where(x => x.SubconCustomsInItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
+                    detailDto.Details = garmentCustomInDetails;
+                });
             });
 
             if (order != "{}")

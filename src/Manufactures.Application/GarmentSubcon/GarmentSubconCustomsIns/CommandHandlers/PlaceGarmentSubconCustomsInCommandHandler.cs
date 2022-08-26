@@ -18,12 +18,14 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconCustomsIns.Command
         private readonly IStorage _storage;
         private readonly IGarmentSubconCustomsInRepository _garmentSubconCustomsInRepository;
         private readonly IGarmentSubconCustomsInItemRepository _garmentSubconCustomsInItemRepository;
+        private readonly IGarmentSubconCustomsInDetailRepository _garmentSubconCustomsInDetailRepository;
 
         public PlaceGarmentSubconCustomsInCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentSubconCustomsInRepository = storage.GetRepository<IGarmentSubconCustomsInRepository>();
             _garmentSubconCustomsInItemRepository = storage.GetRepository<IGarmentSubconCustomsInItemRepository>();
+            _garmentSubconCustomsInDetailRepository = storage.GetRepository<IGarmentSubconCustomsInDetailRepository>();
         }
 
         public async Task<GarmentSubconCustomsIn> Handle(PlaceGarmentSubconCustomsInCommand request, CancellationToken cancellationToken)
@@ -60,6 +62,18 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconCustomsIns.Command
                 );
 
                 await _garmentSubconCustomsInItemRepository.Update(garmentSubconCustomsInItem);
+
+                foreach(var detail in item.Details)
+                {
+                    GarmentSubconCustomsInDetail garmentSubconCustomsInDetail = new GarmentSubconCustomsInDetail(
+                        Guid.NewGuid(),
+                        garmentSubconCustomsInItem.Identity,
+                        detail.SubconCustomsOutId,
+                        detail.CustomsOutNo,
+                        detail.CustomsOutQty
+                    );
+                    await _garmentSubconCustomsInItemRepository.Update(garmentSubconCustomsInItem);
+                }
             }
 
 
