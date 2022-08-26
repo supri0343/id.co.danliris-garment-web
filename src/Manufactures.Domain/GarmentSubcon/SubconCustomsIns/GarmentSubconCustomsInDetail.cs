@@ -32,7 +32,13 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns
 
             ReadModel.AddDomainEvent(new OnGarmentSubconCustomsInPlaced(Identity));
         }
-
+        public GarmentSubconCustomsInDetail(GarmentSubconCustomsInDetailReadModel readModel) : base(readModel)
+        {
+            SubconCustomsInItemId = readModel.SubconCustomsInItemId;
+            SubconCustomsOutId = readModel.SubconCustomsOutId;
+            CustomsOutNo = readModel.CustomsOutNo;
+            CustomsOutQty = readModel.CustomsOutQty;
+        }
         public void Modify()
         {
             MarkModified();

@@ -33,11 +33,16 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconCustomsIns.Command
 
             _garmentSubconCustomsInItemRepository.Find(o => o.SubconCustomsInId == subconCustomsIn.Identity).ForEach(async subconCustomsInItem =>
             {
-                _garmentSubconCustomsInDetailRepository.Find(o => o.SubconCustomsInItemId == subconCustomsInItem.Identity).ForEach(async detail =>
+                var d = _garmentSubconCustomsInDetailRepository.Find(o => o.SubconCustomsInItemId == subconCustomsInItem.Identity).FirstOrDefault();
+                if (d != null)
                 {
-                    detail.Remove();
-                    await _garmentSubconCustomsInDetailRepository.Update(detail);
-                });
+                    _garmentSubconCustomsInDetailRepository.Find(o => o.SubconCustomsInItemId == subconCustomsInItem.Identity).ForEach(async detail =>
+                    {
+                        detail.Remove();
+                        await _garmentSubconCustomsInDetailRepository.Update(detail);
+                    });
+                }
+                
                 subconCustomsInItem.Remove();
                 await _garmentSubconCustomsInItemRepository.Update(subconCustomsInItem);
             });

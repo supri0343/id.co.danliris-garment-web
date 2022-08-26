@@ -25,14 +25,17 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
     {
         private Mock<IGarmentSubconCustomsInRepository> _mockGarmentSubconCustomsInRepository;
         private Mock<IGarmentSubconCustomsInItemRepository> _mockGarmentSubconCustomsInItemRepository;
+        private Mock<IGarmentSubconCustomsInDetailRepository> _mockGarmentSubconCustomsInDetailRepository;
 
         public GarmentSubconCustomsInControllerTests() : base()
         {
             _mockGarmentSubconCustomsInRepository = CreateMock<IGarmentSubconCustomsInRepository>();
             _mockGarmentSubconCustomsInItemRepository = CreateMock<IGarmentSubconCustomsInItemRepository>();
+            _mockGarmentSubconCustomsInDetailRepository = CreateMock<IGarmentSubconCustomsInDetailRepository>();
 
             _MockStorage.SetupStorage(_mockGarmentSubconCustomsInRepository);
             _MockStorage.SetupStorage(_mockGarmentSubconCustomsInItemRepository);
+            _MockStorage.SetupStorage(_mockGarmentSubconCustomsInDetailRepository);
 
         }
 
@@ -113,6 +116,12 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                     new GarmentSubconCustomsInItem(Guid.NewGuid(), Guid.NewGuid(), new Domain.Shared.ValueObjects.SupplierId(1), "", "", 1, "", 1)
                 });
 
+            _mockGarmentSubconCustomsInDetailRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconCustomsInDetailReadModel, bool>>>()))
+                .Returns(new List<GarmentSubconCustomsInDetail>()
+                {
+                    new GarmentSubconCustomsInDetail(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "", 1)
+                });
 
             // Act
             var result = await unitUnderTest.Get(Guid.NewGuid().ToString());
@@ -221,6 +230,21 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Returns(new List<GarmentSubconCustomsInItem>()
                 {
                     new GarmentSubconCustomsInItem(Guid.NewGuid(), Guid.NewGuid(), new Domain.Shared.ValueObjects.SupplierId(1), "", "", 1, "", 1)
+                });
+
+            Guid SubconCustomsInDetailGuid = Guid.NewGuid();
+            GarmentSubconCustomsInDetail garmentSubconCustomsInDetail = new GarmentSubconCustomsInDetail(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "", 1);
+            _mockGarmentSubconCustomsInDetailRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSubconCustomsInDetailReadModel>() {
+                    garmentSubconCustomsInDetail.GetReadModel()
+                }.AsQueryable());
+
+            _mockGarmentSubconCustomsInDetailRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconCustomsInDetailReadModel>>()))
+                .Returns(new List<GarmentSubconCustomsInDetail>()
+                {
+                    new GarmentSubconCustomsInDetail(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "", 1)
                 });
             var orderData = new
             {
