@@ -18,12 +18,14 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconCustomsIns.Command
         private readonly IStorage _storage;
         private readonly IGarmentSubconCustomsInRepository _garmentSubconCustomsInRepository;
         private readonly IGarmentSubconCustomsInItemRepository _garmentSubconCustomsInItemRepository;
+        private readonly IGarmentSubconCustomsInDetailRepository _garmentSubconCustomsInDetailRepository;
 
         public UpdateGarmentSubconCustomsInCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentSubconCustomsInRepository = storage.GetRepository<IGarmentSubconCustomsInRepository>();
             _garmentSubconCustomsInItemRepository = storage.GetRepository<IGarmentSubconCustomsInItemRepository>();
+            _garmentSubconCustomsInDetailRepository = storage.GetRepository<IGarmentSubconCustomsInDetailRepository>();
         }
 
         public async Task<GarmentSubconCustomsIn> Handle(UpdateGarmentSubconCustomsInCommand request, CancellationToken cancellationToken)
