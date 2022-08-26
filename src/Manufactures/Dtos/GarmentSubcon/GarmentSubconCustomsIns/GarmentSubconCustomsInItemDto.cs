@@ -16,6 +16,7 @@ namespace Manufactures.Dtos.GarmentSubcon.GarmentSubconCustomsIns
             DoId = garmentSubconCustomsInItem.DoId;
             DoNo = garmentSubconCustomsInItem.DoNo;
             Quantity = garmentSubconCustomsInItem.Quantity;
+            Details = new List<GarmentSubconCustomsInDetailDto>();
         }
 
         public Guid Id { get; set; }
@@ -24,5 +25,7 @@ namespace Manufactures.Dtos.GarmentSubcon.GarmentSubconCustomsIns
         public int DoId { get; set; }
         public string DoNo { get; set; }
         public decimal Quantity { get; set; }
+        public List<GarmentSubconCustomsInDetailDto> Details { get; set; }
+
     }
 }

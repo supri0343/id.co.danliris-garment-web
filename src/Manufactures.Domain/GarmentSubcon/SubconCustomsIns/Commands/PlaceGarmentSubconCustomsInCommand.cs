@@ -53,6 +53,18 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns.Commands
             RuleFor(r => r.TotalQty)
                .LessThanOrEqualTo(r => r.RemainingQuantity)
                .WithMessage(x => $"'Total Jumlah ' tidak boleh lebih dari '{x.RemainingQuantity}'.");
+            RuleFor(r => r.Details).NotEmpty().OverridePropertyName("Detail");
+            RuleFor(r => r.Details).NotEmpty().WithMessage("Data BC Keluar Belum Ada yang dipilih").OverridePropertyName("DetailsCount").When(s => s.Details != null);
+            RuleForEach(r => r.Details).SetValidator(new GarmentSubconCustomsInDetailValueObjectValidator());
+        }
+    }
+
+    public class GarmentSubconCustomsInDetailValueObjectValidator : AbstractValidator<GarmentSubconCustomsInDetailValueObject>
+    {
+        public GarmentSubconCustomsInDetailValueObjectValidator()
+        {
+            RuleFor(r => r.CustomsOutNo).NotNull();
+            RuleFor(r => r.SubconCustomsOutId).NotNull();
         }
     }
 }

@@ -20,14 +20,17 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconCustomsI
     {
         private readonly Mock<IGarmentSubconCustomsInRepository> _mockSubconCustomsInRepository;
         private readonly Mock<IGarmentSubconCustomsInItemRepository> _mockSubconCustomsInItemRepository;
-        
+        private readonly Mock<IGarmentSubconCustomsInDetailRepository> _mockGarmentSubconCustomsInDetailRepository;
+
         public PlaceGarmentSubconCustomsInCommandHandlerTest()
         {
             _mockSubconCustomsInRepository = CreateMock<IGarmentSubconCustomsInRepository>();
             _mockSubconCustomsInItemRepository = CreateMock<IGarmentSubconCustomsInItemRepository>();
+            _mockGarmentSubconCustomsInDetailRepository = CreateMock<IGarmentSubconCustomsInDetailRepository>();
 
             _MockStorage.SetupStorage(_mockSubconCustomsInRepository);
             _MockStorage.SetupStorage(_mockSubconCustomsInItemRepository);
+            _MockStorage.SetupStorage(_mockGarmentSubconCustomsInDetailRepository);
         }
         private PlaceGarmentSubconCustomsInCommandHandler CreatePlaceGarmentSubconCustomsInCommandHandler()
         {
@@ -75,6 +78,14 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconCustomsI
                             Name = "test"
                        },
                        TotalQty = 1,
+                       Details= new List<GarmentSubconCustomsInDetailValueObject>()
+                       {
+                           new GarmentSubconCustomsInDetailValueObject
+                           {
+                               CustomsOutNo="no",
+                               SubconCustomsOutId= Guid.NewGuid()
+                           }
+                       }
                     }
                 }
             };
@@ -85,6 +96,10 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconCustomsI
             _mockSubconCustomsInItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentSubconCustomsInItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentSubconCustomsInItem>()));
+
+            _mockGarmentSubconCustomsInDetailRepository
+                .Setup(s => s.Update(It.IsAny<GarmentSubconCustomsInDetail>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentSubconCustomsInDetail>()));
 
             _MockStorage
                 .Setup(x => x.Save())

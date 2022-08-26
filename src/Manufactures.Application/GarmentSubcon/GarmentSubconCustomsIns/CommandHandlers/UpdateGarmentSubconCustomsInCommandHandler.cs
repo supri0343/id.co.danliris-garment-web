@@ -18,12 +18,14 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconCustomsIns.Command
         private readonly IStorage _storage;
         private readonly IGarmentSubconCustomsInRepository _garmentSubconCustomsInRepository;
         private readonly IGarmentSubconCustomsInItemRepository _garmentSubconCustomsInItemRepository;
+        private readonly IGarmentSubconCustomsInDetailRepository _garmentSubconCustomsInDetailRepository;
 
         public UpdateGarmentSubconCustomsInCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentSubconCustomsInRepository = storage.GetRepository<IGarmentSubconCustomsInRepository>();
             _garmentSubconCustomsInItemRepository = storage.GetRepository<IGarmentSubconCustomsInItemRepository>();
+            _garmentSubconCustomsInDetailRepository = storage.GetRepository<IGarmentSubconCustomsInDetailRepository>();
         }
 
         public async Task<GarmentSubconCustomsIn> Handle(UpdateGarmentSubconCustomsInCommand request, CancellationToken cancellationToken)
@@ -36,10 +38,29 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconCustomsIns.Command
 
                 if (item == null)
                 {
+                    _garmentSubconCustomsInDetailRepository.Find(o => o.SubconCustomsInItemId == subconCustomsItem.Identity).ForEach(async subconCustomsDetail =>
+                    {
+                        subconCustomsDetail.Remove();
+                        await _garmentSubconCustomsInDetailRepository.Update(subconCustomsDetail);
+                    });
                     subconCustomsItem.Remove();
                 }
                 else
                 {
+                    _garmentSubconCustomsInDetailRepository.Find(o => o.SubconCustomsInItemId == subconCustomsItem.Identity).ForEach(async subconCustomsDetail =>
+                    {
+                        var detail = item.Details.Where(d => d.Id == subconCustomsDetail.Identity).SingleOrDefault();
+                        if (detail == null)
+                        {
+                            subconCustomsDetail.Remove();
+                        }
+                        else
+                        {
+                            subconCustomsDetail.Modify();
+                        }
+
+                        await _garmentSubconCustomsInDetailRepository.Update(subconCustomsDetail);
+                    });
                     subconCustomsItem.Modify();
                 }
 
@@ -63,6 +84,18 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconCustomsIns.Command
                     );
 
                     await _garmentSubconCustomsInItemRepository.Update(garmentSubconCustomsInItem);
+
+                    foreach (var detail in item.Details)
+                    {
+                        GarmentSubconCustomsInDetail garmentSubconCustomsInDetail = new GarmentSubconCustomsInDetail(
+                            Guid.NewGuid(),
+                            garmentSubconCustomsInItem.Identity,
+                            detail.SubconCustomsOutId,
+                            detail.CustomsOutNo,
+                            detail.CustomsOutQty
+                        );
+                        await _garmentSubconCustomsInItemRepository.Update(garmentSubconCustomsInItem);
+                    }
                 }
             }
 

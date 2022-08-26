@@ -20,5 +20,6 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns.ReadModels
         public Guid SubconCustomsInId { get; internal set; }
 
         public virtual GarmentSubconCustomsInReadModel GarmentSubconCustomsIn { get; internal set; }
+        public virtual List<GarmentSubconCustomsInDetailReadModel> GarmentSubconCustomsInDetail { get; internal set; }
     }
 }
