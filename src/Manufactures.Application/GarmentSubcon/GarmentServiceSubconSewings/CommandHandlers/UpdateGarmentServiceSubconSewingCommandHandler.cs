@@ -76,6 +76,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
             serviceSubconSewing.SetBuyerName(request.Buyer.Name);
             serviceSubconSewing.SetQtyPacking(request.QtyPacking);
             serviceSubconSewing.SetUomUnit(request.UomUnit);
+            serviceSubconSewing.SetNettWeight(request.NettWeight);
+            serviceSubconSewing.SetGrossWeight(request.GrossWeight);
             serviceSubconSewing.Modify();
             await _garmentServiceSubconSewingRepository.Update(serviceSubconSewing);
 
