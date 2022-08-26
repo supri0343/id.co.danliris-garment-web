@@ -72,7 +72,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconCustomsIns.Command
                         detail.CustomsOutNo,
                         detail.CustomsOutQty
                     );
-                    await _garmentSubconCustomsInItemRepository.Update(garmentSubconCustomsInItem);
+                    await _garmentSubconCustomsInDetailRepository.Update(garmentSubconCustomsInDetail);
                 }
             }
 

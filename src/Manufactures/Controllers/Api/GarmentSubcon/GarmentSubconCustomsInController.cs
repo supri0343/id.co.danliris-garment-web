@@ -52,11 +52,6 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 .ToList();
 
             var itemIds = items.Select(s => s.Identity).ToList();
-            var details = _garmentSubconCustomsInDetailRepository.Query
-                .Where(o => itemIds.Contains(o.SubconCustomsInItemId))
-                .Select(s => new { s.Identity, s.SubconCustomsOutId })
-                .ToList();
-
             await Task.Yield();
             return Ok(garmentSubconCustomsInListDtos, info: new
             {
@@ -78,8 +73,8 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             {
                 Items = _garmentSubconCustomsInItemRepository.Find(o => o.SubconCustomsInId == subconCustomsIn.Identity).Select(subconCustomsInItem => new GarmentSubconCustomsInItemDto(subconCustomsInItem)
                 {
-                    Details = _garmentSubconCustomsInDetailRepository.Find(o => o.SubconCustomsInItemId == subconCustomsInItem.Identity).Select(subconCustomsInDetail => new GarmentSubconCustomsInDetailDto(subconCustomsInDetail)
-                    { }).ToList()
+                    Details = _garmentSubconCustomsInDetailRepository.Find(o => o.SubconCustomsInItemId == subconCustomsInItem.Identity).FirstOrDefault() != null ? _garmentSubconCustomsInDetailRepository.Find(o => o.SubconCustomsInItemId == subconCustomsInItem.Identity).Select(subconCustomsInDetail => new GarmentSubconCustomsInDetailDto(subconCustomsInDetail)
+                    { }).ToList() : new List<GarmentSubconCustomsInDetailDto>()
                 }).ToList()
 
             }
@@ -153,7 +148,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 itemDto.Items = garmentSubconCustomsInItems;
                 Parallel.ForEach(itemDto.Items, detailDto =>
                 {
-                    var garmentCustomInDetails = garmentSubconCustomsInDetailDto.Where(x => x.SubconCustomsInItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
+                    var garmentCustomInDetails = garmentSubconCustomsInDetailDto.Where(x => x.SubconCustomsInItemId == detailDto.Id).FirstOrDefault()!=null ? garmentSubconCustomsInDetailDto.Where(x => x.SubconCustomsInItemId == detailDto.Id).OrderBy(x => x.Id).ToList() : new List<GarmentSubconCustomsInDetailDto>();
                     detailDto.Details = garmentCustomInDetails;
                 });
             });
