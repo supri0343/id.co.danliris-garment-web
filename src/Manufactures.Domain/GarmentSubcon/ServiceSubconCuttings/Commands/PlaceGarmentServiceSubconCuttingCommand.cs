@@ -36,6 +36,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
             RuleFor(r => r.Uom.Id).NotEmpty().OverridePropertyName("Uom").When(w => w.Uom != null);
             RuleFor(r => r.QtyPacking).NotEmpty().WithMessage("Jumlah Packing tidak boleh kosong!").OverridePropertyName("QtyPacking");
             RuleFor(r => r.NettWeight).NotEmpty().WithMessage("Nett Weight tidak boleh kosong!").OverridePropertyName("Nett Weight");
+            RuleFor(r => r.GrossWeight).NotEmpty().WithMessage("Gross Weight tidak boleh kosong!").OverridePropertyName("Gross Weight");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Data Belum Ada yang dipilih").OverridePropertyName("ItemsCount").When(s => s.Items != null);
             RuleFor(r => r.Buyer).NotNull();
