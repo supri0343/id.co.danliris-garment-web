@@ -67,7 +67,7 @@ namespace Manufactures.Tests.Helpers
 
 
 
-            var subconSewingDto = new GarmentServiceSubconSewingDto(new GarmentServiceSubconSewing(IdSewing, "", DateTimeOffset.Now, true, new Domain.Shared.ValueObjects.BuyerId(1), "code", "name", 1, ""));
+            var subconSewingDto = new GarmentServiceSubconSewingDto(new GarmentServiceSubconSewing(IdSewing, "", DateTimeOffset.Now, true, new Domain.Shared.ValueObjects.BuyerId(1), "code", "name", 1, "", 1, 1));
             var subconSewingDtoItem = new GarmentServiceSubconSewingItem(IdSewing, IdSewing, "", "", new Domain.Shared.ValueObjects.GarmentComodityId(1), "code", "name", new Domain.Shared.ValueObjects.BuyerId(1), "code", "name", new Domain.Shared.ValueObjects.UnitDepartmentId(1), "code", "name");
             var subconSewingDtoItems = new List<GarmentServiceSubconSewingItemDto>()
             {
