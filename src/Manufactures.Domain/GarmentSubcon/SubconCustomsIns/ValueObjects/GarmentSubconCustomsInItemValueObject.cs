@@ -16,6 +16,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns.ValueObjects
         public decimal Quantity { get; set; }
         public decimal TotalQty { get; set; }
         public decimal RemainingQuantity { get; set; }
+        public List<GarmentSubconCustomsInDetailValueObject> Details { get; set; }
 
         public GarmentSubconCustomsInItemValueObject()
         {
