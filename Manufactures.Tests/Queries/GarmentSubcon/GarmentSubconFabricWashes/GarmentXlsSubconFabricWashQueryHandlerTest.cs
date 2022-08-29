@@ -65,7 +65,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentServiceSubconFabricWas
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconFabricWashReadModel>
                 {
-                    new GarmentServiceSubconFabricWash(guidSubconFabricWash, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true, 5, "uomUnit").GetReadModel()
+                    new GarmentServiceSubconFabricWash(guidSubconFabricWash, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true, 5, "uomUnit", 1, 1).GetReadModel()
 
                 }.AsQueryable());
 
@@ -111,7 +111,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentServiceSubconFabricWas
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconFabricWashReadModel>
                 {
-                    new GarmentServiceSubconFabricWash(guidSubconFabricWash, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true, 5, "uomUnit").GetReadModel()
+                    new GarmentServiceSubconFabricWash(guidSubconFabricWash, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true, 5, "uomUnit", 1, 1).GetReadModel()
 
                 }.AsQueryable());
 
