@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20220826092144_Add-column-NW-GW-ServiceSubconSewing")]
+    partial class AddcolumnNWGWServiceSubconSewing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -6983,49 +6985,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.ToTable("GarmentSubconContracts");
                 });
 
-            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.SubconCustomsIns.ReadModels.GarmentSubconCustomsInDetailReadModel", b =>
-                {
-                    b.Property<Guid>("Identity")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<string>("CustomsOutNo")
-                        .HasMaxLength(50);
-
-                    b.Property<decimal>("CustomsOutQty");
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<Guid>("SubconCustomsInItemId");
-
-                    b.Property<Guid>("SubconCustomsOutId");
-
-                    b.HasKey("Identity");
-
-                    b.HasIndex("SubconCustomsInItemId");
-
-                    b.ToTable("GarmentServiceSubconCustomsInDetails");
-                });
-
             modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.SubconCustomsIns.ReadModels.GarmentSubconCustomsInItemReadModel", b =>
                 {
                     b.Property<Guid>("Identity")
@@ -7890,14 +7849,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasOne("Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels.GarmentSubconContractReadModel", "GarmentSubconContract")
                         .WithMany("GarmentSubconContractItem")
                         .HasForeignKey("SubconContractId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.SubconCustomsIns.ReadModels.GarmentSubconCustomsInDetailReadModel", b =>
-                {
-                    b.HasOne("Manufactures.Domain.GarmentSubcon.SubconCustomsIns.ReadModels.GarmentSubconCustomsInItemReadModel", "GarmentSubconCustomsInItem")
-                        .WithMany("GarmentSubconCustomsInDetail")
-                        .HasForeignKey("SubconCustomsInItemId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

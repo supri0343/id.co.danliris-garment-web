@@ -80,6 +80,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
             subconCutting.SetUomId(new UomId(request.Uom.Id));
             subconCutting.SetUomUnit(request.Uom.Unit);
             subconCutting.SetQtyPacking(request.QtyPacking);
+            subconCutting.SetNettWeight(request.NettWeight);
+            subconCutting.SetGrossWeight(request.GrossWeight);
             subconCutting.Modify();
             await _garmentServiceSubconCuttingRepository.Update(subconCutting);
 

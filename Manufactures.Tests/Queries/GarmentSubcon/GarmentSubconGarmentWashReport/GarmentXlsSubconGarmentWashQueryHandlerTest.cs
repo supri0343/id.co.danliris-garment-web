@@ -61,7 +61,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconGarmentWashRepor
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconSewingReadModel>
                 {
-                        new GarmentServiceSubconSewing(guidSubconSewing, "SJS001", DateTimeOffset.Now, false, new BuyerId (1), "BuyerCode", "BuyerName", 5, "uomUnit").GetReadModel()
+                        new GarmentServiceSubconSewing(guidSubconSewing, "SJS001", DateTimeOffset.Now, false, new BuyerId (1), "BuyerCode", "BuyerName", 5, "uomUnit", 1, 1).GetReadModel()
      
                 }.AsQueryable());
 
