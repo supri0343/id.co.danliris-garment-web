@@ -34,10 +34,19 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             _garmentSubconContractItemRepository = Storage.GetRepository<IGarmentSubconContractItemRepository>();
             
         }
-        [HttpGet]
-        public async Task<IActionResult> Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        [HttpGet ("by-user")]
+        public async Task<IActionResult> GetByUser(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
         {
-            VerifyByUser();
+            VerifyUser();
+            string filterUser = string.Concat("'CreatedBy':'", WorkContext.UserName, "'");
+            if (filter == null || !(filter.Trim().StartsWith("{") && filter.Trim().EndsWith("}")) || filter.Replace(" ", "").Equals("{}"))
+            {
+                filter = string.Concat("{", filterUser, "}");
+            }
+            else
+            {
+                filter = filter.Replace("}", string.Concat(", ", filterUser, "}"));
+            }
 
             var query = _garmentSubconContractRepository.Read(page, size, order, keyword, filter);
             var total = query.Count();
@@ -59,13 +68,38 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             });
         }
 
-       
+        [HttpGet]
+        public async Task<IActionResult> Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentSubconContractRepository.Read(page, size, order, keyword, filter);
+            var total = query.Count();
+            query = query.Skip((page - 1) * size).Take(size);
+            double totalQty = query.Sum(b => b.Quantity);
+            List<GarmentSubconContractDto> garmentSubconContractListDtos = _garmentSubconContractRepository
+                .Find(query)
+                .Select(subconContract => new GarmentSubconContractDto(subconContract))
+                .ToList();
+
+            var dtoIds = garmentSubconContractListDtos.Select(s => s.Id).ToList();
+            await Task.Yield();
+            return Ok(garmentSubconContractListDtos, info: new
+            {
+                page,
+                size,
+                total,
+                totalQty
+            });
+        }
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
             Guid guid = Guid.Parse(id);
 
-            VerifyByUser();
+            VerifyUser();
 
             GarmentSubconContractDto garmentSubconContractDto = _garmentSubconContractRepository.Find(o => o.Identity == guid).Select(subcon => new GarmentSubconContractDto(subcon)
             {
@@ -84,7 +118,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         {
             try
             {
-                VerifyByUser();
+                VerifyUser();
                 //var subcon = _garmentSubconContractRepository.Find(a => a.ContractNo.Replace(" ", "") == command.ContractNo.Replace(" ", "")).Select(o => new GarmentSubconContractDto(o)).FirstOrDefault();
                 //if (subcon != null)
                 //    return BadRequest(new
@@ -116,7 +150,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             //    });
             command.SetIdentity(guid);
 
-            VerifyByUser();
+            VerifyUser();
 
             var order = await Mediator.Send(command);
 
@@ -128,7 +162,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         {
             Guid guid = Guid.Parse(id);
 
-            VerifyByUser();
+            VerifyUser();
 
             RemoveGarmentSubconContractCommand command = new RemoveGarmentSubconContractCommand(guid);
             var order = await Mediator.Send(command);
@@ -140,7 +174,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         [HttpGet("complete")]
         public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
         {
-            VerifyByUser();
+            VerifyUser();
 
             var query = _garmentSubconContractRepository.Read(page, size, order, keyword, filter);
             var count = query.Count();
@@ -174,7 +208,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         [HttpGet("realization-report")]
         public async Task<IActionResult> GetReaizationReport(string subconcontractNo, int page = 1, int size = 25, string Order = "{}")
         {
-            VerifyByUser();
+            VerifyUser();
             GarmentRealizationSubconReportQuery query = new GarmentRealizationSubconReportQuery(page, size, Order, subconcontractNo, WorkContext.Token);
             var viewModel = await Mediator.Send(query);
 
@@ -193,7 +227,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         {
             try
             {
-                VerifyByUser();
+                VerifyUser();
                 GetXlsGarmentRealizationSubconReportQuery query = new GetXlsGarmentRealizationSubconReportQuery(page, size, Order, subconcontractNo, WorkContext.Token);
                 byte[] xlsInBytes;
 
@@ -217,7 +251,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         [HttpGet("subcon-contract-report")]
         public async Task<IActionResult> GetSubconContractReport(int supplierNo, string contractType, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string order = "{ }")
         {
-            VerifyByUser();
+            VerifyUser();
             GarmentSubconContactReportQuery query = new GarmentSubconContactReportQuery(page, size,order, supplierNo, contractType, dateFrom, dateTo);
             var viewModel = await Mediator.Send(query);
 
@@ -237,7 +271,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         {
             try
             {
-                VerifyByUser();
+                VerifyUser();
                 GetXlsGarmentSubconContractReporQuery query = new GetXlsGarmentSubconContractReporQuery(page, size, order, supplierNo, contractType, dateFrom, dateTo);
                 byte[] xlsInBytes;
 
@@ -264,7 +298,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             try
             {
                 Guid guid = Guid.Parse(id);
-                VerifyByUser();
+                VerifyUser();
 
                 GarmentSubconContractExcelDto garmentSubconContractDto = _garmentSubconContractRepository.Find(o => o.Identity == guid).Select(subcon => new GarmentSubconContractExcelDto(subcon)
                 {
