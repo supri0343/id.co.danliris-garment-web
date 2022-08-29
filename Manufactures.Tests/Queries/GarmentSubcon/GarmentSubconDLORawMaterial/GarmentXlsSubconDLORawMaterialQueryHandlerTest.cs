@@ -130,7 +130,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLORawMaterial
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconFabricWashReadModel>
                 {
-                    new GarmentServiceSubconFabricWash(guidSubconShrinkagePanel, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true, 0, null).GetReadModel()
+                    new GarmentServiceSubconFabricWash(guidSubconShrinkagePanel, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true, 0, null, 0, 0).GetReadModel()
                 }.AsQueryable());
 
             _mockgarmentSubconFabricWashItemRepository
@@ -219,7 +219,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLORawMaterial
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconFabricWashReadModel>
                 {
-                    new GarmentServiceSubconFabricWash(guidSubconShrinkagePanel, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true, 0, null).GetReadModel()
+                    new GarmentServiceSubconFabricWash(guidSubconShrinkagePanel, "serviceSubconFabricWashNo", DateTimeOffset.Now, "remark", true, 0, null, 0, 0).GetReadModel()
                 }.AsQueryable());
 
             _mockgarmentSubconFabricWashItemRepository
