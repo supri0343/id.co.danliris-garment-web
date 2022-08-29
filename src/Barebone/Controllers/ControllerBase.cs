@@ -392,13 +392,6 @@ namespace Barebone.Controllers
             WorkContext.TimezoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
         }
 
-        protected void VerifyByUser()
-        {
-            WorkContext.UserName = User.Claims.Single(p => p.Type.Equals("username")).Value;
-            WorkContext.Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
-            WorkContext.TimezoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-        }
-
         protected IActionResult Ok<T>(T data, object info = null, string message = null)
         {
             return base.Ok(new
