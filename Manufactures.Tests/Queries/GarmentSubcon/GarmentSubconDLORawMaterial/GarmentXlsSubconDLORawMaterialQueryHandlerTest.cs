@@ -108,7 +108,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLORawMaterial
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconShrinkagePanelReadModel>
                 {
-                    new GarmentServiceSubconShrinkagePanel(guidSubconShrinkagePanel, "serviceSubconShrinkagePanelNo", DateTimeOffset.Now, "remark", true, 0, null).GetReadModel()
+                    new GarmentServiceSubconShrinkagePanel(guidSubconShrinkagePanel, "serviceSubconShrinkagePanelNo", DateTimeOffset.Now, "remark", true, 0, null, 0, 0).GetReadModel()
 
                 }.AsQueryable());
 
@@ -197,7 +197,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLORawMaterial
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconShrinkagePanelReadModel>
                 {
-                    new GarmentServiceSubconShrinkagePanel(guidSubconShrinkagePanel, "serviceSubconShrinkagePanelNo", DateTimeOffset.Now, "remark", true, 0, null).GetReadModel()
+                    new GarmentServiceSubconShrinkagePanel(guidSubconShrinkagePanel, "serviceSubconShrinkagePanelNo", DateTimeOffset.Now, "remark", true, 0, null, 0, 0).GetReadModel()
 
                 }.AsQueryable());
 
