@@ -21,13 +21,15 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
         public DateTimeOffset DueDate { get;  set; }
         public DateTimeOffset ContractDate { get; set; }
         public bool IsUsed { get; set; }
-        public Buyer Buyer { get; set; }
+        //public Buyer Buyer { get; set; }
 
         public string SubconCategory { get; set; }
         public Uom Uom { get; set; }
         public string SKEPNo { get; set; }
         public DateTimeOffset AgreementDate { get; set; }
-        public int CIF { get; set; }
+        public double CIF { get; set; }
+        public double NettWeight { get;set;}
+        public double GrossWeight { get; set; }
         public List<GarmentSubconContractItemValueObject> Items { get; set; }
     }
 
@@ -41,8 +43,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
             RuleFor(r => r.Uom).NotNull();
             RuleFor(r => r.Uom.Id).NotEmpty().OverridePropertyName("Uom").When(w => w.Uom != null);
 
-            RuleFor(r => r.Buyer).NotNull();
-            RuleFor(r => r.Buyer.Id).NotEmpty().OverridePropertyName("Buyer").When(w => w.Buyer != null);
+            //RuleFor(r => r.Buyer).NotNull();
+            //RuleFor(r => r.Buyer.Id).NotEmpty().OverridePropertyName("Buyer").When(w => w.Buyer != null);
 
             RuleFor(r => r.Quantity).GreaterThan(0).WithMessage("Quantity harus lebih dari 0");
             //RuleFor(r => r.ContractNo).NotNull();
@@ -61,12 +63,12 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
     {
         public GarmentSubconContractItemValueObjectValidator()
         {
-            RuleFor(r => r.Product)
-                .NotNull()
-                .WithMessage("Barang harus diisi.");
+            //RuleFor(r => r.Product)
+            //    .NotNull()
+            //    .WithMessage("Barang harus diisi.");
 
-            RuleFor(r => r.Product.Id).NotEmpty().OverridePropertyName("Product").When(w => w.Product != null)
-                .WithMessage("Barang harus diisi.");
+            //RuleFor(r => r.Product.Id).NotEmpty().OverridePropertyName("Product").When(w => w.Product != null)
+            //    .WithMessage("Barang harus diisi.");
 
             RuleFor(r => r.Uom)
                 .NotNull()

@@ -62,12 +62,12 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconContract
                     Id = 1,
                     Name = "test"
                 },
-                Buyer = new Buyer
-                {
-                    Id = 1,
-                    Code = "Buyercode",
-                    Name = "BuyerName"
-                },
+                //Buyer = new Buyer
+                //{
+                //    Id = 1,
+                //    Code = "Buyercode",
+                //    Name = "BuyerName"
+                //},
                 Uom = new Uom
                 {
                     Id = 1,

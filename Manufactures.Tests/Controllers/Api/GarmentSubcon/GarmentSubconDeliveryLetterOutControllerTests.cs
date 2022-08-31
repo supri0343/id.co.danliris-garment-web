@@ -347,7 +347,8 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconContract>()
                 {
-                    new GarmentSubconContract(SubconContractGuid, "","","", new SupplierId(1),"","","","","",1,DateTimeOffset.Now,DateTimeOffset.Now,false,new BuyerId(1),"","","",new UomId(1),"","",DateTimeOffset.Now, 1)
+                    new GarmentSubconContract(SubconContractGuid, "","","", new SupplierId(1),"","","","","",1,DateTimeOffset.Now,DateTimeOffset.Now,false,/*new BuyerId(1),"","",*/"",new UomId(1),"","",DateTimeOffset.Now, 1/*,""*/,1,1)
+
                 });
 
 
@@ -369,7 +370,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconSewingReadModel, bool>>>()))
                 .Returns(new List<GarmentServiceSubconSewing>()
                 {
-                    new GarmentServiceSubconSewing(SubconDeliveryLetterOutItemGuid, "",DateTimeOffset.Now,true, new BuyerId(1),"","",1,"")
+                    new GarmentServiceSubconSewing(SubconDeliveryLetterOutItemGuid, "",DateTimeOffset.Now,true, new BuyerId(1),"","",1,"", 1, 1)
                 });
 
             _mockGarmentServiceSubconSewingItemRepository

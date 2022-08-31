@@ -22,7 +22,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.ExcelTem
             DueDate = garmentSubconContract.DueDate;
             ContractDate = garmentSubconContract.ContractDate;
             IsUsed = garmentSubconContract.IsUsed;
-            Buyer = new Buyer(garmentSubconContract.BuyerId.Value, garmentSubconContract.BuyerCode, garmentSubconContract.BuyerName);
+            //Buyer = new Buyer(garmentSubconContract.BuyerId.Value, garmentSubconContract.BuyerCode, garmentSubconContract.BuyerName);
             SubconCategory = garmentSubconContract.SubconCategory;
             Uom = new Uom(garmentSubconContract.UomId.Value, garmentSubconContract.UomUnit);
             SKEPNo = garmentSubconContract.SKEPNo;
@@ -41,7 +41,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.ExcelTem
         public DateTimeOffset DueDate { get; set; }
         public DateTimeOffset ContractDate { get; set; }
         public bool IsUsed { get; set; }
-        public Buyer Buyer { get; set; }
+        //public Buyer Buyer { get; set; }
 
         public string SubconCategory { get; set; }
         public Uom Uom { get; set; }

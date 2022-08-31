@@ -24,16 +24,18 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels
         public DateTimeOffset DueDate { get; internal set; }
         public DateTimeOffset ContractDate { get; internal set; }
         public bool IsUsed { get; internal set; }
-        public int BuyerId { get; internal set; }
-        public string BuyerCode { get; internal set; }
-        public string BuyerName { get; internal set; }
+        //public int BuyerId { get; internal set; }
+        //public string BuyerCode { get; internal set; }
+        //public string BuyerName { get; internal set; }
 
         public string SubconCategory { get; internal set; }
         public int UomId { get; internal set; }
         public string UomUnit { get; internal set; }
         public string SKEPNo { get; internal set; }
         public DateTimeOffset AgreementDate { get; internal set; }
-        public int CIF { get; internal set; }
+        public double CIF { get; internal set; }
+        public double NettWeight { get; internal set; }
+        public double GrossWeight { get; internal set; }
 
         public virtual List<GarmentSubconContractItemReadModel> GarmentSubconContractItem { get; internal set; }
     }
