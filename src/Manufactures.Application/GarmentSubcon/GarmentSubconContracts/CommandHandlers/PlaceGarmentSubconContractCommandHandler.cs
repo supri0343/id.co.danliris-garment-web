@@ -45,15 +45,17 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
                 request.DueDate,
                 request.ContractDate,
                 request.IsUsed,
-                new BuyerId(request.Buyer.Id),
-                request.Buyer.Code,
-                request.Buyer.Name,
+                //new BuyerId(request.Buyer.Id),
+                //request.Buyer.Code,
+                //request.Buyer.Name,
                 request.SubconCategory,
                 new UomId(request.Uom.Id),
                 request.Uom.Unit,
                 request.SKEPNo,
                 request.AgreementDate,
-                request.CIF
+                request.CIF,
+                request.NettWeight,
+                request.GrossWeight
             );
 
             foreach (var item in request.Items)

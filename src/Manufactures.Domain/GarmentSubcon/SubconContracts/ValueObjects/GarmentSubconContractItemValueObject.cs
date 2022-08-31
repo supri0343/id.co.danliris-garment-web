@@ -15,7 +15,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.ValueObjects
         public double Quantity { get; set; }
 
         public Uom Uom { get; set; }
-        public int CIFItem { get; set; }
+        public double CIFItem { get; set; }
 
         public GarmentSubconContractItemValueObject()
         {

@@ -26,7 +26,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public double Quantity { get; set; }
 
         public Uom Uom { get; set; }
-        public int CIFItem { get; set; }
+        public double CIFItem { get; set; }
     }
 }
 
