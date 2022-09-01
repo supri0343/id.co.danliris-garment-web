@@ -33,8 +33,42 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             _garmentSubconContractRepository = Storage.GetRepository<IGarmentSubconContractRepository>();
             _garmentSubconContractItemRepository = Storage.GetRepository<IGarmentSubconContractItemRepository>();
         }
+        [HttpGet("by-user")]
+        public async Task<IActionResult> GetByUser(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+            string filterUser = string.Concat("'CreatedBy':'", WorkContext.UserName, "'");
+            if (filter == null || !(filter.Trim().StartsWith("{") && filter.Trim().EndsWith("}")) || filter.Replace(" ", "").Equals("{}"))
+            {
+                filter = string.Concat("{", filterUser, "}");
+            }
+            else
+            {
+                filter = filter.Replace("}", string.Concat(", ", filterUser, "}"));
+            }
+
+            var query = _garmentSubconContractRepository.Read(page, size, order, keyword, filter);
+            var total = query.Count();
+            query = query.Skip((page - 1) * size).Take(size);
+            double totalQty = query.Sum(b => b.Quantity);
+            List<GarmentSubconContractDto> garmentSubconContractListDtos = _garmentSubconContractRepository
+                .Find(query)
+                .Select(subconContract => new GarmentSubconContractDto(subconContract))
+                .ToList();
+
+            var dtoIds = garmentSubconContractListDtos.Select(s => s.Id).ToList();
+            await Task.Yield();
+            return Ok(garmentSubconContractListDtos, info: new
+            {
+                page,
+                size,
+                total,
+                totalQty
+            });
+        }
+
         [HttpGet]
-        public async Task<IActionResult> Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        public async Task<IActionResult> Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
         {
             VerifyUser();
 
@@ -58,7 +92,6 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             });
         }
 
-       
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
