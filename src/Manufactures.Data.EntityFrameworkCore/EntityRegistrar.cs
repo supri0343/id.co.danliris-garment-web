@@ -156,6 +156,7 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 			modelBuilder.ApplyConfiguration(new GarmentSubconCustomsInConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSubconCustomsInItemConfig());
+            modelBuilder.ApplyConfiguration(new GarmentSubconCustomsInDetailConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentSubconCustomsOutConfig());
             modelBuilder.ApplyConfiguration(new GarmentSubconCustomsOutItemConfig());
