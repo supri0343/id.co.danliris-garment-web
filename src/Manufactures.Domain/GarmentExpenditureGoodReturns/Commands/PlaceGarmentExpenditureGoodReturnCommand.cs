@@ -40,8 +40,8 @@ namespace Manufactures.Domain.GarmentReturGoodReturns.Commands
             RuleFor(r => r.Unit).NotNull();
             RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
             RuleFor(r => r.ExpenditureNo).NotNull();
-            RuleFor(r => r.DONo).NotNull();
-            RuleFor(r => r.URNNo).NotNull();
+            //RuleFor(r => r.DONo).NotNull();
+            //RuleFor(r => r.URNNo).NotNull();
             RuleFor(r => r.BCNo).NotNull();
             RuleFor(r => r.BCType).NotNull();
             RuleFor(r => r.RONo).NotNull();
