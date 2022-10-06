@@ -17,9 +17,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ValueObjects
         public Guid CuttingInId { get; set; }
         public Guid CuttingInDetailId { get; set; }
         public Product Product { get; set; }
-        public GarmentServiceSubconCuttingSizeValueObject()
-        {
-        }
+        //public GarmentServiceSubconCuttingSizeValueObject()
+        //{
+        //}
         protected override IEnumerable<object> GetAtomicValues()
         {
             throw new NotImplementedException();
