@@ -61,10 +61,12 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             SKEPNo = readModel.SKEPNo;
             AgreementDate = readModel.AgreementDate;
             CIF = readModel.CIF;
+            CreatedBy = readModel.CreatedBy;
+            NettWeight = readModel.NettWeight;
+            GrossWeight = readModel.GrossWeight;
         }
 
         public GarmentSubconContract(Guid identity, string contractType, string contractNo, string agreementNo, SupplierId supplierId, string supplierCode, string supplierName, string jobType, string bPJNo, string finishedGoodType, double quantity, DateTimeOffset dueDate, DateTimeOffset contractDate, bool isUsed, /*BuyerId buyerId, string buyerCode, string buyerName,*/ string subconCategory, UomId uomId, string uomUnit, string sKEPNo, DateTimeOffset agreementDate, double cif, double nettWeight, double grossWeight) : base(identity)
-
         {
             Identity = identity;
             ContractType = contractType;

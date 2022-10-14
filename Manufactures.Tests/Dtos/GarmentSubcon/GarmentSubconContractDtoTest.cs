@@ -16,7 +16,6 @@ namespace Manufactures.Tests.Dtos.GarmentSubcon
             Guid id = Guid.NewGuid();
             var dto = new GarmentSubconContractDto(new GarmentSubconContract(id,"type", "SubconContractNo", "no", new Domain.Shared.ValueObjects.SupplierId(1), "Code", "Name","type","No", "type",1, DateTimeOffset.Now, DateTimeOffset.Now,false,/* new BuyerId(1), "Code", "Name",*/ "a", new UomId(1), "a", "a", DateTimeOffset.Now, 1,/*"",*/1,1));
 
-
             Assert.NotNull(dto.Supplier);
 
         }
