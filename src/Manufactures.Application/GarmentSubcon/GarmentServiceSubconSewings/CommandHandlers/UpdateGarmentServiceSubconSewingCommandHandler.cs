@@ -51,8 +51,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                 {
                     _garmentServiceSubconSewingDetailRepository.Find(i => i.ServiceSubconSewingItemId == subconSewingItem.Identity).ForEach(async subconDetail =>
                     {
-						var detail = item.Details.Where(o => o.Id == subconDetail.Identity).Single();
-						if (!detail.IsSave)
+                        var detail = item.Details.Where(o => o.Id == subconDetail.Identity).Single();
+                        if (!detail.IsSave)
                         {
                             subconDetail.Remove();
                         }
