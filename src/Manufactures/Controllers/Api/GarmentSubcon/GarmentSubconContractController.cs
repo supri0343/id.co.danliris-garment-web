@@ -32,9 +32,10 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         {
             _garmentSubconContractRepository = Storage.GetRepository<IGarmentSubconContractRepository>();
             _garmentSubconContractItemRepository = Storage.GetRepository<IGarmentSubconContractItemRepository>();
+            
         }
-        [HttpGet("by-user")]
-        public async Task<IActionResult> GetByUser(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        [HttpGet ("by-user")]
+        public async Task<IActionResult> GetByUser(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
         {
             VerifyUser();
             string filterUser = string.Concat("'CreatedBy':'", WorkContext.UserName, "'");

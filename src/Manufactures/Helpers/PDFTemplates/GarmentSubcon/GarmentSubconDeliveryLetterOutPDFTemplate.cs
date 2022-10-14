@@ -30,13 +30,13 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(PageSize.A5.Rotate(), 10, 10,100, 10);
+            Document document = new Document(PageSize.A5.Rotate(), 10, 10, 100, 10);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
             writer.PageEvent = new GarmentLocalCoverLetterPdfTemplatePageEvent(garmentSubconDLOut);
             document.Open();
 
-            Paragraph date= new Paragraph("Tanggal "+garmentSubconDLOut.DLDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy", new CultureInfo("id-ID")), normal_font);
+            Paragraph date = new Paragraph("Tanggal " + garmentSubconDLOut.DLDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy", new CultureInfo("id-ID")), normal_font);
             date.Alignment = Element.ALIGN_RIGHT;
 
             document.Add(date);
@@ -50,9 +50,9 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
             cellIdentityContentLeft.Phrase = new Phrase("Tujuan", normal_font);
             tableIdentity.AddCell(cellIdentityContentLeft);
-            cellIdentityContentLeft.Phrase = new Phrase(": "+ supplier, normal_font);
+            cellIdentityContentLeft.Phrase = new Phrase(": " + supplier, normal_font);
             tableIdentity.AddCell(cellIdentityContentLeft);
-            cellIdentityContentLeft.Phrase = new Phrase( garmentSubconDLOut.SubconCategory== "SUBCON CUTTING SEWING" ? "NO. PO" : "", normal_font);
+            cellIdentityContentLeft.Phrase = new Phrase(garmentSubconDLOut.SubconCategory == "SUBCON CUTTING SEWING" ? "NO. PO" : "", normal_font);
             tableIdentity.AddCell(cellIdentityContentLeft);
             cellIdentityContentLeft.Phrase = new Phrase(garmentSubconDLOut.SubconCategory == "SUBCON CUTTING SEWING" ? ": " + garmentSubconDLOut.PONo : "", normal_font);
             tableIdentity.AddCell(cellIdentityContentLeft);
@@ -87,8 +87,8 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             double total = 0;
             if (garmentSubconDLOut.SubconCategory == "SUBCON JASA GARMENT WASH")
             {
-                PdfPTable tableContent = new PdfPTable(10);
-                tableContent.SetWidths(new float[] { 1.5f, 3f, 3f, 3f, 3f, 3f, 2.5f, 2.5f, 2.5f, 2.5f });
+                PdfPTable tableContent = new PdfPTable(9);
+                tableContent.SetWidths(new float[] { 1.5f, 3f, 3f, 3f, 3f, /*3f,*/ 2.5f, 2.5f, 2.5f, 2.5f });
 
                 cellCenter.Phrase = new Phrase("No", bold_font);
                 tableContent.AddCell(cellCenter);
@@ -100,8 +100,8 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase("Komoditi", bold_font);
                 tableContent.AddCell(cellCenter);
-                cellCenter.Phrase = new Phrase("Warna", bold_font);
-                tableContent.AddCell(cellCenter);
+                //cellCenter.Phrase = new Phrase("Warna", bold_font);
+                //tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase("Jumlah Kemasan", bold_font);
                 tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase("Satuan Kemasan", bold_font);
@@ -110,7 +110,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase("Satuan", bold_font);
                 tableContent.AddCell(cellCenter);
-                
+
 
                 //for (int indexItem = 0; indexItem < garmentSubconDLOut.Items.Count; indexItem++)
                 //{
@@ -145,8 +145,8 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                             cellCenter.Phrase = new Phrase($"{item.Comodity.Name}", normal_font);
                             tableContent.AddCell(cellCenter);
 
-                            cellCenter.Phrase = new Phrase($"{DLItem.DesignColor}", normal_font);
-                            tableContent.AddCell(cellCenter);
+                            //cellCenter.Phrase = new Phrase($"{DLItem.DesignColor}", normal_font);
+                            //tableContent.AddCell(cellCenter);
                         }
 
                         cellRight.Phrase = new Phrase($"{DLItem.QtyPacking}", normal_font);
@@ -157,7 +157,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
                         cellRight.Phrase = new Phrase($"{DLItem.Quantity}", normal_font);
                         tableContent.AddCell(cellRight);
-                        
+
                         cellLeft.Phrase = new Phrase("PCS", normal_font);
                         tableContent.AddCell(cellLeft);
 
@@ -183,6 +183,60 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 tableContent.SpacingAfter = 5f;
                 document.Add(tableContent);
             }
+            else if (garmentSubconDLOut.SubconCategory == "SUBCON CUTTING SEWING")
+            {
+                PdfPTable tableContent = new PdfPTable(5);
+                tableContent.SetWidths(new float[] { 1.5f, 8f, 6f, 2.5f, 2.5f });
+
+                cellCenter.Phrase = new Phrase("No", bold_font);
+                tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase("Kode/Nama Barang", bold_font);
+                tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase("Keterangan Lain", bold_font);
+                tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase("Quantity", bold_font);
+                tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase("Satuan", bold_font);
+                tableContent.AddCell(cellCenter);
+
+                for (int indexItem = 0; indexItem < garmentSubconDLOut.Items.Count; indexItem++)
+                {
+                    GarmentSubconDeliveryLetterOutItemDto item = garmentSubconDLOut.Items[indexItem];
+
+                    cellCenter.Phrase = new Phrase((indexItem + 1).ToString(), normal_font);
+                    tableContent.AddCell(cellCenter);
+
+                    cellLeft.Phrase = new Phrase(item.Product.Code + "/" + item.Product.Name, normal_font);
+                    tableContent.AddCell(cellLeft);
+
+                    cellLeft.Phrase = new Phrase(item.DesignColor, normal_font);
+                    tableContent.AddCell(cellLeft);
+
+                    cellRight.Phrase = new Phrase($"{item.Quantity}", normal_font);
+                    tableContent.AddCell(cellRight);
+
+                    cellLeft.Phrase = new Phrase("PCS", normal_font);
+                    tableContent.AddCell(cellLeft);
+
+                    total += item.Quantity;
+                }
+
+                cellLeft.Phrase = new Phrase("TOTAL", bold_font);
+                cellLeft.Colspan = 3;
+                tableContent.AddCell(cellLeft);
+                cellRight.Phrase = new Phrase($"{total}", bold_font);
+                cellRight.Colspan = 1;
+                tableContent.AddCell(cellRight);
+                cellLeft.Phrase = new Phrase("PCS", bold_font);
+                cellLeft.Colspan = 1;
+                tableContent.AddCell(cellLeft);
+
+                PdfPCell cellContent = new PdfPCell(tableContent);
+                tableContent.ExtendLastRow = false;
+                tableContent.SpacingAfter = 5f;
+                document.Add(tableContent);
+            }
+
             else if (garmentSubconDLOut.SubconCategory != "SUBCON SEWING")
             {
                 PdfPTable tableContent = new PdfPTable(7);
@@ -204,7 +258,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                     tableContent.AddCell(cellCenter);
                     cellCenter.Phrase = new Phrase("Satuan", bold_font);
                     tableContent.AddCell(cellCenter);
-                    
+
 
                     for (int indexItem = 0; indexItem < garmentSubconDLOut.Items.Count; indexItem++)
                     {
@@ -236,52 +290,52 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                         total += item.Quantity;
                     }
                 }
-                else if (garmentSubconDLOut.SubconCategory == "SUBCON CUTTING SEWING")
-                {
+                //else if (garmentSubconDLOut.SubconCategory == "SUBCON CUTTING SEWING")
+                //{
 
-                    cellCenter.Phrase = new Phrase("No", bold_font);
-                    tableContent.AddCell(cellCenter);
-                    cellCenter.Phrase = new Phrase("Kode/Nama Barang", bold_font);
-                    tableContent.AddCell(cellCenter);
-                    cellCenter.Phrase = new Phrase("Keterangan Lain", bold_font);
-                    tableContent.AddCell(cellCenter);
-                    cellCenter.Phrase = new Phrase("Quantity", bold_font);
-                    tableContent.AddCell(cellCenter);
-                    cellCenter.Phrase = new Phrase("Satuan", bold_font);
-                    tableContent.AddCell(cellCenter);
-                    cellCenter.Phrase = new Phrase("", bold_font);
-                    tableContent.AddCell(cellCenter);
-                    cellCenter.Phrase = new Phrase("", bold_font);
-                    tableContent.AddCell(cellCenter);
+                //    cellCenter.Phrase = new Phrase("No", bold_font);
+                //    tableContent.AddCell(cellCenter);
+                //    cellCenter.Phrase = new Phrase("Kode/Nama Barang", bold_font);
+                //    tableContent.AddCell(cellCenter);
+                //    cellCenter.Phrase = new Phrase("Keterangan Lain", bold_font);
+                //    tableContent.AddCell(cellCenter);
+                //    cellCenter.Phrase = new Phrase("Quantity", bold_font);
+                //    tableContent.AddCell(cellCenter);
+                //    cellCenter.Phrase = new Phrase("Satuan", bold_font);
+                //    tableContent.AddCell(cellCenter);
+                //    cellCenter.Phrase = new Phrase("", bold_font);
+                //    tableContent.AddCell(cellCenter);
+                //    cellCenter.Phrase = new Phrase("", bold_font);
+                //    tableContent.AddCell(cellCenter);
 
-                    for (int indexItem = 0; indexItem < garmentSubconDLOut.Items.Count; indexItem++)
-                    {
-                        GarmentSubconDeliveryLetterOutItemDto item = garmentSubconDLOut.Items[indexItem];
+                //    for (int indexItem = 0; indexItem < garmentSubconDLOut.Items.Count; indexItem++)
+                //    {
+                //        GarmentSubconDeliveryLetterOutItemDto item = garmentSubconDLOut.Items[indexItem];
 
-                        cellCenter.Phrase = new Phrase((indexItem + 1).ToString(), normal_font);
-                        tableContent.AddCell(cellCenter);
+                //        cellCenter.Phrase = new Phrase((indexItem + 1).ToString(), normal_font);
+                //        tableContent.AddCell(cellCenter);
 
-                        cellLeft.Phrase = new Phrase(item.Product.Code + "/" + item.Product.Name, normal_font);
-                        tableContent.AddCell(cellLeft);
+                //        cellLeft.Phrase = new Phrase(item.Product.Code + "/" + item.Product.Name, normal_font);
+                //        tableContent.AddCell(cellLeft);
 
-                        cellLeft.Phrase = new Phrase(item.DesignColor, normal_font);
-                        tableContent.AddCell(cellLeft);
+                //        cellLeft.Phrase = new Phrase(item.DesignColor, normal_font);
+                //        tableContent.AddCell(cellLeft);
 
-                        cellRight.Phrase = new Phrase($"{item.Quantity}", normal_font);
-                        tableContent.AddCell(cellRight);
+                //        cellRight.Phrase = new Phrase($"{item.Quantity}", normal_font);
+                //        tableContent.AddCell(cellRight);
 
-                        cellLeft.Phrase = new Phrase("PCS", normal_font);
-                        tableContent.AddCell(cellLeft);
+                //        cellLeft.Phrase = new Phrase("PCS", normal_font);
+                //        tableContent.AddCell(cellLeft);
 
-                        cellLeft.Phrase = new Phrase("", normal_font);
-                        tableContent.AddCell(cellLeft);
+                //        //cellLeft.Phrase = new Phrase("", normal_font);
+                //        //tableContent.AddCell(cellLeft);
 
-                        cellLeft.Phrase = new Phrase("", normal_font);
-                        tableContent.AddCell(cellLeft);
+                //        //cellLeft.Phrase = new Phrase("", normal_font);
+                //        //tableContent.AddCell(cellLeft);
 
-                        total += item.Quantity;
-                    }
-                }
+                //        total += item.Quantity;
+                //    }
+                //}
                 else if (garmentSubconDLOut.SubconCategory == "SUBCON BB FABRIC WASH/PRINT" || garmentSubconDLOut.SubconCategory == "SUBCON BB SHRINKAGE/PANEL")
                 {
                     cellCenter.Phrase = new Phrase("No", bold_font);
@@ -298,7 +352,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                     tableContent.AddCell(cellCenter);
                     cellCenter.Phrase = new Phrase("Satuan", bold_font);
                     tableContent.AddCell(cellCenter);
-                    
+
 
                     for (int indexItem = 0; indexItem < garmentSubconDLOut.Items.Count; indexItem++)
                     {
@@ -362,7 +416,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 cellCenter.Phrase = new Phrase("Satuan", bold_font);
                 tableContent.AddCell(cellCenter);
                 int indexItem = 0;
-                foreach ( var DLItem in garmentSubconDLOut.Items)
+                foreach (var DLItem in garmentSubconDLOut.Items)
                 {
                     var cols = DLItem.SubconCutting.Items.Count;
                     foreach (var item in DLItem.SubconCutting.Items)
@@ -382,9 +436,9 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
                             cellLeft.Phrase = new Phrase(DLItem.POSerialNumber, normal_font);
                             tableContent.AddCell(cellLeft);
-                            cols =0;
+                            cols = 0;
                         }
-                        
+
 
                         cellLeft.Phrase = new Phrase(item.DesignColor, normal_font);
                         cellLeft.Rowspan = 1;
@@ -399,7 +453,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                         total += item.TotalCuttingOut;
                     }
 
-                    
+
                 }
                 cellLeft.Phrase = new Phrase("TOTAL", bold_font);
                 cellLeft.Colspan = 4;
@@ -518,7 +572,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
                 #region LINE
 
-                cb.MoveTo(marginLeft-10, height - marginTop+25);
+                cb.MoveTo(marginLeft - 10, height - marginTop + 25);
                 cb.LineTo(width - marginRight, height - marginTop + 25);
                 cb.Stroke();
 
@@ -532,7 +586,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "SURAT JALAN SUBCON", width / 2, titleY + 10, 0);
 
                 cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 8);
-                cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "NO : "+dto.DLNo, width / 2, titleY, 0);
+                cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "NO : " + dto.DLNo, width / 2, titleY, 0);
 
                 #endregion
 
