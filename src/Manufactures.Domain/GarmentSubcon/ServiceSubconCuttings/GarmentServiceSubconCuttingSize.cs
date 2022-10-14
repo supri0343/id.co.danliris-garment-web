@@ -80,7 +80,66 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
                 Quantity = qty;
                 ReadModel.Quantity = qty;
 
-                MarkModified();
+            }
+        }
+
+        public void SetSizeId(SizeId sizeId)
+        {
+            if (SizeId != sizeId)
+            {
+                SizeId = sizeId;
+                ReadModel.SizeId = sizeId.Value;
+
+            }
+        }
+
+        public void SetSizeName(string sizeName)
+        {
+            if (SizeName != sizeName)
+            {
+                SizeName = sizeName;
+                ReadModel.SizeName = sizeName;
+
+            }
+        }
+
+        public void SetProducId(ProductId productId)
+        {
+            if (ProductId != productId)
+            {
+                ProductId = productId;
+                ReadModel.ProductId = productId.Value;
+
+            }
+        }
+
+        public void SetProducName(string productName)
+        {
+            if (ProductName != productName)
+            {
+                ProductName = productName;
+                ReadModel.ProductName = productName;
+
+            }
+        }
+
+        public void SetProducCode(string productCode)
+        {
+            if (ProductCode != productCode)
+            {
+                ProductCode = productCode;
+                ReadModel.ProductCode = productCode;
+
+            }
+        }
+
+        public void SetColor(string color)
+        {
+            if (Color != color)
+            {
+                Color = color;
+                ReadModel.Color = color;
+
             }
         }
 

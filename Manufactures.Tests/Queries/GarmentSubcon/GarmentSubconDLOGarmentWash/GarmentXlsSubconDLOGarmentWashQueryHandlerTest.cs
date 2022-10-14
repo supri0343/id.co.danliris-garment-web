@@ -89,7 +89,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOGarmentWash
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconSewingReadModel>
                 {
-                    new GarmentServiceSubconSewing(guidSubconSewing, "serviceSubconSewingNo", DateTimeOffset.Now, true, new BuyerId(1), "buyerCode", "buyerName", 5, "uomUnit").GetReadModel()
+                    new GarmentServiceSubconSewing(guidSubconSewing, "serviceSubconSewingNo", DateTimeOffset.Now, true, new BuyerId(1), "buyerCode", "buyerName", 5, "uomUnit", 1, 1).GetReadModel()
 
                 }.AsQueryable());
 
@@ -151,7 +151,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOGarmentWash
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconSewingReadModel>
                 {
-                    new GarmentServiceSubconSewing(guidSubconSewing, "serviceSubconSewingNo", DateTimeOffset.Now, true, new BuyerId(1), "buyerCode", "buyerName", 5, "uomUnit").GetReadModel()
+                    new GarmentServiceSubconSewing(guidSubconSewing, "serviceSubconSewingNo", DateTimeOffset.Now, true, new BuyerId(1), "buyerCode", "buyerName", 5, "uomUnit", 1, 1).GetReadModel()
 
                 }.AsQueryable());
 

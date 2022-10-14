@@ -49,6 +49,15 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
             }
         }
 
+        public void SetDesignColor(string DesignColor)
+        {
+            if (this.DesignColor != DesignColor)
+            {
+                this.DesignColor = DesignColor;
+                ReadModel.DesignColor = DesignColor;
+            }
+        }
+
         public void Modify()
         {
             MarkModified();
