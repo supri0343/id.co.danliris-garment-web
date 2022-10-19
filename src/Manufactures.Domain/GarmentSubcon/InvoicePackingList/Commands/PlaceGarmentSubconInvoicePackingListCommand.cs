@@ -1,10 +1,13 @@
-﻿using FluentValidation;
+﻿using ExtCore.Data.Abstractions;
+using FluentValidation;
 using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSubcon.InvoicePackingList.ValueObjects;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+using Manufactures.Domain.GarmentSubcon.InvoicePackingList.Repositories;
 
 namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.Commands
 {
@@ -34,15 +37,22 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.Commands
             RuleFor(r => r.ContractNo).NotNull();
             RuleFor(r => r.NW).NotNull();
             RuleFor(r => r.GW).NotNull();
-            RuleForEach(r => r.Items).SetValidator(new SubconInvoicePackingListItemValueObjectValidator()).When(s => s.Items != null);
+            RuleForEach(r => r.Items).SetValidator(r => new SubconInvoicePackingListItemValueObjectValidator(r)).When(s => s.Items != null);
         }
     }
 
     public class SubconInvoicePackingListItemValueObjectValidator : AbstractValidator<SubconInvoicePackingListItemValueObject>
     {
-        public SubconInvoicePackingListItemValueObjectValidator()
+		public SubconInvoicePackingListItemValueObjectValidator(PlaceGarmentSubconInvoicePackingListCommand placeGarmentSubconInvoicePackingListCommand)
         {
             RuleFor(r => r.DLNo).NotNull();
+			RuleFor(r => r.DLNo).Must((dlno) =>
+			{
+				return placeGarmentSubconInvoicePackingListCommand.Items.FindAll(a => a.DLNo != null && a.DLNo == dlno).Count < 1;
+			}).WithMessage("No SJ sudah ada")
+            //.OverridePropertyName("DLNo")
+            .When(c => c.DLNo != null);
+
             //RuleFor(r => r.Product)
             //    .NotNull()
             //    .WithMessage("Barang harus diisi.");
