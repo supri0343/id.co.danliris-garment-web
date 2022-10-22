@@ -6,6 +6,7 @@ using Manufactures.Domain.GarmentAvalComponents;
 using Manufactures.Domain.GarmentAvalComponents.ReadModels;
 using Manufactures.Domain.GarmentAvalComponents.Repositories;
 using Newtonsoft.Json;
+using System;
 
 namespace Manufactures.Data.EntityFrameworkCore.GarmentAvalComponents.Repositories
 {
@@ -16,15 +17,21 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentAvalComponents.Repositori
             return new GarmentAvalComponent(readModel);
         }
 
-        public IQueryable<GarmentAvalComponentReadModel> ReadList(string order, string keyword, string filter)
+        public IQueryable<GarmentAvalComponentReadModel> ReadList(string order, string keyword, string filter,DateTime dateFrom,DateTime dateTo )
         {
-            var Query = this.Query;
+            DateTimeOffset DateFrom = new DateTimeOffset(dateFrom, new TimeSpan(0, 0, 0));
+            DateTimeOffset DateTo = new DateTimeOffset(dateTo, new TimeSpan(0, 0, 0));
+
+            var Query = this.Query.Where(x => x.Date >= DateFrom && x.Date <= dateTo);
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
             Query = QueryHelper<GarmentAvalComponentReadModel>.Filter(Query, FilterDictionary);
 
-            List<string> SearchAttributes = new List<string> { "AvalComponentNo", "UnitCode", "UnitName", "AvalComponentType", "RONo", "Article" };
-            Query = QueryHelper<GarmentAvalComponentReadModel>.Search(Query, SearchAttributes, keyword);
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                List<string> SearchAttributes = new List<string> { "AvalComponentNo", "UnitCode", "UnitName", "AvalComponentType", "RONo", "Article" };
+                Query = QueryHelper<GarmentAvalComponentReadModel>.Search(Query, SearchAttributes, keyword);
+            }
 
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             Query = OrderDictionary.Count == 0 ? Query.OrderByDescending(o => o.ModifiedDate) : QueryHelper<GarmentAvalComponentReadModel>.Order(Query, OrderDictionary);

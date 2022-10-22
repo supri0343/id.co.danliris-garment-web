@@ -1,6 +1,7 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Infrastructure.Domain.Queries;
+using Manufactures.Domain.GarmentAvalComponents;
 using Manufactures.Domain.GarmentAvalComponents.ReadModels;
 using Manufactures.Domain.GarmentAvalComponents.Repositories;
 using Newtonsoft.Json;
@@ -27,7 +28,7 @@ namespace Manufactures.Application.GarmentAvalComponents.Queries.GetAllGarmentAv
 
         public async Task<GarmentAvalComponentsListViewModel> Handle(GetAllGarmentAvalComponentsQuery request, CancellationToken cancellationToken)
         {
-            var Query = _garmentAvalComponentRepository.ReadList(request.order, request.keyword, request.filter);
+            var Query = _garmentAvalComponentRepository.ReadList(request.order, request.keyword, request.filter,request.dateFrom,request.dateTo);
 
             int total = Query.Count();
             Query = Query.Skip((request.page - 1) * request.size).Take(request.size);
@@ -47,6 +48,7 @@ namespace Manufactures.Application.GarmentAvalComponents.Queries.GetAllGarmentAv
             {
                 dto.Quantities = itemQuantity.Where(w => w.AvalComponentId == dto.Id).Sum(s => s.Quantity);
             });
+
 
             await Task.Yield();
             return new GarmentAvalComponentsListViewModel

@@ -21,11 +21,11 @@ namespace Manufactures.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        public async Task<IActionResult> Get(DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
         {
             VerifyUser();
 
-            GetAllGarmentAvalComponentsQuery query = new GetAllGarmentAvalComponentsQuery(page, size, order, keyword, filter);
+            GetAllGarmentAvalComponentsQuery query = new GetAllGarmentAvalComponentsQuery(page, size, order, keyword, filter,dateFrom,dateTo);
             var viewModel = await Mediator.Send(query);
 
             return Ok(viewModel.GarmentAvalComponents, info : new

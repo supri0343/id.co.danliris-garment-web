@@ -12,14 +12,18 @@ namespace Manufactures.Application.GarmentAvalComponents.Queries.GetAllGarmentAv
         public string order { get; private set; }
         public string keyword { get; private set; }
         public string filter { get; private set; }
+        public DateTime dateFrom { get; private set; }
+        public DateTime dateTo { get; private set; }
 
-        public GetAllGarmentAvalComponentsQuery(int page, int size, string order, string keyword, string filter)
+        public GetAllGarmentAvalComponentsQuery(int page, int size, string order, string keyword, string filter,DateTime dateFrom,DateTime dateTo)
         {
             this.page = page;
             this.size = size;
             this.order = order;
             this.keyword = keyword;
             this.filter = filter;
+            this.dateFrom = dateFrom;
+            this.dateTo = dateTo;
         }
     }
 }

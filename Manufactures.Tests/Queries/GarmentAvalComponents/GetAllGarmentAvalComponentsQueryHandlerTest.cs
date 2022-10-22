@@ -43,10 +43,10 @@ namespace Manufactures.Tests.Queries.GarmentAvalComponents
 
             Guid avalComponentGuid = Guid.NewGuid();
 
-            GetAllGarmentAvalComponentsQuery query = new GetAllGarmentAvalComponentsQuery(1, 25, "{}", null, "{}");
+            GetAllGarmentAvalComponentsQuery query = new GetAllGarmentAvalComponentsQuery(1, 25, "{}", null, "{}",DateTime.Now,DateTime.Now.AddDays(3));
 
             _mockGarmentAvalComponentRepository
-                .Setup(s => s.ReadList(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(s => s.ReadList(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),It.IsAny<DateTime>(),It.IsAny<DateTime>()))
                 .Returns(new List<GarmentAvalComponentReadModel>()
                 {
                     new GarmentAvalComponentReadModel(avalComponentGuid)
