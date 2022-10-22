@@ -57,7 +57,7 @@ namespace Manufactures.Tests.Controllers.Api
                 });
 
             // Act
-            var result = await unitUnderTest.Get();
+            var result = await unitUnderTest.Get(DateTime.Now,DateTime.Now.AddDays(3),1,3,null);
 
             // Assert
             GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
