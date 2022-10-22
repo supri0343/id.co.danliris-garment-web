@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Threading.Tasks;
+using Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationScrap.GetReportAval;
 
 namespace Manufactures.Controllers.Api
 {
@@ -290,6 +291,16 @@ namespace Manufactures.Controllers.Api
 
 				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
 			}
+		}
+
+		[HttpGet("report")]
+		public async Task<IActionResult> GetMutation(DateTime dateFrom, DateTime dateTo,string type)
+		{
+			VerifyUser();
+			GetReportAvalQuery query = new GetReportAvalQuery(dateFrom, dateTo, WorkContext.Token, type);
+			var viewModel = await Mediator.Send(query);
+
+			return Ok(viewModel.garmentMonitorings);
 		}
 	}
 }
