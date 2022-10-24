@@ -22,6 +22,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             QtyPacking = garmentServiceSubconCutting.QtyPacking;
             NettWeight = garmentServiceSubconCutting.NettWeight;
             GrossWeight = garmentServiceSubconCutting.GrossWeight;
+            Remark = garmentServiceSubconCutting.Remark;
             Items = new List<GarmentServiceSubconCuttingItemDto>();
         }
 
@@ -37,6 +38,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public int QtyPacking {get; set;}
         public double NettWeight { get; set; }
         public double GrossWeight { get; set; }
+        public string Remark { get; set; }
         public List<GarmentServiceSubconCuttingItemDto> Items { get; set; }
     }
 }
