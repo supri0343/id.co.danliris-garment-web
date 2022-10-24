@@ -75,24 +75,27 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                         {
                             new GarmentServiceSubconCuttingDetailValueObject
                             {
-                                ServiceSubconCuttingItemId = Guid.NewGuid(),
-								IsSave=true,
-								Quantity=1,
-								DesignColor= "ColorD",
-								CuttingInQuantity=1,
+                                IsSave=true,
+                                Quantity=1,
+                                DesignColor= "ColorD",
+                                CuttingInQuantity=1,
+                                //CuttingInDetailId=Guid.NewGuid(),
                                 Sizes = new List<GarmentServiceSubconCuttingSizeValueObject>
-								{
+                                {
                                     new GarmentServiceSubconCuttingSizeValueObject
-									{
+                                    {
+                                        CuttingInId = Guid.NewGuid(),
+                                        CuttingInDetailId = Guid.NewGuid(),
+                                        Id = Guid.NewGuid(),
+                                        ServiceSubconCuttingDetailId = Guid.NewGuid(),
                                         Size = new SizeValueObject(1, "SizeName"),
                                         Quantity = 1,
-                                        Uom = new Uom(1, "UomUnit"),
+                                        Uom = new Uom(1, "PCS"),
                                         Color = "color",
-                                        Product = new Product(1, "productCode", "productName")
-                                        
-									}
-								}
-							}
+                                        Product = new Product(1, "ProductCode", "ProductName"),
+                                    }
+                                }
+                            }
                         }
                     }
                 },
@@ -106,34 +109,34 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconC
                 {
                     new GarmentServiceSubconCuttingReadModel(ServiceSubconCuttingGuid)
                 }.AsQueryable());
-			_mockServiceSubconCuttingItemRepository
-				.Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingItemReadModel, bool>>>()))
-				.Returns(new List<GarmentServiceSubconCuttingItem>()
-				{
-					new GarmentServiceSubconCuttingItem(ServiceSubconCuttingItemGuid, ServiceSubconCuttingGuid,null,null,new GarmentComodityId(1),null,null)
-				});
-			_mockServiceSubconCuttingDetailRepository
-				.Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingDetailReadModel, bool>>>()))
-				.Returns(new List<GarmentServiceSubconCuttingDetail>()
-				{
-					new GarmentServiceSubconCuttingDetail(new Guid(), new Guid(), null, 1)
-				});
+            _mockServiceSubconCuttingItemRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingItemReadModel, bool>>>()))
+                .Returns(new List<GarmentServiceSubconCuttingItem>()
+                {
+                    new GarmentServiceSubconCuttingItem(ServiceSubconCuttingItemGuid, ServiceSubconCuttingGuid,null,null,new GarmentComodityId(1),null,null)
+                });
+            _mockServiceSubconCuttingDetailRepository
+                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingDetailReadModel, bool>>>()))
+                .Returns(new List<GarmentServiceSubconCuttingDetail>()
+                {
+                    new GarmentServiceSubconCuttingDetail(new Guid(), ServiceSubconCuttingItemGuid, "ColorD", 1)
+                });
             _mockServiceSubconCuttingSizeRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentServiceSubconCuttingSizeReadModel, bool>>>()))
                 .Returns(new List<GarmentServiceSubconCuttingSize>()
                 {
-                    new GarmentServiceSubconCuttingSize(new Guid(), new SizeId(1), null, 1, new UomId(1), null, null, new Guid(), new Guid(), new Guid(), new ProductId(1), null, null)
+                    new GarmentServiceSubconCuttingSize(new Guid(), new SizeId(1), "", 1, new UomId(1), "", "", ServiceSubconCuttingItemGuid, new Guid(), new Guid(), new ProductId(1), "", "")
                 });
 
-			_mockServiceSubconCuttingRepository
-				.Setup(s => s.Update(It.IsAny<GarmentServiceSubconCutting>()))
-				.Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCutting>()));
-			_mockServiceSubconCuttingItemRepository
-				.Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingItem>()))
-				.Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingItem>()));
-			_mockServiceSubconCuttingDetailRepository
-				.Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingDetail>()))
-				.Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingDetail>()));
+            _mockServiceSubconCuttingRepository
+                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCutting>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCutting>()));
+            _mockServiceSubconCuttingItemRepository
+                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingItem>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingItem>()));
+            _mockServiceSubconCuttingDetailRepository
+                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingDetail>()))
+                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingDetail>()));
             _mockServiceSubconCuttingSizeRepository
                 .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCuttingSize>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCuttingSize>()));
