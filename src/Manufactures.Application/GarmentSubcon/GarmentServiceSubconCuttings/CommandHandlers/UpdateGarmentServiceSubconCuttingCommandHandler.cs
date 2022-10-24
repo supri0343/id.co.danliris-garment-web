@@ -66,13 +66,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
 
                         _garmentServiceSubconCuttingSizeRepository.Find(x => x.ServiceSubconCuttingDetailId == subconDetail.Identity).ForEach(async subconCuttingSizes =>
                         {
-                            var sizes = detail.Sizes.Where(s => s.ServiceSubconCuttingDetailId == subconCuttingSizes.Identity).Single();
-                            //var detailSize = sizes.(s => s.Id == subconCuttingSizes.Identity).Single();
+                            var sizes = detail.Sizes.Where(s => s.Id == subconCuttingSizes.Identity).Single();
                             subconCuttingSizes.SetQuantity(sizes.Quantity);
-                            //subconCuttingSizes.SetColor(subconCuttingSizes.Color);
-                            //subconCuttingSizes.SetProducCode(subconCuttingSizes.ProductCode);
-                            //subconCuttingSizes.SetProducName(subconCuttingSizes.ProductName);
-                            //subconCuttingSizes.SetSizeName(subconCuttingSizes.SizeName);
+                            subconCuttingSizes.SetColor(sizes.Color);
+                            subconCuttingSizes.SetSizeName(sizes.Size.Size);
                             subconCuttingSizes.Modify();
 
                             await _garmentServiceSubconCuttingSizeRepository.Update(subconCuttingSizes);
