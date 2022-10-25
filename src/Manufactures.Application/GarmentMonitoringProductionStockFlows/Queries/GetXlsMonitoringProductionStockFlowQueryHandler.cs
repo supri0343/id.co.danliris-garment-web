@@ -4770,7 +4770,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Komoditi", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jumlah Order", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FC", DataType = typeof(string) });
-				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "HOURS", DataType = typeof(string) });
+				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SMV", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "TARIF", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "HARGA BAHAN BAKU", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "CUTTING", DataType = typeof(string) });

@@ -64,7 +64,7 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
             var SAScrapIN = (from a in _garmentScrapTransactionRepository.Query
                              join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                              join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
-                             where a.CreatedDate < dateFrom && a.Deleted == false && b.Deleted == false
+                             where a.TransactionDate < dateFrom && a.Deleted == false && b.Deleted == false
                              && CodeScrap.Contains(c.Code) && a.TransactionType == "IN"
                              select new monitoringView
                              {
@@ -96,7 +96,7 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
             var SAScrapOut = (from a in _garmentScrapTransactionRepository.Query
                              join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                              join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
-                             where a.CreatedDate < dateFrom && a.Deleted == false && b.Deleted == false
+                             where a.TransactionDate < dateFrom && a.Deleted == false && b.Deleted == false
                              && CodeScrap.Contains(c.Code) && a.TransactionType == "OUT"
                              select new monitoringView
                              {
@@ -143,7 +143,7 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
             var FilterdScrapIN = (from a in _garmentScrapTransactionRepository.Query
                              join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                              join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
-                             where a.CreatedDate.Date.Date >= dateFrom.Date && a.CreatedDate.Date.Date <= dateTo.Date
+                             where a.TransactionDate.Date.Date >= dateFrom.Date && a.TransactionDate.Date.Date <= dateTo.Date
                              && a.Deleted == false && b.Deleted == false
                              && CodeScrap.Contains(c.Code) && a.TransactionType == "IN"
                              select new monitoringView
@@ -176,7 +176,7 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
             var FilterdScrapOut = (from a in _garmentScrapTransactionRepository.Query
                               join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
                               join c in _garmentScrapClassificationRepository.Query on b.ScrapClassificationId equals c.Identity
-                              where a.CreatedDate >= dateFrom && a.CreatedDate <= dateTo && a.Deleted == false && b.Deleted == false
+                              where a.TransactionDate >= dateFrom && a.TransactionDate <= dateTo && a.Deleted == false && b.Deleted == false
                               && CodeScrap.Contains(c.Code) && a.TransactionType == "OUT"
                               select new monitoringView
                               {
