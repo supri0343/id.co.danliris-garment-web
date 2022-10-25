@@ -27,6 +27,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels
         public int QtyPacking { get; internal set; }
         public double NettWeight { get; internal set; }
         public double GrossWeight { get; internal set; }
+        public string Remark { get; internal set; }
         public virtual List<GarmentServiceSubconCuttingItemReadModel> GarmentServiceSubconCuttingItem { get; internal set; }
     }
 }
