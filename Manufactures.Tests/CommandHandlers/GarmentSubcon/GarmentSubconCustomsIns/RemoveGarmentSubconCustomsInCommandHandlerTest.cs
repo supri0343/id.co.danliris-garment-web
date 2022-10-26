@@ -49,7 +49,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconCustomsI
             RemoveGarmentSubconCustomsInCommand removeGarmentSubconCustomsInCommand = new RemoveGarmentSubconCustomsInCommand(SubconCustomsInGuid);
 
             GarmentSubconCustomsIn garmentSubconCustomsIn = new GarmentSubconCustomsIn(
-                SubconCustomsInGuid, "no", DateTimeOffset.Now, "type", "type", Guid.NewGuid(), "no", new Domain.Shared.ValueObjects.SupplierId(1), "code", "name","remark",false,"category");
+                SubconCustomsInGuid, "no", DateTimeOffset.Now, "type", "type", Guid.NewGuid(), "no", new Domain.Shared.ValueObjects.SupplierId(1), "code", "name","remark",false,"category","buyerstaff");
 
             _mockSubconCustomsInRepository
                 .Setup(s => s.Query)
