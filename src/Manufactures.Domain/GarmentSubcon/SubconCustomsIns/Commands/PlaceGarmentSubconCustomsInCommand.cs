@@ -20,6 +20,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns.Commands
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
         public string SubconCategory { get; set; }
+        public string BuyerStaff { get; set; }
         public List<GarmentSubconCustomsInItemValueObject> Items { get; set; }
     }
 
@@ -34,6 +35,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconCustomsIns.Commands
             RuleFor(r => r.SubconCategory).NotNull();
             RuleFor(r => r.SubconContractId).NotNull();
             RuleFor(r => r.SubconContractNo).NotNull();
+            RuleFor(r => r.BuyerStaff).NotNull();
             RuleFor(r => r.Supplier.Id).NotEmpty().OverridePropertyName("Supplier").When(w => w.Supplier != null);
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Data Belum Ada yang dipilih").OverridePropertyName("ItemsCount").When(s => s.Items != null);
