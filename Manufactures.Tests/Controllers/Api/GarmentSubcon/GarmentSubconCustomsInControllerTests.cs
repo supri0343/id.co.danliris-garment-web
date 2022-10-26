@@ -76,7 +76,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconCustomsInReadModel>>()))
                 .Returns(new List<GarmentSubconCustomsIn>()
                 {
-                    new GarmentSubconCustomsIn(subconCustomsInGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "no", new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", false, "")
+                    new GarmentSubconCustomsIn(subconCustomsInGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "no", new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", false, "", "")
                 });
 
             Guid subconCustomsInItemGuid = Guid.NewGuid();
@@ -106,7 +106,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconCustomsInReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconCustomsIn>()
                 {
-                    new GarmentSubconCustomsIn(Guid.NewGuid(), "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "no", new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", false, "")
+                    new GarmentSubconCustomsIn(Guid.NewGuid(), "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "no", new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", false, "", "")
                 });
 
             _mockGarmentSubconCustomsInItemRepository
@@ -141,7 +141,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             //    .Returns(new List<GarmentSubconCustomsOut>());
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentSubconCustomsInCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSubconCustomsIn(Guid.NewGuid(), "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "no", new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", false, ""));
+                .ReturnsAsync(new GarmentSubconCustomsIn(Guid.NewGuid(), "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "no", new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", false, "", ""));
 
             // Act
             var result = await unitUnderTest.Post(command);
@@ -172,7 +172,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             Guid subconCustomsInGuid = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentSubconCustomsInCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSubconCustomsIn(subconCustomsInGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "no", new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", false, ""));
+                .ReturnsAsync(new GarmentSubconCustomsIn(subconCustomsInGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "no", new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", false, "", ""));
 
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentSubconCustomsInCommand());
@@ -189,7 +189,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             Guid subconCustomsInGuid = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentSubconCustomsInCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSubconCustomsIn(subconCustomsInGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "", new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", false, ""));
+                .ReturnsAsync(new GarmentSubconCustomsIn(subconCustomsInGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "", new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", false, "", ""));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());
@@ -213,7 +213,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconCustomsInReadModel>>()))
                 .Returns(new List<GarmentSubconCustomsIn>()
                 {
-                    new GarmentSubconCustomsIn(SubconCustomsInGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "no", new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", false, "")
+                    new GarmentSubconCustomsIn(SubconCustomsInGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "no", new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", false, "", "")
                 });
 
             Guid SubconCustomsInItemGuid = Guid.NewGuid();
