@@ -93,6 +93,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
             subconCutting.SetQtyPacking(request.QtyPacking);
             subconCutting.SetNettWeight(request.NettWeight);
             subconCutting.SetGrossWeight(request.GrossWeight);
+            subconCutting.SetRemark(request.Remark);
             subconCutting.Modify();
 
             var existingItem = _garmentServiceSubconCuttingItemRepository.Find(o => o.ServiceSubconCuttingId == subconCutting.Identity);
