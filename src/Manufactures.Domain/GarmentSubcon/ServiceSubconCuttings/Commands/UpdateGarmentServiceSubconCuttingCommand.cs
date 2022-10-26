@@ -23,6 +23,7 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Commands
         public int QtyPacking { get; set; }
         public double NettWeight { get; set; }
         public double GrossWeight { get; set; }
+        public string Remark { get; set; }
         public List<GarmentServiceSubconCuttingItemValueObject> Items { get; set; }
 
         public void SetIdentity(Guid id)

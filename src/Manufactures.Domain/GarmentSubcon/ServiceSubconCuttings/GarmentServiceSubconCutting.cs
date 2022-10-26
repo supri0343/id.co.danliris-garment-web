@@ -17,7 +17,6 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
         public string UnitCode { get; private set; }
         public string UnitName { get; private set; }
         public DateTimeOffset SubconDate { get; private set; }
-
         public bool IsUsed { get; internal set; }
         public BuyerId BuyerId { get; private set; }
         public string BuyerCode { get; private set; }
@@ -183,6 +182,16 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
                 ReadModel.GrossWeight = GrossWeight;
             }
         }
+
+        public void SetRemark (string Remark)
+        {
+            if(this.Remark != Remark)
+            {
+                this.Remark = Remark;
+                ReadModel.Remark = Remark;
+            }
+        }
+
         public void Modify()
         {
             MarkModified();
