@@ -68,7 +68,9 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
                     new UomId(0),
                     "-",
                     item.CIF,
-                    item.TotalPrice
+                    item.TotalPrice,
+                    item.TotalNW,
+                    item.TotalGW
                     );
                 await _subconInvoicePackingListItemRepository.Update(subconInvoicePackingListItem);
             }

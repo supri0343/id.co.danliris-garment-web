@@ -103,7 +103,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconInvoiceP
                 .Setup(s => s.Find(It.IsAny<Expression<Func<SubconInvoicePackingListItemReadModel, bool>>>()))
                 .Returns(new List<SubconInvoicePackingListItem>()
                 {
-                    new SubconInvoicePackingListItem(SubconInvoicePackingListItemGuid, SubconInvoicePackingListGuid,  "dlNo", DateTimeOffset.Now, new Domain.Shared.ValueObjects.ProductId(1), "productCode", "productName", "productRemark", "designColor", 1, new Domain.Shared.ValueObjects.UomId(1), "uomUnit", 1,1)
+                    new SubconInvoicePackingListItem(SubconInvoicePackingListItemGuid, SubconInvoicePackingListGuid,  "dlNo", DateTimeOffset.Now, new Domain.Shared.ValueObjects.ProductId(1), "productCode", "productName", "productRemark", "designColor", 1, new Domain.Shared.ValueObjects.UomId(1), "uomUnit", 1,1,1,1)
                 });
 
 

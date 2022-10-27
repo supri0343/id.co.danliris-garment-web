@@ -20,6 +20,8 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.ValueObjects
         public Uom Uom { get;  set; }
         public double CIF { get;  set; }
         public double TotalPrice { get;  set; }
+        public double TotalNW { get; set; }
+        public double TotalGW { get; set; }
 
         public SubconInvoicePackingListItemValueObject()
         {

@@ -46,12 +46,12 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.Commands
 		public SubconInvoicePackingListItemValueObjectValidator(PlaceGarmentSubconInvoicePackingListCommand placeGarmentSubconInvoicePackingListCommand)
         {
             RuleFor(r => r.DLNo).NotNull();
-			RuleFor(r => r.DLNo).Must((dlno) =>
-			{
-				return placeGarmentSubconInvoicePackingListCommand.Items.FindAll(a => a.DLNo != null && a.DLNo == dlno).Count < 1;
-			}).WithMessage("No SJ sudah ada")
+            RuleFor(r => r.DLNo).Must((dlno) =>
+            {
+                return placeGarmentSubconInvoicePackingListCommand.Items.FindAll(a => a.DLNo != null && a.DLNo == dlno).Count < 2;
+            }).WithMessage("No SJ sudah ada");
             //.OverridePropertyName("DLNo")
-            .When(c => c.DLNo != null);
+            //.When(c => c.DLNo != null);
 
             //RuleFor(r => r.Product)
             //    .NotNull()

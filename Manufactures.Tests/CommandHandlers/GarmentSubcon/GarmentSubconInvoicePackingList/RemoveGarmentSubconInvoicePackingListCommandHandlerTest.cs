@@ -76,6 +76,8 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconInvoiceP
                        new Domain.Shared.ValueObjects.UomId(1), 
                        "uomUnit", 
                        1,
+                       1,
+                       1,
                        1)
                 });
             //_mockSubconInvoicePackingListRepository

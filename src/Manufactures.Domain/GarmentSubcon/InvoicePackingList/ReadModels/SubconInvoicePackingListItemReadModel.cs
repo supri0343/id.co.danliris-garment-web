@@ -27,6 +27,8 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.ReadModels
         public string UomUnit { get; internal set; }
         public double CIF { get; internal set; }
         public double TotalPrice { get; internal set; }
+        public double TotalNW { get; internal set; }
+        public double TotalGW { get; internal set; }
 
         public virtual SubconInvoicePackingListReadModel SubconInvoicePacking { get; internal set; }
     }
