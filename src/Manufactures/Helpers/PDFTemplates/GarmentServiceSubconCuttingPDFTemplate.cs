@@ -64,6 +64,7 @@ namespace Manufactures.Helpers.PDFTemplates
             cellHeaderContentRight.AddElement(new Phrase("Buyer                       : " + garmentSubconCutting.Buyer.Name, normal_font));
             cellHeaderContentRight.AddElement(new Phrase("Jumlah Kemasan     : " + garmentSubconCutting.QtyPacking, normal_font));
             cellHeaderContentRight.AddElement(new Phrase("Satuan Kemasan     : " + garmentSubconCutting.Uom.Unit, normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("Keterangan              : " + garmentSubconCutting.Remark, normal_font));
 
             tableHeader.AddCell(cellHeaderContentRight);
 
@@ -210,7 +211,7 @@ namespace Manufactures.Helpers.PDFTemplates
                         cellCenter.Rowspan = 1;
                         tableContent.AddCell(cellCenter);
                         total += selectedSize.Quantity;
-                        grandTotal += total;
+                        //grandTotal += total;
                     }
                     else
                     {
@@ -219,6 +220,8 @@ namespace Manufactures.Helpers.PDFTemplates
                         tableContent.AddCell(cellCenter);
                     }
                 }
+
+                grandTotal += total;
 
                 cellCenter.Phrase = new Phrase(total.ToString(), normal_font);
                 cellCenter.Rowspan = 1;
@@ -230,6 +233,8 @@ namespace Manufactures.Helpers.PDFTemplates
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
             }
+
+            
 
             cellRight.Phrase = new Phrase("TOTAL", bold_font);
             cellRight.Rowspan = 1;
@@ -259,8 +264,8 @@ namespace Manufactures.Helpers.PDFTemplates
             tableSignature.AddCell(cellCenterTopNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph("Bag. Cutting\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph($"\nDicetak : {DateTimeOffset.Now.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy / HH:mm:ss", new CultureInfo("id-ID"))}", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellLeftNoBorder.Phrase = new Paragraph($"\n\nDicetak : {DateTimeOffset.Now.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy / HH:mm:ss", new CultureInfo("id-ID"))}", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
 

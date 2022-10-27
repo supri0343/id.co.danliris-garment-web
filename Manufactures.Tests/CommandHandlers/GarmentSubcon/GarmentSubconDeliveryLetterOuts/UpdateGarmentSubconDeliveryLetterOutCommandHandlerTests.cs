@@ -298,7 +298,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                 });
             //GarmentServiceSubconCutting garmentSubconCutting = new GarmentServiceSubconCutting(subconGuid, "no", "BORDIR", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, false, new BuyerId(1), "", "", new UomId(1), "", 0);
 
-            GarmentServiceSubconCutting garmentSubconCutting = new GarmentServiceSubconCutting(subconGuid, "no", "BORDIR", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, false, new BuyerId(1), "", "", new UomId(1), "", 0, 0, 0);
+            GarmentServiceSubconCutting garmentSubconCutting = new GarmentServiceSubconCutting(subconGuid, "no", "BORDIR", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, false, new BuyerId(1), "", "", new UomId(1), "", 0, 0, 0, "");
 
             _mockSubconCuttingRepository
                 .Setup(s => s.Query)

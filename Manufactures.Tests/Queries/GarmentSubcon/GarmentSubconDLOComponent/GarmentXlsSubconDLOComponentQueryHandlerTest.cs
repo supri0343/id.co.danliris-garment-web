@@ -94,7 +94,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOComponent
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconCuttingReadModel>
                 {
-                    new GarmentServiceSubconCutting(guidSubconCutting, "subconNo", "subconType", new UnitDepartmentId(1), "unitCode", "unitName", DateTimeOffset.Now, true, new BuyerId(1), "buyerCode", "buyerName", new UomId(1), "UomUnit", 1, 1, 1).GetReadModel()
+                    new GarmentServiceSubconCutting(guidSubconCutting, "subconNo", "subconType", new UnitDepartmentId(1), "unitCode", "unitName", DateTimeOffset.Now, true, new BuyerId(1), "buyerCode", "buyerName", new UomId(1), "UomUnit", 1, 1, 1, "").GetReadModel()
 
 
                 }.AsQueryable());
@@ -165,8 +165,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOComponent
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentServiceSubconCuttingReadModel>
                 {
-
-                    new GarmentServiceSubconCutting(guidSubconCutting, "subconNo", "subconType", new UnitDepartmentId(1), "unitCode", "unitName", DateTimeOffset.Now, true, new BuyerId(1), "buyerCode", "buyerName", new UomId(1), "UomUnit", 1, 1, 1).GetReadModel()
+                    new GarmentServiceSubconCutting(guidSubconCutting, "subconNo", "subconType", new UnitDepartmentId(1), "unitCode", "unitName", DateTimeOffset.Now, true, new BuyerId(1), "buyerCode", "buyerName", new UomId(1), "UomUnit", 1, 1, 1, "").GetReadModel()
 
 
                 }.AsQueryable());
