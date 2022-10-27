@@ -27,8 +27,11 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
         public string UomUnit { get; private set; }
         public double CIF { get; private set; }
         public double TotalPrice { get; private set; }
+        public double TotalNW { get; private set; }
+        public double TotalGW { get; private set; }
 
-        public SubconInvoicePackingListItem(Guid identity, Guid invoicePackingListId, string dlNo, DateTimeOffset dlDate, ProductId productId, string productCode, string productName, string productRemark, string designColor, double quantity, UomId uomId, string uomUnit, double cif, double totalPrice) : base(identity)
+
+        public SubconInvoicePackingListItem(Guid identity, Guid invoicePackingListId, string dlNo, DateTimeOffset dlDate, ProductId productId, string productCode, string productName, string productRemark, string designColor, double quantity, UomId uomId, string uomUnit, double cif, double totalPrice, double totalNW, double totalGW) : base(identity)
         {
             Identity = identity;
             InvoicePackingListId = invoicePackingListId;
@@ -44,6 +47,8 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
             UomUnit = uomUnit;
             CIF = cif;
             TotalPrice = totalPrice;
+            TotalNW = totalNW;
+            TotalGW = totalGW;
 
             ReadModel = new SubconInvoicePackingListItemReadModel(Identity)
             {
@@ -60,6 +65,8 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
                 UomUnit = UomUnit,
                 CIF = CIF,
                 TotalPrice = TotalPrice,
+                TotalNW = TotalNW,
+                TotalGW = TotalGW
             };
 
             ReadModel.AddDomainEvent(new OnSubconPackingListPlaced(Identity));
@@ -81,6 +88,8 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
             UomId = new UomId(readModel.UomId);
             CIF = readModel.CIF;
             TotalPrice = readModel.TotalPrice;
+            TotalNW = readModel.TotalNW;
+            TotalGW = ReadModel.TotalGW;
         }
 
         public void SetDLNo(string DLNo)
@@ -117,6 +126,25 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
                 ReadModel.TotalPrice = TotalPrice;
             }
         }
+
+        public void SetTotalNW(int TotalNW)
+        {
+            if (this.TotalNW != TotalNW)
+            {
+                this.TotalNW = TotalNW;
+                ReadModel.TotalNW = TotalNW;
+            }
+        }
+
+        public void SetTotalGW(int TotalGW)
+        {
+            if (this.TotalGW != TotalGW)
+            {
+                this.TotalGW = TotalGW;
+                ReadModel.TotalGW = TotalGW;
+            }
+        }
+
         public void Modify()
         {
             MarkModified();

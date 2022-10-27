@@ -18,6 +18,8 @@ namespace Manufactures.Dtos.GarmentSubcon
         public Uom Uom { get;  set; }
         public double CIF { get; private set; }
         public double TotalPrice { get; private set; }
+        public double TotalNW { get; private set; }
+        public double TotalGW { get; private set; }
         public GarmentSubconInvoicePackingListItemDto(SubconInvoicePackingListItem subconInvoicePackingListItem)
         {
             Id = subconInvoicePackingListItem.Identity;
@@ -31,7 +33,8 @@ namespace Manufactures.Dtos.GarmentSubcon
             Uom = new Uom(subconInvoicePackingListItem.UomId.Value, subconInvoicePackingListItem.UomUnit);
             CIF = subconInvoicePackingListItem.CIF;
             TotalPrice = subconInvoicePackingListItem.TotalPrice;
-
+            TotalNW = subconInvoicePackingListItem.TotalNW;
+            TotalGW = subconInvoicePackingListItem.TotalGW;
 
         }
 

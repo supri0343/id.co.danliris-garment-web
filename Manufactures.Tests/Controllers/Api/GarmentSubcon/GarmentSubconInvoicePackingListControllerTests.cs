@@ -76,7 +76,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             Guid SubconInvoicePackingListItemGuid = Guid.NewGuid();
            // SubconInvoicePackingListItem garmentSubconDeliveryLetterOutItem = new SubconInvoicePackingListItem(Guid.NewGuid(), SubconDeliveryLetterOutGuid, 1, new Domain.Shared.ValueObjects.ProductId(1), "code", "name", "remark", "color", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", new Domain.Shared.ValueObjects.UomId(1), "unit", "fabType", new Guid(), "", "", "");
-            SubconInvoicePackingListItem SubconInvoicePackingListItem = new SubconInvoicePackingListItem(Guid.NewGuid(), SubconInvoicePackingListGuid,  "", DateTimeOffset.Now, new Domain.Shared.ValueObjects.ProductId(1), "productCode", "productName", "productRemark", "designColor", 1, new Domain.Shared.ValueObjects.UomId(1), "uomUnit", 1,1);
+            SubconInvoicePackingListItem SubconInvoicePackingListItem = new SubconInvoicePackingListItem(Guid.NewGuid(), SubconInvoicePackingListGuid,  "", DateTimeOffset.Now, new Domain.Shared.ValueObjects.ProductId(1), "productCode", "productName", "productRemark", "designColor", 1, new Domain.Shared.ValueObjects.UomId(1), "uomUnit", 1,1,1,1);
 
             _mockSubconInvoicePackingListItemRepository
                 .Setup(s => s.Query)
@@ -135,7 +135,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Returns(new List<SubconInvoicePackingListItem>()
                 {
                     //new GarmentSubconDeliveryLetterOutItem(Guid.NewGuid(),new Guid(),1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit",new Domain.Shared.ValueObjects.UomId(1),"unit","fabType",new Guid(),"","","")
-                    new SubconInvoicePackingListItem(Guid.NewGuid(), new Guid(), "", DateTimeOffset.Now, new Domain.Shared.ValueObjects.ProductId(1), "productCode", "productName", "productRemark", "designColor", 1, new Domain.Shared.ValueObjects.UomId(1), "uomUnit", 1, 1)
+                    new SubconInvoicePackingListItem(Guid.NewGuid(), new Guid(), "", DateTimeOffset.Now, new Domain.Shared.ValueObjects.ProductId(1), "productCode", "productName", "productRemark", "designColor", 1, new Domain.Shared.ValueObjects.UomId(1), "uomUnit", 1, 1,1,1)
                 });
 
 
@@ -227,7 +227,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Returns(new List<SubconInvoicePackingListItem>()
                 {
                     //new GarmentSubconDeliveryLetterOutItem(Guid.NewGuid(),new Guid(),1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit",new Domain.Shared.ValueObjects.UomId(1),"unit","fabType",new Guid(),"","","")
-                    new SubconInvoicePackingListItem(SubconInvoicePackingListitemGuid, SubconInvoicePackingListGuid, "", DateTimeOffset.Now, new Domain.Shared.ValueObjects.ProductId(1), "productCode", "productName", "productRemark", "designColor", 1, new Domain.Shared.ValueObjects.UomId(1), "uomUnit", 1, 1)
+                    new SubconInvoicePackingListItem(SubconInvoicePackingListitemGuid, SubconInvoicePackingListGuid, "", DateTimeOffset.Now, new Domain.Shared.ValueObjects.ProductId(1), "productCode", "productName", "productRemark", "designColor", 1, new Domain.Shared.ValueObjects.UomId(1), "uomUnit", 1, 1,1,1)
                 });
 
             //_mockSewingInItemRepository
