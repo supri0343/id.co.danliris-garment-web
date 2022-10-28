@@ -21,6 +21,7 @@ namespace Manufactures.Dtos.GarmentSubcon.GarmentSubconCustomsIns
             Remark = garmentSubconCustomsIn.Remark;
             CreatedBy = garmentSubconCustomsIn.AuditTrail.CreatedBy;
             IsUsed = garmentSubconCustomsIn.IsUsed;
+            BuyerStaff = garmentSubconCustomsIn.BuyerStaff;
             Items = new List<GarmentSubconCustomsInItemDto>();
         }
 
@@ -34,6 +35,7 @@ namespace Manufactures.Dtos.GarmentSubcon.GarmentSubconCustomsIns
         public Supplier Supplier { get; set; }
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
+        public string BuyerStaff { get; set; }
         public List<GarmentSubconCustomsInItemDto> Items { get; set; }
     }
 }
