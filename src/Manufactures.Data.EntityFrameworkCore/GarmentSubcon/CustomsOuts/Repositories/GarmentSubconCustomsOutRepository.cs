@@ -28,6 +28,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.CustomsOuts.Reposi
                 "CustomsOutNo",
                 "SupplierName",
                 "SupplierCode",
+                "BuyerStaff",
             };
 
             data = QueryHelper<GarmentSubconCustomsOutReadModel>.Search(data, SearchAttributes, keyword);
