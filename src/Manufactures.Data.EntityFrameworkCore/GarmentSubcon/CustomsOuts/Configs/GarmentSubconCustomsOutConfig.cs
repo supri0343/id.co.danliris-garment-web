@@ -23,6 +23,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.CustomsOuts.Config
             builder.Property(a => a.SupplierName).HasMaxLength(100);
             builder.Property(a => a.SupplierCode).HasMaxLength(25);
             builder.Property(p => p.SubconCategory).HasMaxLength(100);
+            builder.Property(p => p.BuyerStaff).HasMaxLength(100);
             builder.HasIndex(i => i.CustomsOutNo).IsUnique().HasFilter("[Deleted]=(0)");
 
             builder.ApplyAuditTrail();

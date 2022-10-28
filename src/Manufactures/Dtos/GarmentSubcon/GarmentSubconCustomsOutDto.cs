@@ -21,6 +21,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             Remark = garmentSubconCustomsOut.Remark;
             CreatedBy = garmentSubconCustomsOut.AuditTrail.CreatedBy;
             SubconCategory = garmentSubconCustomsOut.SubconCategory;
+            BuyerStaff = garmentSubconCustomsOut.BuyerStaff;
             Items = new List<GarmentSubconCustomsOutItemDto>();
         }
 
@@ -36,6 +37,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public double TotalQty { get; set; }
         public double UsedQty { get; set; }
         public string SubconCategory { get; set; }
+        public string BuyerStaff { get; set; }
         public List<GarmentSubconCustomsOutItemDto> Items { get; set; }
     }
 }

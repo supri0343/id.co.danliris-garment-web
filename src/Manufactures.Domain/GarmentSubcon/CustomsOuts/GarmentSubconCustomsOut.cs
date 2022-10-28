@@ -22,8 +22,9 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
         public string SupplierName { get; private set; }
         public string Remark { get; private set; }
         public string SubconCategory { get; private set; }
+        public string BuyerStaff { get; private set; }
 
-        public GarmentSubconCustomsOut(Guid identity, string customsOutNo, DateTimeOffset customsOutDate, string customsOutType, string subconType, Guid subconContractId, string subconContractNo, SupplierId supplierId, string supplierCode, string supplierName, string remark, string subconCategory) : base(identity)
+        public GarmentSubconCustomsOut(Guid identity, string customsOutNo, DateTimeOffset customsOutDate, string customsOutType, string subconType, Guid subconContractId, string subconContractNo, SupplierId supplierId, string supplierCode, string supplierName, string remark, string subconCategory, string buyerStaff) : base(identity)
         {
             Identity = identity;
             CustomsOutNo = customsOutNo;
@@ -37,6 +38,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
             SupplierName = supplierName;
             Remark = remark;
             SubconCategory = subconCategory;
+            BuyerStaff = buyerStaff;
 
             ReadModel = new GarmentSubconCustomsOutReadModel(Identity)
             {
@@ -51,6 +53,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
                 SupplierName = SupplierName,
                 Remark = Remark,
                 SubconCategory = SubconCategory,
+                BuyerStaff = BuyerStaff,
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconCustomsOutPlaced(Identity));
@@ -69,6 +72,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
             SupplierCode = readModel.SupplierCode;
             Remark = readModel.Remark;
             SubconCategory = readModel.SubconCategory;
+            BuyerStaff = readModel.BuyerStaff;
         }
 
         public void Modify()
