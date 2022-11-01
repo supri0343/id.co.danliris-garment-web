@@ -41,7 +41,8 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
                 request.ContractNo,
                 request.NW,
                 request.GW,
-                request.Remark
+                request.Remark,
+                request.BuyerStaff
                 );
 
             foreach(var item in request.Items)

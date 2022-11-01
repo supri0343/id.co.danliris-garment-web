@@ -18,6 +18,8 @@ namespace Manufactures.Dtos.GarmentSubcon
         public double GW { get; internal set; }
         public string Remark { get; internal set; }
         public double CIF { get; internal set; }
+        public string BuyerStaff { get; internal set; }
+
         public List<string> DLNos { get; set; }
         public List<GarmentSubconInvoicePackingListItemDto> Items { get; set; }
         public GarmentSubconInvoicePackingListDto(SubconInvoicePackingList subconInvoicePackingList)
@@ -31,6 +33,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             NW = subconInvoicePackingList.NW;
             GW = subconInvoicePackingList.GW;
             Remark = subconInvoicePackingList.Remark;
+            BuyerStaff = subconInvoicePackingList.BuyerStaff;
             Items = new List<GarmentSubconInvoicePackingListItemDto>();
         }
     }

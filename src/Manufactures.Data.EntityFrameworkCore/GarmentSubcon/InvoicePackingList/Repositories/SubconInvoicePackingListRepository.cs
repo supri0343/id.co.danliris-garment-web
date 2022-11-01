@@ -27,6 +27,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.InvoicePackingList
                 "SupplierName",
                 "Remark",
                 "BCType",
+                "BuyerStaff",
             };
 
             data = QueryHelper<SubconInvoicePackingListReadModel>.Search(data, SearchAttributes, keyword);
