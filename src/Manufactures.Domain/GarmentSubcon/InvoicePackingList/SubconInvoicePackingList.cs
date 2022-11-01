@@ -21,6 +21,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
         public double NW { get; private set; }
         public double GW { get; private set; }
         public string Remark { get; private set; }
+        public string BuyerStaff { get; set; }
 
         public SubconInvoicePackingList(SubconInvoicePackingListReadModel readModel):base(readModel)
         {
@@ -35,9 +36,10 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
             NW = readModel.NW;
             GW = readModel.GW;
             Remark = readModel.Remark;
+            BuyerStaff = readModel.BuyerStaff;
         }
 
-        public SubconInvoicePackingList(Guid identity, string invoiceNo,string bcType, DateTimeOffset date, SupplierId supplierId, string supplierCode, string supplierName, string supplierAddress, string contractNo, double nw,double gw, string keterangan) : base(identity)
+        public SubconInvoicePackingList(Guid identity, string invoiceNo,string bcType, DateTimeOffset date, SupplierId supplierId, string supplierCode, string supplierName, string supplierAddress, string contractNo, double nw,double gw, string keterangan, string buyerStaff) : base(identity)
         {
             Identity = Identity;
             InvoiceNo = invoiceNo;
@@ -51,6 +53,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
             NW = nw;
             GW = gw;
             Remark= keterangan;
+            BuyerStaff = buyerStaff;
 
             ReadModel = new SubconInvoicePackingListReadModel(Identity)
             {
@@ -65,6 +68,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
                 NW = NW,
                 GW = GW,
                 Remark = Remark,
+                BuyerStaff = BuyerStaff,
             };
 
             ReadModel.AddDomainEvent(new OnSubconPackingListPlaced(Identity));

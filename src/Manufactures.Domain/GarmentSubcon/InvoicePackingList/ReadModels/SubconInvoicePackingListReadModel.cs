@@ -22,6 +22,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.ReadModels
         public double NW { get; internal set; }
         public double GW { get; internal set; }
         public string Remark { get; internal set; }
+        public string BuyerStaff { get; internal set; }
         public virtual List<SubconInvoicePackingListItemReadModel> SubconInvoicePackingListItem { get; internal set; }
 
     }
