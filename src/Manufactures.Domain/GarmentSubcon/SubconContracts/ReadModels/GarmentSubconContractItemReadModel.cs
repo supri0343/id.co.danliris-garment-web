@@ -18,6 +18,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels
         public string ProductCode { get; internal set; }
         public string ProductName { get; internal set; }
         public double CIFItem { get; internal set; }
+        public double NettWeight { get; internal set; }
+        public double GrossWeight { get; internal set; }
 
         public virtual GarmentSubconContractReadModel GarmentSubconContract { get; internal set; }
     }
