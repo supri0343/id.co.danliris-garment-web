@@ -81,6 +81,12 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
                 .GreaterThan(0)
                 .WithMessage("Jumlah harus lebih dari '0'.");
 
+            RuleFor(r => r.NettWeight)
+                .GreaterThan(0).When(a=>a.ContractType=="SUBCON GARMENT")
+                .WithMessage("NW harus lebih dari '0'.");
+            RuleFor(r => r.GrossWeight)
+                .GreaterThan(0).When(a => a.ContractType == "SUBCON GARMENT")
+                .WithMessage("GW harus lebih dari '0'.");
         }
     }
 }

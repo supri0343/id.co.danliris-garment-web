@@ -41,6 +41,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
                 {
                     subconItem.SetCIFItem(item.CIFItem);
                     subconItem.SetQuantity(item.Quantity);
+                    subconItem.SetGrossWeight(item.GrossWeight);
+                    subconItem.SetNettWeight(item.NettWeight);
                     subconItem.Modify();
                 }
                 await _garmentSubconContractItemRepository.Update(subconItem);
@@ -58,7 +60,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
                         item.Quantity,
                         new UomId(item.Uom.Id),
                         item.Uom.Unit,
-                        item.CIFItem
+                        item.CIFItem,
+                        item.NettWeight,
+                        item.GrossWeight
                     );
                     
                     await _garmentSubconContractItemRepository.Update(garmentSubconContractItem);
