@@ -16,6 +16,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.ValueObjects
 
         public Uom Uom { get; set; }
         public double CIFItem { get; set; }
+        public double NettWeight { get; set; }
+        public double GrossWeight { get; set; }
+        public string ContractType { get; set; }
 
         public GarmentSubconContractItemValueObject()
         {

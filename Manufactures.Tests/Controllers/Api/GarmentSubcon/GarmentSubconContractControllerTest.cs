@@ -106,7 +106,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractItemReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconContractItem>()
                 {
-                    new GarmentSubconContractItem(Guid.NewGuid(),new Guid(),new Domain.Shared.ValueObjects.ProductId(1),"code","name",1,new Domain.Shared.ValueObjects.UomId(1),"unit", 1)
+                    new GarmentSubconContractItem(Guid.NewGuid(),new Guid(),new Domain.Shared.ValueObjects.ProductId(1),"code","name",1,new Domain.Shared.ValueObjects.UomId(1),"unit", 1,1,1)
                 });
 
             // Act
@@ -217,7 +217,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 });
 
             Guid SubconDeliveryLetterOutItemGuid = Guid.NewGuid();
-            GarmentSubconContractItem garmentSubconContractItem = new GarmentSubconContractItem(Guid.NewGuid(), new Guid(), new Domain.Shared.ValueObjects.ProductId(1), "code", "name", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", 1);
+            GarmentSubconContractItem garmentSubconContractItem = new GarmentSubconContractItem(Guid.NewGuid(), new Guid(), new Domain.Shared.ValueObjects.ProductId(1), "code", "name", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", 1, 1, 1);
 
             _mockGarmentSubconContractItemRepository
                 .Setup(s => s.Query)
@@ -229,7 +229,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconContractItemReadModel>>()))
                 .Returns(new List<GarmentSubconContractItem>()
                 {
-                    new GarmentSubconContractItem(Guid.NewGuid(), new Guid(), new Domain.Shared.ValueObjects.ProductId(1), "code", "name", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", 1)
+                    new GarmentSubconContractItem(Guid.NewGuid(), new Guid(), new Domain.Shared.ValueObjects.ProductId(1), "code", "name", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", 1,1,1)
         });
             var orderData = new
             {

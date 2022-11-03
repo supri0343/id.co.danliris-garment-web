@@ -16,6 +16,8 @@ namespace Manufactures.Dtos.GarmentSubcon
             Quantity = garmentSubconContractItem.Quantity;
             Uom = new Uom(garmentSubconContractItem.UomId.Value, garmentSubconContractItem.UomUnit);
             CIFItem = garmentSubconContractItem.CIFItem;
+            NettWeight = garmentSubconContractItem.NettWeight;
+            GrossWeight = garmentSubconContractItem.GrossWeight;
 
         }
 
@@ -27,6 +29,8 @@ namespace Manufactures.Dtos.GarmentSubcon
 
         public Uom Uom { get; set; }
         public double CIFItem { get; set; }
+        public double NettWeight { get; set; }
+        public double GrossWeight { get; set; }
     }
 }
 

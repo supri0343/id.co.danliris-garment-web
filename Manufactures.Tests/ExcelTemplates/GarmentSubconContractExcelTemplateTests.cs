@@ -31,7 +31,7 @@ namespace Manufactures.Tests.ExcelTemplates
             var subconContract = new GarmentSubconContract(id, "SUBCON GARMENT", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false,  "", new UomId(1), "", "", DateTimeOffset.Now, 0/*,""*/,1,1);
 
             GarmentSubconContractExcelDto dto = new GarmentSubconContractExcelDto(subconContract);
-            var subconContractItem = new GarmentSubconContractItemExcelDto(new GarmentSubconContractItem(id, id, new Domain.Shared.ValueObjects.ProductId(1), "code", "FABRIC", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", 1));
+            var subconContractItem = new GarmentSubconContractItemExcelDto(new GarmentSubconContractItem(id, id, new Domain.Shared.ValueObjects.ProductId(1), "code", "FABRIC", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", 1, 1, 1));
             
             var items = new List<GarmentSubconContractItemExcelDto>()
             {
@@ -65,7 +65,7 @@ namespace Manufactures.Tests.ExcelTemplates
             var subconContract = new GarmentSubconContract(id, "SUBCON GARMENT", "", "", new SupplierId(1), "", "", "", "", "", 1, DateTimeOffset.Now, DateTimeOffset.Now, false, "", new UomId(1), "", "", DateTimeOffset.Now, 0/*,""*/,1,1);
 
             GarmentSubconContractExcelDto dto = new GarmentSubconContractExcelDto(subconContract);
-            var subconContractItem = new GarmentSubconContractItemExcelDto(new GarmentSubconContractItem(id, id, new Domain.Shared.ValueObjects.ProductId(1), "code", "BUTTON", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", 1));
+            var subconContractItem = new GarmentSubconContractItemExcelDto(new GarmentSubconContractItem(id, id, new Domain.Shared.ValueObjects.ProductId(1), "code", "BUTTON", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", 1, 1, 1));
 
             var items = new List<GarmentSubconContractItemExcelDto>()
             {
