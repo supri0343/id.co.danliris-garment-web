@@ -59,6 +59,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                         else
                         {
                             subconDetail.SetQuantity(detail.Quantity);
+                            subconDetail.SetUomUnit(detail.Uom.Unit);
                             subconDetail.Modify();
                         }
                         await _garmentServiceSubconSewingDetailRepository.Update(subconDetail);
