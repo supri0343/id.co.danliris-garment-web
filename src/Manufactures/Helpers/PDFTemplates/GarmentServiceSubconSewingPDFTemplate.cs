@@ -14,7 +14,7 @@ namespace Manufactures.Helpers.PDFTemplates
     {
         public static MemoryStream Generate(GarmentServiceSubconSewingDto garmentSubconSewing)
         {
-            Document document = new Document(PageSize.A5.Rotate(), 40, 40, 130, 40);
+            Document document = new Document(PageSize.A5.Rotate(), 40, 40, 100, 40);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
             writer.PageEvent = new GarmentServiceSubconSewingPDFHeader(garmentSubconSewing);
