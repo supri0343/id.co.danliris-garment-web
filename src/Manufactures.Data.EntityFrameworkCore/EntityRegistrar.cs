@@ -49,6 +49,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentSubconCustomsIn
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLetterOuts.Cofigs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubconCuttingOuts.Configs;
 using Microsoft.EntityFrameworkCore;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconReprocess.Config;
 
 namespace Manufactures.Data.EntityFrameworkCore
 {
@@ -167,6 +168,10 @@ namespace Manufactures.Data.EntityFrameworkCore
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconFabricWashConfig());
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconFabricWashItemConfig());
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconFabricWashDetailConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentSubconReprocessConfig());
+            modelBuilder.ApplyConfiguration(new GarmentSubconReprocessItemConfig());
+            modelBuilder.ApplyConfiguration(new GarmentSubconReprocessDetailConfig());
 
             //GARMENT SAMPLE
             modelBuilder.ApplyConfiguration(new GarmentSampleRequestConfig());

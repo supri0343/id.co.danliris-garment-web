@@ -14,6 +14,7 @@ namespace Manufactures.Dtos.GarmentSubcon
            // Unit = new UnitDepartment(garmentServiceSubconSewingList.UnitId.Value, garmentServiceSubconSewingList.UnitCode, garmentServiceSubconSewingList.UnitName);
             ServiceSubconSewingDate = garmentServiceSubconSewingList.ServiceSubconSewingDate;
             CreatedBy = garmentServiceSubconSewingList.AuditTrail.CreatedBy;
+            Buyer = new Buyer(garmentServiceSubconSewingList.BuyerId.Value, garmentServiceSubconSewingList.BuyerCode, garmentServiceSubconSewingList.BuyerName);
             IsUsed = garmentServiceSubconSewingList.IsUsed;
             Items = new List<GarmentServiceSubconSewingItemDto>();
         }
@@ -26,6 +27,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public double TotalQuantity { get; set; }
         public double TotalRemainingQuantity { get; set; }
         public bool IsUsed { get; set; }
+        public Buyer Buyer { get; set; }
         public List<GarmentServiceSubconSewingItemDto> Items { get; set; }
     }
 }

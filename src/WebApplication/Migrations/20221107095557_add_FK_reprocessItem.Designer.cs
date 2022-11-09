@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20221107095557_add_FK_reprocessItem")]
+    partial class add_FK_reprocessItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -6038,8 +6040,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<Guid>("Identity")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BuyerStaff");
-
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(32);
@@ -6099,6 +6099,142 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasFilter("[Deleted]=(0)");
 
                     b.ToTable("GarmentSubconCustomsOuts");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.InvoicePackingList.ReadModels.SubconInvoicePackingListItemReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("CIF");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<DateTimeOffset>("DLDate");
+
+                    b.Property<string>("DLNo")
+                        .HasMaxLength(50);
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<string>("DesignColor")
+                        .HasMaxLength(255);
+
+                    b.Property<Guid>("InvoicePackingListId");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<string>("ProductCode")
+                        .HasMaxLength(25);
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<string>("ProductName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ProductRemark")
+                        .HasMaxLength(255);
+
+                    b.Property<double>("Quantity");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<double>("TotalGW");
+
+                    b.Property<double>("TotalNW");
+
+                    b.Property<double>("TotalPrice");
+
+                    b.Property<int>("UomId");
+
+                    b.Property<string>("UomUnit")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("InvoicePackingListId");
+
+                    b.ToTable("SubconInvoicePackingListItems");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.InvoicePackingList.ReadModels.SubconInvoicePackingListReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("BCType")
+                        .HasMaxLength(25);
+
+                    b.Property<string>("BuyerStaff");
+
+                    b.Property<string>("ContractNo")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<DateTimeOffset>("Date");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<double>("GW");
+
+                    b.Property<string>("InvoiceNo")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(32);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<double>("NW");
+
+                    b.Property<string>("Remark");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("SupplierAddress")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("SupplierCode")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("SupplierId");
+
+                    b.Property<string>("SupplierName")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Identity");
+
+                    b.HasIndex("InvoiceNo")
+                        .IsUnique()
+                        .HasFilter("[Deleted]=(0)");
+
+                    b.ToTable("SubconInvoicePackingList");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels.GarmentServiceSubconCuttingDetailReadModel", b =>
@@ -7348,8 +7484,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<double>("Quantity");
 
-                    b.Property<string>("Remark");
-
                     b.Property<Guid>("ReprocessItemId");
 
                     b.Property<double>("ReprocessQuantity");
@@ -7367,14 +7501,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<int>("SizeId");
 
                     b.Property<string>("SizeName");
-
-                    b.Property<string>("UnitCode")
-                        .HasMaxLength(20);
-
-                    b.Property<int>("UnitId");
-
-                    b.Property<string>("UnitName")
-                        .HasMaxLength(25);
 
                     b.Property<int>("UomId");
 
@@ -8016,6 +8142,14 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasOne("Manufactures.Domain.GarmentSubcon.CustomsOuts.ReadModels.GarmentSubconCustomsOutReadModel", "GarmentSubconCustomsOut")
                         .WithMany("GarmentSubconCustomsOutItem")
                         .HasForeignKey("SubconCustomsOutId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.InvoicePackingList.ReadModels.SubconInvoicePackingListItemReadModel", b =>
+                {
+                    b.HasOne("Manufactures.Domain.GarmentSubcon.InvoicePackingList.ReadModels.SubconInvoicePackingListReadModel", "SubconInvoicePacking")
+                        .WithMany("SubconInvoicePackingListItem")
+                        .HasForeignKey("InvoicePackingListId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
