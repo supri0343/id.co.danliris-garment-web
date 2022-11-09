@@ -201,7 +201,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             var count = query.Count();
 
             //var garmentServiceSubconCuttingDto = _garmentServiceSubconCuttingRepository.Find(query).Select(o => new GarmentServiceSubconCuttingDto(o)).ToArray();
-            var garmentServiceSubconCuttingItemDto = _garmentServiceSubconCuttingItemRepository.Find(_garmentServiceSubconCuttingItemRepository.Query).Select(o => new GarmentServiceSubconCuttingItemDto(o)).ToArray();
+            var garmentServiceSubconCuttingItemDto = _garmentServiceSubconCuttingItemRepository.Find(query).Select(o => new GarmentServiceSubconCuttingItemDto(o)).ToArray();
             var garmentServiceSubconCuttingDetailDto = _garmentServiceSubconCuttingDetailRepository.Find(_garmentServiceSubconCuttingDetailRepository.Query).Select(o => new GarmentServiceSubconCuttingDetailDto(o)).ToList();
             var garmentServiceSubconCuttingSizeDto = _garmentServiceSubconCuttingSizeRepository.Find(_garmentServiceSubconCuttingSizeRepository.Query).Select(o => new GarmentServiceSubconCuttingSizeDto(o)).ToList();
 
