@@ -3,6 +3,7 @@ using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Domain.GarmentSubcon.SubconReprocess.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconReprocess.Repositories;
 using Manufactures.Dtos.GarmentSubcon.SubconReprocess;
+using Manufactures.Helpers.PDFTemplates.GarmentSubcon.SubconReprocess;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -192,6 +193,31 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 size,
                 count
             });
+        }
+
+        [HttpGet("get-pdf/{id}")]
+        public async Task<IActionResult> GetPdf(string id)
+        {
+            Guid guid = Guid.Parse(id);
+
+            VerifyUser();
+
+            GarmentSubconReprocessDto garmentSubconReprocessDto = _garmentSubconReprocessRepository.Find(o => o.Identity == guid).Select(SubconReprocess => new GarmentSubconReprocessDto(SubconReprocess)
+            {
+                Items = _garmentSubconReprocessItemRepository.Find(o => o.ReprocessId == SubconReprocess.Identity).Select(reprocessItem => new GarmentSubconReprocessItemDto(reprocessItem)
+                {
+                    Details = _garmentSubconReprocessDetailRepository.Find(o => o.ReprocessItemId == reprocessItem.Identity).Select(detail => new GarmentSubconReprocessDetailDto(detail)
+                    { }).ToList()
+                }).ToList()
+
+            }
+            ).FirstOrDefault();
+            var stream = GarmentSubconReprocessPDFTemplate.Generate(garmentSubconReprocessDto);
+
+            return new FileStreamResult(stream, "application/pdf")
+            {
+                FileDownloadName = $"{garmentSubconReprocessDto.ReprocessNo}.pdf"
+            };
         }
     }
 }
