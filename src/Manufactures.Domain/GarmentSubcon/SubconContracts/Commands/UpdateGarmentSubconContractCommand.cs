@@ -56,6 +56,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.Commands
             RuleFor(r => r.FinishedGoodType).NotNull();
             RuleFor(r => r.DueDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Jatuh Tempo Tidak Boleh Kosong");
             RuleFor(r => r.ContractDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Kontrak Tidak Boleh Kosong");
+            RuleForEach(r => r.Items).SetValidator(new GarmentSubconContractItemValueObjectValidator()).When(r => r.Items != null && (r.SubconCategory == "SUBCON CUTTING SEWING" || r.SubconCategory == "SUBCON SEWING" || r.SubconCategory == "SUBCON JASA KOMPONEN"));
         }
     }
 }

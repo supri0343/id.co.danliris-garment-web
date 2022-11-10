@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20221107034503_initial_SubconReprocesses")]
+    partial class initial_SubconReprocesses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -7482,8 +7484,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<double>("Quantity");
 
-                    b.Property<string>("Remark");
-
                     b.Property<Guid>("ReprocessItemId");
 
                     b.Property<double>("ReprocessQuantity");
@@ -7501,14 +7501,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<int>("SizeId");
 
                     b.Property<string>("SizeName");
-
-                    b.Property<string>("UnitCode")
-                        .HasMaxLength(20);
-
-                    b.Property<int>("UnitId");
-
-                    b.Property<string>("UnitName")
-                        .HasMaxLength(25);
 
                     b.Property<int>("UomId");
 
@@ -7529,14 +7521,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("Article")
                         .HasMaxLength(50);
-
-                    b.Property<string>("BuyerCode")
-                        .HasMaxLength(25);
-
-                    b.Property<int>("BuyerId");
-
-                    b.Property<string>("BuyerName")
-                        .HasMaxLength(500);
 
                     b.Property<string>("ComodityCode")
                         .HasMaxLength(255);
@@ -7589,7 +7573,7 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.HasKey("Identity");
 
-                    b.HasIndex("ReprocessId");
+                    b.HasIndex("ServiceSubconCuttingId");
 
                     b.ToTable("GarmentSubconReprocessItems");
                 });
@@ -8277,7 +8261,7 @@ namespace DanLiris.Admin.Web.Migrations
                 {
                     b.HasOne("Manufactures.Domain.GarmentSubcon.SubconReprocess.ReadModels.GarmentSubconReprocessReadModel", "GarmentSubconReprocess")
                         .WithMany("GarmentSubconReprocessItem")
-                        .HasForeignKey("ReprocessId")
+                        .HasForeignKey("ServiceSubconCuttingId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

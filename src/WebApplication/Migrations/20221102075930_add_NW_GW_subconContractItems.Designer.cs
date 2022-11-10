@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20221102075930_add_NW_GW_subconContractItems")]
+    partial class add_NW_GW_subconContractItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -7451,193 +7453,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.ToTable("GarmentSubconDeliveryLetterOuts");
                 });
 
-            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.SubconReprocess.ReadModels.GarmentSubconReprocessDetailReadModel", b =>
-                {
-                    b.Property<Guid>("Identity")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Color")
-                        .HasMaxLength(2000);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("DesignColor")
-                        .HasMaxLength(2000);
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<double>("Quantity");
-
-                    b.Property<string>("Remark");
-
-                    b.Property<Guid>("ReprocessItemId");
-
-                    b.Property<double>("ReprocessQuantity");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<Guid>("ServiceSubconCuttingDetailId");
-
-                    b.Property<Guid>("ServiceSubconCuttingSizeId");
-
-                    b.Property<Guid>("ServiceSubconSewingDetailId");
-
-                    b.Property<int>("SizeId");
-
-                    b.Property<string>("SizeName");
-
-                    b.Property<string>("UnitCode")
-                        .HasMaxLength(20);
-
-                    b.Property<int>("UnitId");
-
-                    b.Property<string>("UnitName")
-                        .HasMaxLength(25);
-
-                    b.Property<int>("UomId");
-
-                    b.Property<string>("UomUnit")
-                        .HasMaxLength(20);
-
-                    b.HasKey("Identity");
-
-                    b.HasIndex("ReprocessItemId");
-
-                    b.ToTable("GarmentSubconReprocessDetails");
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.SubconReprocess.ReadModels.GarmentSubconReprocessItemReadModel", b =>
-                {
-                    b.Property<Guid>("Identity")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Article")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("BuyerCode")
-                        .HasMaxLength(25);
-
-                    b.Property<int>("BuyerId");
-
-                    b.Property<string>("BuyerName")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("ComodityCode")
-                        .HasMaxLength(255);
-
-                    b.Property<int>("ComodityId");
-
-                    b.Property<string>("ComodityName")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<string>("RONo")
-                        .HasMaxLength(20);
-
-                    b.Property<Guid>("ReprocessId");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<Guid>("ServiceSubconCuttingId");
-
-                    b.Property<Guid>("ServiceSubconCuttingItemId");
-
-                    b.Property<string>("ServiceSubconCuttingNo")
-                        .HasMaxLength(25);
-
-                    b.Property<Guid>("ServiceSubconSewingId");
-
-                    b.Property<Guid>("ServiceSubconSewingItemId");
-
-                    b.Property<string>("ServiceSubconSewingNo")
-                        .HasMaxLength(25);
-
-                    b.HasKey("Identity");
-
-                    b.HasIndex("ReprocessId");
-
-                    b.ToTable("GarmentSubconReprocessItems");
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.SubconReprocess.ReadModels.GarmentSubconReprocessReadModel", b =>
-                {
-                    b.Property<Guid>("Identity")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset>("CreatedDate");
-
-                    b.Property<DateTimeOffset>("Date");
-
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.Property<string>("ReprocessNo")
-                        .HasMaxLength(20);
-
-                    b.Property<string>("ReprocessType")
-                        .HasMaxLength(50);
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.HasKey("Identity");
-
-                    b.HasIndex("ReprocessNo")
-                        .IsUnique()
-                        .HasFilter("[Deleted]=(0)");
-
-                    b.ToTable("GarmentSubconReprocesses");
-                });
-
             modelBuilder.Entity("Manufactures.Domain.GarmentSubconCuttingOuts.ReadModels.GarmentSubconCuttingReadModel", b =>
                 {
                     b.Property<Guid>("Identity")
@@ -8262,22 +8077,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.HasOne("Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels.GarmentSubconDeliveryLetterOutReadModel", "GarmentSubconDeliveryLetterOut")
                         .WithMany("GarmentSubconDeliveryLetterOutItem")
                         .HasForeignKey("SubconDeliveryLetterOutId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.SubconReprocess.ReadModels.GarmentSubconReprocessDetailReadModel", b =>
-                {
-                    b.HasOne("Manufactures.Domain.GarmentSubcon.SubconReprocess.ReadModels.GarmentSubconReprocessItemReadModel", "GarmentSubconReprocessItem")
-                        .WithMany("GarmentSubconReprocessDetail")
-                        .HasForeignKey("ReprocessItemId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Manufactures.Domain.GarmentSubcon.SubconReprocess.ReadModels.GarmentSubconReprocessItemReadModel", b =>
-                {
-                    b.HasOne("Manufactures.Domain.GarmentSubcon.SubconReprocess.ReadModels.GarmentSubconReprocessReadModel", "GarmentSubconReprocess")
-                        .WithMany("GarmentSubconReprocessItem")
-                        .HasForeignKey("ReprocessId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

@@ -22,8 +22,10 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
         public double CIFItem { get; private set; }
+        public double NettWeight { get; private set; }
+        public double GrossWeight { get; private set; }
 
-        public GarmentSubconContractItem(Guid identity, Guid subconContractId, ProductId productId, string productCode, string productName, double quantity, UomId uomId, string uomUnit, double cifItem) : base(identity)
+        public GarmentSubconContractItem(Guid identity, Guid subconContractId, ProductId productId, string productCode, string productName, double quantity, UomId uomId, string uomUnit, double cifItem, double nettWeight, double grossWeight) : base(identity)
         {
             Identity = identity;
             SubconContractId = subconContractId;
@@ -34,6 +36,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             UomId = uomId;
             UomUnit = uomUnit;
             CIFItem = cifItem;
+            NettWeight = nettWeight;
+            GrossWeight = grossWeight;
 
             ReadModel = new GarmentSubconContractItemReadModel(Identity)
             {
@@ -45,6 +49,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
                 ProductCode = ProductCode,
                 ProductName = ProductName,
                 CIFItem = CIFItem,
+                NettWeight = NettWeight,
+                GrossWeight = GrossWeight
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconContractPlaced(Identity));
@@ -60,6 +66,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             UomUnit = readModel.UomUnit;
             UomId = new UomId(readModel.UomId);
             CIFItem = readModel.CIFItem;
+            NettWeight = readModel.NettWeight;
+            GrossWeight = readModel.GrossWeight;
         }
         public void SetQuantity(double Quantity)
         {
@@ -75,6 +83,23 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             {
                 this.CIFItem = CIFItem;
                 ReadModel.CIFItem = CIFItem;
+            }
+        }
+        public void SetNettWeight(double NettWeight)
+        {
+            if (this.NettWeight != NettWeight)
+            {
+                this.NettWeight = NettWeight;
+                ReadModel.NettWeight = NettWeight;
+            }
+        }
+
+        public void SetGrossWeight(double GrossWeight)
+        {
+            if (this.GrossWeight != GrossWeight)
+            {
+                this.GrossWeight = GrossWeight;
+                ReadModel.GrossWeight = GrossWeight;
             }
         }
         public void Modify()
