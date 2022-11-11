@@ -105,6 +105,24 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconSewings
             }
         }
 
+        public void SetUomId(UomId uomId)
+        {
+            if (UomId != uomId)
+            {
+                UomId = uomId;
+                ReadModel.UomId = uomId.Value;
+            }
+        }
+
+        public void SetUomUnit(string uomUnit)
+        {
+            if (UomUnit != uomUnit)
+            {
+                UomUnit = uomUnit;
+                ReadModel.UomUnit = uomUnit;
+            }
+        }
+
         public void SetRemark(string remark)
         {
             if (this.Remark != remark)
