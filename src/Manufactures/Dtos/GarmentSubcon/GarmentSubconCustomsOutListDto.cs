@@ -19,6 +19,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             SubconContractNo = garmentSubconCustomsOut.SubconContractNo;
             Supplier = new Supplier(garmentSubconCustomsOut.SupplierId.Value, garmentSubconCustomsOut.SupplierCode, garmentSubconCustomsOut.SupplierName);
             Remark = garmentSubconCustomsOut.Remark;
+            BuyerStaff = garmentSubconCustomsOut.BuyerStaff;
             CreatedBy = garmentSubconCustomsOut.AuditTrail.CreatedBy;
         }
         public Guid Id { get; set; }
@@ -30,5 +31,6 @@ namespace Manufactures.Dtos.GarmentSubcon
         public string SubconContractNo { get; set; }
         public Supplier Supplier { get; set; }
         public string Remark { get; set; }
+        public string BuyerStaff { get; set; }
     }
 }

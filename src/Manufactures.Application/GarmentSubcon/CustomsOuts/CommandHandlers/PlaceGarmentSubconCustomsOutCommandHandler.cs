@@ -46,7 +46,8 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
                 request.Supplier.Code,
                 request.Supplier.Name,
                 request.Remark,
-                request.SubconCategory
+                request.SubconCategory,
+                request.BuyerStaff
             );
 
             foreach (var item in request.Items)
