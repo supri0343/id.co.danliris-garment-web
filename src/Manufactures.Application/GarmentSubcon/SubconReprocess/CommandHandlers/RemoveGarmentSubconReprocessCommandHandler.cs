@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Manufactures.Application.GarmentSubcon.SubconReprocess.CommandHandlers
 {
-    class RemoveGarmentSubconReprocessCommandHandler: ICommandHandler<RemoveGarmentSubconReprocessCommand, GarmentSubconReprocess>
+    public class RemoveGarmentSubconReprocessCommandHandler: ICommandHandler<RemoveGarmentSubconReprocessCommand, GarmentSubconReprocess>
     {
         private readonly IStorage _storage;
         private readonly IGarmentSubconReprocessRepository _garmentSubconReprocessRepository;
