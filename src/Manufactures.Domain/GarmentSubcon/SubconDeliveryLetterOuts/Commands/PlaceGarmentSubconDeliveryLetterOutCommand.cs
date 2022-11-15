@@ -62,6 +62,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
             RuleFor(r => r.Quantity)
                 .GreaterThan(0)
                 .WithMessage("'Jumlah' harus lebih dari '0'.");
+            RuleFor(r => r.Quantity)
+               .LessThanOrEqualTo(r => r.ContractQuantity)
+               .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.ContractQuantity}'.");
         }
     }
 
@@ -73,6 +76,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
             RuleFor(r => r.Quantity)
                 .GreaterThan(0)
                 .WithMessage("'Jumlah' harus lebih dari '0'.");
+            //RuleFor(r => r.Quantity)
+            //   .LessThanOrEqualTo(r => r.ContractQuantity)
+            //   .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.ContractQuantity}'.");
 
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.POSerialNumber).NotNull();
@@ -89,6 +95,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
             RuleFor(r => r.Quantity)
                 .GreaterThan(0)
                 .WithMessage("'Jumlah' harus lebih dari '0'.");
+            //RuleFor(r => r.Quantity)
+            //   .LessThanOrEqualTo(r => r.ContractQuantity)
+            //   .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.ContractQuantity}'.");
 
             RuleFor(r => r.SubconId).NotNull();
             RuleFor(r => r.SubconNo).NotNull();
