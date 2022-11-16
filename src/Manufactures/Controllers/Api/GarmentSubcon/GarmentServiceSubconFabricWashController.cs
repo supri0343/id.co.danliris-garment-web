@@ -134,38 +134,79 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         {
             VerifyUser();
 
-            var query = _garmentServiceSubconFabricWashRepository.Read(page, size, order, keyword, filter);
-            var count = query.Count();
+            var getUENNo = _garmentServiceSubconFabricWashItemRepository.Query.Where(x => keyword.Contains(x.UnitExpenditureNo)).Select(s => new { s.UnitExpenditureNo }).ToList().Count();
 
-            var garmentServiceSubconFabricWashDto = _garmentServiceSubconFabricWashRepository.Find(query).Select(o => new GarmentServiceSubconFabricWashDto(o)).ToArray();
-            var garmentServiceSubconFabricWashItemDto = _garmentServiceSubconFabricWashItemRepository.Find(_garmentServiceSubconFabricWashItemRepository.Query).Select(o => new GarmentServiceSubconFabricWashItemDto(o)).ToList();
-            var garmentServiceSubconFabricWashDetailDto = _garmentServiceSubconFabricWashDetailRepository.Find(_garmentServiceSubconFabricWashDetailRepository.Query).Select(o => new GarmentServiceSubconFabricWashDetailDto(o)).ToList();
-
-            Parallel.ForEach(garmentServiceSubconFabricWashDto, itemDto =>
+            if (getUENNo != 0)
             {
-                var garmentServiceSubconFabricWashItems = garmentServiceSubconFabricWashItemDto.Where(x => x.ServiceSubconFabricWashId == itemDto.Id).OrderBy(x => x.Id).ToList();
+                var query = _garmentServiceSubconFabricWashItemRepository.ReadItem(page, size, order, keyword, filter);
+                var count = query.Count();
 
-                itemDto.Items = garmentServiceSubconFabricWashItems;
-                Parallel.ForEach(itemDto.Items, detailDto =>
+                var garmentServiceSubconFabricWashDto = _garmentServiceSubconFabricWashRepository.Find(_garmentServiceSubconFabricWashRepository.Query).Select(o => new GarmentServiceSubconFabricWashDto(o)).ToArray();
+                var garmentServiceSubconFabricWashItemDto = _garmentServiceSubconFabricWashItemRepository.Find(query).Select(o => new GarmentServiceSubconFabricWashItemDto(o)).ToArray();
+                var garmentServiceSubconFabricWashDetailDto = _garmentServiceSubconFabricWashDetailRepository.Find(_garmentServiceSubconFabricWashDetailRepository.Query).Select(o => new GarmentServiceSubconFabricWashDetailDto(o)).ToList();
+
+                Parallel.ForEach(garmentServiceSubconFabricWashDto, itemDto =>
                 {
-                    var garmentServiceSubconFabricWashDetails = garmentServiceSubconFabricWashDetailDto.Where(x => x.ServiceSubconFabricWashItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
-                    detailDto.Details = garmentServiceSubconFabricWashDetails;
+                    var garmentServiceSubconFabricWashItems = garmentServiceSubconFabricWashItemDto.Where(x => x.ServiceSubconFabricWashId == itemDto.Id).OrderBy(x => x.Id).ToList();
+
+                    itemDto.Items = garmentServiceSubconFabricWashItems;
+                    Parallel.ForEach(itemDto.Items, detailDto =>
+                    {
+                        var garmentServiceSubconFabricWashDetails = garmentServiceSubconFabricWashDetailDto.Where(x => x.ServiceSubconFabricWashItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
+                        detailDto.Details = garmentServiceSubconFabricWashDetails;
+                    });
                 });
-            });
 
-            if (order != "{}")
-            {
-                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-                garmentServiceSubconFabricWashDto = QueryHelper<GarmentServiceSubconFabricWashDto>.Order(garmentServiceSubconFabricWashDto.AsQueryable(), OrderDictionary).ToArray();
+                if (order != "{}")
+                {
+                    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                    garmentServiceSubconFabricWashDto = QueryHelper<GarmentServiceSubconFabricWashDto>.Order(garmentServiceSubconFabricWashDto.AsQueryable(), OrderDictionary).ToArray();
+                }
+
+                await Task.Yield();
+                return Ok(garmentServiceSubconFabricWashDto, info: new
+                {
+                    page,
+                    size,
+                    count
+                });
             }
-
-            await Task.Yield();
-            return Ok(garmentServiceSubconFabricWashDto, info: new
+            else
             {
-                page,
-                size,
-                count
-            });
+                var query = _garmentServiceSubconFabricWashRepository.Read(page, size, order, keyword, filter);
+                var count = query.Count();
+
+                var garmentServiceSubconFabricWashDto = _garmentServiceSubconFabricWashRepository.Find(query).Select(o => new GarmentServiceSubconFabricWashDto(o)).ToArray();
+                var garmentServiceSubconFabricWashItemDto = _garmentServiceSubconFabricWashItemRepository.Find(_garmentServiceSubconFabricWashItemRepository.Query).Select(o => new GarmentServiceSubconFabricWashItemDto(o)).ToList();
+                var garmentServiceSubconFabricWashDetailDto = _garmentServiceSubconFabricWashDetailRepository.Find(_garmentServiceSubconFabricWashDetailRepository.Query).Select(o => new GarmentServiceSubconFabricWashDetailDto(o)).ToList();
+
+                Parallel.ForEach(garmentServiceSubconFabricWashDto, itemDto =>
+                {
+                    var garmentServiceSubconFabricWashItems = garmentServiceSubconFabricWashItemDto.Where(x => x.ServiceSubconFabricWashId == itemDto.Id).OrderBy(x => x.Id).ToList();
+
+                    itemDto.Items = garmentServiceSubconFabricWashItems;
+                    Parallel.ForEach(itemDto.Items, detailDto =>
+                    {
+                        var garmentServiceSubconFabricWashDetails = garmentServiceSubconFabricWashDetailDto.Where(x => x.ServiceSubconFabricWashItemId == detailDto.Id).OrderBy(x => x.Id).ToList();
+                        detailDto.Details = garmentServiceSubconFabricWashDetails;
+                    });
+                });
+
+                if (order != "{}")
+                {
+                    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                    garmentServiceSubconFabricWashDto = QueryHelper<GarmentServiceSubconFabricWashDto>.Order(garmentServiceSubconFabricWashDto.AsQueryable(), OrderDictionary).ToArray();
+                }
+
+                await Task.Yield();
+                return Ok(garmentServiceSubconFabricWashDto, info: new
+                {
+                    page,
+                    size,
+                    count
+                });
+            }
+            
         }
 
         [HttpGet("get-pdf/{id}")]

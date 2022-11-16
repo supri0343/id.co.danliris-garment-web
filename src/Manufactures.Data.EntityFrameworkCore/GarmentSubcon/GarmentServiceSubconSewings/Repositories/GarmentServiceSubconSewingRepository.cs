@@ -20,10 +20,10 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
             data = QueryHelper<GarmentServiceSubconSewingReadModel>.Filter(data, FilterDictionary);
 
+
             List<string> SearchAttributes = new List<string>
             {
                 "ServiceSubconSewingNo",
-                //"UnitCode",
             };
 
             data = QueryHelper<GarmentServiceSubconSewingReadModel>.Search(data, SearchAttributes, keyword);

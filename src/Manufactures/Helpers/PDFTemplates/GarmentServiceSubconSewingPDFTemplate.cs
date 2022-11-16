@@ -14,7 +14,7 @@ namespace Manufactures.Helpers.PDFTemplates
     {
         public static MemoryStream Generate(GarmentServiceSubconSewingDto garmentSubconSewing)
         {
-            Document document = new Document(PageSize.A5.Rotate(), 40, 40, 130, 40);
+            Document document = new Document(PageSize.A5.Rotate(), 40, 40, 100, 40);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
             writer.PageEvent = new GarmentServiceSubconSewingPDFHeader(garmentSubconSewing);
@@ -22,7 +22,8 @@ namespace Manufactures.Helpers.PDFTemplates
 
             PdfPCell cellLeftNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellCenterNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
-            PdfPCell cellCenterTopNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_TOP };
+            PdfPCell cellCenterTopNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_TOP, Padding = 5 };
+            PdfPCell cellCenterBottomNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT, VerticalAlignment = Element.ALIGN_TOP };
             PdfPCell cellRightNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
             PdfPCell cellJustifyNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_JUSTIFIED };
             PdfPCell cellJustifyAllNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_JUSTIFIED_ALL };
@@ -76,7 +77,7 @@ namespace Manufactures.Helpers.PDFTemplates
             {
                 foreach (var detail in item.Details)
                 {
-                    var data = itemData.FirstOrDefault(x =>x.RoNo == item.RONo&& x.DesignColor == detail.DesignColor);
+                    var data = itemData.FirstOrDefault(x =>x.RoNo == item.RONo&& x.Color == detail.Color);
 
                     GarmentSubconSewingItemVM garmentSubconSewingItemVM = new GarmentSubconSewingItemVM();
                     garmentSubconSewingItemVM.RoNo = item.RONo;
@@ -106,9 +107,7 @@ namespace Manufactures.Helpers.PDFTemplates
             PdfPTable tableContent = new PdfPTable(8);
             List<float> widths = new List<float>();
             widths.Add(4f);
-            //widths.Add(4f);
             widths.Add(3f);
-
             widths.Add(4f);
             widths.Add(4f);
             widths.Add(3f);
@@ -124,9 +123,6 @@ namespace Manufactures.Helpers.PDFTemplates
             cellCenter.Phrase = new Phrase("RO", bold_font);
             cellCenter.Rowspan = 1;
             tableContent.AddCell(cellCenter);
-            //cellCenter.Phrase = new Phrase("Area", bold_font);
-            //cellCenter.Rowspan = 1;
-            //tableContent.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("Artikel", bold_font);
             cellCenter.Rowspan = 1;
             tableContent.AddCell(cellCenter);
@@ -190,14 +186,9 @@ namespace Manufactures.Helpers.PDFTemplates
             cellCenter.Phrase = new Phrase(grandTotal.ToString(), bold_font);
             cellCenter.Rowspan = 1;
             tableContent.AddCell(cellCenter);
-            cellCenter.Phrase = new Phrase("", normal_font);
+            cellCenter.Phrase = new Phrase(" ", normal_font);
             cellCenter.Rowspan = 1;
-            tableContent.AddCell(cellCenter); 
-            cellCenter.Phrase = new Phrase("", normal_font);
-            cellCenter.Rowspan = 1;
-            tableContent.AddCell(cellCenter);
-            cellCenter.Phrase = new Phrase("", normal_font);
-            cellCenter.Rowspan = 1;
+            cellCenter.Colspan = 3;
             tableContent.AddCell(cellCenter);
 
             PdfPCell cellContent = new PdfPCell(tableContent); // dont remove
@@ -216,10 +207,14 @@ namespace Manufactures.Helpers.PDFTemplates
             tableSignature.AddCell(cellCenterTopNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph("Bag. Sewing\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph($"\nDicetak : {DateTimeOffset.Now.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy / HH:mm:ss", new CultureInfo("id-ID"))}", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
             cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterBottomNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellCenterBottomNoBorder);
+            cellCenterBottomNoBorder.Phrase = new Paragraph($"Dicetak : {DateTimeOffset.Now.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy / HH:mm:ss", new CultureInfo("id-ID"))}", normal_font);
+            tableSignature.AddCell(cellCenterBottomNoBorder);
+            cellCenterBottomNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellCenterBottomNoBorder);
 
             PdfPCell cellSignature = new PdfPCell(tableSignature);
             tableSignature.ExtendLastRow = false;
@@ -357,19 +352,25 @@ namespace Manufactures.Helpers.PDFTemplates
             PdfPCell newTblCellRight = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT, VerticalAlignment = Element.ALIGN_TOP };
             PdfPCell newTblCellMiddle = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT, VerticalAlignment = Element.ALIGN_TOP };
 
-            newTblCellRight.Phrase = new Phrase("PT DAN LIRIS\nSUKOHARJO\n", baseFontNormal);
+            newTblCellRight.Phrase = new Phrase("PT DAN LIRIS", baseFontNormal);
+            pdfTab.AddCell(newTblCellRight);
+            newTblCellRight.Phrase = new Phrase(" ", baseFontNormal);
             pdfTab.AddCell(newTblCellRight);
             newTblCellLeft.Phrase = new Phrase("Tanggal Subcon " + "   :   " + garmentSubconSewing.ServiceSubconSewingDate.ToOffset(new TimeSpan(clientTimeZoneOffset, 0, 0)).ToString("dd MMMM yyyy", new CultureInfo("id-ID")), baseFontNormal);
             pdfTab.AddCell(newTblCellLeft);
-            newTblCellLeft.Phrase = new Phrase("Buyer " + "   :   " + garmentSubconSewing.Buyer.Name, baseFontNormal);
-            pdfTab.AddCell(newTblCellLeft);
-            newTblCellRight.Phrase = new Phrase("BANARAN, GROGOL", baseFontNormal);
+            newTblCellRight.Phrase = new Phrase("BANARAN, GROGOL, SUKOHARJO", baseFontNormal);
+            pdfTab.AddCell(newTblCellRight);
+            newTblCellRight.Phrase = new Phrase(" ", baseFontNormal);
             pdfTab.AddCell(newTblCellRight);
             newTblCellLeft.Phrase = new Phrase("No Subcon " + "            :   " + garmentSubconSewing.ServiceSubconSewingNo, baseFontNormal);
             pdfTab.AddCell(newTblCellLeft);
-            newTblCellRight.Phrase = new Phrase(" ", baseFontNormal);
-            pdfTab.AddCell(newTblCellRight);
-            
+            newTblCellLeft.Phrase = new Phrase(" ", baseFontNormal);
+            pdfTab.AddCell(newTblCellLeft);
+            newTblCellLeft.Phrase = new Phrase(" ", baseFontNormal);
+            pdfTab.AddCell(newTblCellLeft);
+            newTblCellLeft.Phrase = new Phrase("Buyer " + "                    :   " + garmentSubconSewing.Buyer.Name, baseFontNormal);
+            pdfTab.AddCell(newTblCellLeft);
+
 
 
             //         if ( coba1 < viewModel.inDate)
@@ -412,7 +413,7 @@ namespace Manufactures.Helpers.PDFTemplates
             //call WriteSelectedRows of PdfTable. This writes rows from PdfWriter in PdfTable
             //first param is start row. -1 indicates there is no end row and all the rows to be included to write
             //Third and fourth param is x and y position to start writing
-            pdfTab.WriteSelectedRows(0, -1, 40, document.PageSize.Height - document.TopMargin + 70, writer.DirectContent);
+            pdfTab.WriteSelectedRows(0, -1, 40, document.PageSize.Height - document.TopMargin + 65, writer.DirectContent);
 
             //cb.MoveTo(40, document.PageSize.GetBottom(50));
             //cb.LineTo(document.PageSize.Width - 40, document.PageSize.GetBottom(50));
