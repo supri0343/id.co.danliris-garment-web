@@ -108,7 +108,7 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
                 foreach (var report in scrapListViewModel.scrapDtos)
                 {
 
-                    var TransaksiDate = report.TransactionDate.ToString("dd MMM yyyy");
+                    var TransaksiDate = report.TransactionDate.AddHours(7).ToString("dd MMM yyyy");
                     reportDataTable.Rows.Add(index++, report.TransactionNo, TransaksiDate, report.ScrapSourceName, report.Quantity, report.UomUnit);
 
                 }
