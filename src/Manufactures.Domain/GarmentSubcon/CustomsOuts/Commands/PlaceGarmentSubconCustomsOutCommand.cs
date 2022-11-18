@@ -22,6 +22,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.Commands
         public double UsedQty { get; set; }
         public string SubconCategory { get; set; }
         public double RemainingQuantity { get; set; }
+        public string BuyerStaff { get; set; }
         public virtual List<GarmentSubconCustomsOutItemValueObject> Items { get;  set; }
     }
 

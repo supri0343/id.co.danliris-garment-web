@@ -74,7 +74,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconCustomsOutReadModel>>()))
                 .Returns(new List<GarmentSubconCustomsOut>()
                 {
-                    new GarmentSubconCustomsOut(SubconCustomsOutGuid,"",DateTimeOffset.Now,"","",Guid.NewGuid(),"",new SupplierId(1),"","","", "")
+                    new GarmentSubconCustomsOut(SubconCustomsOutGuid,"",DateTimeOffset.Now,"","",Guid.NewGuid(),"",new SupplierId(1),"","","", "", "")
                 });
 
             Guid SubconCustomsOutItemGuid = Guid.NewGuid();
@@ -103,7 +103,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconCustomsOutReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconCustomsOut>()
                 {
-                    new GarmentSubconCustomsOut(Guid.NewGuid(),"",DateTimeOffset.Now,"","",Guid.NewGuid(),"",new SupplierId(1),"","","","")
+                    new GarmentSubconCustomsOut(Guid.NewGuid(),"",DateTimeOffset.Now,"","",Guid.NewGuid(),"",new SupplierId(1),"","","","","")
                 });
 
             _mockGarmentSubconCustomsOutItemRepository
@@ -132,7 +132,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             //    .Returns(new List<GarmentSubconCustomsOut>());
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentSubconCustomsOutCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSubconCustomsOut(Guid.NewGuid(), "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "", new SupplierId(1), "", "", "", ""));
+                .ReturnsAsync(new GarmentSubconCustomsOut(Guid.NewGuid(), "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "", new SupplierId(1), "", "", "", "",""));
 
             // Act
             var result = await unitUnderTest.Post(command);
@@ -163,7 +163,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             Guid subconCustomsOutGuid = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentSubconCustomsOutCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSubconCustomsOut(subconCustomsOutGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "", new SupplierId(1), "", "", "",""));
+                .ReturnsAsync(new GarmentSubconCustomsOut(subconCustomsOutGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "", new SupplierId(1), "", "", "","",""));
 
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentSubconCustomsOutCommand());
@@ -183,13 +183,13 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconCustomsOutReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconCustomsOut>()
                 {
-                    new GarmentSubconCustomsOut(subconCustomsOutGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "", new SupplierId(1), "", "", "","")
+                    new GarmentSubconCustomsOut(subconCustomsOutGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "", new SupplierId(1), "", "", "","","")
                 });
 
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentSubconCustomsOutCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSubconCustomsOut(subconCustomsOutGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "", new SupplierId(1), "", "", "",""));
+                .ReturnsAsync(new GarmentSubconCustomsOut(subconCustomsOutGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "", new SupplierId(1), "", "", "","",""));
 
             // Act
             var result = await unitUnderTest.Delete(subconCustomsOutGuid.ToString());
@@ -213,7 +213,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconCustomsOutReadModel>>()))
                 .Returns(new List<GarmentSubconCustomsOut>()
                 {
-                    new GarmentSubconCustomsOut(SubconCustomsOutGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "", new SupplierId(1), "", "", "","")
+                    new GarmentSubconCustomsOut(SubconCustomsOutGuid, "", DateTimeOffset.Now, "", "", Guid.NewGuid(), "", new SupplierId(1), "", "", "","", "")
                 });
 
             Guid SubconCustomsOutItemGuid = Guid.NewGuid();
