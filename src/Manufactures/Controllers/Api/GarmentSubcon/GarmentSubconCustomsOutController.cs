@@ -101,6 +101,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             var garmentSubconCustomsOutDto = _garmentSubconCustomsOutRepository.Find(query).Select(o => new GarmentSubconCustomsOutDto(o)).ToArray();
             var garmentSubconCustomsOutItemDto = _garmentSubconCustomsOutItemRepository.Find(_garmentSubconCustomsOutItemRepository.Query).Select(o => new GarmentSubconCustomsOutItemDto(o)).ToList();
+            double totalQty = query.Sum(a => a.GarmentSubconCustomsOutItem.Sum(b => b.Quantity));
 
             Parallel.ForEach(garmentSubconCustomsOutDto, itemDto =>
             {
@@ -121,7 +122,8 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             {
                 page,
                 size,
-                count
+                count,
+                totalQty
             });
         }
 
