@@ -59,7 +59,7 @@ namespace Manufactures.Application.GarmentScrapTransactions.Queries.GetMutationS
 
             List<GetMutationScrapDto> getMutationScrapDtos = new List<GetMutationScrapDto>();
 
-            var CodeScrap = new List<string> { "ZB05", "ZA59" };
+            var CodeScrap = new List<string> { "ZB05", "ZA59", "AV002" };
 
             var SAScrapIN = (from a in _garmentScrapTransactionRepository.Query
                              join b in _garmentScrapTransactionItemRepository.Query on a.Identity equals b.ScrapTransactionId
