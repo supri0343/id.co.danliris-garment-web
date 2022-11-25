@@ -21,8 +21,11 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentAvalComponents.Repositori
         {
             DateTimeOffset DateFrom = new DateTimeOffset(dateFrom, new TimeSpan(0, 0, 0));
             DateTimeOffset DateTo = new DateTimeOffset(dateTo, new TimeSpan(0, 0, 0));
-
-            var Query = this.Query.Where(x => x.Date >= DateFrom && x.Date <= dateTo);
+            var Query = this.Query;
+            if (DateFrom != DateTimeOffset.MinValue || DateTo != DateTimeOffset.MinValue)
+            {
+                Query = this.Query.Where(x => x.Date >= DateFrom && x.Date <= dateTo);
+            }    
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
             Query = QueryHelper<GarmentAvalComponentReadModel>.Filter(Query, FilterDictionary);
