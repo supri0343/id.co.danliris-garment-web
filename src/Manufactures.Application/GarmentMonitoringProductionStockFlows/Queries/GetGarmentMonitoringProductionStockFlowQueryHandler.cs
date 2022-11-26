@@ -205,8 +205,93 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
 
 		}
-	
-		public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
+
+        class monitoringUnionView
+        {
+            public string ro { get; internal set; }
+            public string article { get; internal set; }
+            public string comodity { get; internal set; }
+            public double fc { get; internal set; }
+            public decimal fare { get; internal set; }
+            public decimal farenew { get; internal set; }
+            public decimal basicprice { get; internal set; }
+            public double qtycutting { get; internal set; }
+            public double priceCuttingOut { get; internal set; }
+            public double qtCuttingSubkon { get; internal set; }
+            public double priceCuttingSubkon { get; internal set; }
+            public double qtyCuttingTransfer { get; internal set; }
+            public double priceCuttingTransfer { get; internal set; }
+            public double qtyCuttingIn { get; internal set; }
+            public double priceCuttingIn { get; internal set; }
+            public double begining { get; internal set; }
+            public double beginingcuttingPrice { get; internal set; }
+            public double qtyavalsew { get; internal set; }
+            public double priceavalsew { get; internal set; }
+            public double qtyavalcut { get; internal set; }
+            public double priceavalcut { get; internal set; }
+            public double beginingloading { get; internal set; }
+            public double beginingloadingPrice { get; internal set; }
+            public double qtyLoadingIn { get; internal set; }
+            public double priceLoadingIn { get; internal set; }
+            public double qtyloading { get; internal set; }
+            public double priceloading { get; internal set; }
+            public double qtyLoadingAdj { get; internal set; }
+            public double priceLoadingAdj { get; internal set; }
+            public double beginingSewing { get; internal set; }
+            public double beginingSewingPrice { get; internal set; }
+            public double sewingIn { get; internal set; }
+            public double sewingInPrice { get; internal set; }
+            public double sewingintransfer { get; internal set; }
+            public double sewingintransferPrice { get; internal set; }
+            public double sewingout { get; internal set; }
+            public double sewingoutPrice { get; internal set; }
+            public double sewingretur { get; internal set; }
+            public double sewingreturPrice { get; internal set; }
+            public double wipsewing { get; internal set; }
+            public double wipsewingPrice { get; internal set; }
+            public double wipfinishing { get; internal set; }
+            public double wipfinishingPrice { get; internal set; }
+            public double sewingadj { get; internal set; }
+            public double sewingadjPrice { get; internal set; }
+            public double finishingin { get; internal set; }
+            public double finishinginPrice { get; internal set; }
+            public double finishingintransfer { get; internal set; }
+            public double finishingintransferPrice { get; internal set; }
+            public double finishingadj { get; internal set; }
+            public double finishingadjPrice { get; internal set; }
+            public double finishingout { get; internal set; }
+            public double finishingoutPrice { get; internal set; }
+            public double finishinigretur { get; internal set; }
+            public double finishinigreturPrice { get; internal set; }
+            public double beginingbalanceFinishing { get; internal set; }
+            public double beginingbalanceFinishingPrice { get; internal set; }
+            public double beginingbalancesubcon { get; internal set; }
+            public double beginingbalancesubconPrice { get; internal set; }
+            public double subconIn { get; internal set; }
+            public double subconInPrice { get; internal set; }
+            public double subconout { get; internal set; }
+            public double subconoutPrice { get; internal set; }
+            public double exportQty { get; internal set; }
+            public double exportPrice { get; internal set; }
+            public double otherqty { get; internal set; }
+            public double otherprice { get; internal set; }
+            public double sampleQty { get; internal set; }
+            public double samplePrice { get; internal set; }
+            public double expendAdj { get; internal set; }
+            public double expendAdjPrice { get; internal set; }
+            public double expendRetur { get; internal set; }
+            public double expendReturPrice { get; internal set; }
+            //finishinginqty =group.Sum(s=>s.FinishingInQty)
+            public double beginingBalanceExpenditureGood { get; internal set; }
+            public double beginingBalanceExpenditureGoodPrice { get; internal set; }
+            public double expenditureInTransfer { get; internal set; }
+            public double expenditureInTransferPrice { get; internal set; }
+            public double qtyloadingInTransfer { get; internal set; }
+            public double priceloadingInTransfer { get; internal set; }
+
+        }
+
+        public async Task<CostCalculationGarmentDataProductionReport> GetDataCostCal(List<string> ro, string token)
 		{
             CostCalculationGarmentDataProductionReport costCalculationGarmentDataProductionReport = new CostCalculationGarmentDataProductionReport();
 
@@ -1480,14 +1565,14 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                     select new
                                     {                                    
                                         
-                                        BeginingBalanceSubconQty = (a.FinishingInDate < dateFrom && a.FinishingInDate > dateBalance && a.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
-                                        BeginingBalanceSubconPrice = (a.FinishingInDate < dateFrom && a.FinishingInDate > dateBalance && a.FinishingInType == "PEMBELIAN") ? b.Price : 0,
+                                        //BeginingBalanceSubconQty = (a.FinishingInDate < dateFrom && a.FinishingInDate > dateBalance && a.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
+                                        //BeginingBalanceSubconPrice = (a.FinishingInDate < dateFrom && a.FinishingInDate > dateBalance && a.FinishingInType == "PEMBELIAN") ? b.Price : 0,
                                         BeginingBalanceFinishingQty = (a.FinishingInDate < dateFrom && a.FinishingInDate > dateBalance && a.FinishingInType != "PEMBELIAN") ? b.Quantity : 0,
                                         BeginingBalanceFinishingPrice = (a.FinishingInDate < dateFrom && a.FinishingInDate > dateBalance && a.FinishingInType != "PEMBELIAN") ? b.Price : 0,
                                         FinishingInQty = (a.FinishingInDate >= dateFrom && a.FinishingInType != "PEMBELIAN") ? b.Quantity : 0,
                                         FinishingInPrice = (a.FinishingInDate >= dateFrom && a.FinishingInType != "PEMBELIAN") ? b.Price : 0,
-                                        SubconInQty = (a.FinishingInDate >= dateFrom && a.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
-                                        SubconInPrice = (a.FinishingInDate >= dateFrom && a.FinishingInType == "PEMBELIAN") ? b.Price : 0,
+                                        //SubconInQty = (a.FinishingInDate >= dateFrom && a.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
+                                        //SubconInPrice = (a.FinishingInDate >= dateFrom && a.FinishingInType == "PEMBELIAN") ? b.Price : 0,
                                         Ro = a.RONo,
                                         
                                     }).GroupBy(x => x.Ro, (key, group) => new monitoringView {
@@ -1535,14 +1620,14 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                         SubconOutPrice = 0,
                                         QtyLoadingInTransfer = 0,
                                         PriceLoadingInTransfer = 0,
-                                        BeginingBalanceSubconQty = group.Sum(x=>x.BeginingBalanceSubconQty),
-                                        BeginingBalanceSubconPrice = group.Sum(x => x.BeginingBalanceSubconPrice),
+                                        BeginingBalanceSubconQty = 0,
+                                        BeginingBalanceSubconPrice = 0,
                                         BeginingBalanceFinishingQty = group.Sum(x => x.BeginingBalanceFinishingQty),
                                         BeginingBalanceFinishingPrice = group.Sum(x => x.BeginingBalanceFinishingPrice),
                                         FinishingInQty = group.Sum(x => x.FinishingInQty),
                                         FinishingInPrice = group.Sum(x => x.FinishingInPrice),
-                                        SubconInQty = group.Sum(x => x.SubconInQty),
-                                        SubconInPrice = group.Sum(x => x.SubconInPrice),
+                                        SubconInQty = 0,
+                                        SubconInPrice = 0,
                                         Ro = key,
                                         ExpenditureGoodRetur = 0,
                                         ExpenditureGoodReturPrice = 0,
@@ -1559,6 +1644,107 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                         BeginingBalanceLoadingQty = 0,
                                         BeginingBalanceLoadingPrice = 0
                                     });
+
+            var QuerySubconIn = (from a in (from aa in garmentFinishingInRepository.Query
+                                            where aa.FinishingInDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.FinishingInDate <= dateTo
+                                            select new { aa.RONo, aa.Identity, aa.FinishingInDate, aa.FinishingInType })
+                                 join b in garmentFinishingInItemRepository.Query on a.Identity equals b.FinishingInId
+                                 select new
+                                 {
+
+                                     BeginingBalanceSubconQty = (a.FinishingInDate < dateFrom && a.FinishingInDate > dateBalance && a.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
+                                     BeginingBalanceSubconPrice = (a.FinishingInDate < dateFrom && a.FinishingInDate > dateBalance && a.FinishingInType == "PEMBELIAN") ? b.Price : 0,
+                                     //BeginingBalanceFinishingQty = (a.FinishingInDate < dateFrom && a.FinishingInDate > dateBalance && a.FinishingInType != "PEMBELIAN") ? b.Quantity : 0,
+                                     //BeginingBalanceFinishingPrice = (a.FinishingInDate < dateFrom && a.FinishingInDate > dateBalance && a.FinishingInType != "PEMBELIAN") ? b.Price : 0,
+                                     //FinishingInQty = (a.FinishingInDate >= dateFrom && a.FinishingInType != "PEMBELIAN") ? b.Quantity : 0,
+                                     //FinishingInPrice = (a.FinishingInDate >= dateFrom && a.FinishingInType != "PEMBELIAN") ? b.Price : 0,
+                                     SubconInQty = (a.FinishingInDate >= dateFrom && a.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
+                                     SubconInPrice = (a.FinishingInDate >= dateFrom && a.FinishingInType == "PEMBELIAN") ? b.Price : 0,
+                                     Ro = a.RONo,
+
+                                 }).GroupBy(x => x.Ro, (key, group) => new monitoringUnionView
+                                 {
+                                     ro = key,
+                                     article = null,
+                                     comodity = null,
+                                     fc = 0,
+                                     fare = 0,
+                                     farenew = 0,
+                                     basicprice = 0,
+                                     qtycutting = 0,
+                                     priceCuttingOut = 0,
+                                     qtCuttingSubkon = 0,
+                                     priceCuttingSubkon = 0,
+                                     qtyCuttingTransfer = 0,
+                                     priceCuttingTransfer = 0,
+                                     qtyCuttingIn = 0,
+                                     priceCuttingIn = 0,
+                                     begining = 0,
+                                     beginingcuttingPrice = 0,
+                                     qtyavalsew = 0,
+                                     priceavalsew = 0,
+                                     qtyavalcut = 0,
+                                     priceavalcut = 0,
+                                     beginingloading = 0,
+                                     beginingloadingPrice = 0,
+                                     qtyLoadingIn = 0,
+                                     priceLoadingIn = 0,
+                                     qtyloading = 0,
+                                     priceloading = 0,
+                                     qtyLoadingAdj = 0,
+                                     priceLoadingAdj = 0,
+                                     beginingSewing = 0,
+                                     beginingSewingPrice = 0,
+                                     sewingIn = 0,
+                                     sewingInPrice = 0,
+                                     sewingintransfer = 0,
+                                     sewingintransferPrice = 0,
+                                     sewingout = 0,
+                                     sewingoutPrice = 0,
+                                     sewingretur = 0,
+                                     sewingreturPrice = 0,
+                                     wipsewing = 0,
+                                     wipsewingPrice = 0,
+                                     wipfinishing = 0,
+                                     wipfinishingPrice = 0,
+                                     sewingadj = 0,
+                                     sewingadjPrice = 0,
+                                     finishingin = 0,
+                                     finishinginPrice = 0,
+                                     finishingintransfer = 0,
+                                     finishingintransferPrice = 0,
+                                     finishingadj = 0,
+                                     finishingadjPrice = 0,
+                                     finishingout = 0,
+                                     finishingoutPrice = 0,
+                                     finishinigretur = 0,
+                                     finishinigreturPrice = 0,
+                                     beginingbalanceFinishing = 0,
+                                     beginingbalanceFinishingPrice = 0,
+                                     beginingbalancesubcon = group.Sum(s => s.BeginingBalanceSubconQty),
+                                     beginingbalancesubconPrice = group.Sum(s => s.BeginingBalanceSubconPrice),
+                                     subconIn = group.Sum(s => s.SubconInQty),
+                                     subconInPrice = group.Sum(s => s.SubconInPrice),
+                                     subconout = 0,
+                                     subconoutPrice = 0,
+                                     exportQty = 0,
+                                     exportPrice = 0,
+                                     otherqty = 0,
+                                     otherprice = 0,
+                                     sampleQty = 0,
+                                     samplePrice = 0,
+                                     expendAdj = 0,
+                                     expendAdjPrice = 0,
+                                     expendRetur = 0,
+                                     expendReturPrice = 0,
+                                     //finishinginqty =group.Sum(s=>s.FinishingInQty)
+                                     beginingBalanceExpenditureGood = 0,
+                                     beginingBalanceExpenditureGoodPrice = 0,
+                                     expenditureInTransfer = 0,
+                                     expenditureInTransferPrice = 0,
+                                     qtyloadingInTransfer = 0,
+                                     priceloadingInTransfer = 0
+                                 });
             var QueryFinishingOut = (from a in (from aa in garmentFinishingOutRepository.Query
                                                 where aa.FinishingOutDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.FinishingOutDate <= dateTo && aa.FinishingTo == "GUDANG JADI"
                                                 select new { aa.RONo, aa.Identity, aa.FinishingOutDate, aa.FinishingTo })
@@ -1572,13 +1758,13 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                          BeginingBalanceFinishingPrice = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType != "PEMBELIAN") ? -b.Price : 0,
                                          BeginingBalanceExpenditureGood = ((a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType != "PEMBELIAN") ? b.Quantity : 0) + ((a.FinishingOutDate < dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Quantity : 0),
                                          BeginingBalanceExpenditureGoodPrice = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType != "PEMBELIAN") ? b.Price : 0 + ((a.FinishingOutDate < dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Price : 0),
-                                         BeginingBalanceSubconQty = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType == "PEMBELIAN") ? -b.Quantity : 0,
-                                         BeginingBalanceSubconPrice = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType == "PEMBELIAN") ? -b.Price : 0,
+                                         //BeginingBalanceSubconQty = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType == "PEMBELIAN") ? -b.Quantity : 0,
+                                         //BeginingBalanceSubconPrice = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType == "PEMBELIAN") ? -b.Price : 0,
 
                                          FinishingOutQty = (a.FinishingOutDate >= dateFrom && d.FinishingInType != "PEMBELIAN") ? b.Quantity : 0,
                                          FinishingOutPrice = (a.FinishingOutDate >= dateFrom && d.FinishingInType != "PEMBELIAN") ? b.Price : 0,
-                                         SubconOutQty = (a.FinishingOutDate >= dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
-                                         SubconOutPrice = (a.FinishingOutDate >= dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Price : 0,
+                                         //SubconOutQty = (a.FinishingOutDate >= dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
+                                         //SubconOutPrice = (a.FinishingOutDate >= dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Price : 0,
                                          Ro = a.RONo,
                                          
 
@@ -1631,13 +1817,13 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                          BeginingBalanceFinishingPrice = group.Sum(x => x.BeginingBalanceFinishingPrice),
                                          BeginingBalanceExpenditureGood = group.Sum(x => x.BeginingBalanceExpenditureGood),
                                          BeginingBalanceExpenditureGoodPrice = group.Sum(x => x.BeginingBalanceExpenditureGoodPrice),
-                                         BeginingBalanceSubconQty = group.Sum(x => x.BeginingBalanceSubconQty),
-                                         BeginingBalanceSubconPrice = group.Sum(x => x.BeginingBalanceSubconPrice),
+                                         BeginingBalanceSubconQty = 0,
+                                         BeginingBalanceSubconPrice = 0,
 
                                          FinishingOutQty = group.Sum(x => x.FinishingOutQty),
                                          FinishingOutPrice = group.Sum(x => x.FinishingOutPrice),
-                                         SubconOutQty = group.Sum(x => x.SubconOutQty),
-                                         SubconOutPrice = group.Sum(x => x.SubconOutPrice),
+                                         SubconOutQty = 0,
+                                         SubconOutPrice = 0,
                                          Ro = key,
                                          ExpenditureGoodRetur = 0,
                                          ExpenditureGoodReturPrice = 0,
@@ -1654,6 +1840,113 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                          BeginingBalanceLoadingQty = 0,
                                          BeginingBalanceLoadingPrice = 0
                                      });
+
+            var QuerySubconOut = (from a in (from aa in garmentFinishingOutRepository.Query
+                                             where aa.FinishingOutDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.FinishingOutDate <= dateTo && aa.FinishingTo == "GUDANG JADI"
+                                             select new { aa.RONo, aa.Identity, aa.FinishingOutDate, aa.FinishingTo })
+                                  join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
+                                  join c in garmentFinishingInItemRepository.Query on b.FinishingInItemId equals c.Identity
+                                  join d in garmentFinishingInRepository.Query on c.FinishingInId equals d.Identity
+                                  select new
+                                  {
+
+                                      //BeginingBalanceFinishingQty = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType != "PEMBELIAN") ? -b.Quantity : 0,
+                                      //BeginingBalanceFinishingPrice = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType != "PEMBELIAN") ? -b.Price : 0,
+                                      //BeginingBalanceExpenditureGood = ((a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType != "PEMBELIAN") ? b.Quantity : 0) + ((a.FinishingOutDate < dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Quantity : 0),
+                                      //BeginingBalanceExpenditureGoodPrice = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType != "PEMBELIAN") ? b.Price : 0 + ((a.FinishingOutDate < dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Price : 0),
+                                      BeginingBalanceSubconQty = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType == "PEMBELIAN") ? -b.Quantity : 0,
+                                      BeginingBalanceSubconPrice = (a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalance && d.FinishingInType == "PEMBELIAN") ? -b.Price : 0,
+
+                                      //FinishingOutQty = (a.FinishingOutDate >= dateFrom && d.FinishingInType != "PEMBELIAN") ? b.Quantity : 0,
+                                      //FinishingOutPrice = (a.FinishingOutDate >= dateFrom && d.FinishingInType != "PEMBELIAN") ? b.Price : 0,
+                                      SubconOutQty = (a.FinishingOutDate >= dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
+                                      SubconOutPrice = (a.FinishingOutDate >= dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Price : 0,
+                                      Ro = a.RONo,
+
+
+                                  }).GroupBy(x => x.Ro, (key, group) => new monitoringUnionView
+                                  {
+                                      ro = key,
+                                      article = null,
+                                      comodity = null,
+                                      fc = 0,
+                                      fare = 0,
+                                      farenew = 0,
+                                      basicprice = 0,
+                                      qtycutting = 0,
+                                      priceCuttingOut = 0,
+                                      qtCuttingSubkon = 0,
+                                      priceCuttingSubkon = 0,
+                                      qtyCuttingTransfer = 0,
+                                      priceCuttingTransfer = 0,
+                                      qtyCuttingIn = 0,
+                                      priceCuttingIn = 0,
+                                      begining = 0,
+                                      beginingcuttingPrice = 0,
+                                      qtyavalsew = 0,
+                                      priceavalsew = 0,
+                                      qtyavalcut = 0,
+                                      priceavalcut = 0,
+                                      beginingloading = 0,
+                                      beginingloadingPrice = 0,
+                                      qtyLoadingIn = 0,
+                                      priceLoadingIn = 0,
+                                      qtyloading = 0,
+                                      priceloading = 0,
+                                      qtyLoadingAdj = 0,
+                                      priceLoadingAdj = 0,
+                                      beginingSewing = 0,
+                                      beginingSewingPrice = 0,
+                                      sewingIn = 0,
+                                      sewingInPrice = 0,
+                                      sewingintransfer = 0,
+                                      sewingintransferPrice = 0,
+                                      sewingout = 0,
+                                      sewingoutPrice = 0,
+                                      sewingretur = 0,
+                                      sewingreturPrice = 0,
+                                      wipsewing = 0,
+                                      wipsewingPrice = 0,
+                                      wipfinishing = 0,
+                                      wipfinishingPrice = 0,
+                                      sewingadj = 0,
+                                      sewingadjPrice = 0,
+                                      finishingin = 0,
+                                      finishinginPrice = 0,
+                                      finishingintransfer = 0,
+                                      finishingintransferPrice = 0,
+                                      finishingadj = 0,
+                                      finishingadjPrice = 0,
+                                      finishingout = 0,
+                                      finishingoutPrice = 0,
+                                      finishinigretur = 0,
+                                      finishinigreturPrice = 0,
+                                      beginingbalanceFinishing = 0,
+                                      beginingbalanceFinishingPrice = 0,
+                                      beginingbalancesubcon = group.Sum(s => s.BeginingBalanceSubconQty),
+                                      beginingbalancesubconPrice = group.Sum(s => s.BeginingBalanceSubconPrice),
+                                      subconIn = 0,
+                                      subconInPrice = 0,
+                                      subconout = group.Sum(s => s.SubconOutQty),
+                                      subconoutPrice = group.Sum(s => s.SubconOutPrice),
+                                      exportQty = 0,
+                                      exportPrice = 0,
+                                      otherqty = 0,
+                                      otherprice = 0,
+                                      sampleQty = 0,
+                                      samplePrice = 0,
+                                      expendAdj = 0,
+                                      expendAdjPrice = 0,
+                                      expendRetur = 0,
+                                      expendReturPrice = 0,
+                                      //finishinginqty =group.Sum(s=>s.FinishingInQty)
+                                      beginingBalanceExpenditureGood = 0,
+                                      beginingBalanceExpenditureGoodPrice = 0,
+                                      expenditureInTransfer = 0,
+                                      expenditureInTransferPrice = 0,
+                                      qtyloadingInTransfer = 0,
+                                      priceloadingInTransfer = 0
+                                  });
 
             var QueryExpenditureGoodInTransfer = (from a in (from aa in garmentFinishingOutRepository.Query
                                                              where aa.FinishingOutDate >= dateBalance && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId != aa.UnitToId && aa.FinishingOutDate <= dateTo && aa.FinishingTo == "GUDANG JADI" && aa.UnitToId == (request.unit == 0 ? aa.UnitToId : request.unit)
@@ -2177,11 +2470,11 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				.Union(QueryLoadingInTransfer)
 				.AsEnumerable();
 
-            var queryNow2 = queryNow.Where(x => x.BeginingBalanceCuttingQty != 0).AsEnumerable();
+            //var queryNow2 = queryNow.Where(x => x.BeginingBalanceCuttingQty != 0).AsEnumerable();
 
             //queryNow = queryNow.Where(x => Convert.ToInt32(x.Ro.Substring(0, 2)) > 19).AsEnumerable();
             
-            var querySum = (from a in queryNow
+            var querySumAwal = (from a in queryNow
 							join b in queryGroup on a.Ro equals b.Ro
 							select new
 							{
@@ -2265,8 +2558,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 								a.QtyLoadingInTransfer,
 								a.PriceLoadingInTransfer
 							})
-				.GroupBy(x => new { x.FareNew, x.Fare, x.BasicPrice, x.FC, x.Ro, x.Article, x.Comodity }, (key, group) => new
-				{
+				.GroupBy(x => new { x.FareNew, x.Fare, x.BasicPrice, x.FC, x.Ro, x.Article, x.Comodity }, (key, group) => new monitoringUnionView
+                {
 					ro = key.Ro,
 					article = key.Article,
 					comodity = key.Comodity,
@@ -2350,7 +2643,93 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                     
 				}).ToList();
 
-			GarmentMonitoringProductionStockFlowListViewModel garmentMonitoringProductionFlow = new GarmentMonitoringProductionStockFlowListViewModel();
+            var queryUnion = querySumAwal.Union(QuerySubconIn).Union(QuerySubconOut).AsEnumerable();
+
+            var querySum = queryUnion.GroupBy(x => new { x.farenew, x.fare, x.basicprice, x.fc, x.ro, x.article, x.comodity }, (key, group) => new monitoringUnionView
+            {
+                ro = key.ro,
+                article = key.article,
+                comodity = key.comodity,
+                fc = key.fc,
+                fare = key.fare,
+                farenew = key.farenew,
+                basicprice = key.basicprice,
+                qtycutting = group.Sum(s => s.qtycutting),
+                priceCuttingOut = group.Sum(s => s.priceCuttingOut),
+                qtCuttingSubkon = group.Sum(s => s.qtCuttingSubkon),
+                priceCuttingSubkon = group.Sum(s => s.priceCuttingSubkon),
+                qtyCuttingTransfer = group.Sum(s => s.qtyCuttingTransfer),
+                priceCuttingTransfer = group.Sum(s => s.priceCuttingTransfer),
+                qtyCuttingIn = group.Sum(s => s.qtyCuttingIn),
+                priceCuttingIn = group.Sum(s => s.priceCuttingIn),
+                begining = group.Sum(s => s.begining),
+                beginingcuttingPrice = group.Sum(s => s.beginingcuttingPrice),
+                qtyavalsew = group.Sum(s => s.qtyavalsew),
+                priceavalsew = group.Sum(s => s.priceavalsew),
+                qtyavalcut = group.Sum(s => s.qtyavalcut),
+                priceavalcut = group.Sum(s => s.priceavalcut),
+                beginingloading = group.Sum(s => s.beginingloading),
+                beginingloadingPrice = group.Sum(s => s.beginingloadingPrice),
+                qtyLoadingIn = group.Sum(s => s.qtyLoadingIn),
+                priceLoadingIn = group.Sum(s => s.priceLoadingIn),
+                qtyloading = group.Sum(s => s.qtyloading),
+                priceloading = group.Sum(s => s.priceloading),
+                qtyLoadingAdj = group.Sum(s => s.qtyLoadingAdj),
+                priceLoadingAdj = group.Sum(s => s.priceLoadingAdj),
+                beginingSewing = group.Sum(s => s.beginingSewing),
+                beginingSewingPrice = group.Sum(s => s.beginingSewingPrice),
+                sewingIn = group.Sum(s => s.sewingIn),
+                sewingInPrice = group.Sum(s => s.sewingInPrice),
+                sewingintransfer = group.Sum(s => s.sewingintransfer),
+                sewingintransferPrice = group.Sum(s => s.sewingintransferPrice),
+                sewingout = group.Sum(s => s.sewingout),
+                sewingoutPrice = group.Sum(s => s.sewingoutPrice),
+                sewingretur = group.Sum(s => s.sewingretur),
+                sewingreturPrice = group.Sum(s => s.sewingreturPrice),
+                wipsewing = group.Sum(s => s.wipsewing),
+                wipsewingPrice = group.Sum(s => s.wipsewingPrice),
+                wipfinishing = group.Sum(s => s.wipfinishing),
+                wipfinishingPrice = group.Sum(s => s.wipfinishingPrice),
+                sewingadj = group.Sum(s => s.sewingadj),
+                sewingadjPrice = group.Sum(s => s.sewingadjPrice),
+                finishingin = group.Sum(s => s.finishingin),
+                finishinginPrice = group.Sum(s => s.finishinginPrice),
+                finishingintransfer = group.Sum(s => s.finishingintransfer),
+                finishingintransferPrice = group.Sum(s => s.finishingintransferPrice),
+                finishingadj = group.Sum(s => s.finishingadj),
+                finishingadjPrice = group.Sum(s => s.finishingadjPrice),
+                finishingout = group.Sum(s => s.finishingout),
+                finishingoutPrice = group.Sum(s => s.finishingoutPrice),
+                finishinigretur = group.Sum(s => s.finishinigretur),
+                finishinigreturPrice = group.Sum(s => s.finishinigreturPrice),
+                beginingbalanceFinishing = group.Sum(s => s.beginingbalanceFinishing),
+                beginingbalanceFinishingPrice = group.Sum(s => s.beginingbalanceFinishingPrice),
+                beginingbalancesubcon = group.Sum(s => s.beginingbalancesubcon),
+                beginingbalancesubconPrice = group.Sum(s => s.beginingbalancesubconPrice),
+                subconIn = group.Sum(s => s.subconIn),
+                subconInPrice = group.Sum(s => s.subconInPrice),
+                subconout = group.Sum(s => s.subconout),
+                subconoutPrice = group.Sum(s => s.subconoutPrice),
+                exportQty = group.Sum(s => s.exportQty),
+                exportPrice = group.Sum(s => s.exportPrice),
+                otherqty = group.Sum(s => s.otherqty),
+                otherprice = group.Sum(s => s.otherprice),
+                sampleQty = group.Sum(s => s.sampleQty),
+                samplePrice = group.Sum(s => s.samplePrice),
+                expendAdj = group.Sum(s => s.expendAdj),
+                expendAdjPrice = group.Sum(s => s.expendAdjPrice),
+                expendRetur = group.Sum(s => s.expendRetur),
+                expendReturPrice = group.Sum(s => s.expendReturPrice),
+                //finishinginqty =group.Sum(s=>s.FinishingInQty)
+                beginingBalanceExpenditureGood = group.Sum(s => s.beginingBalanceExpenditureGood),
+                beginingBalanceExpenditureGoodPrice = group.Sum(s => s.beginingBalanceExpenditureGoodPrice),
+                expenditureInTransfer = group.Sum(s => s.expenditureInTransfer),
+                expenditureInTransferPrice = group.Sum(s => s.expenditureInTransferPrice),
+                qtyloadingInTransfer = group.Sum(s => s.qtyloadingInTransfer),
+                priceloadingInTransfer = group.Sum(s => s.priceloadingInTransfer)
+            }).ToList();
+
+            GarmentMonitoringProductionStockFlowListViewModel garmentMonitoringProductionFlow = new GarmentMonitoringProductionStockFlowListViewModel();
 			List<GarmentMonitoringProductionStockFlowDto> monitoringDtos = new List<GarmentMonitoringProductionStockFlowDto>();
 
             var ros = querySum.Select(x => x.ro).Distinct().ToArray();
