@@ -48,7 +48,6 @@ namespace Manufactures.Controllers.Api
                 byte[] xlsInBytes;
 
                 var xls = await Mediator.Send(query);
-
                 string filename = "Laporan Aval Komponen";
 
                 if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
