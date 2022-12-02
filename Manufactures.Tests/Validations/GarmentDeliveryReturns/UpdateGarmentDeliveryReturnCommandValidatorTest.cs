@@ -70,7 +70,7 @@ namespace Manufactures.Tests.Validations.GarmentDeliveryReturns
                 },
                 Items = new List<GarmentDeliveryReturnItemValueObject>()
                 {
-                    new GarmentDeliveryReturnItemValueObject(id,id,1,1,id.ToString(),new Product(),"DesignColor","roNo",1,new Uom(),id,1,1,true),
+                    new GarmentDeliveryReturnItemValueObject(id,id,1,1,id.ToString(),new Product(),"DesignColor","roNo",1,new Uom(),id,1,1,"color","rak","level","box","area",true),
                     new GarmentDeliveryReturnItemValueObject()
                     {
                         IsSave =true,
@@ -93,7 +93,13 @@ namespace Manufactures.Tests.Validations.GarmentDeliveryReturns
                         {
                             Id =1,
                             Unit="Unit"
-                        }
+                        },
+                        Colour = "",
+                        Area ="",
+                        Box="",
+                        Level="",
+                        Rack="",
+                        
                     }
                 }
             };

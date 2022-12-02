@@ -12,7 +12,7 @@ namespace Manufactures.Domain.GarmentSample.SampleDeliveryReturns.ValueObjects
 
         }
 
-        public GarmentSampleDeliveryReturnItemValueObject(Guid id, Guid drId, int unitDOItemId, int uenItemId, string preparingItemId, Product product, string designColor, string roNo, double quantity, Uom uom, Guid garmentDeliveryReturnId, double quantityUENItem, double remainingQuantityPreparingItem, bool isSave)
+        public GarmentSampleDeliveryReturnItemValueObject(Guid id, Guid drId, int unitDOItemId, int uenItemId, string preparingItemId, Product product, string designColor, string roNo, double quantity, Uom uom, Guid garmentDeliveryReturnId, double quantityUENItem, double remainingQuantityPreparingItem, string colour, string rack, string level, string box, string area, bool isSave)
         {
             Id = id;
             DRId = drId;
@@ -26,6 +26,11 @@ namespace Manufactures.Domain.GarmentSample.SampleDeliveryReturns.ValueObjects
             Uom = uom;
             QuantityUENItem = quantityUENItem;
             RemainingQuantityPreparingItem = remainingQuantityPreparingItem;
+            Area = area;
+            Box = box;
+            Colour = colour;
+            Rack = rack;
+            Level = level;
             IsSave = isSave;
         }
 
@@ -42,6 +47,11 @@ namespace Manufactures.Domain.GarmentSample.SampleDeliveryReturns.ValueObjects
         public double QuantityUENItem { get; set; }
         public double RemainingQuantityPreparingItem { get; set; }
         public bool IsSave { get; set; }
+        public string Colour { get; set; }
+        public string Rack { get; set; }
+        public string Level { get; set; }
+        public string Box { get; set; }
+        public string Area { get; set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
