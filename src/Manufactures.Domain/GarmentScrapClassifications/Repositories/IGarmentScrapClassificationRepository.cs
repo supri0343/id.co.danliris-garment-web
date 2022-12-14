@@ -10,5 +10,6 @@ namespace Manufactures.Domain.GarmentScrapClassifications.Repositories
 	{
 		
 		IQueryable<GarmentScrapClassificationReadModel> Read(int page, int size, string order, string keyword, string filter);
+		IQueryable<GarmentScrapClassificationReadModel> ReadNonKomponen(int page, int size, string order, string keyword, string filter);
 	}
 }

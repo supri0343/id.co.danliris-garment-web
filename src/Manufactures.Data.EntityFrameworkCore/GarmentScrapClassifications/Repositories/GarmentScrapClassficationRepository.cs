@@ -35,6 +35,29 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentScrapClassifications.Repo
 			return data;
 		}
 
+		public IQueryable<GarmentScrapClassificationReadModel> ReadNonKomponen(int page, int size, string order, string keyword, string filter)
+		{
+			var data = Query.Where(x => x.Code != "AV002" || x.Name != "AVAL KOMPONEN");
+
+			Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+			data = QueryHelper<GarmentScrapClassificationReadModel>.Filter(data, FilterDictionary);
+			
+			List<string> SearchAttributes = new List<string>
+			{
+				"Code",
+				"Name"
+			};
+
+			data = QueryHelper<GarmentScrapClassificationReadModel>.Search(data, SearchAttributes, keyword);
+
+			Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+			data = OrderDictionary.Count == 0 ? data.OrderByDescending(o => o.ModifiedDate) : QueryHelper<GarmentScrapClassificationReadModel>.Order(data, OrderDictionary);
+
+			data = data.Skip((page - 1) * size).Take(size);
+
+			return data;
+		}
+
 		protected override GarmentScrapClassification Map(GarmentScrapClassificationReadModel readModel)
 		{
 			return new GarmentScrapClassification(readModel);

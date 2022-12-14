@@ -45,6 +45,28 @@ namespace Manufactures.Controllers.Api
 				count
 			});
 		}
+
+		[HttpGet("non-kompomen")]
+		public async Task<IActionResult> GetClasificationNonKomponen(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+		{
+			VerifyUser();
+
+			var query = _garmentScrapClassificationRepository.ReadNonKomponen(page, size, order, keyword, filter);
+			var count = query.Count();
+
+			List<GarmentScrapClassificationListDto> listDtos = _garmentScrapClassificationRepository
+				.Find(query)
+				.Select(data => new GarmentScrapClassificationListDto(data))
+				.ToList();
+
+			await Task.Yield();
+			return Ok(listDtos, info: new
+			{
+				page,
+				size,
+				count
+			});
+		}
 		[HttpGet("{id}")]
 		public async Task<IActionResult> Get(string id)
 		{
