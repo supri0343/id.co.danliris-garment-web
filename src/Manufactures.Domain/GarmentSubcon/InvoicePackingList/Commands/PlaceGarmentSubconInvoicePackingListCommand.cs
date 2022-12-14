@@ -25,6 +25,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.Commands
         public double GW { get; set; }
         public string Remark { get; set; }
         public string BuyerStaff { get; set; }
+        public Guid SubconContractId { get; set; }
         public List<SubconInvoicePackingListItemValueObject> Items { get; set; }
     }
     public class PlaceGarmentSubconInvoicePackingListCommandValidator : AbstractValidator<PlaceGarmentSubconInvoicePackingListCommand>

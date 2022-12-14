@@ -42,7 +42,8 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
                 request.NW,
                 request.GW,
                 request.Remark,
-                request.BuyerStaff
+                request.BuyerStaff,
+                request.SubconContractId
                 );
 
             foreach(var item in request.Items)

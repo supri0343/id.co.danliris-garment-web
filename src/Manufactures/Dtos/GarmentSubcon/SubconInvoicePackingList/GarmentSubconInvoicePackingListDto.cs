@@ -21,6 +21,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public string BuyerStaff { get; internal set; }
 
         public List<string> DLNos { get; set; }
+        public Guid SubconContractId { get; set; }
         public List<GarmentSubconInvoicePackingListItemDto> Items { get; set; }
         public GarmentSubconInvoicePackingListDto(SubconInvoicePackingList subconInvoicePackingList)
         {
@@ -34,6 +35,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             GW = subconInvoicePackingList.GW;
             Remark = subconInvoicePackingList.Remark;
             BuyerStaff = subconInvoicePackingList.BuyerStaff;
+            SubconContractId = subconInvoicePackingList.SubconContractId;
             Items = new List<GarmentSubconInvoicePackingListItemDto>();
         }
     }

@@ -12,7 +12,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 {
     public class GarmentSubconInvoicePackingListPDFTemplate
     {
-        public static MemoryStream Generate(GarmentSubconInvoicePackingListDto garmentSubconInvoicePacking)
+        public static MemoryStream Generate(GarmentSubconInvoicePackingListDto garmentSubconInvoicePacking, string finishedgood)
         {
             Document document = new Document(PageSize.A5.Rotate(), 10, 10, 10, 10);
             MemoryStream stream = new MemoryStream();
@@ -64,7 +64,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             #region content
 
             PdfPTable tableContent = new PdfPTable(5);
-            tableContent.SetWidths(new float[] { 1f, 3f, 3f, 3f, 2.5f });
+            tableContent.SetWidths(new float[] { 1f, 4.5f, 2f, 2.5f, 2.5f });
 
             cellCenter.Phrase = new Phrase("No", bold_font);
             tableContent.AddCell(cellCenter);
@@ -89,11 +89,15 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
 
-                cellCenter.Phrase = new Phrase(garmentSubconInvoicePacking.Remark, normal_font);
-                cellCenter.Rowspan = 1;
-                tableContent.AddCell(cellCenter);
+				//cellCenter.Phrase = new Phrase(garmentSubconInvoicePacking.Remark, normal_font);
+				//cellCenter.Rowspan = 1;
+				//tableContent.AddCell(cellCenter);
 
-                cellCenter.Phrase = new Phrase("", normal_font);
+				cellCenter.Phrase = new Phrase(finishedgood, normal_font);
+				cellCenter.Rowspan = 1;
+				tableContent.AddCell(cellCenter);
+
+				cellCenter.Phrase = new Phrase("", normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
 
@@ -122,7 +126,11 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                     cellCenter.Rowspan = 1;
                     tableContent.AddCell(cellCenter);
 
-                    cellCenter.Phrase = new Phrase(garmentSubconInvoicePacking.Remark, normal_font);
+                    //cellCenter.Phrase = new Phrase(garmentSubconInvoicePacking.Remark, normal_font);
+                    //cellCenter.Rowspan = 1;
+                    //tableContent.AddCell(cellCenter);
+
+                    cellCenter.Phrase = new Phrase(finishedgood, normal_font);
                     cellCenter.Rowspan = 1;
                     tableContent.AddCell(cellCenter);
 
@@ -160,25 +168,48 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             #region TableSignature
 
             PdfPTable tableSignature = new PdfPTable(1);
+            double totalqty = 0;
+            
 
-            cellCenterTopNoBorder.Phrase = new Paragraph("NW  : " + garmentSubconInvoicePacking.NW + " KG", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("GW  : "+garmentSubconInvoicePacking.GW+" KG", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
+            foreach (var a in garmentSubconInvoicePacking.Items)
+			{
+                totalqty += a.Quantity;
+                cellLeftNoBorder.Phrase = new Paragraph("NW  : " + garmentSubconInvoicePacking.NW * totalqty + " KG", normal_font);
+                tableSignature.AddCell(cellLeftNoBorder);
+                cellLeftNoBorder.Phrase = new Paragraph("GW  : " + garmentSubconInvoicePacking.GW * totalqty + " KG", normal_font);
+                tableSignature.AddCell(cellLeftNoBorder);
+                cellLeftNoBorder.Phrase = new Paragraph(" ", normal_font);
+                tableSignature.AddCell(cellLeftNoBorder);
+                cellLeftNoBorder.Phrase = new Paragraph(" ", normal_font);
+                tableSignature.AddCell(cellLeftNoBorder);
+                cellLeftNoBorder.Phrase = new Paragraph(" ", normal_font);
+                tableSignature.AddCell(cellLeftNoBorder);
+                cellLeftNoBorder.Phrase = new Paragraph(" ", normal_font);
+                tableSignature.AddCell(cellLeftNoBorder);
+                cellLeftNoBorder.Phrase = new Paragraph(" ", normal_font);
+                tableSignature.AddCell(cellLeftNoBorder);
+                cellLeftNoBorder.Phrase = new Paragraph(" ", normal_font);
+                tableSignature.AddCell(cellLeftNoBorder);
+            }
 
-            cellLeftNoBorder.Phrase = new Paragraph("(DAN LIRIS)", normal_font);
+            //cellCenterTopNoBorder.Phrase = new Paragraph("NW  : " + garmentSubconInvoicePacking.NW  + " KG", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+            //cellCenterTopNoBorder.Phrase = new Paragraph("GW  : "+garmentSubconInvoicePacking.GW * quantity + " KG", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+            //cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+            //cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+            //cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+            //cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+            //cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+            //cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+
+            cellLeftNoBorder.Phrase = new Paragraph("                      " +"(DAN LIRIS)", normal_font);
             tableSignature.AddCell(cellLeftNoBorder);
 
             PdfPCell cellSignature = new PdfPCell(tableSignature);
