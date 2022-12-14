@@ -106,14 +106,14 @@ namespace Manufactures.Helpers.PDFTemplates
 
             PdfPTable tableContent = new PdfPTable(8);
             List<float> widths = new List<float>();
-            widths.Add(4f);
+            widths.Add(2f);
             widths.Add(3f);
+            widths.Add(5f);
+            widths.Add(5f);
+            widths.Add(2f);
+            widths.Add(2f);
             widths.Add(4f);
             widths.Add(4f);
-            widths.Add(3f);
-            widths.Add(3f);
-            widths.Add(4f);
-            widths.Add(6f);
 
             tableContent.SetWidths(widths.ToArray());
 

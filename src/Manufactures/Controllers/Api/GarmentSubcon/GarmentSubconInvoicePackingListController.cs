@@ -7,6 +7,7 @@ using Manufactures.Domain.GarmentSubcon.InvoicePackingList;
 using Manufactures.Domain.GarmentSubcon.InvoicePackingList.Commands;
 using Manufactures.Domain.GarmentSubcon.InvoicePackingList.ReadModels;
 using Manufactures.Domain.GarmentSubcon.InvoicePackingList.Repositories;
+using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
 using Manufactures.Helpers.PDFTemplates;
 using Manufactures.Dtos.GarmentSubcon;
 using Microsoft.AspNetCore.Authorization;
@@ -29,11 +30,13 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
     {
         private readonly ISubconInvoicePackingListRepository subconInvoicePackingListRepository;
         private readonly ISubconInvoicePackingListItemRepository subconInvoicePackingListItemRepository;
+        private readonly IGarmentSubconContractRepository garmentSubconContractRepository;
 
         public GarmentSubconInvoicePackingListController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             subconInvoicePackingListRepository = Storage.GetRepository<ISubconInvoicePackingListRepository>();
             subconInvoicePackingListItemRepository = Storage.GetRepository<ISubconInvoicePackingListItemRepository>();
+            garmentSubconContractRepository = Storage.GetRepository<IGarmentSubconContractRepository>();
         }
 
         [HttpGet]
@@ -168,7 +171,9 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             }
             ).FirstOrDefault();
-            var stream = GarmentSubconInvoicePackingListPDFTemplate.Generate(garmentSubconInvoicePackingListDto);
+
+            var finishedgood = garmentSubconContractRepository.Find(a => a.Identity == garmentSubconInvoicePackingListDto.SubconContractId).Select(a => a.FinishedGoodType).FirstOrDefault();
+            var stream = GarmentSubconInvoicePackingListPDFTemplate.Generate(garmentSubconInvoicePackingListDto, finishedgood);
 
             return new FileStreamResult(stream, "application/pdf")
             {

@@ -22,6 +22,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
         public double GW { get; private set; }
         public string Remark { get; private set; }
         public string BuyerStaff { get; set; }
+        public Guid SubconContractId { get; private set; }
 
         public SubconInvoicePackingList(SubconInvoicePackingListReadModel readModel):base(readModel)
         {
@@ -37,9 +38,10 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
             GW = readModel.GW;
             Remark = readModel.Remark;
             BuyerStaff = readModel.BuyerStaff;
+            SubconContractId = ReadModel.SubconContractId;
         }
 
-        public SubconInvoicePackingList(Guid identity, string invoiceNo,string bcType, DateTimeOffset date, SupplierId supplierId, string supplierCode, string supplierName, string supplierAddress, string contractNo, double nw,double gw, string keterangan, string buyerStaff) : base(identity)
+        public SubconInvoicePackingList(Guid identity, string invoiceNo,string bcType, DateTimeOffset date, SupplierId supplierId, string supplierCode, string supplierName, string supplierAddress, string contractNo, double nw,double gw, string keterangan, string buyerStaff, Guid subconContractId) : base(identity)
         {
             Identity = Identity;
             InvoiceNo = invoiceNo;
@@ -54,6 +56,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
             GW = gw;
             Remark= keterangan;
             BuyerStaff = buyerStaff;
+            SubconContractId = subconContractId;
 
             ReadModel = new SubconInvoicePackingListReadModel(Identity)
             {
@@ -62,13 +65,14 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
                 Date = Date,
                 SupplierId = SupplierId.Value,
                 SupplierCode = SupplierCode,
-                SupplierName = SupplierCode,
+                SupplierName = SupplierName,
                 SupplierAddress = SupplierAddress,
                 ContractNo = ContractNo,
                 NW = NW,
                 GW = GW,
                 Remark = Remark,
                 BuyerStaff = BuyerStaff,
+                SubconContractId = SubconContractId,
             };
 
             ReadModel.AddDomainEvent(new OnSubconPackingListPlaced(Identity));

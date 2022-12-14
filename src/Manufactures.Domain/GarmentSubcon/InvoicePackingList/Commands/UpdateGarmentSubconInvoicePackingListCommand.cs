@@ -21,6 +21,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.Commands
         public double NW { get; set; }
         public double GW { get; set; }
         public string Remark { get; set; }
+        public Guid SubconContractId { get; set; }
         public List<SubconInvoicePackingListItemValueObject> Items { get; set; }
         public void SetIdentity(Guid id)
         {
