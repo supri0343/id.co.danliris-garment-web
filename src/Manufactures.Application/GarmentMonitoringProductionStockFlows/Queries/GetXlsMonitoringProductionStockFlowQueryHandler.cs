@@ -4256,7 +4256,124 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
                 }).AsEnumerable();
 
-            var queryUnion = querySumAwal.Union(QuerySubconIn).Union(QuerySubconOut).AsEnumerable();
+
+            var unionSubcon = QuerySubconIn.Union(QuerySubconOut).AsEnumerable();
+
+            //var BasicPrices = (from a in sumbasicPrice
+            //                   join b in sumFCs on a.RO equals b.RO into sumFCes
+            //                   from bb in sumFCes.DefaultIfEmpty()
+            //                   join c in queryBalance on a.RO equals c.Ro into queryBalances
+            //                   from cc in queryBalances.DefaultIfEmpty()
+            //                   where ros.Contains(a.RO)
+            //                   select new
+
+            var QuerySubcon = (from a in unionSubcon
+                               join b in queryGroup on a.ro equals b.Ro into querResu
+                               from bb in querResu.DefaultIfEmpty()
+                               select new
+                               {
+                                   Article = bb== null ? "" : bb.Article,
+                                   Comodity = bb == null ? "" : bb.Comodity,
+                                   FC = bb == null ? 0 : bb.FC,
+                                   BasicPrice = bb == null ? 0 : bb.BasicPrice,
+                                   Fare = bb == null ? 0 : bb.Fare,
+                                   FareNew = bb == null ? 0 : bb.FareNew,
+                                   a.ro,
+                                   a.beginingbalancesubcon,
+                                   a.beginingbalancesubconPrice,
+                                   a.subconIn,
+                                   a.subconInPrice,
+                                   a.subconout,
+                                   a.subconoutPrice,
+                               })
+                .GroupBy(x => new { x.FareNew, x.Fare, x.BasicPrice, x.FC, x.ro, x.Article, x.Comodity }, (key, group) => new monitoringUnionView
+                {
+                    ro = key.ro,
+                    article = key.Article,
+                    comodity = key.Comodity,
+                    fc = key.FC,
+                    fare = key.Fare,
+                    farenew = key.FareNew,
+                    basicprice = key.BasicPrice,
+                    qtycutting = 0,
+                    priceCuttingOut = 0,
+                    qtCuttingSubkon = 0,
+                    priceCuttingSubkon = 0,
+                    qtyCuttingTransfer = 0,
+                    priceCuttingTransfer = 0,
+                    qtyCuttingIn = 0,
+                    priceCuttingIn = 0,
+                    begining = 0,
+                    beginingcuttingPrice = 0,
+                    qtyavalsew = 0,
+                    priceavalsew = 0,
+                    qtyavalcut = 0,
+                    priceavalcut = 0,
+                    beginingloading = 0,
+                    beginingloadingPrice = 0,
+                    qtyLoadingIn = 0,
+                    priceLoadingIn = 0,
+                    qtyloading = 0,
+                    priceloading = 0,
+                    qtyLoadingAdj = 0,
+                    priceLoadingAdj = 0,
+                    beginingSewing = 0,
+                    beginingSewingPrice = 0,
+                    sewingIn = 0,
+                    sewingInPrice = 0,
+                    sewingintransfer = 0,
+                    sewingintransferPrice = 0,
+                    sewingout = 0,
+                    sewingoutPrice = 0,
+                    sewingretur = 0,
+                    sewingreturPrice = 0,
+                    wipsewing = 0,
+                    wipsewingPrice = 0,
+                    wipfinishing = 0,
+                    wipfinishingPrice = 0,
+                    sewingadj = 0,
+                    sewingadjPrice = 0,
+                    finishingin = 0,
+                    finishinginPrice = 0,
+                    finishingintransfer = 0,
+                    finishingintransferPrice = 0,
+                    finishingadj = 0,
+                    finishingadjPrice = 0,
+                    finishingout = 0,
+                    finishingoutPrice = 0,
+                    finishinigretur = 0,
+                    finishinigreturPrice = 0,
+                    beginingbalanceFinishing = 0,
+                    beginingbalanceFinishingPrice = 0,
+                    beginingbalancesubcon = group.Sum(s => s.beginingbalancesubcon),
+                    beginingbalancesubconPrice = group.Sum(s => s.beginingbalancesubconPrice),
+                    subconIn = group.Sum(s => s.subconIn),
+                    subconInPrice = group.Sum(s => s.subconInPrice),
+                    subconout = group.Sum(s => s.subconout),
+                    subconoutPrice = group.Sum(s => s.subconoutPrice),
+                    exportQty = 0,
+                    exportPrice = 0,
+                    otherqty = 0,
+                    otherprice = 0,
+                    sampleQty = 0,
+                    samplePrice = 0,
+                    expendAdj = 0,
+                    expendAdjPrice = 0,
+                    expendRetur = 0,
+                    expendReturPrice = 0,
+                    //finishinginqty =group.Sum(s=>s.FinishingInQty)
+                    beginingBalanceExpenditureGood = 0,
+                    beginingBalanceExpenditureGoodPrice = 0,
+                    expenditureInTransfer = 0,
+                    expenditureInTransferPrice = 0,
+                    qtyloadingInTransfer = 0,
+                    priceloadingInTransfer = 0
+
+
+
+                }).AsEnumerable();
+
+            var queryUnion = querySumAwal.Union(QuerySubcon).AsEnumerable();
 
             var querySum = queryUnion.GroupBy(x => new { x.farenew, x.fare, x.basicprice, x.fc, x.ro, x.article, x.comodity }, (key, group) => new monitoringUnionView
             {
