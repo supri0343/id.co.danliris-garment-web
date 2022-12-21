@@ -27,6 +27,10 @@ namespace Manufactures.Domain.GarmentAvalProducts.ValueObjects
         public double BasicPrice { get; set; }
         public double PreparingQuantity { get; set; }
         public bool IsReceived { get; set; }
+        public string BCNo { get;  set; }
+        public DateTime BCDate { get;  set; }
+        public string POSerialNumber { get;  set; }
+        public string BCType { get; set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

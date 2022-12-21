@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20221219045748_Add-Coloum-BC-AvalProductItems")]
+    partial class AddColoumBCAvalProductItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -316,8 +318,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTime>("BCDate");
 
                     b.Property<string>("BCNo");
-
-                    b.Property<string>("BCType");
 
                     b.Property<double>("BasicPrice");
 

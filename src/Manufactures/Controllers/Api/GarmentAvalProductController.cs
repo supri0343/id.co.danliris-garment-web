@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Infrastructure.External.DanLirisClient.Microservice.Cache;
 using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
+using Manufactures.Application.GarmentAvalProducts.Queries.GetForLoaderAval_BC;
 using Manufactures.Domain.GarmentAvalProducts.Commands;
 using Manufactures.Domain.GarmentAvalProducts.Repositories;
 using Manufactures.Domain.GarmentPreparings.Commands;
@@ -197,6 +198,21 @@ namespace Manufactures.Controllers.Api
             var order = await Mediator.Send(command);
 
             return Ok();
+        }
+
+        [HttpGet("with-bc")]
+        public async Task<IActionResult> GetAvalProductWithBC(int unit, string ro, int page = 1, int size = 25)
+        {
+            VerifyUser();
+            GetForLoaderAval_BCQuery query = new GetForLoaderAval_BCQuery(unit, ro, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.getForLoaderAval_BCDtos, info: new
+            {
+                page,
+                size,
+                viewModel.count
+            });
         }
     }
 }

@@ -25,6 +25,11 @@ namespace Manufactures.Domain.GarmentAvalProducts.ReadModels
         public double BasicPrice { get; internal set; }
         public bool IsReceived { get; internal set; }
 		public string UId { get; set; }
-		public virtual GarmentAvalProductReadModel GarmentAvalProductIdentity { get; internal set; }
+        public string BCNo { get; internal set; }
+        public DateTime? BCDate { get; internal set; }
+        public string POSerialNumber { get; internal set; }
+        public string BCType { get; internal set; }
+
+        public virtual GarmentAvalProductReadModel GarmentAvalProductIdentity { get; internal set; }
     }
 }

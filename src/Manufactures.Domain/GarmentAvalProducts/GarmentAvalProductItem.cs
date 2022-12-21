@@ -23,8 +23,13 @@ namespace Manufactures.Domain.GarmentAvalProducts
         public string UomUnit { get; private set; }
         public double BasicPrice { get; private set; }
         public bool IsReceived { get; private set; }
+        public string BCNo { get; private set; }
+        public DateTime? BCDate { get; private set; }
+        public string POSerialNumber { get; private set; }
+        public string BCType { get; private set; }
 
-        public GarmentAvalProductItem(Guid identity, Guid apId, GarmentPreparingId preparingId, GarmentPreparingItemId preparingItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, double basicPrice, bool isReceived) : base(identity)
+
+        public GarmentAvalProductItem(Guid identity, Guid apId, GarmentPreparingId preparingId, GarmentPreparingItemId preparingItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, double basicPrice, bool isReceived, string bcno, DateTime? bcdate, string poSerialNumber,string bctype) : base(identity)
         {
             this.MarkTransient();
 
@@ -41,6 +46,10 @@ namespace Manufactures.Domain.GarmentAvalProducts
             UomUnit = uomUnit;
             BasicPrice = basicPrice;
             IsReceived = isReceived;
+            BCNo = bcno;
+            BCDate = bcdate;
+            POSerialNumber = poSerialNumber;
+            BCType = bctype;
 
             ReadModel = new GarmentAvalProductItemReadModel(Identity)
             {
@@ -55,8 +64,12 @@ namespace Manufactures.Domain.GarmentAvalProducts
                 UomId = UomId.Value,
                 UomUnit = UomUnit,
                 BasicPrice=BasicPrice,
-                IsReceived=IsReceived
-            };
+                IsReceived=IsReceived,
+                BCNo = BCNo,
+                BCDate = BCDate,
+                POSerialNumber = POSerialNumber,
+                BCType = BCType,
+        };
             ReadModel.AddDomainEvent(new OnGarmentAvalProductPlaced(this.Identity));
         }
 
@@ -74,6 +87,10 @@ namespace Manufactures.Domain.GarmentAvalProducts
             UomUnit = ReadModel.UomUnit;
             BasicPrice = ReadModel.BasicPrice;
             IsReceived = ReadModel.IsReceived;
+            BCNo = ReadModel.BCNo;
+            BCDate = ReadModel.BCDate;
+            POSerialNumber = ReadModel.POSerialNumber;
+            BCType = ReadModel.BCType;
         }
 
         public void setPreparingId(GarmentPreparingId newPreparingId)
@@ -182,6 +199,45 @@ namespace Manufactures.Domain.GarmentAvalProducts
             {
                 this.IsReceived = IsReceived;
                 ReadModel.IsReceived = IsReceived;
+            }
+        }
+
+        public void SetBCNo(string newBCNo)
+        {
+            //Validator.ThrowIfNullOrEmpty(() => newBCNo);
+            if (newBCNo != BCNo)
+            {
+                BCNo = newBCNo;
+                ReadModel.BCNo = newBCNo;
+            }
+        }
+
+        public void SetBCDate(DateTime newBCDate)
+        {
+            if (newBCDate != BCDate)
+            {
+                BCDate = newBCDate;
+                ReadModel.BCDate = newBCDate;
+            }
+        }
+
+        public void SetPOSerialNumber(string newPOSerialNumber)
+        {
+            //Validator.ThrowIfNullOrEmpty(() => newPOSerialNumber);
+            if (newPOSerialNumber != POSerialNumber)
+            {
+                POSerialNumber = newPOSerialNumber;
+                ReadModel.POSerialNumber = newPOSerialNumber;
+            }
+        }
+
+        public void SetBCType(string newBCType)
+        {
+            //Validator.ThrowIfNullOrEmpty(() => newBCNo);
+            if (newBCType != BCType)
+            {
+                BCType = newBCType;
+                ReadModel.BCType = newBCType;
             }
         }
 

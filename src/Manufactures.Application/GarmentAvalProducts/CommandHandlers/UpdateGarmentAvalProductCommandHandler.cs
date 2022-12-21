@@ -56,10 +56,14 @@ namespace Manufactures.Application.GarmentAvalProducts.CommandHandlers
                 dbItem.setQuantity(item.Quantity);
                 dbItem.setUomId(new UomId(item.Uom.Id));
                 dbItem.setUomUnit(item.Uom.Unit);
+                dbItem.SetBCNo(item.BCNo);
+                dbItem.SetBCDate(item.BCDate);
+                dbItem.SetPOSerialNumber(item.POSerialNumber);
+                dbItem.SetBCType(item.BCType);
                 await _garmentAvalProductItemRepository.Update(dbItem);
             }
 
-            addedItems.Select(x => new GarmentAvalProductItem(Guid.NewGuid(), garmentAvalProduct.Identity, x.PreparingId, x.PreparingItemId, new ProductId(x.Product.Id), x.Product.Code, x.Product.Name, x.DesignColor, x.Quantity, new UomId(x.Uom.Id), x.Uom.Unit, x.BasicPrice, x.IsReceived)).ToList()
+            addedItems.Select(x => new GarmentAvalProductItem(Guid.NewGuid(), garmentAvalProduct.Identity, x.PreparingId, x.PreparingItemId, new ProductId(x.Product.Id), x.Product.Code, x.Product.Name, x.DesignColor, x.Quantity, new UomId(x.Uom.Id), x.Uom.Unit, x.BasicPrice, x.IsReceived,x.BCNo,x.BCDate,x.POSerialNumber,x.BCType)).ToList()
                 .ForEach(async x => await _garmentAvalProductItemRepository.Update(x));
 
             foreach (var item in deletedItems)
