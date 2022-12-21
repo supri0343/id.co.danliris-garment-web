@@ -350,8 +350,12 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
 		public async Task<GarmentMonitoringProductionStockFlowListViewModel> Handle(GetMonitoringProductionStockFlowQuery request, CancellationToken cancellationToken)
 		{
-			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
-			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
+            //DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
+            //DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
+
+            DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
+            DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
+
             DateTimeOffset dateBalance = (from a in garmentBalanceProductionStockRepository.Query.OrderByDescending(s => s.CreatedDate)
                                           select a.CreatedDate).FirstOrDefault();
             DateTimeOffset dateFareNew = dateTo.AddDays(1);
