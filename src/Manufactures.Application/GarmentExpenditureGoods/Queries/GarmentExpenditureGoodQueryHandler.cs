@@ -159,7 +159,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 
 
 			var QueryRo = (from a in garmentExpenditureGoodRepository.Query
-									where a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) && a.ExpenditureDate  >= dateFrom && a.ExpenditureDate <= dateTo
+									where a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) && a.ExpenditureDate.AddHours(7) >= dateFrom && a.ExpenditureDate.AddHours(7) <= dateTo
 									select a.RONo).Distinct();
 		 
 			List<string> _ro = new List<string>();
