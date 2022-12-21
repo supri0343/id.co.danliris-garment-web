@@ -185,7 +185,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 
 			var sumFCs = (from a in garmentCuttingInRepository.Query
 						  where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" &&
-						 a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) && a.CuttingInDate <= dateTo
+						 a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) && a.CuttingInDate.AddHours(7) <= dateTo
 						  join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
 						  join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
 						  select new { a.FC, a.RONo, FCs = Convert.ToDouble(c.CuttingInQuantity * a.FC), c.CuttingInQuantity })
@@ -197,10 +197,10 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 						   AvgFC = group.Sum(s => (s.FCs)) / group.Sum(s => s.CuttingInQuantity)
 					   });
             var Query = from a in (from aa in garmentExpenditureGoodRepository.Query
-								   where aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.ExpenditureDate >= dateFrom && aa.ExpenditureDate <= dateTo
+								   where aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.ExpenditureDate.AddHours(7) >= dateFrom && aa.ExpenditureDate.AddHours(7) <= dateTo
 								   select aa)
 								   join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
-						where a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) && a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo
+						//where a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) && a.ExpenditureDate.Date >= dateFrom.Date && a.ExpenditureDate <= dateTo
 						
 						//Enhance Jason Aug 2021
 						//select new monitoringView { fc = (from aa in sumFCs where aa.RO == a.RONo select aa.FC / aa.Count).FirstOrDefault(),
