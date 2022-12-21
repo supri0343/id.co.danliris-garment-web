@@ -14,7 +14,6 @@ namespace Manufactures.Dtos
 
             LastModifiedDate = garmentAvalProductItem.AuditTrail.ModifiedDate ?? garmentAvalProductItem.AuditTrail.CreatedDate;
             LastModifiedBy = garmentAvalProductItem.AuditTrail.ModifiedBy ?? garmentAvalProductItem.AuditTrail.CreatedBy;
-
             APId = garmentAvalProductItem.APId;
             PreparingId = new GarmentPreparing(garmentAvalProductItem.PreparingId.Value, "", "");
             PreparingItemId = new GarmentPreparingItem(garmentAvalProductItem.PreparingItemId.Value, null, "", 0);
@@ -24,6 +23,11 @@ namespace Manufactures.Dtos
             Uom = new Uom(garmentAvalProductItem.UomId.Value, garmentAvalProductItem.UomUnit);
             BasicPrice = garmentAvalProductItem.BasicPrice;
             IsReceived = garmentAvalProductItem.IsReceived;
+            BCNo = garmentAvalProductItem.BCNo;
+            BCDate = garmentAvalProductItem.BCDate;
+            POSerialNumber = garmentAvalProductItem.POSerialNumber;
+            BCType = garmentAvalProductItem.BCType;
+
         }
 
         public Guid Id { get; set; }
@@ -41,5 +45,10 @@ namespace Manufactures.Dtos
         public Uom Uom { get; set; }
         public double BasicPrice { get; set; }
         public bool IsReceived { get; set; }
+        public string BCNo { get; set; }
+        public DateTime? BCDate { get; set; }
+        public string POSerialNumber { get; set; }
+        public string BCType { get; set; }
+
     }
 }

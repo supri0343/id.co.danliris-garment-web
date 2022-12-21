@@ -189,7 +189,7 @@ namespace Manufactures.Tests.Queries.GarmentPreparings.WIP
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentAvalProductItemReadModel>
                 {
-                    new GarmentAvalProductItem(guidAvalProductItem,guidAvalProduct,new GarmentPreparingId(guidPreparing.ToString()),new GarmentPreparingItemId(guidPreparingItem.ToString()),new Domain.GarmentAvalProducts.ValueObjects.ProductId(1),"","","",9,new Domain.GarmentAvalProducts.ValueObjects.UomId(1),"",1,false).GetReadModel()
+                    new GarmentAvalProductItem(guidAvalProductItem,guidAvalProduct,new GarmentPreparingId(guidPreparing.ToString()),new GarmentPreparingItemId(guidPreparingItem.ToString()),new Domain.GarmentAvalProducts.ValueObjects.ProductId(1),"","","",9,new Domain.GarmentAvalProducts.ValueObjects.UomId(1),"",1,false,"",DateTime.Now,"","").GetReadModel()
                 }.AsQueryable());
             _mockGarmentAvalProductRepository
                 .Setup(s => s.Query)
