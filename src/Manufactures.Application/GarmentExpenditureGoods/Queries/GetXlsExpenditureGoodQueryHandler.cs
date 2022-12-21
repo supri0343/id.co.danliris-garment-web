@@ -158,9 +158,9 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 		public async Task<MemoryStream> Handle(GetXlsExpenditureGoodQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
-			dateFrom.AddHours(7);
+			//dateFrom.AddHours(7);
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
-			dateTo = dateTo.AddHours(7);
+			//dateTo = dateTo.AddHours(7);
 
 
 			var QueryRo = (from a in garmentExpenditureGoodRepository.Query

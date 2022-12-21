@@ -153,9 +153,9 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 		public async Task<GarmentMonitoringExpenditureGoodListViewModel> Handle(GetMonitoringExpenditureGoodQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
-			dateFrom.AddHours(7);
+			//dateFrom.AddHours(-7);
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
-			dateTo = dateTo.AddHours(7);
+			//dateTo = dateTo.AddHours(-7);
 
 
 			var QueryRo = (from a in garmentExpenditureGoodRepository.Query
@@ -204,12 +204,19 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 						
 						//Enhance Jason Aug 2021
 						//select new monitoringView { fc = (from aa in sumFCs where aa.RO == a.RONo select aa.FC / aa.Count).FirstOrDefault(),
-						select new monitoringView { fc = (from aa in sumFCs where aa.RO == a.RONo select aa.AvgFC).FirstOrDefault(),
+						select new monitoringView { 
+							fc = (from aa in sumFCs where aa.RO == a.RONo select aa.AvgFC).FirstOrDefault(),
 							//price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()),
 							price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.AvgBasicPrice).FirstOrDefault()),
 							buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(),
-                            buyerArticle = a.BuyerCode + " " + a.Article, roNo = a.RONo, expenditureDate = a.ExpenditureDate, expenditureGoodNo = a.ExpenditureGoodNo,
-                            expenditureGoodType = a.ExpenditureType, invoice = a.Invoice, colour = b.Description, qty = b.Quantity,
+                            buyerArticle = a.BuyerCode + " " + a.Article,
+							roNo = a.RONo,
+							expenditureDate = a.ExpenditureDate,
+							expenditureGoodNo = a.ExpenditureGoodNo,
+                            expenditureGoodType = a.ExpenditureType,
+							invoice = a.Invoice,
+							colour = b.Description,
+							qty = b.Quantity,
                             name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(),
                             unitname = a.UnitName};
 
