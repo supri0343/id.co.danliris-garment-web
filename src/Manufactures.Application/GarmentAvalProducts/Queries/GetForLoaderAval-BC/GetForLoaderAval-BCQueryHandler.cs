@@ -52,6 +52,7 @@ namespace Manufactures.Application.GarmentAvalProducts.Queries.GetForLoaderAval_
             public Uom Uom { get; set; }
             public double BasicPrice { get; set; }
             public string UENNo { get; set; }
+            public string Article { get; set; }
             public int UENItemId { get; set; }
             public DateTimeOffset? ProcessDate { get; set; }
         }
@@ -95,7 +96,7 @@ namespace Manufactures.Application.GarmentAvalProducts.Queries.GetForLoaderAval_
             var QueryPrep = (from a in _garmentPreparingRepository.Query
                          join b in _garmentPreparingItemRepository.Query
                          on a.Identity equals b.GarmentPreparingId
-                         where a.RONo == request.ro && a.UnitId == request.unit && b.RemainingQuantity > 0
+                         where a.RONo == request.ro && a.UnitId == (request.unit == null ? a.UnitId : request.unit) && b.RemainingQuantity > 0
                          select new ViewModel
                          {
                              preparingId = a.Identity,
@@ -107,7 +108,8 @@ namespace Manufactures.Application.GarmentAvalProducts.Queries.GetForLoaderAval_
                              BasicPrice = b.BasicPrice,
                              UENNo = a.UENNo,
                              UENItemId = b.UENItemId,
-                             ProcessDate = a.ProcessDate
+                             ProcessDate = a.ProcessDate,
+                             Article = a.Article
 
                          }).ToList();
 
@@ -135,7 +137,8 @@ namespace Manufactures.Application.GarmentAvalProducts.Queries.GetForLoaderAval_
                     bcdate = bc != null ? bc.bcdate : null,
                     bctype = bc != null ? bc.bctype : "-",
                     poSerialNumber = bc != null ? bc.poSerialNumber : "-",
-                    ProcessDate = a.ProcessDate
+                    ProcessDate = a.ProcessDate,
+                    article = a.Article
                     
                 };
 

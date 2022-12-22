@@ -458,7 +458,7 @@ namespace Manufactures.Controllers.Api
         }
 
         [HttpGet("with-bc")]
-        public async Task<IActionResult> GetAvalProductWithBC(int unit, string ro, int page = 1, int size = 25)
+        public async Task<IActionResult> GetAvalProductWithBC(int? unit, string ro, int page = 1, int size = 25)
         {
             VerifyUser();
             GetForLoaderAval_BCQuery query = new GetForLoaderAval_BCQuery(unit, ro, WorkContext.Token);

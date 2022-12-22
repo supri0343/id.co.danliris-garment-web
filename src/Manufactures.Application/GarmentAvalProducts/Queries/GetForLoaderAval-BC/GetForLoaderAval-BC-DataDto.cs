@@ -27,6 +27,7 @@ namespace Manufactures.Application.GarmentAvalProducts.Queries.GetForLoaderAval_
         public string poSerialNumber { get; set; }
         public DateTimeOffset? ProcessDate { get; set; }
         public string bctype { get;  set; }
+        public string article { get; set; }
         //public int UomId { get; set; }
         //public string UomUnit { get; set; }
         //public Guid preparingId { get; set; }
@@ -44,6 +45,7 @@ namespace Manufactures.Application.GarmentAvalProducts.Queries.GetForLoaderAval_
             poSerialNumber = getForLoaderAval_BCDto.poSerialNumber;
             ProcessDate = getForLoaderAval_BCDto.ProcessDate;
             bctype = getForLoaderAval_BCDto.bctype;
+            article = getForLoaderAval_BCDto.article;
             //Uom = new Uom(getForLoaderAval_BCDto.UomId, getForLoaderAval_BCDtok.UomUnit);
         }
     }
