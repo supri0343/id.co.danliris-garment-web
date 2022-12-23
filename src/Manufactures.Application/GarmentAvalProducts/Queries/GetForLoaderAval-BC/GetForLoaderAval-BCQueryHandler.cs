@@ -146,7 +146,8 @@ namespace Manufactures.Application.GarmentAvalProducts.Queries.GetForLoaderAval_
 
             }
 
-            data.getForLoaderAval_BCDtos = getForLoaderAval_BCDto;
+            var dataDistinct = getForLoaderAval_BCDto.Distinct().ToList();
+            data.getForLoaderAval_BCDtos = dataDistinct;
 
             //data.getForLoaderAval_BCDtos = QueryAvalList;
             //data.getForLoaderAval_BC_BCNoDtos = BClist;
