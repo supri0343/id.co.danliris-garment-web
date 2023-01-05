@@ -134,7 +134,7 @@ namespace Manufactures.Application.GarmentAvalProducts.Queries.GetForLoaderAval_
                     Uom = a.Uom,
                     BasicPrice = a.BasicPrice,
                     bcno = bc != null ? bc.bcno : "-",
-                    bcdate = bc != null ? bc.bcdate : null,
+                    bcdate = bc != null ? (bc.bcdate != DateTime.MinValue ? bc.bcdate : null) : null,
                     bctype = bc != null ? bc.bctype : "-",
                     poSerialNumber = bc != null ? bc.poSerialNumber : "-",
                     ProcessDate = a.ProcessDate,
