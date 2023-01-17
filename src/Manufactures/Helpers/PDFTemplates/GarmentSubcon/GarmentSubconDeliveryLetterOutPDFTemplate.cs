@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
@@ -110,7 +111,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase("Satuan", bold_font);
                 tableContent.AddCell(cellCenter);
-                
+
 
 
                 //for (int indexItem = 0; indexItem < garmentSubconDLOut.Items.Count; indexItem++)
@@ -120,30 +121,104 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 //    cellCenter.Phrase = new Phrase((indexItem + 1).ToString(), normal_font);
                 //    tableContent.AddCell(cellCenter);
 
+                List<GarmentSubconSewingItemVM> itemData = new List<GarmentSubconSewingItemVM>();
+                foreach (var DLItem in garmentSubconDLOut.Items)
+                {
+                    foreach (var item in DLItem.SubconSewing.Items)
+                    {
+                        foreach (var detail in item.Details)
+                        {
+                            var data = itemData.FirstOrDefault(x => x.RoNo == item.RONo);
+
+                            GarmentSubconSewingItemVM garmentSubconSewingItemVM = new GarmentSubconSewingItemVM();
+                            garmentSubconSewingItemVM.RoNo = item.RONo;
+                            garmentSubconSewingItemVM.Article = item.Article;
+                            garmentSubconSewingItemVM.Comodity = item.Comodity.Code + " - " + item.Comodity.Name;
+
+                            if (data == null)
+                            {
+                                garmentSubconSewingItemVM.DesignColor = detail.DesignColor;
+                                garmentSubconSewingItemVM.Color = detail.Color;
+                                garmentSubconSewingItemVM.Unit = detail.Unit.Code;
+                                garmentSubconSewingItemVM.Quantity = detail.Quantity;
+                                garmentSubconSewingItemVM.UomUnit = detail.Uom.Unit;
+                                garmentSubconSewingItemVM.Remark = detail.Remark;
+                                garmentSubconSewingItemVM.UnitName = item.Unit.Name;
+                                itemData.Add(garmentSubconSewingItemVM);
+                            }
+                            else
+                            {
+                                data.Quantity += detail.Quantity;
+                            }
+                        }
+                    }
+                }
+
                 int indexItem = 0;
                 foreach (var DLItem in garmentSubconDLOut.Items)
                 {
                     var cols = DLItem.SubconSewing.Items.Count;
-                    foreach (var item in DLItem.SubconSewing.Items)
+                    //foreach (var item in DLItem.SubconSewing.Items)
+                    //{
+                    //    if (cols > 0)
+                    //    {
+                    //        cellCenter.Phrase = new Phrase((indexItem + 1).ToString(), normal_font);
+                    //        //cellCenter.Rowspan = cols;
+                    //        cellCenter.VerticalAlignment = Element.ALIGN_TOP;
+                    //        tableContent.AddCell(cellCenter);
+                    //        indexItem++;
+
+                    //        cellLeft.Phrase = new Phrase("GARMENT WASH", normal_font);
+                    //        tableContent.AddCell(cellLeft);
+
+                    //        cellLeft.Phrase = new Phrase($"{DLItem.SubconNo}", normal_font);
+                    //        tableContent.AddCell(cellLeft);
+
+                    //        cellCenter.Phrase = new Phrase($"{item.Article}", normal_font);
+                    //        tableContent.AddCell(cellCenter);
+
+                    //        cellCenter.Phrase = new Phrase($"{item.Comodity.Name}", normal_font);
+                    //        tableContent.AddCell(cellCenter);
+
+                    //        //cellCenter.Phrase = new Phrase($"{DLItem.DesignColor}", normal_font);
+                    //        //tableContent.AddCell(cellCenter);
+                    //    }
+
+                    //    cellRight.Phrase = new Phrase($"{DLItem.QtyPacking}", normal_font);
+                    //    tableContent.AddCell(cellRight);
+
+                    //    cellLeft.Phrase = new Phrase($"{DLItem.UomSatuanUnit}", normal_font);
+                    //    tableContent.AddCell(cellLeft);
+
+                    //    cellRight.Phrase = new Phrase($"{DLItem.Quantity}", normal_font);
+                    //    tableContent.AddCell(cellRight);
+
+                    //    cellLeft.Phrase = new Phrase("PCS", normal_font);
+                    //    tableContent.AddCell(cellLeft);
+
+                    //    total += DLItem.Quantity;
+                    //}
+
+                    foreach (var item in itemData)
                     {
                         if (cols > 0)
                         {
                             cellCenter.Phrase = new Phrase((indexItem + 1).ToString(), normal_font);
-							//cellCenter.Rowspan = cols;
-							cellCenter.VerticalAlignment = Element.ALIGN_TOP;
-							tableContent.AddCell(cellCenter);
+                            //cellCenter.Rowspan = cols;
+                            cellCenter.VerticalAlignment = Element.ALIGN_TOP;
+                            tableContent.AddCell(cellCenter);
                             indexItem++;
 
                             cellLeft.Phrase = new Phrase("GARMENT WASH", normal_font);
                             tableContent.AddCell(cellLeft);
 
-                            cellLeft.Phrase = new Phrase($"{DLItem.SubconNo}", normal_font);
+                            cellLeft.Phrase = new Phrase($"{item.RoNo}", normal_font);
                             tableContent.AddCell(cellLeft);
 
                             cellCenter.Phrase = new Phrase($"{item.Article}", normal_font);
                             tableContent.AddCell(cellCenter);
 
-                            cellCenter.Phrase = new Phrase($"{item.Comodity.Name}", normal_font);
+                            cellCenter.Phrase = new Phrase($"{item.Comodity}", normal_font);
                             tableContent.AddCell(cellCenter);
 
                             //cellCenter.Phrase = new Phrase($"{DLItem.DesignColor}", normal_font);
@@ -156,14 +231,18 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                         cellLeft.Phrase = new Phrase($"{DLItem.UomSatuanUnit}", normal_font);
                         tableContent.AddCell(cellLeft);
 
-                        cellRight.Phrase = new Phrase($"{DLItem.Quantity}", normal_font);
+                        cellRight.Phrase = new Phrase($"{item.Quantity}", normal_font);
                         tableContent.AddCell(cellRight);
 
                         cellLeft.Phrase = new Phrase("PCS", normal_font);
                         tableContent.AddCell(cellLeft);
 
-                        total += DLItem.Quantity;
+                        total += item.Quantity;
                     }
+
+
+
+
                 }
 
                 cellLeft.Phrase = new Phrase("TOTAL", bold_font);

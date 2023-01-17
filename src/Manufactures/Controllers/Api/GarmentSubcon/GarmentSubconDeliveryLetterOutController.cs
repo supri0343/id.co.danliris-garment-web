@@ -213,7 +213,12 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                     SubconSewing = _garmentServiceSubconSewingRepository.Find(o => o.Identity == subconItem.SubconId).Select(sSewing => new GarmentServiceSubconSewingDto(sSewing)
                     {
                         Items = _garmentServiceSubconSewingItemRepository.Find(o => o.ServiceSubconSewingId == sSewing.Identity).Select(sSewingItem => new GarmentServiceSubconSewingItemDto(sSewingItem)
-                        {}).ToList()
+                        {
+                            Details = _garmentServiceSubconSewingDetailRepository.Find(o => o.ServiceSubconSewingItemId == sSewingItem.Identity).Select(subconDetail => new GarmentServiceSubconSewingDetailDto(subconDetail)
+                            {
+
+                            }).ToList()
+                        }).ToList()
                     }).FirstOrDefault()
 
                 }).ToList()
