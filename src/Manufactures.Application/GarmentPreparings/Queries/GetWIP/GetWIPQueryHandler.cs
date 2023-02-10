@@ -35,6 +35,7 @@ using Manufactures.Domain.GarmentSample.SampleFinishingOuts.Repositories;
 using Manufactures.Domain.GarmentSample.SampleAvalProducts.Repositories;
 using Manufactures.Domain.GarmentSample.SampleAvalComponents.Repositories;
 using Manufactures.Domain.GarmentSample.SampleDeliveryReturns.Repositories;
+using Manufactures.Domain.GarmentSewingDOs.Repositories;
 
 namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
 {
@@ -69,6 +70,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
         private readonly IGarmentAdjustmentItemRepository garmentAdjustmentItemRepository;
         private readonly IGarmentFinishingInRepository garmentFinishingInRepository;
         private readonly IGarmentFinishingInItemRepository garmentFinishingInItemRepository;
+        private readonly IGarmentSewingDORepository garmentSewingDORepository;
+        private readonly IGarmentSewingDOItemRepository garmentSewingDOItemRepository;
         //Sample
         private readonly IGarmentSamplePreparingRepository garmentSamplePreparingRepository;
         private readonly IGarmentSamplePreparingItemRepository garmentSamplePreparingItemRepository;
@@ -119,6 +122,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
             garmentAdjustmentItemRepository = storage.GetRepository<IGarmentAdjustmentItemRepository>();
             garmentFinishingInRepository = storage.GetRepository<IGarmentFinishingInRepository>();
             garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
+            garmentSewingDORepository = storage.GetRepository<IGarmentSewingDORepository>();
+            garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
             //Sample
             garmentSamplePreparingRepository = storage.GetRepository<IGarmentSamplePreparingRepository>();
             garmentSamplePreparingItemRepository = storage.GetRepository<IGarmentSamplePreparingItemRepository>();
@@ -151,7 +156,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
 
             var httpContent = new StringContent(JsonConvert.SerializeObject(codes), Encoding.UTF8, "application/json");
 
-            var garmentProductionUri = MasterDataSettings.Endpoint + $"master/garmentProducts/byCode";
+            var garmentProductionUri = MasterDataSettings.Endpoint + $"master/garmentProducts/byCodes";
             var httpResponse = await _http.SendAsync(HttpMethod.Get, garmentProductionUri, token, httpContent);
 
 
@@ -458,7 +463,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
                                              })
                                   join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
                                   join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
-                                  join d in garmentCuttingOutItemRepository.Query on a.Identity equals d.CuttingInId
+                                  //join d in garmentCuttingOutItemRepository.Query on a.Identity equals d.CuttingInId
                                   select new monitoringViewTempCutting
                                   {
                                       ro = a.RONo,
@@ -469,10 +474,12 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
                                               where aa.CuttingOutDate.AddHours(7) <= dateTo && aa.CuttingOutDate.AddHours(7) > dateBalance
                                               select new { aa.Identity, aa.RONo })
                                    join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
+                                   join c in garmentCuttingOutDetailRepository.Query on b.Identity equals c.CutOutItemId
                                    select new monitoringViewTempCutting
                                    {
                                        ro = a.RONo,
-                                       Quantity = -b.TotalCuttingOut
+                                       //Quantity = -b.TotalCuttingOut
+                                       Quantity = -c.CuttingOutQuantity
                                    });
 
 
@@ -505,6 +512,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
             //    ro = key.ro,
             //    Quantity = group.Sum(x => x.Quantity),
             //});
+
 
             var QueryCuttNow = (from a in queryCutTemp
                                 join b in garmentCuttingOutRepository.Query on a.ro equals b.RONo
@@ -621,15 +629,15 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
                 queryBalanceLoading.Add(a);
             }
 
-            var QueryCuttingOutForLoading = (from a in (from aa in garmentCuttingOutRepository.Query
-                                                        where aa.CuttingOutDate.AddHours(7) <= dateTo && aa.CuttingOutDate.AddHours(7) > dateBalance
+            var QueryCuttingOutForLoading = (from a in (from aa in garmentSewingDORepository.Query
+                                                        where aa.SewingDODate.AddHours(7) <= dateTo && aa.SewingDODate.AddHours(7) > dateBalance
                                                         select new { aa.Identity, aa.ComodityCode, aa.ComodityName })
-                                             join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CutOutId
+                                             join b in garmentSewingDOItemRepository.Query on a.Identity equals b.SewingDOId
                                              select new monitoringViewsTemp
                                              {
                                                  itemCode = a.ComodityCode,
                                                  itemname = a.ComodityName.TrimEnd(),
-                                                 Quantity = b.TotalCuttingOut
+                                                 Quantity = b.Quantity
                                              });
 
             var QueryLoading = (from a in (from aa in garmentLoadingRepository.Query
@@ -909,6 +917,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
 
             //var WIPTemp = FactCutting.Concat(FactFinishing).ToList();
 
+            //var WIPTemp = SakirCutting.Concat(SakirLoading).Concat(SakirSewing).Concat(SakirFinishing).ToList();
             var WIPTemp = SakirCutting.Concat(SakirLoading).Concat(SakirSewing).Concat(SakirFinishing).ToList();
 
             WIPTemp = WIPTemp.GroupBy(x => new { x.itemCode, x.itemname, x.unitQty }, (key, group) => new monitoringViewsTemp

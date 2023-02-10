@@ -96,7 +96,7 @@ namespace Manufactures.Application.GarmentAvalProducts.Queries.GetForLoaderAval_
             var QueryPrep = (from a in _garmentPreparingRepository.Query
                          join b in _garmentPreparingItemRepository.Query
                          on a.Identity equals b.GarmentPreparingId
-                         where a.RONo == request.ro && a.UnitId == (request.unit == null ? a.UnitId : request.unit) && b.RemainingQuantity > 0
+                         where a.RONo == request.ro && a.UnitId == (request.unit == null ? a.UnitId : request.unit)
                          select new ViewModel
                          {
                              preparingId = a.Identity,
