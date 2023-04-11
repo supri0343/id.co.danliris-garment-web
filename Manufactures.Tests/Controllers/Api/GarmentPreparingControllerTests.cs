@@ -274,7 +274,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingItemReadModel, bool>>>()))
                 .Returns(new List<GarmentPreparingItem>()
                 {
-                    new GarmentPreparingItem(Guid.NewGuid(), 0, new ProductId(1), null, null, null, 0, new UomId(1), null, null, 0, 0, Guid.NewGuid(),null)
+                    new GarmentPreparingItem(Guid.NewGuid(), 0, new ProductId(1), null, null, null, 0, new UomId(1), null, null, 0, 0, Guid.NewGuid(),null,"bcno","bctype",DateTime.Now)
                 });
 
             // Act

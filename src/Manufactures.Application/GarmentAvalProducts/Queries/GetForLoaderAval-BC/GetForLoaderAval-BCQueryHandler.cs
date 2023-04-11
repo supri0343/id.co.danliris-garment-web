@@ -55,6 +55,9 @@ namespace Manufactures.Application.GarmentAvalProducts.Queries.GetForLoaderAval_
             public string Article { get; set; }
             public int UENItemId { get; set; }
             public DateTimeOffset? ProcessDate { get; set; }
+            public string BCNo { get; set; }
+            public string BCType { get; set; }
+            public DateTime? BCDate { get; set; }
         }
 
         public async Task<List<GetForLoaderAval_BC_BCNoDto>> GetDataBC(List<int> uenitemId, string token)
@@ -109,21 +112,51 @@ namespace Manufactures.Application.GarmentAvalProducts.Queries.GetForLoaderAval_
                              UENNo = a.UENNo,
                              UENItemId = b.UENItemId,
                              ProcessDate = a.ProcessDate,
-                             Article = a.Article
+                             Article = a.Article,
+                             BCType = b.BCType,
+                             BCNo = b.BCNo,
+                             BCDate = b.BCDate
+                             
+                         }).Distinct().ToList();
 
-                         }).ToList();
+            //var ListUenItemId = QueryPrep.Select(x => x.UENItemId).Distinct().ToList();
 
-            var ListUenItemId = QueryPrep.Select(x => x.UENItemId).Distinct().ToList();
-
-            var BClist = await GetDataBC(ListUenItemId, request.token);
+            //var BClist = await GetDataBC(ListUenItemId, request.token);
 
             GetForLoaderAval_BCViewModel data = new GetForLoaderAval_BCViewModel();
             List<GetForLoaderAval_BCDto> getForLoaderAval_BCDto = new List<GetForLoaderAval_BCDto>();
 
-            foreach (var a in QueryPrep)
-            {
-                var bc = BClist.Where(x => x.uenitemId == a.UENItemId).FirstOrDefault();
 
+            //Old Query
+            //foreach (var a in QueryPrep)
+            //{
+            //    var bc = BClist.Where(x => x.uenitemId == a.UENItemId).FirstOrDefault();
+
+            //    var result = new GetForLoaderAval_BCDto
+            //    {
+            //        preparingId = a.preparingId,
+            //        preparingItemId = a.preparingItemId,
+            //        Product = a.Product,
+            //        DesignColor = a.DesignColor,
+            //        RemainingQuantity = a.RemainingQuantity,
+            //        Uom = a.Uom,
+            //        BasicPrice = a.BasicPrice,
+            //        bcno = bc != null ? bc.bcno : "-",
+            //        bcdate = bc != null ? (bc.bcdate != DateTime.MinValue ? bc.bcdate : null) : null,
+            //        bctype = bc != null ? bc.bctype : "-",
+            //        poSerialNumber = bc != null ? bc.poSerialNumber : "-",
+            //        ProcessDate = a.ProcessDate,
+            //        article = a.Article
+                    
+            //    };
+
+            //    getForLoaderAval_BCDto.Add(result);
+
+            //}
+
+            //New Query
+            foreach(var a in QueryPrep)
+            {
                 var result = new GetForLoaderAval_BCDto
                 {
                     preparingId = a.preparingId,
@@ -133,23 +166,23 @@ namespace Manufactures.Application.GarmentAvalProducts.Queries.GetForLoaderAval_
                     RemainingQuantity = a.RemainingQuantity,
                     Uom = a.Uom,
                     BasicPrice = a.BasicPrice,
-                    bcno = bc != null ? bc.bcno : "-",
-                    bcdate = bc != null ? (bc.bcdate != DateTime.MinValue ? bc.bcdate : null) : null,
-                    bctype = bc != null ? bc.bctype : "-",
-                    poSerialNumber = bc != null ? bc.poSerialNumber : "-",
+                    bcno = a.BCNo,
+                    bcdate = a.BCDate,
+                    bctype = a.BCType,
                     ProcessDate = a.ProcessDate,
                     article = a.Article
-                    
+
                 };
 
                 getForLoaderAval_BCDto.Add(result);
-
             }
 
-            var dataDistinct = getForLoaderAval_BCDto.Distinct().ToList();
-            data.getForLoaderAval_BCDtos = dataDistinct;
 
-            //data.getForLoaderAval_BCDtos = QueryAvalList;
+
+            //var dataDistinct = getForLoaderAval_BCDto.Distinct().ToList();
+            //data.getForLoaderAval_BCDtos = dataDistinct;
+
+            data.getForLoaderAval_BCDtos = getForLoaderAval_BCDto;
             //data.getForLoaderAval_BC_BCNoDtos = BClist;
 
             return data;

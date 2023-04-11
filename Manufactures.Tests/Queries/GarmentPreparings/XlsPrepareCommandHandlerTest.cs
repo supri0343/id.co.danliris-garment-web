@@ -111,7 +111,7 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentPreparingItemReadModel>
 				{
-					new Domain.GarmentPreparings.GarmentPreparingItem(guidPrepareItem, 1, new Domain.GarmentPreparings.ValueObjects.ProductId(1), "", "", "", 0, new Domain.GarmentPreparings.ValueObjects.UomId(1), "", "", 0, 50, guidPrepare,null).GetReadModel()
+					new Domain.GarmentPreparings.GarmentPreparingItem(guidPrepareItem, 1, new Domain.GarmentPreparings.ValueObjects.ProductId(1), "", "", "", 0, new Domain.GarmentPreparings.ValueObjects.UomId(1), "", "", 0, 50, guidPrepare,null,"bcno","bctype",DateTime.Now).GetReadModel()
 				}.AsQueryable());
 
 			_mockGarmentPreparingRepository
@@ -198,7 +198,7 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentPreparingItemReadModel>
 				{
-					new Domain.GarmentPreparings.GarmentPreparingItem(guidPrepareItem, 1, new Domain.GarmentPreparings.ValueObjects.ProductId(1), "", "", "", 0, new Domain.GarmentPreparings.ValueObjects.UomId(1), "", "", 0, 50, guidPrepare,null).GetReadModel()
+					new Domain.GarmentPreparings.GarmentPreparingItem(guidPrepareItem, 1, new Domain.GarmentPreparings.ValueObjects.ProductId(1), "", "", "", 0, new Domain.GarmentPreparings.ValueObjects.UomId(1), "", "", 0, 50, guidPrepare,null,"bcno","bctype",DateTime.Now).GetReadModel()
 				}.AsQueryable());
 
 			_mockGarmentPreparingRepository

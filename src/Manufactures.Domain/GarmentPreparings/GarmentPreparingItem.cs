@@ -26,7 +26,11 @@ namespace Manufactures.Domain.GarmentPreparings
         public Guid GarmentPreparingId { get; private set; }
         public string ROSource { get; private set; }
 		public string UId { get; private set; }
-		public GarmentPreparingItem(Guid identity, int uenItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, string fabricType, double remainingQuantity, double basicPrice, Guid garmentPreparingId, string roSource) : base(identity)
+
+        public string BCNo { get; private set; }
+        public string BCType { get; private set; }
+        public DateTime? BCDate { get; private set; }
+        public GarmentPreparingItem(Guid identity, int uenItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, string fabricType, double remainingQuantity, double basicPrice, Guid garmentPreparingId, string roSource,string bcNo,string bcType,DateTime? bcDate) : base(identity)
         {
             this.MarkTransient();
 
@@ -44,7 +48,9 @@ namespace Manufactures.Domain.GarmentPreparings
             BasicPrice = basicPrice;
             GarmentPreparingId = garmentPreparingId;
             ROSource = roSource;
-
+            BCNo = bcNo;
+            BCType = bcType;
+            BCDate = bcDate;
             ReadModel = new GarmentPreparingItemReadModel(Identity)
             {
                 UENItemId = UENItemId,
@@ -59,7 +65,10 @@ namespace Manufactures.Domain.GarmentPreparings
                 RemainingQuantity = RemainingQuantity,
                 BasicPrice = BasicPrice,
                 GarmentPreparingId = GarmentPreparingId,
-                ROSource=roSource
+                ROSource= ROSource,
+                BCNo=BCNo,
+                BCType=BCType,
+                BCDate = BCDate,
             };
             ReadModel.AddDomainEvent(new OnGarmentPreparingPlaced(this.Identity));
         }
@@ -79,6 +88,9 @@ namespace Manufactures.Domain.GarmentPreparings
             BasicPrice = ReadModel.BasicPrice;
             GarmentPreparingId = ReadModel.GarmentPreparingId;
             ROSource = ReadModel.ROSource;
+            BCNo = ReadModel.BCNo;
+            BCType = ReadModel.BCType;
+            BCDate = ReadModel.BCDate;
         }
 
         public void setUenItemId(int newUenItemId)
@@ -214,6 +226,34 @@ namespace Manufactures.Domain.GarmentPreparings
             {
                 BasicPrice = newBasicPrice;
                 ReadModel.BasicPrice = newBasicPrice;
+            }
+        }
+
+        public void setBCNo(string newBCNO)
+        {
+
+            if (newBCNO != BCNo)
+            {
+                BCNo = newBCNO;
+                ReadModel.BCNo = newBCNO;
+            }
+        }
+        public void setBCType(string newBCType)
+        {
+
+            if (newBCType != BCType)
+            {
+                BCType = newBCType;
+                ReadModel.BCType = newBCType;
+            }
+        }
+        public void setBCDate(DateTime? newBCDate)
+        {
+
+            if (newBCDate != BCDate)
+            {
+                BCDate = newBCDate;
+                ReadModel.BCDate = newBCDate;
             }
         }
 

@@ -12,7 +12,7 @@ namespace Manufactures.Domain.GarmentPreparings.ValueObjects
         }
 
 
-        public GarmentPreparingItemValueObject(Guid id, int uenItemId, Product product, string designColor, double quantity, Uom uom, string fabricType, double remainingQuantity, double basicPrice, Guid garmentPreparingId, string roSource)
+        public GarmentPreparingItemValueObject(Guid id, int uenItemId, Product product, string designColor, double quantity, Uom uom, string fabricType, double remainingQuantity, double basicPrice, Guid garmentPreparingId, string roSource, string bcNo, string bcType, DateTime? bcDate)
         {
             Identity = id;
             UENItemId = uenItemId;
@@ -25,6 +25,9 @@ namespace Manufactures.Domain.GarmentPreparings.ValueObjects
             BasicPrice = basicPrice;
             GarmentPreparingId = garmentPreparingId;
             ROSource = roSource;
+            BCNo = bcNo;
+            BCType = bcType;
+            BCDate = bcDate;
         }
 
         public Guid Identity { get; set; }
@@ -38,6 +41,9 @@ namespace Manufactures.Domain.GarmentPreparings.ValueObjects
         public double BasicPrice { get; set; }
         public Guid GarmentPreparingId { get; set; }
         public string ROSource { get; set; }
+        public string BCNo { get; set ; }
+        public string BCType { get; set ; }
+        public DateTime? BCDate { get; set ; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

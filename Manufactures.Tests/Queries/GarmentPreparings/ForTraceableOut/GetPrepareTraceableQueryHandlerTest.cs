@@ -58,7 +58,7 @@ namespace Manufactures.Tests.Queries.GarmentPreparings.ForTraceableOut
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentPreparingItemReadModel>
                 {
-                        new GarmentPreparingItem(guidPreparingItem,0,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productcode","name","",20,new Domain.GarmentPreparings.ValueObjects.UomId(1),"","",0,0,guidPreparing,"ro1").GetReadModel()
+                        new GarmentPreparingItem(guidPreparingItem,0,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productcode","name","",20,new Domain.GarmentPreparings.ValueObjects.UomId(1),"","",0,0,guidPreparing,"ro1","bcno","bctype",DateTime.Now).GetReadModel()
 
                 }.AsQueryable());
 

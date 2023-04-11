@@ -169,7 +169,7 @@ namespace Manufactures.Tests.Queries.GarmentFinishingOuts
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentPreparingItemReadModel>
 				{
-					new GarmentPreparingItem(guidGarmentPreparingItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidGarmentPreparing,null).GetReadModel()
+					new GarmentPreparingItem(guidGarmentPreparingItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidGarmentPreparing,null,"bcno","bctype",DateTime.Now).GetReadModel()
 				}.AsQueryable());
             var garmentBalanceFinishing = Guid.NewGuid();
             _mockGarmentBalanceFinishingRepository
@@ -266,7 +266,7 @@ namespace Manufactures.Tests.Queries.GarmentFinishingOuts
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentPreparingItemReadModel>
 				{
-					new GarmentPreparingItem(guidGarmentPreparingItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidGarmentPreparing,null).GetReadModel()
+					new GarmentPreparingItem(guidGarmentPreparingItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidGarmentPreparing,null,"bcno","bctype",DateTime.Now).GetReadModel()
 				}.AsQueryable());
 			var garmentBalanceFinishing = Guid.NewGuid();
 			_mockGarmentBalanceFinishingRepository

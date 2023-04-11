@@ -24,6 +24,9 @@ namespace Manufactures.Dtos
             BasicPrice = (decimal)garmentPreparingItem.BasicPrice;
             GarmentPreparingId = garmentPreparingItem.GarmentPreparingId;
             ROSource = garmentPreparingItem.ROSource;
+            BCNo = garmentPreparingItem.BCNo;
+            BCType = garmentPreparingItem.BCType;
+            BCDate = garmentPreparingItem.BCDate;
         }
 
         public Guid Id { get; set; }
@@ -42,5 +45,8 @@ namespace Manufactures.Dtos
         public decimal RemainingQuantity { get; set; }
         public decimal BasicPrice { get; set; }
         public Guid GarmentPreparingId { get; set; }
+        public string BCNo { get; set; }
+        public string BCType { get; set; }
+        public DateTime? BCDate { get; set; }
     }
 }
