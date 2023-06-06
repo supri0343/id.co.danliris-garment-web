@@ -154,6 +154,8 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 var query = _garmentServiceSubconSewingItemRepository.ReadItem(page, size, order, keyword, filter);
                 var count = query.Count();
 
+                query = query.Skip((page - 1) * size).Take(size);
+               
                 var garmentServiceSubconSewingDto = _garmentServiceSubconSewingRepository.Find(_garmentServiceSubconSewingRepository.Query).Select(o => new GarmentServiceSubconSewingDto(o)).ToArray();
                 var garmentServiceSubconSewingItemDto = _garmentServiceSubconSewingItemRepository.Find(query).Select(o => new GarmentServiceSubconSewingItemDto(o)).ToArray();
                 var garmentServiceSubconSewingDetailDto = _garmentServiceSubconSewingDetailRepository.Find(_garmentServiceSubconSewingDetailRepository.Query).Select(o => new GarmentServiceSubconSewingDetailDto(o)).ToList();
@@ -176,6 +178,8 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                     garmentServiceSubconSewingDto = QueryHelper<GarmentServiceSubconSewingDto>.Order(garmentServiceSubconSewingDto.AsQueryable(), OrderDictionary).ToArray();
                 }
 
+ 
+
                 await Task.Yield();
                 return Ok(garmentServiceSubconSewingDto, info: new
                 {
@@ -187,8 +191,9 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             else
             {
                 var query = _garmentServiceSubconSewingRepository.Read(page, size, order, keyword, filter);
+                
                 var count = query.Count();
-
+                query = query.Skip((page - 1) * size).Take(size);
                 var garmentServiceSubconSewingDto = _garmentServiceSubconSewingRepository.Find(query).Select(o => new GarmentServiceSubconSewingDto(o)).ToArray();
                 var garmentServiceSubconSewingItemDto = _garmentServiceSubconSewingItemRepository.Find(_garmentServiceSubconSewingItemRepository.Query).Select(o => new GarmentServiceSubconSewingItemDto(o)).ToList();
                 var garmentServiceSubconSewingDetailDto = _garmentServiceSubconSewingDetailRepository.Find(_garmentServiceSubconSewingDetailRepository.Query).Select(o => new GarmentServiceSubconSewingDetailDto(o)).ToList();
