@@ -3258,7 +3258,11 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                FinishingTransferExpenditure = item.FinishingTransferExpenditure,
                                FinishingTransferExpenditurePrice = item.FinishingTransferExpenditurePrice,
                                MaterialUsage = item.MaterialUsage,
-                               PriceUsage = item.PriceUsage
+                               PriceUsage = item.PriceUsage,
+                               SubconSewingInQty = 0,
+                               SubconSewingOutQty = 0,
+                               SubconExpenditureGoodInQty = 0,
+                               SubconExpenditureGoodQty = 0,
                            }).ToList();
 
 

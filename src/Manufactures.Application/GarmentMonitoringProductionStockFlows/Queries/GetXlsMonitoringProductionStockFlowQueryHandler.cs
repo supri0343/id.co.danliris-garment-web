@@ -4904,7 +4904,11 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                FinishingTransferExpenditure = item.FinishingTransferExpenditure,
                                FinishingTransferExpenditurePrice = item.FinishingTransferExpenditurePrice,
                                MaterialUsage = item.FinishingInExpenditure * item.BasicPrice,
-                               PriceUsage = item.FinishingInExpenditure * Convert.ToDouble(item.Fare)
+                               PriceUsage = item.FinishingInExpenditure * Convert.ToDouble(item.Fare),
+                               SubconSewingInQty = 0,
+                               SubconSewingOutQty = 0,
+                               SubconExpenditureGoodInQty = 0,
+                               SubconExpenditureGoodQty = 0,
                            }).OrderBy(x=>x.Ro).ToList();
 
 
@@ -5255,7 +5259,9 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING7", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING8", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING9", DataType = typeof(string) });
-				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING10", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING11", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING2", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING3", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING4", DataType = typeof(string) });
@@ -5275,13 +5281,15 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI7", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI8", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI9", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI10", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI11", DataType = typeof(string) });
 
-				reportDataTable.Rows.Add("", "", "", "",
+                reportDataTable.Rows.Add("", "", "", "",
 				"Saldo Awal WIP Cutting", "Cutting In (WIP Cutting)", "Cutting Out / HP(WIP Loading)", "Cutting Out Transfer", "Cutting Out Subkon", "Aval Komponen dari Cutting", "Aval Komponen dari Sewing", "Saldo Akhir WIP Cutting",
 				"Saldo Awal Loading", "Loading In", "Loading In Transfer", "Loading Out (WIP Sewing)	", "Adjs Loading", "Saldo Akhir Loading",
-				"Saldo Awal WIP Sewing", "Sewing In (WIP Sewing)", "Sewing Out (WIP Finishing)", "Sewing In Transfer", "Sewing Out Tranfer WIP Sewing", "Sewing Out Transfer WIP Finishing", "Retur ke Cutting", "Adjs Sewing", "Saldo Akhir WIP Sewing",
+				"Saldo Awal WIP Sewing", "Sewing In (WIP Sewing)", "Sewing Out (WIP Finishing)", "Subkon Masuk", "Subkon Keluar", "Sewing In Transfer", "Sewing Out Tranfer WIP Sewing", "Sewing Out Transfer WIP Finishing", "Retur ke Cutting", "Adjs Sewing", "Saldo Akhir WIP Sewing",
 				"Saldo Awal WIP Finishing", "Finishing In (WIP Finishing)", "Saldo Awal WIP Subkon", "Subkon In", "Subkon Out", "Saldo Akhir WIP Subkon", "Finishing Out (WIP BJ)", "Finishing In Transfer", "Adjs Finishing", "Retur ke Sewing", "Saldo Akhir WIP Finishing",
-				"Saldo Awal Barang jadi", "Barang Jadi In/ (WIP BJ)", "Barang Jadi In Transfer", "Penerimaan Lain-lain (Retur)", "Pengiriman Export", "Pengiriman Gudang Sisa", "Pengiriman Lain-lain/Sample", "Adjust Barang Jadi", "Saldo Akhir Barang Jadi"
+				"Saldo Awal Barang jadi", "Barang Jadi In/ (WIP BJ)", "Barang Jadi In Transfer", "Penerimaan Lain-lain (Retur)", "Pengiriman Export", "Pengiriman Gudang Sisa", "Pengiriman Lain-lain/Sample", "Subkon Masuk", "Subkon Keluar", "Adjust Barang Jadi", "Saldo Akhir Barang Jadi"
 				);
 			}
 			else
@@ -5342,7 +5350,9 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING16", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING17", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING18", DataType = typeof(string) });
-				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING19", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SEWING20", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING2", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING3", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "FINISHING4", DataType = typeof(string) });
@@ -5384,7 +5394,9 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI18", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI19", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI20", DataType = typeof(string) });
-				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nilai Baru Komersil(SaldoAkhir)", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI21", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI22", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nilai Baru Komersil(SaldoAkhir)", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nilai Baru Komersil(SaldoAkhir)2", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nilai Baru Komersil(SaldoAkhir)3", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nilai Baru Komersil(SaldoAkhir)4", DataType = typeof(string) });
@@ -5395,17 +5407,18 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				reportDataTable.Rows.Add("", "", "", "", "", "", "", "", "",
 									"Saldo Awal WIP Cutting","", "Cutting In (WIP Cutting)","", "Cutting Out / HP(WIP Loading)","", "Cutting Out Transfer","", "Cutting Out Subkon","", "Aval Komponen dari Cutting","", "Aval Komponen dari Sewing","", "Saldo Akhir WIP Cutting","",
 									"Saldo Awal Loading","", "Loading In","", "Loading In Transfer", "", "Loading Out (WIP Sewing)	","", "Adjs Loading","", "Saldo Akhir Loading","",
-									"Saldo Awal WIP Sewing","", "Sewing In (WIP Sewing)","", "Sewing Out (WIP Finishing)","", "Sewing In Transfer","", "Sewing Out Tranfer WIP Sewing","", "Sewing Out Transfer WIP Finishing","", "Retur ke Cutting","", "Adjs Sewing","", "Saldo Akhir WIP Sewing","",
+									"Saldo Awal WIP Sewing","", "Sewing In (WIP Sewing)","", "Sewing Out (WIP Finishing)","","Subkon Masuk", "Subkon Keluar", "Sewing In Transfer","", "Sewing Out Tranfer WIP Sewing","", "Sewing Out Transfer WIP Finishing","", "Retur ke Cutting","", "Adjs Sewing","", "Saldo Akhir WIP Sewing","",
 									"Saldo Awal WIP Finishing","", "Finishing In (WIP Finishing)","", "Saldo Awal WIP Subkon","", "Subkon In","", "Subkon Out","", "Saldo Akhir WIP Subkon","", "Finishing Out (WIP BJ)","", "Finishing In Transfer","", "Adjs Finishing","", "Retur ke Sewing","", "Saldo Akhir WIP Finishing","",
-									"Saldo Awal Barang jadi","", "Barang Jadi In/ (WIP BJ)","", "Finishing Transfer","", "Penerimaan Lain-lain (Retur)","", "Standar Konversi Biaya","", "Pengiriman Export","", "Pengiriman Gudang Sisa","", "Pengiriman Lain-lain/Sample","", "Adjust Barang Jadi","", "Saldo Akhir Barang Jadi","",
+									"Saldo Awal Barang jadi","", "Barang Jadi In/ (WIP BJ)","", "Finishing Transfer","", "Penerimaan Lain-lain (Retur)","", "Standar Konversi Biaya","", "Pengiriman Export","", "Pengiriman Gudang Sisa","", "Pengiriman Lain-lain/Sample","", "Subkon Masuk", "Subkon Keluar", "Adjust Barang Jadi","", "Saldo Akhir Barang Jadi","",
 									"Tarif","Cutting","Loading","Sewing","Finishing", "Subkon","Barang Jadi"
 									);
 				reportDataTable.Rows.Add("", "", "", "", "", "", "", "", "",
 					"Qty","Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga",
-					"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga",
-					"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga",
+					"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", 
+
+                    "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Qty", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga",
 					"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga",
-					"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Tarif", "Pemakaian Bahan Baku", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty","Harga",
+					"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Tarif", "Pemakaian Bahan Baku", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Qty", "Qty", "Harga", "Qty","Harga",
 					"","","","","","",""
 					);
 				
@@ -5419,9 +5432,9 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					reportDataTable.Rows.Add(report.Ro, report.Article, report.Comodity, report.QtyOrder,
 					report.BeginingBalanceCuttingQty, report.QtyCuttingIn, report.QtyCuttingOut, report.QtyCuttingTransfer, report.QtyCuttingsubkon, report.AvalCutting, report.AvalSewing, report.EndBalancCuttingeQty,
 					report.BeginingBalanceLoadingQty, report.QtyLoadingIn,report.QtyLoadingInTransfer, report.QtyLoading, report.QtyLoadingAdjs, report.EndBalanceLoadingQty,
-					report.BeginingBalanceSewingQty, report.QtySewingIn, report.QtySewingOut, report.QtySewingInTransfer, report.WipSewingOut, report.WipFinishingOut, report.QtySewingRetur, report.QtySewingAdj, report.EndBalanceSewingQty,
+					report.BeginingBalanceSewingQty, report.QtySewingIn, report.QtySewingOut, report.QtySewingInTransfer, report.WipSewingOut, report.SubconSewingInQty, report.SubconSewingOutQty, report.WipFinishingOut, report.QtySewingRetur, report.QtySewingAdj, report.EndBalanceSewingQty,
 					report.BeginingBalanceFinishingQty, report.FinishingInQty, report.BeginingBalanceSubconQty, report.SubconInQty, report.SubconOutQty, report.EndBalanceSubconQty, report.FinishingOutQty, report.FinishingInTransferQty, report.FinishingAdjQty, report.FinishingReturQty, report.EndBalanceFinishingQty,
-					report.BeginingBalanceExpenditureGood, report.FinishingInExpenditure, report.FinishingInTransferQty, report.ExpenditureGoodRetur, report.ExportQty, report.OtherQty, report.SampleQty, report.ExpenditureGoodAdj, report.EndBalanceExpenditureGood);
+					report.BeginingBalanceExpenditureGood, report.FinishingInExpenditure, report.FinishingInTransferQty, report.ExpenditureGoodRetur, report.ExportQty, report.OtherQty, report.SampleQty, report.SubconExpenditureGoodInQty, report.SubconExpenditureGoodQty, report.ExpenditureGoodAdj, report.EndBalanceExpenditureGood);
 					counter++;
 				}
 				else
@@ -5429,9 +5442,9 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					reportDataTable.Rows.Add(report.Ro, report.Article, report.BuyerCode, report.Comodity, report.QtyOrder, report.FC, report.Hours, report.Fare, report.BasicPrice,
 						report.BeginingBalanceCuttingQty, report.BeginingBalanceCuttingPrice, report.QtyCuttingIn,report.PriceCuttingIn, report.QtyCuttingOut,report.PriceCuttingOut, report.QtyCuttingTransfer,report.PriceCuttingTransfer, report.QtyCuttingsubkon,report.PriceCuttingsubkon, report.AvalCutting,report.AvalCuttingPrice, report.AvalSewing,report.AvalSewingPrice, report.EndBalancCuttingeQty,report.EndBalancCuttingePrice,
 						report.BeginingBalanceLoadingQty, report.BeginingBalanceLoadingPrice, report.QtyLoadingIn, report.PriceLoadingIn,report.QtyLoadingInTransfer,report.PriceLoadingInTransfer, report.QtyLoading, report.PriceLoading, report.QtyLoadingAdjs, report.PriceLoadingAdjs, report.EndBalanceLoadingQty, report.EndBalanceLoadingPrice,
-						report.BeginingBalanceSewingQty, report.BeginingBalanceSewingPrice, report.QtySewingIn,report.PriceSewingIn, report.QtySewingOut,report.PriceSewingOut, report.QtySewingInTransfer,report.PriceSewingInTransfer, report.WipSewingOut,report.WipSewingOutPrice, report.WipFinishingOut,report.WipFinishingOutPrice, report.QtySewingRetur,report.PriceSewingRetur, report.QtySewingAdj,report.PriceSewingAdj, report.EndBalanceSewingQty,report.EndBalanceSewingPrice,
+						report.BeginingBalanceSewingQty, report.BeginingBalanceSewingPrice, report.QtySewingIn,report.PriceSewingIn, report.QtySewingOut,report.PriceSewingOut, report.QtySewingInTransfer,report.PriceSewingInTransfer, report.WipSewingOut,report.SubconSewingInQty, report.SubconSewingOutQty, report.WipSewingOutPrice, report.WipFinishingOut,report.WipFinishingOutPrice, report.QtySewingRetur,report.PriceSewingRetur, report.QtySewingAdj,report.PriceSewingAdj, report.EndBalanceSewingQty,report.EndBalanceSewingPrice,
 						report.BeginingBalanceFinishingQty,report.BeginingBalanceFinishingPrice, report.FinishingInQty,report.FinishingInPrice, report.BeginingBalanceSubconQty,report.BeginingBalanceSubconPrice, report.SubconInQty,report.SubconInPrice, report.SubconOutQty,report.SubconOutPrice, report.EndBalanceSubconQty,report.EndBalanceSubconPrice, report.FinishingOutQty,report.FinishingOutPrice, report.FinishingInTransferQty,report.FinishingInTransferPrice, report.FinishingAdjQty,report.FinishingAdjPRice, report.FinishingReturQty,report.FinishingReturPrice, report.EndBalanceFinishingQty,report.EndBalanceFinishingPrice,
-						report.BeginingBalanceExpenditureGood,report.BeginingBalanceExpenditureGoodPrice, report.FinishingInExpenditure,report.FinishingInExpenditurepPrice, report.FinishingInTransferQty,report.FinishingInTransferPrice, report.ExpenditureGoodRetur,report.ExpenditureGoodReturPrice,report.PriceUsage, report.MaterialUsage, report.ExportQty,report.ExportPrice, report.OtherQty,report.OtherPrice, report.SampleQty,report.SamplePrice, report.ExpenditureGoodAdj,report.ExpenditureGoodAdjPrice, report.EndBalanceExpenditureGood,report.EndBalanceExpenditureGoodPrice,
+						report.BeginingBalanceExpenditureGood,report.BeginingBalanceExpenditureGoodPrice, report.FinishingInExpenditure,report.FinishingInExpenditurepPrice, report.FinishingInTransferQty,report.FinishingInTransferPrice, report.ExpenditureGoodRetur,report.ExpenditureGoodReturPrice,report.PriceUsage, report.MaterialUsage, report.ExportQty,report.ExportPrice, report.OtherQty,report.OtherPrice, report.SampleQty,report.SamplePrice, report.SubconExpenditureGoodInQty, report.SubconExpenditureGoodQty, report.ExpenditureGoodAdj,report.ExpenditureGoodAdjPrice, report.EndBalanceExpenditureGood,report.EndBalanceExpenditureGoodPrice,
 						report.FareNew, report.CuttingNew, report.LoadingNew, report.SewingNew, report.FinishingNew,report.SubconNew, report.ExpenditureNew
 						);
 					counter++;
@@ -5449,34 +5462,36 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					worksheet.Cells["A1"].Value = "Report Produksi"; worksheet.Cells["A" + 1 + ":AU" + 1 + ""].Merge = true;
 					worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
 					worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
-					worksheet.Cells["A" + 1 + ":AU" + 1 + ""].Merge = true;
-					worksheet.Cells["A" + 2 + ":AU" + 2 + ""].Merge = true;
-					worksheet.Cells["A" + 3 + ":AU" + 3 + ""].Merge = true;
-					worksheet.Cells["A" + 1 + ":AU" + 3 + ""].Style.Font.Size = 15;
-					worksheet.Cells["A" + 1 + ":AU" + 3 + ""].Style.Font.Bold = true;
-					worksheet.Cells["A" + 1 + ":AU" + 6 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-					worksheet.Cells["A" + 1 + ":AU" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+					worksheet.Cells["A" + 1 + ":AY" + 1 + ""].Merge = true;
+					worksheet.Cells["A" + 2 + ":AY" + 2 + ""].Merge = true;
+					worksheet.Cells["A" + 3 + ":AY" + 3 + ""].Merge = true;
+					worksheet.Cells["A" + 1 + ":AY" + 3 + ""].Style.Font.Size = 15;
+					worksheet.Cells["A" + 1 + ":AY" + 3 + ""].Style.Font.Bold = true;
+					worksheet.Cells["A" + 1 + ":AY" + 6 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					worksheet.Cells["A" + 1 + ":AY" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 					worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
-					worksheet.Cells["E" + 5 + ":AU" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					worksheet.Cells["E" + 5 + ":AY" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+					//worksheet.Cells["E" + 5 + ":L" + 5 + ""].Merge = true;
+					//worksheet.Cells["M" + 5 + ":R" + 5 + ""].Merge = true;
+					//worksheet.Cells["S" + 5 + ":AA" + 5 + ""].Merge = true;
+					//worksheet.Cells["AB" + 5 + ":AL" + 5 + ""].Merge = true;
+					//worksheet.Cells["AM" + 5 + ":AU" + 5 + ""].Merge = true;
 
 					worksheet.Cells["E" + 5 + ":L" + 5 + ""].Merge = true;
-					worksheet.Cells["M" + 5 + ":R" + 5 + ""].Merge = true;
-					worksheet.Cells["S" + 5 + ":AA" + 5 + ""].Merge = true;
-					worksheet.Cells["AB" + 5 + ":AL" + 5 + ""].Merge = true;
-					worksheet.Cells["AM" + 5 + ":AU" + 5 + ""].Merge = true;
-					worksheet.Cells["E" + 5 + ":L" + 5 + ""].Merge = true;
-					worksheet.Cells["S" + 5 + ":AA" + 5 + ""].Merge = true;
-					worksheet.Cells["AB" + 5 + ":AL" + 5 + ""].Merge = true;
-					worksheet.Cells["AM" + 5 + ":AU" + 5 + ""].Merge = true;
+                    worksheet.Cells["M" + 5 + ":R" + 5 + ""].Merge = true;
+                    worksheet.Cells["S" + 5 + ":AC" + 5 + ""].Merge = true;
+					worksheet.Cells["AD" + 5 + ":AN" + 5 + ""].Merge = true;
+					worksheet.Cells["AO" + 5 + ":AY" + 5 + ""].Merge = true;
 					worksheet.Cells["A" + counter + ":D" + counter + ""].Merge = true;
-					worksheet.Cells["A" + 5 + ":AU"  +6 + ""].Style.Font.Bold = true;
-					worksheet.Cells["E" + 6 + ":AU" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-					worksheet.Cells["A" + 5 + ":AU" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":AU" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":AU" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":AU" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + counter + ":AU" + counter + ""].Style.Font.Bold = true;
-                    foreach (var cell in worksheet.Cells["D" + 7 + ":AU" + (counter + 1) + ""])
+					worksheet.Cells["A" + 5 + ":AY"  +6 + ""].Style.Font.Bold = true;
+					worksheet.Cells["E" + 6 + ":AY" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+					worksheet.Cells["A" + 5 + ":AY" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":AY" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":AY" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":AY" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + counter + ":AY" + counter + ""].Style.Font.Bold = true;
+                    foreach (var cell in worksheet.Cells["D" + 7 + ":AY" + (counter + 1) + ""])
                     {
                         cell.Value = Convert.ToDecimal(cell.Value);
                     }
@@ -5486,21 +5501,21 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					worksheet.Cells["A1"].Value = "Report Produksi"; worksheet.Cells["A" + 1 + ":AT" + 1 + ""].Merge = true;
 					worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
 					worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
-					worksheet.Cells["A" + 1 + ":CZ" + 1 + ""].Merge = true;
-					worksheet.Cells["A" + 2 + ":CZ" + 2 + ""].Merge = true;
-					worksheet.Cells["A" + 3 + ":CZ" + 3 + ""].Merge = true;
-					worksheet.Cells["A" + 1 + ":CZ" + 3 + ""].Style.Font.Size = 15;
-					worksheet.Cells["A" + 1 + ":CZ" + 3 + ""].Style.Font.Bold = true;
-					worksheet.Cells["A" + 1 + ":CZ" + 3 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-					worksheet.Cells["A" + 1 + ":CZ" + 3 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+					worksheet.Cells["A" + 1 + ":DD" + 1 + ""].Merge = true;
+					worksheet.Cells["A" + 2 + ":DD" + 2 + ""].Merge = true;
+					worksheet.Cells["A" + 3 + ":DD" + 3 + ""].Merge = true;
+					worksheet.Cells["A" + 1 + ":DD" + 3 + ""].Style.Font.Size = 15;
+					worksheet.Cells["A" + 1 + ":DD" + 3 + ""].Style.Font.Bold = true;
+					worksheet.Cells["A" + 1 + ":DD" + 3 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					worksheet.Cells["A" + 1 + ":DD" + 3 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 					worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
 					worksheet.Cells["E" + 5 + ":L" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 					worksheet.Cells["J" + 5 + ":Y" + 5 + ""].Merge = true;
 					worksheet.Cells["Z" + 5 + ":AK" + 5 + ""].Merge = true;
-					worksheet.Cells["AL" + 5 + ":BC" + 5 + ""].Merge = true;
-					worksheet.Cells["BD" + 5 + ":BY" + 5 + ""].Merge = true;
-					worksheet.Cells["BZ" + 5 + ":CS" + 5 + ""].Merge = true;
-					worksheet.Cells["CT" + 5 + ":CZ" + 5 + ""].Merge = true;
+					worksheet.Cells["AL" + 5 + ":BE" + 5 + ""].Merge = true;
+					worksheet.Cells["BF" + 5 + ":CA" + 5 + ""].Merge = true;
+					worksheet.Cells["CB" + 5 + ":CW" + 5 + ""].Merge = true;
+					worksheet.Cells["CX" + 5 + ":DD" + 5 + ""].Merge = true;
 					worksheet.Cells["A" + 5 + ":A" + 7 + ""].Merge = true;
 					worksheet.Cells["B" + 5 + ":B" + 7 + ""].Merge = true;
 					worksheet.Cells["C" + 5 + ":C" + 7 + ""].Merge = true;
@@ -5527,7 +5542,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					worksheet.Cells["AL" + 6 + ":AM" + 6 + ""].Merge = true;
 					worksheet.Cells["AN" + 6 + ":AO" + 6 + ""].Merge = true;
 					worksheet.Cells["AP" + 6 + ":AQ" + 6 + ""].Merge = true;
-					worksheet.Cells["AR" + 6 + ":AS" + 6 + ""].Merge = true;
+
+					
 					worksheet.Cells["AT" + 6 + ":AU" + 6 + ""].Merge = true;
 					worksheet.Cells["AV" + 6 + ":AW" + 6 + ""].Merge = true;
 					worksheet.Cells["AX" + 6 + ":AY" + 6 + ""].Merge = true;
@@ -5553,19 +5569,20 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					worksheet.Cells["CL" + 6 + ":CM" + 6 + ""].Merge = true;
 					worksheet.Cells["CN" + 6 + ":CO" + 6 + ""].Merge = true;
 					worksheet.Cells["CP" + 6 + ":CQ" + 6 + ""].Merge = true;
-					worksheet.Cells["CR" + 6 + ":CS" + 6 + ""].Merge = true;
-					worksheet.Cells["A" + (counter + 1) + ":i" + (counter + 1) + ""].Merge = true;
-					worksheet.Cells["A" + 5 + ":CZ" + 7 + ""].Style.Font.Bold = true;
-					worksheet.Cells["A" + (counter + 1) + ":CZ" + (counter + 1) + ""].Style.Font.Bold = true;
-					worksheet.Cells["A" + 5 + ":CZ" + 7 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-					worksheet.Cells["A" + 5 + ":CZ" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-					worksheet.Cells["E" + 8 + ":CZ" + (counter + 1) + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+					worksheet.Cells["CT" + 6 + ":CU" + 6 + ""].Merge = true;
+                    worksheet.Cells["CV" + 6 + ":CW" + 6 + ""].Merge = true;
+                    worksheet.Cells["A" + (counter + 1) + ":i" + (counter + 1) + ""].Merge = true;
+					worksheet.Cells["A" + 5 + ":DD" + 7 + ""].Style.Font.Bold = true;
+					worksheet.Cells["A" + (counter + 1) + ":DD" + (counter + 1) + ""].Style.Font.Bold = true;
+					worksheet.Cells["A" + 5 + ":DD" + 7 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					worksheet.Cells["A" + 5 + ":DD" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+					worksheet.Cells["E" + 8 + ":DD" + (counter + 1) + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 					
-					worksheet.Cells["A" + 5 + ":CZ" + (counter + 1) + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":CZ" + (counter + 1) + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":CZ" + (counter + 1) + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":CZ" + (counter + 1) + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    foreach (var cell in worksheet.Cells["E" + 8 + ":CZ" + (counter + 1) + ""])
+					worksheet.Cells["A" + 5 + ":DD" + (counter + 1) + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":DD" + (counter + 1) + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":DD" + (counter + 1) + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":DD" + (counter + 1) + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    foreach (var cell in worksheet.Cells["E" + 8 + ":DD" + (counter + 1) + ""])
                     {
                         cell.Value = Convert.ToDecimal(cell.Value);
                     }
