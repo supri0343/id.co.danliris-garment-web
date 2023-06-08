@@ -119,10 +119,13 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 		public decimal SubconNew { get; internal set; }
         public double MaterialUsage { get; internal set; }
         public double PriceUsage { get; internal set; }
+		public double SubconSewingInQty { get; internal set; }
+		public double SubconSewingOutQty { get; internal set; }
+		public double SubconExpenditureGoodInQty { get; internal set; }
+		public double SubconExpenditureGoodQty { get; internal set; }
 
-        public GarmentMonitoringProductionStockFlowDto(GarmentMonitoringProductionStockFlowDto flowDto)
+		public GarmentMonitoringProductionStockFlowDto(GarmentMonitoringProductionStockFlowDto flowDto)
 		{
-			 
 			this.Ro = flowDto.Ro;
 			this.BuyerCode = flowDto.BuyerCode;
 			this.Article = flowDto.Article;
@@ -217,7 +220,11 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			this.ExpenditureNew = flowDto.ExpenditureNew;
             this.MaterialUsage = flowDto.MaterialUsage;
             this.PriceUsage = flowDto.PriceUsage;
-			
+			this.SubconSewingInQty = flowDto.SubconSewingInQty;
+			this.SubconSewingOutQty = flowDto.SubconSewingOutQty;
+			this.SubconExpenditureGoodInQty = flowDto.SubconExpenditureGoodInQty;
+			this.SubconExpenditureGoodQty = flowDto.SubconExpenditureGoodQty;
+
 		}
 		
 	}
