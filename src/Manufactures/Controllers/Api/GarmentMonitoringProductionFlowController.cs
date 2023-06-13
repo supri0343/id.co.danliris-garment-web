@@ -64,6 +64,7 @@ namespace Manufactures.Controllers.Api
 				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
 			}
 		}
+
 		[HttpGet("stocks")]
 		public async Task<IActionResult> GetMonitoringProductionStockFlow(int unit, DateTime dateFrom,DateTime dateTo, string ro, int page = 1, int size = 25, string Order = "{}")
 		{
@@ -96,6 +97,34 @@ namespace Manufactures.Controllers.Api
 
 				if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
 			
+				filename += ".xlsx";
+
+				xlsInBytes = xls.ToArray();
+				var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+				return file;
+			}
+			catch (Exception e)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+			}
+		}
+		[HttpGet("stocksdownloadMII")]
+		public async Task<IActionResult> GetXlsMonitoringProductionStockFlowMII(string type, int unit, DateTime dateFrom, DateTime dateTo, string ro, int page = 1, int size = 25, string Order = "{}")
+		{
+			try
+			{
+				VerifyUser();
+				GetXlsMonitoringProductionStockFlowQuery query = new GetXlsMonitoringProductionStockFlowQuery(page, size, Order, unit, ro, dateFrom, dateTo, type, WorkContext.Token);
+				byte[] xlsInBytes;
+
+				var xls = await Mediator.Send(query);
+
+				string filename = "Laporan Flow Persediaan";
+
+				if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+				if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+
 				filename += ".xlsx";
 
 				xlsInBytes = xls.ToArray();
