@@ -51,6 +51,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentSubconCuttingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.InvoicePackingList.Configs;
 using Microsoft.EntityFrameworkCore;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconReprocess.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.ServiceSubconExpenditureGood.Config;
 
 namespace Manufactures.Data.EntityFrameworkCore
 {
@@ -234,6 +235,11 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 			modelBuilder.ApplyConfiguration(new SubconInvoicePackingListConfig());
 			modelBuilder.ApplyConfiguration(new SubconInvoicePackingListItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentServiceSubconExpenditureGoodConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSubconExpenditureGoodItemConfig());
+
+
 
 
 

@@ -114,6 +114,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         {
             try
             {
+
                 VerifyUser();
 
                 var order = await Mediator.Send(command);

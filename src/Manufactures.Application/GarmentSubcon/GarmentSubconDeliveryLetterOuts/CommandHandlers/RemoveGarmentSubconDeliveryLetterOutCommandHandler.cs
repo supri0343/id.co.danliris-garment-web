@@ -2,6 +2,8 @@
 using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Repositories;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconExpenditureGood;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconExpenditureGood.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
@@ -35,6 +37,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
         private readonly IGarmentServiceSubconShrinkagePanelRepository _garmentServiceSubconShrinkagePanelRepository;
         private readonly IGarmentServiceSubconFabricWashRepository _garmentServiceSubconFabricWashRepository;
         private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
+        private readonly IGarmentServiceSubconExpenditureGoodRepository _garmentServiceSubconExpenditureGoodRepository;
 
         public RemoveGarmentSubconDeliveryLetterOutCommandHandler(IStorage storage)
         {
@@ -47,6 +50,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             _garmentServiceSubconShrinkagePanelRepository = storage.GetRepository<IGarmentServiceSubconShrinkagePanelRepository>();
             _garmentServiceSubconFabricWashRepository = storage.GetRepository<IGarmentServiceSubconFabricWashRepository>();
             _garmentSubconContractRepository = storage.GetRepository<IGarmentSubconContractRepository>();
+            _garmentServiceSubconExpenditureGoodRepository = storage.GetRepository<IGarmentServiceSubconExpenditureGoodRepository>();
         }
 
 
@@ -96,6 +100,14 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     subconFabric.Modify();
 
                     await _garmentServiceSubconFabricWashRepository.Update(subconFabric);
+                }
+                else if (subconDeliveryLetterOut.SubconCategory == "SUBCON JASA BARANG JADI")
+                {
+                    var subconExpenditureGood = _garmentServiceSubconExpenditureGoodRepository.Query.Where(x => x.Identity == subconDeliveryLetterOutItem.SubconId).Select(s => new GarmentServiceSubconExpenditureGood(s)).Single();
+                    subconExpenditureGood.SetIsUsed(false);
+                    subconExpenditureGood.Modify();
+
+                    await _garmentServiceSubconExpenditureGoodRepository.Update(subconExpenditureGood);
                 }
                 await _garmentSubconDeliveryLetterOutItemRepository.Update(subconDeliveryLetterOutItem);
             });

@@ -2,6 +2,8 @@
 using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.Repositories;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconExpenditureGood;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconExpenditureGood.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
@@ -33,6 +35,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
         private readonly IGarmentServiceSubconSewingRepository _garmentSubconSewingRepository;
         private readonly IGarmentServiceSubconShrinkagePanelRepository _garmentServiceSubconShrinkagePanelRepository;
         private readonly IGarmentServiceSubconFabricWashRepository _garmentServiceSubconFabricWashRepository;
+        private readonly IGarmentServiceSubconExpenditureGoodRepository _garmentServiceSubconExpenditureGoodRepository;
 
         public UpdateGarmentSubconDeliveryLetterOutCommandHandler(IStorage storage)
         {
@@ -44,6 +47,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             _garmentSubconSewingRepository = storage.GetRepository<IGarmentServiceSubconSewingRepository>();
             _garmentServiceSubconShrinkagePanelRepository = storage.GetRepository<IGarmentServiceSubconShrinkagePanelRepository>();
             _garmentServiceSubconFabricWashRepository = storage.GetRepository<IGarmentServiceSubconFabricWashRepository>();
+            _garmentServiceSubconExpenditureGoodRepository = storage.GetRepository<IGarmentServiceSubconExpenditureGoodRepository>();
         }
 
         public async Task<GarmentSubconDeliveryLetterOut> Handle(UpdateGarmentSubconDeliveryLetterOutCommand request, CancellationToken cancellationToken)
@@ -114,6 +118,14 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                             subconFabric.Modify();
 
                             await _garmentServiceSubconFabricWashRepository.Update(subconFabric);
+                        }
+                        else if (subconDeliveryLetterOut.SubconCategory == "SUBCON JASA BARANG JADI")
+                        {
+                            var subconExpenditureGood = _garmentServiceSubconExpenditureGoodRepository.Query.Where(x => x.Identity == subconDLItem.SubconId).Select(s => new GarmentServiceSubconExpenditureGood(s)).Single();
+                            subconExpenditureGood.SetIsUsed(false);
+                            subconExpenditureGood.Modify();
+
+                            await _garmentServiceSubconExpenditureGoodRepository.Update(subconExpenditureGood);
                         }
                         subconDLItem.Remove();
                     }
@@ -192,6 +204,14 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                             subconFabric.Modify();
 
                             await _garmentServiceSubconFabricWashRepository.Update(subconFabric);
+                        }
+                        else if (request.SubconCategory == "SUBCON JASA BARANG JADI")
+                        {
+                            var subconExpenditureGood = _garmentServiceSubconExpenditureGoodRepository.Query.Where(x => x.Identity == item.SubconId).Select(s => new GarmentServiceSubconExpenditureGood(s)).Single();
+                            subconExpenditureGood.SetIsUsed(true);
+                            subconExpenditureGood.Modify();
+
+                            await _garmentServiceSubconExpenditureGoodRepository.Update(subconExpenditureGood);
                         }
                         await _garmentSubconDeliveryLetterOutItemRepository.Update(garmentSubconDeliveryLetterOutItem);
                     }
