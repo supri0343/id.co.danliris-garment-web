@@ -150,5 +150,39 @@ namespace Manufactures.Tests.Controllers.Api
 			GetStatusCode(result).Should().Equals((int)HttpStatusCode.InternalServerError);
 
 		}
+
+        [Fact]
+        public async Task GetXLSMIIStockBehavior()
+        {
+			var unitUnderTest = CreateGarmentMonitoringProductionFlowController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetXlsMonitoringProductionStockFlowQuery>(), It.IsAny<CancellationToken>()))
+				.ReturnsAsync(new MemoryStream());
+
+			// Act
+			var result = await unitUnderTest.GetXlsMonitoringProductionStockFlowMII("bookkeeping", 1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+
+			// Assert
+			Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+
+		}
+
+		[Fact]
+		public async Task GetXLSStockMII_InternalServerError()
+		{
+			var unitUnderTest = CreateGarmentMonitoringProductionFlowController();
+
+			_MockMediator
+				.Setup(s => s.Send(It.IsAny<GetXlsMonitoringProductionStockFlowQuery>(), It.IsAny<CancellationToken>()))
+				.Throws(new Exception());
+
+			// Act
+			var result = await unitUnderTest.GetXlsMonitoringProductionStockFlowMII("", 1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+
+			// Assert
+			GetStatusCode(result).Should().Equals((int)HttpStatusCode.InternalServerError);
+
+		}
 	}
 }
