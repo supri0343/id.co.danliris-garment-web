@@ -4,9 +4,9 @@ using System.Text;
 using Manufactures.Domain.Shared.ValueObjects;
 using Moonlay.Domain;
 
-namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.ValueObjects
+namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.SubconInvoicePackingListReceiptItemValueObjects
 {
-    public class SubconInvoicePackingListItemValueObject : ValueObject
+    public class SubconInvoicePackingListReceiptItemValueObject : ValueObject
     {
         public Guid Id { get; set; }
         public Guid InvoicePackingListId { get; set; }
@@ -15,16 +15,16 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.ValueObjects
 
         public Product Product { get;  set; }
 
-        public string DesignColor { get;  set; }
+        //public string DesignColor { get;  set; }
         public double Quantity { get;  set; }
         public Uom Uom { get;  set; }
         public double CIF { get;  set; }
         public double TotalPrice { get;  set; }
-        public double TotalNW { get; set; }
-        public double TotalGW { get; set; }
+        //public double TotalNW { get; set; }
+        //public double TotalGW { get; set; }
         public double PricePerDealUnit { get; set; }
 
-        public SubconInvoicePackingListItemValueObject()
+        public SubconInvoicePackingListReceiptItemValueObject()
         {
         }
         protected override IEnumerable<object> GetAtomicValues()

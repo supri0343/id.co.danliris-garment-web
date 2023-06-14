@@ -71,7 +71,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<SubconInvoicePackingListReadModel>>()))
                 .Returns(new List<SubconInvoicePackingList>()
                 {
-                    new SubconInvoicePackingList(SubconInvoicePackingListGuid, "", "",DateTimeOffset.Now,new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", "", 1,1,"","", new Guid())
+                    new SubconInvoicePackingList(SubconInvoicePackingListGuid, "", "",DateTimeOffset.Now,new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", "", 1,1,"","", new Guid(),"")
                 });
 
             Guid SubconInvoicePackingListItemGuid = Guid.NewGuid();
@@ -127,7 +127,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                .Returns(new List<SubconInvoicePackingList>()
                {
                     //new GarmentSubconDeliveryLetterOut(Guid.NewGuid(), null,null,new Guid(),"","",DateTimeOffset.Now,1,"","",1,"", false,"","")
-                    new SubconInvoicePackingList(Guid.NewGuid(), "", "",DateTimeOffset.Now,new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", "", 1,1,"","", new Guid())
+                    new SubconInvoicePackingList(Guid.NewGuid(), "", "",DateTimeOffset.Now,new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", "", 1,1,"","", new Guid(),"")
                });
 
             _mockSubconInvoicePackingListItemRepository
@@ -171,7 +171,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             Guid subconDeliveryLetterOutGuid = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentSubconInvoicePackingListCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new SubconInvoicePackingList(subconDeliveryLetterOutGuid, "", "", DateTimeOffset.Now, new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", "", 1, 1, "","", new Guid()));
+                .ReturnsAsync(new SubconInvoicePackingList(subconDeliveryLetterOutGuid, "", "", DateTimeOffset.Now, new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", "", 1, 1, "","", new Guid(), ""));
 
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentSubconInvoicePackingListCommand());
@@ -197,7 +197,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentSubconInvoicePackingListCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new SubconInvoicePackingList(SubconInvoicePackingListGuid, "InvoiceNo", "", DateTimeOffset.Now, new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", "", 1, 1, "","", new Guid()));
+                .ReturnsAsync(new SubconInvoicePackingList(SubconInvoicePackingListGuid, "InvoiceNo", "", DateTimeOffset.Now, new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", "", 1, 1, "","", new Guid(), ""));
 
             // Act
             var result = await unitUnderTest.Delete(SubconInvoicePackingListGuid.ToString());
@@ -219,7 +219,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                .Returns(new List<SubconInvoicePackingList>()
                {
                     //new GarmentSubconDeliveryLetterOut(Guid.NewGuid(), null,null,new Guid(),"","",DateTimeOffset.Now,1,"","",1,"", false,"","")
-                    new SubconInvoicePackingList(SubconInvoicePackingListGuid, "", "",DateTimeOffset.Now,new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", "", 1,1,"","", new Guid())
+                    new SubconInvoicePackingList(SubconInvoicePackingListGuid, "", "",DateTimeOffset.Now,new Domain.Shared.ValueObjects.SupplierId(1), "", "", "", "", 1,1,"","", new Guid(),"")
                });
 
             _mockSubconInvoicePackingListItemRepository

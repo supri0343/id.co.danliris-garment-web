@@ -15,6 +15,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.Commands
     {
         public string InvoiceNo { get; set; }
         public string BCType { get; set; }
+        public string POType { get; set; }
         public DateTimeOffset Date { get; set; }
         public Supplier Supplier { get; set; }
         public string SupplierCode { get; set; }
@@ -33,6 +34,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.Commands
         public PlaceGarmentSubconInvoicePackingListCommandValidator()
         {
             RuleFor(r => r.BCType).NotNull();
+            RuleFor(r => r.POType).NotNull().When(x => x.BCType == "BC 2.6.2").WithMessage("Harap Pilih Tipe PO");
             RuleFor(r => r.Date).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Tidak Boleh Kosong");
             RuleFor(r => r.Supplier).NotNull();
             RuleFor(r => r.Supplier.Id).NotEmpty().OverridePropertyName("Supplier").When(w => w.Supplier != null);
