@@ -12,7 +12,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 {
     public class GarmentSubconInvoicePackingListPDFTemplate
     {
-        public static MemoryStream Generate(GarmentSubconInvoicePackingListDto garmentSubconInvoicePacking, string finishedgood)
+        public static MemoryStream Generate(GarmentSubconInvoicePackingListDto garmentSubconInvoicePacking, GarmentSubconContractDto garmentSubconContract)
         {
             Document document = new Document(PageSize.A5.Rotate(), 10, 10, 10, 10);
             MemoryStream stream = new MemoryStream();
@@ -44,16 +44,34 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             tableTiltle.ExtendLastRow = false;
             document.Add(tableTiltle);
 
-            PdfPTable tableHeader = new PdfPTable(1);
-            tableHeader.SetWidths(new float[] { 1f });
+            PdfPTable tableHeader = new PdfPTable(2);
+            tableHeader.SetWidths(new float[] { 2f, 7f, });
+            PdfPCell cellIdentityContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
 
-            PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentLeft.AddElement(new Phrase("No Invoice    : "+garmentSubconInvoicePacking.InvoiceNo, bold_font));
-            cellHeaderContentLeft.AddElement(new Phrase("Tanggal        : " + garmentSubconInvoicePacking.Date.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
-            cellHeaderContentLeft.AddElement(new Phrase("No Subcon   : " + garmentSubconInvoicePacking.Supplier.Name ,normal_font));
-            cellHeaderContentLeft.AddElement(new Phrase("                      " + garmentSubconInvoicePacking.Supplier.Address, normal_font));
-            tableHeader.AddCell(cellHeaderContentLeft);
+            cellIdentityContentLeft.Phrase = new Phrase("No Invoice", normal_font);
+            tableHeader.AddCell(cellIdentityContentLeft);
+            cellIdentityContentLeft.Phrase = new Phrase(": " + garmentSubconInvoicePacking.InvoiceNo, normal_font);
+            tableHeader.AddCell(cellIdentityContentLeft);
 
+            cellIdentityContentLeft.Phrase = new Phrase("Tanggal", normal_font);
+            tableHeader.AddCell(cellIdentityContentLeft);
+            cellIdentityContentLeft.Phrase = new Phrase(": " + garmentSubconInvoicePacking.Date.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font);
+            tableHeader.AddCell(cellIdentityContentLeft);
+
+            cellIdentityContentLeft.Phrase = new Phrase("Supplier", normal_font);
+            tableHeader.AddCell(cellIdentityContentLeft);
+            cellIdentityContentLeft.Phrase = new Phrase(": " + garmentSubconInvoicePacking.Supplier.Name, normal_font);
+            tableHeader.AddCell(cellIdentityContentLeft);
+
+            cellIdentityContentLeft.Phrase = new Phrase("", normal_font);
+            tableHeader.AddCell(cellIdentityContentLeft);
+            cellIdentityContentLeft.Phrase = new Phrase("  " + garmentSubconInvoicePacking.Supplier.Address, normal_font);
+            tableHeader.AddCell(cellIdentityContentLeft);
+
+            cellIdentityContentLeft.Phrase = new Phrase("No SK", normal_font);
+            tableHeader.AddCell(cellIdentityContentLeft);
+            cellIdentityContentLeft.Phrase = new Phrase(": " + garmentSubconInvoicePacking.ContractNo, normal_font);
+            tableHeader.AddCell(cellIdentityContentLeft);
 
             PdfPCell cellHeader = new PdfPCell(tableHeader);
             tableHeader.ExtendLastRow = false;
@@ -63,8 +81,8 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
             #region content
 
-            PdfPTable tableContent = new PdfPTable(5);
-            tableContent.SetWidths(new float[] { 1f, 4.5f, 2f, 2.5f, 2.5f });
+            PdfPTable tableContent = new PdfPTable(8);
+            tableContent.SetWidths(new float[] { 1f, 4.5f, 2f, 2.5f, 2.5f, 2.5f , 2.5f , 2.5f });
 
             cellCenter.Phrase = new Phrase("No", bold_font);
             tableContent.AddCell(cellCenter);
@@ -72,90 +90,129 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             tableContent.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("Jumlah", bold_font);
             tableContent.AddCell(cellCenter);
-            //cellCenter.Phrase = new Phrase("Satuan", bold_font);
-            //tableContent.AddCell(cellCenter);
-            //cellCenter.Phrase = new Phrase("----", bold_font);
-            //tableContent.AddCell(cellCenter);
-            cellCenter.Phrase = new Phrase("Hrg Satuan Rp", bold_font);
+            cellCenter.Phrase = new Phrase("Satuan", bold_font);
             tableContent.AddCell(cellCenter);
-            cellCenter.Phrase = new Phrase("Jml Harga Rp", bold_font);
+            cellCenter.Phrase = new Phrase("Jumlah Kemasan", bold_font);
+            tableContent.AddCell(cellCenter);
+            cellCenter.Phrase = new Phrase("Satuan Kemasan", bold_font);
+            tableContent.AddCell(cellCenter);
+            cellCenter.Phrase = new Phrase("Hrg Satuan", bold_font);
+            tableContent.AddCell(cellCenter);
+            cellCenter.Phrase = new Phrase("Harga Total", bold_font);
             tableContent.AddCell(cellCenter);
 
-            int indexItem = 0;
 
-            if (garmentSubconInvoicePacking.Items.Count == 0)
+
+            //        if (garmentSubconInvoicePacking.Items.Count == 0)
+            //        {
+            //            cellCenter.Phrase = new Phrase(indexItem + 1.ToString(), normal_font);
+            //            tableContent.AddCell(cellCenter);
+
+            //cellCenter.Phrase = new Phrase(garmentSubconContract.FinishedGoodType, normal_font);
+            //tableContent.AddCell(cellCenter);
+
+            //cellCenter.Phrase = new Phrase("", normal_font);
+            //            tableContent.AddCell(cellCenter);
+
+            //            cellCenter.Phrase = new Phrase("", normal_font);
+            //            tableContent.AddCell(cellCenter);
+
+            //            cellCenter.Phrase = new Phrase("-", normal_font);
+            //            tableContent.AddCell(cellCenter);
+
+            //            cellCenter.Phrase = new Phrase("Rp " + (garmentSubconInvoicePacking.CIF), normal_font);
+            //            tableContent.AddCell(cellCenter);
+
+            //            cellCenter.Phrase = new Phrase("Rp " + (garmentSubconInvoicePacking.CIF * 0), normal_font);
+            //            tableContent.AddCell(cellCenter);
+            //        }
+            //        else
+            //        { 
+            int indexItem = 1;
+
+            if (garmentSubconInvoicePacking.BCType == "BC 2.6.2")
             {
-                cellCenter.Phrase = new Phrase(indexItem + 1.ToString(), normal_font);
-                cellCenter.Rowspan = 1;
-                tableContent.AddCell(cellCenter);
+                if (garmentSubconInvoicePacking.ReceiptItems.Count > 0)
+                {
+                    foreach (var a in garmentSubconInvoicePacking.ReceiptItems)
+                    {
+                        cellCenter.Phrase = new Phrase(indexItem.ToString(), normal_font);
+                        tableContent.AddCell(cellCenter);
 
-				//cellCenter.Phrase = new Phrase(garmentSubconInvoicePacking.Remark, normal_font);
-				//cellCenter.Rowspan = 1;
-				//tableContent.AddCell(cellCenter);
+                        cellCenter.Phrase = new Phrase(garmentSubconContract.FinishedGoodType, normal_font);
+                        tableContent.AddCell(cellCenter);
 
-				cellCenter.Phrase = new Phrase(finishedgood, normal_font);
-				cellCenter.Rowspan = 1;
-				tableContent.AddCell(cellCenter);
+                        cellCenter.Phrase = new Phrase(a.Quantity.ToString(), normal_font);
+                        tableContent.AddCell(cellCenter);
 
-				cellCenter.Phrase = new Phrase("", normal_font);
-                cellCenter.Rowspan = 1;
-                tableContent.AddCell(cellCenter);
+                        cellCenter.Phrase = new Phrase(a.Uom.Unit, normal_font);
+                        tableContent.AddCell(cellCenter);
 
-                //cellCenter.Phrase = new Phrase("", normal_font);
-                //cellCenter.Rowspan = 1;
-                //tableContent.AddCell(cellCenter);
+                        cellCenter.Phrase = new Phrase("-", normal_font);
+                        cellCenter.Rowspan = 1;
+                        tableContent.AddCell(cellCenter);
 
-                //cellCenter.Phrase = new Phrase("-", normal_font);
-                //cellCenter.Rowspan = 1;
-                //tableContent.AddCell(cellCenter);
+                        cellCenter.Phrase = new Phrase("-", normal_font);
+                        cellCenter.Rowspan = 1;
+                        tableContent.AddCell(cellCenter);
 
-                cellCenter.Phrase = new Phrase("Rp " + (garmentSubconInvoicePacking.CIF), normal_font);
-                cellCenter.Rowspan = 1;
-                tableContent.AddCell(cellCenter);
+                        cellCenter.Phrase = new Phrase("Rp. " + a.PricePerDealUnit.ToString("n", CultureInfo.GetCultureInfo("id-ID")), normal_font);
+                        tableContent.AddCell(cellCenter);
 
-                cellCenter.Phrase = new Phrase("Rp " + (garmentSubconInvoicePacking.CIF * 0), normal_font);
-                cellCenter.Rowspan = 1;
-                tableContent.AddCell(cellCenter);
+                        cellCenter.Phrase = new Phrase("Rp. " + a.TotalPrice.ToString("n", CultureInfo.GetCultureInfo("id-ID")), normal_font);
+                        tableContent.AddCell(cellCenter);
+
+                        indexItem++;
+                    }
+                }
             }
-            else
-            { 
-                //List<string, string> iwak = new List<string, string>;
+            else if (garmentSubconInvoicePacking.BCType == "BC 2.6.1")
+            {
                 foreach (var a in garmentSubconInvoicePacking.Items)
                 {
-                    cellCenter.Phrase = new Phrase(indexItem + 1.ToString(), normal_font);
-                    cellCenter.Rowspan = 1;
+                    var sumQtyPack = 0;
+                    var UomPack = "";
+                    foreach(var dl in a.deliveryLetterOutList)
+                    {
+                        UomPack = dl.Items[0].UomSatuanUnit;
+                        foreach (var dli in dl.Items)
+                        {
+                            sumQtyPack += dli.QtyPacking;
+
+                        }
+                    }
+                    cellCenter.Phrase = new Phrase(indexItem.ToString(), normal_font);
                     tableContent.AddCell(cellCenter);
 
-                    //cellCenter.Phrase = new Phrase(garmentSubconInvoicePacking.Remark, normal_font);
-                    //cellCenter.Rowspan = 1;
-                    //tableContent.AddCell(cellCenter);
-
-                    cellCenter.Phrase = new Phrase(finishedgood, normal_font);
-                    cellCenter.Rowspan = 1;
+                    cellCenter.Phrase = new Phrase(garmentSubconContract.FinishedGoodType, normal_font);
                     tableContent.AddCell(cellCenter);
 
                     cellCenter.Phrase = new Phrase(a.Quantity.ToString(), normal_font);
+                    tableContent.AddCell(cellCenter);
+
+                    cellCenter.Phrase = new Phrase(a.Uom.Unit, normal_font);
+                    tableContent.AddCell(cellCenter);
+
+                    cellCenter.Phrase = new Phrase(sumQtyPack.ToString("n", CultureInfo.GetCultureInfo("id-ID")), normal_font);
                     cellCenter.Rowspan = 1;
                     tableContent.AddCell(cellCenter);
 
-                    //cellCenter.Phrase = new Phrase(a.Uom.Unit, normal_font);
-                    //cellCenter.Rowspan = 1;
-                    //tableContent.AddCell(cellCenter);
-
-                    //cellCenter.Phrase = new Phrase("-", normal_font);
-                    //cellCenter.Rowspan = 1;
-                    //tableContent.AddCell(cellCenter);
-
-                    cellCenter.Phrase = new Phrase("Rp " + a.CIF, normal_font);
+                    cellCenter.Phrase = new Phrase(UomPack, normal_font);
                     cellCenter.Rowspan = 1;
                     tableContent.AddCell(cellCenter);
 
-                    cellCenter.Phrase = new Phrase("Rp " + a.CIF * a.Quantity, normal_font);
-                    cellCenter.Rowspan = 1;
+                    cellCenter.Phrase = new Phrase("Rp. " + garmentSubconContract.CIF.ToString("n", CultureInfo.GetCultureInfo("id-ID")), normal_font);
                     tableContent.AddCell(cellCenter);
 
+                    cellCenter.Phrase = new Phrase("Rp. " + (garmentSubconContract.CIF * a.Quantity).ToString("n", CultureInfo.GetCultureInfo("id-ID")), normal_font);
+                    tableContent.AddCell(cellCenter);
+
+                    indexItem++;
                 }
             }
+                
+            
+            //}
 
 
             PdfPCell cellContent = new PdfPCell(tableContent); // dont remove
@@ -167,49 +224,174 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
             #region TableSignature
 
-            PdfPTable tableSignature = new PdfPTable(1);
-            double totalqty = 0;
-            
+            PdfPTable tableSignature = new PdfPTable(2);
+            tableSignature.SetWidths(new float[] { 2f, 7f, });
+            //PdfPCell cellIdentityContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
 
-            foreach (var a in garmentSubconInvoicePacking.Items)
-			{
-                totalqty += a.Quantity;
-                cellLeftNoBorder.Phrase = new Paragraph("NW  : " + garmentSubconInvoicePacking.NW * totalqty + " KG", normal_font);
-                tableSignature.AddCell(cellLeftNoBorder);
-                cellLeftNoBorder.Phrase = new Paragraph("GW  : " + garmentSubconInvoicePacking.GW * totalqty + " KG", normal_font);
-                tableSignature.AddCell(cellLeftNoBorder);
-                cellLeftNoBorder.Phrase = new Paragraph(" ", normal_font);
-                tableSignature.AddCell(cellLeftNoBorder);
-                cellLeftNoBorder.Phrase = new Paragraph(" ", normal_font);
-                tableSignature.AddCell(cellLeftNoBorder);
-                cellLeftNoBorder.Phrase = new Paragraph(" ", normal_font);
-                tableSignature.AddCell(cellLeftNoBorder);
-                cellLeftNoBorder.Phrase = new Paragraph(" ", normal_font);
-                tableSignature.AddCell(cellLeftNoBorder);
-                cellLeftNoBorder.Phrase = new Paragraph(" ", normal_font);
-                tableSignature.AddCell(cellLeftNoBorder);
-                cellLeftNoBorder.Phrase = new Paragraph(" ", normal_font);
-                tableSignature.AddCell(cellLeftNoBorder);
+            if (garmentSubconInvoicePacking.BCType == "BC 2.6.2")
+            {
+                cellIdentityContentLeft.Phrase = new Phrase("NW", normal_font);
+                tableSignature.AddCell(cellIdentityContentLeft);
+                cellIdentityContentLeft.Phrase = new Phrase(": -" , normal_font);
+                tableSignature.AddCell(cellIdentityContentLeft);
+
+                cellIdentityContentLeft.Phrase = new Phrase("GW", normal_font);
+                tableSignature.AddCell(cellIdentityContentLeft);
+                cellIdentityContentLeft.Phrase = new Phrase(": -", normal_font);
+                tableSignature.AddCell(cellIdentityContentLeft);
+            }
+            else if (garmentSubconInvoicePacking.BCType == "BC 2.6.1")
+            {
+                var sumTotGW = 0;
+                var sumTotNW = 0;
+                foreach (var a in garmentSubconInvoicePacking.Items)
+                {
+                    sumTotGW += Convert.ToInt32(a.TotalGW);
+                    sumTotNW += Convert.ToInt32(a.TotalNW);
+                }
+                cellIdentityContentLeft.Phrase = new Phrase("NW", normal_font);
+                tableSignature.AddCell(cellIdentityContentLeft);
+                cellIdentityContentLeft.Phrase = new Phrase(": "+ sumTotGW + " KG", normal_font);
+                tableSignature.AddCell(cellIdentityContentLeft);
+
+                cellIdentityContentLeft.Phrase = new Phrase("GW", normal_font);
+                tableSignature.AddCell(cellIdentityContentLeft);
+                cellIdentityContentLeft.Phrase = new Phrase(": " + sumTotGW + " KG", normal_font);
+                tableSignature.AddCell(cellIdentityContentLeft);
             }
 
-            //cellCenterTopNoBorder.Phrase = new Paragraph("NW  : " + garmentSubconInvoicePacking.NW  + " KG", normal_font);
-            //tableSignature.AddCell(cellCenterTopNoBorder);
-            //cellCenterTopNoBorder.Phrase = new Paragraph("GW  : "+garmentSubconInvoicePacking.GW * quantity + " KG", normal_font);
-            //tableSignature.AddCell(cellCenterTopNoBorder);
-            //cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
-            //tableSignature.AddCell(cellCenterTopNoBorder);
-            //cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
-            //tableSignature.AddCell(cellCenterTopNoBorder);
-            //cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
-            //tableSignature.AddCell(cellCenterTopNoBorder);
-            //cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
-            //tableSignature.AddCell(cellCenterTopNoBorder);
-            //cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
-            //tableSignature.AddCell(cellCenterTopNoBorder);
-            //cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
-            //tableSignature.AddCell(cellCenterTopNoBorder);
+            #region Padding
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
 
-            cellLeftNoBorder.Phrase = new Paragraph("                      " +"(DAN LIRIS)", normal_font);
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder); cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+
+            #endregion
+
+
+            cellLeftNoBorder.Phrase = new Paragraph("       " +"(UDIK WIJANARKO)", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder);
+
+            cellLeftNoBorder.Phrase = new Paragraph("     Kasie Urusan Kepabeaan", normal_font);
+            tableSignature.AddCell(cellLeftNoBorder);
+
+            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
             tableSignature.AddCell(cellLeftNoBorder);
 
             PdfPCell cellSignature = new PdfPCell(tableSignature);
