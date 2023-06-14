@@ -2,7 +2,9 @@
 using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSubcon.InvoicePackingList;
 using Manufactures.Domain.GarmentSubcon.InvoicePackingList.Commands;
+using Manufactures.Domain.GarmentSubcon.InvoicePackingList.ISubconInvoicePackingListReceiptItemRepositories;
 using Manufactures.Domain.GarmentSubcon.InvoicePackingList.Repositories;
+using Manufactures.Domain.GarmentSubcon.SubconInvoicePackingListReceiptItemModel;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -19,12 +21,14 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
         private readonly IStorage _storage;
         private readonly ISubconInvoicePackingListRepository _subconInvoicePackingListRepository;
         private readonly ISubconInvoicePackingListItemRepository _subconInvoicePackingListItemRepository;
+        private readonly ISubconInvoicePackingListReceiptItemRepository _subconInvoicePackingListReceiptItemRepository;
 
         public PlaceGarmentSubconInvoicePackingListCommandHandler(IStorage storage)
         {
             _storage = storage;
             _subconInvoicePackingListRepository = storage.GetRepository<ISubconInvoicePackingListRepository>();
             _subconInvoicePackingListItemRepository = storage.GetRepository<ISubconInvoicePackingListItemRepository>();
+            _subconInvoicePackingListReceiptItemRepository = storage.GetRepository<ISubconInvoicePackingListReceiptItemRepository>();
         }
         public async Task<SubconInvoicePackingList> Handle(PlaceGarmentSubconInvoicePackingListCommand request, CancellationToken cancellationToken)
         {
@@ -43,38 +47,86 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
                 request.GW,
                 request.Remark,
                 request.BuyerStaff,
-                request.SubconContractId
+                request.SubconContractId,
+                request.POType
                 );
 
             foreach(var item in request.Items)
             {
-                SubconInvoicePackingListItem subconInvoicePackingListItem = new SubconInvoicePackingListItem(
-                    Guid.NewGuid(),
-                    InvoicePackingListId,
-                    item.DLNo,
-                    item.DLDate,
-                    //new ProductId(item.Product.Id),
-                    //item.Product.Code,
-                    //item.Product.Name,
-                    //item.Product.Remark,
-                    // item.DesignColor,
+                if(request.BCType == "BC 2.6.2" || request.BCType == "BC 2.7 IN")
+                {
+                    if(request.POType == "DENGAN PO")
+                    {
+                        SubconInvoicePackingListReceiptItem subconInvoicePackingListReceiptItem = new SubconInvoicePackingListReceiptItem(
+                            Guid.NewGuid(),
+                            InvoicePackingListId,
+                            item.DLNo,
+                            item.DLDate,
+                            new ProductId(item.Product.Id),
+                            item.Product.Code,
+                            item.Product.Name,
+                            item.Product.Remark,
+                            item.Quantity,
+                            new UomId(item.Uom.Id),
+                            item.Uom.Unit,
+                            item.TotalPrice,
+                            item.PricePerDealUnit
+                       );
 
-                    new ProductId(0),
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                    item.Quantity,
-                    //new UomId(item.Uom.Id),
-                    //item.Uom.Unit,
-                    new UomId(0),
-                    "-",
-                    item.CIF,
-                    item.TotalPrice,
-                    item.TotalNW,
-                    item.TotalGW
+                       await _subconInvoicePackingListReceiptItemRepository.Update(subconInvoicePackingListReceiptItem);
+                    }
+                    else
+                    {
+                        SubconInvoicePackingListReceiptItem subconInvoicePackingListReceiptItem = new SubconInvoicePackingListReceiptItem(
+                          Guid.NewGuid(),
+                          InvoicePackingListId,
+                          item.DLNo,
+                          item.DLDate,
+                          new ProductId(0),
+                          "-",
+                          "-",
+                          item.Product.Remark,
+                          item.Quantity,
+                          new UomId(item.Uom.Id),
+                          item.Uom.Unit,
+                          item.TotalPrice,
+                          item.PricePerDealUnit
+                        );
+                        await _subconInvoicePackingListReceiptItemRepository.Update(subconInvoicePackingListReceiptItem);
+                    }
+                   
+                }
+                else
+                {
+                    SubconInvoicePackingListItem subconInvoicePackingListItem = new SubconInvoicePackingListItem(
+                        Guid.NewGuid(),
+                        InvoicePackingListId,
+                        item.DLNo,
+                        item.DLDate,
+                        //new ProductId(item.Product.Id),
+                        //item.Product.Code,
+                        //item.Product.Name,
+                        //item.Product.Remark,
+                        // item.DesignColor,
+
+                        new ProductId(0),
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        item.Quantity,
+                        //new UomId(item.Uom.Id),
+                        //item.Uom.Unit,
+                        new UomId(0),
+                        "-",
+                        item.CIF,
+                        item.TotalPrice,
+                        item.TotalNW,
+                        item.TotalGW
                     );
-                await _subconInvoicePackingListItemRepository.Update(subconInvoicePackingListItem);
+                    await _subconInvoicePackingListItemRepository.Update(subconInvoicePackingListItem);
+                }
+                
             }
             await _subconInvoicePackingListRepository.Update(subconInvoicePackingList);
             _storage.Save();

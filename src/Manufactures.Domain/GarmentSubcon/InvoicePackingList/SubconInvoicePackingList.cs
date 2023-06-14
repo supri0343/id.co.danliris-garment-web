@@ -12,6 +12,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
     {
         public string InvoiceNo { get; private set; }
         public string BCType { get; private set; }
+        public string POType { get; private set; }
         public DateTimeOffset Date { get; private set; }
         public SupplierId SupplierId { get; private set; }
         public string SupplierCode { get; private set; }
@@ -28,6 +29,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
         {
             InvoiceNo = readModel.InvoiceNo;
             BCType = readModel.BCType;
+            POType = readModel.POType;
             Date = readModel.Date;
             SupplierId = new SupplierId(readModel.SupplierId);
             SupplierCode = readModel.SupplierCode;
@@ -41,11 +43,12 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
             SubconContractId = ReadModel.SubconContractId;
         }
 
-        public SubconInvoicePackingList(Guid identity, string invoiceNo,string bcType, DateTimeOffset date, SupplierId supplierId, string supplierCode, string supplierName, string supplierAddress, string contractNo, double nw,double gw, string keterangan, string buyerStaff, Guid subconContractId) : base(identity)
+        public SubconInvoicePackingList(Guid identity, string invoiceNo,string bcType, DateTimeOffset date, SupplierId supplierId, string supplierCode, string supplierName, string supplierAddress, string contractNo, double nw,double gw, string keterangan, string buyerStaff, Guid subconContractId,string poType) : base(identity)
         {
             Identity = Identity;
             InvoiceNo = invoiceNo;
             BCType = bcType;
+            POType = poType;
             Date = date;
             SupplierId = supplierId;
             SupplierCode = supplierCode;
@@ -62,6 +65,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
             {
                 InvoiceNo = InvoiceNo,
                 BCType = BCType,
+                POType = POType,
                 Date = Date,
                 SupplierId = SupplierId.Value,
                 SupplierCode = SupplierCode,
@@ -96,6 +100,15 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList
             {
                 this.BCType = BCType;
                 ReadModel.BCType = BCType;
+            }
+        }
+
+        public void SetPOType(string POType)
+        {
+            if (this.POType != POType)
+            {
+                this.POType = POType;
+                ReadModel.POType = POType;
             }
         }
         public void SetDate(DateTimeOffset Date)
