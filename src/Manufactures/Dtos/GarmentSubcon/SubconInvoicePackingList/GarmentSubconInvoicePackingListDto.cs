@@ -1,5 +1,6 @@
 ﻿using Manufactures.Domain.GarmentSubcon.InvoicePackingList;
 using Manufactures.Domain.Shared.ValueObjects;
+using Manufactures.Dtos.GarmentSubconReceipt;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +12,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public Guid Id { get; internal set; }
         public string InvoiceNo { get; internal set; }
         public string BCType { get; internal set; }
+        public string POType { get; internal set; }
         public DateTimeOffset Date { get; internal set; }
         public Supplier Supplier { get; internal set; }
         public string ContractNo { get; internal set; }
@@ -23,11 +25,14 @@ namespace Manufactures.Dtos.GarmentSubcon
         public List<string> DLNos { get; set; }
         public Guid SubconContractId { get; set; }
         public List<GarmentSubconInvoicePackingListItemDto> Items { get; set; }
+        public List<GarmentSubconInvoicePackingListReceiptItemDto> ReceiptItems { get; set; }
+
         public GarmentSubconInvoicePackingListDto(SubconInvoicePackingList subconInvoicePackingList)
         {
             Id = subconInvoicePackingList.Identity;
             InvoiceNo = subconInvoicePackingList.InvoiceNo;
             BCType = subconInvoicePackingList.BCType;
+            POType = subconInvoicePackingList.POType;
             Date = subconInvoicePackingList.Date;
             Supplier = new Supplier(subconInvoicePackingList.SupplierId.Value, subconInvoicePackingList.SupplierCode, subconInvoicePackingList.SupplierName, subconInvoicePackingList.SupplierAddress);
             ContractNo = subconInvoicePackingList.ContractNo;
@@ -37,6 +42,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             BuyerStaff = subconInvoicePackingList.BuyerStaff;
             SubconContractId = subconInvoicePackingList.SubconContractId;
             Items = new List<GarmentSubconInvoicePackingListItemDto>();
+            ReceiptItems = new List<GarmentSubconInvoicePackingListReceiptItemDto>();
         }
     }
 }
