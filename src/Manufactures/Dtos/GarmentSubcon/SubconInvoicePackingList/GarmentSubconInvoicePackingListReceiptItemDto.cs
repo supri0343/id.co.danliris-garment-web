@@ -1,27 +1,24 @@
 ﻿using Manufactures.Domain.GarmentSubcon.InvoicePackingList;
+using Manufactures.Domain.GarmentSubcon.SubconInvoicePackingListReceiptItemModel;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Manufactures.Dtos.GarmentSubcon
+namespace Manufactures.Dtos.GarmentSubconReceipt
 {
-    public class GarmentSubconInvoicePackingListItemDto:BaseDto
+    public class GarmentSubconInvoicePackingListReceiptItemDto : BaseDto
     {
         public Guid Id { get; set; }
         public Guid InvoicePackingListId { get;  set; }
         public string DLNo { get;  set; }
         public DateTimeOffset DLDate { get;  set; }
         public Product Product { get;  set; }
-        public string DesignColor { get;  set; }
         public double Quantity { get;  set; }
         public Uom Uom { get;  set; }
-        public double CIF { get; private set; }
         public double TotalPrice { get; private set; }
-        public double TotalNW { get; private set; }
-        public double TotalGW { get; private set; }
-        public List<GarmentSubconDeliveryLetterOutListDto> deliveryLetterOutList { get; set; }
-        public GarmentSubconInvoicePackingListItemDto(SubconInvoicePackingListItem subconInvoicePackingListItem)
+        public double PricePerDealUnit { get; private set; }
+        public GarmentSubconInvoicePackingListReceiptItemDto(SubconInvoicePackingListReceiptItem subconInvoicePackingListItem)
         {
             Id = subconInvoicePackingListItem.Identity;
             InvoicePackingListId = subconInvoicePackingListItem.InvoicePackingListId;
@@ -29,13 +26,14 @@ namespace Manufactures.Dtos.GarmentSubcon
             DLDate = subconInvoicePackingListItem.DLDate;
             Product = new Product(subconInvoicePackingListItem.ProductId.Value, subconInvoicePackingListItem.ProductCode, subconInvoicePackingListItem.ProductName, subconInvoicePackingListItem.ProductRemark);
             //ProductRemark = subconInvoicePackingListItem.ProductRemark;
-            DesignColor = subconInvoicePackingListItem.DesignColor;
+            //DesignColor = subconInvoicePackingListItem.DesignColor;
             Quantity = subconInvoicePackingListItem.Quantity;
             Uom = new Uom(subconInvoicePackingListItem.UomId.Value, subconInvoicePackingListItem.UomUnit);
-            CIF = subconInvoicePackingListItem.CIF;
+            //CIF = subconInvoicePackingListItem.CIF;
             TotalPrice = subconInvoicePackingListItem.TotalPrice;
-            TotalNW = subconInvoicePackingListItem.TotalNW;
-            TotalGW = subconInvoicePackingListItem.TotalGW;
+            PricePerDealUnit = subconInvoicePackingListItem.PricePerDealUnit;
+            //TotalNW = subconInvoicePackingListItem.TotalNW;
+            //TotalGW = subconInvoicePackingListItem.TotalGW;
 
         }
 

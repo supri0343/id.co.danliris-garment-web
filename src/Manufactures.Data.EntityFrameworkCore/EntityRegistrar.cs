@@ -52,6 +52,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.InvoicePackingList.Con
 using Microsoft.EntityFrameworkCore;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconReprocess.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.ServiceSubconExpenditureGood.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.InvoicePackingList.ReceiptConfigs;
 
 namespace Manufactures.Data.EntityFrameworkCore
 {
@@ -235,6 +236,7 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 			modelBuilder.ApplyConfiguration(new SubconInvoicePackingListConfig());
 			modelBuilder.ApplyConfiguration(new SubconInvoicePackingListItemConfig());
+			modelBuilder.ApplyConfiguration(new SubconInvoicePackingListReceiptItemConfig());
 
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconExpenditureGoodConfig());
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconExpenditureGoodItemConfig());

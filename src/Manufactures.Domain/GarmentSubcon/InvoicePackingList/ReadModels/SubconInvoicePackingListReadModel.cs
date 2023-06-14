@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Domain.ReadModels;
+using Manufactures.Domain.GarmentSubcon.InvoicePackingList.SubconInvoicePackingListReceiptItemReadModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,6 +14,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.ReadModels
 
         public string InvoiceNo { get; internal set; }
         public string BCType { get; internal set; }
+        public string POType { get; internal set; }
         public DateTimeOffset Date { get; internal set; }
         public int SupplierId { get; internal set; }
         public string SupplierCode { get; internal set; }
@@ -25,6 +27,7 @@ namespace Manufactures.Domain.GarmentSubcon.InvoicePackingList.ReadModels
         public string BuyerStaff { get; internal set; }
         public Guid SubconContractId { get; internal set; }
         public virtual List<SubconInvoicePackingListItemReadModel> SubconInvoicePackingListItem { get; internal set; }
+        public virtual List<SubconInvoicePackingListReceiptItemReadModel> SubconInvoicePackingListReceiptItem { get; internal set; }
 
     }
 }

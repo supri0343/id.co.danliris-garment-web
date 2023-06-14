@@ -20,6 +20,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Manufactures.Helpers.PDFTemplates.GarmentSubcon;
+using Manufactures.Domain.GarmentSubcon.InvoicePackingList.ISubconInvoicePackingListReceiptItemRepositories;
+using Manufactures.Dtos.GarmentSubconReceipt;
+using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Repositories;
 
 namespace Manufactures.Controllers.Api.GarmentSubcon
 {
@@ -31,12 +34,18 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         private readonly ISubconInvoicePackingListRepository subconInvoicePackingListRepository;
         private readonly ISubconInvoicePackingListItemRepository subconInvoicePackingListItemRepository;
         private readonly IGarmentSubconContractRepository garmentSubconContractRepository;
+        private readonly ISubconInvoicePackingListReceiptItemRepository subconInvoicePackingListReceiptItemRepository;
+        private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;
+        private readonly IGarmentSubconDeliveryLetterOutItemRepository _garmentSubconDeliveryLetterOutItemRepository;
 
         public GarmentSubconInvoicePackingListController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             subconInvoicePackingListRepository = Storage.GetRepository<ISubconInvoicePackingListRepository>();
             subconInvoicePackingListItemRepository = Storage.GetRepository<ISubconInvoicePackingListItemRepository>();
             garmentSubconContractRepository = Storage.GetRepository<IGarmentSubconContractRepository>();
+            subconInvoicePackingListReceiptItemRepository = Storage.GetRepository<ISubconInvoicePackingListReceiptItemRepository>();
+            _garmentSubconDeliveryLetterOutRepository = Storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
+            _garmentSubconDeliveryLetterOutItemRepository = Storage.GetRepository<IGarmentSubconDeliveryLetterOutItemRepository>();
         }
 
         [HttpGet]
@@ -60,10 +69,19 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 .Select(s => new { s.Identity,s.InvoicePackingListId,s.DLNo })
                 .ToList();
 
+            var receiptItems = subconInvoicePackingListReceiptItemRepository.Query
+               .Where(o => dtoIds.Contains(o.InvoicePackingListId))
+               .Select(s => new { s.Identity, s.InvoicePackingListId, s.DLNo })
+               .ToList();
+
+
             Parallel.ForEach(garmentSubconInvoicePackingListDtos, dto =>
             {
                 var currentItems = items.Where(s => s.InvoicePackingListId == dto.Id);
-                dto.DLNos = currentItems.Select(s => s.DLNo).ToList();
+                var currentReceiptItems = receiptItems.Where(s => s.InvoicePackingListId == dto.Id);
+
+                var UnionItems = currentItems.Union(currentReceiptItems);
+                dto.DLNos = UnionItems.Select(s => s.DLNo).ToList();
                
             });
 
@@ -110,10 +128,8 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             GarmentSubconInvoicePackingListDto garmentSubconInvoicePackingListDto  = subconInvoicePackingListRepository.Find(o => o.Identity == guid).Select(subcon => new GarmentSubconInvoicePackingListDto(subcon)
             {
-                Items = subconInvoicePackingListItemRepository.Find(o => o.InvoicePackingListId == subcon.Identity).Select(subconItem => new GarmentSubconInvoicePackingListItemDto(subconItem)
-                {
-
-                }).ToList()
+                Items = subconInvoicePackingListItemRepository.Find(o => o.InvoicePackingListId == subcon.Identity).Select(subconItem => new GarmentSubconInvoicePackingListItemDto(subconItem){}).ToList(),
+                ReceiptItems = subconInvoicePackingListReceiptItemRepository.Find(s => s.InvoicePackingListId == subcon.Identity).Select(receiptItem => new Dtos.GarmentSubconReceipt.GarmentSubconInvoicePackingListReceiptItemDto(receiptItem) { }).ToList()
             }).FirstOrDefault();
 
             await Task.Yield();
@@ -166,14 +182,22 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             {
                 Items = subconInvoicePackingListItemRepository.Find(o => o.InvoicePackingListId == subcon.Identity).Select(subconItem => new GarmentSubconInvoicePackingListItemDto(subconItem)
                 {
-                  
+                    deliveryLetterOutList = _garmentSubconDeliveryLetterOutRepository.Find(o => o.DLNo == subconItem.DLNo).Select(dl => new GarmentSubconDeliveryLetterOutListDto(dl) 
+                    {
+                        Items = _garmentSubconDeliveryLetterOutItemRepository.Find(s => s.SubconDeliveryLetterOutId == dl.Identity).Select(dli => new GarmentSubconDeliveryLetterOutItemDto(dli)
+                        { }).ToList()
+                    }).ToList()
+                }).ToList(),
+
+                ReceiptItems = subconInvoicePackingListReceiptItemRepository.Find(o => o.InvoicePackingListId == subcon.Identity).Select(subconItem => new GarmentSubconInvoicePackingListReceiptItemDto(subconItem) {
                 }).ToList()
+
 
             }
             ).FirstOrDefault();
 
-            var finishedgood = garmentSubconContractRepository.Find(a => a.Identity == garmentSubconInvoicePackingListDto.SubconContractId).Select(a => a.FinishedGoodType).FirstOrDefault();
-            var stream = GarmentSubconInvoicePackingListPDFTemplate.Generate(garmentSubconInvoicePackingListDto, finishedgood);
+            GarmentSubconContractDto subconContract = garmentSubconContractRepository.Find(a => a.Identity == garmentSubconInvoicePackingListDto.SubconContractId).Select(a => new GarmentSubconContractDto(a)).FirstOrDefault();
+            var stream = GarmentSubconInvoicePackingListPDFTemplate.Generate(garmentSubconInvoicePackingListDto, subconContract);
 
             return new FileStreamResult(stream, "application/pdf")
             {
