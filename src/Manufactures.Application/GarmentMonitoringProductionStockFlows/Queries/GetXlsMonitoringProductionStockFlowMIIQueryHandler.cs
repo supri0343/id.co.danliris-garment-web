@@ -35,7 +35,7 @@ using static Infrastructure.External.DanLirisClient.Microservice.MasterResult.Co
 
 namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 {
-    public class GetXlsMonitoringProductionStockFlowMIIQueryHandler : IQueryHandler<GetXlsMonitoringProductionStockFlowQuery, MemoryStream>
+    public class GetXlsMonitoringProductionStockFlowMIIQueryHandler : IQueryHandler<GetXlsMonitoringProductionStockFlowMIIQuery, MemoryStream>
     {
         protected readonly IHttpClientService _http;
         private readonly IStorage _storage;
@@ -304,7 +304,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
             public double FC { get; internal set; }
             public double Count { get; internal set; }
         }
-        public async Task<MemoryStream> Handle(GetXlsMonitoringProductionStockFlowQuery request, CancellationToken cancellationToken)
+        public async Task<MemoryStream> Handle(GetXlsMonitoringProductionStockFlowMIIQuery request, CancellationToken cancellationToken)
         {
             //DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom, new TimeSpan(7, 0, 0));
             //DateTimeOffset dateTo = new DateTimeOffset(request.dateTo, new TimeSpan(7, 0, 0));
