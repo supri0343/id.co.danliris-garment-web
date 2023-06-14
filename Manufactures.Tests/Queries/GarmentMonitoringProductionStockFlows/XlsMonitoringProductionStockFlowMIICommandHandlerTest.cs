@@ -213,7 +213,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionStockFlows
             Guid guidExpenditure = Guid.NewGuid();
             Guid guidExpenditureReturn = Guid.NewGuid();
             Guid guidAdjustmentItem = Guid.NewGuid();
-            GetXlsMonitoringProductionStockFlowQuery getMonitoring = new GetXlsMonitoringProductionStockFlowQuery(1, 25, "{}", 1, "ro", DateTime.Now.AddDays(-5), DateTime.Now, "", "token");
+            GetXlsMonitoringProductionStockFlowMIIQuery getMonitoring = new GetXlsMonitoringProductionStockFlowMIIQuery(1, 25, "{}", 1, "ro", DateTime.Now.AddDays(-5), DateTime.Now, "", "token");
 
             _mockGarmentBalanceProductionStockRepository
                .Setup(s => s.Query)

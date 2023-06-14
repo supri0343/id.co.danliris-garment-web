@@ -114,7 +114,7 @@ namespace Manufactures.Controllers.Api
 			try
 			{
 				VerifyUser();
-				GetXlsMonitoringProductionStockFlowQuery query = new GetXlsMonitoringProductionStockFlowQuery(page, size, Order, unit, ro, dateFrom, dateTo, type, WorkContext.Token);
+				GetXlsMonitoringProductionStockFlowMIIQuery query = new GetXlsMonitoringProductionStockFlowMIIQuery(page, size, Order, unit, ro, dateFrom, dateTo, type, WorkContext.Token);
 				byte[] xlsInBytes;
 
 				var xls = await Mediator.Send(query);
