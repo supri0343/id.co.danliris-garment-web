@@ -251,12 +251,12 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 }
                 cellIdentityContentLeft.Phrase = new Phrase("NW", normal_font);
                 tableSignature.AddCell(cellIdentityContentLeft);
-                cellIdentityContentLeft.Phrase = new Phrase(": "+ sumTotGW + " KG", normal_font);
+                cellIdentityContentLeft.Phrase = new Phrase(": "+ string.Format("{0:0.0000}", sumTotNW) + " KG", normal_font);
                 tableSignature.AddCell(cellIdentityContentLeft);
 
                 cellIdentityContentLeft.Phrase = new Phrase("GW", normal_font);
                 tableSignature.AddCell(cellIdentityContentLeft);
-                cellIdentityContentLeft.Phrase = new Phrase(": " + sumTotGW + " KG", normal_font);
+                cellIdentityContentLeft.Phrase = new Phrase(": " + string.Format("{0:0.0000}", sumTotGW) + " KG", normal_font);
                 tableSignature.AddCell(cellIdentityContentLeft);
             }
 
