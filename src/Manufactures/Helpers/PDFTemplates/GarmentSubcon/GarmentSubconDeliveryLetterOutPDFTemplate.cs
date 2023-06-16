@@ -246,7 +246,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 }
 
                 cellLeft.Phrase = new Phrase("TOTAL", bold_font);
-                cellLeft.Colspan = 8;
+                cellLeft.Colspan = 5;
                 tableContent.AddCell(cellLeft);
                 cellRight.Phrase = new Phrase($"{total}", bold_font);
                 cellRight.Colspan = 1;
@@ -465,7 +465,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                     }
                 }
                 cellLeft.Phrase = new Phrase("TOTAL", bold_font);
-                cellLeft.Colspan = 5;
+                cellLeft.Colspan = 3;
                 tableContent.AddCell(cellLeft);
                 cellRight.Phrase = new Phrase($"{total}", bold_font);
                 cellRight.Colspan = 1;
@@ -578,7 +578,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
                 cellIdentityContentLeft.Phrase = new Phrase("Keterangan", normal_font);
                 tableIRemark.AddCell(cellIdentityContentLeft);
-                cellIdentityContentLeft.Phrase = new Phrase(": " + garmentSubconDLOut.ContractNo, normal_font);
+                cellIdentityContentLeft.Phrase = new Phrase(": " , normal_font);
                 tableIRemark.AddCell(cellIdentityContentLeft);
 
                 PdfPCell cellRemark = new PdfPCell(tableIRemark);
