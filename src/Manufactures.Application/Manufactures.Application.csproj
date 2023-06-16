@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\Manufactures.Data.EntityFrameworkCore\Manufactures.Data.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
