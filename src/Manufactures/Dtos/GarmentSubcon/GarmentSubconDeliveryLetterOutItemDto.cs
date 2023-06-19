@@ -3,6 +3,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 using System.Collections.Generic;
 using System.Text;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
+using Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconExpenditureGoodDtoos;
 
 namespace Manufactures.Dtos.GarmentSubcon
 {
@@ -50,6 +51,8 @@ namespace Manufactures.Dtos.GarmentSubcon
         public string SubconNo { get; set; }
         public GarmentSubconCuttingOutDto SubconCutting { get; set; }
         public GarmentServiceSubconSewingDto SubconSewing { get; set; }
+        public GarmentServiceSubconExpenditureGoodDto SubconExpenditureGood { get; set; }
+        
         public GarmentServiceSubconSewingDetailDto SubconSewingDetail { get; set; }
         #endregion
         //public Uom UomSatuan { get; set; }

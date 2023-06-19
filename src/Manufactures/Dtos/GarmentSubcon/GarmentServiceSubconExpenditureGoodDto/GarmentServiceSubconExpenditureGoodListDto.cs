@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconExpenditureGood;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
 using Manufactures.Domain.Shared.ValueObjects;
+using Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconExpenditureGoodItemDtos;
 
-namespace Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconExpenditureGoodDto
+namespace Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconExpenditureGoodListDto
 {
     public class GarmentServiceSubconExpenditureGoodListDto : BaseDto
     {

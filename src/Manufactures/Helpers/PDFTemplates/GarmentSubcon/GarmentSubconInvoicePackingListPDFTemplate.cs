@@ -242,12 +242,12 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             }
             else if (garmentSubconInvoicePacking.BCType == "BC 2.6.1")
             {
-                var sumTotGW = 0;
-                var sumTotNW = 0;
+                double sumTotGW = 0;
+                double sumTotNW = 0;
                 foreach (var a in garmentSubconInvoicePacking.Items)
                 {
-                    sumTotGW += Convert.ToInt32(a.TotalGW);
-                    sumTotNW += Convert.ToInt32(a.TotalNW);
+                    sumTotGW += a.TotalGW;
+                    sumTotNW += a.TotalNW;
                 }
                 cellIdentityContentLeft.Phrase = new Phrase("NW", normal_font);
                 tableSignature.AddCell(cellIdentityContentLeft);
