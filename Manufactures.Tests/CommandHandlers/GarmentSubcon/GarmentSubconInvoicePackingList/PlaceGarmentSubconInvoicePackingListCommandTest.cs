@@ -34,7 +34,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconInvoiceP
 
         private PlaceGarmentSubconInvoicePackingListCommandHandler CreatePlaceGarmentSubconInvoicePackingListCommandHandler()
         {
-            return new PlaceGarmentSubconInvoicePackingListCommandHandler(_MockStorage.Object);
+            return new PlaceGarmentSubconInvoicePackingListCommandHandler(_MockStorage.Object, _MockHttpService.Object,  _MockWebApiContext.Object);
         }
 
         [Fact]
