@@ -13,7 +13,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 {
     public class GarmentSubconDeliveryLetterOutPDFTemplate
     {
-        public static MemoryStream Generate(GarmentSubconDeliveryLetterOutDto garmentSubconDLOut, string supplier)
+        public static MemoryStream Generate(GarmentSubconDeliveryLetterOutDto garmentSubconDLOut, GarmentSubconContractDto GarmentSubconContractDto)
         {
             PdfPCell cellLeftNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellCenterNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
@@ -51,7 +51,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
             cellIdentityContentLeft.Phrase = new Phrase("Tujuan", normal_font);
             tableIdentity.AddCell(cellIdentityContentLeft);
-            cellIdentityContentLeft.Phrase = new Phrase(": " + supplier, normal_font);
+            cellIdentityContentLeft.Phrase = new Phrase(": " + GarmentSubconContractDto.Supplier.Name, normal_font);
             tableIdentity.AddCell(cellIdentityContentLeft);
             cellIdentityContentLeft.Phrase = new Phrase(garmentSubconDLOut.SubconCategory == "SUBCON CUTTING SEWING" ? "NO. PO" : "", normal_font);
             tableIdentity.AddCell(cellIdentityContentLeft);
@@ -316,6 +316,75 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 tableContent.SpacingAfter = 5f;
                 document.Add(tableContent);
             }
+            else if (garmentSubconDLOut.SubconCategory == "SUBCON JASA BARANG JADI")
+            {
+                PdfPTable tableContent = new PdfPTable(7);
+                tableContent.SetWidths(new float[] { 1.5f, 3f, 3f, 3f, 3f, 2.5f, 2.5f });
+
+                cellCenter.Phrase = new Phrase("No", bold_font);
+                tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase("Packing List", bold_font);
+                tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase("RO", bold_font);
+                tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase("Article", bold_font);
+                tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase("Komoditi", bold_font);
+                tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase("Quantity", bold_font);
+                tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase("Satuan", bold_font);
+                tableContent.AddCell(cellCenter);
+
+                int indexItem = 0;
+                foreach (var DLItem in garmentSubconDLOut.Items)
+                {
+                    foreach (var item in DLItem.SubconExpenditureGood.Items)
+                    {
+                        cellCenter.Phrase = new Phrase((indexItem + 1).ToString(), normal_font);
+                        //cellCenter.Rowspan = cols;
+                        cellCenter.VerticalAlignment = Element.ALIGN_TOP;
+                        tableContent.AddCell(cellCenter);
+
+
+                        cellLeft.Phrase = new Phrase(GarmentSubconContractDto.JobType, normal_font);
+                        tableContent.AddCell(cellLeft);
+
+                        cellLeft.Phrase = new Phrase(item.RONo, normal_font);
+                        tableContent.AddCell(cellLeft);
+
+                        cellCenter.Phrase = new Phrase(item.Article, normal_font);
+                        tableContent.AddCell(cellCenter);
+
+                        cellCenter.Phrase = new Phrase(item.Comodity.Name, normal_font);
+                        tableContent.AddCell(cellCenter);
+
+                        cellRight.Phrase = new Phrase(item.Quantity.ToString(), normal_font);
+                        tableContent.AddCell(cellRight);
+
+                        cellLeft.Phrase = new Phrase(item.UomUnit, normal_font);
+                        tableContent.AddCell(cellLeft);
+
+                        total += item.Quantity;
+
+                        indexItem++;
+                    }
+                }
+                cellLeft.Phrase = new Phrase("TOTAL", bold_font);
+                cellLeft.Colspan = 5;
+                tableContent.AddCell(cellLeft);
+                cellRight.Phrase = new Phrase($"{total}", bold_font);
+                cellRight.Colspan = 1;
+                tableContent.AddCell(cellRight);
+                cellLeft.Phrase = new Phrase("PCS", bold_font);
+                cellLeft.Colspan = 1;
+                tableContent.AddCell(cellLeft);
+
+                PdfPCell cellContent = new PdfPCell(tableContent);
+                tableContent.ExtendLastRow = false;
+                tableContent.SpacingAfter = 5f;
+                document.Add(tableContent);
+            }
 
             else if (garmentSubconDLOut.SubconCategory != "SUBCON SEWING")
             {
@@ -479,7 +548,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 tableContent.SpacingAfter = 5f;
                 document.Add(tableContent);
             }
-
+            
             else
             {
                 PdfPTable tableContent = new PdfPTable(6);
