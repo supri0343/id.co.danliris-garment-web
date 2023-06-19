@@ -4,7 +4,7 @@ using Manufactures.Domain.GarmentSubcon.ServiceSubconExpenditureGood;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
 using Manufactures.Domain.Shared.ValueObjects;
 
-namespace Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconExpenditureGoodDto
+namespace Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconExpenditureGoodItemDtos
 {
     public class GarmentServiceSubconExpenditureGoodItemDto : BaseDto
     {
