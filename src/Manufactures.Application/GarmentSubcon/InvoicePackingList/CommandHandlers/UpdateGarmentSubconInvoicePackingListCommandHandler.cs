@@ -1,5 +1,8 @@
 ﻿using ExtCore.Data.Abstractions;
+using Infrastructure;
 using Infrastructure.Domain.Commands;
+using Infrastructure.External.DanLirisClient.Microservice;
+using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Manufactures.Domain.GarmentSubcon.InvoicePackingList;
 using Manufactures.Domain.GarmentSubcon.InvoicePackingList.Commands;
 using Manufactures.Domain.GarmentSubcon.InvoicePackingList.ISubconInvoicePackingListReceiptItemRepositories;
@@ -19,13 +22,17 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
     public class UpdateGarmentSubconInvoicePackingListCommandHandler : ICommandHandler<UpdateGarmentSubconInvoicePackingListCommand, SubconInvoicePackingList>
     {
         private readonly IStorage _storage;
+        private readonly IWebApiContext _webApiContext;
+        private readonly IHttpClientService _http;
         private readonly ISubconInvoicePackingListRepository _subconInvoicePackingListRepository;
         private readonly ISubconInvoicePackingListItemRepository _subconInvoicePackingListItemRepository;
         private readonly ISubconInvoicePackingListReceiptItemRepository _subconInvoicePackingListReceiptItemRepository;
 
-        public UpdateGarmentSubconInvoicePackingListCommandHandler(IStorage storage)
+        public UpdateGarmentSubconInvoicePackingListCommandHandler(IStorage storage, IWebApiContext webApiContext, IHttpClientService http)
         {
             _storage = storage;
+            _http = http;
+            _webApiContext = webApiContext;
             _subconInvoicePackingListRepository = storage.GetRepository<ISubconInvoicePackingListRepository>();
             _subconInvoicePackingListItemRepository = storage.GetRepository<ISubconInvoicePackingListItemRepository>();
             _subconInvoicePackingListReceiptItemRepository = storage.GetRepository<ISubconInvoicePackingListReceiptItemRepository>();
@@ -34,13 +41,26 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
         {
             var invoicePackingList = _subconInvoicePackingListRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new SubconInvoicePackingList(o)).Single();
 
-            if(invoicePackingList.BCType == "BC 2.6.2" || invoicePackingList.BCType == "BC 2.7 IN")
+            List<string> UpdateIsSubconWithPO = new List<string>();
+            List<string> UpdateIsSubconNonPO = new List<string>();
+            List<string> DeletedIsSubconWithPO = new List<string>();
+            List<string> DeletedSubconNonPO = new List<string>();
+            if (invoicePackingList.BCType == "BC 2.6.2" || invoicePackingList.BCType == "BC 2.7 IN")
             {
                 _subconInvoicePackingListReceiptItemRepository.Find(o => o.InvoicePackingListId == invoicePackingList.Identity).ForEach(async invoicePackingListReceiptItem =>
                 {
                     var item = request.Items.Where(o => o.Id == invoicePackingListReceiptItem.Identity).SingleOrDefault();
                     if (item == null)
                     {
+                        if (invoicePackingList.POType == "DENGAN PO")
+                        {
+                            DeletedIsSubconWithPO.Add(invoicePackingListReceiptItem.DLNo);
+                        }
+                        else
+                        {
+                            DeletedSubconNonPO.Add(invoicePackingListReceiptItem.DLNo);
+                        }
+
                         invoicePackingListReceiptItem.Remove();
                     }
 
@@ -66,8 +86,39 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
                          item.TotalPrice,
                          item.PricePerDealUnit
                        );
+
+                        if (invoicePackingList.POType == "DENGAN PO")
+                        {
+                            UpdateIsSubconWithPO.Add(item.DLNo);
+                        }
+                        else
+                        {
+                            UpdateIsSubconNonPO.Add(item.DLNo);
+                        }
                         await _subconInvoicePackingListReceiptItemRepository.Update(subconInvoicePackingListReceiptItem);
                     }
+                }
+
+                var DLListNo = "";
+                if (UpdateIsSubconWithPO.Count() > 0)
+                {
+                    DLListNo = string.Join(",", UpdateIsSubconWithPO);
+                    await SetIsSubconInvoiceGarmentDeliveryOrder(DLListNo, invoicePackingList.POType, true);
+                }
+                else if (UpdateIsSubconNonPO.Count() > 0)
+                {
+                    DLListNo = string.Join(",", UpdateIsSubconNonPO);
+                    await SetIsSubconInvoiceGarmentDeliveryOrder(DLListNo, invoicePackingList.POType, true);
+                }
+                if(DeletedIsSubconWithPO.Count() > 0) ///* UpdateDeletedDLNo*/ 
+                {
+                    DLListNo = string.Join(",", DeletedIsSubconWithPO);
+                    await SetIsSubconInvoiceGarmentDeliveryOrder(DLListNo, invoicePackingList.POType, false);
+                }
+                else if (DeletedSubconNonPO.Count() > 0)
+                {
+                    DLListNo = string.Join(",", DeletedSubconNonPO);
+                    await SetIsSubconInvoiceGarmentDeliveryOrder(DLListNo, invoicePackingList.POType, false);
                 }
             }
             else
@@ -125,6 +176,23 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
 
             return invoicePackingList;
 
+        }
+
+        public async Task<string> SetIsSubconInvoiceGarmentDeliveryOrder(string DLNo, string POType, bool IsSubconInvoice)
+        {
+            var garmentPurchasingtUri = PurchasingDataSettings.Endpoint;
+            var garmentPurchasingtUriUpdate = "";
+            if (POType == "TANPA PO")
+            {
+                garmentPurchasingtUriUpdate = garmentPurchasingtUri + $"garment-delivery-orders-non-po/isSubconInvoice?DONos={DLNo}&isSubconInvoice={IsSubconInvoice}";
+            }
+            else
+            {
+                garmentPurchasingtUriUpdate = garmentPurchasingtUri + $"garment-delivery-orders/isSubconInvoice?DONos={DLNo}&isSubconInvoice={IsSubconInvoice}";
+            }
+            var garmentPurchasingtResponse = await _http.GetAsync(garmentPurchasingtUriUpdate, _webApiContext.Token);
+
+            return garmentPurchasingtResponse.EnsureSuccessStatusCode().ToString(); ;
         }
     }
 }
