@@ -11,7 +11,9 @@ using Manufactures.Domain.GarmentSubcon.ServiceSubconExpenditureGood.Repositorie
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Repositories;
 using Manufactures.Dtos.GarmentSubcon;
-using Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconExpenditureGoodDto;
+using Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconExpenditureGoodDtoos;
+using Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconExpenditureGoodItemDtos;
+using Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconExpenditureGoodListDto;
 using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
