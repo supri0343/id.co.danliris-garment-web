@@ -14,7 +14,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
     {
         public static MemoryStream Generate(GarmentSubconInvoicePackingListDto garmentSubconInvoicePacking, GarmentSubconContractDto garmentSubconContract)
         {
-            Document document = new Document(PageSize.A5.Rotate(), 10, 10, 10, 10);
+            Document document = new Document(PageSize.A4, 10, 10, 10, 10);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
             document.Open();
@@ -82,7 +82,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             #region content
 
             PdfPTable tableContent = new PdfPTable(8);
-            tableContent.SetWidths(new float[] { 1f, 4.5f, 2f, 2.5f, 2.5f, 2.5f , 2.5f , 2.5f });
+            tableContent.SetWidths(new float[] { 1f, 4.5f, 1.5f, 2f, 2f, 2f , 2.5f , 3.5f });
 
             cellCenter.Phrase = new Phrase("No", bold_font);
             tableContent.AddCell(cellCenter);
@@ -128,8 +128,12 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             //        }
             //        else
             //        { 
-            int indexItem = 1;
+           
+            var totQtyPack = 0;
+            double totQty = 0;
+            double totPrice = 0;
 
+            int indexItem = 1;
             if (garmentSubconInvoicePacking.BCType == "BC 2.6.2")
             {
                 if (garmentSubconInvoicePacking.ReceiptItems.Count > 0)
@@ -168,6 +172,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             }
             else if (garmentSubconInvoicePacking.BCType == "BC 2.6.1")
             {
+               
                 foreach (var a in garmentSubconInvoicePacking.Items)
                 {
                     var sumQtyPack = 0;
@@ -190,7 +195,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                     cellCenter.Phrase = new Phrase(a.Quantity.ToString(), normal_font);
                     tableContent.AddCell(cellCenter);
 
-                    cellCenter.Phrase = new Phrase(a.Uom.Unit, normal_font);
+                    cellCenter.Phrase = new Phrase(garmentSubconContract.Uom.Unit, normal_font);
                     tableContent.AddCell(cellCenter);
 
                     cellCenter.Phrase = new Phrase(sumQtyPack.ToString("n", CultureInfo.GetCultureInfo("id-ID")), normal_font);
@@ -208,11 +213,33 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                     tableContent.AddCell(cellCenter);
 
                     indexItem++;
+
+                    totQtyPack += sumQtyPack;
+                    totQty += a.Quantity;
+                    totPrice += garmentSubconContract.CIF * a.Quantity;
                 }
+              
             }
-                
-            
-            //}
+
+            cellLeft.Phrase = new Phrase("TOTAL", bold_font);
+            cellLeft.Colspan = 2;
+            tableContent.AddCell(cellLeft);
+            cellRight.Phrase = new Phrase($"{totQty}", bold_font);
+            cellRight.Colspan = 1;
+            tableContent.AddCell(cellRight);
+            cellLeft.Phrase = new Phrase("", bold_font);
+            cellLeft.Colspan = 1;
+            tableContent.AddCell(cellLeft);
+            cellRight.Phrase = new Phrase($"{totQtyPack}", bold_font);
+            cellRight.Colspan = 1;
+            tableContent.AddCell(cellRight);
+            cellLeft.Phrase = new Phrase("", bold_font);
+            cellLeft.Colspan = 2;
+            tableContent.AddCell(cellLeft);
+            cellRight.Phrase = new Phrase("Rp. " + (totPrice).ToString("n", CultureInfo.GetCultureInfo("id-ID")), bold_font);
+            cellRight.Colspan = 1;
+            tableContent.AddCell(cellRight);
+
 
 
             PdfPCell cellContent = new PdfPCell(tableContent); // dont remove
