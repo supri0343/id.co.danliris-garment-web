@@ -31,7 +31,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(PageSize.A5.Rotate(), 10, 10, 100, 10);
+            Document document = new Document(PageSize.A4, 10, 10, 100, 10);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
             writer.PageEvent = new GarmentLocalCoverLetterPdfTemplatePageEvent(garmentSubconDLOut);
