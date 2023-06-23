@@ -169,7 +169,7 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
 
             var lastNo = _subconInvoicePackingListRepository.Query.Where(w => w.InvoiceNo.StartsWith(prefix))
                 .OrderByDescending(o => o.InvoiceNo)
-                .Select(s => int.Parse(s.InvoiceNo.Substring(11, 2)))
+                .Select(s => int.Parse(s.InvoiceNo.Substring(9, 3)))
                 .FirstOrDefault();
             var no = $"{prefix}{(lastNo + 1).ToString("D5")}";
 
