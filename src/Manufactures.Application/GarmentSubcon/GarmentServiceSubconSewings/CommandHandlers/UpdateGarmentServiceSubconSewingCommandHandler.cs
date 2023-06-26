@@ -185,7 +185,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                                         sewIn.UnitCode,
                                         sewIn.UnitName,
                                         "",
-                                        ""
+                                        sewInItem.Color
 
                                     ));
                                 }
@@ -197,7 +197,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
                     {
                         if (detail.IsSave)
                         {
-                            var sewInDetail = SewingInDetails.Where(y => y.DesignColor == detail.DesignColor && y.UnitId == new UnitDepartmentId(detail.Unit.Id)).ToList();
+                            var sewInDetail = SewingInDetails.Where(y => y.DesignColor == detail.DesignColor && y.UnitId == new UnitDepartmentId(detail.Unit.Id) && y.Color == detail.Color).ToList();
                             var qty = detail.Quantity;
                             if (sewInDetail.ToArray().Count() != 0)
                             {
