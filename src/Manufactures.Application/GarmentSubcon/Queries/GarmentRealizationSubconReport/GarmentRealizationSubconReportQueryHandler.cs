@@ -175,7 +175,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
                     bcDateOut = i.bcDateIn,
                     bcNoOut = i.bcNoIn,
                     quantityOut = i.quantityIn,
-                    uomOut = "",
+                    uomOut = "PCS",
                     jobType = i.fintype,
                     //subconNo = i.subconNo,
                     //bpjNo = i.bpjNo,
