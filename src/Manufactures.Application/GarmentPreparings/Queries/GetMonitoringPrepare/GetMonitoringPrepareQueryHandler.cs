@@ -122,9 +122,9 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 		public async Task<GarmentMonitoringPrepareListViewModel> Handle(GetMonitoringPrepareQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
-            dateFrom.AddHours(7);
+            //dateFrom.AddHours(7);
             DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
-			dateTo = dateTo.AddHours(7);
+			//dateTo = dateTo.AddHours(7);
 
 			var QueryMutationPrepareNow = from a in (from aa in garmentPreparingRepository.Query
 													 where aa.UnitId == request.unit && aa.ProcessDate.Value.AddHours(7) <= dateTo
@@ -329,13 +329,14 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 							};
 
 			var QueryDRPrepare = from a in (from data in garmentDeliveryReturnRepository.Query
-											where data.ReturnDate <= dateTo && data.UnitId == request.unit
-                                            && data.StorageName.Contains("GUDANG BAHAN BAKU")
+											where data.CreatedDate <= dateTo && data.UnitId == request.unit 
+											&& data.StorageName.Contains("GUDANG BAHAN BAKU")
 											select new
 											{
 												data.RONo,
 												data.Identity,
-												data.ReturnDate
+												data.ReturnDate,
+												data.CreatedDate
 											})
 								 join b in (from bb in garmentDeliveryReturnItemRepository.Query
 											where bb.PreparingItemId != "00000000-0000-0000-0000-000000000000"
@@ -354,7 +355,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 									 b.Quantity,
 									 b.DesignColor,
 									 a.ReturnDate,
-									 b.ProductCode
+									 b.ProductCode,
+									 a.CreatedDate,
 								 };
 
 			var QueryDeliveryReturn = from a in QueryDRPrepare
@@ -364,10 +366,10 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 									  {
 										  prepareItemid = c.Identity,
 										  price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.Total).FirstOrDefault()),
-										  expenditure = a.ReturnDate >= dateFrom ? a.Quantity : 0,
+										  expenditure = a.CreatedDate >= dateFrom ? a.Quantity : 0,
 										  aval = 0,
 										  uomUnit = "",
-										  stock = a.ReturnDate < dateFrom ? -a.Quantity : 0,
+										  stock = a.CreatedDate < dateFrom ? -a.Quantity : 0,
 										  mainFabricExpenditure = 0,
 										  nonMainFabricExpenditure = 0,
 										  remark = c.DesignColor,
