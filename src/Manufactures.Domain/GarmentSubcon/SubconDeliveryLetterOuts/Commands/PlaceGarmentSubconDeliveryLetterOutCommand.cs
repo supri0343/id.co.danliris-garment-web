@@ -48,6 +48,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
             RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutItemValueObjectValidator()).When(r => r.SubconCategory == "SUBCON CUTTING SEWING");
             RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutCuttingItemValueObjectValidator()).When(r => r.SubconCategory == "SUBCON SEWING");
             RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutServiceItemValueObjectValidator()).When(r => r.ContractType == "SUBCON JASA" || r.ContractType == "SUBCON BAHAN BAKU");
+            RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutShrinkAgePanelItemValueObjectValidator()).When(r => r.ContractType == "SUBCON BAHAN BAKU" && r.SubconCategory == "SUBCON BB SHRINKAGE/PANEL");
             RuleFor(r => r.TotalQty)
                  .LessThanOrEqualTo(r => r.UsedQty)
                  .WithMessage(x => $"'Jumlah Total' tidak boleh lebih dari '{x.UsedQty}'.");
@@ -98,6 +99,20 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
             //RuleFor(r => r.Quantity)
             //   .LessThanOrEqualTo(r => r.ContractQuantity)
             //   .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.ContractQuantity}'.");
+
+            RuleFor(r => r.SubconId).NotNull();
+            RuleFor(r => r.SubconNo).NotNull();
+        }
+    }
+
+    public class GarmentSubconDeliveryLetterOutShrinkAgePanelItemValueObjectValidator : AbstractValidator<GarmentSubconDeliveryLetterOutItemValueObject>
+    {
+        public GarmentSubconDeliveryLetterOutShrinkAgePanelItemValueObjectValidator()
+        {
+
+            RuleFor(r => r.SmallQuantity)
+                .GreaterThan(0)
+                .WithMessage("'Jumlah' harus lebih dari '0'.");
 
             RuleFor(r => r.SubconId).NotNull();
             RuleFor(r => r.SubconNo).NotNull();
