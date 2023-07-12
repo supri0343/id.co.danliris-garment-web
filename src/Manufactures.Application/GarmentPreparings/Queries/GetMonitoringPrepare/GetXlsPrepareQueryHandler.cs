@@ -1,4 +1,4 @@
-﻿using Infrastructure.Domain.Queries;
+﻿	using Infrastructure.Domain.Queries;
 using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Manufactures.Domain.GarmentPreparings.Repositories;
 using System;
@@ -128,7 +128,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
 			//dateTo = dateTo.AddHours(7);
 			var QueryMutationPrepareNow = from a in (from aa in garmentPreparingRepository.Query
-													 where aa.UnitId == request.unit && aa.ProcessDate.Value.AddHours(7) <= dateTo
+													 where aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.ProcessDate.Value.AddHours(7) <= dateTo
 													 select new
 													 {
 														 aa.Identity,
@@ -168,7 +168,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 
 			//NEW QUERY
 			var sumbasicPrice = (from a in (from aa in garmentPreparingRepository.Query
-											where aa.UnitId == request.unit
+											where aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit)
 											select new
 											{
 												aa.Identity,
@@ -218,7 +218,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 												   });
 
 			var QueryCuttingDONow = from a in (from data in garmentCuttingInRepository.Query
-											   where data.UnitId == request.unit && data.CuttingInDate.AddHours(7) <= dateTo
+											   where data.UnitId == (request.unit == 0 ? data.UnitId : request.unit) && data.CuttingInDate.AddHours(7) <= dateTo
 											   select new
 											   {
 												   data.RONo,
@@ -273,7 +273,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 							join b in garmentAvalProductItemRepository.Query on a.Identity equals b.APId
 							join c in garmentPreparingItemRepository.Query on Guid.Parse(b.PreparingItemId) equals c.Identity
 							join d in (from data in garmentPreparingRepository.Query
-									   where data.UnitId == request.unit
+									   where data.UnitId == (request.unit == 0 ? data.UnitId : request.unit)
 									   select new
 									   {
 										   data.Identity,
