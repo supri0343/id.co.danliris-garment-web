@@ -86,6 +86,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
             #region TableContent
             double total = 0;
+            double totalOut = 0;
             if (garmentSubconDLOut.SubconCategory == "SUBCON JASA GARMENT WASH")
             {
                 PdfPTable tableContent = new PdfPTable(7);
@@ -388,11 +389,11 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
             else if (garmentSubconDLOut.SubconCategory != "SUBCON SEWING")
             {
-                PdfPTable tableContent = new PdfPTable(5);
-                tableContent.SetWidths(new float[] { 1.5f, 8f, 6f,/* 2.5f, 2.5f,*/ 2.5f, 2.5f });
-
                 if (garmentSubconDLOut.SubconCategory == "SUBCON JASA KOMPONEN")
                 {
+                    PdfPTable tableContent = new PdfPTable(5);
+                    tableContent.SetWidths(new float[] { 1.5f, 8f, 6f,/* 2.5f, 2.5f,*/ 2.5f, 2.5f });
+
                     cellCenter.Phrase = new Phrase("No", bold_font);
                     tableContent.AddCell(cellCenter);
                     cellCenter.Phrase = new Phrase("Nama/Jenis Barang", bold_font);
@@ -408,8 +409,6 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                     cellCenter.Phrase = new Phrase("Satuan", bold_font);
                     tableContent.AddCell(cellCenter);
                     
-
-
                     for (int indexItem = 0; indexItem < garmentSubconDLOut.Items.Count; indexItem++)
                     {
                         GarmentSubconDeliveryLetterOutItemDto item = garmentSubconDLOut.Items[indexItem];
@@ -439,55 +438,24 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
                         total += item.Quantity;
                     }
+
+                    cellLeft.Phrase = new Phrase("TOTAL", bold_font);
+                    cellLeft.Colspan = 3;
+                    tableContent.AddCell(cellLeft);
+                    cellRight.Phrase = new Phrase($"{total}", bold_font);
+                    cellRight.Colspan = 1;
+                    tableContent.AddCell(cellRight);
+
+                    PdfPCell cellContent1 = new PdfPCell(tableContent);
+                    tableContent.ExtendLastRow = false;
+                    tableContent.SpacingAfter = 5f;
+                    document.Add(tableContent);
                 }
-                //else if (garmentSubconDLOut.SubconCategory == "SUBCON CUTTING SEWING")
-                //{
-
-                //    cellCenter.Phrase = new Phrase("No", bold_font);
-                //    tableContent.AddCell(cellCenter);
-                //    cellCenter.Phrase = new Phrase("Kode/Nama Barang", bold_font);
-                //    tableContent.AddCell(cellCenter);
-                //    cellCenter.Phrase = new Phrase("Keterangan Lain", bold_font);
-                //    tableContent.AddCell(cellCenter);
-                //    cellCenter.Phrase = new Phrase("Quantity", bold_font);
-                //    tableContent.AddCell(cellCenter);
-                //    cellCenter.Phrase = new Phrase("Satuan", bold_font);
-                //    tableContent.AddCell(cellCenter);
-                //    cellCenter.Phrase = new Phrase("", bold_font);
-                //    tableContent.AddCell(cellCenter);
-                //    cellCenter.Phrase = new Phrase("", bold_font);
-                //    tableContent.AddCell(cellCenter);
-
-                //    for (int indexItem = 0; indexItem < garmentSubconDLOut.Items.Count; indexItem++)
-                //    {
-                //        GarmentSubconDeliveryLetterOutItemDto item = garmentSubconDLOut.Items[indexItem];
-
-                //        cellCenter.Phrase = new Phrase((indexItem + 1).ToString(), normal_font);
-                //        tableContent.AddCell(cellCenter);
-
-                //        cellLeft.Phrase = new Phrase(item.Product.Code + "/" + item.Product.Name, normal_font);
-                //        tableContent.AddCell(cellLeft);
-
-                //        cellLeft.Phrase = new Phrase(item.DesignColor, normal_font);
-                //        tableContent.AddCell(cellLeft);
-
-                //        cellRight.Phrase = new Phrase($"{item.Quantity}", normal_font);
-                //        tableContent.AddCell(cellRight);
-
-                //        cellLeft.Phrase = new Phrase("PCS", normal_font);
-                //        tableContent.AddCell(cellLeft);
-
-                //        //cellLeft.Phrase = new Phrase("", normal_font);
-                //        //tableContent.AddCell(cellLeft);
-
-                //        //cellLeft.Phrase = new Phrase("", normal_font);
-                //        //tableContent.AddCell(cellLeft);
-
-                //        total += item.Quantity;
-                //    }
-                //}
                 else if (garmentSubconDLOut.SubconCategory == "SUBCON BB FABRIC WASH/PRINT" || garmentSubconDLOut.SubconCategory == "SUBCON BB SHRINKAGE/PANEL")
                 {
+                    PdfPTable tableContent = new PdfPTable(6);
+                    tableContent.SetWidths(new float[] { 1.5f, 8f, 6f, 2.5f, 2.5f, 2.5f });
+
                     cellCenter.Phrase = new Phrase("No", bold_font);
                     tableContent.AddCell(cellCenter);
                     cellCenter.Phrase = new Phrase("Packing List", bold_font);
@@ -502,8 +470,8 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                     tableContent.AddCell(cellCenter);
                     cellCenter.Phrase = new Phrase("Satuan", bold_font);
                     tableContent.AddCell(cellCenter);
-                    
-
+                    cellCenter.Phrase = new Phrase("Quantity Keluar (PCS)", bold_font);
+                    tableContent.AddCell(cellCenter);
 
                     for (int indexItem = 0; indexItem < garmentSubconDLOut.Items.Count; indexItem++)
                     {
@@ -530,23 +498,31 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                         cellLeft.Phrase = new Phrase("MTR", normal_font);
                         tableContent.AddCell(cellLeft);
 
-                        total += item.Quantity;
-                    }
-                }
-                cellLeft.Phrase = new Phrase("TOTAL", bold_font);
-                cellLeft.Colspan = 3;
-                tableContent.AddCell(cellLeft);
-                cellRight.Phrase = new Phrase($"{total}", bold_font);
-                cellRight.Colspan = 1;
-                tableContent.AddCell(cellRight);
-                cellLeft.Phrase = new Phrase(garmentSubconDLOut.SubconCategory == "SUBCON BB FABRIC WASH/PRINT" || garmentSubconDLOut.SubconCategory == "SUBCON BB SHRINKAGE/PANEL" ? "MTR" : "PCS", bold_font);
-                cellLeft.Colspan = 1;
-                tableContent.AddCell(cellLeft);
+                        cellRight.Phrase = new Phrase($"{item.SmallQuantity}", normal_font);
+                        tableContent.AddCell(cellRight);
 
-                PdfPCell cellContent = new PdfPCell(tableContent);
-                tableContent.ExtendLastRow = false;
-                tableContent.SpacingAfter = 5f;
-                document.Add(tableContent);
+                        total += item.Quantity;
+                        totalOut += item.SmallQuantity;
+                    }
+                    cellLeft.Phrase = new Phrase("TOTAL", bold_font);
+                    cellLeft.Colspan = 3;
+                    tableContent.AddCell(cellLeft);
+                    cellRight.Phrase = new Phrase($"{total}", bold_font);
+                    cellRight.Colspan = 1;
+                    tableContent.AddCell(cellRight);
+                    cellLeft.Phrase = new Phrase("MTR", bold_font);
+                    cellLeft.Colspan = 1;
+                    tableContent.AddCell(cellLeft);
+                    cellRight.Phrase = new Phrase($"{totalOut}", bold_font);
+                    cellRight.Colspan = 1;
+                    tableContent.AddCell(cellRight);
+                    
+                    PdfPCell cellContent = new PdfPCell(tableContent);
+                    tableContent.ExtendLastRow = false;
+                    tableContent.SpacingAfter = 5f;
+                    document.Add(tableContent);
+                }
+               
             }
             
             else

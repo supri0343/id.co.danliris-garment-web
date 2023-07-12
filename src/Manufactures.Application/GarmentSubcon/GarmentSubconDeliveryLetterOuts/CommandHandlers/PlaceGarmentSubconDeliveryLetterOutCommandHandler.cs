@@ -99,7 +99,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     item.SubconNo,
                     //new UomId(item.UomSatuan.Id),
                     item.UomSatuanUnit,
-                    item.QtyPacking
+                    item.QtyPacking,
+                    item.SmallQuantity,
+                    item.SmallUomUnit
                 );
                 if(request.SubconCategory=="SUBCON SEWING")
                 {
