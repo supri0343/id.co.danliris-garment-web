@@ -65,7 +65,6 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     var item = request.Items.Where(o => o.Id == subconDeliveryLetterOutItem.Identity).Single();
 
                     subconDeliveryLetterOutItem.SetQuantity(item.Quantity);
-
                     subconDeliveryLetterOutItem.Modify();
 
                     await _garmentSubconDeliveryLetterOutItemRepository.Update(subconDeliveryLetterOutItem);
@@ -131,6 +130,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     }
                     else
                     {
+                        if (subconDeliveryLetterOut.SubconCategory == "SUBCON BB SHRINKAGE/PANEL")
+                        {
+                            subconDLItem.SetSmallQty(item.SmallQuantity);
+                        }
                         subconDLItem.Modify();
                     }
 
@@ -163,7 +166,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                             item.SubconNo,
                             //new UomId(item.UomSatuan.Id),
                             item.UomSatuanUnit,
-                            item.QtyPacking
+                            item.QtyPacking,
+                            item.SmallQuantity,
+                            item.SmallUomUnit
                         );
                         if (request.SubconCategory == "SUBCON SEWING")
                         {
