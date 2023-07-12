@@ -2875,7 +2875,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                    //Math.Round(Convert.ToDouble(a.BasicPrice / a.Count), 2) * Convert.ToDouble(bb.FC / bb.Count),2),
                                    Math.Round(Convert.ToDouble((bb != null ? bb.FC / bb.Count : 0) == 0 ? cc != null ? cc.BasicPrice : 0 : Convert.ToDouble(a != null ? a.BasicPrice / a.Count : 0)) * Convert.ToDouble(bb != null ? bb.FC / bb.Count : 0), 2),
                                    realization = a.RO
-                               }).ToList();
+                               }).Distinct().ToList();
 
             var dtos = (from a in querySum
                         join b in BasicPrices on a.ro equals b.realization
