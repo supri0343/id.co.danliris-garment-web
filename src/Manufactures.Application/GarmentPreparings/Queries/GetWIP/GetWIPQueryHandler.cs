@@ -269,8 +269,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
                                      select new monitoringViewTemp
                                      {
                                          itemCode = c.ProductCode,
-                                         unitQty = c.CuttingInUomUnit,
-                                         Quantity = c.CuttingInQuantity * -1
+                                         unitQty = c.PreparingUomUnit,
+                                         Quantity = c.PreparingQuantity * -1
                                      };
             var FactPrepareAvalProduct = from a in (from aa in garmentAvalProductRepository.Query
                                                         //where aa.AvalDate.Value.Date < request.Date.Date
@@ -323,8 +323,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
                                            select new monitoringViewTemp
                                            {
                                                itemCode = c.ProductCode,
-                                               unitQty = c.CuttingInUomUnit,
-                                               Quantity = c.CuttingInQuantity * -1
+                                               unitQty = c.PreparingUomUnit,
+                                               Quantity = c.PreparingQuantity * -1
                                            };
             var FactPrepareAvalProductSample = from a in (from aa in garmentSampleAvalProductRepository.Query
                                                               //where aa.AvalDate.Value.Date < request.Date.Date
@@ -515,7 +515,13 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
 
 
             var QueryCuttNow = (from a in queryCutTemp
-                                join b in garmentCuttingOutRepository.Query on a.ro equals b.RONo
+                                join b in (from data in garmentCuttingOutRepository.Query
+                                           select new
+                                           {
+                                               data.RONo,
+                                               data.ComodityCode,
+                                               data.ComodityName
+                                           }).Distinct() on a.ro equals b.RONo
                                 select new monitoringViewsTemp
                                 {
                                     itemCode = b.ComodityCode,
@@ -579,7 +585,13 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
             //});
 
             var QueryCuttNowSample = (from a in queryCutTempSample
-                                      join b in garmentSampleCuttingOutRepository.Query on a.ro equals b.RONo
+                                      join b in (from data in garmentSampleCuttingOutRepository.Query
+                                                 select new
+                                                 {
+                                                     data.RONo,
+                                                     data.ComodityCode,
+                                                     data.ComodityName
+                                                 }).Distinct() on a.ro equals b.RONo
                                       select new monitoringViewsTemp
                                       {
                                           itemCode = b.ComodityCode,

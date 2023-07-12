@@ -278,9 +278,11 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
                                      select new monitoringViewTemp
                                      {
                                          itemCode = c.ProductCode,
-                                         unitQty = c.CuttingInUomUnit,
-                                         Quantity = c.CuttingInQuantity * -1
+                                         unitQty = c.PreparingUomUnit,
+                                         Quantity = Convert.ToDouble(c.PreparingQuantity * -1)
                                      };
+
+
             var FactPrepareAvalProduct = from a in (from aa in garmentAvalProductRepository.Query
                                                         //where aa.AvalDate.Value.Date < request.Date.Date
                                                         //where aa.AvalDate.Value.AddHours(7).Year == request.Date.Year
@@ -371,18 +373,20 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
             //});
             #endregion
 
+            var aaaa = FactPreparePreparing.Where(x => x.itemCode == "TC12582");
+            var baab = FactPrepareCutting.Where(x => x.itemCode == "TC12582");
+            var caac = FactPrepareAvalProduct.Where(x => x.itemCode == "TC12582");
+            var daad = FactPrepareDeliveryReturn.Where(x => x.itemCode == "TC12582");
+            var eaae = FactPrepareTempSample.Where(x => x.itemCode == "TC12582");
             var FactPrepareTemp = FactPreparePreparing.Union(FactPrepareCutting).Union(FactPrepareAvalProduct).Union(FactPrepareDeliveryReturn).Union(FactPrepareTempSample).AsEnumerable();
-            var FactPrepareTemp2 = FactPrepareTemp.GroupBy(x => new { x.itemCode, x.unitQty }, (key, groupdata) => new monitoringViewTemp
+            var FactPrepareTemp2 = FactPrepareTemp.GroupBy(x => new { x.itemCode, x.unitQty }, (key, group) => new monitoringViewTemp
             {
                 itemCode = key.itemCode,
                 unitQty = key.unitQty,
-                Quantity = groupdata.Sum(x => x.Quantity)
+                Quantity = group.Sum(s => s.Quantity)
             }).ToList();
 
             List<monitoringViewsTemp> SakirPreparing = new List<monitoringViewsTemp>();
-
-            FactPrepareTemp2 = FactPrepareTemp2.Where(x => x.Quantity > 0.01).Select(x => x).ToList();
-
 
             List<GarmentProductViewModel> GarmentProducts = new List<GarmentProductViewModel>();
 
@@ -403,7 +407,6 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
                 var Width = GarmentProduct == null ? "-" : GarmentProduct.Width;
                 var Const = GarmentProduct == null ? "-" : GarmentProduct.Const;
                 var Yarn = GarmentProduct == null ? "-" : GarmentProduct.Yarn;
-
 
                 SakirPreparing.Add(new monitoringViewsTemp
                 {
@@ -524,19 +527,26 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
 
 
             var QueryCuttNow = (from a in queryCutTemp
-                               join b in garmentCuttingOutRepository.Query on a.ro equals b.RONo
-                               select new monitoringViewsTemp
-                               {
-                                   itemCode = b.ComodityCode,
-                                   itemname = b.ComodityName.TrimEnd(),
-                                   Quantity = a.Quantity,
-                                 
-                               }).GroupBy(x => new { x.itemCode, x.itemname }, (key, group) => new monitoringViewsTemp
-                               {
-                                   itemname = key.itemname,
-                                   itemCode = key.itemCode,
-                                   Quantity = group.Sum(x => x.Quantity),
-                               });
+                                join b in (from data in garmentCuttingOutRepository.Query
+                                           select new
+                                           {
+                                               data.RONo,
+                                               data.ComodityCode,
+                                               data.ComodityName
+                                           }).Distinct() on a.ro equals b.RONo
+                                select new monitoringViewsTemp
+                                {
+                                    itemCode = b.ComodityCode,
+                                    itemname = b.ComodityName.TrimEnd(),
+                                    Quantity = a.Quantity,
+
+                                }).GroupBy(x => new { x.itemCode, x.itemname }, (key, group) => new monitoringViewsTemp
+                                {
+                                    itemname = key.itemname,
+                                    itemCode = key.itemCode,
+                                    Quantity = group.Sum(x => x.Quantity),
+                                });
+
 
             #region SampleCutting 
             var QueryCuttingInSample = (from a in (from aa in garmentSampleCuttingInRepository.Query
@@ -588,7 +598,13 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
             //});
 
             var QueryCuttNowSample = (from a in queryCutTempSample
-                                     join b in garmentSampleCuttingOutRepository.Query on a.ro equals b.RONo
+                                     join b in (from data in garmentSampleCuttingOutRepository.Query
+                                                select new
+                                                {
+                                                    data.RONo,
+                                                    data.ComodityCode,
+                                                    data.ComodityName
+                                                }).Distinct() on a.ro equals b.RONo
                                select new monitoringViewsTemp
                                {
                                    itemCode = b.ComodityCode,
@@ -952,10 +968,10 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
                 unitQty = key.unitQty
 
             }).ToList();
-
+            
             //var WIP = WIPTemp.Where(x => x.Quantity > 0).Concat(FactPrepare).ToList();
             var WIP = WIPTemp.Where(x => x.Quantity > 0).Concat(SakirPreparing).ToList();
-
+            var iwaj = WIP.Where(x => x.itemCode == "TC12582");
             foreach (var i in WIP)
             {
                 GarmentWIPDto dto = new GarmentWIPDto
