@@ -53,6 +53,11 @@ using Microsoft.EntityFrameworkCore;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconReprocess.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.ServiceSubconExpenditureGood.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.InvoicePackingList.ReceiptConfigs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSample.GarmentServiceSampleCuttings.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSample.GarmentServiceSampleSewings.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentSample.GarmentServiceSampleShrinkagePanels.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentSample.GarmentServiceSampleFabricWashes.Config;
+using Manufactures.Data.EntityFrameworkCore.GarmentSample.ServiceSampleExpenditureGood.Config;
 
 namespace Manufactures.Data.EntityFrameworkCore
 {
@@ -242,9 +247,26 @@ namespace Manufactures.Data.EntityFrameworkCore
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconExpenditureGoodItemConfig());
 
 
+			//
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleCuttingConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleCuttingItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleCuttingDetailConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleCuttingSizeConfig());
 
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleSewingConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleSewingItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleSewingDetailConfig());
 
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleShrinkagePanelConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleShrinkagePanelItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleShrinkagePanelDetailConfig());
 
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleFabricWashConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleFabricWashItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleFabricWashDetailConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleExpenditureGoodConfig());
+			modelBuilder.ApplyConfiguration(new GarmentServiceSampleExpenditureGoodItemConfig());
 		}
 	}
 }

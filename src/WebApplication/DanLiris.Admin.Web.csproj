@@ -14,6 +14,8 @@
     <Compile Remove="Migrations\20220728163929_add-colomn-uom-qty-packing-subcon-service-cutting.Designer.cs" />
     <Compile Remove="Migrations\20230607033835_add-table-GarmentServiceSubconExpenditureGood.cs" />
     <Compile Remove="Migrations\20230607033835_add-table-GarmentServiceSubconExpenditureGood.Designer.cs" />
+    <Compile Remove="Migrations\20230712072015_Create_Tables_Service_Sample.cs" />
+    <Compile Remove="Migrations\20230712072015_Create_Tables_Service_Sample.Designer.cs" />
   </ItemGroup>
 
   <!--<ItemGroup>
