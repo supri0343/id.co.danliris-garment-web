@@ -971,7 +971,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
             
             //var WIP = WIPTemp.Where(x => x.Quantity > 0).Concat(FactPrepare).ToList();
             var WIP = WIPTemp.Where(x => x.Quantity > 0).Concat(SakirPreparing).ToList();
-            var iwaj = WIP.Where(x => x.itemCode == "TC12582");
+
             foreach (var i in WIP)
             {
                 GarmentWIPDto dto = new GarmentWIPDto
