@@ -216,9 +216,10 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 		public async Task<MemoryStream> Handle(GetXlsMonitoringSampleStockFlowQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
-			dateFrom.AddHours(7);
+			//dateFrom.AddHours(7);
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
-			dateTo = dateTo.AddHours(7); DateTimeOffset dateFareNew = dateTo.AddDays(1);
+			//dateTo = dateTo.AddHours(7);
+			DateTimeOffset dateFareNew = dateTo.AddDays(1);
 
 
             var sumbasicPrice = (from a in (from prep in garmentPreparingRepository.Query
@@ -235,7 +236,7 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
                          });
             var sumFCs = (from a in garmentCuttingInRepository.Query
                           where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.CuttingType == "Main Fabric" &&
-                          a.CuttingInDate <= dateTo
+                          a.CuttingInDate.AddHours(7) <= dateTo
                           join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
                           join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
                           select new { a.FC, a.RONo, FCs= Convert.ToDouble( c.CuttingInQuantity  * a.FC),c.CuttingInQuantity}) 
@@ -249,28 +250,31 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
             var queryGroup = (from a in (from aa in garmentCuttingOutRepository.Query
                                          where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro))
                                          select new { aa.RONo, aa.ComodityId, aa.ComodityName, aa.Article })
-                              select new { BasicPrice = (from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault(),
+                              select new {
+                                  BasicPrice = (from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault(),
                                   FareNew = (from aa in garmentComodityPriceRepository.Query where aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && a.ComodityId == aa.ComodityId && aa.Date == dateFareNew select aa.Price).FirstOrDefault(),
                                   Fare = (from aa in garmentComodityPriceRepository.Query where aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && a.ComodityId == aa.ComodityId && aa.IsValid == true select aa.Price).FirstOrDefault(),
-                                  Ro = a.RONo, Article = a.Article, Comodity = a.ComodityName,
+                                  Ro = a.RONo, 
+								  Article = a.Article, 
+								  Comodity = a.ComodityName,
                                   FC = (from cost in sumFCs where cost.RO == a.RONo select cost.FC / cost.Count).FirstOrDefault() }).Distinct();
 
 
 
 
 			var QueryCuttingOut = (from a in (from aa in garmentCuttingOutRepository.Query
-											  where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.CuttingOutDate <= dateTo && aa.CuttingOutType == "SEWING" && aa.UnitId == aa.UnitFromId
+											  where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.CuttingOutDate.AddHours(7) <= dateTo && aa.CuttingOutType == "SEWING" && aa.UnitId == aa.UnitFromId
 											  select new { aa.RONo, aa.Identity, aa.CuttingOutDate, aa.CuttingOutType })
 								   join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CuttingOutId
 								   join c in garmentCuttingOutDetailRepository.Query on b.Identity equals c.CuttingOutItemId
 
 								   select new
 								   {
-									   BeginingBalanceCuttingQty = a.CuttingOutDate < dateFrom ? -c.CuttingOutQuantity : 0,
-									   BeginingBalanceCuttingPrice = a.CuttingOutDate < dateFrom ? -c.Price : 0,
+									   BeginingBalanceCuttingQty = a.CuttingOutDate.AddHours(7) < dateFrom ? -c.CuttingOutQuantity : 0,
+									   BeginingBalanceCuttingPrice = a.CuttingOutDate.AddHours(7) < dateFrom ? -c.Price : 0,
 									   Ro = a.RONo,
-									   QtyCuttingOut = a.CuttingOutDate >= dateFrom ? c.CuttingOutQuantity : 0,
-									   PriceCuttingOut = a.CuttingOutDate >= dateFrom ? c.Price : 0,
+									   QtyCuttingOut = a.CuttingOutDate.AddHours(7) >= dateFrom ? c.CuttingOutQuantity : 0,
+									   PriceCuttingOut = a.CuttingOutDate.AddHours(7) >= dateFrom ? c.Price : 0,
 								   }).GroupBy(x => x.Ro, (key, group) => new monitoringView
 								   {
 									   QtyCuttingIn = 0,
@@ -347,18 +351,18 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 
 								   });
 			var QueryCuttingOutSubkon = (from a in (from aa in garmentCuttingOutRepository.Query
-													where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitFromId == (request.unit == 0 ? aa.UnitFromId : request.unit) && aa.CuttingOutDate <= dateTo && aa.CuttingOutType == "SUBKON"
+													where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitFromId == (request.unit == 0 ? aa.UnitFromId : request.unit) && aa.CuttingOutDate.AddHours(7) <= dateTo && aa.CuttingOutType == "SUBKON"
 													select new { aa.RONo, aa.Identity, aa.CuttingOutDate, aa.CuttingOutType })
 										 join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CuttingOutId
 										 join c in garmentCuttingOutDetailRepository.Query on b.Identity equals c.CuttingOutItemId
 										 select new
 										 {
 
-											 BeginingBalanceCuttingQty = a.CuttingOutDate < dateFrom ? -c.CuttingOutQuantity : 0,
+											 BeginingBalanceCuttingQty = a.CuttingOutDate.AddHours(7) < dateFrom ? -c.CuttingOutQuantity : 0,
 											 Ro = a.RONo,
-											 BeginingBalanceCuttingPrice = a.CuttingOutDate < dateFrom ? -c.Price : 0,
-											 QtyCuttingsubkon = a.CuttingOutDate >= dateFrom ? c.CuttingOutQuantity : 0,
-											 PriceCuttingsubkon = a.CuttingOutDate >= dateFrom ? c.Price : 0,
+											 BeginingBalanceCuttingPrice = a.CuttingOutDate.AddHours(7) < dateFrom ? -c.Price : 0,
+											 QtyCuttingsubkon = a.CuttingOutDate.AddHours(7) >= dateFrom ? c.CuttingOutQuantity : 0,
+											 PriceCuttingsubkon = a.CuttingOutDate.AddHours(7) >= dateFrom ? c.Price : 0,
 										 }).GroupBy(x => x.Ro, (key, group) => new monitoringView
 										 {
 											 QtyCuttingIn = 0,
@@ -436,17 +440,17 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 
 										 });
 			var QueryCuttingOutTransfer = (from a in (from aa in garmentCuttingOutRepository.Query
-													  where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitFromId == (request.unit == 0 ? aa.UnitFromId : request.unit) && aa.CuttingOutDate <= dateTo && aa.CuttingOutType == "SEWING" && aa.UnitId != aa.UnitFromId
+													  where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitFromId == (request.unit == 0 ? aa.UnitFromId : request.unit) && aa.CuttingOutDate.AddHours(7) <= dateTo && aa.CuttingOutType == "SEWING" && aa.UnitId != aa.UnitFromId
 													  select new { aa.RONo, aa.Identity, aa.CuttingOutType, aa.CuttingOutDate })
 										   join b in garmentCuttingOutItemRepository.Query on a.Identity equals b.CuttingOutId
 										   join c in garmentCuttingOutDetailRepository.Query on b.Identity equals c.CuttingOutItemId
 										   select new
 										   {
-											   BeginingBalanceCuttingQty = a.CuttingOutDate < dateFrom ? -c.CuttingOutQuantity : 0,
-											   BeginingBalanceCuttingPrice = a.CuttingOutDate < dateFrom ? -c.Price : 0,
+											   BeginingBalanceCuttingQty = a.CuttingOutDate.AddHours(7) < dateFrom ? -c.CuttingOutQuantity : 0,
+											   BeginingBalanceCuttingPrice = a.CuttingOutDate.AddHours(7) < dateFrom ? -c.Price : 0,
 											   Ro = a.RONo,
-											   QtyCuttingTransfer = a.CuttingOutDate >= dateFrom ? c.CuttingOutQuantity : 0,
-											   PriceCuttingTransfer = a.CuttingOutDate >= dateFrom ? c.Price : 0,
+											   QtyCuttingTransfer = a.CuttingOutDate.AddHours(7) >= dateFrom ? c.CuttingOutQuantity : 0,
+											   PriceCuttingTransfer = a.CuttingOutDate.AddHours(7) >= dateFrom ? c.Price : 0,
 										   }).GroupBy(x => x.Ro, (key, group) => new monitoringView
 										   {
 											   QtyCuttingIn = 0,
@@ -525,18 +529,18 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 
 										   });
 			var QueryCuttingIn = (from a in (from aa in garmentCuttingInRepository.Query
-											 where aa.CuttingType != "Non Main Fabric" && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.CuttingInDate <= dateTo
+											 where aa.CuttingType != "Non Main Fabric" && (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.CuttingInDate.AddHours(7) <= dateTo
 											 select new { aa.RONo, aa.Identity, aa.CuttingInDate })
 								  join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
 								  join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
 								  select new
 								  {
 
-									  BeginingBalanceCuttingQty = a.CuttingInDate < dateFrom ? c.CuttingInQuantity : 0,
-									  BeginingBalanceCuttingPrice = a.CuttingInDate < dateFrom ? c.Price : 0,
+									  BeginingBalanceCuttingQty = a.CuttingInDate.AddHours(7) < dateFrom ? c.CuttingInQuantity : 0,
+									  BeginingBalanceCuttingPrice = a.CuttingInDate.AddHours(7) < dateFrom ? c.Price : 0,
 									  Ro = a.RONo,
-									  QtyCuttingIn = a.CuttingInDate >= dateFrom ? c.CuttingInQuantity : 0,
-									  PriceCuttingIn = a.CuttingInDate >= dateFrom ? c.Price : 0,
+									  QtyCuttingIn = a.CuttingInDate.AddHours(7) >= dateFrom ? c.CuttingInQuantity : 0,
+									  PriceCuttingIn = a.CuttingInDate.AddHours(7) >= dateFrom ? c.Price : 0,
 
 								  }).GroupBy(x => x.Ro, (key, group) => new monitoringView
 								  {
@@ -614,14 +618,14 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 								  });
 
 			var QueryAvalCompSewing = (from a in (from aa in garmentAvalComponentRepository.Query
-												  where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.Date <= dateTo && aa.SampleAvalComponentType == "SEWING"
+												  where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.Date.AddHours(7) <= dateTo && aa.SampleAvalComponentType == "SEWING"
 												  select new { aa.RONo, aa.Identity, aa.Date, aa.SampleAvalComponentType })
 									   join b in garmentAvalComponentItemRepository.Query on a.Identity equals b.SampleAvalComponentId
 									   select new
 									   {
 										   Ro = a.RONo,
-										   AvalSewing = a.Date >= dateFrom ? b.Quantity : 0,
-										   AvalSewingPrice = a.Date >= dateFrom ? Convert.ToDouble(b.Price) : 0,
+										   AvalSewing = a.Date.AddHours(7) >= dateFrom ? b.Quantity : 0,
+										   AvalSewingPrice = a.Date.AddHours(7) >= dateFrom ? Convert.ToDouble(b.Price) : 0,
 									   }).GroupBy(x => x.Ro, (key, group) => new monitoringView
 									   {
 										   QtySewingIn = 0,
@@ -697,14 +701,14 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 										   BeginingBalanceFinishingPrice = 0
 									   });
 			var QueryAvalCompCutting = (from a in (from aa in garmentAvalComponentRepository.Query
-												   where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.Date <= dateTo && aa.SampleAvalComponentType == "CUTTING"
+												   where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.Date.AddHours(7) <= dateTo && aa.SampleAvalComponentType == "CUTTING"
 												   select new { aa.RONo, aa.Identity, aa.Date, aa.SampleAvalComponentType })
 										join b in garmentAvalComponentItemRepository.Query on a.Identity equals b.SampleAvalComponentId
 										select new
 										{
 											Ro = a.RONo,
-											AvalCutting = a.Date >= dateFrom ? b.Quantity : 0,
-											AvalCuttingPrice = a.Date >= dateFrom ? Convert.ToDouble(b.Price) : 0
+											AvalCutting = a.Date.AddHours(7) >= dateFrom ? b.Quantity : 0,
+											AvalCuttingPrice = a.Date.AddHours(7) >= dateFrom ? Convert.ToDouble(b.Price) : 0
 										}).GroupBy(x => x.Ro, (key, group) => new monitoringView
 										{
 											QtyCuttingIn = 0,
@@ -781,15 +785,15 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 										});
 
 			var QuerySewingIn = (from a in (from aa in garmentSewingInRepository.Query
-											where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.SewingInDate <= dateTo
+											where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.SewingInDate.AddHours(7) <= dateTo
 											select new { aa.RONo, aa.Identity, aa.SewingInDate, aa.SewingFrom })
 								 join b in garmentSewingInItemRepository.Query on a.Identity equals b.SewingInId
 								 select new
 								 {
-									 BeginingBalanceSewingQty = (a.SewingInDate < dateFrom && a.SewingFrom != "SEWING" /*&& a.SewingFrom == "FINISHING"*/) ? b.Quantity : 0,
-									 BeginingBalanceSewingPrice = (a.SewingInDate < dateFrom && a.SewingFrom != "SEWING" /*&& a.SewingFrom == "FINISHING"*/) ? b.Price : 0,
-									 QtySewingIn = (a.SewingInDate >= dateFrom) && a.SewingFrom != "SEWING" ? b.Quantity : 0,
-									 PriceSewingIn = (a.SewingInDate >= dateFrom) && a.SewingFrom != "SEWING" ? b.Price : 0,
+									 BeginingBalanceSewingQty = (a.SewingInDate.AddHours(7) < dateFrom && a.SewingFrom != "SEWING" /*&& a.SewingFrom == "FINISHING"*/) ? b.Quantity : 0,
+									 BeginingBalanceSewingPrice = (a.SewingInDate.AddHours(7) < dateFrom && a.SewingFrom != "SEWING" /*&& a.SewingFrom == "FINISHING"*/) ? b.Price : 0,
+									 QtySewingIn = (a.SewingInDate.AddHours(7) >= dateFrom) && a.SewingFrom != "SEWING" ? b.Quantity : 0,
+									 PriceSewingIn = (a.SewingInDate.AddHours(7) >= dateFrom) && a.SewingFrom != "SEWING" ? b.Price : 0,
 									 Ro = a.RONo
 
 								 }).GroupBy(x => x.Ro, (key, group) => new monitoringView
@@ -869,32 +873,32 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 									 BeginingBalanceFinishingPrice = 0
 								 });
 			var QuerySewingOut = (from a in (from aa in garmentSewingOutRepository.Query
-											 where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.SewingOutDate <= dateTo
+											 where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.SewingOutDate.AddHours(7) <= dateTo
 											 select new { aa.RONo, aa.Identity, aa.SewingOutDate, aa.SewingTo, aa.UnitToId, aa.UnitId })
 								  join b in garmentSewingOutItemRepository.Query on a.Identity equals b.SampleSewingOutId
 
 								  select new
 								  {
 
-									  FinishingTransferExpenditure = (a.SewingOutDate >= dateFrom && a.SewingTo == "FINISHING" && a.UnitId != a.UnitToId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0,
-									  FinishingTransferExpenditurePrice = (a.SewingOutDate >= dateFrom && a.SewingTo == "FINISHING" && a.UnitId != a.UnitToId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0,
-									  FinishingInTransferQty = (a.SewingOutDate >= dateFrom && a.SewingTo == "FINISHING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Quantity : 0,
-									  FinishingInTransferPrice = (a.SewingOutDate >= dateFrom && a.SewingTo == "FINISHING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Price : 0,
-									  BeginingBalanceFinishingQty = (a.SewingOutDate < dateFrom && a.SewingTo == "FINISHING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Quantity : 0,
-									  BeginingBalanceFinishingPrice = (a.SewingOutDate < dateFrom && a.SewingTo == "FINISHING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Price : 0,
-									  BeginingBalanceSewingQty = (a.SewingOutDate < dateFrom && a.SewingTo == "FINISHING" && a.UnitToId == a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? -b.Quantity : 0 - ((a.SewingOutDate < dateFrom && a.SewingTo == "FINISHING" && a.UnitToId == a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? -b.Quantity : 0) + ((a.SewingOutDate < dateFrom && a.SewingTo == "SEWING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Quantity : 0) - ((a.SewingOutDate < dateFrom && a.SewingTo == "CUTTING" && a.UnitId == a.UnitToId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0) - ((a.SewingOutDate < dateFrom && a.SewingTo == "SEWING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0) - ((a.SewingOutDate < dateFrom && a.SewingTo == "FINISHING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0),
-									  BeginingBalanceSewingPrice = (a.SewingOutDate < dateFrom && a.SewingTo == "FINISHING" && a.UnitToId == a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? -b.Price : 0 - ((a.SewingOutDate < dateFrom && a.SewingTo == "FINISHING" && a.UnitToId == a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? -b.Price : 0) + ((a.SewingOutDate < dateFrom && a.SewingTo == "SEWING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Price : 0) - ((a.SewingOutDate < dateFrom && a.SewingTo == "CUTTING" && a.UnitId == a.UnitToId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0) - ((a.SewingOutDate < dateFrom && a.SewingTo == "SEWING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0) - ((a.SewingOutDate < dateFrom && a.SewingTo == "FINISHING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0),
+									  FinishingTransferExpenditure = (a.SewingOutDate.AddHours(7) >= dateFrom && a.SewingTo == "FINISHING" && a.UnitId != a.UnitToId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0,
+									  FinishingTransferExpenditurePrice = (a.SewingOutDate.AddHours(7) >= dateFrom && a.SewingTo == "FINISHING" && a.UnitId != a.UnitToId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0,
+									  FinishingInTransferQty = (a.SewingOutDate.AddHours(7) >= dateFrom && a.SewingTo == "FINISHING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Quantity : 0,
+									  FinishingInTransferPrice = (a.SewingOutDate.AddHours(7) >= dateFrom && a.SewingTo == "FINISHING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Price : 0,
+									  BeginingBalanceFinishingQty = (a.SewingOutDate.AddHours(7) < dateFrom && a.SewingTo == "FINISHING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Quantity : 0,
+									  BeginingBalanceFinishingPrice = (a.SewingOutDate.AddHours(7) < dateFrom && a.SewingTo == "FINISHING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Price : 0,
+									  BeginingBalanceSewingQty = (a.SewingOutDate.AddHours(7) < dateFrom && a.SewingTo == "FINISHING" && a.UnitToId == a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? -b.Quantity : 0 - ((a.SewingOutDate.AddHours(7) < dateFrom && a.SewingTo == "FINISHING" && a.UnitToId == a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? -b.Quantity : 0) + ((a.SewingOutDate.AddHours(7) < dateFrom && a.SewingTo == "SEWING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Quantity : 0) - ((a.SewingOutDate.AddHours(7) < dateFrom && a.SewingTo == "CUTTING" && a.UnitId == a.UnitToId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0) - ((a.SewingOutDate.AddHours(7) < dateFrom && a.SewingTo == "SEWING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0) - ((a.SewingOutDate.AddHours(7) < dateFrom && a.SewingTo == "FINISHING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0),
+									  BeginingBalanceSewingPrice = (a.SewingOutDate.AddHours(7) < dateFrom && a.SewingTo == "FINISHING" && a.UnitToId == a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? -b.Price : 0 - ((a.SewingOutDate.AddHours(7) < dateFrom && a.SewingTo == "FINISHING" && a.UnitToId == a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? -b.Price : 0) + ((a.SewingOutDate.AddHours(7) < dateFrom && a.SewingTo == "SEWING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Price : 0) - ((a.SewingOutDate.AddHours(7) < dateFrom && a.SewingTo == "CUTTING" && a.UnitId == a.UnitToId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0) - ((a.SewingOutDate.AddHours(7) < dateFrom && a.SewingTo == "SEWING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0) - ((a.SewingOutDate.AddHours(7) < dateFrom && a.SewingTo == "FINISHING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0),
 
-									  QtySewingRetur = (a.SewingOutDate >= dateFrom && a.SewingTo == "CUTTING" && a.UnitId == a.UnitToId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0,
-									  PriceSewingRetur = (a.SewingOutDate >= dateFrom && a.SewingTo == "CUTTING" && a.UnitId == a.UnitToId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0,
-									  QtySewingInTransfer = (a.SewingOutDate >= dateFrom && a.SewingTo == "SEWING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Quantity : 0,
-									  PriceSewingInTransfer = (a.SewingOutDate >= dateFrom && a.SewingTo == "SEWING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Price : 0,
-									  WipSewingOut = (a.SewingOutDate >= dateFrom && a.SewingTo == "SEWING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0,
-									  WipSewingOutPrice = (a.SewingOutDate >= dateFrom && a.SewingTo == "SEWING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0,
-									  WipFinishingOut = (a.SewingOutDate >= dateFrom && a.SewingTo == "FINISHING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0,
-									  WipFinishingOutPrice = (a.SewingOutDate >= dateFrom && a.SewingTo == "FINISHING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0,
-									  QtySewingOut = (a.SewingOutDate >= dateFrom && a.SewingTo == "FINISHING" && a.UnitToId == a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0,
-									  PriceSewingOut = (a.SewingOutDate >= dateFrom && a.SewingTo == "FINISHING" && a.UnitToId == a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0,
+									  QtySewingRetur = (a.SewingOutDate.AddHours(7) >= dateFrom && a.SewingTo == "CUTTING" && a.UnitId == a.UnitToId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0,
+									  PriceSewingRetur = (a.SewingOutDate.AddHours(7) >= dateFrom && a.SewingTo == "CUTTING" && a.UnitId == a.UnitToId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0,
+									  QtySewingInTransfer = (a.SewingOutDate.AddHours(7) >= dateFrom && a.SewingTo == "SEWING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Quantity : 0,
+									  PriceSewingInTransfer = (a.SewingOutDate.AddHours(7) >= dateFrom && a.SewingTo == "SEWING" && a.UnitId != a.UnitToId && a.UnitToId == (request.unit == 0 ? a.UnitToId : request.unit)) ? b.Price : 0,
+									  WipSewingOut = (a.SewingOutDate.AddHours(7) >= dateFrom && a.SewingTo == "SEWING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0,
+									  WipSewingOutPrice = (a.SewingOutDate.AddHours(7) >= dateFrom && a.SewingTo == "SEWING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0,
+									  WipFinishingOut = (a.SewingOutDate.AddHours(7) >= dateFrom && a.SewingTo == "FINISHING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0,
+									  WipFinishingOutPrice = (a.SewingOutDate.AddHours(7) >= dateFrom && a.SewingTo == "FINISHING" && a.UnitToId != a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0,
+									  QtySewingOut = (a.SewingOutDate.AddHours(7) >= dateFrom && a.SewingTo == "FINISHING" && a.UnitToId == a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Quantity : 0,
+									  PriceSewingOut = (a.SewingOutDate.AddHours(7) >= dateFrom && a.SewingTo == "FINISHING" && a.UnitToId == a.UnitId && a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)) ? b.Price : 0,
 
 									  Ro = a.RONo,
 
@@ -982,20 +986,20 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 
 
 			var QueryFinishingIn = (from a in (from aa in garmentFinishingInRepository.Query
-											   where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.FinishingInDate <= dateTo
+											   where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.FinishingInDate.AddHours(7) <= dateTo
 											   select new { aa.RONo, aa.Identity, aa.FinishingInDate, aa.FinishingInType })
 									join b in garmentFinishingInItemRepository.Query on a.Identity equals b.FinishingInId
 									select new
 									{
 
-										BeginingBalanceSubconQty = (a.FinishingInDate < dateFrom && a.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
-										BeginingBalanceSubconPrice = (a.FinishingInDate < dateFrom && a.FinishingInType == "PEMBELIAN") ? b.Price : 0,
-										BeginingBalanceFinishingQty = (a.FinishingInDate < dateFrom && a.FinishingInType != "PEMBELIAN") ? b.Quantity : 0,
-										BeginingBalanceFinishingPrice = (a.FinishingInDate < dateFrom && a.FinishingInType != "PEMBELIAN") ? b.Price : 0,
-										FinishingInQty = (a.FinishingInDate >= dateFrom && a.FinishingInType != "PEMBELIAN") ? b.Quantity : 0,
-										FinishingInPrice = (a.FinishingInDate >= dateFrom && a.FinishingInType != "PEMBELIAN") ? b.Price : 0,
-										SubconInQty = (a.FinishingInDate >= dateFrom && a.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
-										SubconInPrice = (a.FinishingInDate >= dateFrom && a.FinishingInType == "PEMBELIAN") ? b.Price : 0,
+										BeginingBalanceSubconQty = (a.FinishingInDate.AddHours(7) < dateFrom && a.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
+										BeginingBalanceSubconPrice = (a.FinishingInDate.AddHours(7) < dateFrom && a.FinishingInType == "PEMBELIAN") ? b.Price : 0,
+										BeginingBalanceFinishingQty = (a.FinishingInDate.AddHours(7) < dateFrom && a.FinishingInType != "PEMBELIAN") ? b.Quantity : 0,
+										BeginingBalanceFinishingPrice = (a.FinishingInDate.AddHours(7) < dateFrom && a.FinishingInType != "PEMBELIAN") ? b.Price : 0,
+										FinishingInQty = (a.FinishingInDate.AddHours(7) >= dateFrom && a.FinishingInType != "PEMBELIAN") ? b.Quantity : 0,
+										FinishingInPrice = (a.FinishingInDate.AddHours(7) >= dateFrom && a.FinishingInType != "PEMBELIAN") ? b.Price : 0,
+										SubconInQty = (a.FinishingInDate.AddHours(7) >= dateFrom && a.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
+										SubconInPrice = (a.FinishingInDate.AddHours(7) >= dateFrom && a.FinishingInType == "PEMBELIAN") ? b.Price : 0,
 										Ro = a.RONo,
 
 									}).GroupBy(x => x.Ro, (key, group) => new monitoringView
@@ -1075,7 +1079,7 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 										BeginingBalanceLoadingPrice = 0
 									});
 			var QueryFinishingOut = (from a in (from aa in garmentFinishingOutRepository.Query
-												where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.FinishingOutDate <= dateTo && aa.FinishingTo == "GUDANG JADI"
+												where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.FinishingOutDate.AddHours(7) <= dateTo && aa.FinishingTo == "GUDANG JADI"
 												select new { aa.RONo, aa.Identity, aa.FinishingOutDate, aa.FinishingTo })
 									 join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 									 join c in garmentFinishingInItemRepository.Query on b.FinishingInItemId equals c.Identity
@@ -1083,17 +1087,17 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 									 select new
 									 {
 
-										 BeginingBalanceFinishingQty = (a.FinishingOutDate < dateFrom && d.FinishingInType != "PEMBELIAN") ? -b.Quantity : 0,
-										 BeginingBalanceFinishingPrice = (a.FinishingOutDate < dateFrom && d.FinishingInType != "PEMBELIAN") ? -b.Price : 0,
-										 BeginingBalanceExpenditureGood = ((a.FinishingOutDate < dateFrom && d.FinishingInType != "PEMBELIAN") ? b.Quantity : 0) + ((a.FinishingOutDate < dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Quantity : 0),
-										 BeginingBalanceExpenditureGoodPrice = (a.FinishingOutDate < dateFrom && d.FinishingInType != "PEMBELIAN") ? b.Price : 0 + ((a.FinishingOutDate < dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Price : 0),
-										 BeginingBalanceSubconQty = (a.FinishingOutDate < dateFrom && d.FinishingInType == "PEMBELIAN") ? -b.Quantity : 0,
-										 BeginingBalanceSubconPrice = (a.FinishingOutDate < dateFrom && d.FinishingInType == "PEMBELIAN") ? -b.Price : 0,
+										 BeginingBalanceFinishingQty = (a.FinishingOutDate.AddHours(7) < dateFrom && d.FinishingInType != "PEMBELIAN") ? -b.Quantity : 0,
+										 BeginingBalanceFinishingPrice = (a.FinishingOutDate.AddHours(7) < dateFrom && d.FinishingInType != "PEMBELIAN") ? -b.Price : 0,
+										 BeginingBalanceExpenditureGood = ((a.FinishingOutDate.AddHours(7) < dateFrom && d.FinishingInType != "PEMBELIAN") ? b.Quantity : 0) + ((a.FinishingOutDate.AddHours(7) < dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Quantity : 0),
+										 BeginingBalanceExpenditureGoodPrice = (a.FinishingOutDate.AddHours(7) < dateFrom && d.FinishingInType != "PEMBELIAN") ? b.Price : 0 + ((a.FinishingOutDate.AddHours(7) < dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Price : 0),
+										 BeginingBalanceSubconQty = (a.FinishingOutDate.AddHours(7) < dateFrom && d.FinishingInType == "PEMBELIAN") ? -b.Quantity : 0,
+										 BeginingBalanceSubconPrice = (a.FinishingOutDate.AddHours(7) < dateFrom && d.FinishingInType == "PEMBELIAN") ? -b.Price : 0,
 
-										 FinishingOutQty = (a.FinishingOutDate >= dateFrom && d.FinishingInType != "PEMBELIAN") ? b.Quantity : 0,
-										 FinishingOutPrice = (a.FinishingOutDate >= dateFrom && d.FinishingInType != "PEMBELIAN") ? b.Price : 0,
-										 SubconOutQty = (a.FinishingOutDate >= dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
-										 SubconOutPrice = (a.FinishingOutDate >= dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Price : 0,
+										 FinishingOutQty = (a.FinishingOutDate.AddHours(7) >= dateFrom && d.FinishingInType != "PEMBELIAN") ? b.Quantity : 0,
+										 FinishingOutPrice = (a.FinishingOutDate.AddHours(7) >= dateFrom && d.FinishingInType != "PEMBELIAN") ? b.Price : 0,
+										 SubconOutQty = (a.FinishingOutDate.AddHours(7) >= dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Quantity : 0,
+										 SubconOutPrice = (a.FinishingOutDate.AddHours(7) >= dateFrom && d.FinishingInType == "PEMBELIAN") ? b.Price : 0,
 										 Ro = a.RONo,
 
 
@@ -1178,7 +1182,7 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 									 });
 
 			var QueryExpenditureGoodInTransfer = (from a in (from aa in garmentFinishingOutRepository.Query
-															 where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId != aa.UnitToId && aa.FinishingOutDate <= dateTo && aa.FinishingTo == "GUDANG JADI" && aa.UnitToId == (request.unit == 0 ? aa.UnitToId : request.unit)
+															 where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId != aa.UnitToId && aa.FinishingOutDate.AddHours(7) <= dateTo && aa.FinishingTo == "GUDANG JADI" && aa.UnitToId == (request.unit == 0 ? aa.UnitToId : request.unit)
 															 select new { aa.RONo, aa.Identity, aa.FinishingOutDate, aa.FinishingTo })
 												  join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 												  join c in garmentFinishingInItemRepository.Query on b.FinishingInItemId equals c.Identity
@@ -1187,10 +1191,10 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 												  {
 
 													  Ro = a.RONo,
-													  ExpenditureGoodInTransfer = (a.FinishingOutDate >= dateFrom) ? b.Quantity : 0,
-													  ExpenditureGoodInTransferPrice = (a.FinishingOutDate >= dateFrom) ? b.Price : 0,
-													  BeginingBalanceExpenditureGood = (a.FinishingOutDate < dateFrom) ? b.Quantity : 0,
-													  BeginingBalanceExpenditureGoodPrice = (a.FinishingOutDate < dateFrom) ? b.Price : 0,
+													  ExpenditureGoodInTransfer = (a.FinishingOutDate.AddHours(7) >= dateFrom) ? b.Quantity : 0,
+													  ExpenditureGoodInTransferPrice = (a.FinishingOutDate.AddHours(7) >= dateFrom) ? b.Price : 0,
+													  BeginingBalanceExpenditureGood = (a.FinishingOutDate.AddHours(7) < dateFrom) ? b.Quantity : 0,
+													  BeginingBalanceExpenditureGoodPrice = (a.FinishingOutDate.AddHours(7) < dateFrom) ? b.Price : 0,
 
 												  }).GroupBy(x => x.Ro, (key, group) => new monitoringView
 												  {
@@ -1271,7 +1275,7 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 
 
 			var QueryFinishingRetur = (from a in (from aa in garmentFinishingOutRepository.Query
-												  where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.FinishingOutDate <= dateTo && aa.FinishingTo == "SEWING"
+												  where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.FinishingOutDate.AddHours(7) <= dateTo && aa.FinishingTo == "SEWING"
 												  select new { aa.RONo, aa.Identity, aa.FinishingOutDate, aa.FinishingTo, aa.UnitId, aa.UnitToId })
 									   join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
 									   join c in garmentFinishingInItemRepository.Query on b.FinishingInItemId equals c.Identity
@@ -1279,10 +1283,10 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 									   select new
 									   {
 
-										   BeginingBalanceFinishingQty = (d.FinishingInType != "PEMBELIAN" && a.FinishingOutDate < dateFrom && a.UnitId == a.UnitToId) ? -b.Quantity : 0,
-										   BeginingBalanceFinishingPrice = (d.FinishingInType != "PEMBELIAN" && a.FinishingOutDate < dateFrom && a.UnitId == a.UnitToId) ? -b.Price : 0,
-										   FinishingReturQty = (d.FinishingInType != "PEMBELIAN" && a.FinishingOutDate >= dateFrom && a.UnitToId == a.UnitToId) ? b.Quantity : 0,
-										   FinishingReturPrice = (d.FinishingInType != "PEMBELIAN" && a.FinishingOutDate >= dateFrom && a.UnitToId == a.UnitToId) ? b.Price : 0,
+										   BeginingBalanceFinishingQty = (d.FinishingInType != "PEMBELIAN" && a.FinishingOutDate.AddHours(7) < dateFrom && a.UnitId == a.UnitToId) ? -b.Quantity : 0,
+										   BeginingBalanceFinishingPrice = (d.FinishingInType != "PEMBELIAN" && a.FinishingOutDate.AddHours(7) < dateFrom && a.UnitId == a.UnitToId) ? -b.Price : 0,
+										   FinishingReturQty = (d.FinishingInType != "PEMBELIAN" && a.FinishingOutDate.AddHours(7) >= dateFrom && a.UnitToId == a.UnitToId) ? b.Quantity : 0,
+										   FinishingReturPrice = (d.FinishingInType != "PEMBELIAN" && a.FinishingOutDate.AddHours(7) >= dateFrom && a.UnitToId == a.UnitToId) ? b.Price : 0,
 										   Ro = a.RONo,
 
 									   }).GroupBy(x => x.Ro, (key, group) => new monitoringView
@@ -1360,28 +1364,28 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 										   BeginingBalanceLoadingPrice = 0
 									   });
 			var QueryExpenditureGoods = (from a in (from aa in garmentExpenditureGoodRepository.Query
-													where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.ExpenditureDate <= dateTo
+													where (request.ro == null || (request.ro != null && request.ro != "" && aa.RONo == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.ExpenditureDate.AddHours(7) <= dateTo
 													select new { aa.RONo, aa.Identity, aa.ExpenditureDate, aa.ExpenditureType })
 										 join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
 										 select new
 										 {
 
-											 BeginingBalanceExpenditureGood = a.ExpenditureDate < dateFrom ? -b.Quantity : 0,
-											 BeginingBalanceExpenditureGoodPrice = a.ExpenditureDate < dateFrom ? -b.Price : 0,
-											 ExportQty = (a.ExpenditureDate >= dateFrom && a.ExpenditureType == "EXPORT") ? b.Quantity : 0,
-											 ExportPrice = (a.ExpenditureDate >= dateFrom && a.ExpenditureType == "EXPORT") ? b.Price : 0,
-											 SampleQty = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "ARSIP SAMPLE")) ? b.Quantity : 0,
-											 SamplePrice = (a.ExpenditureDate >= dateFrom & (a.ExpenditureType == "ARSIP SAMPLE")) ? b.Price : 0,
-											 MDQuantity = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "ARSIP MD")) ? b.Quantity : 0,
-											 MDPrice = (a.ExpenditureDate >= dateFrom & (a.ExpenditureType == "ARSIP MD")) ? b.Price : 0,
+											 BeginingBalanceExpenditureGood = a.ExpenditureDate.AddHours(7) < dateFrom ? -b.Quantity : 0,
+											 BeginingBalanceExpenditureGoodPrice = a.ExpenditureDate.AddHours(7) < dateFrom ? -b.Price : 0,
+											 ExportQty = (a.ExpenditureDate.AddHours(7) >= dateFrom && a.ExpenditureType == "EXPORT") ? b.Quantity : 0,
+											 ExportPrice = (a.ExpenditureDate.AddHours(7) >= dateFrom && a.ExpenditureType == "EXPORT") ? b.Price : 0,
+											 SampleQty = (a.ExpenditureDate.AddHours(7) >= dateFrom && (a.ExpenditureType == "ARSIP SAMPLE")) ? b.Quantity : 0,
+											 SamplePrice = (a.ExpenditureDate.AddHours(7) >= dateFrom & (a.ExpenditureType == "ARSIP SAMPLE")) ? b.Price : 0,
+											 MDQuantity = (a.ExpenditureDate.AddHours(7) >= dateFrom && (a.ExpenditureType == "ARSIP MD")) ? b.Quantity : 0,
+											 MDPrice = (a.ExpenditureDate.AddHours(7) >= dateFrom & (a.ExpenditureType == "ARSIP MD")) ? b.Price : 0,
 
-                                             LocalQty = (a.ExpenditureDate >= dateFrom && a.ExpenditureType == "PENGIRIMAN LOKAL") ? b.Quantity : 0,
-                                             LocalPrice = (a.ExpenditureDate >= dateFrom && a.ExpenditureType == "PENGIRIMAN LOKAL") ? b.Price : 0,
-                                             NCSQty = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "EXPORT (NON COMMERCIAL SAMPLE)")) ? b.Quantity : 0,
-                                             NCSPrice = (a.ExpenditureDate >= dateFrom & (a.ExpenditureType == "EXPORT (NON COMMERCIAL SAMPLE)")) ? b.Price : 0,
+                                             LocalQty = (a.ExpenditureDate.AddHours(7) >= dateFrom && a.ExpenditureType == "PENGIRIMAN LOKAL") ? b.Quantity : 0,
+                                             LocalPrice = (a.ExpenditureDate.AddHours(7) >= dateFrom && a.ExpenditureType == "PENGIRIMAN LOKAL") ? b.Price : 0,
+                                             NCSQty = (a.ExpenditureDate.AddHours(7) >= dateFrom && (a.ExpenditureType == "EXPORT (NON COMMERCIAL SAMPLE)")) ? b.Quantity : 0,
+                                             NCSPrice = (a.ExpenditureDate.AddHours(7) >= dateFrom & (a.ExpenditureType == "EXPORT (NON COMMERCIAL SAMPLE)")) ? b.Price : 0,
 
-                                             OtherQty = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "SISA")) ? b.Quantity : 0,
-											 OtherPrice = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "SISA")) ? b.Price : 0,
+                                             OtherQty = (a.ExpenditureDate.AddHours(7) >= dateFrom && (a.ExpenditureType == "SISA")) ? b.Quantity : 0,
+											 OtherPrice = (a.ExpenditureDate.AddHours(7) >= dateFrom && (a.ExpenditureType == "SISA")) ? b.Price : 0,
 											 Ro = a.RONo,
 
 										 }).GroupBy(x => x.Ro, (key, group) => new monitoringView
@@ -1667,7 +1671,7 @@ namespace Manufactures.Application.GarmentSample.GarmentMonitoringSampleStockFlo
 			GarmentMonitoringSampleStockFlowListViewModel garmentMonitoringSampleFlow = new GarmentMonitoringSampleStockFlowListViewModel();
 			List<GarmentMonitoringSampleStockFlowDto> monitoringDtos = new List<GarmentMonitoringSampleStockFlowDto>();
 
-			var ros = querySum.Select(x => x.ro).Distinct().ToArray();
+			//var ros = querySum.Select(x => x.ro).Distinct().ToArray();
 
 			var dtosPrice = (from a in querySum
 
