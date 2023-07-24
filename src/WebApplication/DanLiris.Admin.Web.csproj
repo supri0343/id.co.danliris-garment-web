@@ -16,6 +16,8 @@
     <Compile Remove="Migrations\20230607033835_add-table-GarmentServiceSubconExpenditureGood.Designer.cs" />
     <Compile Remove="Migrations\20230712072015_Create_Tables_Service_Sample.cs" />
     <Compile Remove="Migrations\20230712072015_Create_Tables_Service_Sample.Designer.cs" />
+    <Compile Remove="Migrations\20230717090130_add-Table-details-SubconDL.cs" />
+    <Compile Remove="Migrations\20230717090130_add-Table-details-SubconDL.Designer.cs" />
   </ItemGroup>
 
   <!--<ItemGroup>

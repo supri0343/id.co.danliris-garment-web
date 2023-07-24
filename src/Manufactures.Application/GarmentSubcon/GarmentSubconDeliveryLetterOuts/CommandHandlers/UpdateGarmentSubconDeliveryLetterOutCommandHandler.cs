@@ -30,6 +30,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
         private readonly IStorage _storage;
         private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;
         private readonly IGarmentSubconDeliveryLetterOutItemRepository _garmentSubconDeliveryLetterOutItemRepository;
+        private readonly IGarmentSubconDeliveryLetterOutDetailRepository _garmentSubconDeliveryLetterOutDetailRepository;
         private readonly IGarmentSubconCuttingOutRepository _garmentCuttingOutRepository;
         private readonly IGarmentServiceSubconCuttingRepository _garmentSubconCuttingRepository;
         private readonly IGarmentServiceSubconSewingRepository _garmentSubconSewingRepository;
@@ -42,6 +43,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             _storage = storage;
             _garmentSubconDeliveryLetterOutRepository = _storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
             _garmentSubconDeliveryLetterOutItemRepository = _storage.GetRepository<IGarmentSubconDeliveryLetterOutItemRepository>();
+            _garmentSubconDeliveryLetterOutDetailRepository = storage.GetRepository<IGarmentSubconDeliveryLetterOutDetailRepository>();
             _garmentCuttingOutRepository = storage.GetRepository<IGarmentSubconCuttingOutRepository>();
             _garmentSubconCuttingRepository = storage.GetRepository<IGarmentServiceSubconCuttingRepository>();
             _garmentSubconSewingRepository = storage.GetRepository<IGarmentServiceSubconSewingRepository>();
@@ -52,30 +54,44 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
 
         public async Task<GarmentSubconDeliveryLetterOut> Handle(UpdateGarmentSubconDeliveryLetterOutCommand request, CancellationToken cancellationToken)
         {
+
+            if (request.ItemsAcc != null)
+            {
+                foreach (var itemAcc in request.ItemsAcc)
+                {
+                    if (itemAcc.Id != Guid.Empty || itemAcc.Quantity > 0)
+                    {
+                        request.Items.Add(itemAcc);
+                    }
+                }
+            }
             var subconDeliveryLetterOut = _garmentSubconDeliveryLetterOutRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentSubconDeliveryLetterOut(o)).Single();
 
-            if(subconDeliveryLetterOut.SubconCategory == "SUBCON CUTTING SEWING")
-            {
+            //if(subconDeliveryLetterOut.SubconCategory == "SUBCON CUTTING SEWING")
+            //{
 
-                //subconDeliveryLetterOut.SetEPOItemId(request.EPOItemId);
-                //subconDeliveryLetterOut.SetPONo(request.PONo);
+            //    //subconDeliveryLetterOut.SetEPOItemId(request.EPOItemId);
+            //    //subconDeliveryLetterOut.SetPONo(request.PONo);
 
-                _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subconDeliveryLetterOut.Identity).ForEach(async subconDeliveryLetterOutItem =>
-                {
-                    var item = request.Items.Where(o => o.Id == subconDeliveryLetterOutItem.Identity).Single();
+            //    _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subconDeliveryLetterOut.Identity).ForEach(async subconDeliveryLetterOutItem =>
+            //    {
+            //        var item = request.Items.Where(o => o.Id == subconDeliveryLetterOutItem.Identity).Single();
 
-                    subconDeliveryLetterOutItem.SetQuantity(item.Quantity);
-                    subconDeliveryLetterOutItem.Modify();
+            //        subconDeliveryLetterOutItem.SetQuantity(item.Quantity);
+            //        subconDeliveryLetterOutItem.Modify();
 
-                    await _garmentSubconDeliveryLetterOutItemRepository.Update(subconDeliveryLetterOutItem);
-                });
-            }
-            else
-            {
+            //        await _garmentSubconDeliveryLetterOutItemRepository.Update(subconDeliveryLetterOutItem);
+            //    });
+            //}
+            //else
+            //{
                 _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subconDeliveryLetterOut.Identity).ForEach(async subconDLItem =>
                 {
                     var item = request.Items.Where(o => o.Id == subconDLItem.Identity).SingleOrDefault();
-                    
+                    if(item.Quantity == 0)
+                    {
+                        subconDLItem.Remove();
+                    }
                     if (item==null)
                     {
                         if (subconDeliveryLetterOut.SubconCategory == "SUBCON SEWING")
@@ -126,6 +142,15 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
 
                             await _garmentServiceSubconExpenditureGoodRepository.Update(subconExpenditureGood);
                         }
+
+                        _garmentSubconDeliveryLetterOutDetailRepository.Find(x => x.SubconDeliveryLetterOutItemId == subconDLItem.Identity).ForEach(async subconDLDetail =>
+                        {
+                            subconDLDetail.Remove();
+                            subconDLDetail.Modify();
+
+                            await _garmentSubconDeliveryLetterOutDetailRepository.Update(subconDLDetail);
+                        });
+
                         subconDLItem.Remove();
                     }
                     else
@@ -133,10 +158,41 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                         if (subconDeliveryLetterOut.SubconCategory == "SUBCON BB SHRINKAGE/PANEL")
                         {
                             subconDLItem.SetSmallQty(item.SmallQuantity);
-                        }
-                        subconDLItem.Modify();
-                    }
 
+                        }else if (subconDeliveryLetterOut.SubconCategory == "SUBCON SEWING" || subconDeliveryLetterOut.SubconCategory == "SUBCON JASA KOMPONEN" )
+                        {
+                            _garmentSubconDeliveryLetterOutDetailRepository.Find(x => x.SubconDeliveryLetterOutItemId == subconDLItem.Identity).ForEach(async subconDLDetail =>
+                            {
+
+                                var detail = item.Details.Where(o => o.Id == subconDLDetail.Identity).Single();
+
+                                if (detail.Quantity > 0)
+                                {
+                                    subconDLDetail.SetQuantity(detail.Quantity);
+                                    subconDLDetail.Modify();
+                                }
+                                else
+                                {
+                                    subconDLDetail.Remove();
+                                }
+
+                                
+
+                                await _garmentSubconDeliveryLetterOutDetailRepository.Update(subconDLDetail);
+                            });
+                            
+                                    
+                        }else if(subconDeliveryLetterOut.SubconCategory == "SUBCON CUTTING SEWING")
+                        {
+                            if(item.Quantity > 0)
+                            {
+                                subconDLItem.SetQuantity(item.Quantity);
+                                subconDLItem.Modify();
+                            }
+                        }
+
+                       
+                    }
 
                     await _garmentSubconDeliveryLetterOutItemRepository.Update(subconDLItem);
                 });
@@ -168,9 +224,39 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                             item.UomSatuanUnit,
                             item.QtyPacking,
                             item.SmallQuantity,
-                            item.SmallUomUnit
+                            item.SmallUomUnit,
+                            item.UENId,
+                            item.UENNo
                         );
-                        if (request.SubconCategory == "SUBCON SEWING")
+
+
+                        if (item.Details != null)
+                        {
+                        foreach (var detail in item.Details)
+                        {
+                            GarmentSubconDeliveryLetterOutDetail garmentSubconDeliveryLetterOutDetail = new GarmentSubconDeliveryLetterOutDetail(
+                                   Guid.NewGuid(),
+                                   garmentSubconDeliveryLetterOutItem.Identity,
+                                   detail.UENItemId,
+                                   new ProductId(detail.Product.Id),
+                                   detail.Product.Code,
+                                   detail.Product.Name,
+                                   detail.ProductRemark,
+                                   detail.DesignColor,
+                                   detail.Quantity,
+                                   new UomId(detail.Uom.Id),
+                                   detail.Uom.Unit,
+                                   new UomId(detail.UomOut.Id),
+                                   detail.UomOut.Unit,
+                                   detail.FabricType,
+                                   detail.UENId,
+                                   detail.UENNo
+                            );
+                            await _garmentSubconDeliveryLetterOutDetailRepository.Update(garmentSubconDeliveryLetterOutDetail);
+                        }
+                    }
+
+                    if (request.SubconCategory == "SUBCON SEWING")
                         {
                             var subconCuttingOut = _garmentCuttingOutRepository.Query.Where(x => x.Identity == item.SubconId).Select(s => new GarmentSubconCuttingOut(s)).Single();
                             subconCuttingOut.SetIsUsed(true);
@@ -220,8 +306,40 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                         }
                         await _garmentSubconDeliveryLetterOutItemRepository.Update(garmentSubconDeliveryLetterOutItem);
                     }
+                    else
+                {
+                    if (item.Details != null)
+                    {
+                        foreach (var detail in item.Details)
+                        {
+                            if(detail.Id == Guid.Empty && detail.Quantity > 0)
+                            {
+                                GarmentSubconDeliveryLetterOutDetail garmentSubconDeliveryLetterOutDetail = new GarmentSubconDeliveryLetterOutDetail(
+                                  Guid.NewGuid(),
+                                  item.Id,
+                                  detail.UENItemId,
+                                  new ProductId(detail.Product.Id),
+                                  detail.Product.Code,
+                                  detail.Product.Name,
+                                  detail.ProductRemark,
+                                  detail.DesignColor,
+                                  detail.Quantity,
+                                  new UomId(detail.Uom.Id),
+                                  detail.Uom.Unit,
+                                  new UomId(detail.UomOut.Id),
+                                  detail.UomOut.Unit,
+                                  detail.FabricType,
+                                  detail.UENId,
+                                  detail.UENNo
+                                );
+                                await _garmentSubconDeliveryLetterOutDetailRepository.Update(garmentSubconDeliveryLetterOutDetail);
+                            }
+
+                        }
+                    }
                 }
-            }
+                }
+            //}
 
             subconDeliveryLetterOut.SetDate(request.DLDate.GetValueOrDefault());
             subconDeliveryLetterOut.SetRemark(request.Remark);
