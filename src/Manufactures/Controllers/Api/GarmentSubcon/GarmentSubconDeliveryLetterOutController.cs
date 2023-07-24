@@ -36,6 +36,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
     {
         private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;
         private readonly IGarmentSubconDeliveryLetterOutItemRepository _garmentSubconDeliveryLetterOutItemRepository;
+        private readonly IGarmentSubconDeliveryLetterOutDetailRepository _garmentSubconDeliveryLetterOutDetailRepository;
         private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
         private readonly IGarmentSubconCuttingOutRepository _garmentCuttingOutRepository;
         private readonly IGarmentSubconCuttingOutItemRepository _garmentCuttingOutItemRepository;
@@ -49,6 +50,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         {
             _garmentSubconDeliveryLetterOutRepository = Storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
             _garmentSubconDeliveryLetterOutItemRepository = Storage.GetRepository<IGarmentSubconDeliveryLetterOutItemRepository>();
+            _garmentSubconDeliveryLetterOutDetailRepository = Storage.GetRepository<IGarmentSubconDeliveryLetterOutDetailRepository>();
             _garmentSubconContractRepository = Storage.GetRepository<IGarmentSubconContractRepository>();
             _garmentCuttingOutRepository = Storage.GetRepository<IGarmentSubconCuttingOutRepository>();
             _garmentCuttingOutItemRepository = Storage.GetRepository<IGarmentSubconCuttingOutItemRepository>();
@@ -80,10 +82,21 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 Select(o => new GarmentSubconDeliveryLetterOutItemDto(o))
                 .ToList();
 
+            var garmentSubconDeliveryLetterOutDetailDto = _garmentSubconDeliveryLetterOutDetailRepository.
+                Find(_garmentSubconDeliveryLetterOutDetailRepository.Query).
+                Select(o => new GarmentSubconDeliveryLetterOutDetailDto(o)).
+                ToList();
+
             Parallel.ForEach(garmentSubconDeliveryLetterOutListDtos, dto =>
             {
                 var currentItems = garmentdeliveryLetterOutItemDto.Where(s => s.SubconDeliveryLetterOutId == dto.Id).ToList();
                 dto.Items = currentItems;
+
+                Parallel.ForEach(dto.Items, DetailDto =>
+                {
+                    var garmentSubconDeliveryLetterOutDetails = garmentSubconDeliveryLetterOutDetailDto.Where(x => x.SubconDeliveryLetterOutItemId == DetailDto.Id).OrderBy(s => s.Id).ToList();
+                    DetailDto.Details = garmentSubconDeliveryLetterOutDetails;
+                });
 
             });
 
@@ -108,8 +121,8 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             {
                 Items = _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subcon.Identity).Select(subconItem => new GarmentSubconDeliveryLetterOutItemDto(subconItem)
                 {
-
-                }).ToList()
+                    Details = _garmentSubconDeliveryLetterOutDetailRepository.Find(o => o.SubconDeliveryLetterOutItemId == subconItem.Identity).Select(subconDetail => new GarmentSubconDeliveryLetterOutDetailDto(subconDetail) {}).ToList()
+            }).ToList()
             }
             ).FirstOrDefault();
 
@@ -127,10 +140,27 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
                 var order = await Mediator.Send(command);
 
-                if(command.SubconCategory== "SUBCON CUTTING SEWING")
-                    await PutGarmentUnitExpenditureNoteCreate(command.UENId);
+                //if(command.SubconCategory== "SUBCON CUTTING SEWING")
+                //    await PutGarmentUnitExpenditureNoteCreate(command.UENId);
+                if (command.SubconCategory == "SUBCON CUTTING SEWING")
+                {
+                    var uenIds = command.Items.Select(x => x.UENId).Distinct();
 
-                return Ok(order.Identity);
+                    foreach (var a in uenIds.Distinct())
+                    {
+                        await PutGarmentUnitExpenditureNoteCreate(a);
+                    }
+                }else if (command.SubconCategory == "SUBCON JASA KOMPONEN" || command.SubconCategory == "SUBCON SEWING")
+                {
+                    List<int> uenIds = new List<int>();
+                    command.Items.ForEach(x => x.Details.ForEach(r => uenIds.Add(r.UENId)));
+
+                    foreach (var a in uenIds.Distinct())
+                    {
+                        await PutGarmentUnitExpenditureNoteCreate(a);
+                    }
+                }
+                    return Ok(order.Identity);
             }
             catch (Exception e)
             {
@@ -148,13 +178,18 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             var garmentSubconDeliveryLetterOutDto = _garmentSubconDeliveryLetterOutRepository.Find(query).Select(o => new GarmentSubconDeliveryLetterOutDto(o)).ToArray();
             var garmentSubconDeliveryLetterOutItemDto = _garmentSubconDeliveryLetterOutItemRepository.Find(_garmentSubconDeliveryLetterOutItemRepository.Query).Select(o => new GarmentSubconDeliveryLetterOutItemDto(o)).ToList();
+            var garmentSubconDeliveryLetterOutDetailDto = _garmentSubconDeliveryLetterOutDetailRepository.Find(_garmentSubconDeliveryLetterOutDetailRepository.Query).Select(o => new GarmentSubconDeliveryLetterOutDetailDto(o)).ToList();
 
             Parallel.ForEach(garmentSubconDeliveryLetterOutDto, itemDto =>
             {
                 var garmentSubconDeliveryLetterOutItems = garmentSubconDeliveryLetterOutItemDto.Where(x => x.SubconDeliveryLetterOutId == itemDto.Id).OrderBy(x => x.Id).ToList();
 
                 itemDto.Items = garmentSubconDeliveryLetterOutItems;
-
+                Parallel.ForEach(itemDto.Items, DetailDto =>
+                {
+                    var garmentSubconDeliveryLetterOutDetails = garmentSubconDeliveryLetterOutDetailDto.Where(x => x.SubconDeliveryLetterOutItemId == DetailDto.Id).OrderBy(s => s.Id).ToList();
+                    DetailDto.Details = garmentSubconDeliveryLetterOutDetails;
+                });
             });
 
             if (order != "{}")
@@ -192,12 +227,30 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             Guid guid = Guid.Parse(id);
 
             VerifyUser();
-            var garmentSubconDeliveryLetterOut = _garmentSubconDeliveryLetterOutRepository.Find(x => x.Identity == guid).Select(o => new GarmentSubconDeliveryLetterOutDto(o)).FirstOrDefault();
-
+          
             RemoveGarmentSubconDeliveryLetterOutCommand command = new RemoveGarmentSubconDeliveryLetterOutCommand(guid);
+            var garmentSubconDeliveryLetterOut = _garmentSubconDeliveryLetterOutRepository.Find(x => x.Identity == guid).Select(o => new GarmentSubconDeliveryLetterOutDto(o)).FirstOrDefault();
+            var itemsData = _garmentSubconDeliveryLetterOutItemRepository.Find(s => s.SubconDeliveryLetterOutId == garmentSubconDeliveryLetterOut.Id).Select(x => new GarmentSubconDeliveryLetterOutItemDto(x)).ToList();
+            var detailData = _garmentSubconDeliveryLetterOutDetailRepository.Find(x => x.SubconDeliveryLetterOutItemId == itemsData.Select(s => s.Id).First()).Select(x => new GarmentSubconDeliveryLetterOutDetailDto(x)).ToList();
+
             var order = await Mediator.Send(command);
-            if(garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON CUTTING SEWING")
-                await PutGarmentUnitExpenditureNoteDelete(garmentSubconDeliveryLetterOut.UENId); 
+
+            if( garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON JASA KOMPONEN" || garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON SEWING")
+            {
+                if(detailData.Count > 0)
+                {
+                    foreach (var a in detailData.Select(x => x.UENId).Distinct())
+                    {
+                        await PutGarmentUnitExpenditureNoteDelete(a);
+                    }
+                }
+            }else if (garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON CUTTING SEWING")
+            {
+                foreach (var a in itemsData.Select(x => x.UENId).Distinct()) 
+                {
+                    await PutGarmentUnitExpenditureNoteDelete(a);
+                }
+            }
 
             return Ok(order.Identity);
         }
