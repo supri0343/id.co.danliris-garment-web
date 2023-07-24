@@ -40,6 +40,11 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels
         public int QtyPacking { get; internal set; }
         public double SmallQuantity { get; internal set; }
         public string SmallUomUnit { get; internal set; }
+
+        //enhance 14-07-23
+        public int UENId { get; internal set; }
+        public string UENNo { get; internal set; }
+        public virtual List<GarmentSubconDeliveryLetterOutDetailReadModel> GarmentSubconDeliveryLetterOutDetail { get; internal set; }
         public virtual GarmentSubconDeliveryLetterOutReadModel GarmentSubconDeliveryLetterOut { get; internal set; }
     }
 }

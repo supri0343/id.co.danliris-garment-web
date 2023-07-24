@@ -7,11 +7,11 @@ using System.Text;
 
 namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLetterOuts.Cofigs
 {
-    public class GarmentSubconDeliveryLetterOutItemConfig : IEntityTypeConfiguration<GarmentSubconDeliveryLetterOutItemReadModel>
+    public class GarmentSubconDeliveryLetterOutDetailConfig : IEntityTypeConfiguration<GarmentSubconDeliveryLetterOutDetailReadModel>
     {
-        public void Configure(EntityTypeBuilder<GarmentSubconDeliveryLetterOutItemReadModel> builder)
+        public void Configure(EntityTypeBuilder<GarmentSubconDeliveryLetterOutDetailReadModel> builder)
         {
-            builder.ToTable("GarmentSubconDeliveryLetterOutItems");
+            builder.ToTable("GarmentSubconDeliveryLetterOutDetails");
             builder.HasKey(e => e.Identity);
 
             builder.Property(p => p.ProductCode).HasMaxLength(25);
@@ -21,14 +21,11 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLett
             builder.Property(p => p.UomUnit).HasMaxLength(50);
             builder.Property(p => p.UomOutUnit).HasMaxLength(50);
             builder.Property(p => p.FabricType).HasMaxLength(255);
-            builder.Property(p => p.RONo).HasMaxLength(25);
-            builder.Property(p => p.POSerialNumber).HasMaxLength(50);
-            builder.Property(p => p.SubconNo).HasMaxLength(50);
-            builder.Property(p => p.SmallUomUnit).HasMaxLength(10);
+
             builder.Property(p => p.UENNo).HasMaxLength(100);
-            builder.HasOne(w => w.GarmentSubconDeliveryLetterOut)
-                .WithMany(h => h.GarmentSubconDeliveryLetterOutItem)
-                .HasForeignKey(f => f.SubconDeliveryLetterOutId);
+            builder.HasOne(w => w.GarmentSubconDeliveryLetterOutItem)
+                .WithMany(h => h.GarmentSubconDeliveryLetterOutDetail)
+                .HasForeignKey(f => f.SubconDeliveryLetterOutItemId);
 
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ValueObjects
 {
-    public class GarmentSubconDeliveryLetterOutItemValueObject : ValueObject
+    public class GarmentSubconDeliveryLetterOutDetailValueObject : ValueObject
     {
         public Guid Id { get; set; }
         public Guid SubconDeliveryLetterOutId { get; set; }
@@ -24,23 +24,10 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ValueObject
         public string FabricType { get; set; }
         public double ContractQuantity { get; set; }
 
-        #region Cutting
-        public string RONo { get; set; }
-        public Guid SubconId { get; set; }
-        public string POSerialNumber { get; set; }
-        public string SubconNo { get; set; }
+        public int UENId { get;  set; }
+        public string UENNo { get;  set; }
 
-        #endregion
-        //public Uom UomSatuan { get; set; }
-        public string UomSatuanUnit { get; set; }
-        public int QtyPacking { get; set; }
-        public double SmallQuantity { get;  set; }
-        public string SmallUomUnit { get;  set; }
-        public int UENId { get; set; }
-        public string UENNo { get; set; }
-        public List<GarmentSubconDeliveryLetterOutDetailValueObject> Details { get; set; }
-        
-        public GarmentSubconDeliveryLetterOutItemValueObject()
+        public GarmentSubconDeliveryLetterOutDetailValueObject()
         {
         }
         protected override IEnumerable<object> GetAtomicValues()

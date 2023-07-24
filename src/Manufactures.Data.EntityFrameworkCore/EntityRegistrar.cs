@@ -161,6 +161,7 @@ namespace Manufactures.Data.EntityFrameworkCore
 
             modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutConfig());
             modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconDeliveryLetterOutDetailConfig());
 
 			modelBuilder.ApplyConfiguration(new GarmentSubconCustomsInConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSubconCustomsInItemConfig());
