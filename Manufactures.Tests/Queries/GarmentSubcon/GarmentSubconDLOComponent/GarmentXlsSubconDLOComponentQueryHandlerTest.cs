@@ -87,7 +87,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOComponent
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutItemReadModel>
                 {
-                    new GarmentSubconDeliveryLetterOutItem(guidDeliveryLetterOutItem, guidDeliveryLetterOut, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconCutting, "roNo", "poSerialNumber", "subconNo", "uomSatuanUnit", 1,1,"").GetReadModel()
+                    new GarmentSubconDeliveryLetterOutItem(guidDeliveryLetterOutItem, guidDeliveryLetterOut, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconCutting, "roNo", "poSerialNumber", "subconNo", "uomSatuanUnit", 1,1,"",1,"").GetReadModel()
                 }.AsQueryable());
 
             _mockgarmentSubconCuttingRepository
@@ -158,7 +158,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOComponent
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutItemReadModel>
                 {
-                    new GarmentSubconDeliveryLetterOutItem(guidDeliveryLetterOutItem, guidDeliveryLetterOut, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconCutting, "roNo", "poSerialNumber", "subconNo", "uomSatuanUnit", 1,1,"").GetReadModel()
+                    new GarmentSubconDeliveryLetterOutItem(guidDeliveryLetterOutItem, guidDeliveryLetterOut, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconCutting, "roNo", "poSerialNumber", "subconNo", "uomSatuanUnit", 1,1,"",1,"").GetReadModel()
                 }.AsQueryable());
 
             _mockgarmentSubconCuttingRepository

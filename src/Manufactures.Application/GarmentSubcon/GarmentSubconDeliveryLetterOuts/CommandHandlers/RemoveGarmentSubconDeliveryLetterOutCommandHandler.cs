@@ -31,6 +31,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
         private readonly IStorage _storage;
         private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;
         private readonly IGarmentSubconDeliveryLetterOutItemRepository _garmentSubconDeliveryLetterOutItemRepository;
+        private readonly IGarmentSubconDeliveryLetterOutDetailRepository _garmentSubconDeliveryLetterOutDetailRepository;
         private readonly IGarmentSubconCuttingOutRepository _garmentCuttingOutRepository;
         private readonly IGarmentServiceSubconCuttingRepository _garmentSubconCuttingRepository;
         private readonly IGarmentServiceSubconSewingRepository _garmentSubconSewingRepository;
@@ -44,6 +45,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             _storage = storage;
             _garmentSubconDeliveryLetterOutRepository = storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
             _garmentSubconDeliveryLetterOutItemRepository = storage.GetRepository<IGarmentSubconDeliveryLetterOutItemRepository>();
+            _garmentSubconDeliveryLetterOutDetailRepository = storage.GetRepository<IGarmentSubconDeliveryLetterOutDetailRepository>();
             _garmentCuttingOutRepository = storage.GetRepository<IGarmentSubconCuttingOutRepository>();
             _garmentSubconCuttingRepository = storage.GetRepository<IGarmentServiceSubconCuttingRepository>();
             _garmentSubconSewingRepository = storage.GetRepository<IGarmentServiceSubconSewingRepository>();
@@ -60,6 +62,13 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
 
             _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subconDeliveryLetterOut.Identity).ForEach(async subconDeliveryLetterOutItem =>
             {
+                //Detail
+                _garmentSubconDeliveryLetterOutDetailRepository.Find(s => s.SubconDeliveryLetterOutItemId == subconDeliveryLetterOutItem.Identity).ForEach(async subconDeliveryLetterOutDetail =>
+                {
+                    subconDeliveryLetterOutDetail.Remove();
+                    await _garmentSubconDeliveryLetterOutDetailRepository.Update(subconDeliveryLetterOutDetail);
+                });
+
                 subconDeliveryLetterOutItem.Remove();
                 if (subconDeliveryLetterOut.SubconCategory == "SUBCON SEWING")
                 {
