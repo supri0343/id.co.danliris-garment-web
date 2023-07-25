@@ -10,8 +10,8 @@ namespace Manufactures.Dtos.GarmentSample.GarmentServiceSampleFabricWashes
         public GarmentServiceSampleFabricWashDto(GarmentServiceSampleFabricWash garmentServiceSampleFabricWashList)
         {
             Id = garmentServiceSampleFabricWashList.Identity;
-            ServiceSampleFabricWashNo = garmentServiceSampleFabricWashList.ServiceSampleFabricWashNo;
-            ServiceSampleFabricWashDate = garmentServiceSampleFabricWashList.ServiceSampleFabricWashDate;
+            ServiceSubconFabricWashNo = garmentServiceSampleFabricWashList.ServiceSampleFabricWashNo;
+            ServiceSubconFabricWashDate = garmentServiceSampleFabricWashList.ServiceSampleFabricWashDate;
             Remark = garmentServiceSampleFabricWashList.Remark;
             IsUsed = garmentServiceSampleFabricWashList.IsUsed;
             QtyPacking = garmentServiceSampleFabricWashList.QtyPacking;
@@ -22,8 +22,8 @@ namespace Manufactures.Dtos.GarmentSample.GarmentServiceSampleFabricWashes
         }
 
         public Guid Id { get; internal set; }
-        public string ServiceSampleFabricWashNo { get; set; }
-        public DateTimeOffset ServiceSampleFabricWashDate { get; set; }
+        public string ServiceSubconFabricWashNo { get; set; }
+        public DateTimeOffset ServiceSubconFabricWashDate { get; set; }
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
         public int QtyPacking { get; set; }

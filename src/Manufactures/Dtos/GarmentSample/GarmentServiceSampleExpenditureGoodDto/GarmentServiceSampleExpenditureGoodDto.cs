@@ -12,9 +12,9 @@ namespace Manufactures.Dtos.GarmentSample.GarmentServiceSampleExpenditureGoodDto
         public GarmentServiceSampleExpenditureGoodDto(GarmentServiceSampleExpenditureGood serviceSampleExpenditureGood)
         {
             Id = serviceSampleExpenditureGood.Identity;
-            ServiceSampleExpenditureGoodNo = serviceSampleExpenditureGood.ServiceSampleExpenditureGoodNo;
+            ServiceSubconExpenditureGoodNo = serviceSampleExpenditureGood.ServiceSampleExpenditureGoodNo;
             //
-            ServiceSampleExpenditureGoodDate = serviceSampleExpenditureGood.ServiceSampleExpenditureGoodDate;
+            ServiceSubconExpenditureGoodDate = serviceSampleExpenditureGood.ServiceSampleExpenditureGoodDate;
             IsUsed = serviceSampleExpenditureGood.IsUsed;
             Buyer = new Buyer(serviceSampleExpenditureGood.BuyerId.Value, serviceSampleExpenditureGood.BuyerCode, serviceSampleExpenditureGood.BuyerName);
             QtyPacking = serviceSampleExpenditureGood.QtyPacking;
@@ -25,10 +25,10 @@ namespace Manufactures.Dtos.GarmentSample.GarmentServiceSampleExpenditureGoodDto
         }
 
         public Guid Id { get; internal set; }
-        public string ServiceSampleExpenditureGoodNo { get; set; }
+        public string ServiceSubconExpenditureGoodNo { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }
-        public DateTimeOffset ServiceSampleExpenditureGoodDate { get; set; }
+        public DateTimeOffset ServiceSubconExpenditureGoodDate { get; set; }
         public bool IsUsed { get; set; }
         public Buyer Buyer { get; set; }
         public int QtyPacking { get; set; }

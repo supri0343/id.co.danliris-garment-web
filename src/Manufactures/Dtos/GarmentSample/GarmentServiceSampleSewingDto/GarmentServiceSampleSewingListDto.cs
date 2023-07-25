@@ -10,9 +10,9 @@ namespace Manufactures.Dtos.GarmentSample
         public GarmentServiceSampleSewingListDto(GarmentServiceSampleSewing garmentServiceSampleSewingList)
         {
             Id = garmentServiceSampleSewingList.Identity;
-            ServiceSampleSewingNo = garmentServiceSampleSewingList.ServiceSampleSewingNo;
-           // Unit = new UnitDepartment(garmentServiceSampleSewingList.UnitId.Value, garmentServiceSampleSewingList.UnitCode, garmentServiceSampleSewingList.UnitName);
-            ServiceSampleSewingDate = garmentServiceSampleSewingList.ServiceSampleSewingDate;
+            ServiceSubconSewingNo = garmentServiceSampleSewingList.ServiceSampleSewingNo;
+            // Unit = new UnitDepartment(garmentServiceSampleSewingList.UnitId.Value, garmentServiceSampleSewingList.UnitCode, garmentServiceSampleSewingList.UnitName);
+            ServiceSubconSewingDate = garmentServiceSampleSewingList.ServiceSampleSewingDate;
             CreatedBy = garmentServiceSampleSewingList.AuditTrail.CreatedBy;
             Buyer = new Buyer(garmentServiceSampleSewingList.BuyerId.Value, garmentServiceSampleSewingList.BuyerCode, garmentServiceSampleSewingList.BuyerName);
             IsUsed = garmentServiceSampleSewingList.IsUsed;
@@ -20,10 +20,10 @@ namespace Manufactures.Dtos.GarmentSample
         }
 
         public Guid Id { get; set; }
-        public string ServiceSampleSewingNo { get; set; }
+        public string ServiceSubconSewingNo { get; set; }
         public UnitDepartment Unit { get; set; }
         public string SewingTo { get; set; }
-        public DateTimeOffset ServiceSampleSewingDate { get; set; }
+        public DateTimeOffset ServiceSubconSewingDate { get; set; }
         public double TotalQuantity { get; set; }
         public double TotalRemainingQuantity { get; set; }
         public bool IsUsed { get; set; }

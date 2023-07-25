@@ -216,7 +216,71 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             VerifyUser();
 
+            List<int> UenToIsPrepTrue = new List<int>();
+            List<int> UenToIsPrepFalse = new List<int>();
+
+            if (command.SubconCategory == "SUBCON CUTTING SEWING")
+            {      
+                //Add UEN Id to Update Is Preparing True
+                var newData = command.ItemsAcc.Where(x => x.Id == Guid.Empty && x.Quantity > 0).FirstOrDefault();
+                if (newData != null)
+                {
+                    UenToIsPrepTrue.Add(newData.UENId);
+                }
+            }else if(command.SubconCategory == "SUBCON JASA KOMPONEN" || command.SubconCategory == "SUBCON SEWING")
+            {
+                var newData = command.Items.FirstOrDefault().Details.Where(x => x.Id == Guid.Empty && x.Quantity > 0).FirstOrDefault();
+                if (newData != null)
+                {
+                    UenToIsPrepTrue.Add(newData.UENId);
+                }
+            }
+               
+            //Find Deleted BUK ACC
+            _garmentSubconDeliveryLetterOutRepository.Find(x => x.Identity == command.Identity).ForEach(async DLOut => 
+            {
+                _garmentSubconDeliveryLetterOutItemRepository.Find(x => x.SubconDeliveryLetterOutId == DLOut.Identity).ForEach(async DLItem =>
+                {
+                    if(command.SubconCategory == "SUBCON CUTTING SEWING")
+                    {
+                        var deletedAcc = command.ItemsAcc.Where(x => x.Id == DLItem.Identity).FirstOrDefault();
+                        if (deletedAcc != null && deletedAcc.Quantity == 0)
+                        {
+                            UenToIsPrepFalse.Add(deletedAcc.UENId);
+                        }
+                    }else if(command.SubconCategory == "SUBCON JASA KOMPONEN" || command.SubconCategory == "SUBCON SEWING")
+                    {
+                        _garmentSubconDeliveryLetterOutDetailRepository.Find(x => x.SubconDeliveryLetterOutItemId == DLItem.Identity).ForEach(async DLDetail =>
+                        {
+                            var deletedAcc = command.Items.FirstOrDefault().Details.Where(x => x.Id == DLDetail.Identity).FirstOrDefault();
+                            if (deletedAcc != null && deletedAcc.Quantity == 0)
+                            {
+                                UenToIsPrepFalse.Add(deletedAcc.UENId);
+                            }
+                        });
+                    }
+                });
+            });
+
+            if (UenToIsPrepTrue.Count > 0)
+            {
+                foreach (var a in UenToIsPrepTrue.Select(x => x).Distinct())
+                {
+                    await PutGarmentUnitExpenditureNoteCreate(a);
+                }
+            }
+
+            if (UenToIsPrepFalse.Count > 0)
+            {
+                foreach (var a in UenToIsPrepFalse.Select(x => x).Distinct())
+                {
+                    await PutGarmentUnitExpenditureNoteDelete(a);
+                }
+            }
+
             var order = await Mediator.Send(command);
+
+           
 
             return Ok(order.Identity);
         }
@@ -235,7 +299,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             var order = await Mediator.Send(command);
 
-            if( garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON JASA KOMPONEN" || garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON SEWING")
+            if(garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON JASA KOMPONEN" || garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON SEWING")
             {
                 if(detailData.Count > 0)
                 {

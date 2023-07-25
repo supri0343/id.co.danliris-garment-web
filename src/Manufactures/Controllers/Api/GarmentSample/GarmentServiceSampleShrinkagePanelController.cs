@@ -235,7 +235,7 @@ namespace Manufactures.Controllers.Api.GarmentSample
 
             return new FileStreamResult(stream, "application/pdf")
             {
-                FileDownloadName = $"{garmentServiceSampleShrinkagePanelDto.ServiceSampleShrinkagePanelNo}.pdf"
+                FileDownloadName = $"{garmentServiceSampleShrinkagePanelDto.ServiceSubconShrinkagePanelNo}.pdf"
             };
         }
 
