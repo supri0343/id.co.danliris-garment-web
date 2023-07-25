@@ -10,9 +10,9 @@ namespace Manufactures.Dtos.GarmentSample
         public GarmentServiceSampleSewingDto(GarmentServiceSampleSewing garmentServiceSampleSewingList)
         {
             Id = garmentServiceSampleSewingList.Identity;
-            ServiceSampleSewingNo = garmentServiceSampleSewingList.ServiceSampleSewingNo;
+            ServiceSubconSewingNo = garmentServiceSampleSewingList.ServiceSampleSewingNo;
             //
-            ServiceSampleSewingDate = garmentServiceSampleSewingList.ServiceSampleSewingDate;
+            ServiceSubconSewingDate = garmentServiceSampleSewingList.ServiceSampleSewingDate;
             IsUsed = garmentServiceSampleSewingList.IsUsed;
             Buyer = new Buyer(garmentServiceSampleSewingList.BuyerId.Value, garmentServiceSampleSewingList.BuyerCode, garmentServiceSampleSewingList.BuyerName);
             QtyPacking = garmentServiceSampleSewingList.QtyPacking;
@@ -23,10 +23,10 @@ namespace Manufactures.Dtos.GarmentSample
         }
 
         public Guid Id { get; internal set; }
-        public string ServiceSampleSewingNo { get; set; }
+        public string ServiceSubconSewingNo { get; set; }
         public string RONo { get; set; }
         public string Article { get; set; }
-        public DateTimeOffset ServiceSampleSewingDate { get; set; }
+        public DateTimeOffset ServiceSubconSewingDate { get; set; }
         public bool IsUsed { get; set; }
         public Buyer Buyer { get; set; }
         public int QtyPacking { get; set; }

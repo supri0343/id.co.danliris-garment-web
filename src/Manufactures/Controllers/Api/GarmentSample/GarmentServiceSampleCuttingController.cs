@@ -43,7 +43,7 @@ namespace Manufactures.Controllers.Api.GarmentSample
             VerifyUser();
 
             var query = _garmentServiceSampleCuttingRepository.Read(page, size, order, keyword, filter);
-            var total = query.Count();
+            var total = query.Count();                
             double totalQty = query.Sum(a => a.GarmentServiceSampleCuttingItem.Sum(b => b.GarmentServiceSampleCuttingDetail.Sum(c=>c.Quantity)));
 
             query = query.Skip((page - 1) * size).Take(size);
@@ -259,7 +259,7 @@ namespace Manufactures.Controllers.Api.GarmentSample
 
             return new FileStreamResult(stream, "application/pdf")
             {
-                FileDownloadName = $"{garmentServiceSampleCuttingDto.SampleNo}.pdf"
+                FileDownloadName = $"{garmentServiceSampleCuttingDto.SubconNo}.pdf"
             };
         }
 

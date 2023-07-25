@@ -50,8 +50,8 @@ namespace Manufactures.Helpers.PDFTemplates
             tableHeader.AddCell(cellHeaderContentLeft);
 
             PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal Sample    : " + garmentSampleFabricWash.ServiceSampleFabricWashDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
-            cellHeaderContentCenter.AddElement(new Paragraph("No Sample             : " + garmentSampleFabricWash.ServiceSampleFabricWashNo, normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal Sample    : " + garmentSampleFabricWash.ServiceSubconFabricWashDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("No Sample             : " + garmentSampleFabricWash.ServiceSubconFabricWashNo, normal_font));
             tableHeader.AddCell(cellHeaderContentCenter);
 
             PdfPCell cellHeader = new PdfPCell(tableHeader);
