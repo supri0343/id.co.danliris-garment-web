@@ -10,16 +10,16 @@ namespace Manufactures.Dtos.GarmentSample.GarmentServiceSampleFabricWashes
         public GarmentServiceSampleFabricWashListDto(GarmentServiceSampleFabricWash garmentServiceSampleFabricWashList)
         {
             Id = garmentServiceSampleFabricWashList.Identity;
-            ServiceSampleFabricWashNo = garmentServiceSampleFabricWashList.ServiceSampleFabricWashNo;
-            ServiceSampleFabricWashDate = garmentServiceSampleFabricWashList.ServiceSampleFabricWashDate;
+            ServiceSubconFabricWashNo = garmentServiceSampleFabricWashList.ServiceSampleFabricWashNo;
+            ServiceSubconFabricWashDate = garmentServiceSampleFabricWashList.ServiceSampleFabricWashDate;
             CreatedBy = garmentServiceSampleFabricWashList.AuditTrail.CreatedBy;
             IsUsed = garmentServiceSampleFabricWashList.IsUsed;
             Items = new List<GarmentServiceSampleFabricWashItemDto>();
         }
 
         public Guid Id { get; set; }
-        public string ServiceSampleFabricWashNo { get; set; }
-        public DateTimeOffset ServiceSampleFabricWashDate { get; set; }
+        public string ServiceSubconFabricWashNo { get; set; }
+        public DateTimeOffset ServiceSubconFabricWashDate { get; set; }
         public bool IsUsed { get; set; }
         public List<GarmentServiceSampleFabricWashItemDto> Items { get; set; }
     }

@@ -10,8 +10,8 @@ namespace Manufactures.Dtos.GarmentSample.GarmentServiceSampleShrinkagePanels
         public GarmentServiceSampleShrinkagePanelListDto(GarmentServiceSampleShrinkagePanel garmentServiceSampleShrinkagePanelList)
         {
             Id = garmentServiceSampleShrinkagePanelList.Identity;
-            ServiceSampleShrinkagePanelNo = garmentServiceSampleShrinkagePanelList.ServiceSampleShrinkagePanelNo;
-            ServiceSampleShrinkagePanelDate = garmentServiceSampleShrinkagePanelList.ServiceSampleShrinkagePanelDate;
+            ServiceSubconShrinkagePanelNo = garmentServiceSampleShrinkagePanelList.ServiceSampleShrinkagePanelNo;
+            ServiceSubconShrinkagePanelDate = garmentServiceSampleShrinkagePanelList.ServiceSampleShrinkagePanelDate;
             Remark = garmentServiceSampleShrinkagePanelList.Remark;
             CreatedBy = garmentServiceSampleShrinkagePanelList.AuditTrail.CreatedBy;
             IsUsed = garmentServiceSampleShrinkagePanelList.IsUsed;
@@ -21,8 +21,8 @@ namespace Manufactures.Dtos.GarmentSample.GarmentServiceSampleShrinkagePanels
         }
 
         public Guid Id { get; set; }
-        public string ServiceSampleShrinkagePanelNo { get; set; }
-        public DateTimeOffset ServiceSampleShrinkagePanelDate { get; set; }
+        public string ServiceSubconShrinkagePanelNo { get; set; }
+        public DateTimeOffset ServiceSubconShrinkagePanelDate { get; set; }
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
         public int QtyPacking { get; set; }

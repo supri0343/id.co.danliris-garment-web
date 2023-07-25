@@ -30,6 +30,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
         public double TotalQty { get; set; }
         public double UsedQty { get; set; }
         public string SubconCategory { get; set; }
+        public string OrderType { get; set; }
         public List<GarmentSubconDeliveryLetterOutItemValueObject> Items { get; set; }
         public List<GarmentSubconDeliveryLetterOutItemValueObject> ItemsAcc { get; set; }
     }
@@ -114,9 +115,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
             RuleFor(r => r.POSerialNumber).NotNull();
             RuleFor(r => r.SubconId).NotNull();
             RuleFor(r => r.SubconNo).NotNull();
-            RuleFor(r => r.Details).NotEmpty().OverridePropertyName("Detail").When(s => s.Details != null);
+        //RuleFor(r => r.Details).NotEmpty().OverridePropertyName("Detail").When(s => s.Details != null);
         //RuleFor(r => r.Details).NotEmpty().WithMessage("Detail tidak boleh kosong").OverridePropertyName("ItemsCount").When(s => s.Details != null);
-            RuleForEach(r => r.Details).SetValidator(new GarmentSubconDeliveryLetterOutDetailValueObjectValidator());
+        RuleForEach(r => r.Details).SetValidator(new GarmentSubconDeliveryLetterOutDetailValueObjectValidator()).When(s => s.Details != null);
         }
     }
 
@@ -151,9 +152,9 @@ public class GarmentSubconDeliveryLetterOutServiceComponentValueObjectValidator 
 
         RuleFor(r => r.SubconId).NotNull();
         RuleFor(r => r.SubconNo).NotNull();
-        RuleFor(r => r.Details).NotEmpty().OverridePropertyName("Detail").When(s => s.Details != null);
+        //RuleFor(r => r.Details).NotEmpty().OverridePropertyName("Detail").When(s => s.Details != null);
         //RuleFor(r => r.Details).NotEmpty().WithMessage("Detail tidak boleh kosong").OverridePropertyName("ItemsCount").When(s => s.Details != null);
-        RuleForEach(r => r.Details).SetValidator(new GarmentSubconDeliveryLetterOutDetailValueObjectValidator());
+        RuleForEach(r => r.Details).SetValidator(new GarmentSubconDeliveryLetterOutDetailValueObjectValidator()).When(s => s.Details != null);
     }
 }
 

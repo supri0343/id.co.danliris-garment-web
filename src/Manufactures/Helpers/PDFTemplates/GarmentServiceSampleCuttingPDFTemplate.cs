@@ -54,12 +54,12 @@ namespace Manufactures.Helpers.PDFTemplates
             tableHeader.AddCell(cellHeaderContentLeft);
 
             PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal Sample  : " + garmentSampleCutting.SampleDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
-            cellHeaderContentCenter.AddElement(new Paragraph("No Sample          : " + garmentSampleCutting.SampleNo, normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("Tanggal Sample  : " + garmentSampleCutting.SubconDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID")), normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("No Sample          : " + garmentSampleCutting.SubconNo, normal_font));
             tableHeader.AddCell(cellHeaderContentCenter);
 
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentRight.AddElement(new Phrase("Jenis Sample           : " + garmentSampleCutting.SampleType, normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("Jenis Sample           : " + garmentSampleCutting.SubconType, normal_font));
             cellHeaderContentRight.AddElement(new Phrase("Unit Asal                  : " + garmentSampleCutting.Unit.Name, normal_font));
             cellHeaderContentRight.AddElement(new Phrase("Buyer                       : " + garmentSampleCutting.Buyer.Name, normal_font));
             cellHeaderContentRight.AddElement(new Phrase("Jumlah Kemasan     : " + garmentSampleCutting.QtyPacking, normal_font));

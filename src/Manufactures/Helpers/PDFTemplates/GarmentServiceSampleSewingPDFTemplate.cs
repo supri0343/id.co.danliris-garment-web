@@ -356,13 +356,13 @@ namespace Manufactures.Helpers.PDFTemplates
             pdfTab.AddCell(newTblCellRight);
             newTblCellRight.Phrase = new Phrase(" ", baseFontNormal);
             pdfTab.AddCell(newTblCellRight);
-            newTblCellLeft.Phrase = new Phrase("Tanggal Sample " + "   :   " + garmentSampleSewing.ServiceSampleSewingDate.ToOffset(new TimeSpan(clientTimeZoneOffset, 0, 0)).ToString("dd MMMM yyyy", new CultureInfo("id-ID")), baseFontNormal);
+            newTblCellLeft.Phrase = new Phrase("Tanggal Sample " + "   :   " + garmentSampleSewing.ServiceSubconSewingDate.ToOffset(new TimeSpan(clientTimeZoneOffset, 0, 0)).ToString("dd MMMM yyyy", new CultureInfo("id-ID")), baseFontNormal);
             pdfTab.AddCell(newTblCellLeft);
             newTblCellRight.Phrase = new Phrase("BANARAN, GROGOL, SUKOHARJO", baseFontNormal);
             pdfTab.AddCell(newTblCellRight);
             newTblCellRight.Phrase = new Phrase(" ", baseFontNormal);
             pdfTab.AddCell(newTblCellRight);
-            newTblCellLeft.Phrase = new Phrase("No Sample " + "            :   " + garmentSampleSewing.ServiceSampleSewingNo, baseFontNormal);
+            newTblCellLeft.Phrase = new Phrase("No Sample " + "            :   " + garmentSampleSewing.ServiceSubconSewingNo, baseFontNormal);
             pdfTab.AddCell(newTblCellLeft);
             newTblCellLeft.Phrase = new Phrase(" ", baseFontNormal);
             pdfTab.AddCell(newTblCellLeft);

@@ -27,6 +27,7 @@ namespace Manufactures.Dtos.GarmentSubcon
             Items = new List<GarmentSubconDeliveryLetterOutItemDto>();
             ServiceType = garmentSubconDeliveryLetterOutList.ServiceType;
             SubconCategory = garmentSubconDeliveryLetterOutList.SubconCategory;
+            OrderType = garmentSubconDeliveryLetterOutList.OrderType;
         }
 
         public Guid Id { get; set; }
@@ -47,6 +48,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public bool IsUsed { get; set; }
         public string ServiceType { get; set; }
         public string SubconCategory { get; set; }
+        public string OrderType { get; set; }
         public List<GarmentSubconDeliveryLetterOutItemDto> Items { get; set; }
     }
 }
