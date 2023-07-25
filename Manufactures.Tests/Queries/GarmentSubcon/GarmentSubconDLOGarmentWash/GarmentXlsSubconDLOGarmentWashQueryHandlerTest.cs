@@ -74,7 +74,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOGarmentWash
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>
                 {
-                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", Guid.Empty, "contractNo", "SUBCON JASA", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON JASA GARMENT WASH").GetReadModel(),
+                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", Guid.Empty, "contractNo", "SUBCON JASA", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON JASA GARMENT WASH","JOB ORDER").GetReadModel(),
 
                 }.AsQueryable());
 
@@ -136,7 +136,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOGarmentWash
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>
                 {
-                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", Guid.Empty, "contractNo", "SUBCON JASA", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON JASA GARMENT WASH").GetReadModel(),
+                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", Guid.Empty, "contractNo", "SUBCON JASA", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON JASA GARMENT WASH","JOB ORDER").GetReadModel(),
 
                 }.AsQueryable());
 

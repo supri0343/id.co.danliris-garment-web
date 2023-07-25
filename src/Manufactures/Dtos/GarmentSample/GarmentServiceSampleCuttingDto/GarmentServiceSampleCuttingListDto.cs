@@ -11,9 +11,9 @@ namespace Manufactures.Dtos.GarmentSample
         public GarmentServiceSampleCuttingListDto(GarmentServiceSampleCutting garmentServiceSampleCutting)
         {
             Id = garmentServiceSampleCutting.Identity;
-            SampleNo = garmentServiceSampleCutting.SampleNo;
-            SampleType = garmentServiceSampleCutting.SampleType;
-            SampleDate = garmentServiceSampleCutting.SampleDate;
+            SubconNo = garmentServiceSampleCutting.SampleNo;
+            SubconType = garmentServiceSampleCutting.SampleType;
+            SubconDate = garmentServiceSampleCutting.SampleDate;
             CreatedBy = garmentServiceSampleCutting.AuditTrail.CreatedBy;
             Buyer = new Buyer(garmentServiceSampleCutting.BuyerId.Value, garmentServiceSampleCutting.BuyerCode, garmentServiceSampleCutting.BuyerName);
             Unit = new UnitDepartment(garmentServiceSampleCutting.UnitId.Value, garmentServiceSampleCutting.UnitCode, garmentServiceSampleCutting.UnitName);
@@ -22,10 +22,10 @@ namespace Manufactures.Dtos.GarmentSample
         }
 
         public Guid Id { get; set; }
-        public string SampleNo { get; set; }
-        public string SampleType { get; set; }
+        public string SubconNo { get; set; }
+        public string SubconType { get; set; }
 
-        public DateTimeOffset SampleDate { get; set; }
+        public DateTimeOffset SubconDate { get; set; }
         public UnitDepartment Unit { get; set; }
 
         public double TotalQuantity { get; set; }

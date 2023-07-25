@@ -12,9 +12,9 @@ namespace Manufactures.Dtos.GarmentSample.GarmentServiceSampleExpenditureGoodLis
         public GarmentServiceSampleExpenditureGoodListDto(GarmentServiceSampleExpenditureGood serviceSampleExpenditureGood  )
         {
             Id = serviceSampleExpenditureGood.Identity;
-            ServiceSampleExpenditureGoodNo = serviceSampleExpenditureGood.ServiceSampleExpenditureGoodNo;
+            ServiceSubconExpenditureGoodNo = serviceSampleExpenditureGood.ServiceSampleExpenditureGoodNo;
             // Unit = new UnitDepartment(serviceSampleExpenditureGood.UnitId.Value, serviceSampleExpenditureGood.UnitCode, serviceSampleExpenditureGood.UnitName);
-            ServiceSampleExpenditureGoodDate = serviceSampleExpenditureGood.ServiceSampleExpenditureGoodDate;
+            ServiceSubconExpenditureGoodDate = serviceSampleExpenditureGood.ServiceSampleExpenditureGoodDate;
             CreatedBy = serviceSampleExpenditureGood.AuditTrail.CreatedBy;
             Buyer = new Buyer(serviceSampleExpenditureGood.BuyerId.Value, serviceSampleExpenditureGood.BuyerCode, serviceSampleExpenditureGood.BuyerName);
             IsUsed = serviceSampleExpenditureGood.IsUsed;
@@ -26,10 +26,10 @@ namespace Manufactures.Dtos.GarmentSample.GarmentServiceSampleExpenditureGoodLis
         }
 
         public Guid Id { get; set; }
-        public string ServiceSampleExpenditureGoodNo { get; set; }
+        public string ServiceSubconExpenditureGoodNo { get; set; }
         public UnitDepartment Unit { get; set; }
         //public string SewingTo { get; set; }
-        public DateTimeOffset ServiceSampleExpenditureGoodDate { get; set; }
+        public DateTimeOffset ServiceSubconExpenditureGoodDate { get; set; }
         public double TotalQuantity { get; set; }
         //public double TotalRemainingQuantity { get; set; }
         public bool IsUsed { get; set; }
