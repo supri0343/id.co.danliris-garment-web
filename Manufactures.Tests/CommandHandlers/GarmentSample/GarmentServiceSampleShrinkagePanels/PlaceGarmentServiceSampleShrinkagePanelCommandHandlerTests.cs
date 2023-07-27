@@ -48,7 +48,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.GarmentServiceSampleS
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentServiceSampleShrinkagePanelCommand placeGarmentServiceSampleShrinkagePanelCommand = new PlaceGarmentServiceSampleShrinkagePanelCommand()
             {
-                ServiceSampleShrinkagePanelDate = DateTimeOffset.Now,
+                ServiceSubconShrinkagePanelDate = DateTimeOffset.Now,
                 IsSave = true,
                 Items = new List<GarmentServiceSampleShrinkagePanelItemValueObject>
                 {

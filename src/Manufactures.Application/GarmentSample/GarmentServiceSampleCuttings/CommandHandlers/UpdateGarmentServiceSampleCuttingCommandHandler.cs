@@ -84,7 +84,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleCuttings.Co
                 await _garmentServiceSampleCuttingItemRepository.Update(SampleCuttingItem);
             });
 
-            SampleCutting.SetDate(request.SampleDate.GetValueOrDefault());
+            SampleCutting.SetDate(request.SubconDate.GetValueOrDefault());
             SampleCutting.SetBuyerId(new BuyerId(request.Buyer.Id));
             SampleCutting.SetBuyerCode(request.Buyer.Code);
             SampleCutting.SetBuyerName(request.Buyer.Name);

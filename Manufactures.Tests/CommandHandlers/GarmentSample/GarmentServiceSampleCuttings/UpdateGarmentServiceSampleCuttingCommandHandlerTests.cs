@@ -58,8 +58,8 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.GarmentServiceSampleC
             UpdateGarmentServiceSampleCuttingCommand UpdateGarmentServiceSampleCuttingCommand = new UpdateGarmentServiceSampleCuttingCommand()
             {
                 Unit = new UnitDepartment(1, "UnitCode", "UnitName"),
-                SampleDate = DateTimeOffset.Now,
-                SampleType = "PRINT",
+                SubconDate = DateTimeOffset.Now,
+                SubconType = "PRINT",
                 Buyer = new Buyer(1, "BuyerCode", "BuyerName"),
                 Uom = new Uom(1, "UomUnit"),
                 Items = new List<GarmentServiceSampleCuttingItemValueObject>

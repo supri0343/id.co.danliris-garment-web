@@ -35,7 +35,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleFabricWashe
             GarmentServiceSampleFabricWash garmentServiceSampleFabricWash = new GarmentServiceSampleFabricWash(
                 Guid.NewGuid(),
                 GenerateServiceSampleFabricWashNo(request),
-                request.ServiceSampleFabricWashDate.GetValueOrDefault(),
+                request.ServiceSubconFabricWashDate.GetValueOrDefault(),
                 request.Remark,
                 request.IsUsed,
                 request.QtyPacking,

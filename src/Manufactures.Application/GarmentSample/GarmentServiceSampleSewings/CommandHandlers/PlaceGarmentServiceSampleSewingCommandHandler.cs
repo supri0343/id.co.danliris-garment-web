@@ -11,6 +11,8 @@ using Manufactures.Domain.GarmentSample.ServiceSampleSewings;
 using Manufactures.Domain.GarmentSample.ServiceSampleSewings.Commands;
 using Manufactures.Domain.GarmentSample.ServiceSampleSewings.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
+using Manufactures.Domain.GarmentSample.SampleSewingIns.Repositories;
+using Manufactures.Domain.GarmentSample.SamplePreparings.Repositories;
 
 namespace Manufactures.Application.GarmentSample.GarmentServiceSampleSewings.CommandHandlers
 {
@@ -20,19 +22,19 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleSewings.Com
         private readonly IGarmentServiceSampleSewingRepository _garmentServiceSampleSewingRepository;
         private readonly IGarmentServiceSampleSewingItemRepository _garmentServiceSampleSewingItemRepository;
         private readonly IGarmentServiceSampleSewingDetailRepository _garmentServiceSampleSewingDetailRepository;
-        private readonly IGarmentSewingInRepository _garmentSewingInRepository;
-        private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
-        private readonly IGarmentPreparingRepository _garmentPreparingRepository;
+        private readonly IGarmentSampleSewingInRepository _garmentSewingInRepository;
+        private readonly IGarmentSampleSewingInItemRepository _garmentSewingInItemRepository;
+        private readonly IGarmentSamplePreparingRepository _garmentPreparingRepository;
 
         public PlaceGarmentServiceSampleSewingCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentServiceSampleSewingRepository = storage.GetRepository<IGarmentServiceSampleSewingRepository>();
             _garmentServiceSampleSewingItemRepository = storage.GetRepository<IGarmentServiceSampleSewingItemRepository>();
-            _garmentSewingInRepository = storage.GetRepository<IGarmentSewingInRepository>();
-            _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
+            _garmentSewingInRepository = storage.GetRepository<IGarmentSampleSewingInRepository>();
+            _garmentSewingInItemRepository = storage.GetRepository<IGarmentSampleSewingInItemRepository>();
             _garmentServiceSampleSewingDetailRepository= storage.GetRepository<IGarmentServiceSampleSewingDetailRepository>();
-            _garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
+            _garmentPreparingRepository = storage.GetRepository<IGarmentSamplePreparingRepository>();
         }
 
         public async Task<GarmentServiceSampleSewing> Handle(PlaceGarmentServiceSampleSewingCommand request, CancellationToken cancellationToken)
@@ -45,7 +47,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleSewings.Com
             GarmentServiceSampleSewing garmentServiceSampleSewing = new GarmentServiceSampleSewing(
                 Guid.NewGuid(),
                 GenerateServiceSampleSewingNo(request),
-                request.ServiceSampleSewingDate.GetValueOrDefault(),
+                request.ServiceSubconSewingDate.GetValueOrDefault(),
                 request.IsUsed,
                 new BuyerId(request.Buyer.Id),
                 request.Buyer.Code,
