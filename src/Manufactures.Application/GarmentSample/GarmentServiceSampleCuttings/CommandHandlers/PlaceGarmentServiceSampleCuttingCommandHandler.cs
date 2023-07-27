@@ -212,13 +212,13 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleCuttings.Co
             var now = DateTime.Now;
             var year = now.ToString("yy");
             var month = now.ToString("MM");
-            var code = request.SubconType == "BORDIR" ? "B" : request.SubconType == "PRINT" ? "PR" : request.SubconType == "OTHERS" ? "O" : "PL";
+            var code = request.SubconType == "BORDIR" ? "BR" : request.SubconType == "PRINT" ? "PR" : request.SubconType == "OTHERS" ? "OT" : "PL";
 
             var prefix = $"SJC{code}{year}{month}";
 
             var lastSampleNo = _garmentServiceSampleCuttingRepository.Query.Where(w => w.SampleNo.StartsWith(prefix))
                 .OrderByDescending(o => o.SampleNo)
-                .Select(s => int.Parse(s.SampleNo.Replace(prefix, "")))
+                .Select(s => int.Parse(s.SampleNo.Substring(9, 4)))
                 .FirstOrDefault();
             var CutInNo = $"{prefix}{(lastSampleNo + 1).ToString("D4")}" + "-S";
 

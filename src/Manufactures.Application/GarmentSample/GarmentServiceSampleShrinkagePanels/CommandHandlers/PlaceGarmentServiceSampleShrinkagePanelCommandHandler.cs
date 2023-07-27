@@ -98,7 +98,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleShrinkagePa
 
             var lastServiceSampleShrinkagePanelNo = _garmentServiceSampleShrinkagePanelRepository.Query.Where(w => w.ServiceSampleShrinkagePanelNo.StartsWith(prefix))
                 .OrderByDescending(o => o.ServiceSampleShrinkagePanelNo)
-                .Select(s => int.Parse(s.ServiceSampleShrinkagePanelNo.Replace(prefix, "")))
+                .Select(s => int.Parse(s.ServiceSampleShrinkagePanelNo.Substring(8,4)))
                 .FirstOrDefault();
             var ServiceSampleShrinkagePanelNo = $"{prefix}{(lastServiceSampleShrinkagePanelNo + 1).ToString("D4")}" + "-S";
 

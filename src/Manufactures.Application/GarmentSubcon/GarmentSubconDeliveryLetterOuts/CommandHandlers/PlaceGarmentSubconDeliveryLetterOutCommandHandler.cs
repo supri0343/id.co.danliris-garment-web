@@ -353,7 +353,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
 
             var lastNo = _garmentSubconDeliveryLetterOutRepository.Query.Where(w => w.DLNo.StartsWith(prefix))
                 .OrderByDescending(o => o.DLNo)
-                .Select(s => int.Parse(s.DLNo.Substring(11, 4)))
+                .Select(s => int.Parse(s.DLNo.Substring(12, 4)))
                 .FirstOrDefault();
             var no = $"{prefix}{(lastNo + 1).ToString("D4")}{code}";
 
