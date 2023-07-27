@@ -36,7 +36,7 @@ namespace Manufactures.Tests.Validations.GarmentSample.GarmentServiceSampleSewin
             // Arrange
             var validator = GetValidationRules();
             var unitUnderTest = new PlaceGarmentServiceSampleSewingCommand();
-            unitUnderTest.ServiceSampleSewingDate = DateTimeOffset.Now.AddDays(-7);
+            unitUnderTest.ServiceSubconSewingDate = DateTimeOffset.Now.AddDays(-7);
 
             // Action
             var result = validator.TestValidate(unitUnderTest);
@@ -52,8 +52,8 @@ namespace Manufactures.Tests.Validations.GarmentSample.GarmentServiceSampleSewin
             Guid id = Guid.NewGuid();
             var unitUnderTest = new PlaceGarmentServiceSampleSewingCommand()
             {
-                ServiceSampleSewingDate = DateTimeOffset.Now,
-                ServiceSampleSewingNo = "SewingOutNo",
+                ServiceSubconSewingDate = DateTimeOffset.Now,
+                ServiceSubconSewingNo = "SewingOutNo",
                 Buyer = new Buyer()
                 {
                     Id = 1,

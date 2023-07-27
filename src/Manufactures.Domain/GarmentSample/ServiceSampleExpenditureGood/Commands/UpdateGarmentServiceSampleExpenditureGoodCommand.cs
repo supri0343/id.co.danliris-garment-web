@@ -11,8 +11,8 @@ namespace Manufactures.Domain.GarmentSample.ServiceSampleExpenditureGood.Command
     public class UpdateGarmentServiceSampleExpenditureGoodCommand : ICommand<GarmentServiceSampleExpenditureGood>
     {
         public Guid Identity { get; private set; }
-        public string ServiceSampleExpenditureGoodNo { get; set; }
-        public DateTimeOffset? ServiceSampleExpenditureGoodDate { get; set; }
+        public string ServiceSubconExpenditureGoodNo { get; set; }
+        public DateTimeOffset? ServiceSubconExpenditureGoodDate { get; set; }
         public bool IsUsed { get; set; }
         public Buyer Buyer { get; set; }
         public int QtyPacking { get; set; }
@@ -33,8 +33,8 @@ namespace Manufactures.Domain.GarmentSample.ServiceSampleExpenditureGood.Command
         {
             //RuleFor(r => r.Unit).NotNull();
             //RuleFor(r => r.Unit.Id).NotEmpty().OverridePropertyName("Unit").When(w => w.Unit != null);
-            RuleFor(r => r.ServiceSampleExpenditureGoodDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sample Jasa ExpenditureGood Tidak Boleh Kosong");
-            RuleFor(r => r.ServiceSampleExpenditureGoodDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Sample Jasa ExpenditureGood Tidak Boleh Lebih dari Hari Ini");
+            RuleFor(r => r.ServiceSubconExpenditureGoodDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sample Jasa ExpenditureGood Tidak Boleh Kosong");
+            RuleFor(r => r.ServiceSubconExpenditureGoodDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Sample Jasa ExpenditureGood Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.Buyer).NotNull();
             RuleFor(r => r.Buyer.Id).NotEmpty().OverridePropertyName("Buyer").When(w => w.Buyer != null);
             RuleFor(r => r.NettWeight).NotEmpty().WithMessage("Nett Weight tidak boleh kosong!").OverridePropertyName("Nett Weight");

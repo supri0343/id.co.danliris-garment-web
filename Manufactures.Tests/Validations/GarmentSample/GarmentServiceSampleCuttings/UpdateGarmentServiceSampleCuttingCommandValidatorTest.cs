@@ -39,8 +39,8 @@ namespace Manufactures.Tests.Validations.GarmentSample.GarmentServiceSampleCutti
             var unitUnderTest = new UpdateGarmentServiceSampleCuttingCommand()
             {
                 IsUsed = true,
-                SampleDate = DateTimeOffset.Now,
-                SampleNo = "CuttingOutNo",
+                SubconDate = DateTimeOffset.Now,
+                SubconNo = "CuttingOutNo",
                 NettWeight = 1, 
                 GrossWeight = 1,
                 Uom = new Uom()

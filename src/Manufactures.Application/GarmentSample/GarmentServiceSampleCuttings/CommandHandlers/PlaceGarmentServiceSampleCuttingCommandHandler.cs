@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentCuttingIns;
 using Manufactures.Domain.GarmentPreparings.Repositories;
+using Manufactures.Domain.GarmentSample.SampleCuttingIns.Repositories;
+using Manufactures.Domain.GarmentSample.SamplePreparings.Repositories;
 
 namespace Manufactures.Application.GarmentSample.GarmentServiceSampleCuttings.CommandHandlers
 {
@@ -23,10 +25,10 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleCuttings.Co
         private readonly IGarmentServiceSampleCuttingItemRepository _garmentServiceSampleCuttingItemRepository;
         private readonly IGarmentServiceSampleCuttingDetailRepository _garmentServiceSampleCuttingDetailRepository;
         private readonly IGarmentServiceSampleCuttingSizeRepository _garmentServiceSampleCuttingSizeRepository;
-        private readonly IGarmentCuttingInRepository _garmentCuttingInRepository;
-        private readonly IGarmentCuttingInItemRepository _garmentCuttingInItemRepository;
-        private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
-        private readonly IGarmentPreparingRepository _garmentPreparingRepository;
+        private readonly IGarmentSampleCuttingInRepository _garmentCuttingInRepository;
+        private readonly IGarmentSampleCuttingInItemRepository _garmentCuttingInItemRepository;
+        private readonly IGarmentSampleCuttingInDetailRepository _garmentCuttingInDetailRepository;
+        private readonly IGarmentSamplePreparingRepository _garmentPreparingRepository;
 
         public PlaceGarmentServiceSampleCuttingCommandHandler(IStorage storage)
         {
@@ -35,10 +37,10 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleCuttings.Co
             _garmentServiceSampleCuttingItemRepository = storage.GetRepository<IGarmentServiceSampleCuttingItemRepository>();
             _garmentServiceSampleCuttingDetailRepository= storage.GetRepository<IGarmentServiceSampleCuttingDetailRepository>();
             _garmentServiceSampleCuttingSizeRepository = storage.GetRepository<IGarmentServiceSampleCuttingSizeRepository>();
-            _garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
-            _garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
-            _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
-            _garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
+            _garmentCuttingInRepository = storage.GetRepository<IGarmentSampleCuttingInRepository>();
+            _garmentCuttingInItemRepository = storage.GetRepository<IGarmentSampleCuttingInItemRepository>();
+            _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentSampleCuttingInDetailRepository>();
+            _garmentPreparingRepository = storage.GetRepository<IGarmentSamplePreparingRepository>();
 
         }
 
@@ -52,11 +54,11 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleCuttings.Co
             GarmentServiceSampleCutting garmentServiceSampleCutting = new GarmentServiceSampleCutting(
                 Guid.NewGuid(),
                 GenerateSampleNo(request),
-                request.SampleType,
+                request.SubconType,
                 new UnitDepartmentId(request.Unit.Id),
                 request.Unit.Code,
                 request.Unit.Name,
-                request.SampleDate.GetValueOrDefault(),
+                request.SubconDate.GetValueOrDefault(),
                 request.IsUsed,
                 new BuyerId(request.Buyer.Id),
                 request.Buyer.Code,
@@ -210,7 +212,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleCuttings.Co
             var now = DateTime.Now;
             var year = now.ToString("yy");
             var month = now.ToString("MM");
-            var code = request.SampleType == "BORDIR" ? "B" : request.SampleType == "PRINT" ? "PR" : request.SampleType == "OTHERS" ? "O" : "PL";
+            var code = request.SubconType == "BORDIR" ? "B" : request.SubconType == "PRINT" ? "PR" : request.SubconType == "OTHERS" ? "O" : "PL";
 
             var prefix = $"SJC{code}{year}{month}";
 

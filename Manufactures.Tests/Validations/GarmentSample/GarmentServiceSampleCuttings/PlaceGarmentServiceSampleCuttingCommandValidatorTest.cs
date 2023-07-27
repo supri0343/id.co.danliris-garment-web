@@ -40,8 +40,8 @@ namespace Manufactures.Tests.Validations.GarmentSample.GarmentServiceSampleCutti
             var unitUnderTest = new PlaceGarmentServiceSampleCuttingCommand()
             {
                 IsUsed = true,
-                SampleDate = DateTimeOffset.Now,
-                SampleNo = "CuttingOutNo",
+                SubconDate = DateTimeOffset.Now,
+                SubconNo = "CuttingOutNo",
                 QtyPacking = 1,
                 NettWeight = 1,
                 GrossWeight = 1,
@@ -50,7 +50,7 @@ namespace Manufactures.Tests.Validations.GarmentSample.GarmentServiceSampleCutti
                     Id = 1,
                     Unit = "ROLL"
                 },
-                SampleType="test",
+                SubconType = "test",
                 Unit = new UnitDepartment()
                 {
                     Id = 1,
@@ -134,8 +134,8 @@ namespace Manufactures.Tests.Validations.GarmentSample.GarmentServiceSampleCutti
             var unitUnderTest = new PlaceGarmentServiceSampleCuttingCommand()
             {
                 IsUsed = true,
-                SampleDate = DateTimeOffset.Now,
-                SampleNo = "CuttingOutNo",
+                SubconDate = DateTimeOffset.Now,
+                SubconNo = "CuttingOutNo",
                 Unit = new UnitDepartment()
                 {
                     Id = 1,
@@ -194,8 +194,8 @@ namespace Manufactures.Tests.Validations.GarmentSample.GarmentServiceSampleCutti
             var unitUnderTest = new PlaceGarmentServiceSampleCuttingCommand()
             {
                 IsUsed = true,
-                SampleDate = DateTimeOffset.Now,
-                SampleNo = "CuttingOutNo",
+                SubconDate = DateTimeOffset.Now,
+                SubconNo = "CuttingOutNo",
                 Unit = new UnitDepartment()
                 {
                     Id = 1,
@@ -264,8 +264,8 @@ namespace Manufactures.Tests.Validations.GarmentSample.GarmentServiceSampleCutti
             var unitUnderTest = new PlaceGarmentServiceSampleCuttingCommand()
             {
                 IsUsed = true,
-                SampleDate = DateTimeOffset.Now,
-                SampleNo = "CuttingOutNo",
+                SubconDate = DateTimeOffset.Now,
+                SubconNo = "CuttingOutNo",
                 Unit = new UnitDepartment()
                 {
                     Id = 1,
