@@ -48,7 +48,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.GarmentServiceSampleF
             CancellationToken cancellationToken = CancellationToken.None;
             PlaceGarmentServiceSampleFabricWashCommand placeGarmentServiceSampleFabricWashCommand = new PlaceGarmentServiceSampleFabricWashCommand()
             {
-                ServiceSampleFabricWashDate = DateTimeOffset.Now,
+                ServiceSubconFabricWashDate = DateTimeOffset.Now,
                 IsSave = true,
                 Items = new List<GarmentServiceSampleFabricWashItemValueObject>
                 {

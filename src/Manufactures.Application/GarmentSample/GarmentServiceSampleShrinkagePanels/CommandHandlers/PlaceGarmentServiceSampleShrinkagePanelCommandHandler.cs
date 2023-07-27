@@ -35,7 +35,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleShrinkagePa
             GarmentServiceSampleShrinkagePanel garmentServiceSampleShrinkagePanel = new GarmentServiceSampleShrinkagePanel(
                 Guid.NewGuid(),
                 GenerateServiceSampleShrinkagePanelNo(request),
-                request.ServiceSampleShrinkagePanelDate.GetValueOrDefault(),
+                request.ServiceSubconShrinkagePanelDate.GetValueOrDefault(),
                 request.Remark,
                 request.IsUsed,
                 request.QtyPacking,
