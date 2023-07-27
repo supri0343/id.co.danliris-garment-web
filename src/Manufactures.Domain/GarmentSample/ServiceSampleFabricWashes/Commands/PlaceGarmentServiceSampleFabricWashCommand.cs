@@ -10,8 +10,8 @@ namespace Manufactures.Domain.GarmentSample.ServiceSampleFabricWashes.Commands
 {
     public class PlaceGarmentServiceSampleFabricWashCommand : ICommand<GarmentServiceSampleFabricWash>
     {
-        public string ServiceSampleFabricWashNo { get; set; }
-        public DateTimeOffset? ServiceSampleFabricWashDate { get; set; }
+        public string ServiceSubconFabricWashNo { get; set; }
+        public DateTimeOffset? ServiceSubconFabricWashDate { get; set; }
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
         public int QtyPacking { get; set; }
@@ -25,7 +25,7 @@ namespace Manufactures.Domain.GarmentSample.ServiceSampleFabricWashes.Commands
     {
         public PlaceGarmentServiceSampleFabricWashCommandValidator()
         {
-            RuleFor(r => r.ServiceSampleFabricWashDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sample Jasa Fabric Wash Tidak Boleh Kosong");
+            RuleFor(r => r.ServiceSubconFabricWashDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sample Jasa Fabric Wash Tidak Boleh Kosong");
             // RuleFor(r => r.ServiceSampleSewingDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Sample Jasa Sewing Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");

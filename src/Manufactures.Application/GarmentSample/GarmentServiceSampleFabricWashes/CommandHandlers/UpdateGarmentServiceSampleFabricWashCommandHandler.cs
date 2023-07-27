@@ -74,7 +74,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleFabricWashe
             });
 
 
-            serviceSampleFabricWash.SetServiceSampleFabricWashDate(request.ServiceSampleFabricWashDate.GetValueOrDefault());
+            serviceSampleFabricWash.SetServiceSampleFabricWashDate(request.ServiceSubconFabricWashDate.GetValueOrDefault());
             serviceSampleFabricWash.SetRemark(request.Remark);
             serviceSampleFabricWash.SetQtyPacking(request.QtyPacking);
             serviceSampleFabricWash.SetUomUnit(request.UomUnit);

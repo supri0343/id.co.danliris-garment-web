@@ -7,6 +7,7 @@ using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
+using Manufactures.Domain.GarmentSample.SampleFinishedGoodStocks.Repositories;
 using Manufactures.Domain.GarmentSample.ServiceSampleExpenditureGood;
 using Manufactures.Domain.GarmentSample.ServiceSampleExpenditureGood.Commands;
 using Manufactures.Domain.GarmentSample.ServiceSampleExpenditureGood.Repositories;
@@ -23,8 +24,8 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditure
         private readonly IGarmentServiceSampleExpenditureGoodRepository _garmentServiceSampleExpenditureGoodRepository;
         private readonly IGarmentServiceSampleExpenditureGoodtemRepository _garmentServiceSampleExpenditureGoodItemRepository;
 
-        private readonly IGarmentFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
-        private readonly IGarmentFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
+        private readonly IGarmentSampleFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
+        private readonly IGarmentSampleFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
 
         public UpdateGarmentServiceSampleExpenditureGoodCommandHandler(IStorage storage)
@@ -34,8 +35,8 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditure
             _garmentServiceSampleExpenditureGoodItemRepository = storage.GetRepository<IGarmentServiceSampleExpenditureGoodtemRepository>();
 
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
-            _garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentFinishedGoodStockRepository>();
-            _garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentFinishedGoodStockHistoryRepository>();
+            _garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentSampleFinishedGoodStockRepository>();
+            _garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentSampleFinishedGoodStockHistoryRepository>();
         }
 
         public async Task<GarmentServiceSampleExpenditureGood> Handle(UpdateGarmentServiceSampleExpenditureGoodCommand request, CancellationToken cancellationToken)
@@ -54,7 +55,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditure
                     }
                 }
             });
-            SampleExpenditureGood.SetDate(request.ServiceSampleExpenditureGoodDate.GetValueOrDefault());
+            SampleExpenditureGood.SetDate(request.ServiceSubconExpenditureGoodDate.GetValueOrDefault());
             SampleExpenditureGood.SetBuyerId(new BuyerId(request.Buyer.Id));
             SampleExpenditureGood.SetBuyerCode(request.Buyer.Code);
             SampleExpenditureGood.SetBuyerName(request.Buyer.Name);

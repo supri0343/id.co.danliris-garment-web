@@ -111,7 +111,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleShrinkagePa
                 }
             }
 
-            serviceSampleShrinkagePanel.SetServiceSampleShrinkagePanelDate(request.ServiceSampleShrinkagePanelDate.GetValueOrDefault());
+            serviceSampleShrinkagePanel.SetServiceSampleShrinkagePanelDate(request.ServiceSubconShrinkagePanelDate.GetValueOrDefault());
             serviceSampleShrinkagePanel.SetRemark(request.Remark);
             serviceSampleShrinkagePanel.SetQtyPacking(request.QtyPacking);
             serviceSampleShrinkagePanel.SetUomUnit(request.UomUnit);

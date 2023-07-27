@@ -18,6 +18,7 @@ using Manufactures.Domain.GarmentSample.ServiceSampleSewings;
 using Manufactures.Domain.GarmentSample.ServiceSampleSewings.Commands;
 using Manufactures.Domain.GarmentSample.ServiceSampleSewings.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
+using Manufactures.Domain.GarmentSample.SampleFinishedGoodStocks.Repositories;
 
 namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditureGoods.CommandHandlers
 {
@@ -27,8 +28,8 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditure
         private readonly IGarmentServiceSampleExpenditureGoodRepository _garmentServiceSampleExpenditureGoodRepository;
         private readonly IGarmentServiceSampleExpenditureGoodtemRepository _garmentServiceSampleExpenditureGoodItemRepository;
 
-        private readonly IGarmentFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
-        private readonly IGarmentFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
+        private readonly IGarmentSampleFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
+        private readonly IGarmentSampleFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
 
 
@@ -39,8 +40,8 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditure
             _garmentServiceSampleExpenditureGoodItemRepository = storage.GetRepository<IGarmentServiceSampleExpenditureGoodtemRepository>();
 
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
-            _garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentFinishedGoodStockRepository>();
-            _garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentFinishedGoodStockHistoryRepository>();
+            _garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentSampleFinishedGoodStockRepository>();
+            _garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentSampleFinishedGoodStockHistoryRepository>();
         }
 
         public async Task<GarmentServiceSampleExpenditureGood> Handle(PlaceGarmentServiceSampleExpenditureGoodCommand request, CancellationToken cancellationToken)
@@ -48,7 +49,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditure
             GarmentServiceSampleExpenditureGood garmentServiceSampleExpenditureGood = new GarmentServiceSampleExpenditureGood(
                   Guid.NewGuid(),
                   GenerateServiceSampleExpenditureGoodNo(request),
-                  request.ServiceSampleExpenditureGoodDate,
+                  request.ServiceSubconExpenditureGoodDate,
                   false,
                   new BuyerId(request.Buyer.Id),
                   request.Buyer.Code,

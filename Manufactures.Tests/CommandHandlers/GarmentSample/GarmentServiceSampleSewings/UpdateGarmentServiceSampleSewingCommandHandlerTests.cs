@@ -82,9 +82,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.GarmentServiceSampleS
 
                 //    }
                 //},
-                ServiceSampleSewingNo = "serviceSewingNo",
+                ServiceSubconSewingNo = "serviceSewingNo",
                 Buyer = new Buyer(1, "buyerCode", "buyerName"),
-                ServiceSampleSewingDate = DateTimeOffset.Now,
+                ServiceSubconSewingDate = DateTimeOffset.Now,
                 QtyPacking = 1,
                 UomUnit = "uomUnit",
                 NettWeight = 1,

@@ -10,8 +10,8 @@ namespace Manufactures.Domain.GarmentSample.ServiceSampleShrinkagePanels.Command
     public class UpdateGarmentServiceSampleShrinkagePanelCommand : ICommand<GarmentServiceSampleShrinkagePanel>
     {
         public Guid Identity { get; private set; }
-        public string ServiceSampleShrinkagePanelNo { get; set; }
-        public DateTimeOffset? ServiceSampleShrinkagePanelDate { get; set; }
+        public string ServiceSubconShrinkagePanelNo { get; set; }
+        public DateTimeOffset? ServiceSubconShrinkagePanelDate { get; set; }
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
         public int QtyPacking { get; set; }
@@ -30,7 +30,7 @@ namespace Manufactures.Domain.GarmentSample.ServiceSampleShrinkagePanels.Command
     {
         public UpdateGarmentServiceSampleShrinkagePanelCommandValidator()
         {
-            RuleFor(r => r.ServiceSampleShrinkagePanelDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sample Jasa Shrinkage Panel Tidak Boleh Kosong");
+            RuleFor(r => r.ServiceSubconShrinkagePanelDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Sample Jasa Shrinkage Panel Tidak Boleh Kosong");
             //RuleFor(r => r.ServiceSampleSewingDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Sample Jasa Sewing Tidak Boleh Lebih dari Hari Ini");
             RuleFor(r => r.NettWeight).NotEmpty().WithMessage("Nett Weight tidak boleh kosong!").OverridePropertyName("Nett Weight");
             RuleFor(r => r.GrossWeight).NotEmpty().WithMessage("Gross Weight tidak boleh kosong!").OverridePropertyName("Gross Weight");
