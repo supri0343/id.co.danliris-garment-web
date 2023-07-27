@@ -202,7 +202,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleSewings.Com
 
             var lastServiceSampleSewingNo = _garmentServiceSampleSewingRepository.Query.Where(w => w.ServiceSampleSewingNo.StartsWith(prefix))
                 .OrderByDescending(o => o.ServiceSampleSewingNo)
-                .Select(s => int.Parse(s.ServiceSampleSewingNo.Replace(prefix, "")))
+                .Select(s => int.Parse(s.ServiceSampleSewingNo.Substring(7,4)))
                 .FirstOrDefault();
             var ServiceSampleSewingNo = $"{prefix}{(lastServiceSampleSewingNo + 1).ToString("D4")}" + "-S";
 

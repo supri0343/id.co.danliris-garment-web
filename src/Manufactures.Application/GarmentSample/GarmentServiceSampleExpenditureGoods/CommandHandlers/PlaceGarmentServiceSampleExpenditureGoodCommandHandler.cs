@@ -143,7 +143,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditure
 
             var lastServiceSampleExpenditureGoodNo = _garmentServiceSampleExpenditureGoodRepository.Query.Where(w => w.ServiceSampleExpenditureGoodNo.StartsWith(prefix))
                 .OrderByDescending(o => o.ServiceSampleExpenditureGoodNo)
-                .Select(s => int.Parse(s.ServiceSampleExpenditureGoodNo.Replace(prefix, "")))
+                .Select(s => int.Parse(s.ServiceSampleExpenditureGoodNo.Substring(8, 4)))
                 .FirstOrDefault();
             var ServiceSampleExpenditureGoodNo = "";
 
