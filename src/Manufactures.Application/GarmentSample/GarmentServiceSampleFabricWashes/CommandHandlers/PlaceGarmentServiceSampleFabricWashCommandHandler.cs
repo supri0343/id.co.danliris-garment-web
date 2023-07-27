@@ -98,7 +98,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleFabricWashe
 
             var lastServiceSampleFabricWashNo = _garmentServiceSampleFabricWashRepository.Query.Where(w => w.ServiceSampleFabricWashNo.StartsWith(prefix))
                 .OrderByDescending(o => o.ServiceSampleFabricWashNo)
-                .Select(s => int.Parse(s.ServiceSampleFabricWashNo.Replace(prefix, "")))
+                .Select(s => int.Parse(s.ServiceSampleFabricWashNo.Substring(7, 4)))
                 .FirstOrDefault();
             var ServiceSampleFabricWashNo = $"{prefix}{(lastServiceSampleFabricWashNo + 1).ToString("D4")}" + "-S";
 
