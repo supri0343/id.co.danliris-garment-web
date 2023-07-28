@@ -59,6 +59,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentSample.GarmentServiceSampleSh
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.GarmentServiceSampleFabricWashes.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.ServiceSampleExpenditureGood.Config;
 using Manufactures.Data.EntityFrameworkCore.LogHistories.Configs;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentPreparings.Config;
 
 namespace Manufactures.Data.EntityFrameworkCore
 {
@@ -271,6 +272,9 @@ namespace Manufactures.Data.EntityFrameworkCore
 			modelBuilder.ApplyConfiguration(new GarmentServiceSampleExpenditureGoodItemConfig());
 
 			modelBuilder.ApplyConfiguration(new LogHistoryConfig());
+			//Receipt Subcon
+			modelBuilder.ApplyConfiguration(new GarmentSubconPreparingConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconPreparingItemConfig());
 		}
 	}
 }
