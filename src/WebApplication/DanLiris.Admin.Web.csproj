@@ -19,6 +19,8 @@
     <Compile Remove="Migrations\20230712072015_Create_Tables_Service_Sample.Designer.cs" />
     <Compile Remove="Migrations\20230717090130_add-Table-details-SubconDL.cs" />
     <Compile Remove="Migrations\20230717090130_add-Table-details-SubconDL.Designer.cs" />
+    <Compile Remove="Migrations\20230728042131_add-table-SubconPreparing.cs" />
+    <Compile Remove="Migrations\20230728042131_add-table-SubconPreparing.Designer.cs" />
   </ItemGroup>
 
   <!--<ItemGroup>
