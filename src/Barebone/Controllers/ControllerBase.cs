@@ -267,6 +267,33 @@ namespace Barebone.Controllers
             return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
         }
 
+        protected async Task<string> PutGarmentSubconUnitExpenditureNoteCreate(int id)
+        {
+            var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-subcon-unit-expenditure-notes/isPreparingTrue/{id}";
+            var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, WorkContext.Token, new StringContent(JsonConvert.SerializeObject(new { username = PurchasingDataSettings.Username, password = PurchasingDataSettings.Password }), Encoding.UTF8, "application/json"));
+
+            //TokenResult tokenResult = new TokenResult();
+            //if (garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().IsSuccessStatusCode)
+            //{
+            //    return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
+            //}
+            return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
+        }
+
+        protected async Task<string> PutGarmentSubconUnitExpenditureNoteDelete(int id)
+        {
+            var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-subcon-unit-expenditure-notes/isPreparingFalse/{id}";
+            var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, WorkContext.Token, new StringContent(JsonConvert.SerializeObject(new { username = PurchasingDataSettings.Username, password = PurchasingDataSettings.Password }), Encoding.UTF8, "application/json"));
+
+            //TokenResult tokenResult = new TokenResult();
+            //if (garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().IsSuccessStatusCode)
+            //{
+            //    tokenResult = JsonConvert.DeserializeObject<TokenResult>(await garmentUnitExpenditureNoteResponse.Content.ReadAsStringAsync());
+
+            //}
+            return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
+        }
+
         protected async Task<string> PutGarmentUnitExpenditureNoteCreateForDeliveryReturn(int id, double quantity, double quantityBefore)
         {
             var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-unit-expenditure-notes/returQuantity/{id}";
