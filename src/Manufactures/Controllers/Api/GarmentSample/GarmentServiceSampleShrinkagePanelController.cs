@@ -97,6 +97,14 @@ namespace Manufactures.Controllers.Api.GarmentSample
 
                 var order = await Mediator.Send(command);
 
+                //Update isPreparing UEN 
+                var listUenNo = command.Items.Select(x => x.UnitExpenditureNo).Distinct();
+                if (listUenNo.Count() > 0)
+                {
+                    var joinUenNo = string.Join(",", listUenNo);
+                    await PutGarmentUnitExpenditureNoteByNo(joinUenNo, true);
+                }
+                
                 return Ok(order.Identity);
             }
             catch (Exception e)
@@ -125,9 +133,24 @@ namespace Manufactures.Controllers.Api.GarmentSample
             Guid guid = Guid.Parse(id);
 
             VerifyUser();
+            //Get List of UENNo
+            List<string> listUenNo = new List<string>();
+            _garmentServiceSampleShrinkagePanelRepository.Find(x => x.Identity == guid).ForEach(async header =>
+                _garmentServiceSampleShrinkagePanelItemRepository.Find(x => x.ServiceSampleShrinkagePanelId == header.Identity).ForEach(async item =>
+                {
+                    listUenNo.Add(item.UnitExpenditureNo);
+                })
+            );
 
             RemoveGarmentServiceSampleShrinkagePanelCommand command = new RemoveGarmentServiceSampleShrinkagePanelCommand(guid);
             var order = await Mediator.Send(command);
+
+            if (listUenNo.Count() > 0)
+            {
+                var joinUenNo = string.Join(",", listUenNo.Distinct());
+                await PutGarmentUnitExpenditureNoteByNo(joinUenNo, false);
+            }
+
 
             return Ok(order.Identity);
         }

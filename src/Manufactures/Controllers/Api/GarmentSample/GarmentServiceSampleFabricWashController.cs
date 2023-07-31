@@ -94,6 +94,14 @@ namespace Manufactures.Controllers.Api.GarmentSample
 
                 var order = await Mediator.Send(command);
 
+                //Update isPreparing UEN 
+                var listUenNo = command.Items.Select(x => x.UnitExpenditureNo).Distinct();
+                if (listUenNo.Count() > 0)
+                {
+                    var joinUenNo = string.Join(",", listUenNo);
+                    await PutGarmentUnitExpenditureNoteByNo(joinUenNo, true);
+                }
+
                 return Ok(order.Identity);
             }
             catch (Exception e)
@@ -123,8 +131,24 @@ namespace Manufactures.Controllers.Api.GarmentSample
 
             VerifyUser();
 
+            //Get List of UENNo
+            List<string> listUenNo = new List<string>();
+            _garmentServiceSampleFabricWashRepository.Find(x => x.Identity == guid).ForEach(async header =>
+                _garmentServiceSampleFabricWashItemRepository.Find(x => x.ServiceSampleFabricWashId == header.Identity).ForEach(async item =>
+                {
+                    listUenNo.Add(item.UnitExpenditureNo);
+                })
+            );
+
             RemoveGarmentServiceSampleFabricWashCommand command = new RemoveGarmentServiceSampleFabricWashCommand(guid);
             var order = await Mediator.Send(command);
+
+            //Update IsPreparing UENNO
+            if (listUenNo.Count() > 0)
+            {
+                var joinUenNo = string.Join(",", listUenNo.Distinct());
+                await PutGarmentUnitExpenditureNoteByNo(joinUenNo, false);
+            }
 
             return Ok(order.Identity);
         }
