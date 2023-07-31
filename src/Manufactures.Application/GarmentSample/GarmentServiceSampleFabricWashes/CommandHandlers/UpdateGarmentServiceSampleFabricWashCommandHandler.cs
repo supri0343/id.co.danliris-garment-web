@@ -1,5 +1,8 @@
 ﻿using ExtCore.Data.Abstractions;
+using Infrastructure;
 using Infrastructure.Domain.Commands;
+using Infrastructure.External.DanLirisClient.Microservice;
+using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Manufactures.Domain.GarmentSample.ServiceSampleFabricWashes;
 using Manufactures.Domain.GarmentSample.ServiceSampleFabricWashes.Commands;
 using Manufactures.Domain.GarmentSample.ServiceSampleFabricWashes.Repositories;
@@ -16,13 +19,17 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleFabricWashe
     public class UpdateGarmentServiceSampleFabricWashCommandHandler : ICommandHandler<UpdateGarmentServiceSampleFabricWashCommand, GarmentServiceSampleFabricWash>
     {
         private readonly IStorage _storage;
+        private readonly IWebApiContext _webApiContext;
+        private readonly IHttpClientService _http;
         private readonly IGarmentServiceSampleFabricWashRepository _garmentServiceSampleFabricWashRepository;
         private readonly IGarmentServiceSampleFabricWashItemRepository _garmentServiceSampleFabricWashItemRepository;
         private readonly IGarmentServiceSampleFabricWashDetailRepository _garmentServiceSampleFabricWashDetailRepository;
 
-        public UpdateGarmentServiceSampleFabricWashCommandHandler(IStorage storage)
+        public UpdateGarmentServiceSampleFabricWashCommandHandler(IStorage storage, IWebApiContext webApiContext, IHttpClientService http)
         {
             _storage = storage;
+            _http = http;
+            _webApiContext = webApiContext;
             _garmentServiceSampleFabricWashRepository = _storage.GetRepository<IGarmentServiceSampleFabricWashRepository>();
             _garmentServiceSampleFabricWashItemRepository = _storage.GetRepository<IGarmentServiceSampleFabricWashItemRepository>();
             _garmentServiceSampleFabricWashDetailRepository = storage.GetRepository<IGarmentServiceSampleFabricWashDetailRepository>();
@@ -34,12 +41,15 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleFabricWashe
 
             Dictionary<Guid, double> fabricWashUpdated = new Dictionary<Guid, double>();
 
+            List<string> listDeletedUenNo = new List<string>();
+            List<string> listUsedUenNo = new List<string>();
             _garmentServiceSampleFabricWashItemRepository.Find(o => o.ServiceSampleFabricWashId == serviceSampleFabricWash.Identity).ForEach(async SampleFabricWashItem =>
             {
                 var item = request.Items.Where(o => o.Id == SampleFabricWashItem.Identity).SingleOrDefault();
 
                 if (item == null)
                 {
+                    listDeletedUenNo.Add(SampleFabricWashItem.UnitExpenditureNo);
                     _garmentServiceSampleFabricWashDetailRepository.Find(i => i.ServiceSampleFabricWashItemId == SampleFabricWashItem.Identity).ForEach(async SampleFabricWashDetail =>
                     {
                         SampleFabricWashDetail.Remove();
@@ -90,6 +100,8 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleFabricWashe
             {
                 foreach (var item in newitem)
                 {
+                    listUsedUenNo.Add(item.UnitExpenditureNo);
+
                     GarmentServiceSampleFabricWashItem garmentServiceSampleFabricWashItem = new GarmentServiceSampleFabricWashItem(
                         Guid.NewGuid(),
                         serviceSampleFabricWash.Identity,
@@ -130,6 +142,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleFabricWashe
             {
                 foreach (var item in removeItem)
                 {
+                    listDeletedUenNo.Add(item.UnitExpenditureNo);
                     _garmentServiceSampleFabricWashDetailRepository.Find(i => i.ServiceSampleFabricWashItemId == item.Identity).ForEach(async serviceSampleFabricWashDetail =>
                     {
                         serviceSampleFabricWashDetail.Remove();
@@ -140,11 +153,33 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleFabricWashe
                 }
             }
 
+            //Update Is Preparing UENNo
+            if (listDeletedUenNo.Count() > 0)
+            {
+                var joinUenNo = string.Join(",", listDeletedUenNo.Distinct());
+                await PutGarmentUnitExpenditureNoteByNo(joinUenNo, false);
+            }
+
+            if (listUsedUenNo.Count() > 0)
+            {
+                var joinUenNo = string.Join(",", listUsedUenNo.Distinct());
+                await PutGarmentUnitExpenditureNoteByNo(joinUenNo, true);
+            }
+
+
             await _garmentServiceSampleFabricWashRepository.Update(serviceSampleFabricWash);
 
             _storage.Save();
 
             return serviceSampleFabricWash;
+        }
+
+        public async Task<string> PutGarmentUnitExpenditureNoteByNo(string uenNo, bool isPreparing)
+        {
+            var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-unit-expenditure-notes/isPreparingByNo?UENNo={uenNo}&IsPreparing={isPreparing}";
+            var garmentUnitExpenditureNoteResponse = await _http.GetAsync(garmentUnitExpenditureNoteUri, _webApiContext.Token);
+
+            return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
         }
     }
 }
