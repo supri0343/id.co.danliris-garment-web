@@ -60,6 +60,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentSample.GarmentServiceSampleFa
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.ServiceSampleExpenditureGood.Config;
 using Manufactures.Data.EntityFrameworkCore.LogHistories.Configs;
 using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentPreparings.Config;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentCuttingIns.Configs;
 
 namespace Manufactures.Data.EntityFrameworkCore
 {
@@ -275,6 +276,10 @@ namespace Manufactures.Data.EntityFrameworkCore
 			//Receipt Subcon
 			modelBuilder.ApplyConfiguration(new GarmentSubconPreparingConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSubconPreparingItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingInConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingInItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingInDetailConfig());
 		}
 	}
 }
