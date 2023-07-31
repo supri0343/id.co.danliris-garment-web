@@ -1,5 +1,8 @@
 ﻿using ExtCore.Data.Abstractions;
+using Infrastructure;
 using Infrastructure.Domain.Commands;
+using Infrastructure.External.DanLirisClient.Microservice;
+using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Repositories;
@@ -16,13 +19,17 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
     public class UpdateGarmentServiceSubconFabricWashCommandHandler : ICommandHandler<UpdateGarmentServiceSubconFabricWashCommand, GarmentServiceSubconFabricWash>
     {
         private readonly IStorage _storage;
+        private readonly IWebApiContext _webApiContext;
+        private readonly IHttpClientService _http;
         private readonly IGarmentServiceSubconFabricWashRepository _garmentServiceSubconFabricWashRepository;
         private readonly IGarmentServiceSubconFabricWashItemRepository _garmentServiceSubconFabricWashItemRepository;
         private readonly IGarmentServiceSubconFabricWashDetailRepository _garmentServiceSubconFabricWashDetailRepository;
 
-        public UpdateGarmentServiceSubconFabricWashCommandHandler(IStorage storage)
+        public UpdateGarmentServiceSubconFabricWashCommandHandler(IStorage storage, IWebApiContext webApiContext, IHttpClientService http)
         {
             _storage = storage;
+            _http = http;
+            _webApiContext = webApiContext;
             _garmentServiceSubconFabricWashRepository = _storage.GetRepository<IGarmentServiceSubconFabricWashRepository>();
             _garmentServiceSubconFabricWashItemRepository = _storage.GetRepository<IGarmentServiceSubconFabricWashItemRepository>();
             _garmentServiceSubconFabricWashDetailRepository = storage.GetRepository<IGarmentServiceSubconFabricWashDetailRepository>();
@@ -34,12 +41,15 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
 
             Dictionary<Guid, double> fabricWashUpdated = new Dictionary<Guid, double>();
 
+            List<string> listDeletedUenNo = new List<string>();
+            List<string> listUsedUenNo = new List<string>();
             _garmentServiceSubconFabricWashItemRepository.Find(o => o.ServiceSubconFabricWashId == serviceSubconFabricWash.Identity).ForEach(async subconFabricWashItem =>
             {
                 var item = request.Items.Where(o => o.Id == subconFabricWashItem.Identity).SingleOrDefault();
 
                 if (item == null)
                 {
+                    listDeletedUenNo.Add(subconFabricWashItem.UnitExpenditureNo);
                     _garmentServiceSubconFabricWashDetailRepository.Find(i => i.ServiceSubconFabricWashItemId == subconFabricWashItem.Identity).ForEach(async subconFabricWashDetail =>
                     {
                         subconFabricWashDetail.Remove();
@@ -90,6 +100,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
             {
                 foreach (var item in newitem)
                 {
+                    listUsedUenNo.Add(item.UnitExpenditureNo);
                     GarmentServiceSubconFabricWashItem garmentServiceSubconFabricWashItem = new GarmentServiceSubconFabricWashItem(
                         Guid.NewGuid(),
                         serviceSubconFabricWash.Identity,
@@ -130,6 +141,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
             {
                 foreach (var item in removeItem)
                 {
+                    listDeletedUenNo.Add(item.UnitExpenditureNo);
                     _garmentServiceSubconFabricWashDetailRepository.Find(i => i.ServiceSubconFabricWashItemId == item.Identity).ForEach(async serviceSubconFabricWashDetail =>
                     {
                         serviceSubconFabricWashDetail.Remove();
@@ -142,9 +154,30 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
 
             await _garmentServiceSubconFabricWashRepository.Update(serviceSubconFabricWash);
 
+            //Update Is Preparing UENNo
+            if (listDeletedUenNo.Count() > 0)
+            {
+                var joinUenNo = string.Join(",", listDeletedUenNo.Distinct());
+                await PutGarmentUnitExpenditureNoteByNo(joinUenNo, false);
+            }
+
+            if (listUsedUenNo.Count() > 0)
+            {
+                var joinUenNo = string.Join(",", listUsedUenNo.Distinct());
+                await PutGarmentUnitExpenditureNoteByNo(joinUenNo, true);
+            }
+
             _storage.Save();
 
             return serviceSubconFabricWash;
+        }
+
+        public async Task<string> PutGarmentUnitExpenditureNoteByNo(string uenNo, bool isPreparing)
+        {
+            var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-unit-expenditure-notes/isPreparingByNo?UENNo={uenNo}&IsPreparing={isPreparing}";
+            var garmentUnitExpenditureNoteResponse = await _http.GetAsync(garmentUnitExpenditureNoteUri, _webApiContext.Token);
+
+            return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
         }
     }
 }

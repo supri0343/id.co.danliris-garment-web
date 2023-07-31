@@ -298,6 +298,14 @@ namespace Barebone.Controllers
             return garmentPackingListResponse.EnsureSuccessStatusCode().ToString(); ;
         }
 
+        protected async Task<string> PutGarmentUnitExpenditureNoteByNo(string uenNo,bool isPreparing)
+        {
+            var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-unit-expenditure-notes/isPreparingByNo?UENNo={uenNo}&IsPreparing={isPreparing}";
+            var garmentUnitExpenditureNoteResponse = await _http.GetAsync(garmentUnitExpenditureNoteUri, WorkContext.Token);
+
+            return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
+        }
+
         protected ProductResult GetGarmentProducts(string keyword = null)
         {
             var masterProductUri = MasterDataSettings.Endpoint + $"master/garmentProducts?size={int.MaxValue}&keyword={keyword}";

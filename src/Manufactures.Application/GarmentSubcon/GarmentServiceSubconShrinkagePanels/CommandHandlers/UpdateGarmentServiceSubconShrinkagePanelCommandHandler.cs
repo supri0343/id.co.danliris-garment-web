@@ -1,5 +1,8 @@
 ﻿using ExtCore.Data.Abstractions;
+using Infrastructure;
 using Infrastructure.Domain.Commands;
+using Infrastructure.External.DanLirisClient.Microservice;
+using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Repositories;
@@ -16,13 +19,17 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconShrinkagePa
     public class UpdateGarmentServiceSubconShrinkagePanelCommandHandler : ICommandHandler<UpdateGarmentServiceSubconShrinkagePanelCommand, GarmentServiceSubconShrinkagePanel>
     {
         private readonly IStorage _storage;
+        private readonly IWebApiContext _webApiContext;
+        private readonly IHttpClientService _http;
         private readonly IGarmentServiceSubconShrinkagePanelRepository _garmentServiceSubconShrinkagePanelRepository;
         private readonly IGarmentServiceSubconShrinkagePanelItemRepository _garmentServiceSubconShrinkagePanelItemRepository;
         private readonly IGarmentServiceSubconShrinkagePanelDetailRepository _garmentServiceSubconShrinkagePanelDetailRepository;
 
-        public UpdateGarmentServiceSubconShrinkagePanelCommandHandler(IStorage storage)
+        public UpdateGarmentServiceSubconShrinkagePanelCommandHandler(IStorage storage, IWebApiContext webApiContext, IHttpClientService http)
         {
             _storage = storage;
+            _http = http;
+            _webApiContext = webApiContext;
             _garmentServiceSubconShrinkagePanelRepository = _storage.GetRepository<IGarmentServiceSubconShrinkagePanelRepository>();
             _garmentServiceSubconShrinkagePanelItemRepository = _storage.GetRepository<IGarmentServiceSubconShrinkagePanelItemRepository>();
             _garmentServiceSubconShrinkagePanelDetailRepository = storage.GetRepository<IGarmentServiceSubconShrinkagePanelDetailRepository>();
@@ -34,12 +41,15 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconShrinkagePa
 
             Dictionary<Guid, double> sewInItemToBeUpdated = new Dictionary<Guid, double>();
 
+            List<string> listDeletedUenNo = new List<string>();
+            List<string> listUsedUenNo = new List<string>();
             _garmentServiceSubconShrinkagePanelItemRepository.Find(o => o.ServiceSubconShrinkagePanelId == serviceSubconShrinkagePanel.Identity).ForEach(async subconShrinkagePanelItem =>
             {
                 var item = request.Items.Where(o => o.Id == subconShrinkagePanelItem.Identity).SingleOrDefault();
 
                 if (item==null)
                 {
+                    listDeletedUenNo.Add(subconShrinkagePanelItem.UnitExpenditureNo);
                     _garmentServiceSubconShrinkagePanelDetailRepository.Find(i => i.ServiceSubconShrinkagePanelItemId == subconShrinkagePanelItem.Identity).ForEach(async subconDetail =>
                     {
                         subconDetail.Remove();
@@ -75,6 +85,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconShrinkagePa
             {
                 if (item.Id == Guid.Empty)
                 {
+                    listUsedUenNo.Add(item.UnitExpenditureNo);
                     GarmentServiceSubconShrinkagePanelItem garmentServiceSubconShrinkagePanelItem = new GarmentServiceSubconShrinkagePanelItem(
                         Guid.NewGuid(),
                         serviceSubconShrinkagePanel.Identity,
@@ -120,9 +131,29 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconShrinkagePa
             serviceSubconShrinkagePanel.Modify();
             await _garmentServiceSubconShrinkagePanelRepository.Update(serviceSubconShrinkagePanel);
 
+            //Update Is Preparing UENNo
+            if (listDeletedUenNo.Count() > 0)
+            {
+                var joinUenNo = string.Join(",", listDeletedUenNo.Distinct());
+                await PutGarmentUnitExpenditureNoteByNo(joinUenNo, false);
+            }
+
+            if (listUsedUenNo.Count() > 0)
+            {
+                var joinUenNo = string.Join(",", listUsedUenNo.Distinct());
+                await PutGarmentUnitExpenditureNoteByNo(joinUenNo, true);
+            }
+
             _storage.Save();
 
             return serviceSubconShrinkagePanel;
+        }
+        public async Task<string> PutGarmentUnitExpenditureNoteByNo(string uenNo, bool isPreparing)
+        {
+            var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-unit-expenditure-notes/isPreparingByNo?UENNo={uenNo}&IsPreparing={isPreparing}";
+            var garmentUnitExpenditureNoteResponse = await _http.GetAsync(garmentUnitExpenditureNoteUri, _webApiContext.Token);
+
+            return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
         }
     }
 }
