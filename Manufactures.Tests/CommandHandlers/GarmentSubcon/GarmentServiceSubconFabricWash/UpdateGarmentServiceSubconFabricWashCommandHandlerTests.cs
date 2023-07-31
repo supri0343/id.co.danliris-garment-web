@@ -34,7 +34,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentServiceSubconF
 
         private UpdateGarmentServiceSubconFabricWashCommandHandler CreateUpdateGarmentServiceSubconFabricWashCommandHandler()
         {
-            return new UpdateGarmentServiceSubconFabricWashCommandHandler(_MockStorage.Object);
+            return new UpdateGarmentServiceSubconFabricWashCommandHandler(_MockStorage.Object, _MockWebApiContext.Object, _MockHttpService.Object);
         }
 
         //[Fact]

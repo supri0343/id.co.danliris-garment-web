@@ -34,7 +34,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSample.GarmentServiceSampleS
 
         private UpdateGarmentServiceSampleShrinkagePanelCommandHandler CreateUpdateGarmentServiceSampleShrinkagePanelCommandHandler()
         {
-            return new UpdateGarmentServiceSampleShrinkagePanelCommandHandler(_MockStorage.Object);
+            return new UpdateGarmentServiceSampleShrinkagePanelCommandHandler(_MockStorage.Object, _MockWebApiContext.Object, _MockHttpService.Object);
         }
 
         /*[Fact]
