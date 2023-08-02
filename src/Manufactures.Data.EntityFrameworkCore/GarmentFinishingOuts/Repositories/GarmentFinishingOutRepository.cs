@@ -22,14 +22,14 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentFinishingOuts.Repositorie
 
             List<string> SearchAttributes = new List<string>
             {
-                "FinishingOutNo",
-                "UnitCode",
-                "UnitToCode",
+                //"FinishingOutNo",
+                //"UnitCode",
+                //"UnitToCode",
                 "RONo",
-                "Article",
-                "GarmentFinishingOutItem.ProductCode",
-                "GarmentFinishingOutItem.Color",
-                "FinishingTo"
+                //"Article",
+                //"GarmentFinishingOutItem.ProductCode",
+                //"GarmentFinishingOutItem.Color",
+                //"FinishingTo"
             };
 
             data = QueryHelper<GarmentFinishingOutReadModel>.Search(data, SearchAttributes, keyword);
