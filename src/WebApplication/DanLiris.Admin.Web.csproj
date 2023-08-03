@@ -22,6 +22,8 @@
     <Compile Remove="Migrations\20230728042131_add-table-SubconPreparing.Designer.cs" />
     <Compile Remove="Migrations\20230802013859_Create_Garment_Subcon_Cutting_Outs.cs" />
     <Compile Remove="Migrations\20230802013859_Create_Garment_Subcon_Cutting_Outs.Designer.cs" />
+    <Compile Remove="Migrations\20230802050053_add-table-SubconLoadingIns.cs" />
+    <Compile Remove="Migrations\20230802050053_add-table-SubconLoadingIns.Designer.cs" />
   </ItemGroup>
 
   <!--<ItemGroup>
