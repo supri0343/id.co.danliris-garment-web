@@ -61,6 +61,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentSample.ServiceSampleExpenditu
 using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentPreparings.Config;
 using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentCuttingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentCuttingOuts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentLoadings.Configs;
 
 namespace Manufactures.Data.EntityFrameworkCore
 {
@@ -282,6 +283,9 @@ namespace Manufactures.Data.EntityFrameworkCore
 			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingOutConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingOutItemConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingOutDetailConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconLoadingInConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconLoadingInItemConfig());
 		}
 	}
 }
