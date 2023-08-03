@@ -159,7 +159,15 @@ namespace Manufactures.Controllers.Api.GermentReciptSubcon
         public async Task<IActionResult> GetLoaderByRO(string keyword, string filter = "{}")
         {
             var query = _garmentCuttingInRepository.Read(1, int.MaxValue, "{}", "", filter);
-            query = query.Where(o => o.RONo.Contains(keyword) && o.Items.Any(a=>a.Details.Any(b=>b.RemainingQuantity>0)));
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                query = query.Where(o => o.RONo.Contains(keyword) && o.Items.Any(a => a.Details.Any(b => b.RemainingQuantity > 0)));
+            }
+            else
+            {
+                query = query.Where(o => o.Items.Any(a => a.Details.Any(b => b.RemainingQuantity > 0)));
+            }
 
             var rOs = _garmentCuttingInRepository.Find(query)
                 .Select(o => new { o.RONo, o.Article }).Distinct().ToList();
