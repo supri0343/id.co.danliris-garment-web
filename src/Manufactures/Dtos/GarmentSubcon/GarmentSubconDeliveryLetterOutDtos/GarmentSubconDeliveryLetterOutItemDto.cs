@@ -27,6 +27,12 @@ namespace Manufactures.Dtos.GarmentSubcon
             //UomSatuan = new Uom(garmentSubconDeliveryLetterOutItem.UomSatuanId.Value, garmentSubconDeliveryLetterOutItem.UomSatuanUnit);
             UomSatuanUnit = garmentSubconDeliveryLetterOutItem.UomSatuanUnit;
             QtyPacking = garmentSubconDeliveryLetterOutItem.QtyPacking;
+            SmallQuantity = garmentSubconDeliveryLetterOutItem.SmallQuantity;
+            SmallUomUnit = garmentSubconDeliveryLetterOutItem.SmallUomUnit;
+            UENId = garmentSubconDeliveryLetterOutItem.UENId;
+            UENNo = garmentSubconDeliveryLetterOutItem.UENNo;
+            Details = new List<GarmentSubconDeliveryLetterOutDetailDto>();
+            
         }
 
         public Guid Id { get; set; }
@@ -58,6 +64,11 @@ namespace Manufactures.Dtos.GarmentSubcon
         //public Uom UomSatuan { get; set; }
         public string UomSatuanUnit { get; set; }
         public int QtyPacking { get; set; }
+        public double SmallQuantity { get; set; }
+        public string SmallUomUnit { get; set; }
         //public double ContractQuantity { get; set; }
+        public int UENId { get; set; }
+        public string UENNo { get; set; }
+        public List<GarmentSubconDeliveryLetterOutDetailDto> Details { get; set; }
     }
 }
