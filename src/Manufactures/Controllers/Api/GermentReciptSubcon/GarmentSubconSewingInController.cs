@@ -156,5 +156,27 @@ namespace Manufactures.Controllers.Api.GermentReciptSubcon
                 throw e;
             }
         }
+
+        [HttpGet("get-by-ro")]
+        public async Task<IActionResult> GetByRo(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentSewingRepository.ReadComplete(page, size, order, keyword, filter);
+            var total = query.Count();
+            double totalQty = query.Sum(a => a.GarmentSewingInItem.Sum(b => b.Quantity));
+            query = query.Skip((page - 1) * size).Take(size);
+
+            var garmentSewingInDto = _garmentSewingRepository.Find(query).Select(o => new GarmentSubconSewingInListDto(o)).ToArray();
+
+            await Task.Yield();
+            return Ok(garmentSewingInDto, info: new
+            {
+                page,
+                size,
+                total,
+                totalQty
+            });
+        }
     }
 }
