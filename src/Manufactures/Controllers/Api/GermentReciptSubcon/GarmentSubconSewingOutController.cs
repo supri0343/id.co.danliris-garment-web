@@ -20,14 +20,14 @@ namespace Manufactures.Controllers.Api.GermentReciptSubcon
     [ApiController]
     [Authorize]
     [Route("subcon-sewing-outs")]
-    public class GarmentSewingOutController : ControllerApiBase
+    public class GarmentSubconSewingOutController : ControllerApiBase
     {
         private readonly IGarmentSubconSewingOutRepository _garmentSewingOutRepository;
         private readonly IGarmentSubconSewingOutItemRepository _garmentSewingOutItemRepository;
         private readonly IGarmentSubconSewingOutDetailRepository _garmentSewingOutDetailRepository;
         private readonly IGarmentSubconSewingInItemRepository _garmentSewingInItemRepository;
 
-        public GarmentSewingOutController(IServiceProvider serviceProvider) : base(serviceProvider)
+        public GarmentSubconSewingOutController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentSewingOutRepository = Storage.GetRepository<IGarmentSubconSewingOutRepository>();
             _garmentSewingOutItemRepository = Storage.GetRepository<IGarmentSubconSewingOutItemRepository>();
