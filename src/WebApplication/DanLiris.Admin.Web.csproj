@@ -25,6 +25,10 @@
     <Compile Remove="Migrations\20230802013859_Create_Garment_Subcon_Cutting_Outs.Designer.cs" />
     <Compile Remove="Migrations\20230802050053_add-table-SubconLoadingIns.cs" />
     <Compile Remove="Migrations\20230802050053_add-table-SubconLoadingIns.Designer.cs" />
+    <Compile Remove="Migrations\20230814061512_add-table-SubconFinishingIn.cs" />
+    <Compile Remove="Migrations\20230814061512_add-table-SubconFinishingIn.Designer.cs" />
+    <Compile Remove="Migrations\20230814082022_add-table-SubconFinishingIn.cs" />
+    <Compile Remove="Migrations\20230814082022_add-table-SubconFinishingIn.Designer.cs" />
   </ItemGroup>
 
   <!--<ItemGroup>
