@@ -91,16 +91,16 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLORawMaterial
                  .Setup(s => s.Query)
                  .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>
                  {
-                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", new Guid(), "contractNo", "SUBCON BAHAN BAKU", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON BB SHRINKAGE/PANEL").GetReadModel(),
-                         new GarmentSubconDeliveryLetterOut(guidSubconDLO2, "dLNo", "dLType", new Guid(), "contractNo", "SUBCON BAHAN BAKU", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON BB FABRIC WASH/PRINT").GetReadModel(),
+                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", new Guid(), "contractNo", "SUBCON BAHAN BAKU", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON BB SHRINKAGE/PANEL","JOB ORDER").GetReadModel(),
+                         new GarmentSubconDeliveryLetterOut(guidSubconDLO2, "dLNo", "dLType", new Guid(), "contractNo", "SUBCON BAHAN BAKU", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON BB FABRIC WASH/PRINT","JOB ORDER").GetReadModel(),
                  }.AsQueryable());
 
             _mockgarmentSubconDeliveryLetterOutItemRepository
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutItemReadModel>
                 {   
-                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem, guidSubconDLO, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconShrinkagePanel, "roNo", "poSerialNumber", "subconNo", "uomSatuanUnit", 1).GetReadModel(),
-                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem, guidSubconDLO2, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconShrinkagePanel, "roNo", "poSerialNumber", "subconNo", "uomSatuanUnit", 1).GetReadModel()
+                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem, guidSubconDLO, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconShrinkagePanel, "roNo", "poSerialNumber", "subconNo", "uomSatuanUnit", 1,1,"",1,"").GetReadModel(),
+                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem, guidSubconDLO2, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconShrinkagePanel, "roNo", "poSerialNumber", "subconNo", "uomSatuanUnit", 1,1,"",1,"").GetReadModel()
 
                 }.AsQueryable());
 
@@ -180,16 +180,16 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLORawMaterial
                  .Setup(s => s.Query)
                  .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>
                  {
-                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", new Guid(), "contractNo", "SUBCON BAHAN BAKU", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON BB SHRINKAGE/PANEL").GetReadModel(),
-                         new GarmentSubconDeliveryLetterOut(guidSubconDLO2, "dLNo", "dLType", new Guid(), "contractNo", "SUBCON BAHAN BAKU", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON BB FABRIC WASH/PRINT").GetReadModel(),
+                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", new Guid(), "contractNo", "SUBCON BAHAN BAKU", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON BB SHRINKAGE/PANEL","JOB ORDER").GetReadModel(),
+                         new GarmentSubconDeliveryLetterOut(guidSubconDLO2, "dLNo", "dLType", new Guid(), "contractNo", "SUBCON BAHAN BAKU", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON BB FABRIC WASH/PRINT","JOB ORDER").GetReadModel(),
                  }.AsQueryable());
 
             _mockgarmentSubconDeliveryLetterOutItemRepository
                  .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutItemReadModel>
                 {
-                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem, guidSubconDLO, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconShrinkagePanel, "roNo", "poSerialNumber", "subconNo", "uomSatuanUnit", 1).GetReadModel(),
-                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem, guidSubconDLO2, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconShrinkagePanel, "roNo", "poSerialNumber", "subconNo", "uomSatuanUnit", 1).GetReadModel()
+                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem, guidSubconDLO, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconShrinkagePanel, "roNo", "poSerialNumber", "subconNo", "uomSatuanUnit", 1,1,"",1,"").GetReadModel(),
+                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem, guidSubconDLO2, 1, new ProductId(1), "productCode", "productName", "productRemark", "designColor", 2, new UomId(1), "uomUnit", new UomId(1), "uomOutUnit", "fabricType", guidSubconShrinkagePanel, "roNo", "poSerialNumber", "subconNo", "uomSatuanUnit", 1,1,"",1,"").GetReadModel()
 
                 }.AsQueryable());
 

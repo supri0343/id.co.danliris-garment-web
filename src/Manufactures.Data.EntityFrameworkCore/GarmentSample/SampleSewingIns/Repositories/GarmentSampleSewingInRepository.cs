@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Data.EntityFrameworkCore;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Domain.GarmentSample.SamplePreparings.ReadModels;
 using Manufactures.Domain.GarmentSample.SampleSewingIns;
 using Manufactures.Domain.GarmentSample.SampleSewingIns.ReadModels;
 using Manufactures.Domain.GarmentSample.SampleSewingIns.Repositories;
@@ -42,15 +43,15 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleSewingIns.Re
         public IQueryable<GarmentSampleSewingInReadModel> ReadComplete(int page, int size, string order, string keyword, string filter)
         {
             var data = Query;
-            //var buyerCode = string.Empty;
+            var buyerCode = string.Empty;
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
 
-            //if (FilterDictionary.ContainsKey("BuyerCode"))
-            //{
-            //    buyerCode = FilterDictionary.FirstOrDefault(k => k.Key == "BuyerCode").Value.ToString();
-            //    FilterDictionary.Remove("BuyerCode");
-            //}
+            if (FilterDictionary.ContainsKey("BuyerCode"))
+            {
+                buyerCode = FilterDictionary.FirstOrDefault(k => k.Key == "BuyerCode").Value.ToString();
+                FilterDictionary.Remove("BuyerCode");
+            }
 
             data = QueryHelper<GarmentSampleSewingInReadModel>.Filter(data, FilterDictionary);
 
@@ -61,14 +62,14 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleSewingIns.Re
 
             data = QueryHelper<GarmentSampleSewingInReadModel>.Search(data, SearchAttributes, keyword);
 
-            //if (!string.IsNullOrEmpty(buyerCode))
-            //{
-            //    var preparings = storageContext.Set<GarmentPreparingReadModel>();
-            //    var roNo = preparings.Where(x => x.BuyerCode == buyerCode)
-            //        .Select(s => s.RONo).Distinct().ToList();
+            if (!string.IsNullOrEmpty(buyerCode))
+            {
+                var preparings = storageContext.Set<GarmentSamplePreparingReadModel>();
+                var roNo = preparings.Where(x => x.BuyerCode == buyerCode)
+                    .Select(s => s.RONo).Distinct().ToList();
 
-            //    data = data.Where(x => roNo.Contains(x.RONo));
-            //}
+                data = data.Where(x => roNo.Contains(x.RONo));
+            }
 
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             data = OrderDictionary.Count == 0 ? data.OrderByDescending(o => o.ModifiedDate) : QueryHelper<GarmentSampleSewingInReadModel>.Order(data, OrderDictionary);

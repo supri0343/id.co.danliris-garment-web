@@ -24,6 +24,8 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLett
             builder.Property(p => p.RONo).HasMaxLength(25);
             builder.Property(p => p.POSerialNumber).HasMaxLength(50);
             builder.Property(p => p.SubconNo).HasMaxLength(50);
+            builder.Property(p => p.SmallUomUnit).HasMaxLength(10);
+            builder.Property(p => p.UENNo).HasMaxLength(100);
             builder.HasOne(w => w.GarmentSubconDeliveryLetterOut)
                 .WithMany(h => h.GarmentSubconDeliveryLetterOutItem)
                 .HasForeignKey(f => f.SubconDeliveryLetterOutId);

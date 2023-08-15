@@ -5,14 +5,21 @@ using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCuttingSewi
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOGarmentWashReport;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMaterialReport;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOSewingReport;
+using Manufactures.Domain.GarmentSample.ServiceSampleExpenditureGood.Repositories;
+using Manufactures.Domain.GarmentSample.ServiceSampleSewings.Repositories;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconExpenditureGood;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconExpenditureGood.Repositories;
+using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Repositories;
+using Manufactures.Domain.GarmentSubconCuttingOuts;
 using Manufactures.Domain.GarmentSubconCuttingOuts.Repositories;
+using Manufactures.Domain.Shared.ValueObjects;
 using Manufactures.Dtos;
+using Manufactures.Dtos.GarmentSample;
 using Manufactures.Dtos.GarmentSubcon;
 using Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconExpenditureGoodDtoos;
 using Manufactures.Dtos.GarmentSubcon.GarmentServiceSubconExpenditureGoodItemDtos;
@@ -36,6 +43,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
     {
         private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;
         private readonly IGarmentSubconDeliveryLetterOutItemRepository _garmentSubconDeliveryLetterOutItemRepository;
+        private readonly IGarmentSubconDeliveryLetterOutDetailRepository _garmentSubconDeliveryLetterOutDetailRepository;
         private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
         private readonly IGarmentSubconCuttingOutRepository _garmentCuttingOutRepository;
         private readonly IGarmentSubconCuttingOutItemRepository _garmentCuttingOutItemRepository;
@@ -44,11 +52,18 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         private readonly IGarmentServiceSubconSewingDetailRepository _garmentServiceSubconSewingDetailRepository;
         private readonly IGarmentServiceSubconExpenditureGoodRepository _garmentServiceSubconExpenditureGoodRepository;
         private readonly IGarmentServiceSubconExpenditureGoodtemRepository _garmentServiceSubconExpenditureGoodItemRepository;
+        //Sample
+        private readonly IGarmentServiceSampleSewingRepository _garmentServiceSubconSampleSewingRepository;
+        private readonly IGarmentServiceSampleSewingItemRepository _garmentServiceSubconSampleSewingItemRepository;
+        private readonly IGarmentServiceSampleSewingDetailRepository _garmentServiceSubconSampleSewingDetailRepository;
+        private readonly IGarmentServiceSampleExpenditureGoodRepository _garmentServiceSubconSampleExpenditureGoodRepository;
+        private readonly IGarmentServiceSampleExpenditureGoodtemRepository _garmentServiceSubconSampleExpenditureGoodItemRepository;
 
         public GarmentSubconDeliveryLetterOutController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentSubconDeliveryLetterOutRepository = Storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
             _garmentSubconDeliveryLetterOutItemRepository = Storage.GetRepository<IGarmentSubconDeliveryLetterOutItemRepository>();
+            _garmentSubconDeliveryLetterOutDetailRepository = Storage.GetRepository<IGarmentSubconDeliveryLetterOutDetailRepository>();
             _garmentSubconContractRepository = Storage.GetRepository<IGarmentSubconContractRepository>();
             _garmentCuttingOutRepository = Storage.GetRepository<IGarmentSubconCuttingOutRepository>();
             _garmentCuttingOutItemRepository = Storage.GetRepository<IGarmentSubconCuttingOutItemRepository>();
@@ -57,6 +72,12 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             _garmentServiceSubconSewingDetailRepository = Storage.GetRepository<IGarmentServiceSubconSewingDetailRepository>();
             _garmentServiceSubconExpenditureGoodRepository = Storage.GetRepository<IGarmentServiceSubconExpenditureGoodRepository>();
             _garmentServiceSubconExpenditureGoodItemRepository = Storage.GetRepository<IGarmentServiceSubconExpenditureGoodtemRepository>();
+            //Sample
+            _garmentServiceSubconSampleSewingRepository = Storage.GetRepository<IGarmentServiceSampleSewingRepository>();
+            _garmentServiceSubconSampleSewingItemRepository = Storage.GetRepository<IGarmentServiceSampleSewingItemRepository>();
+            _garmentServiceSubconSampleSewingDetailRepository = Storage.GetRepository<IGarmentServiceSampleSewingDetailRepository>();
+            _garmentServiceSubconSampleExpenditureGoodRepository = Storage.GetRepository<IGarmentServiceSampleExpenditureGoodRepository>();
+            _garmentServiceSubconSampleExpenditureGoodItemRepository = Storage.GetRepository<IGarmentServiceSampleExpenditureGoodtemRepository>();
         }
 
         [HttpGet]
@@ -80,10 +101,21 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 Select(o => new GarmentSubconDeliveryLetterOutItemDto(o))
                 .ToList();
 
+            var garmentSubconDeliveryLetterOutDetailDto = _garmentSubconDeliveryLetterOutDetailRepository.
+                Find(_garmentSubconDeliveryLetterOutDetailRepository.Query).
+                Select(o => new GarmentSubconDeliveryLetterOutDetailDto(o)).
+                ToList();
+
             Parallel.ForEach(garmentSubconDeliveryLetterOutListDtos, dto =>
             {
                 var currentItems = garmentdeliveryLetterOutItemDto.Where(s => s.SubconDeliveryLetterOutId == dto.Id).ToList();
                 dto.Items = currentItems;
+
+                Parallel.ForEach(dto.Items, DetailDto =>
+                {
+                    var garmentSubconDeliveryLetterOutDetails = garmentSubconDeliveryLetterOutDetailDto.Where(x => x.SubconDeliveryLetterOutItemId == DetailDto.Id).OrderBy(s => s.Id).ToList();
+                    DetailDto.Details = garmentSubconDeliveryLetterOutDetails;
+                });
 
             });
 
@@ -108,8 +140,8 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             {
                 Items = _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subcon.Identity).Select(subconItem => new GarmentSubconDeliveryLetterOutItemDto(subconItem)
                 {
-
-                }).ToList()
+                    Details = _garmentSubconDeliveryLetterOutDetailRepository.Find(o => o.SubconDeliveryLetterOutItemId == subconItem.Identity).Select(subconDetail => new GarmentSubconDeliveryLetterOutDetailDto(subconDetail) {}).ToList()
+            }).ToList()
             }
             ).FirstOrDefault();
 
@@ -127,10 +159,27 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
                 var order = await Mediator.Send(command);
 
-                if(command.SubconCategory== "SUBCON CUTTING SEWING")
-                    await PutGarmentUnitExpenditureNoteCreate(command.UENId);
+                //if(command.SubconCategory== "SUBCON CUTTING SEWING")
+                //    await PutGarmentUnitExpenditureNoteCreate(command.UENId);
+                if (command.SubconCategory == "SUBCON CUTTING SEWING")
+                {
+                    var uenIds = command.Items.Select(x => x.UENId).Distinct();
 
-                return Ok(order.Identity);
+                    foreach (var a in uenIds.Distinct())
+                    {
+                        await PutGarmentUnitExpenditureNoteCreate(a);
+                    }
+                }else if (command.SubconCategory == "SUBCON JASA KOMPONEN" || command.SubconCategory == "SUBCON SEWING")
+                {
+                    List<int> uenIds = new List<int>();
+                    command.Items.ForEach(x => x.Details.ForEach(r => uenIds.Add(r.UENId)));
+
+                    foreach (var a in uenIds.Distinct())
+                    {
+                        await PutGarmentUnitExpenditureNoteCreate(a);
+                    }
+                }
+                    return Ok(order.Identity);
             }
             catch (Exception e)
             {
@@ -148,13 +197,18 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             var garmentSubconDeliveryLetterOutDto = _garmentSubconDeliveryLetterOutRepository.Find(query).Select(o => new GarmentSubconDeliveryLetterOutDto(o)).ToArray();
             var garmentSubconDeliveryLetterOutItemDto = _garmentSubconDeliveryLetterOutItemRepository.Find(_garmentSubconDeliveryLetterOutItemRepository.Query).Select(o => new GarmentSubconDeliveryLetterOutItemDto(o)).ToList();
+            var garmentSubconDeliveryLetterOutDetailDto = _garmentSubconDeliveryLetterOutDetailRepository.Find(_garmentSubconDeliveryLetterOutDetailRepository.Query).Select(o => new GarmentSubconDeliveryLetterOutDetailDto(o)).ToList();
 
             Parallel.ForEach(garmentSubconDeliveryLetterOutDto, itemDto =>
             {
                 var garmentSubconDeliveryLetterOutItems = garmentSubconDeliveryLetterOutItemDto.Where(x => x.SubconDeliveryLetterOutId == itemDto.Id).OrderBy(x => x.Id).ToList();
 
                 itemDto.Items = garmentSubconDeliveryLetterOutItems;
-
+                Parallel.ForEach(itemDto.Items, DetailDto =>
+                {
+                    var garmentSubconDeliveryLetterOutDetails = garmentSubconDeliveryLetterOutDetailDto.Where(x => x.SubconDeliveryLetterOutItemId == DetailDto.Id).OrderBy(s => s.Id).ToList();
+                    DetailDto.Details = garmentSubconDeliveryLetterOutDetails;
+                });
             });
 
             if (order != "{}")
@@ -181,7 +235,71 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
             VerifyUser();
 
+            List<int> UenToIsPrepTrue = new List<int>();
+            List<int> UenToIsPrepFalse = new List<int>();
+
+            if (command.SubconCategory == "SUBCON CUTTING SEWING")
+            {      
+                //Add UEN Id to Update Is Preparing True
+                var newData = command.ItemsAcc.Where(x => x.Id == Guid.Empty && x.Quantity > 0).FirstOrDefault();
+                if (newData != null)
+                {
+                    UenToIsPrepTrue.Add(newData.UENId);
+                }
+            }else if(command.SubconCategory == "SUBCON JASA KOMPONEN" || command.SubconCategory == "SUBCON SEWING")
+            {
+                var newData = command.Items.FirstOrDefault().Details.Where(x => x.Id == Guid.Empty && x.Quantity > 0).FirstOrDefault();
+                if (newData != null)
+                {
+                    UenToIsPrepTrue.Add(newData.UENId);
+                }
+            }
+               
+            //Find Deleted BUK ACC
+            _garmentSubconDeliveryLetterOutRepository.Find(x => x.Identity == command.Identity).ForEach(async DLOut => 
+            {
+                _garmentSubconDeliveryLetterOutItemRepository.Find(x => x.SubconDeliveryLetterOutId == DLOut.Identity).ForEach(async DLItem =>
+                {
+                    if(command.SubconCategory == "SUBCON CUTTING SEWING")
+                    {
+                        var deletedAcc = command.ItemsAcc.Where(x => x.Id == DLItem.Identity).FirstOrDefault();
+                        if (deletedAcc != null && deletedAcc.Quantity == 0)
+                        {
+                            UenToIsPrepFalse.Add(deletedAcc.UENId);
+                        }
+                    }else if(command.SubconCategory == "SUBCON JASA KOMPONEN" || command.SubconCategory == "SUBCON SEWING")
+                    {
+                        _garmentSubconDeliveryLetterOutDetailRepository.Find(x => x.SubconDeliveryLetterOutItemId == DLItem.Identity).ForEach(async DLDetail =>
+                        {
+                            var deletedAcc = command.Items.FirstOrDefault().Details.Where(x => x.Id == DLDetail.Identity).FirstOrDefault();
+                            if (deletedAcc != null && deletedAcc.Quantity == 0)
+                            {
+                                UenToIsPrepFalse.Add(deletedAcc.UENId);
+                            }
+                        });
+                    }
+                });
+            });
+
+            if (UenToIsPrepTrue.Count > 0)
+            {
+                foreach (var a in UenToIsPrepTrue.Select(x => x).Distinct())
+                {
+                    await PutGarmentUnitExpenditureNoteCreate(a);
+                }
+            }
+
+            if (UenToIsPrepFalse.Count > 0)
+            {
+                foreach (var a in UenToIsPrepFalse.Select(x => x).Distinct())
+                {
+                    await PutGarmentUnitExpenditureNoteDelete(a);
+                }
+            }
+
             var order = await Mediator.Send(command);
+
+           
 
             return Ok(order.Identity);
         }
@@ -192,12 +310,30 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             Guid guid = Guid.Parse(id);
 
             VerifyUser();
-            var garmentSubconDeliveryLetterOut = _garmentSubconDeliveryLetterOutRepository.Find(x => x.Identity == guid).Select(o => new GarmentSubconDeliveryLetterOutDto(o)).FirstOrDefault();
-
+          
             RemoveGarmentSubconDeliveryLetterOutCommand command = new RemoveGarmentSubconDeliveryLetterOutCommand(guid);
+            var garmentSubconDeliveryLetterOut = _garmentSubconDeliveryLetterOutRepository.Find(x => x.Identity == guid).Select(o => new GarmentSubconDeliveryLetterOutDto(o)).FirstOrDefault();
+            var itemsData = _garmentSubconDeliveryLetterOutItemRepository.Find(s => s.SubconDeliveryLetterOutId == garmentSubconDeliveryLetterOut.Id).Select(x => new GarmentSubconDeliveryLetterOutItemDto(x)).ToList();
+            var detailData = _garmentSubconDeliveryLetterOutDetailRepository.Find(x => x.SubconDeliveryLetterOutItemId == itemsData.Select(s => s.Id).First()).Select(x => new GarmentSubconDeliveryLetterOutDetailDto(x)).ToList();
+
             var order = await Mediator.Send(command);
-            if(garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON CUTTING SEWING")
-                await PutGarmentUnitExpenditureNoteDelete(garmentSubconDeliveryLetterOut.UENId); 
+
+            if(garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON JASA KOMPONEN" || garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON SEWING")
+            {
+                if(detailData.Count > 0)
+                {
+                    foreach (var a in detailData.Select(x => x.UENId).Distinct())
+                    {
+                        await PutGarmentUnitExpenditureNoteDelete(a);
+                    }
+                }
+            }else if (garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON CUTTING SEWING")
+            {
+                foreach (var a in itemsData.Select(x => x.UENId).Distinct()) 
+                {
+                    await PutGarmentUnitExpenditureNoteDelete(a);
+                }
+            }
 
             return Ok(order.Identity);
         }
@@ -208,36 +344,126 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             Guid guid = Guid.Parse(id);
 
             VerifyUser();
+            var garmentSubconDeliveryLetterOutDto = _garmentSubconDeliveryLetterOutRepository.Find(o => o.Identity == guid).Select(s => new GarmentSubconDeliveryLetterOutDto(s)).FirstOrDefault();
 
-            GarmentSubconDeliveryLetterOutDto garmentSubconDeliveryLetterOutDto = _garmentSubconDeliveryLetterOutRepository.Find(o => o.Identity == guid).Select(subcon => new GarmentSubconDeliveryLetterOutDto(subcon)
+            if (garmentSubconDeliveryLetterOutDto.OrderType == "JOB ORDER")
             {
-                Items = _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subcon.Identity).Select(subconItem => new GarmentSubconDeliveryLetterOutItemDto(subconItem)
+                garmentSubconDeliveryLetterOutDto = _garmentSubconDeliveryLetterOutRepository.Find(o => o.Identity == guid).Select(subcon => new GarmentSubconDeliveryLetterOutDto(subcon)
                 {
-                    SubconCutting = _garmentCuttingOutRepository.Find(o => o.Identity == subconItem.SubconId).Select(cutOut => new GarmentSubconCuttingOutDto(cutOut)
+                    Items = _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subcon.Identity).Select(subconItem => new GarmentSubconDeliveryLetterOutItemDto(subconItem)
                     {
-                        Items = _garmentCuttingOutItemRepository.Find(o => o.CutOutId == cutOut.Identity).Select(cutOutItem => new GarmentSubconCuttingOutItemDto(cutOutItem)
-                        { }).ToList()
-                    }).FirstOrDefault(),
-
-                    SubconSewing = _garmentServiceSubconSewingRepository.Find(o => o.Identity == subconItem.SubconId).Select(sSewing => new GarmentServiceSubconSewingDto(sSewing)
-                    {
-                        Items = _garmentServiceSubconSewingItemRepository.Find(o => o.ServiceSubconSewingId == sSewing.Identity).Select(sSewingItem => new GarmentServiceSubconSewingItemDto(sSewingItem)
+                        SubconCutting = _garmentCuttingOutRepository.Find(o => o.Identity == subconItem.SubconId).Select(cutOut => new GarmentSubconCuttingOutDto(cutOut)
                         {
-                            Details = _garmentServiceSubconSewingDetailRepository.Find(o => o.ServiceSubconSewingItemId == sSewingItem.Identity).Select(subconDetail => new GarmentServiceSubconSewingDetailDto(subconDetail)
+                            Items = _garmentCuttingOutItemRepository.Find(o => o.CutOutId == cutOut.Identity).Select(cutOutItem => new GarmentSubconCuttingOutItemDto(cutOutItem)
+                            { }).ToList()
+                        }).FirstOrDefault(),
+
+                        SubconSewing = _garmentServiceSubconSewingRepository.Find(o => o.Identity == subconItem.SubconId).Select(sSewing => new GarmentServiceSubconSewingDto(sSewing)
+                        {
+                            Items = _garmentServiceSubconSewingItemRepository.Find(o => o.ServiceSubconSewingId == sSewing.Identity).Select(sSewingItem => new GarmentServiceSubconSewingItemDto(sSewingItem)
                             {
+                                Details = _garmentServiceSubconSewingDetailRepository.Find(o => o.ServiceSubconSewingItemId == sSewingItem.Identity).Select(subconDetail => new GarmentServiceSubconSewingDetailDto(subconDetail)
+                                {
 
+                                }).ToList()
                             }).ToList()
-                        }).ToList()
-                    }).FirstOrDefault(),
+                        }).FirstOrDefault(),
 
-                    SubconExpenditureGood = _garmentServiceSubconExpenditureGoodRepository.Find(o => o.Identity == subconItem.SubconId).Select(sExpend => new GarmentServiceSubconExpenditureGoodDto(sExpend)
+                        SubconExpenditureGood = _garmentServiceSubconExpenditureGoodRepository.Find(o => o.Identity == subconItem.SubconId).Select(sExpend => new GarmentServiceSubconExpenditureGoodDto(sExpend)
+                        {
+                            Items = _garmentServiceSubconExpenditureGoodItemRepository.Find(o => o.ServiceSubconExpenditureGoodId == sExpend.Identity).Select(sExpendItem => new GarmentServiceSubconExpenditureGoodItemDto(sExpendItem) { }).ToList()
+                        }).FirstOrDefault()
+
+
+                    }).ToList()
+                }).FirstOrDefault();
+            }
+            else
+            {
+                garmentSubconDeliveryLetterOutDto = _garmentSubconDeliveryLetterOutRepository.Find(o => o.Identity == guid).Select(subcon => new GarmentSubconDeliveryLetterOutDto(subcon)
+                {
+                    Items = _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subcon.Identity).Select(subconItem => new GarmentSubconDeliveryLetterOutItemDto(subconItem)
+                    {
+                        SubconSewing = _garmentServiceSubconSampleSewingRepository.Find(o => o.Identity == subconItem.SubconId).Select(sSewing => new GarmentServiceSubconSewingDto(new GarmentServiceSubconSewing
+                        (
+                            sSewing.Identity,
+                            sSewing.ServiceSampleSewingNo,
+                            sSewing.ServiceSampleSewingDate,
+                            sSewing.IsUsed,
+                            sSewing.BuyerId,
+                            sSewing.BuyerCode,
+                            sSewing.BuyerName,
+                            sSewing.QtyPacking,
+                            sSewing.UomUnit,
+                            sSewing.NettWeight,
+                            sSewing.GrossWeight
+                        ))
+                        {
+                            Items = _garmentServiceSubconSampleSewingItemRepository.Find(o => o.ServiceSampleSewingId == sSewing.Identity).Select(sSewingItem => new GarmentServiceSubconSewingItemDto(new GarmentServiceSubconSewingItem
+                            (
+                                sSewingItem.Identity,
+                                sSewingItem.ServiceSampleSewingId,
+                                sSewingItem.RONo,
+                                sSewingItem.Article,
+                                sSewingItem.ComodityId,
+                                sSewingItem.ComodityCode,
+                                sSewingItem.ComodityName,
+                                sSewingItem.BuyerId,
+                                sSewingItem.BuyerCode,
+                                sSewingItem.BuyerName,
+                                sSewingItem.UnitId,
+                                sSewingItem.UnitCode,
+                                sSewingItem.UnitName
+                            ))
+                            {
+                                Details = _garmentServiceSubconSampleSewingDetailRepository.Find(o => o.ServiceSampleSewingItemId == sSewingItem.Identity).Select(subconDetail => new GarmentServiceSubconSewingDetailDto(new GarmentServiceSubconSewingDetail
+                                (
+                                    subconDetail.Identity,
+                                    subconDetail.ServiceSampleSewingItemId,
+                                    subconDetail.SewingInId,
+                                    subconDetail.SewingInItemId,
+                                    subconDetail.ProductId,
+                                    subconDetail.ProductCode,
+                                    subconDetail.ProductName,
+                                    subconDetail.DesignColor,
+                                    subconDetail.Quantity,
+                                    subconDetail.UomId,
+                                    subconDetail.UomUnit,
+                                    subconDetail.UnitId,
+                                    subconDetail.UnitCode,
+                                    subconDetail.UnitName,
+                                    subconDetail.Remark,
+                                    subconDetail.Color
+                                    ))
+                                {
+
+                                }).ToList()
+                            }).ToList()
+                        }).FirstOrDefault(),
+
+                    SubconExpenditureGood = _garmentServiceSubconSampleExpenditureGoodRepository.Find(o => o.Identity == subconItem.SubconId).Select(sExpend => new GarmentServiceSubconExpenditureGoodDto(new GarmentServiceSubconExpenditureGood
+                    (
+                        sExpend.Identity,
+                        sExpend.ServiceSampleExpenditureGoodNo,
+                        sExpend.ServiceSampleExpenditureGoodDate,
+                        sExpend.IsUsed,
+                        sExpend.BuyerId,
+                        sExpend.BuyerCode,
+                        sExpend.BuyerName,
+                        sExpend.QtyPacking,
+                        sExpend.UomUnit,
+                        sExpend.NettWeight,
+                        sExpend.GrossWeight
+                        ))
                     {
                         Items = _garmentServiceSubconExpenditureGoodItemRepository.Find(o => o.ServiceSubconExpenditureGoodId == sExpend.Identity).Select(sExpendItem => new GarmentServiceSubconExpenditureGoodItemDto(sExpendItem) { }).ToList()
                     }).FirstOrDefault()
 
 
                 }).ToList()
-            }).FirstOrDefault();
+                }).FirstOrDefault();
+            }
+            
             var subconContractDto = _garmentSubconContractRepository.Find(a => a.Identity == garmentSubconDeliveryLetterOutDto.SubconContractId).Select(a => new GarmentSubconContractDto(a)).FirstOrDefault();
             var stream = GarmentSubconDeliveryLetterOutPDFTemplate.Generate(garmentSubconDeliveryLetterOutDto, subconContractDto);
 
