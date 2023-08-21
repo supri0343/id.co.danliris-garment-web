@@ -228,6 +228,7 @@ namespace Manufactures.Controllers.Api.GermentReciptSubcon
         public async Task<IActionResult> GetLoaderByRO(string keyword, string filter = "{}")
         {
             var query = _garmentFinishingInRepository.Read(1, int.MaxValue, "{}", "", filter);
+            if(!string.IsNullOrWhiteSpace(keyword))
             query = query.Where(o => o.RONo.Contains(keyword));
 
             var rOs = _garmentFinishingInRepository.Find(query)
