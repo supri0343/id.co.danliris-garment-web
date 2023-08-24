@@ -1,6 +1,7 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentFinishingOuts.Queries;
+using Manufactures.Application.GarmentFinishingOuts.Queries.GetMonitoringWithCreatedUTC;
 using Manufactures.Application.GarmentFinishingOuts.Queries.GetTotalQuantityTraceable;
 using Manufactures.Application.GarmentReport.ForTraceableIn.Queries;
 using Manufactures.Domain.GarmentFinishingIns.Repositories;
@@ -351,6 +352,49 @@ namespace Manufactures.Controllers.Api
             var viewModel = await Mediator.Send(query);
 
             return Ok(viewModel.data);
+        }
+
+        [HttpGet("monitoring-withUTC")]
+        public async Task<IActionResult> GetMonitoringWithUTC(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+        {
+            VerifyUser();
+            GetMonitoringWithCreatedUTCQuery query = new GetMonitoringWithCreatedUTCQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.data, info: new
+            {
+                page,
+                size,
+                viewModel.count
+            });
+        }
+
+        [HttpGet("download-withUTC")]
+        public async Task<IActionResult> GetXlsWithUTC(int unit, DateTime dateFrom, DateTime dateTo, string type, int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsMonitoringWithCreatedUTCQuery query = new GetXlsMonitoringWithCreatedUTCQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = "Laporan Finishing Out";
+
+                if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+                if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
         }
 
     }
