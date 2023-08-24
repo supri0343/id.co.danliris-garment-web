@@ -23,7 +23,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentLoadingOuts
         public UomId UomId { get; internal set; }
         public string UomUnit { get; internal set; }
         public string Color { get; internal set; }
-        public double RemainingQuantity { get; internal set; }
+        public double RealQtyOut { get; internal set; }
         public double BasicPrice { get; internal set; }
         public double Price { get; internal set; }
 
@@ -36,12 +36,12 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentLoadingOuts
             }
         }
 
-        public void SetRemainingQuantity(double RemainingQuantity)
+        public void SetRealQtyOut(double RealQtyOut)
         {
-            if (this.RemainingQuantity != RemainingQuantity)
+            if (this.RealQtyOut != RealQtyOut)
             {
-                this.RemainingQuantity = RemainingQuantity;
-                ReadModel.RemainingQuantity = RemainingQuantity;
+                this.RealQtyOut = RealQtyOut;
+                ReadModel.RealQtyOut = RealQtyOut;
             }
         }
 
@@ -54,7 +54,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentLoadingOuts
             }
         }
 
-        public GarmentSubconLoadingOutItem(Guid identity, Guid loadingId, Guid sewingDOItemId, SizeId sizeId, string sizeName, ProductId productId, string productCode, string productName, string designColor, double quantity, double remainingQuantity, double basicPrice, UomId uomId, string uomUnit, string color, double price) : base(identity)
+        public GarmentSubconLoadingOutItem(Guid identity, Guid loadingId, Guid sewingDOItemId, SizeId sizeId, string sizeName, ProductId productId, string productCode, string productName, string designColor, double quantity, double realQtyOut, double basicPrice, UomId uomId, string uomUnit, string color, double price) : base(identity)
         {
             LoadingOutId = loadingId;
             LoadingInItemId = sewingDOItemId;
@@ -68,7 +68,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentLoadingOuts
             UomId = uomId;
             UomUnit = uomUnit;
             Color = color;
-            RemainingQuantity = remainingQuantity;
+            RealQtyOut = realQtyOut;
             BasicPrice = basicPrice;
             Price = price;
 
@@ -86,7 +86,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentLoadingOuts
                 UomId = UomId.Value,
                 UomUnit = UomUnit,
                 Color = Color,
-                RemainingQuantity = RemainingQuantity,
+                RealQtyOut = RealQtyOut,
                 BasicPrice = BasicPrice,
                 Price=Price
             };
@@ -108,7 +108,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentLoadingOuts
             UomId = new UomId( readModel.UomId);
             UomUnit = readModel.UomUnit;
             Color = readModel.Color;
-            RemainingQuantity = readModel.RemainingQuantity;
+            RealQtyOut = readModel.RealQtyOut;
             BasicPrice = readModel.BasicPrice;
             Price = readModel.Price;
         }

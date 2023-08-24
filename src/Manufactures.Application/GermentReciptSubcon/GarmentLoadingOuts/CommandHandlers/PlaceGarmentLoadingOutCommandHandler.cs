@@ -70,7 +70,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentLoadingOuts.Comman
                         item.Product.Name,
                         item.DesignColor,
                         item.Quantity,
-                        item.Quantity,
+                        0,
                         item.BasicPrice,
                         new UomId(item.Uom.Id),
                         item.Uom.Unit,

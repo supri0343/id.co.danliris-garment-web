@@ -33,7 +33,7 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GarmentLoadingOut
         public GarmentComodity Comodity { get; internal set; }
         public DateTimeOffset LoadingOutDate { get; internal set; }
 
-        public double TotalRemainingQuantity { get; set; }
+        public double TotalRealQtyOut { get; set; }
         public double TotalLoadingQuantity { get; set; }
         public List<string> Products { get; set; }
         public List<string> Colors { get; set; }

@@ -106,7 +106,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentCuttingOuts.Querie
                         CuttingOutQuantity = cod.CuttingOutQuantity,
                         CuttingOutUom = new Uom(cod.CuttingOutUomId, cod.CuttingOutUomUnit),
                         Color = cod.Color,
-                        RemainingQuantity = cod.RemainingQuantity,
+                        RealQtyOut = cod.RealQtyOut,
                         BasicPrice = cod.BasicPrice,
                         Price = cod.Price,
                     }).ToList();
@@ -114,7 +114,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentCuttingOuts.Querie
 
                 co.Products = co.Items.Select(i => i.Product.Code).ToList();
                 co.TotalCuttingOutQuantity = co.Items.Sum(i => i.Details.Sum(d => d.CuttingOutQuantity));
-                co.TotalRemainingQuantity = co.Items.Sum(i => i.Details.Sum(d => d.RemainingQuantity));
+                co.TotalQtyOut = co.Items.Sum(i => i.Details.Sum(d => d.RealQtyOut));
             }
 
             await Task.Yield();

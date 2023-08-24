@@ -17,7 +17,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts
         public UomId CuttingOutUomId { get; private set; }
         public string CuttingOutUomUnit { get; private set; }
         public string Color { get; private set; }
-        public double RemainingQuantity { get; private set; }
+        public double RealQtyOut { get; private set; }
         public double BasicPrice { get; private set; }
         public double Price { get; private set; }
 		public string UId { get; private set; }
@@ -31,12 +31,12 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts
             }
         }
 
-        public void SetRemainingQuantity(double RemainingQuantity)
+        public void SetRealOutQuantity(double RemainingQuantity)
         {
-            if (this.RemainingQuantity != RemainingQuantity)
+            if (this.RealQtyOut != RemainingQuantity)
             {
-                this.RemainingQuantity = RemainingQuantity;
-                ReadModel.RemainingQuantity = RemainingQuantity;
+                this.RealQtyOut = RemainingQuantity;
+                ReadModel.RealQtyOut = RemainingQuantity;
             }
         }
 
@@ -76,7 +76,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts
             }
         }
 
-        public GarmentSubconCuttingOutDetail(Guid identity, Guid cutOutItemId, SizeId sizeId, string sizeName, string color, double remainingQuantity, double cuttingOutQuantity, UomId cuttingOutUomId, string cuttingOutUomUnit, double basicPrice, double price) : base(identity)
+        public GarmentSubconCuttingOutDetail(Guid identity, Guid cutOutItemId, SizeId sizeId, string sizeName, string color, double realQtyOut, double cuttingOutQuantity, UomId cuttingOutUomId, string cuttingOutUomUnit, double basicPrice, double price) : base(identity)
         {
             //MarkTransient();
 
@@ -84,7 +84,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts
             Color = color;
             SizeId = sizeId;
             SizeName = sizeName;
-            RemainingQuantity = remainingQuantity;
+            RealQtyOut = realQtyOut;
             CuttingOutQuantity = cuttingOutQuantity;
             CuttingOutUomId = cuttingOutUomId;
             CuttingOutUomUnit = cuttingOutUomUnit;
@@ -97,7 +97,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts
                 Color = Color,
                 SizeId = SizeId.Value,
                 SizeName = SizeName,
-                RemainingQuantity = RemainingQuantity,
+                RealQtyOut = RealQtyOut,
                 CuttingOutQuantity = CuttingOutQuantity,
                 CuttingOutUomId = CuttingOutUomId.Value,
                 CuttingOutUomUnit = CuttingOutUomUnit,
@@ -114,7 +114,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts
             Color = readModel.Color;
             SizeId = new SizeId(readModel.SizeId);
             SizeName = readModel.SizeName;
-            RemainingQuantity = readModel.RemainingQuantity;
+            RealQtyOut = readModel.RealQtyOut;
             CuttingOutQuantity = readModel.CuttingOutQuantity;
             CuttingOutUomId = new UomId(readModel.CuttingOutUomId);
             CuttingOutUomUnit = readModel.CuttingOutUomUnit;

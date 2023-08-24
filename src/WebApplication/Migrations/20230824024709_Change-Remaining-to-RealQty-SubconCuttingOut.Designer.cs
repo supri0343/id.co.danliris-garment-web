@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20230824024709_Change-Remaining-to-RealQty-SubconCuttingOut")]
+    partial class ChangeRemainingtoRealQtySubconCuttingOut
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -5154,7 +5156,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(2000);
+                        .HasMaxLength(50);
 
                     b.Property<string>("ComodityCode")
                         .HasMaxLength(255);
@@ -5338,7 +5340,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(2000);
+                        .HasMaxLength(50);
 
                     b.Property<double>("BasicPrice");
 
@@ -5699,7 +5701,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(2000);
+                        .HasMaxLength(50);
 
                     b.Property<string>("BuyerCode")
                         .HasMaxLength(25);
@@ -7584,7 +7586,7 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate");
 
                     b.Property<string>("DesignColor")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(100);
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(32);
@@ -8192,8 +8194,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(50);
 
                     b.Property<double>("GrossWeight");
-
-                    b.Property<bool>("IsCustoms");
 
                     b.Property<bool>("IsUsed");
 
@@ -8940,35 +8940,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.ToTable("GarmentSubconCuttingRelations");
                 });
 
-            modelBuilder.Entity("Manufactures.Domain.LogHistories.ReadModels.LogHistoryReadModel", b =>
-
-            {
-                  b.Property<DateTimeOffset>("CreatedDate");
-                  b.Property<string>("CreatedBy")
-                   .IsRequired()
-                        .HasMaxLength(32);
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy");
-
-                      b.Property<string>("Activity")
-                      .HasMaxLength(1000);
-                    
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("Division")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("ModifiedBy");
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.HasKey("Identity");
-
-                    b.ToTable("LogHistory");
-
-                     });
             modelBuilder.Entity("Manufactures.Domain.GermentReciptSubcon.GarmentCuttingIns.ReadModels.GarmentSubconCuttingInDetailReadModel", b =>
                 {
                     b.Property<Guid>("Identity")
@@ -8985,7 +8956,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset>("CreatedDate");
 
-    
                     b.Property<Guid>("CutInItemId");
 
                     b.Property<int>("CuttingInQuantity");
@@ -9933,7 +9903,7 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<double>("Quantity");
 
-                    b.Property<double>("RealQtyOut");
+                    b.Property<double>("RemainingQuantity");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -10051,13 +10021,13 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("BeacukaiType")
                         .HasMaxLength(20);
 
-                    b.Property<DateTimeOffset>("CreatedDate");
-
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(32);
 
-                     b.Property<bool?>("Deleted");
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(32);
@@ -10095,7 +10065,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
-
 
                     b.Property<int>("UENItemId");
 
@@ -10433,7 +10402,7 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<double>("Quantity");
 
-                    b.Property<double>("RealQtyOut");
+                    b.Property<double>("RemainingQuantity");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()

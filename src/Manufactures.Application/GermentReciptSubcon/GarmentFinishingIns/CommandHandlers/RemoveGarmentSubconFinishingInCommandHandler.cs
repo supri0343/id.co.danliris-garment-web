@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GermentReciptSubcon.GarmentFinishingIns;
 using Manufactures.Domain.GermentReciptSubcon.GarmentFinishingIns.Commands;
 using Manufactures.Domain.GermentReciptSubcon.GarmentFinishingIns.Repositories;
+using Manufactures.Domain.GermentReciptSubcon.GarmentSewingIns;
+using Manufactures.Domain.GermentReciptSubcon.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts;
 using Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts.Repositories;
 using System;
@@ -20,6 +22,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentFinishingIns.Comma
         private readonly IGarmentSubconFinishingInRepository _garmentFinishingInRepository;
         private readonly IGarmentSubconFinishingInItemRepository _garmentFinishingInItemRepository;
         private readonly IGarmentSubconSewingOutItemRepository _garmentSewingOutItemRepository;
+        private readonly IGarmentSubconSewingInItemRepository _garmentSewingInItemRepository;
 
         public RemoveGarmentSubconFinishingInCommandHandler(IStorage storage)
         {
@@ -27,6 +30,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentFinishingIns.Comma
             _garmentFinishingInRepository = storage.GetRepository<IGarmentSubconFinishingInRepository>();
             _garmentFinishingInItemRepository = storage.GetRepository<IGarmentSubconFinishingInItemRepository>();
             _garmentSewingOutItemRepository = storage.GetRepository<IGarmentSubconSewingOutItemRepository>();
+            _garmentSewingInItemRepository = storage.GetRepository<IGarmentSubconSewingInItemRepository>();
         }
 
         public async Task<GarmentSubconFinishingIn> Handle(RemoveGarmentSubconFinishingInCommand request, CancellationToken cancellationToken)
@@ -51,13 +55,27 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentFinishingIns.Comma
                 await _garmentFinishingInItemRepository.Update(finishingInItem);
             });
 
-            foreach (var sewingOutItem in sewingOutItemToBeUpdated)
+            foreach (var sewingDOItem in sewingOutItemToBeUpdated)
             {
-                var garmentSewingOutItem = _garmentSewingOutItemRepository.Query.Where(x => x.Identity == sewingOutItem.Key).Select(s => new GarmentSubconSewingOutItem(s)).Single();
-                garmentSewingOutItem.SetRemainingQuantity(garmentSewingOutItem.RemainingQuantity + sewingOutItem.Value);
+                var garmentSewingOutItem = _garmentSewingOutItemRepository.Query.Where(x => x.Identity == sewingDOItem.Key).Select(s => new GarmentSubconSewingOutItem(s)).Single();
+
+                double diffQty = garmentSewingOutItem.Quantity - sewingDOItem.Value;
+                garmentSewingOutItem.SetRealQtyOut(0);
                 garmentSewingOutItem.Modify();
 
                 await _garmentSewingOutItemRepository.Update(garmentSewingOutItem);
+
+                //Update RemainingQty 
+                if (diffQty > 0)
+                {
+                    var garmentSewingInItem = _garmentSewingInItemRepository.Query.Where(x => x.Identity == garmentSewingOutItem.SewingInItemId).Select(s => new GarmentSubconSewingInItem(s)).Single();
+
+                    garmentSewingInItem.SetRemainingQuantity(garmentSewingInItem.RemainingQuantity - diffQty);
+
+                    garmentSewingInItem.Modify();
+
+                    await _garmentSewingInItemRepository.Update(garmentSewingInItem);
+                }
             }
 
             finIn.Remove();
