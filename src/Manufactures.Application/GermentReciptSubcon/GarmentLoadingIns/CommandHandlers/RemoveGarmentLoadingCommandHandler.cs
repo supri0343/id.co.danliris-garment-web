@@ -7,6 +7,8 @@ using Manufactures.Domain.GarmentSewingDOs;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
+using Manufactures.Domain.GermentReciptSubcon.GarmentCuttingIns;
+using Manufactures.Domain.GermentReciptSubcon.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts;
 using Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentLoadingIns;
@@ -27,13 +29,19 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentLoadings.CommandHa
         private readonly IGarmentSubconLoadingInRepository _garmentLoadingRepository;
         private readonly IGarmentSubconLoadingInItemRepository _garmentLoadingItemRepository;
 
+        private readonly IGarmentSubconCuttingOutItemRepository _garmentCuttinOutItemRepository;
         private readonly IGarmentSubconCuttingOutDetailRepository _garmentCuttingOutDetailRepository;
+
+        private readonly IGarmentSubconCuttingInDetailRepository _garmentCuttingInDetailRepository;
         public RemoveGarmentLoadingCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentLoadingRepository = storage.GetRepository<IGarmentSubconLoadingInRepository>();
             _garmentLoadingItemRepository = storage.GetRepository<IGarmentSubconLoadingInItemRepository>();
+            _garmentCuttinOutItemRepository = storage.GetRepository<IGarmentSubconCuttingOutItemRepository>();
             _garmentCuttingOutDetailRepository = storage.GetRepository<IGarmentSubconCuttingOutDetailRepository>();
+
+            _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentSubconCuttingInDetailRepository>();
         }
 
         public async Task<GarmentSubconLoadingIn> Handle(RemoveGarmentSubconLoadingInCommand request, CancellationToken cancellationToken)
@@ -59,11 +67,29 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentLoadings.CommandHa
 
             foreach (var cuttingOutDetail in CutOutDetailToBeUpdated)
             {
+                //Update Real Qty Cutting Out
                 var garmentCuttingOutDetail = _garmentCuttingOutDetailRepository.Query.Where(x => x.Identity == cuttingOutDetail.Key).Select(s => new GarmentSubconCuttingOutDetail(s)).Single();
-                garmentCuttingOutDetail.SetRemainingQuantity(garmentCuttingOutDetail.RemainingQuantity + cuttingOutDetail.Value);
+
+                double diffQty = garmentCuttingOutDetail.CuttingOutQuantity - cuttingOutDetail.Value;
+
+                garmentCuttingOutDetail.SetRealOutQuantity(0);
                 garmentCuttingOutDetail.Modify();
 
                 await _garmentCuttingOutDetailRepository.Update(garmentCuttingOutDetail);
+
+                //Update RemainingQty Cutting In If CuttingOut Qty is different with Real Out Qty
+                if (diffQty > 0)
+                {
+                    var garmentCuttingOutItem = _garmentCuttinOutItemRepository.Query.Where(x => x.Identity == garmentCuttingOutDetail.CutOutItemId).Select(s => new GarmentSubconCuttingOutItem(s)).Single();
+
+                    var garmenCuttingInDetail = _garmentCuttingInDetailRepository.Query.Where(x => x.Identity == garmentCuttingOutItem.CuttingInDetailId).Select(s => new GarmentSubconCuttingInDetail(s)).Single();
+
+                    garmenCuttingInDetail.SetRemainingQuantity(garmenCuttingInDetail.RemainingQuantity - diffQty);
+
+                    garmenCuttingInDetail.Modify();
+
+                    await _garmentCuttingInDetailRepository.Update(garmenCuttingInDetail);
+                }
             }
 
             loading.Remove();

@@ -23,7 +23,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts.ValueObjects
         public bool IsDifferentSize { get; set; }
         public double SewingInQuantity { get; set; }
         public double TotalQuantity { get; set; }
-        public double RemainingQuantity { get; set; }
+        public double RealQtyOut { get; set; }
         public double BasicPrice { get; set; }
         public double Price { get; set; }
         public GarmentSubconSewingOutItemValueObject()

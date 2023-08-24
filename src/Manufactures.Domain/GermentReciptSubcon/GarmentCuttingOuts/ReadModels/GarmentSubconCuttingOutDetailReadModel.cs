@@ -19,7 +19,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts.ReadModels
         public int CuttingOutUomId { get; internal set; }
         public string CuttingOutUomUnit { get; internal set; }
         public string Color { get; internal set; }
-        public double RemainingQuantity { get; internal set; }
+        public double RealQtyOut { get; internal set; }
         public double BasicPrice { get; internal set; }
         public double Price { get; internal set; }
         public string Remark { get; internal set; }

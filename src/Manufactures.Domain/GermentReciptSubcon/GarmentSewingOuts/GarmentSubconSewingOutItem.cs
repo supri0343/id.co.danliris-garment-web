@@ -24,11 +24,11 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
         public string Color { get; private set; }
-        public double RemainingQuantity { get; private set; }
+        public double RealQtyOut { get; private set; }
         public double BasicPrice { get; private set; }
         public double Price { get; private set; }
 
-        public GarmentSubconSewingOutItem(Guid identity, Guid sewingOutId, Guid sewingInId, Guid sewingInItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId,string sizeName, double quantity, UomId uomId, string uomUnit, string color, double remainingQuantity, double basicPrice, double price) : base(identity)
+        public GarmentSubconSewingOutItem(Guid identity, Guid sewingOutId, Guid sewingInId, Guid sewingInItemId, ProductId productId, string productCode, string productName, string designColor, SizeId sizeId,string sizeName, double quantity, UomId uomId, string uomUnit, string color, double realQtyOut, double basicPrice, double price) : base(identity)
         {
             //MarkTransient();
 
@@ -46,7 +46,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts
             UomId = uomId;
             UomUnit = uomUnit;
             Color = color;
-            RemainingQuantity = remainingQuantity;
+            RealQtyOut = realQtyOut;
             BasicPrice = basicPrice;
             Price = price;
 
@@ -65,9 +65,9 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts
                 UomId = UomId.Value,
                 UomUnit=UomUnit,
                 Color = Color,
-                RemainingQuantity= remainingQuantity,
-                BasicPrice=basicPrice,
-                Price=price
+                RealQtyOut = RealQtyOut,
+                BasicPrice= BasicPrice,
+                Price= Price
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSewingOutPlaced(Identity));
@@ -88,7 +88,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts
             UomId = new UomId( readModel.UomId);
             UomUnit = readModel.UomUnit;
             Color = readModel.Color;
-            RemainingQuantity = readModel.RemainingQuantity;
+            RealQtyOut = readModel.RealQtyOut;
             BasicPrice = readModel.BasicPrice;
             Price = readModel.Price;
         }
@@ -111,12 +111,12 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts
             }
         }
 
-        public void SetRemainingQuantity(double RemainingQuantity)
+        public void SetRealQtyOut(double RealQtyOut)
         {
-            if (this.RemainingQuantity != RemainingQuantity)
+            if (this.RealQtyOut != RealQtyOut)
             {
-                this.RemainingQuantity = RemainingQuantity;
-                ReadModel.RemainingQuantity = RemainingQuantity;
+                this.RealQtyOut = RealQtyOut;
+                ReadModel.RealQtyOut = RealQtyOut;
             }
         }
 

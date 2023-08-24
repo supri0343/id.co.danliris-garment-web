@@ -16,7 +16,7 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GermentCuttingOut
             CuttingOutQuantity = garmentCuttingOutDetail.CuttingOutQuantity;
             CuttingOutUom = new Uom(garmentCuttingOutDetail.CuttingOutUomId.Value, garmentCuttingOutDetail.CuttingOutUomUnit);
             Color = garmentCuttingOutDetail.Color;
-            RemainingQuantity = garmentCuttingOutDetail.RemainingQuantity;
+            RealQtyOut = garmentCuttingOutDetail.RealQtyOut;
             BasicPrice = garmentCuttingOutDetail.BasicPrice;
             Price = garmentCuttingOutDetail.Price;
             
@@ -28,7 +28,7 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GermentCuttingOut
         public double CuttingOutQuantity { get; set; }
         public Uom CuttingOutUom { get; set; }
         public string Color { get; set; }
-        public double RemainingQuantity { get; set; }
+        public double RealQtyOut { get; set; }
         public double BasicPrice { get; set; }
         public double Price { get; set; }
        

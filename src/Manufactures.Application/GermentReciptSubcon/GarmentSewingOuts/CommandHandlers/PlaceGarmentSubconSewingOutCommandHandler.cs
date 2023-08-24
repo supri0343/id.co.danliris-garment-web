@@ -89,7 +89,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentSubconSewingOuts.C
                         new UomId(item.Uom.Id),
                         item.Uom.Unit,
                         item.Color,
-                        item.RemainingQuantity,
+                        0,
                         item.BasicPrice,
                         item.Price
                     );

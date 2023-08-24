@@ -47,7 +47,7 @@ namespace Manufactures.Controllers.GermentReciptSubcon.Api
                 loadingItem.ProductCode,
                 loadingItem.ProductName,
                 loadingItem.Quantity,
-                loadingItem.RemainingQuantity,
+                loadingItem.RealQtyOut,
                 loadingItem.Color,
                 loadingItem.LoadingOutId
             }).ToList();
@@ -60,7 +60,7 @@ namespace Manufactures.Controllers.GermentReciptSubcon.Api
                 {
                     Products = items.Select(i => i.ProductName).Distinct().ToList(),
                     TotalLoadingQuantity =Math.Round( items.Sum(i => i.Quantity),2),
-                    TotalRemainingQuantity= Math.Round(items.Sum(i => i.RemainingQuantity),2),
+                    TotalRealQtyOut = Math.Round(items.Sum(i => i.RealQtyOut),2),
                     Colors=items.Where(i=>i.Color!=null).Select(i=>i.Color).Distinct().ToList()
                 };
             }).ToList();

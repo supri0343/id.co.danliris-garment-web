@@ -52,7 +52,7 @@ namespace Manufactures.Controllers.Api.GermentReciptSubcon
             var dtoIds = garmentSewingOutListDtos.Select(s => s.Id).ToList();
             var items = _garmentSewingOutItemRepository.Query
                 .Where(o => dtoIds.Contains(o.SewingOutId))
-                .Select(s => new { s.Identity, s.SewingOutId, s.ProductCode, s.Color , s.Quantity, s.RemainingQuantity})
+                .Select(s => new { s.Identity, s.SewingOutId, s.ProductCode, s.Color , s.Quantity, s.RealQtyOut})
                 .ToList();
 
             var itemIds = items.Select(s => s.Identity).ToList();
@@ -67,7 +67,7 @@ namespace Manufactures.Controllers.Api.GermentReciptSubcon
                 dto.Colors = currentItems.Where(i => i.Color != null).Select(i => i.Color).Distinct().ToList();
                 dto.Products = currentItems.Select(i =>  i.ProductCode).Distinct().ToList();
                 dto.TotalQuantity = currentItems.Sum(i => i.Quantity);
-                dto.TotalRemainingQuantity = currentItems.Sum(i => i.RemainingQuantity);
+                dto.TotalRealQtyOut = currentItems.Sum(i => i.RealQtyOut);
             });
 
             await Task.Yield();

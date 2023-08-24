@@ -26,7 +26,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentLoadingOuts.ReadModels
         public int UomId { get; internal set; }
         public string UomUnit { get; internal set; }
         public string Color { get; internal set; }
-        public double RemainingQuantity { get; internal set; }
+        public double RealQtyOut { get; internal set; }
         public double BasicPrice { get; internal set; }
         public double Price { get; internal set; }
 		public string UId { get; private set; }

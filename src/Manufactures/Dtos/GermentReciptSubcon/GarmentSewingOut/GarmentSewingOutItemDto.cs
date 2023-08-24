@@ -21,7 +21,7 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GermentSewingOut
             Quantity = garmentSewingOutItem.Quantity;
             Uom = new Uom(garmentSewingOutItem.UomId.Value, garmentSewingOutItem.UomUnit);
             Color = garmentSewingOutItem.Color;
-            RemainingQuantity = garmentSewingOutItem.RemainingQuantity;
+            RealQtyOut = garmentSewingOutItem.RealQtyOut;
             BasicPrice = garmentSewingOutItem.BasicPrice;
             Price = garmentSewingOutItem.Price;
 
@@ -38,7 +38,7 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GermentSewingOut
         public double Quantity { get;  set; }
         public Uom Uom { get;  set; }
         public string Color { get;  set; }
-        public double RemainingQuantity { get; set; }
+        public double RealQtyOut { get; set; }
         public double BasicPrice { get; set; }
         public double Price { get; set; }
         public List<GarmentSewingOutDetailDto> Details { get; set; }
