@@ -17,7 +17,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentLoadingOuts.ValueObject
         public double Quantity { get;  set; }
         public Uom Uom { get;  set; }
         public string Color { get;  set; }
-        public double RemainingQuantity { get;  set; }
+        public double RealQtyOut { get;  set; }
         public double BasicPrice { get; set; }
         public double LoadingInRemainingQuantity { get; set; }
         public bool IsSave { get; set; }

@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20230824081813_Change-Remaining-to-RealQty-SubconSewingOut")]
+    partial class ChangeRemainingtoRealQtySubconSewingOut
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -5154,7 +5156,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(2000);
+                        .HasMaxLength(50);
 
                     b.Property<string>("ComodityCode")
                         .HasMaxLength(255);
@@ -5338,7 +5340,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(2000);
+                        .HasMaxLength(50);
 
                     b.Property<double>("BasicPrice");
 
@@ -5699,7 +5701,7 @@ namespace DanLiris.Admin.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Article")
-                        .HasMaxLength(2000);
+                        .HasMaxLength(50);
 
                     b.Property<string>("BuyerCode")
                         .HasMaxLength(25);
@@ -8192,8 +8194,6 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasMaxLength(50);
 
                     b.Property<double>("GrossWeight");
-
-                    b.Property<bool>("IsCustoms");
 
                     b.Property<bool>("IsUsed");
 
