@@ -17,7 +17,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentCuttingOuts.Querie
         public UnitDepartment Unit { get; set; }
         public GarmentComodity Comodity { get; set; }
 
-        public double TotalRemainingQuantity { get; set; }
+        public double TotalQtyOut { get; set; }
         public double TotalCuttingOutQuantity { get; set; }
         public List<string> Products { get; set; }
         public List<GarmentSubconCuttingOutItemDto> Items { get; set; }

@@ -13,6 +13,8 @@ using Manufactures.Domain.GermentReciptSubcon.GarmentFinishingIns;
 using Manufactures.Domain.GermentReciptSubcon.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts;
+using Manufactures.Domain.GermentReciptSubcon.GarmentSewingIns.Repositories;
+using Manufactures.Domain.GermentReciptSubcon.GarmentSewingIns;
 
 namespace Manufactures.Application.GermentReciptSubcon.GarmentFinishingIns.CommandHandlers
 {
@@ -22,6 +24,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentFinishingIns.Comma
         private readonly IGarmentSubconFinishingInRepository _garmentFinishingInRepository;
         private readonly IGarmentSubconFinishingInItemRepository _garmentFinishingInItemRepository;
         private readonly IGarmentSubconSewingOutItemRepository _garmentSewingOutItemRepository;
+        private readonly IGarmentSubconSewingInItemRepository _garmentSewingInItemRepository;
 
         public PlaceGarmentSubconFinishingInCommandHandler(IStorage storage)
         {
@@ -29,6 +32,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentFinishingIns.Comma
             _garmentFinishingInRepository = storage.GetRepository<IGarmentSubconFinishingInRepository>();
             _garmentFinishingInItemRepository = storage.GetRepository<IGarmentSubconFinishingInItemRepository>();
             _garmentSewingOutItemRepository = storage.GetRepository<IGarmentSubconSewingOutItemRepository>();
+            _garmentSewingInItemRepository = storage.GetRepository<IGarmentSubconSewingInItemRepository>();
         }
 
         public async Task<GarmentSubconFinishingIn> Handle(PlaceGarmentSubconFinishingInCommand request, CancellationToken cancellationToken)
@@ -95,15 +99,50 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentFinishingIns.Comma
 
                     await _garmentFinishingInItemRepository.Update(garmentFinishingInItem);
                 }
+                else
+                {
+                    //Remove sewing out when data Item not selected
+                    var garmentSewingOutItem = _garmentSewingOutItemRepository.Query.Where(o => o.Identity == item.SewingOutItemId).Select(s => new GarmentSubconSewingOutItem(s)).Single();
+
+                    double diffQty = garmentSewingOutItem.Quantity;
+
+                    if (diffQty > 0)
+                    {
+                        var garmentSewingInItem = _garmentSewingInItemRepository.Query.Where(x => x.Identity == garmentSewingOutItem.SewingInItemId).Select(s => new GarmentSubconSewingInItem(s)).Single();
+
+                        garmentSewingInItem.SetRemainingQuantity(garmentSewingInItem.RemainingQuantity + diffQty);
+
+                        garmentSewingInItem.Modify();
+
+                        await _garmentSewingInItemRepository.Update(garmentSewingInItem);
+                    }
+
+                    garmentSewingOutItem.Remove();
+
+                    await _garmentSewingOutItemRepository.Update(garmentSewingOutItem);
+                }
             }
 
             foreach (var sewingDOItem in sewingOutItemToBeUpdated)
             {
                 var garmentSewingOutItem = _garmentSewingOutItemRepository.Query.Where(x => x.Identity == sewingDOItem.Key).Select(s => new GarmentSubconSewingOutItem(s)).Single();
-                garmentSewingOutItem.SetRemainingQuantity(garmentSewingOutItem.RemainingQuantity - sewingDOItem.Value);
+                
+                double diffQty = garmentSewingOutItem.Quantity - sewingDOItem.Value;
+                garmentSewingOutItem.SetRealQtyOut(sewingDOItem.Value);
                 garmentSewingOutItem.Modify();
 
                 await _garmentSewingOutItemRepository.Update(garmentSewingOutItem);
+
+                if (diffQty > 0)
+                {
+                    var garmentSewingInItem = _garmentSewingInItemRepository.Query.Where(x => x.Identity == garmentSewingOutItem.SewingInItemId).Select(s => new GarmentSubconSewingInItem(s)).Single();
+
+                    garmentSewingInItem.SetRemainingQuantity(garmentSewingInItem.RemainingQuantity + diffQty);
+
+                    garmentSewingInItem.Modify();
+
+                    await _garmentSewingInItemRepository.Update(garmentSewingInItem);
+                }
             }
 
             await _garmentFinishingInRepository.Update(garmentFinishingIn);

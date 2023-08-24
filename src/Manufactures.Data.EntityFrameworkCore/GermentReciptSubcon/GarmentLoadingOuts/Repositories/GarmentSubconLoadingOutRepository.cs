@@ -94,7 +94,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentLoadi
                         Unit = y.UomUnit
                     },
                     Color = y.Color,
-                    RemainingQuantity = y.RemainingQuantity,
+                    RealQtyOut = y.RealQtyOut,
                     BasicPrice = y.BasicPrice,
                     LoadingInItemId = y.LoadingInItemId,
                     LoadingOutId = y.LoadingOutId,

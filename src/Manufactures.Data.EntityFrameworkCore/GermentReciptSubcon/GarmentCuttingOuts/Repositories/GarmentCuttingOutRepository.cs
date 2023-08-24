@@ -100,7 +100,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentCutti
                             Unit = garmentCuttingOutDetail.CuttingOutUomUnit
                         },
                         Color = garmentCuttingOutDetail.Color,
-                        RemainingQuantity = garmentCuttingOutDetail.RemainingQuantity,
+                        RealQtyOut = garmentCuttingOutDetail.RealQtyOut,
                         BasicPrice = garmentCuttingOutDetail.BasicPrice,
                         Price = garmentCuttingOutDetail.Price
 

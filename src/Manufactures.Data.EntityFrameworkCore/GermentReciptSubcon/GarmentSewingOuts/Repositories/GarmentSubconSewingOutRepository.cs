@@ -148,7 +148,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentSewin
                         Unit = garmentSewingOutItem.UomUnit,
                     },
                     Color = garmentSewingOutItem.Color,
-                    RemainingQuantity = garmentSewingOutItem.RemainingQuantity,
+                    RealQtyOut = garmentSewingOutItem.RealQtyOut,
                     BasicPrice = garmentSewingOutItem.BasicPrice,
                     Price = garmentSewingOutItem.Price,
 

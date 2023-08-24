@@ -107,7 +107,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentCuttingOuts.Comman
                         new SizeId(detail.Size.Id),
                         detail.Size.Size,
                         detail.Color.ToUpper(),
-                        detail.CuttingOutQuantity,
+                        0,
                         detail.CuttingOutQuantity,
                         new UomId(detail.CuttingOutUom.Id),
                         detail.CuttingOutUom.Unit,

@@ -34,7 +34,7 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GermentSewingOut
         public List<string> Colors { get; set; }
         public List<string> Products { get; set; }
         public double TotalQuantity { get; set; }
-        public double TotalRemainingQuantity { get; set; }
+        public double TotalRealQtyOut { get; set; }
         public List<GarmentSewingOutItemDto> Items { get; set; }
     }
 }

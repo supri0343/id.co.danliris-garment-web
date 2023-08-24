@@ -14,7 +14,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts.ValueObject
         public double CuttingOutQuantity { get; set; }
         public Uom CuttingOutUom { get; set; }
         public string Color { get; set; }
-        public double RemainingQuantity { get; set; }
+        public double RealQtyOut { get; set; }
         public double BasicPrice { get; set; }
         public double Price { get; set; }
 

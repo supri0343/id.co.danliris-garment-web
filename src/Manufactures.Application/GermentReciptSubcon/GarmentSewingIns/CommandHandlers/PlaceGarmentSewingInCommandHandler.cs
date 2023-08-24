@@ -1,5 +1,7 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
+using Manufactures.Domain.GermentReciptSubcon.GarmentLoadingIns;
+using Manufactures.Domain.GermentReciptSubcon.GarmentLoadingIns.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentLoadingOuts;
 using Manufactures.Domain.GermentReciptSubcon.GarmentLoadingOuts.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentSewingIns;
@@ -21,6 +23,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentSewingIns.CommandH
         private readonly IGarmentSubconSewingInRepository _garmentSewingInRepository;
         private readonly IGarmentSubconSewingInItemRepository _garmentSewingInItemRepository;
         private readonly IGarmentSubconLoadingOutItemRepository _garmentLoadingOutItemRepository;
+        private readonly IGarmentSubconLoadingInItemRepository _garmentLoadingInItemRepository;
         //private readonly IGarmentSubconSewingOutItemRepository _garmentSewingOutItemRepository;
         //private readonly IGarmentSubconFinishingOutItemRepository _garmentFinishingOutItemRepository;
 
@@ -30,13 +33,13 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentSewingIns.CommandH
             _garmentSewingInRepository = storage.GetRepository<IGarmentSubconSewingInRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSubconSewingInItemRepository>();
             _garmentLoadingOutItemRepository = storage.GetRepository<IGarmentSubconLoadingOutItemRepository>();
-            //_garmentSewingOutItemRepository = storage.GetRepository<IGarmentSewingOutItemRepository>();
-            //_garmentFinishingOutItemRepository = storage.GetRepository<IGarmentFinishingOutItemRepository>();
+            _garmentLoadingInItemRepository = storage.GetRepository<IGarmentSubconLoadingInItemRepository>();
+
         }
 
         public async Task<GarmentSubconSewingIn> Handle(PlaceGarmentSubconSewingInCommand request, CancellationToken cancellationToken)
         {
-            request.Items = request.Items.Where(item => item.IsSave == true).ToList();
+            //request.Items = request.Items.Where(item => item.IsSave == true).ToList();
 
             GarmentSubconSewingIn garmentSewingIn = new GarmentSubconSewingIn(
                 Guid.NewGuid(),
@@ -61,58 +64,98 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentSewingIns.CommandH
 
             foreach (var item in request.Items)
             {
-                GarmentSubconSewingInItem garmentSewingInItem = new GarmentSubconSewingInItem(
-                    Guid.NewGuid(),
-                    garmentSewingIn.Identity,
-                    item.SewingOutItemId,
-                    item.SewingOutDetailId,
-                    item.LoadingOutItemId,
-                    item.FinishingOutItemId,
-                    item.FinishingOutDetailId,
-                    new ProductId(item.Product.Id),
-                    item.Product.Code,
-                    item.Product.Name,
-                    item.DesignColor,
-                    new SizeId(item.Size.Id),
-                    item.Size.Size,
-                    item.Quantity,
-                    new UomId(item.Uom.Id),
-                    item.Uom.Unit,
-                    item.Color,
-                    item.Quantity,
-                    item.BasicPrice,
-                    item.Price
-                );
-
-                if (request.SewingFrom == "CUTTING")
+                if (item.IsSave == true)
                 {
-                    var garmentLoadingItem = _garmentLoadingOutItemRepository.Query.Where(o => o.Identity == item.LoadingOutItemId).Select(s => new GarmentSubconLoadingOutItem(s)).Single();
+                    GarmentSubconSewingInItem garmentSewingInItem = new GarmentSubconSewingInItem(
+                        Guid.NewGuid(),
+                        garmentSewingIn.Identity,
+                        item.SewingOutItemId,
+                        item.SewingOutDetailId,
+                        item.LoadingOutItemId,
+                        item.FinishingOutItemId,
+                        item.FinishingOutDetailId,
+                        new ProductId(item.Product.Id),
+                        item.Product.Code,
+                        item.Product.Name,
+                        item.DesignColor,
+                        new SizeId(item.Size.Id),
+                        item.Size.Size,
+                        item.Quantity,
+                        new UomId(item.Uom.Id),
+                        item.Uom.Unit,
+                        item.Color,
+                        item.Quantity,
+                        item.BasicPrice,
+                        item.Price
+                    );
 
-                    garmentLoadingItem.SetRemainingQuantity(garmentLoadingItem.RemainingQuantity - item.Quantity);
+                    if (request.SewingFrom == "CUTTING")
+                    {
+                        var garmentLoadingItem = _garmentLoadingOutItemRepository.Query.Where(o => o.Identity == item.LoadingOutItemId).Select(s => new GarmentSubconLoadingOutItem(s)).Single();
 
-                    garmentLoadingItem.Modify();
-                    await _garmentLoadingOutItemRepository.Update(garmentLoadingItem);
+                        double diffQty = garmentLoadingItem.Quantity - item.Quantity;
+                        garmentLoadingItem.SetRealQtyOut(item.Quantity);
+
+                        garmentLoadingItem.Modify();
+                        await _garmentLoadingOutItemRepository.Update(garmentLoadingItem);
+
+                        if (diffQty > 0) 
+                        {
+                            var garmentCuttingInItem = _garmentLoadingInItemRepository.Query.Where(x => x.Identity == garmentLoadingItem.LoadingInItemId).Select(s => new GarmentSubconLoadingInItem(s)).Single();
+
+                            garmentCuttingInItem.SetRemainingQuantity(garmentCuttingInItem.RemainingQuantity + diffQty);
+
+                            garmentCuttingInItem.Modify();
+
+                            await _garmentLoadingInItemRepository.Update(garmentCuttingInItem);
+                        }
+                    }
+                    //else if(request.SewingFrom == "SEWING")
+                    //{
+                    //    var garmentSewingOutItem = _garmentSewingOutItemRepository.Query.Where(s => s.Identity == item.SewingOutItemId).Select(s => new GarmentSewingOutItem(s)).Single();
+
+                    //    garmentSewingOutItem.SetRemainingQuantity(garmentSewingOutItem.RemainingQuantity - item.Quantity);
+
+                    //    garmentSewingOutItem.Modify();
+                    //    await _garmentSewingOutItemRepository.Update(garmentSewingOutItem);
+                    //}
+                    //else if (request.SewingFrom == "FINISHING")
+                    //{
+                    //    var garmentFinishingOutItem = _garmentFinishingOutItemRepository.Query.Where(s => s.Identity == item.FinishingOutItemId).Select(s => new GarmentFinishingOutItem(s)).Single();
+
+                    //    garmentFinishingOutItem.SetRemainingQuantity(garmentFinishingOutItem.RemainingQuantity - item.Quantity);
+
+                    //    garmentFinishingOutItem.Modify();
+                    //    await _garmentFinishingOutItemRepository.Update(garmentFinishingOutItem);
+                    //}
+
+                    await _garmentSewingInItemRepository.Update(garmentSewingInItem);
                 }
-                //else if(request.SewingFrom == "SEWING")
-                //{
-                //    var garmentSewingOutItem = _garmentSewingOutItemRepository.Query.Where(s => s.Identity == item.SewingOutItemId).Select(s => new GarmentSewingOutItem(s)).Single();
+                else
+                {
+                    // Remove sewing out when data Item not selected
+                    if (request.SewingFrom == "CUTTING")
+                    {
+                        var garmentLoadingItem = _garmentLoadingOutItemRepository.Query.Where(o => o.Identity == item.LoadingOutItemId).Select(s => new GarmentSubconLoadingOutItem(s)).Single();
 
-                //    garmentSewingOutItem.SetRemainingQuantity(garmentSewingOutItem.RemainingQuantity - item.Quantity);
+                        double diffQty = garmentLoadingItem.Quantity;
+                
+                        if (diffQty > 0)
+                        {
+                            var garmentCuttingInItem = _garmentLoadingInItemRepository.Query.Where(x => x.Identity == garmentLoadingItem.LoadingInItemId).Select(s => new GarmentSubconLoadingInItem(s)).Single();
 
-                //    garmentSewingOutItem.Modify();
-                //    await _garmentSewingOutItemRepository.Update(garmentSewingOutItem);
-                //}
-                //else if (request.SewingFrom == "FINISHING")
-                //{
-                //    var garmentFinishingOutItem = _garmentFinishingOutItemRepository.Query.Where(s => s.Identity == item.FinishingOutItemId).Select(s => new GarmentFinishingOutItem(s)).Single();
+                            garmentCuttingInItem.SetRemainingQuantity(garmentCuttingInItem.RemainingQuantity + diffQty);
 
-                //    garmentFinishingOutItem.SetRemainingQuantity(garmentFinishingOutItem.RemainingQuantity - item.Quantity);
+                            garmentCuttingInItem.Modify();
 
-                //    garmentFinishingOutItem.Modify();
-                //    await _garmentFinishingOutItemRepository.Update(garmentFinishingOutItem);
-                //}
+                            await _garmentLoadingInItemRepository.Update(garmentCuttingInItem);
+                        }
 
-                await _garmentSewingInItemRepository.Update(garmentSewingInItem);
+                        garmentLoadingItem.Remove();
+
+                        await _garmentLoadingOutItemRepository.Update(garmentLoadingItem);
+                    }
+                }
             }
 
             await _garmentSewingInRepository.Update(garmentSewingIn);
