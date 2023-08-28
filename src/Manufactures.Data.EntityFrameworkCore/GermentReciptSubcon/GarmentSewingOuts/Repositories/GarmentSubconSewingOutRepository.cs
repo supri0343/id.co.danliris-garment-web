@@ -161,6 +161,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentSewin
                             Size = garmentSewingOutDetail.SizeName,
                         },
                         Quantity = garmentSewingOutDetail.Quantity,
+                        RealQtyOut = garmentSewingOutDetail.RealQtyOut,
                         Uom = new
                         {
                             Id = garmentSewingOutDetail.UomId,

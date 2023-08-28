@@ -16,7 +16,8 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GermentSewingOut
             Size = new SizeValueObject(garmentSewingOutDetail.SizeId.Value, garmentSewingOutDetail.SizeName);
             Quantity = garmentSewingOutDetail.Quantity;
             Uom = new Uom(garmentSewingOutDetail.UomId.Value, garmentSewingOutDetail.UomUnit);
-            
+            RealQtyOut = garmentSewingOutDetail.RealQtyOut;
+
         }
 
         public Guid Id { get; set; }
@@ -24,5 +25,6 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GermentSewingOut
         public SizeValueObject Size { get; set; }
         public double Quantity { get; set; }
         public Uom Uom { get; set; }
+        public double RealQtyOut { get; set; }
     }
 }
