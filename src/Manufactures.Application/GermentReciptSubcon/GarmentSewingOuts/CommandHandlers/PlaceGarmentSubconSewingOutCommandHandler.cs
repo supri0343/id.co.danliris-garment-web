@@ -106,7 +106,8 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentSubconSewingOuts.C
                                 detail.Size.Size,
                                 detail.Quantity,
                                 new UomId(detail.Uom.Id),
-                                detail.Uom.Unit
+                                detail.Uom.Unit,
+                                0
                             );
                             detail.Id = garmentSewingOutDetail.Identity;
 

@@ -17,6 +17,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts
         public double Quantity { get; private set; }
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
+        public double RealQtyOut { get; private set; }
 
         public void SetQuantity(double Quantity)
         {
@@ -44,8 +45,16 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts
                 ReadModel.SizeName = SizeName;
             }
         }
+        public void SetRealQtyOut(double RealQtyOut)
+        {
+            if (this.RealQtyOut != RealQtyOut)
+            {
+                this.RealQtyOut = RealQtyOut;
+                ReadModel.RealQtyOut = RealQtyOut;
+            }
+        }
 
-        public GarmentSubconSewingOutDetail(Guid identity, Guid sewingOutItemId, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit) : base(identity)
+        public GarmentSubconSewingOutDetail(Guid identity, Guid sewingOutItemId, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit,double realQtyOut) : base(identity)
         {
             //MarkTransient();
 
@@ -55,6 +64,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts
             Quantity = quantity;
             UomId = uomId;
             UomUnit = uomUnit;
+            RealQtyOut = realQtyOut;
 
             ReadModel = new GarmentSubconSewingOutDetailReadModel(Identity)
             {
@@ -63,7 +73,8 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts
                 SizeName = SizeName,
                 Quantity = Quantity,
                 UomId = UomId.Value,
-                UomUnit = UomUnit
+                UomUnit = UomUnit,
+                RealQtyOut = RealQtyOut
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSewingOutPlaced(Identity));
@@ -77,6 +88,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts
             Quantity = readModel.Quantity;
             UomId = new UomId(readModel.UomId);
             UomUnit = readModel.UomUnit;
+            RealQtyOut = readModel.RealQtyOut;
         }
 
         public void Modify()
