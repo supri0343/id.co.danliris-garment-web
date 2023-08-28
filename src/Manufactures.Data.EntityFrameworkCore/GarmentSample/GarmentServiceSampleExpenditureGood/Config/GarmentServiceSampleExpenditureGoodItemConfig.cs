@@ -17,7 +17,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSample.ServiceSampleExpen
                    .HasForeignKey(a => a.ServiceSampleExpenditureGoodId);
 
             builder.Property(a => a.RONo).HasMaxLength(25);
-            builder.Property(a => a.Article).HasMaxLength(50);
+            builder.Property(a => a.Article).HasMaxLength(255);
             builder.Property(a => a.ComodityCode).HasMaxLength(25);
             builder.Property(a => a.ComodityName).HasMaxLength(100);
             //builder.Property(a => a.BuyerName).HasMaxLength(100);
