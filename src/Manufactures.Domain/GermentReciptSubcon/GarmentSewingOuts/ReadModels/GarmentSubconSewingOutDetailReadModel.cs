@@ -17,6 +17,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts.ReadModels
         public double Quantity { get; internal set; }
         public int UomId { get; internal set; }
         public string UomUnit { get; internal set; }
+        public double RealQtyOut { get; internal set; }
 
         public virtual GarmentSubconSewingOutItemReadModel GarmentSewingOutItemIdentity { get; internal set; }
 

@@ -12,6 +12,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts.ValueObjects
         public Guid SewingOutItemId { get;  set; }
         public SizeValueObject Size { get;  set; }
         public double Quantity { get;  set; }
+        public double RealQtyOut { get; set; }
         public Uom Uom { get;  set; }
         public GarmentSubconSewingOutDetailValueObject()
         {

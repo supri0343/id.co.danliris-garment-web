@@ -23,6 +23,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentFinishingIns.Comma
         private readonly IGarmentSubconFinishingInItemRepository _garmentFinishingInItemRepository;
         private readonly IGarmentSubconSewingOutItemRepository _garmentSewingOutItemRepository;
         private readonly IGarmentSubconSewingInItemRepository _garmentSewingInItemRepository;
+        private readonly IGarmentSubconSewingOutDetailRepository _garmentSewingOutDetailRepository;
 
         public RemoveGarmentSubconFinishingInCommandHandler(IStorage storage)
         {
@@ -31,6 +32,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentFinishingIns.Comma
             _garmentFinishingInItemRepository = storage.GetRepository<IGarmentSubconFinishingInItemRepository>();
             _garmentSewingOutItemRepository = storage.GetRepository<IGarmentSubconSewingOutItemRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSubconSewingInItemRepository>();
+            _garmentSewingOutDetailRepository = storage.GetRepository<IGarmentSubconSewingOutDetailRepository>();
         }
 
         public async Task<GarmentSubconFinishingIn> Handle(RemoveGarmentSubconFinishingInCommand request, CancellationToken cancellationToken)
@@ -59,11 +61,24 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentFinishingIns.Comma
             {
                 var garmentSewingOutItem = _garmentSewingOutItemRepository.Query.Where(x => x.Identity == sewingDOItem.Key).Select(s => new GarmentSubconSewingOutItem(s)).Single();
 
+                var garmentSewingOutDetails = _garmentSewingOutDetailRepository.Query.Where(x => x.SewingOutItemId == sewingDOItem.Key).Select(s => new GarmentSubconSewingOutDetail(s)).ToList();
+                
+                if(garmentSewingOutDetails.Count > 0)
+                {
+                    foreach(var SewingOutDetail in garmentSewingOutDetails)
+                    {
+                        SewingOutDetail.SetRealQtyOut(0);
+                        SewingOutDetail.Modify();
+
+                        await _garmentSewingOutDetailRepository.Update(SewingOutDetail);
+                    }
+                }
                 double diffQty = garmentSewingOutItem.Quantity - sewingDOItem.Value;
                 garmentSewingOutItem.SetRealQtyOut(0);
                 garmentSewingOutItem.Modify();
 
                 await _garmentSewingOutItemRepository.Update(garmentSewingOutItem);
+
 
                 //Update RemainingQty 
                 if (diffQty > 0)
