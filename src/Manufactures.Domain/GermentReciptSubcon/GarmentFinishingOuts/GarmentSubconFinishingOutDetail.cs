@@ -14,6 +14,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentFinishingOuts
         public SizeId SizeId { get; private set; }
         public string SizeName { get; private set; }
         public double Quantity { get; private set; }
+        public double RealQtyOut { get; private set; }
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
 
@@ -44,7 +45,15 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentFinishingOuts
             }
         }
 
-        public GarmentSubconFinishingOutDetail(Guid identity, Guid sewingOutItemId, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit) : base(identity)
+        public void SetRealQtyOut(double RealQtyOut)
+        {
+            if (this.RealQtyOut != RealQtyOut)
+            {
+                this.RealQtyOut = RealQtyOut;
+                ReadModel.RealQtyOut = RealQtyOut;
+            }
+        }
+        public GarmentSubconFinishingOutDetail(Guid identity, Guid sewingOutItemId, SizeId sizeId, string sizeName, double quantity, UomId uomId, string uomUnit, double realQtyOut) : base(identity)
         {
             //MarkTransient();
 
@@ -54,7 +63,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentFinishingOuts
             Quantity = quantity;
             UomId = uomId;
             UomUnit = uomUnit;
-
+            RealQtyOut = realQtyOut;
             ReadModel = new GarmentReceiptSubconFinishingOutDetailReadModel(Identity)
             {
                 FinishingOutItemId = FinishingOutItemId,
@@ -62,7 +71,8 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentFinishingOuts
                 SizeName = SizeName,
                 Quantity = Quantity,
                 UomId = UomId.Value,
-                UomUnit = UomUnit
+                UomUnit = UomUnit,
+                RealQtyOut = RealQtyOut
             };
 
             ReadModel.AddDomainEvent(new OnGarmentFinishingOutPlaced(Identity));
@@ -76,6 +86,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentFinishingOuts
             Quantity = readModel.Quantity;
             UomId = new UomId(readModel.UomId);
             UomUnit = readModel.UomUnit;
+            RealQtyOut = readModel.RealQtyOut;
         }
 
         public void Modify()
