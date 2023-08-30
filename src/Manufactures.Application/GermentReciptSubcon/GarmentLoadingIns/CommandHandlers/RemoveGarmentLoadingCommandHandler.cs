@@ -81,6 +81,10 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentLoadings.CommandHa
                 if (diffQty > 0)
                 {
                     var garmentCuttingOutItem = _garmentCuttinOutItemRepository.Query.Where(x => x.Identity == garmentCuttingOutDetail.CutOutItemId).Select(s => new GarmentSubconCuttingOutItem(s)).Single();
+                    garmentCuttingOutItem.SetRealOutQuantity(0);
+                    garmentCuttingOutItem.Modify();
+
+                    await _garmentCuttinOutItemRepository.Update(garmentCuttingOutItem);
 
                     var garmenCuttingInDetail = _garmentCuttingInDetailRepository.Query.Where(x => x.Identity == garmentCuttingOutItem.CuttingInDetailId).Select(s => new GarmentSubconCuttingInDetail(s)).Single();
 

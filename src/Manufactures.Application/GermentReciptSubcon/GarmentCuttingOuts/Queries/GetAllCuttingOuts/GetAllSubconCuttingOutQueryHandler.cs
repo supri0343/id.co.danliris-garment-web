@@ -115,6 +115,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentCuttingOuts.Querie
                 co.Products = co.Items.Select(i => i.Product.Code).ToList();
                 co.TotalCuttingOutQuantity = co.Items.Sum(i => i.Details.Sum(d => d.CuttingOutQuantity));
                 co.TotalQtyOut = co.Items.Sum(i => i.Details.Sum(d => d.RealQtyOut));
+                co.TotalQtyOut = co.Items.Sum(i => i.Details.Sum(d => d.RealQtyOut));
             }
 
             await Task.Yield();

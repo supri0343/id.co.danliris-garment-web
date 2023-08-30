@@ -141,11 +141,20 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentFinishingIns.Comma
                             var garmentSewingOutItemm = _garmentSewingOutItemRepository.Query.Where(o => o.Identity == garmentSewingOutDetail.SewingOutItemId).Select(s => new GarmentSubconSewingOutItem(s)).Single();
                             var garmentSewingInItem = _garmentSewingInItemRepository.Query.Where(x => x.Identity == garmentSewingOutItemm.SewingInItemId).Select(s => new GarmentSubconSewingInItem(s)).Single();
 
-                            garmentSewingOutItemm.SetQuantity(garmentSewingOutItemm.Quantity - diffQtyy);
+                            if (garmentSewingOutItemm.Quantity - diffQtyy == 0)
+                            {
+                                garmentSewingOutItemm.Remove();
+                            }
+                            else
+                            {
+                                garmentSewingOutItemm.SetQuantity(garmentSewingOutItemm.Quantity - diffQtyy);
+                                garmentSewingOutItemm.Modify();
+                            }
+
                             garmentSewingInItem.SetRemainingQuantity(garmentSewingInItem.RemainingQuantity + diffQtyy);
 
                             garmentSewingInItem.Modify();
-                            garmentSewingOutItemm.Modify();
+
 
                             await _garmentSewingOutItemRepository.Update(garmentSewingOutItemm);
                             await _garmentSewingInItemRepository.Update(garmentSewingInItem);

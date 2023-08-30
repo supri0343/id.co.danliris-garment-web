@@ -21,8 +21,8 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts.ReadModels
         public string DesignColor { get; internal set; }
         public double TotalCuttingOut { get; internal set; }
 		public string UId { get; private set; }
-
-		public virtual ICollection<GarmentSubconCuttingOutDetailReadModel> GarmentSubconCuttingOutDetail { get; internal set; }
+        public double RealQtyOut { get; internal set; }
+        public virtual ICollection<GarmentSubconCuttingOutDetailReadModel> GarmentSubconCuttingOutDetail { get; internal set; }
         public virtual GarmentSubconCuttingOutReadModel GarmentSubconCuttingOutIdentity { get; internal set; }
     }
 }

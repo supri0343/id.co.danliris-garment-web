@@ -20,7 +20,8 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts
         public double TotalCuttingOut { get; private set; }
         public double TotalCuttingOutQuantity { get; private set; }
 		public string UId { get; private set; }
-		public GarmentSubconCuttingOutItem(Guid identity, Guid cuttingInId, Guid cuttingInDetailId, Guid cutOutId, ProductId productId, string productCode, string productName, string designColor, double totalCuttingOut) : base(identity)
+        public double RealQtyOut { get; private set; }
+        public GarmentSubconCuttingOutItem(Guid identity, Guid cuttingInId, Guid cuttingInDetailId, Guid cutOutId, ProductId productId, string productCode, string productName, string designColor, double totalCuttingOut,double realQtyOut) : base(identity)
         {
             //MarkTransient();
 
@@ -33,6 +34,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts
             ProductName = productName;
             DesignColor = designColor;
             TotalCuttingOut = totalCuttingOut;
+            RealQtyOut = realQtyOut;
 
             ReadModel = new GarmentSubconCuttingOutItemReadModel(identity)
             {
@@ -44,6 +46,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts
                 ProductName = ProductName,
                 DesignColor = DesignColor,
                 TotalCuttingOut = TotalCuttingOut,
+                RealQtyOut = RealQtyOut,
                 GarmentSubconCuttingOutDetail = new List<GarmentSubconCuttingOutDetailReadModel>()
             };
 
@@ -60,8 +63,25 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts
             ProductName = readModel.ProductName;
             DesignColor = readModel.DesignColor;
             TotalCuttingOut = readModel.TotalCuttingOut;
+            RealQtyOut = readModel.RealQtyOut;
+        }
+        public void SetRealOutQuantity(double realQtyOut)
+        {
+            if (this.RealQtyOut != realQtyOut)
+            {
+                this.RealQtyOut = realQtyOut;
+                ReadModel.RealQtyOut = realQtyOut;
+            }
         }
 
+        public void SetTotalCuttingOutQuantity(double totalCuttingOut)
+        {
+            if (this.TotalCuttingOut != totalCuttingOut)
+            {
+                this.TotalCuttingOut = totalCuttingOut;
+                ReadModel.TotalCuttingOut = totalCuttingOut;
+            }
+        }
         public void Modify()
         {
             MarkModified();

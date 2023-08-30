@@ -20,6 +20,7 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GarmentFinishingOut
             FinishingOutDate = garmentFinishingOutList.FinishingOutDate;
             FinishingTo = garmentFinishingOutList.FinishingTo;
             CreatedBy = garmentFinishingOutList.AuditTrail.CreatedBy;
+            Comodity = new GarmentComodity(garmentFinishingOutList.ComodityId.Value, garmentFinishingOutList.ComodityCode, garmentFinishingOutList.ComodityName);
             Items = new List<GarmentFinishingOutItemDto>();
         }
 
@@ -34,7 +35,8 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GarmentFinishingOut
         public List<string> Colors { get; set; }
         public List<string> Products { get; set; }
         public double TotalQuantity { get; set; }
-        public double TotalRemainingQuantity { get; set; }
+        public double TotalRealQtyOut { get; set; }
+        public GarmentComodity Comodity { get; private set; }
         public List<GarmentFinishingOutItemDto> Items { get; set; }
     }
 }
