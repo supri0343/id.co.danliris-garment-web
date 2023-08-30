@@ -96,7 +96,8 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentCuttingOuts.Comman
                     item.Product.Code,
                     item.Product.Name,
                     item.DesignColor,
-                    item.TotalCuttingOutQuantity
+                    item.TotalCuttingOutQuantity,
+                    0
                 );
 
                 foreach (var detail in item.Details)

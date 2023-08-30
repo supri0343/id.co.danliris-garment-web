@@ -136,6 +136,10 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentLoadings.CommandHa
                 if(diffQty > 0)
                 {
                     var garmentCuttingOutItem = _garmentCuttinOutItemRepository.Query.Where(x => x.Identity == garmentCuttingOutDetail.CutOutItemId).Select(s => new GarmentSubconCuttingOutItem(s)).Single();
+                    garmentCuttingOutItem.SetRealOutQuantity(garmentCuttingOutItem.RealQtyOut + cuttingOutDetail.Value);
+                    garmentCuttingOutItem.Modify();
+
+                    await _garmentCuttinOutItemRepository.Update(garmentCuttingOutItem);
 
                     var garmenCuttingInDetail = _garmentCuttingInDetailRepository.Query.Where(x => x.Identity == garmentCuttingOutItem.CuttingInDetailId).Select(s => new GarmentSubconCuttingInDetail(s)).Single();
 
@@ -159,6 +163,18 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentLoadings.CommandHa
                 if (diffQty > 0)
                 {
                     var garmentCuttingOutItem = _garmentCuttinOutItemRepository.Query.Where(x => x.Identity == garmentCuttingOutDetail.CutOutItemId).Select(s => new GarmentSubconCuttingOutItem(s)).Single();
+                    
+                    if(garmentCuttingOutItem.TotalCuttingOut - diffQty == 0)
+                    {
+                        garmentCuttingOutItem.Remove();
+                    }
+                    else
+                    {
+                        garmentCuttingOutItem.SetTotalCuttingOutQuantity(garmentCuttingOutItem.TotalCuttingOut - cuttingOutDetail.Value);
+                        garmentCuttingOutItem.Modify();
+                    }
+
+                    await _garmentCuttinOutItemRepository.Update(garmentCuttingOutItem);
 
                     var garmenCuttingInDetail = _garmentCuttingInDetailRepository.Query.Where(x => x.Identity == garmentCuttingOutItem.CuttingInDetailId).Select(s => new GarmentSubconCuttingInDetail(s)).Single();
 

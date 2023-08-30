@@ -118,7 +118,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentFinis
                         Unit = garmentFinishingOutItem.UomUnit
                     },
                     Color = garmentFinishingOutItem.Color,
-                    RemainingQuantity = garmentFinishingOutItem.RemainingQuantity,
+                    RealQtyOut = garmentFinishingOutItem.RealQtyOut,
                     BasicPrice = garmentFinishingOutItem.BasicPrice,
                     Price = garmentFinishingOutItem.Price,
 
@@ -130,6 +130,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentFinis
                             Id = garmentFinishingOutDetail.SizeId,
                             Size = garmentFinishingOutDetail.SizeName,
                         },
+                        RealQtyOut = garmentFinishingOutDetail.RealQtyOut,
                         Quantity = garmentFinishingOutDetail.Quantity,
                         Uom = new
                         {

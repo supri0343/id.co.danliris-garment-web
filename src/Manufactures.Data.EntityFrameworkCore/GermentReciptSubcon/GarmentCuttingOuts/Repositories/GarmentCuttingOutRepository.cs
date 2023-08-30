@@ -38,6 +38,27 @@ namespace Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentCutti
             return data;
         }
 
+        public IQueryable<GarmentSubconCuttingOutReadModel> ReadComplete(int page, int size, string order, string keyword, string filter)
+        {
+            var data = Query;
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            data = QueryHelper<GarmentSubconCuttingOutReadModel>.Filter(data, FilterDictionary);
+
+            List<string> SearchAttributes = new List<string>
+            {
+                "RONo",  
+            };
+
+            data = QueryHelper<GarmentSubconCuttingOutReadModel>.Search(data, SearchAttributes, keyword);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            data = OrderDictionary.Count == 0 ? data.OrderByDescending(o => o.ModifiedDate) : QueryHelper<GarmentSubconCuttingOutReadModel>.Order(data, OrderDictionary);
+
+
+            return data;
+        }
+
         protected override GarmentSubconCuttingOut Map(GarmentSubconCuttingOutReadModel readModel)
         {
             return new GarmentSubconCuttingOut(readModel);
@@ -85,7 +106,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentCutti
                     },
                     DesignColor = garmentCuttingOutItem.DesignColor,
                     TotalCuttingOut = garmentCuttingOutItem.TotalCuttingOut,
-
+                    RealQtyOut = garmentCuttingOutItem.RealQtyOut,
                     Details = garmentCuttingOutItem.GarmentSubconCuttingOutDetail.Select(garmentCuttingOutDetail => new {
                         Id = garmentCuttingOutDetail.Identity,
                         CutOutItemId = garmentCuttingOutDetail.CutOutItemId,

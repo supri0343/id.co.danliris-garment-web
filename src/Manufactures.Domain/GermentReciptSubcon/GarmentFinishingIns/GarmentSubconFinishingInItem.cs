@@ -46,7 +46,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentFinishingIns
             SubconCuttingId = subconCuttingId;
             ProductId = productId;
             ProductCode = productCode;
-            ProductName = productCode;
+            ProductName = productName;
             DesignColor = designColor;
             SizeId = sizeId;
             SizeName = sizeName;

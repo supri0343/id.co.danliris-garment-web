@@ -12,6 +12,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts.Repositorie
         IQueryable<GarmentSubconCuttingOutReadModel> Read(int page, int size, string order, string keyword, string filter);
 
         IQueryable<object> ReadExecute(IQueryable<GarmentSubconCuttingOutReadModel> query);
+        IQueryable<GarmentSubconCuttingOutReadModel> ReadComplete(int page, int size, string order, string keyword, string filter);
     }
     
 }
