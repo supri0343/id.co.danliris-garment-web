@@ -17,6 +17,7 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GermentCuttingOut
             Product = new Product(garmentCuttingOutItem.ProductId.Value, garmentCuttingOutItem.ProductCode, garmentCuttingOutItem.ProductName);
             DesignColor = garmentCuttingOutItem.DesignColor;
             TotalCuttingOut = garmentCuttingOutItem.TotalCuttingOut;
+            RealQtyOut = garmentCuttingOutItem.RealQtyOut;
             TotalCuttingOutQuantity = garmentCuttingOutItem.TotalCuttingOutQuantity;
 
             Details = new List<GarmentSubconCuttingOutDetailDto>();
@@ -29,6 +30,7 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GermentCuttingOut
         public Product Product { get; set; }
         public string DesignColor { get; set; }
         public double TotalCuttingOut { get; set; }
+        public double RealQtyOut { get; set; }
         public double TotalCuttingOutQuantity { get; set; }
         public List<GarmentSubconCuttingOutDetailDto> Details { get; set; }
     }

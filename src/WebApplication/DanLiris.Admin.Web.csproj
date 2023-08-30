@@ -31,6 +31,14 @@
     <Compile Remove="Migrations\20230814061512_add-table-SubconFinishingIn.Designer.cs" />
     <Compile Remove="Migrations\20230814082022_add-table-SubconFinishingIn.cs" />
     <Compile Remove="Migrations\20230814082022_add-table-SubconFinishingIn.Designer.cs" />
+    <Compile Remove="Migrations\20230829033445_add-table-SubconPackingIn.cs" />
+    <Compile Remove="Migrations\20230829033445_add-table-SubconPackingIn.Designer.cs" />
+    <Compile Remove="Migrations\20230829034053_add-table-SubconPackingIn.cs" />
+    <Compile Remove="Migrations\20230829034053_add-table-SubconPackingIn.Designer.cs" />
+    <Compile Remove="Migrations\20230829034919_add-table-SubconPackingIn.cs" />
+    <Compile Remove="Migrations\20230829034919_add-table-SubconPackingIn.Designer.cs" />
+    <Compile Remove="Migrations\20230829035121_add-table-SubconPackingIn.cs" />
+    <Compile Remove="Migrations\20230829035121_add-table-SubconPackingIn.Designer.cs" />
   </ItemGroup>
 
   <!--<ItemGroup>

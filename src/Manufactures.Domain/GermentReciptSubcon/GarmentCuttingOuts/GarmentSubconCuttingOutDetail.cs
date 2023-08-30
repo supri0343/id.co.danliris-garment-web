@@ -31,12 +31,12 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts
             }
         }
 
-        public void SetRealOutQuantity(double RemainingQuantity)
+        public void SetRealOutQuantity(double realQtyOut)
         {
-            if (this.RealQtyOut != RemainingQuantity)
+            if (this.RealQtyOut != realQtyOut)
             {
-                this.RealQtyOut = RemainingQuantity;
-                ReadModel.RealQtyOut = RemainingQuantity;
+                this.RealQtyOut = realQtyOut;
+                ReadModel.RealQtyOut = realQtyOut;
             }
         }
 

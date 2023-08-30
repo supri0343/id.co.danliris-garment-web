@@ -85,7 +85,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentFinishingOuts.Comm
                         new UomId(item.Uom.Id),
                         item.Uom.Unit,
                         item.Color,
-                        request.IsDifferentSize ? item.TotalQuantity : item.Quantity,
+                        0,
                         item.BasicPrice,
                         item.Price
                     );
@@ -102,7 +102,8 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentFinishingOuts.Comm
                                 detail.Size.Size,
                                 detail.Quantity,
                                 new UomId(detail.Uom.Id),
-                                detail.Uom.Unit
+                                detail.Uom.Unit,
+                                0
                             );
                             detail.Id = garmentFinishingOutDetailId;
                             if (finishingInItemToBeUpdated.ContainsKey(item.FinishingInItemId))

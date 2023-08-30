@@ -13,6 +13,8 @@ using Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts.Commands;
 using Manufactures.Dtos.GermentReciptSubcon.GermentCuttingOut;
+using Newtonsoft.Json;
+using Infrastructure.Data.EntityFrameworkCore.Utilities;
 
 namespace Manufactures.Controllers.Api.GermentReciptSubcon
 {
@@ -164,48 +166,74 @@ namespace Manufactures.Controllers.Api.GermentReciptSubcon
             }
         }
 
-		//[HttpGet("monitoring")]
-		//public async Task<IActionResult> GetMonitoring(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
-		//{
-		//	VerifyUser();
-		//	GetMonitoringCuttingQuery query = new GetMonitoringCuttingQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
-		//	var viewModel = await Mediator.Send(query);
+        //[HttpGet("monitoring")]
+        //public async Task<IActionResult> GetMonitoring(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+        //{
+        //	VerifyUser();
+        //	GetMonitoringCuttingQuery query = new GetMonitoringCuttingQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
+        //	var viewModel = await Mediator.Send(query);
 
-		//	return Ok(viewModel.garmentMonitorings, info: new
-		//	{
-		//		page,
-		//		size,
-		//		viewModel.count
-		//	});
-		//}
+        //	return Ok(viewModel.garmentMonitorings, info: new
+        //	{
+        //		page,
+        //		size,
+        //		viewModel.count
+        //	});
+        //}
 
-		//[HttpGet("download")]
-		//public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, string type,int page = 1, int size = 25, string Order = "{}")
-		//{
-		//	try
-		//	{
-		//		VerifyUser();
-		//		GetXlsCuttingQuery query = new GetXlsCuttingQuery(page, size, Order, unit, dateFrom, dateTo, type,WorkContext.Token);
-		//		byte[] xlsInBytes;
+        //[HttpGet("download")]
+        //public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, string type,int page = 1, int size = 25, string Order = "{}")
+        //{
+        //	try
+        //	{
+        //		VerifyUser();
+        //		GetXlsCuttingQuery query = new GetXlsCuttingQuery(page, size, Order, unit, dateFrom, dateTo, type,WorkContext.Token);
+        //		byte[] xlsInBytes;
 
-		//		var xls = await Mediator.Send(query);
+        //		var xls = await Mediator.Send(query);
 
-		//		string filename = "Laporan Cutting";
+        //		string filename = "Laporan Cutting";
 
-		//		if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+        //		if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
 
-		//		if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
-		//		filename += ".xlsx";
+        //		if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+        //		filename += ".xlsx";
 
-		//		xlsInBytes = xls.ToArray();
-		//		var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
-		//		return file;
-		//	}
-		//	catch (Exception e)
-		//	{
-		//		return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
-		//	}
-		//}
+        //		xlsInBytes = xls.ToArray();
+        //		var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+        //		return file;
+        //	}
+        //	catch (Exception e)
+        //	{
+        //		return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+        //	}
+        //}
+
+        [HttpGet("get-by-ro")]
+        public async Task<IActionResult> GetByRo(int page = 1, int size = 10, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentSubconCuttingOutRepository.ReadComplete(page, size, order, keyword, filter);
+            var count = query.Count();
+
+            var garmentSewingOutDto = _garmentSubconCuttingOutRepository.Find(query).Select(o => new GarmentSubconCuttingOutDto(o)).ToArray();
+
+            if (order != "{}")
+            {
+                Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+                garmentSewingOutDto = QueryHelper<GarmentSubconCuttingOutDto>.Order(garmentSewingOutDto.AsQueryable(), OrderDictionary).ToArray();
+            }
+
+
+            await Task.Yield();
+            return Ok(garmentSewingOutDto, info: new
+            {
+                page,
+                size,
+                count
+            });
+        }
 
         [HttpGet("complete")]
         public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")

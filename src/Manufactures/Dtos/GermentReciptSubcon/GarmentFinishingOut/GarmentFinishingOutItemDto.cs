@@ -21,7 +21,7 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GarmentFinishingOut
             Quantity = garmentFinishingOutItem.Quantity;
             Uom = new Uom(garmentFinishingOutItem.UomId.Value, garmentFinishingOutItem.UomUnit);
             Color = garmentFinishingOutItem.Color;
-            RemainingQuantity = garmentFinishingOutItem.RemainingQuantity;
+            RealQtyOut = garmentFinishingOutItem.RealQtyOut;
             BasicPrice = garmentFinishingOutItem.BasicPrice;
             Price = garmentFinishingOutItem.Price;
 
@@ -38,7 +38,7 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GarmentFinishingOut
         public double Quantity { get; set; }
         public Uom Uom { get; set; }
         public string Color { get; set; }
-        public double RemainingQuantity { get; set; }
+        public double RealQtyOut { get; set; }
         public double BasicPrice { get; set; }
         public double Price { get; set; }
         public List<GarmentFinishingOutDetailDto> Details { get; set; }

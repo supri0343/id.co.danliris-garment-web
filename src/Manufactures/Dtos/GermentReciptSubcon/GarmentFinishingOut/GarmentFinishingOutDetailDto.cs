@@ -16,13 +16,14 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GarmentFinishingOut
             Size = new SizeValueObject(garmentFinishingOutDetail.SizeId.Value, garmentFinishingOutDetail.SizeName);
             Quantity = garmentFinishingOutDetail.Quantity;
             Uom = new Uom(garmentFinishingOutDetail.UomId.Value, garmentFinishingOutDetail.UomUnit);
-
+            RealQtyOut =  garmentFinishingOutDetail.RealQtyOut;
         }
 
         public Guid Id { get; set; }
         public Guid FinishingOutItemId { get; set; }
         public SizeValueObject Size { get; set; }
         public double Quantity { get; set; }
+        public double RealQtyOut { get; set; }
         public Uom Uom { get; set; }
     }
 }
