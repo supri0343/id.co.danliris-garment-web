@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSubcon.CustomsOuts;
 using Manufactures.Domain.GarmentSubcon.CustomsOuts.Commands;
 using Manufactures.Domain.GarmentSubcon.CustomsOuts.Repositories;
+using Manufactures.Domain.GarmentSubcon.SubconContracts;
+using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
@@ -21,13 +23,14 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
         private readonly IGarmentSubconCustomsOutRepository _garmentSubconCustomsOutRepository;
         private readonly IGarmentSubconCustomsOutItemRepository _garmentSubconCustomsOutItemRepository;
         private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;
-
+        private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
         public PlaceGarmentSubconCustomsOutCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentSubconCustomsOutRepository = storage.GetRepository<IGarmentSubconCustomsOutRepository>();
             _garmentSubconCustomsOutItemRepository = storage.GetRepository<IGarmentSubconCustomsOutItemRepository>();
             _garmentSubconDeliveryLetterOutRepository = storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
+            _garmentSubconContractRepository = storage.GetRepository<IGarmentSubconContractRepository>();
         }
 
         public async Task<GarmentSubconCustomsOut> Handle(PlaceGarmentSubconCustomsOutCommand request, CancellationToken cancellationToken)
@@ -64,9 +67,13 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
                 subconDLOut.SetIsUsed(true);
                 subconDLOut.Modify();
                 await _garmentSubconDeliveryLetterOutRepository.Update(subconDLOut);
-
                 await _garmentSubconCustomsOutItemRepository.Update(garmentSubconCustomsOutItem);
             }
+
+            var subconContract = _garmentSubconContractRepository.Query.Where(x => x.Identity == request.SubconContractId).Select(n => new GarmentSubconContract(n)).Single();
+            subconContract.SetIsCustoms(true);
+            subconContract.Modify();
+            await _garmentSubconContractRepository.Update(subconContract);
 
             await _garmentSubconCustomsOutRepository.Update(garmentSubconCustomsOut);
 
