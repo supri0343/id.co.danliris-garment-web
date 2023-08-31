@@ -36,7 +36,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
         public string CreatedBy { get; private set; }
         public double NettWeight { get; private set; }
         public double GrossWeight { get; private set; }
-
+        public bool IsCustoms { get; private set; }
         public GarmentSubconContract(GarmentSubconContractReadModel readModel) : base(readModel)
         {
             ContractType = readModel.ContractType;
@@ -64,9 +64,10 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             CreatedBy = readModel.CreatedBy;
             NettWeight = readModel.NettWeight;
             GrossWeight = readModel.GrossWeight;
+            IsCustoms = readModel.IsCustoms;
         }
 
-        public GarmentSubconContract(Guid identity, string contractType, string contractNo, string agreementNo, SupplierId supplierId, string supplierCode, string supplierName, string jobType, string bPJNo, string finishedGoodType, double quantity, DateTimeOffset dueDate, DateTimeOffset contractDate, bool isUsed, /*BuyerId buyerId, string buyerCode, string buyerName,*/ string subconCategory, UomId uomId, string uomUnit, string sKEPNo, DateTimeOffset agreementDate, double cif, double nettWeight, double grossWeight) : base(identity)
+        public GarmentSubconContract(Guid identity, string contractType, string contractNo, string agreementNo, SupplierId supplierId, string supplierCode, string supplierName, string jobType, string bPJNo, string finishedGoodType, double quantity, DateTimeOffset dueDate, DateTimeOffset contractDate, bool isUsed, /*BuyerId buyerId, string buyerCode, string buyerName,*/ string subconCategory, UomId uomId, string uomUnit, string sKEPNo, DateTimeOffset agreementDate, double cif, double nettWeight, double grossWeight,bool isCustoms) : base(identity)
         {
             Identity = identity;
             ContractType = contractType;
@@ -93,6 +94,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             CIF = cif;
             NettWeight = nettWeight;
             GrossWeight = grossWeight;
+            IsCustoms = isCustoms;
             ReadModel = new GarmentSubconContractReadModel(Identity)
             {
                 ContractType = ContractType,
@@ -118,7 +120,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
                 AgreementDate = agreementDate,
                 CIF = CIF,
                 NettWeight = NettWeight,
-                GrossWeight = GrossWeight
+                GrossWeight = GrossWeight,
+                IsCustoms = IsCustoms
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconContractPlaced(Identity));
@@ -231,6 +234,15 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts
             {
                 this.IsUsed = Isused;
                 ReadModel.IsUsed = Isused;
+            }
+        }
+
+        public void SetIsCustoms(bool IsCustoms)
+        {
+            if (this.IsCustoms != IsCustoms)
+            {
+                this.IsCustoms = IsCustoms;
+                ReadModel.IsCustoms = IsCustoms;
             }
         }
         //public void SetBuyerId(BuyerId SupplierId)

@@ -36,7 +36,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels
         public double CIF { get; internal set; }
         public double NettWeight { get; internal set; }
         public double GrossWeight { get; internal set; }
-
+        public bool IsCustoms { get; internal set; }
         public virtual List<GarmentSubconContractItemReadModel> GarmentSubconContractItem { get; internal set; }
     }
 }
