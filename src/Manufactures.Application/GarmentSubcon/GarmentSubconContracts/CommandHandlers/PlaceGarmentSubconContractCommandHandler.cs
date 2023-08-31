@@ -55,7 +55,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
                 request.AgreementDate,
                 request.CIF,
                 request.NettWeight,
-                request.GrossWeight
+                request.GrossWeight,
+                false
             );
 
             foreach (var item in request.Items)
