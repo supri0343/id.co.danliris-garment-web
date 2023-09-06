@@ -3,6 +3,7 @@ using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Infrastructure.External.DanLirisClient.Microservice.Cache;
 using Manufactures.Domain.GermentReciptSubcon.GarmentPackingIns.Commands;
 using Manufactures.Domain.GermentReciptSubcon.GarmentPackingIns.Repositories;
+using Manufactures.Domain.Shared.ValueObjects;
 using Manufactures.Dtos.GermentReciptSubcon.GarmentPackingIn;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -167,8 +168,13 @@ namespace Manufactures.Controllers.Api.GermentReciptSubcon
             if (!string.IsNullOrWhiteSpace(keyword))
                 query = query.Where(o => o.RONo.Contains(keyword));
 
-            var rOs = _garmentPackingInRepository.Find(query)
-                .Select(o => new { o.RONo, o.Article, o.ComodityCode, o.ComodityId, o.ComodityName }).Distinct().ToList();
+            var rOs = query
+                .Select(o => new 
+                {
+                    RONo =  o.RONo,
+                    Article = o.Article,
+                    Comodity = new GarmentComodity(o.ComodityId, o.ComodityCode, o.ComodityName)  
+                }).Distinct().ToList();
 
             await Task.Yield();
 
