@@ -68,6 +68,7 @@ using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentSewingOut
 using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentFinishingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentFinishingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentPackingIns.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentPackingOut.Configs;
 
 namespace Manufactures.Data.EntityFrameworkCore
 {
@@ -312,6 +313,9 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 			modelBuilder.ApplyConfiguration(new GarmentSubconPackingInConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSubconPackingInItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconPackingOutConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconPackingOutItemConfig());
 		}
 	}
 }
