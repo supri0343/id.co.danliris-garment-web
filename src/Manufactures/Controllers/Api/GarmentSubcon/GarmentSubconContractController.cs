@@ -3,6 +3,7 @@ using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentSubcon.GarmentSubconContracts.ExcelTemplates;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubconReport;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconContactReport;
+using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoringOut;
 using Manufactures.Domain.GarmentSubcon.SubconContracts;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.ReadModels;
@@ -314,6 +315,49 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
                 //if (subconcontractNo != null) filename += " " + subconcontractNo;
                 //filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [HttpGet("subcon-out-monitoring")]
+        public async Task<IActionResult> GetSubconOutMonitoring(string subconcontractNo, string subconContractType, string subconCategory, int page = 1, int size = 25, string Order = "{}")
+        {
+            VerifyUser();
+            GarmentSubconMonitoringOutQuery query = new GarmentSubconMonitoringOutQuery(page, size, Order, subconcontractNo, subconContractType, subconCategory, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            var model = new { IN = viewModel.garmentSubconMonitoringOutDtosIn.OrderBy( x => x.bcNoOut), Out = viewModel.garmentSubconMonitoringOutDtosOut.OrderBy(x => x.bcNoOut) };
+
+            return Ok(model, info: new
+            {
+                page,
+                size,
+                viewModel.count
+            });
+        }
+
+        [HttpGet("subcon-out-monitoring/download")]
+        public async Task<IActionResult> GetXlsSubconOutMonitoring(string subconcontractNo, string subconContractType, string subconCategory, int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                VerifyUser();
+                GetXLSGarmentSubconMonitoringOutQuery query = new GetXLSGarmentSubconMonitoringOutQuery(page, size, Order, subconcontractNo, subconContractType, subconCategory,WorkContext.Token);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = "Monitoring Subcon Keluar ";
+
+                if (subconcontractNo != null) filename += " " + subconcontractNo;
+                filename += ".xlsx";
 
                 xlsInBytes = xls.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
