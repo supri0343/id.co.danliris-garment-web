@@ -342,19 +342,23 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             var type = request.ContractType == "SUBCON BAHAN BAKU" ? "BB" : request.ContractType == "SUBCON CUTTING" ? "CT" : request.ContractType == "SUBCON GARMENT" ? "SG":"JS";
 
             var prefix = "";
+            int pad; 
             if(request.OrderType == "JOB ORDER")
             {
                 prefix = $"SJK/{type}/{year}{month}";
+                pad = 11;
             }
             else
             {
                 prefix = $"SJKS/{type}/{year}{month}";
+                pad = 12;
             }
 
             var lastNo = _garmentSubconDeliveryLetterOutRepository.Query.Where(w => w.DLNo.StartsWith(prefix))
-                .OrderByDescending(o => o.DLNo)
-                .Select(s => int.Parse(s.DLNo.Substring(12, 4)))
-                .FirstOrDefault();
+           .OrderByDescending(o => o.DLNo)
+           .Select(s => int.Parse(s.DLNo.Substring(pad, 4)))
+           .FirstOrDefault();
+      
             var no = $"{prefix}{(lastNo + 1).ToString("D4")}{code}";
 
             return no;
