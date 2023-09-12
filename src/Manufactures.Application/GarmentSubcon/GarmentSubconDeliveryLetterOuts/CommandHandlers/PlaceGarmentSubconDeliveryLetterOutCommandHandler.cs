@@ -143,6 +143,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     item.UENNo
                 );
 
+
                 if(item.Details != null)
                 {
                     foreach (var detail in item.Details)
