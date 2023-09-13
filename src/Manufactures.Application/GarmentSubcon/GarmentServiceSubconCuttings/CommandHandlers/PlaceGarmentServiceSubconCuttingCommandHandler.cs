@@ -79,9 +79,123 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
                     item.Comodity.Code,
                     item.Comodity.Name
                 );
-
+                
                 List<GarmentServiceSubconCuttingSize> cuttingInDetails = new List<GarmentServiceSubconCuttingSize>();
                 var cuttingIn = _garmentCuttingInRepository.Query.Where(x => x.RONo == item.RONo).OrderBy(a => a.CreatedDate).ToList();
+                #region Old Query Calculating From Cut In (13/09/23)
+                //foreach (var cutIn in cuttingIn)
+                //{
+                //    var cuttingInItems = _garmentCuttingInItemRepository.Query.Where(x => x.CutInId == cutIn.Identity).OrderBy(a => a.CreatedDate).ToList();
+                //    foreach (var cutInItem in cuttingInItems)
+                //    {
+                //        var cutInDetails = _garmentCuttingInDetailRepository.Query.Where(x => x.CutInItemId == cutInItem.Identity).OrderBy(a => a.CreatedDate).ToList();
+
+                //        foreach (var cutInDetail in cutInDetails)
+                //        {
+                //            var subconCuttingSizes = _garmentServiceSubconCuttingSizeRepository.Query.Where(o => o.CuttingInDetailId == cutInDetail.Identity).ToList();
+                //            if (subconCuttingSizes != null)
+                //            {
+                //                double qty = (double)cutInDetail.CuttingInQuantity;
+                //                foreach (var subconCuttingDetail in subconCuttingSizes)
+                //                {
+                //                    qty -= subconCuttingDetail.Quantity;
+                //                }
+                //                if (qty > 0)
+                //                {
+                //                    cuttingInDetails.Add(new GarmentServiceSubconCuttingSize
+                //                    (
+                //                        new Guid(),
+                //                        new SizeId(1),
+                //                        "",
+                //                        qty,
+                //                        new UomId(1),
+                //                        "",
+                //                        cutInDetail.DesignColor,
+                //                        item.Id,
+                //                        cutIn.Identity,
+                //                        cutInDetail.Identity,
+                //                        new ProductId(cutInDetail.ProductId),
+                //                        cutInDetail.ProductCode,
+                //                        cutInDetail.ProductName
+                //                    ));
+                //                }
+
+                //            }
+                //        }
+                //    }
+                //}
+
+                //foreach (var detail in item.Details)
+                //{
+                //    if (detail.IsSave)
+                //    {
+                //        GarmentServiceSubconCuttingDetail garmentServiceSubconCuttingDetail = new GarmentServiceSubconCuttingDetail(
+                //                    Guid.NewGuid(),
+                //                    garmentServiceSubconCuttingItem.Identity,
+                //                    detail.DesignColor,
+                //                    detail.Quantity
+                //                );
+                //        var cutInDetail = cuttingInDetails.Where(y => y.Color == detail.DesignColor).ToList();
+                //        foreach (var size in detail.Sizes)
+                //        {
+                //            var qty = size.Quantity;
+                //            foreach (var d in cutInDetail)
+                //            {
+                //                if (d.Quantity > 0)
+                //                {
+                //                    var qtyRemains = d.Quantity - qty;
+                //                    if (qtyRemains >= 0)
+                //                    {
+                //                        GarmentServiceSubconCuttingSize garmentServiceSubconCuttingSize = new GarmentServiceSubconCuttingSize(
+                //                            Guid.NewGuid(),
+                //                            new SizeId(size.Size.Id),
+                //                            size.Size.Size,
+                //                            qty,
+                //                            new UomId(size.Uom.Id),
+                //                            size.Uom.Unit,
+                //                            size.Color,
+                //                            garmentServiceSubconCuttingDetail.Identity,
+                //                            d.CuttingInId,
+                //                            d.CuttingInDetailId,
+                //                            d.ProductId,
+                //                            d.ProductCode,
+                //                            d.ProductName
+                //                        );
+                //                        await _garmentServiceSubconCuttingSizeRepository.Update(garmentServiceSubconCuttingSize);
+                //                        d.SetQuantity(qtyRemains);
+                //                        break;
+                //                    }
+                //                    else if (qtyRemains < 0)
+                //                    {
+                //                        qty -= d.Quantity;
+                //                        GarmentServiceSubconCuttingSize garmentServiceSubconCuttingSize = new GarmentServiceSubconCuttingSize(
+                //                            Guid.NewGuid(),
+                //                            new SizeId(size.Size.Id),
+                //                            size.Size.Size,
+                //                            d.Quantity,
+                //                            new UomId(size.Uom.Id),
+                //                            size.Uom.Unit,
+                //                            size.Color,
+                //                            garmentServiceSubconCuttingDetail.Identity,
+                //                            d.CuttingInId,
+                //                            d.CuttingInDetailId,
+                //                            d.ProductId,
+                //                            d.ProductCode,
+                //                            d.ProductName
+                //                        );
+                //                        await _garmentServiceSubconCuttingSizeRepository.Update(garmentServiceSubconCuttingSize);
+                //                        d.SetQuantity(qtyRemains);
+                //                    }
+                //                }
+
+                //            }
+                //        }
+                //        await _garmentServiceSubconCuttingDetailRepository.Update(garmentServiceSubconCuttingDetail);
+                //    }
+                //}
+                #endregion
+
+                #region New Query Ignore Calculating From Cut In (13/09/23)
 
                 foreach (var cutIn in cuttingIn)
                 {
@@ -95,31 +209,22 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
                             var subconCuttingSizes = _garmentServiceSubconCuttingSizeRepository.Query.Where(o => o.CuttingInDetailId == cutInDetail.Identity).ToList();
                             if (subconCuttingSizes != null)
                             {
-                                double qty = (double)cutInDetail.CuttingInQuantity;
-                                foreach (var subconCuttingDetail in subconCuttingSizes)
-                                {
-                                    qty -= subconCuttingDetail.Quantity;
-                                }
-                                if (qty > 0)
-                                {
-                                    cuttingInDetails.Add(new GarmentServiceSubconCuttingSize
-                                    (
-                                        new Guid(),
-                                        new SizeId(1),
-                                        "",
-                                        qty,
-                                        new UomId(1),
-                                        "",
-                                        cutInDetail.DesignColor,
-                                        item.Id,
-                                        cutIn.Identity,
-                                        cutInDetail.Identity,
-                                        new ProductId(cutInDetail.ProductId),
-                                        cutInDetail.ProductCode,
-                                        cutInDetail.ProductName
-                                    ));
-                                }
-
+                                cuttingInDetails.Add(new GarmentServiceSubconCuttingSize
+                                (
+                                    new Guid(),
+                                    new SizeId(1),
+                                    "",
+                                    cutInDetail.CuttingInQuantity,
+                                    new UomId(1),
+                                    "",
+                                    cutInDetail.DesignColor,
+                                    item.Id,
+                                    cutIn.Identity,
+                                    cutInDetail.Identity,
+                                    new ProductId(cutInDetail.ProductId),
+                                    cutInDetail.ProductCode,
+                                    cutInDetail.ProductName
+                                ));
                             }
                         }
                     }
@@ -135,68 +240,35 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
                                     detail.DesignColor,
                                     detail.Quantity
                                 );
-                        var cutInDetail = cuttingInDetails.Where(y => y.Color == detail.DesignColor).ToList();
+                        var cutInDetail = cuttingInDetails.FirstOrDefault(y => y.Color == detail.DesignColor);
                         foreach (var size in detail.Sizes)
                         {
-                            var qty = size.Quantity;
-                            foreach (var d in cutInDetail)
                             {
-                                if (d.Quantity > 0)
-                                {
-                                    var qtyRemains = d.Quantity - qty;
-                                    if (qtyRemains >= 0)
-                                    {
-                                        GarmentServiceSubconCuttingSize garmentServiceSubconCuttingSize = new GarmentServiceSubconCuttingSize(
-                                            Guid.NewGuid(),
-                                            new SizeId(size.Size.Id),
-                                            size.Size.Size,
-                                            qty,
-                                            new UomId(size.Uom.Id),
-                                            size.Uom.Unit,
-                                            size.Color,
-                                            garmentServiceSubconCuttingDetail.Identity,
-                                            d.CuttingInId,
-                                            d.CuttingInDetailId,
-                                            d.ProductId,
-                                            d.ProductCode,
-                                            d.ProductName
-                                        );
-                                        await _garmentServiceSubconCuttingSizeRepository.Update(garmentServiceSubconCuttingSize);
-                                        d.SetQuantity(qtyRemains);
-                                        break;
-                                    }
-                                    else if (qtyRemains < 0)
-                                    {
-                                        qty -= d.Quantity;
-                                        GarmentServiceSubconCuttingSize garmentServiceSubconCuttingSize = new GarmentServiceSubconCuttingSize(
-                                            Guid.NewGuid(),
-                                            new SizeId(size.Size.Id),
-                                            size.Size.Size,
-                                            d.Quantity,
-                                            new UomId(size.Uom.Id),
-                                            size.Uom.Unit,
-                                            size.Color,
-                                            garmentServiceSubconCuttingDetail.Identity,
-                                            d.CuttingInId,
-                                            d.CuttingInDetailId,
-                                            d.ProductId,
-                                            d.ProductCode,
-                                            d.ProductName
-                                        );
-                                        await _garmentServiceSubconCuttingSizeRepository.Update(garmentServiceSubconCuttingSize);
-                                        d.SetQuantity(qtyRemains);
-                                    }
-                                }
-                                
+                                GarmentServiceSubconCuttingSize garmentServiceSubconCuttingSize = new GarmentServiceSubconCuttingSize(
+                                    Guid.NewGuid(),
+                                    new SizeId(size.Size.Id),
+                                    size.Size.Size,
+                                    size.Quantity,
+                                    new UomId(size.Uom.Id),
+                                    size.Uom.Unit,
+                                    size.Color,
+                                    garmentServiceSubconCuttingDetail.Identity,
+                                    cutInDetail.CuttingInId,
+                                    cutInDetail.CuttingInDetailId,
+                                    cutInDetail.ProductId,
+                                    cutInDetail.ProductCode,
+                                    cutInDetail.ProductName
+                                );
+                                await _garmentServiceSubconCuttingSizeRepository.Update(garmentServiceSubconCuttingSize);
+
                             }
                         }
                         await _garmentServiceSubconCuttingDetailRepository.Update(garmentServiceSubconCuttingDetail);
                     }
                 }
-
+                #endregion
                 await _garmentServiceSubconCuttingItemRepository.Update(garmentServiceSubconCuttingItem);
             }
-
 
             await _garmentServiceSubconCuttingRepository.Update(garmentServiceSubconCutting);
 
