@@ -35,7 +35,7 @@ namespace Manufactures.Controllers.GermentReciptSubcon.Api
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        public async Task<IActionResult> Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
         {
             VerifyUser();
 
@@ -82,7 +82,7 @@ namespace Manufactures.Controllers.GermentReciptSubcon.Api
 
             GarmentPackingOutDto garmentPackingOutDto = _garmentPackingOutRepository.Find(o => o.Identity == guid).Select(finishOut => new GarmentPackingOutDto(finishOut)
             {
-                Items = _garmentPackingOutItemRepository.Find(o => o.PackingOutId == finishOut.Identity).OrderBy(a=>a.Description).ThenBy(i => i.SizeName).Select(packingOutItem => new GarmentPackingOutItemDto(packingOutItem)
+                Items = _garmentPackingOutItemRepository.Find(o => o.PackingOutId == finishOut.Identity).OrderBy(a => a.Description).ThenBy(i => i.SizeName).Select(packingOutItem => new GarmentPackingOutItemDto(packingOutItem)
                 {
                 }).ToList()
             }
@@ -110,7 +110,7 @@ namespace Manufactures.Controllers.GermentReciptSubcon.Api
         }
 
         [HttpPut("update-received/{id}")]
-        public async Task<IActionResult> Patch(string id, [FromBody]bool isReceived)
+        public async Task<IActionResult> Patch(string id, [FromBody] bool isReceived)
         {
             Guid guid = Guid.Parse(id);
 
@@ -136,8 +136,8 @@ namespace Manufactures.Controllers.GermentReciptSubcon.Api
             return Ok(order.Identity);
 
         }
-		[HttpGet("complete")]
-        public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        [HttpGet("complete")]
+        public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
         {
             VerifyUser();
 
@@ -155,5 +155,23 @@ namespace Manufactures.Controllers.GermentReciptSubcon.Api
             });
         }
 
+        [HttpPut("isPackingList")]
+        public async Task<IActionResult> IsPackingList([FromBody] UpdateIsPackingListGarmentSubconPackingOutCommand command)
+        {
+            try
+            {
+                VerifyUser();
+
+                var order = await Mediator.Send(command);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+
+        }
     }
 }

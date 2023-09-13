@@ -5,6 +5,7 @@ using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace Manufactures.Domain.GermentReciptSubcon.GarmentPackingIns.Commands
@@ -39,7 +40,7 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentPackingIns.Commands
             RuleFor(r => r.Article).NotNull();
             RuleFor(r => r.Price).GreaterThan(0).WithMessage("Tarif komoditi belum ada");
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
-            RuleFor(r => r.Items).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount");
+            RuleFor(r => r.Items.Where(s => s.IsSave == true)).NotEmpty().WithMessage("Item Tidak Boleh Kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
             RuleForEach(r => r.Items).SetValidator(new GarmentSubconPackingInItemValueObjectValidator());
         }
     }
