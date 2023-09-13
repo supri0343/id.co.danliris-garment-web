@@ -182,7 +182,7 @@ namespace Manufactures.Controllers.Api.GermentReciptSubcon
         }
 
         [HttpPut("approve")]
-        public async Task<IActionResult> ApproveLoading([FromBody] UpdateApproveGarmentSubconPackingInCommand command)
+        public async Task<IActionResult> Approve([FromBody] UpdateApproveGarmentSubconPackingInCommand command)
         {
             try
             {

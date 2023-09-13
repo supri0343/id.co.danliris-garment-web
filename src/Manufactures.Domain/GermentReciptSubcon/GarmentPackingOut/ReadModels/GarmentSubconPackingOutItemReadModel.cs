@@ -22,7 +22,8 @@ namespace Manufactures.Domain.GarmentPackingOut.ReadModels
         public double BasicPrice { get; internal set; }
         public double Price { get; internal set; }
 		public string UId { get; set; }
-		public virtual GarmentSubconPackingOutReadModel GarmentSubconPackingOut { get; internal set; }
+        public bool IsPackingList { get; internal set; }
+        public virtual GarmentSubconPackingOutReadModel GarmentSubconPackingOut { get; internal set; }
 
     }
 }
