@@ -132,6 +132,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             var totQtyPack = 0;
             double totQty = 0;
             double totPrice = 0;
+            double totSmallqtyBB = 0;
 
             int indexItem = 1;
             if (garmentSubconInvoicePacking.BCType == "BC 2.6.2")
@@ -177,24 +178,49 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 {
                     var sumQtyPack = 0;
                     var UomPack = "";
+
+                    double SmallqtyBB = 0;
+
+                    bool isBBPanel = false;
                     foreach(var dl in a.deliveryLetterOutList)
                     {
+                   
                         UomPack = dl.Items[0].UomSatuanUnit;
                         foreach (var dli in dl.Items)
                         {
                             sumQtyPack += dli.QtyPacking;
 
+                            if (dl.SubconCategory == "SUBCON BB SHRINKAGE/PANEL")
+                            {
+                                SmallqtyBB += dli.SmallQuantity;
+                                isBBPanel = true;
+                            }
+
                         }
                     }
+
+                    totQtyPack += sumQtyPack;
+                    totQty += a.Quantity;
+                    totPrice += garmentSubconContract.CIF * a.Quantity;
+                    totSmallqtyBB += SmallqtyBB;
+
                     cellCenter.Phrase = new Phrase(indexItem.ToString(), normal_font);
                     tableContent.AddCell(cellCenter);
 
                     cellCenter.Phrase = new Phrase(garmentSubconContract.FinishedGoodType, normal_font);
                     tableContent.AddCell(cellCenter);
 
-                    cellCenter.Phrase = new Phrase(a.Quantity.ToString(), normal_font);
-                    tableContent.AddCell(cellCenter);
-
+                    if (isBBPanel)
+                    {
+                        cellCenter.Phrase = new Phrase(SmallqtyBB.ToString(), normal_font);
+                        tableContent.AddCell(cellCenter);
+                    }
+                    else
+                    {
+                        cellCenter.Phrase = new Phrase(a.Quantity.ToString(), normal_font);
+                        tableContent.AddCell(cellCenter);
+                    }
+                    
                     cellCenter.Phrase = new Phrase(garmentSubconContract.Uom.Unit, normal_font);
                     tableContent.AddCell(cellCenter);
 
@@ -214,9 +240,6 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
                     indexItem++;
 
-                    totQtyPack += sumQtyPack;
-                    totQty += a.Quantity;
-                    totPrice += garmentSubconContract.CIF * a.Quantity;
                 }
               
             }
@@ -224,9 +247,20 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             cellLeft.Phrase = new Phrase("TOTAL", bold_font);
             cellLeft.Colspan = 2;
             tableContent.AddCell(cellLeft);
-            cellRight.Phrase = new Phrase($"{totQty}", bold_font);
-            cellRight.Colspan = 1;
-            tableContent.AddCell(cellRight);
+
+            if (garmentSubconContract.SubconCategory == "SUBCON BB SHRINKAGE/PANEL")
+            {
+                cellRight.Phrase = new Phrase($"{totSmallqtyBB}", bold_font);
+                cellRight.Colspan = 1;
+                tableContent.AddCell(cellRight);
+            }
+            else
+            {
+                cellRight.Phrase = new Phrase($"{totQty}", bold_font);
+                cellRight.Colspan = 1;
+                tableContent.AddCell(cellRight);
+            }
+  
             cellLeft.Phrase = new Phrase("", bold_font);
             cellLeft.Colspan = 1;
             tableContent.AddCell(cellLeft);
