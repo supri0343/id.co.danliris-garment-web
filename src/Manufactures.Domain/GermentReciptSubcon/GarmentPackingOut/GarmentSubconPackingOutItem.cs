@@ -22,8 +22,8 @@ namespace Manufactures.Domain.GarmentPackingOut
         public string Description { get; private set; }
         public double BasicPrice { get; private set; }
         public double Price { get; private set; }
-        public bool IsPackingList{ get; private set; }
-        public GarmentSubconPackingOutItem(Guid identity, Guid packingOutId, Guid packingInItemId, SizeId sizeId, string sizeName, double quantity, double returQuantity, UomId uomId, string uomUnit, string description, double basicPrice, double price,bool isPackingList) : base(identity)
+        //public bool IsPackingList{ get; private set; }
+        public GarmentSubconPackingOutItem(Guid identity, Guid packingOutId, Guid packingInItemId, SizeId sizeId, string sizeName, double quantity, double returQuantity, UomId uomId, string uomUnit, string description, double basicPrice, double price/*,bool isPackingList*/) : base(identity)
         {
             PackingOutId = packingOutId;
             PackingInItemId = packingInItemId;
@@ -36,7 +36,7 @@ namespace Manufactures.Domain.GarmentPackingOut
             Description = description;
             BasicPrice = basicPrice;
             Price = price;
-            IsPackingList = isPackingList;
+            //IsPackingList = isPackingList;
 
             ReadModel = new GarmentSubconPackingOutItemReadModel(Identity)
             {
@@ -51,7 +51,7 @@ namespace Manufactures.Domain.GarmentPackingOut
                 Description = Description,
                 BasicPrice = BasicPrice,
                 Price = Price,
-                IsPackingList = IsPackingList
+                //IsPackingList = IsPackingList
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconPackingOutPlaced(Identity));
@@ -70,7 +70,7 @@ namespace Manufactures.Domain.GarmentPackingOut
             Description = readModel.Description;
             BasicPrice = readModel.BasicPrice;
             Price = readModel.Price;
-            IsPackingList = readModel.IsPackingList;
+            //IsPackingList = readModel.IsPackingList;
         }
 
         public void SetReturQuantity(double ReturQuantity)
@@ -82,14 +82,14 @@ namespace Manufactures.Domain.GarmentPackingOut
             }
         }
 
-        public void SetIsPackingList(bool isPackingList)
-        {
-            if (this.IsPackingList != isPackingList)
-            {
-                this.IsPackingList = isPackingList;
-                ReadModel.IsPackingList = isPackingList;
-            }
-        }
+        //public void SetIsPackingList(bool isPackingList)
+        //{
+        //    if (this.IsPackingList != isPackingList)
+        //    {
+        //        this.IsPackingList = isPackingList;
+        //        ReadModel.IsPackingList = isPackingList;
+        //    }
+        //}
 
         public void Modify()
         {

@@ -10,13 +10,17 @@ namespace Manufactures.Domain.GarmentPackingOut.Commands
 {
     public class UpdateIsPackingListGarmentSubconPackingOutCommand : ICommand<int>
     {
-        public UpdateIsPackingListGarmentSubconPackingOutCommand(List<string> ids, bool isPackingList)
+        public UpdateIsPackingListGarmentSubconPackingOutCommand(List<string> nos, bool isReceived,string invoiceNo,int packingListId)
         {
-            Identities = ids;
-            IsPackingList = isPackingList;
+            PackingOutNos = nos;
+            IsReceived = isReceived;
+            InvoiceNo = invoiceNo;
+            PackingListId = packingListId;
         }
 
-        public List<string> Identities { get; private set; }
-        public bool IsPackingList { get; private set; }
+        public List<string> PackingOutNos { get; private set; }
+        public bool IsReceived { get; private set; }
+        public string InvoiceNo { get; private set; }
+        public int PackingListId { get; private set; }
     }
 }

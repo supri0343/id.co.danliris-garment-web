@@ -82,8 +82,8 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentPackingOuts.Comman
                         item.Uom.Unit,
                         item.Description,
                         item.BasicPrice,
-                        (item.BasicPrice + (double)garmentComodityPrice.Price) * item.Quantity,
-                        false
+                        (item.BasicPrice + (double)garmentComodityPrice.Price) * item.Quantity
+                       
                        );
 
                     await _garmentPackingOutItemRepository.Update(garmentPackingOutItem);
