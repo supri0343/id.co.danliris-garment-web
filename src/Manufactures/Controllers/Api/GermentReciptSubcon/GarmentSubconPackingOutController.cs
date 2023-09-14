@@ -109,19 +109,7 @@ namespace Manufactures.Controllers.GermentReciptSubcon.Api
             }
         }
 
-        [HttpPut("update-received/{id}")]
-        public async Task<IActionResult> Patch(string id, [FromBody] bool isReceived)
-        {
-            Guid guid = Guid.Parse(id);
 
-
-            VerifyUser();
-
-            UpdateIsReceivedGarmentSubconPackingOutCommand command = new UpdateIsReceivedGarmentSubconPackingOutCommand(guid, isReceived);
-            var order = await Mediator.Send(command);
-
-            return Ok(order.Identity);
-        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
@@ -155,7 +143,7 @@ namespace Manufactures.Controllers.GermentReciptSubcon.Api
             });
         }
 
-        [HttpPut("isPackingList")]
+        [HttpPut("update-received")]
         public async Task<IActionResult> IsPackingList([FromBody] UpdateIsPackingListGarmentSubconPackingOutCommand command)
         {
             try
@@ -173,5 +161,6 @@ namespace Manufactures.Controllers.GermentReciptSubcon.Api
 
 
         }
+
     }
 }
