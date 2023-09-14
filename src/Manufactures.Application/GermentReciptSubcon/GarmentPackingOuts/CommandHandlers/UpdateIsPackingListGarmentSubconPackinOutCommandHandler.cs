@@ -14,33 +14,40 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentPackingIns.Command
 {
     public class UpdateIsPackingListGarmentSubconPackinOutCommandHandler : ICommandHandler<UpdateIsPackingListGarmentSubconPackingOutCommand, int>
     {
-        private readonly IGarmentSubconPackingOutItemRepository _garmentPackingOutItemRepository;
+        private readonly IGarmentSubconPackingOutRepository _garmentPackingOutRepository;
         private readonly IStorage _storage;
 
         public UpdateIsPackingListGarmentSubconPackinOutCommandHandler(IStorage storage)
         {
-            _garmentPackingOutItemRepository = storage.GetRepository<IGarmentSubconPackingOutItemRepository>();
+            _garmentPackingOutRepository = storage.GetRepository<IGarmentSubconPackingOutRepository>();
             _storage = storage;
         }
 
         public async Task<int> Handle(UpdateIsPackingListGarmentSubconPackingOutCommand request, CancellationToken cancellationToken)
         {
-            List<Guid> guids = new List<Guid>();
-            foreach (var id in request.Identities)
-            {
-                guids.Add(Guid.Parse(id));
-            }
-            var Packings = _garmentPackingOutItemRepository.Query.Where(a => guids.Contains(a.Identity)).Select(a => new GarmentSubconPackingOutItem(a)).ToList();
 
-            foreach (var model in Packings)
+           
+            foreach (var PackingOutNo in request.PackingOutNos)
             {
-                model.SetIsPackingList(request.IsPackingList);
-                model.Modify();
-                await _garmentPackingOutItemRepository.Update(model);
+                var packingOut = _garmentPackingOutRepository.Query.Where(x => x.PackingOutNo == PackingOutNo).Select(o => new GarmentSubconPackingOut(o)).Single();
+                if (request.IsReceived == true)
+                {
+                    packingOut.SetIsReceived(request.IsReceived);
+                    packingOut.SetInvoice(request.InvoiceNo);
+                    packingOut.SetPackingListId(request.PackingListId);
+                }
+                else
+                {
+                    packingOut.SetIsReceived(request.IsReceived);
+                    packingOut.SetInvoice(null);
+                    packingOut.SetPackingListId(0);
+                }
+                packingOut.Modify();
+                await _garmentPackingOutRepository.Update(packingOut);
             }
             _storage.Save();
 
-            return guids.Count();
+            return request.PackingOutNos.Count();
         }
     }
 }
