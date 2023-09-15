@@ -30,7 +30,7 @@ namespace Manufactures.Controllers.Api.GarmentSample
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
+        public async Task<IActionResult> Get(int page = 1, int size = 150, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
         {
             VerifyUser();
 
