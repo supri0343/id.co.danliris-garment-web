@@ -19,6 +19,30 @@
     <Compile Remove="Migrations\20230712072015_Create_Tables_Service_Sample.Designer.cs" />
     <Compile Remove="Migrations\20230717090130_add-Table-details-SubconDL.cs" />
     <Compile Remove="Migrations\20230717090130_add-Table-details-SubconDL.Designer.cs" />
+    <Compile Remove="Migrations\20230728042131_add-table-SubconPreparing.cs" />
+    <Compile Remove="Migrations\20230728042131_add-table-SubconPreparing.Designer.cs" />
+    <Compile Remove="Migrations\20230802013859_Create_Garment_Subcon_Cutting_Outs.cs" />
+    <Compile Remove="Migrations\20230802013859_Create_Garment_Subcon_Cutting_Outs.Designer.cs" />
+    <Compile Remove="Migrations\20230802050053_add-table-SubconLoadingIns.cs" />
+    <Compile Remove="Migrations\20230802050053_add-table-SubconLoadingIns.Designer.cs" />
+    <Compile Remove="Migrations\20230814061512_add-table-SubconFinishingIn.cs" />
+    <Compile Remove="Migrations\20230814061512_add-table-SubconFinishingIn.Designer.cs" />
+    <Compile Remove="Migrations\20230814082022_add-table-SubconFinishingIn.cs" />
+    <Compile Remove="Migrations\20230814082022_add-table-SubconFinishingIn.Designer.cs" />
+    <Compile Remove="Migrations\20230829033445_add-table-SubconPackingIn.cs" />
+    <Compile Remove="Migrations\20230829033445_add-table-SubconPackingIn.Designer.cs" />
+    <Compile Remove="Migrations\20230829034053_add-table-SubconPackingIn.cs" />
+    <Compile Remove="Migrations\20230829034053_add-table-SubconPackingIn.Designer.cs" />
+    <Compile Remove="Migrations\20230829034919_add-table-SubconPackingIn.cs" />
+    <Compile Remove="Migrations\20230829034919_add-table-SubconPackingIn.Designer.cs" />
+    <Compile Remove="Migrations\20230829035121_add-table-SubconPackingIn.cs" />
+    <Compile Remove="Migrations\20230829035121_add-table-SubconPackingIn.Designer.cs" />
+    <Compile Remove="Migrations\20230905061714_add-table-SubconPackingOut.cs" />
+    <Compile Remove="Migrations\20230905061714_add-table-SubconPackingOut.Designer.cs" />
+    <Compile Remove="Migrations\20230905061827_add-table-SubconPackingOut.cs" />
+    <Compile Remove="Migrations\20230905061827_add-table-SubconPackingOut.Designer.cs" />
+    <Compile Remove="Migrations\20230905062350_add-table-SubconPackingOut.cs" />
+    <Compile Remove="Migrations\20230905062350_add-table-SubconPackingOut.Designer.cs" />
   </ItemGroup>
 
   <!--<ItemGroup>
