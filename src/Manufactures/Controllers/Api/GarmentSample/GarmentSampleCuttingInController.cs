@@ -203,5 +203,30 @@ namespace Manufactures.Controllers.Api.GarmentSample
 
             return Ok();
         }
+
+        [HttpGet("by-roNo-currentYear")]
+        public async Task<IActionResult> GetLoaderByROCurrentYear(string keyword, string filter = "{}")
+        {
+            var query = _garmentSampleCuttingInRepository.Read(1, int.MaxValue, "{}", "", filter);
+
+            var curDateString = (Convert.ToInt32(DateTime.Now.Year) - 1);
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                query = query.Where(o => o.RONo.Contains(keyword) && o.CreatedDate.Year >= curDateString);
+            }
+            else
+            {
+                query = query.Where(o => o.CreatedDate.Year >= curDateString);
+            }
+           
+
+            var rOs = _garmentSampleCuttingInRepository.Find(query)
+                .Select(o => new { o.RONo, o.Article }).Distinct().ToList();
+
+            await Task.Yield();
+
+            return Ok(rOs);
+        }
     }
 }
