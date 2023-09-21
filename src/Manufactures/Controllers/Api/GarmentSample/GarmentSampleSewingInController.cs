@@ -141,5 +141,32 @@ namespace Manufactures.Controllers.Api.GarmentSample
 
             return Ok();
         }
+
+        [HttpGet("get-by-ro-currentYear")]
+        public async Task<IActionResult> GetLoaderByROCurrentYear(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _GarmentSampleSewingInRepository.ReadComplete(page, size, order, keyword, filter);
+
+            var curDateString = (Convert.ToInt32(DateTime.Now.Year) - 1);
+
+            query = query.Where(o => o.CreatedDate.Year >= curDateString);
+
+            var total = query.Count();
+            double totalQty = query.Sum(a => a.GarmentSampleSewingInItem.Sum(b => b.Quantity));
+            query = query.Skip((page - 1) * size).Take(size);
+
+            var garmentSewingInDto = _GarmentSampleSewingInRepository.Find(query).Select(o => new GarmentSampleSewingInListDto(o)).ToArray();
+
+            await Task.Yield();
+            return Ok(garmentSewingInDto, info: new
+            {
+                page,
+                size,
+                total,
+                totalQty
+            });
+        }
     }
 }

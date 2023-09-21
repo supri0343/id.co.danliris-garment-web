@@ -81,42 +81,140 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleSewings.Com
                 var SewingIn = _garmentSewingInRepository.Query.Where(x => x.RONo == item.RONo).OrderBy(a => a.CreatedDate).ToList();
                 List<GarmentServiceSampleSewingDetail> SewingInDetails = new List<GarmentServiceSampleSewingDetail>();
 
+                #region Old Query Calculating From Cut In(13 / 09 / 23)
+                //foreach (var sewIn in SewingIn)
+                //{
+                //    var SewingInItems = _garmentSewingInItemRepository.Query.Where(x => x.SewingInId == sewIn.Identity).OrderBy(a => a.CreatedDate).ToList();
+                //    foreach (var sewInItem in SewingInItems)
+                //    {
+                //        var subconSewingDetails = _garmentServiceSampleSewingDetailRepository.Query.Where(o => o.SewingInItemId == sewInItem.Identity);
+                //        if (subconSewingDetails != null)
+                //        {
+                //            double qty = (double)sewInItem.Quantity;
+                //            foreach (var subconSewingDetail in subconSewingDetails.ToList())
+                //            {
+                //                qty -= subconSewingDetail.Quantity;
+                //            }
+                //            if (qty > 0)
+                //            {
+                //                SewingInDetails.Add(new GarmentServiceSampleSewingDetail
+                //                (
+                //                    new Guid(),
+                //                    item.Id,
+                //                    sewIn.Identity,
+                //                    sewInItem.Identity,
+                //                    new ProductId(sewInItem.ProductId),
+                //                    sewInItem.ProductCode,
+                //                    sewInItem.ProductName,
+                //                    sewInItem.DesignColor,
+                //                    qty,
+                //                    new UomId(sewInItem.UomId),
+                //                    sewInItem.UomUnit,
+                //                    new UnitDepartmentId(sewIn.UnitId),
+                //                    sewIn.UnitCode,
+                //                    sewIn.UnitName,
+                //                    "",
+                //                    sewInItem.Color
+
+                //                ));
+                //            }
+                //        }
+                //    }
+                //}
+
+                //foreach (var detail in item.Details)
+                //{
+                //    if (detail.IsSave)
+                //    {
+                //        var sewInDetail = SewingInDetails.Where(y => y.DesignColor == detail.DesignColor && y.UnitId== new UnitDepartmentId(detail.Unit.Id) && y.Color == detail.Color).ToList();
+                //        var qty = detail.Quantity;
+                //        if(sewInDetail.ToArray().Count() != 0)
+                //        {
+                //            foreach (var d in sewInDetail)
+                //            {
+                //                var qtyRemains = d.Quantity - qty;
+                //                if (qtyRemains >= 0)
+                //                {
+                //                    GarmentServiceSampleSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSampleSewingDetail(
+                //                        Guid.NewGuid(),
+                //                        garmentServiceSubconSewingItem.Identity,
+                //                        d.SewingInId,
+                //                        d.SewingInItemId,
+                //                        d.ProductId,
+                //                        d.ProductCode,
+                //                        d.ProductName,
+                //                        d.DesignColor,
+                //                        qty,
+                //                        d.UomId,
+                //                        d.UomUnit,
+                //                        d.UnitId,
+                //                        d.UnitCode,
+                //                        d.UnitName,
+                //                        detail.Remark,
+                //                        detail.Color
+                //                    );
+                //                    await _garmentServiceSampleSewingDetailRepository.Update(garmentServiceSubconSewingDetail);
+                //                    break;
+                //                }
+                //                else if (qtyRemains < 0)
+                //                {
+                //                    qty -= d.Quantity;
+                //                    GarmentServiceSampleSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSampleSewingDetail(
+                //                        Guid.NewGuid(),
+                //                        garmentServiceSubconSewingItem.Identity,
+                //                        d.SewingInId,
+                //                        d.SewingInItemId,
+                //                        d.ProductId,
+                //                        d.ProductCode,
+                //                        d.ProductName,
+                //                        d.DesignColor,
+                //                        d.Quantity,
+                //                        d.UomId,
+                //                        d.UomUnit,
+                //                        d.UnitId,
+                //                        d.UnitCode,
+                //                        d.UnitName,
+                //                        detail.Remark,
+                //                        detail.Color
+                //                    );
+                //                    await _garmentServiceSampleSewingDetailRepository.Update(garmentServiceSubconSewingDetail);
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+                #endregion
+
+                #region New Query Ignore Calculating From Cut In (13/09/23)
                 foreach (var sewIn in SewingIn)
                 {
                     var SewingInItems = _garmentSewingInItemRepository.Query.Where(x => x.SewingInId == sewIn.Identity).OrderBy(a => a.CreatedDate).ToList();
                     foreach (var sewInItem in SewingInItems)
                     {
-                        var SampleSewingDetails = _garmentServiceSampleSewingDetailRepository.Query.Where(o => o.SewingInItemId == sewInItem.Identity);
-                        if (SampleSewingDetails != null)
+                        var subconSewingDetails = _garmentServiceSampleSewingDetailRepository.Query.Where(o => o.SewingInItemId == sewInItem.Identity);
+                        if (subconSewingDetails != null)
                         {
-                            double qty = (double)sewInItem.Quantity;
-                            foreach (var SampleSewingDetail in SampleSewingDetails.ToList())
-                            {
-                                qty -= SampleSewingDetail.Quantity;
-                            }
-                            if (qty > 0)
-                            {
-                                SewingInDetails.Add(new GarmentServiceSampleSewingDetail
-                                (
-                                    new Guid(),
-                                    item.Id,
-                                    sewIn.Identity,
-                                    sewInItem.Identity,
-                                    new ProductId(sewInItem.ProductId),
-                                    sewInItem.ProductCode,
-                                    sewInItem.ProductName,
-                                    sewInItem.DesignColor,
-                                    qty,
-                                    new UomId(sewInItem.UomId),
-                                    sewInItem.UomUnit,
-                                    new UnitDepartmentId(sewIn.UnitId),
-                                    sewIn.UnitCode,
-                                    sewIn.UnitName,
-                                    "",
-                                    sewInItem.Color
+                            SewingInDetails.Add(new GarmentServiceSampleSewingDetail
+                            (
+                                new Guid(),
+                                item.Id,
+                                sewIn.Identity,
+                                sewInItem.Identity,
+                                new ProductId(sewInItem.ProductId),
+                                sewInItem.ProductCode,
+                                sewInItem.ProductName,
+                                sewInItem.DesignColor,
+                                sewInItem.Quantity,
+                                new UomId(sewInItem.UomId),
+                                sewInItem.UomUnit,
+                                new UnitDepartmentId(sewIn.UnitId),
+                                sewIn.UnitCode,
+                                sewIn.UnitName,
+                                "",
+                                sewInItem.Color
 
-                                ));
-                            }
+                            ));
+
                         }
                     }
                 }
@@ -125,63 +223,36 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleSewings.Com
                 {
                     if (detail.IsSave)
                     {
-                        var sewInDetail = SewingInDetails.Where(y => y.DesignColor == detail.DesignColor && y.UnitId== new UnitDepartmentId(detail.Unit.Id) && y.Color == detail.Color).ToList();
+                        var sewInDetail = SewingInDetails.FirstOrDefault(y => y.DesignColor == detail.DesignColor && y.UnitId == new UnitDepartmentId(detail.Unit.Id) && y.Color == detail.Color);
                         var qty = detail.Quantity;
-                        if(sewInDetail.ToArray().Count() != 0)
+
                         {
-                            foreach (var d in sewInDetail)
-                            {
-                                var qtyRemains = d.Quantity - qty;
-                                if (qtyRemains >= 0)
-                                {
-                                    GarmentServiceSampleSewingDetail garmentServiceSampleSewingDetail = new GarmentServiceSampleSewingDetail(
-                                        Guid.NewGuid(),
-                                        garmentServiceSampleSewingItem.Identity,
-                                        d.SewingInId,
-                                        d.SewingInItemId,
-                                        d.ProductId,
-                                        d.ProductCode,
-                                        d.ProductName,
-                                        d.DesignColor,
-                                        qty,
-                                        d.UomId,
-                                        d.UomUnit,
-                                        d.UnitId,
-                                        d.UnitCode,
-                                        d.UnitName,
-                                        detail.Remark,
-                                        detail.Color
-                                    );
-                                    await _garmentServiceSampleSewingDetailRepository.Update(garmentServiceSampleSewingDetail);
-                                    break;
-                                }
-                                else if (qtyRemains < 0)
-                                {
-                                    qty -= d.Quantity;
-                                    GarmentServiceSampleSewingDetail garmentServiceSampleSewingDetail = new GarmentServiceSampleSewingDetail(
-                                        Guid.NewGuid(),
-                                        garmentServiceSampleSewingItem.Identity,
-                                        d.SewingInId,
-                                        d.SewingInItemId,
-                                        d.ProductId,
-                                        d.ProductCode,
-                                        d.ProductName,
-                                        d.DesignColor,
-                                        d.Quantity,
-                                        d.UomId,
-                                        d.UomUnit,
-                                        d.UnitId,
-                                        d.UnitCode,
-                                        d.UnitName,
-                                        detail.Remark,
-                                        detail.Color
-                                    );
-                                    await _garmentServiceSampleSewingDetailRepository.Update(garmentServiceSampleSewingDetail);
-                                }
-                            }
+                            GarmentServiceSampleSewingDetail garmentServiceSubconSewingDetail = new GarmentServiceSampleSewingDetail(
+                                Guid.NewGuid(),
+                                garmentServiceSampleSewingItem.Identity,
+                                sewInDetail.SewingInId,
+                                sewInDetail.SewingInItemId,
+                                sewInDetail.ProductId,
+                                sewInDetail.ProductCode,
+                                sewInDetail.ProductName,
+                                sewInDetail.DesignColor,
+                                detail.Quantity,
+                                sewInDetail.UomId,
+                                sewInDetail.UomUnit,
+                                sewInDetail.UnitId,
+                                sewInDetail.UnitCode,
+                                sewInDetail.UnitName,
+                                detail.Remark,
+                                detail.Color
+                            );
+                            await _garmentServiceSampleSewingDetailRepository.Update(garmentServiceSubconSewingDetail);
                         }
+
+
+
                     }
                 }
+                #endregion
                 await _garmentServiceSampleSewingItemRepository.Update(garmentServiceSampleSewingItem);
             }
 
