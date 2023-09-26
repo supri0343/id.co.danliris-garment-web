@@ -900,7 +900,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
 
                 var Query = QueryOrder.Union(QuerySample).ToList();
                 var UENNo = string.Join(",", Query.Select(x => x.UENNo).Distinct());
-                var GetROFromUEN = await GetROInByUENId(null, UENNo, request.token);
+                var GetROFromUEN = await GetROInByUENNo(UENNo, request.token);
                 var Queryjoin = (from a in Query
                                  join b in GetROFromUEN on a.UENNo equals b.uenNo
                                  select new monitoringViewTemp
