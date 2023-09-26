@@ -289,11 +289,11 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
             public string roNo { get; set; }
             public string productName { get; set; }
 
-            public string gamentDONo { get; set; }
+            public string garmentDONo { get; set; }
 
             public string urnNo { get; set; }
             public int gamentDOId { get; set; }
-            public string subconContractId { get; set; }
+            public Guid subconContractId { get; set; }
 
         }
 
@@ -598,7 +598,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                              join f in garmentServiceSubconCuttingRepository.Query on d.SubconId equals f.Identity
                              join g in garmentServiceSubconCuttingItemRepository.Query on f.Identity equals g.ServiceSubconCuttingId
                              join h in garmentSubconContractRepository.Query on a.SubconContractId equals h.Identity
-                             where h.ContractNo == request.subconcontractNo
+                             where h.ContractNo == request.subconcontractNo && c.OrderType.ToLower() == "job order" && h.IsCustoms
                              select new monitoringViewTemp
                              {
                                  bcDateOut = a.CustomsOutDate,
@@ -618,7 +618,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                                    join f in garmentServiceSampleCuttingRepository.Query on d.SubconId equals f.Identity
                                    join g in garmentServiceSampleCuttingItemRepository.Query on f.Identity equals g.ServiceSampleCuttingId
                                    join h in garmentSubconContractRepository.Query on a.SubconContractId equals h.Identity
-                                   where a.SubconContractNo == request.subconcontractNo
+                                   where a.SubconContractNo == request.subconcontractNo && c.OrderType.ToLower() == "sample" && h.IsCustoms
                                    select new monitoringViewTemp
                                    {
                                        bcDateOut = a.CustomsOutDate,
@@ -641,7 +641,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                                 join c in garmentSubconDeliveryLetterOutRepository.Query on b.SubconDLOutId equals c.Identity
                                 join d in garmentSubconDeliveryLetterOutItemRepository.Query on c.Identity equals d.SubconDeliveryLetterOutId
                                 join e in garmentSubconDeliveryLetterOutDetailRepository.Query on d.Identity equals e.SubconDeliveryLetterOutItemId
-                                where a.SubconContractNo == request.subconcontractNo
+                                where a.SubconContractNo == request.subconcontractNo 
                                 select new monitoringViewTemp
                                 {
 
@@ -657,10 +657,10 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
 
                 var UENId = string.Join(",", QueryBUK.Select(x => x.UENId).Distinct());
 
-                var GetROFromUEN = GetROInByUENId(UENId, request.token);
+                var GetROFromUEN = await GetROInByUENId(UENId, request.token);
 
                 var QueryBUKJoin = (from a in QueryBUK
-                                    join b in GetROFromUEN.Result on a.UENId equals b.id
+                                    join b in GetROFromUEN on a.UENId equals b.id
                                     select new monitoringViewTemp
                                     {
                                         bcDateOut = a.bcDateOut,
@@ -675,27 +675,44 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
 
                 QueryKeluar3 = QueryUnionPL.Union(QueryBUKJoin).ToList();
 
-                var getBCDOUrn = await GetDOUrn(request.subconcontractNo, request.subconContractType, request.subconCategory, request.token);
-                var queryInSubconRemain = (from a in getBCDOUrn
-                                           join b in garmentSubconContractRepository.Query on a.subconContractId.ToString() equals b.Identity.ToString()
-                                           where b.IsCustoms
+                //var getBCDOUrn = await GetDOUrn(request.subconcontractNo, request.subconContractType, request.subconCategory, request.token);
+                //var queryInSubconRemain = (from a in getBCDOUrn
+                //                           join b in garmentSubconContractRepository.Query on a.subconContractId.ToString() equals b.Identity.ToString()
+                //                           where b.IsCustoms
 
-                                           select new monitoringViewINTemp
-                                           {
-                                               bcDateIn = a.bcDateIn,
-                                               bcNoIn = a.bcNoIn,
-                                               boNo = a.urnNo,
-                                               roNo = a.roNo,
-                                               productName = a.productName,
-                                               quantityIn = a.quantityIn,
-                                               uomUnitIn = a.uomUnitIn
-                                           }
+                //                           select new monitoringViewINTemp
+                //                           {
+                //                               bcDateIn = a.bcDateIn,
+                //                               bcNoIn = a.bcNoIn,
+                //                               boNo = a.urnNo,
+                //                               roNo = a.roNo,
+                //                               productName = a.productName,
+                //                               quantityIn = a.quantityIn,
+                //                               uomUnitIn = a.uomUnitIn
+                //                           }
 
 
 
-                    );
+                //    );
 
-                QueryMasuk = queryInSubconRemain.ToList();
+                //QueryMasuk = queryInSubconRemain.ToList();
+
+                var Query262Purch = await GetBCInByContractNo(request.subconcontractNo, request.subconContractType, request.subconCategory, request.token);
+
+                var Query262 = from a in garmentSubconContractRepository.Query
+                               join b in Query262Purch on a.Identity equals b.subconContractId
+                               where a.IsCustoms
+                               select new monitoringViewINTemp
+                               {
+                                   bcDateIn = b.bcDateIn,
+                                   bcNoIn = b.bcNoIn,
+                                   quantityIn = b.quantityIn,
+                                   uomUnitIn = b.uomUnitIn,
+                                   fintype = a.JobType,
+                                   garmentDONo = b.garmentDONo,
+                                   roNo = b.roNo
+                               };
+                QueryMasuk = Query262.ToList();
 
             }
             else if (request.subconContractType == "SUBCON JASA" && request.subconCategory == "SUBCON JASA GARMENT WASH")
@@ -720,7 +737,24 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
 
                              });
                 QueryKeluar3 = Query.ToList();
-                QueryMasuk = await GetBCInByContractNo(request.subconcontractNo, request.subconContractType, request.subconCategory, request.token);
+                //QueryMasuk = await GetBCInByContractNo(request.subconcontractNo, request.subconContractType, request.subconCategory, request.token);
+
+                var Query262Purch = await GetBCInByContractNo(request.subconcontractNo, request.subconContractType, request.subconCategory, request.token);
+
+                var Query262 = from a in garmentSubconContractRepository.Query
+                               join b in Query262Purch on a.Identity equals b.subconContractId
+                               where a.IsCustoms
+                               select new monitoringViewINTemp
+                               {
+                                   bcDateIn = b.bcDateIn,
+                                   bcNoIn = b.bcNoIn,
+                                   quantityIn = b.quantityIn,
+                                   uomUnitIn = b.uomUnitIn,
+                                   fintype = a.JobType,
+                                   garmentDONo = b.garmentDONo,
+                                   roNo = b.roNo
+                               };
+                QueryMasuk = Query262.ToList();
             }
             else if (request.subconContractType == "SUBCON JASA" && request.subconCategory == "SUBCON JASA BARANG JADI")
             {
@@ -735,6 +769,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                              join g in garmentServiceSubconExpenditureGoodItemRepository.Query on f.Identity equals g.ServiceSubconExpenditureGoodId
 
                              where e.ContractNo == request.subconcontractNo
+                             && c.OrderType.ToLower() == "job order"
                              select new monitoringViewTemp
                              {
                                  bcDateOut = a.CustomsOutDate,
@@ -742,7 +777,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                                  bonNo = c.DLNo,
                                  roNo = g.RONo,
                                  jobtype = e.JobType,
-                                 quantityOut = d.Quantity,
+                                 quantityOut = g.Quantity,
                                  uomOut = e.UomUnit,
                                  // UENId = e.UENItemId
 
@@ -757,6 +792,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                                    join g in garmentServiceSampleExpenditureGoodItemRepository.Query on f.Identity equals g.ServiceSampleExpenditureGoodId
 
                                    where e.ContractNo == request.subconcontractNo
+                                   && c.OrderType.ToLower()== "sample"
                                    select new monitoringViewTemp
                                    {
                                        bcDateOut = a.CustomsOutDate,
@@ -764,7 +800,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                                        bonNo = c.DLNo,
                                        roNo = g.RONo,
                                        jobtype = e.JobType,
-                                       quantityOut = d.Quantity,
+                                       quantityOut = g.Quantity,
                                        uomOut = e.UomUnit,
                                        // UENId = e.UENItemId
 
@@ -772,7 +808,22 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                 var Query = QueryOrder.Union(QuerySample);
                 QueryKeluar3 = Query.ToList();
 
-                QueryMasuk = await GetBCInByContractNo(request.subconcontractNo, request.subconContractType, request.subconCategory, request.token);
+                //QueryMasuk = await GetBCInByContractNo(request.subconcontractNo, request.subconContractType, request.subconCategory, request.token);
+                var Query262Purch = await GetBCInByContractNo(request.subconcontractNo, request.subconContractType, request.subconCategory, request.token);
+                var Query262 = from a in garmentSubconContractRepository.Query
+                               join b in Query262Purch on a.Identity equals b.subconContractId
+                               where a.IsCustoms
+                               select new monitoringViewINTemp
+                               {
+                                   bcDateIn = b.bcDateIn,
+                                   bcNoIn = b.bcNoIn,
+                                   quantityIn = b.quantityIn,
+                                   uomUnitIn = b.uomUnitIn,
+                                   fintype = a.JobType,
+                                   garmentDONo = b.garmentDONo,
+                                   roNo = b.roNo
+                               };
+                QueryMasuk = Query262.ToList();
             }
             
             else if (request.subconContractType == "SUBCON BAHAN BAKU" && request.subconCategory == "SUBCON BB SHRINKAGE/PANEL")
@@ -860,6 +911,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                              join h in garmentServiceSubconFabricWashDetailRepository.Query on g.Identity equals h.ServiceSubconFabricWashItemId
 
                              where e.ContractNo == request.subconcontractNo
+                             //&& e.IsCustoms
                              select new monitoringViewTemp
                              {
                                  bcDateOut = a.CustomsOutDate,
@@ -903,6 +955,8 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                 var GetROFromUEN = await GetROInByUENNo(UENNo, request.token);
                 var Queryjoin = (from a in Query
                                  join b in GetROFromUEN on a.UENNo equals b.uenNo
+                                 //join b in GetROFromUEN on a.UENNo equals b.uenNo into m
+                                 //from b in m.DefaultIfEmpty()
                                  select new monitoringViewTemp
                                  {
                                      bcDateOut = a.bcDateOut,
@@ -953,7 +1007,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                     quantityOut = i.quantityIn,
                     uomOut = i.fintype =="FABRIC" ? "MTR" : i.uomUnitIn,
                     jobType = i.fintype,
-                    bonNo = i.gamentDONo,
+                    bonNo = i.garmentDONo,
                     roNo = i.roNo
                     //bpjNo = i.bpjNo,
                     //dueDate = i.dueDate,
