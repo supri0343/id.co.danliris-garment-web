@@ -22,6 +22,9 @@ using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconExpenditureGood.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Repositories;
+using Manufactures.Domain.GarmentSample.ServiceSampleFabricWashes.Repositories;
+using Manufactures.Domain.GarmentSample.ServiceSampleShrinkagePanels.Repositories;
+using Manufactures.Domain.GarmentSample.ServiceSampleExpenditureGood.Repositories;
 
 namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoringOut
 {
@@ -55,6 +58,14 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
         private readonly IGarmentServiceSubconFabricWashRepository garmentServiceSubconFabricWashRepository;
         private readonly IGarmentServiceSubconFabricWashItemRepository garmentServiceSubconFabricWashItemRepository;
         private readonly IGarmentServiceSubconFabricWashDetailRepository garmentServiceSubconFabricWashDetailRepository;
+        private readonly IGarmentServiceSampleFabricWashRepository garmentServiceSampleFabricWashRepository;
+        private readonly IGarmentServiceSampleFabricWashItemRepository garmentServiceSampleFabricWashItemRepository;
+        private readonly IGarmentServiceSampleFabricWashDetailRepository garmentServiceSampleFabricWashDetailRepository;
+        private readonly IGarmentServiceSampleShrinkagePanelRepository garmentServiceSampleShrinkagePanelRepository;
+        private readonly IGarmentServiceSampleShrinkagePanelItemRepository garmentServiceSampleShrinkagePanelItemRepository;
+        private readonly IGarmentServiceSampleExpenditureGoodRepository garmentServiceSampleExpenditureGoodRepository;
+        private readonly IGarmentServiceSampleExpenditureGoodtemRepository garmentServiceSampleExpenditureGoodItemRepository;
+
         //private readonly IGarmentCuttingInRepository garmentCuttingInRepository;
         //private readonly IGarmentCuttingInItemRepository garmentCuttingInItemRepository;
         //private readonly IGarmentCuttingInDetailRepository garmentCuttingInDetailRepository;
@@ -88,7 +99,13 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
             garmentServiceSubconFabricWashRepository = storage.GetRepository<IGarmentServiceSubconFabricWashRepository>();
             garmentServiceSubconFabricWashItemRepository = storage.GetRepository<IGarmentServiceSubconFabricWashItemRepository>();
             garmentServiceSubconFabricWashDetailRepository = storage.GetRepository<IGarmentServiceSubconFabricWashDetailRepository>();
-
+            garmentServiceSampleFabricWashRepository = storage.GetRepository<IGarmentServiceSampleFabricWashRepository>();
+            garmentServiceSampleFabricWashItemRepository = storage.GetRepository<IGarmentServiceSampleFabricWashItemRepository>();
+            garmentServiceSampleFabricWashDetailRepository = storage.GetRepository<IGarmentServiceSampleFabricWashDetailRepository>();
+            garmentServiceSampleShrinkagePanelRepository = storage.GetRepository<IGarmentServiceSampleShrinkagePanelRepository>();
+            garmentServiceSampleShrinkagePanelItemRepository = storage.GetRepository<IGarmentServiceSampleShrinkagePanelItemRepository>();
+            garmentServiceSampleExpenditureGoodRepository = storage.GetRepository<IGarmentServiceSampleExpenditureGoodRepository>();
+            garmentServiceSampleExpenditureGoodItemRepository = storage.GetRepository<IGarmentServiceSampleExpenditureGoodtemRepository>();
             //garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
             //garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
             //garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
@@ -127,11 +144,11 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
             return data;
         }
 
-        public async Task<List<RoTemp>> GetROInByUENId(string UENId,string UENNo, string token)
+        public async Task<List<RoTemp>> GetROInByUENId(string UENId, string token)
         {
             List<RoTemp> data = new List<RoTemp>();
             var garmentPurchasingtUri = PurchasingDataSettings.Endpoint;
-            var garmentPurchasingtUriUpdate = garmentPurchasingtUri + $"garment-unit-expenditure-notes/get-ro?uenId={UENId}&uenNo={UENNo}";
+            var garmentPurchasingtUriUpdate = garmentPurchasingtUri + $"garment-unit-expenditure-notes/get-ro?uenId={UENId}";
 
             var httpResponse = await _http.GetAsync(garmentPurchasingtUriUpdate, token);
 
@@ -155,6 +172,36 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
             }
             return data;
         }
+
+        public async Task<List<RoTemp>> GetROInByUENNo(string UENNo, string token)
+        {
+            List<RoTemp> data = new List<RoTemp>();
+            var garmentPurchasingtUri = PurchasingDataSettings.Endpoint;
+            var garmentPurchasingtUriUpdate = garmentPurchasingtUri + $"garment-beacukai/get-ro?uenNo={UENNo}";
+
+            var httpResponse = await _http.GetAsync(garmentPurchasingtUriUpdate, token);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var contentString = await httpResponse.Content.ReadAsStringAsync();
+                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+
+                if (content.GetValueOrDefault("data") == null)
+                {
+                    data = null;
+                }
+                else
+                {
+                    data = JsonConvert.DeserializeObject<List<RoTemp>>(content.GetValueOrDefault("data").ToString());
+                }
+            }
+            else
+            {
+                var err = await httpResponse.Content.ReadAsStringAsync();
+            }
+            return data;
+        }
+
 
         public async Task<List<monitoringViewINTemp>> GetBCforFinInSubcon(string contractNo, string token)
         {
@@ -342,7 +389,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
 
                 var UENId = string.Join(",", QueryKeluar.Select(x => x.UENId).Distinct());
 
-                var GetROFromUEN = await GetROInByUENId(UENId, null, request.token);
+                var GetROFromUEN = await GetROInByUENId(UENId, request.token);
 
                 //BUK Subcon
                 QueryKeluar3 = (from a in QueryKeluar
@@ -474,7 +521,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
 
                 var UENId = string.Join(",", Query1.Select(x => x.UENId).Distinct());
 
-                var GetROFromUEN = GetROInByUENId(UENId, null, request.token);
+                var GetROFromUEN = GetROInByUENId(UENId,request.token);
 
                 var Query1join = (from a in Query1
                                   join b in GetROFromUEN.Result on a.UENId equals b.id
@@ -610,7 +657,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
 
                 var UENId = string.Join(",", QueryBUK.Select(x => x.UENId).Distinct());
 
-                var GetROFromUEN = GetROInByUENId(UENId, null, request.token);
+                var GetROFromUEN = GetROInByUENId(UENId, request.token);
 
                 var QueryBUKJoin = (from a in QueryBUK
                                     join b in GetROFromUEN.Result on a.UENId equals b.id
@@ -678,7 +725,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
             else if (request.subconContractType == "SUBCON JASA" && request.subconCategory == "SUBCON JASA BARANG JADI")
             {
 
-                var Query = (from a in garmentSubconCustomsOutRepository.Query
+                var QueryOrder = (from a in garmentSubconCustomsOutRepository.Query
                              join b in garmentSubconCustomsOutItemRepository.Query on a.Identity equals b.SubconCustomsOutId
                              join c in garmentSubconDeliveryLetterOutRepository.Query on b.SubconDLOutId equals c.Identity
                              join d in garmentSubconDeliveryLetterOutItemRepository.Query on c.Identity equals d.SubconDeliveryLetterOutId
@@ -700,6 +747,29 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                                  // UENId = e.UENItemId
 
                              });
+                var QuerySample = (from a in garmentSubconCustomsOutRepository.Query
+                                   join b in garmentSubconCustomsOutItemRepository.Query on a.Identity equals b.SubconCustomsOutId
+                                   join c in garmentSubconDeliveryLetterOutRepository.Query on b.SubconDLOutId equals c.Identity
+                                   join d in garmentSubconDeliveryLetterOutItemRepository.Query on c.Identity equals d.SubconDeliveryLetterOutId
+
+                                   join e in garmentSubconContractRepository.Query on a.SubconContractId equals e.Identity
+                                   join f in garmentServiceSampleExpenditureGoodRepository.Query on d.SubconId equals f.Identity
+                                   join g in garmentServiceSampleExpenditureGoodItemRepository.Query on f.Identity equals g.ServiceSampleExpenditureGoodId
+
+                                   where e.ContractNo == request.subconcontractNo
+                                   select new monitoringViewTemp
+                                   {
+                                       bcDateOut = a.CustomsOutDate,
+                                       bcNoOut = a.CustomsOutNo,
+                                       bonNo = c.DLNo,
+                                       roNo = g.RONo,
+                                       jobtype = e.JobType,
+                                       quantityOut = d.Quantity,
+                                       uomOut = e.UomUnit,
+                                       // UENId = e.UENItemId
+
+                                   });
+                var Query = QueryOrder.Union(QuerySample);
                 QueryKeluar3 = Query.ToList();
 
                 QueryMasuk = await GetBCInByContractNo(request.subconcontractNo, request.subconContractType, request.subconCategory, request.token);
@@ -707,7 +777,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
             
             else if (request.subconContractType == "SUBCON BAHAN BAKU" && request.subconCategory == "SUBCON BB SHRINKAGE/PANEL")
             {
-                var Query = (from a in garmentSubconCustomsOutRepository.Query
+                var QueryOrder = (from a in garmentSubconCustomsOutRepository.Query
                              join b in garmentSubconCustomsOutItemRepository.Query on a.Identity equals b.SubconCustomsOutId
                              join c in garmentSubconDeliveryLetterOutRepository.Query on b.SubconDLOutId equals c.Identity
                              join d in garmentSubconDeliveryLetterOutItemRepository.Query on c.Identity equals d.SubconDeliveryLetterOutId
@@ -731,10 +801,37 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                                  
                                  
 
-                             });
+                             }).ToList();
+                var QuerySample = (from a in garmentSubconCustomsOutRepository.Query
+                                  join b in garmentSubconCustomsOutItemRepository.Query on a.Identity equals b.SubconCustomsOutId
+                                  join c in garmentSubconDeliveryLetterOutRepository.Query on b.SubconDLOutId equals c.Identity
+                                  join d in garmentSubconDeliveryLetterOutItemRepository.Query on c.Identity equals d.SubconDeliveryLetterOutId
+
+                                  join e in garmentSubconContractRepository.Query on a.SubconContractId equals e.Identity
+                                  join f in garmentServiceSampleShrinkagePanelRepository.Query on d.SubconId equals f.Identity
+                                  join g in garmentServiceSampleShrinkagePanelItemRepository.Query on f.Identity equals g.ServiceSampleShrinkagePanelId
+
+
+                                  where e.ContractNo == request.subconcontractNo
+                                  select new monitoringViewTemp
+                                  {
+                                      bcDateOut = a.CustomsOutDate,
+                                      bcNoOut = a.CustomsOutNo,
+                                      bonNo = c.DLNo,
+                                      //roNo = g.RONo,
+                                      jobtype = e.JobType,
+                                      quantityOut = d.Quantity,
+                                      uomOut = e.UomUnit,
+                                      UENNo = g.UnitExpenditureNo,
+
+
+
+                                  }).ToList();
+                var Query = QueryOrder.Union(QuerySample).ToList();
                 var UENNo = string.Join(",", Query.Select(x => x.UENNo).Distinct());
 
-                var GetROFromUEN = await GetROInByUENId(null, UENNo, request.token);
+                //var GetROFromUEN = await GetROInByUENId(null, UENNo, request.token);
+                var GetROFromUEN = await GetROInByUENNo(UENNo, request.token);
                 var Queryjoin = (from a in Query
                                  join b in GetROFromUEN on a.UENNo equals b.uenNo
                                  select new monitoringViewTemp
@@ -753,7 +850,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
             }
             else if (request.subconContractType == "SUBCON BAHAN BAKU" && request.subconCategory == "SUBCON BB FABRIC WASH/PRINT")
             {
-                var Query = (from a in garmentSubconCustomsOutRepository.Query
+                var QueryOrder = (from a in garmentSubconCustomsOutRepository.Query
                              join b in garmentSubconCustomsOutItemRepository.Query on a.Identity equals b.SubconCustomsOutId
                              join c in garmentSubconDeliveryLetterOutRepository.Query on b.SubconDLOutId equals c.Identity
                              join d in garmentSubconDeliveryLetterOutItemRepository.Query on c.Identity equals d.SubconDeliveryLetterOutId
@@ -775,11 +872,37 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                                  UENNo = g.UnitExpenditureNo
 
                              }
-                             );
+                             ).ToList();
+
+                var QuerySample = (from a in garmentSubconCustomsOutRepository.Query
+                             join b in garmentSubconCustomsOutItemRepository.Query on a.Identity equals b.SubconCustomsOutId
+                             join c in garmentSubconDeliveryLetterOutRepository.Query on b.SubconDLOutId equals c.Identity
+                             join d in garmentSubconDeliveryLetterOutItemRepository.Query on c.Identity equals d.SubconDeliveryLetterOutId
+                             join e in garmentSubconContractRepository.Query on a.SubconContractId equals e.Identity
+                             join f in garmentServiceSampleFabricWashRepository.Query on d.SubconId equals f.Identity
+                             join g in garmentServiceSampleFabricWashItemRepository.Query on f.Identity equals g.ServiceSampleFabricWashId
+                             join h in garmentServiceSampleFabricWashDetailRepository.Query on g.Identity equals h.ServiceSampleFabricWashItemId
+
+                             where e.ContractNo == request.subconcontractNo
+                             select new monitoringViewTemp
+                             {
+                                 bcDateOut = a.CustomsOutDate,
+                                 bcNoOut = a.CustomsOutNo,
+                                 bonNo = c.DLNo,
+                                 //roNo = g.RONo,
+                                 jobtype = e.JobType,
+                                 quantityOut = (double)h.Quantity,
+                                 uomOut = e.UomUnit,
+                                 UENNo = g.UnitExpenditureNo
+
+                             }
+                             ).ToList();
+
+                var Query = QueryOrder.Union(QuerySample).ToList();
                 var UENNo = string.Join(",", Query.Select(x => x.UENNo).Distinct());
-                var GetROFromUEN = GetROInByUENId(null, UENNo, request.token);
+                var GetROFromUEN = await GetROInByUENId(null, UENNo, request.token);
                 var Queryjoin = (from a in Query
-                                 join b in GetROFromUEN.Result on a.UENId equals b.id
+                                 join b in GetROFromUEN on a.UENNo equals b.uenNo
                                  select new monitoringViewTemp
                                  {
                                      bcDateOut = a.bcDateOut,
@@ -828,9 +951,9 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconMonitoring
                     bcDateOut = i.bcDateIn,
                     bcNoOut = i.bcNoIn,
                     quantityOut = i.quantityIn,
-                    uomOut = i.uomUnitIn,
+                    uomOut = i.fintype =="FABRIC" ? "MTR" : i.uomUnitIn,
                     jobType = i.fintype,
-                    gamentDONo = i.gamentDONo,
+                    bonNo = i.gamentDONo,
                     roNo = i.roNo
                     //bpjNo = i.bpjNo,
                     //dueDate = i.dueDate,
