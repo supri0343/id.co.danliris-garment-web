@@ -11,6 +11,8 @@ using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentSewingOuts;
 using Manufactures.Domain.GarmentSewingOuts.Commands;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -35,6 +37,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
         private readonly IGarmentFinishingInRepository _garmentFinishingInRepository;
         private readonly IGarmentFinishingInItemRepository _garmentFinishingInItemRepository;
+        private readonly ILogHistoryRepository _logHistoryRepository;
 
         public PlaceGarmentSewingOutCommandHandler(IStorage storage)
         {
@@ -50,6 +53,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
             _garmentFinishingInRepository = storage.GetRepository<IGarmentFinishingInRepository>();
             _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentSewingOut> Handle(PlaceGarmentSewingOutCommand request, CancellationToken cancellationToken)
@@ -275,6 +279,10 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 }
 
                 await _garmentCuttingInRepository.Update(garmentCuttingIn);
+
+                //Add Log History
+                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI", "Create Cutting In - " + garmentCuttingIn.CutInNo, DateTime.Now);
+                await _logHistoryRepository.Update(logHistory1);
             }
 
             #endregion
@@ -302,6 +310,11 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                     request.SewingOutDate.GetValueOrDefault()
                 );
                 await _garmentSewingInRepository.Update(garmentSewingIn);
+
+                //Add Log History
+                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI", "Create Sewing In - " + garmentSewingIn.SewingInNo, DateTime.Now);
+                await _logHistoryRepository.Update(logHistory1);
+
                 foreach (var item in request.Items)
                 {
                     if (item.IsSave)
@@ -390,6 +403,11 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                     null
                 );
                 await _garmentFinishingInRepository.Update(garmentFinishingIn);
+
+                //Add Log History
+                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI", "Create Finishing In - " + garmentFinishingIn.FinishingInNo, DateTime.Now);
+                await _logHistoryRepository.Update(logHistory1);
+
                 foreach (var item in request.Items)
                 {
                     if (item.IsSave)
@@ -449,6 +467,11 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 }
             }
             #endregion
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Sewing Out - " + garmentSewingOut.SewingOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+
             _storage.Save();
 
             return garmentSewingOut;

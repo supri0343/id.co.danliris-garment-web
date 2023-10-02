@@ -5,6 +5,8 @@ using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentSewingDOs;
 using Manufactures.Domain.GarmentSewingDOs.Commands;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -21,13 +23,14 @@ namespace Manufactures.Application.GarmentSewingDOs.CommandHandlers
         private readonly IGarmentSewingDORepository _garmentSewingDORepository;
         private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
         //private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public PlaceGarmentSewingDOCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentSewingDORepository = storage.GetRepository<IGarmentSewingDORepository>();
             _garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
             //_garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentSewingDO> Handle(PlaceGarmentSewingDOCommand request, CancellationToken cancellationToken)
@@ -77,6 +80,10 @@ namespace Manufactures.Application.GarmentSewingDOs.CommandHandlers
             }
 
             await _garmentSewingDORepository.Update(garmentSewingDO);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Sewing DO - " + garmentSewingDO.SewingDONo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

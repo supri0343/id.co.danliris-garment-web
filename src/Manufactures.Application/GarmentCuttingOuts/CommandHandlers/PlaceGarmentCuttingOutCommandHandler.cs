@@ -9,6 +9,8 @@ using Manufactures.Domain.GarmentCuttingOuts.Commands;
 using Manufactures.Domain.GarmentCuttingOuts.Repositories;
 using Manufactures.Domain.GarmentSewingDOs;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -29,6 +31,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
         private readonly IGarmentSewingDORepository _garmentSewingDORepository;
         private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
+        private readonly ILogHistoryRepository _logHistoryRepository;
 
         public PlaceGarmentCuttingOutCommandHandler(IStorage storage)
         {
@@ -40,6 +43,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
             _garmentSewingDORepository = storage.GetRepository<IGarmentSewingDORepository>();
             _garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
             _garmentComodityPriceRepository= storage.GetRepository<IGarmentComodityPriceRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+
         }
 
         public async Task<GarmentCuttingOut> Handle(PlaceGarmentCuttingOutCommand request, CancellationToken cancellationToken)
@@ -166,6 +171,14 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
             await _garmentCuttingOutRepository.Update(garmentCuttingOut);
 
             await _garmentSewingDORepository.Update(garmentSewingDO);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Cutting Out - " + garmentCuttingOut.CutOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+
+            //Add Log History
+            LogHistory logHistory2 = new LogHistory(new Guid(), "PRODUKSI", "Create Sewing DO - " + garmentSewingDO.SewingDONo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory2);
 
             _storage.Save();
 

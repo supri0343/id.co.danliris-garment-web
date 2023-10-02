@@ -9,6 +9,8 @@ using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentSewingOuts;
 using Manufactures.Domain.GarmentSewingOuts.Commands;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -30,7 +32,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
         private readonly IGarmentCuttingInItemRepository _garmentCuttingInItemRepository;
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateGarmentSewingOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -42,6 +44,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             _garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentSewingOut> Handle(UpdateGarmentSewingOutCommand request, CancellationToken cancellationToken)
@@ -298,6 +301,10 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             sewOut.SetDate(request.SewingOutDate.GetValueOrDefault());
             sewOut.Modify();
             await _garmentSewingOutRepository.Update(sewOut);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Sewing Out - " + sewOut.SewingOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

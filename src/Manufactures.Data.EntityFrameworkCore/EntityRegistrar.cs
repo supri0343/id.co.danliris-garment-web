@@ -58,6 +58,7 @@ using Manufactures.Data.EntityFrameworkCore.GarmentSample.GarmentServiceSampleSe
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.GarmentServiceSampleShrinkagePanels.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.GarmentServiceSampleFabricWashes.Config;
 using Manufactures.Data.EntityFrameworkCore.GarmentSample.ServiceSampleExpenditureGood.Config;
+using Manufactures.Data.EntityFrameworkCore.LogHistories.Configs;
 
 namespace Manufactures.Data.EntityFrameworkCore
 {
@@ -268,6 +269,8 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 			modelBuilder.ApplyConfiguration(new GarmentServiceSampleExpenditureGoodConfig());
 			modelBuilder.ApplyConfiguration(new GarmentServiceSampleExpenditureGoodItemConfig());
+
+			modelBuilder.ApplyConfiguration(new LogHistoryConfig());
 		}
 	}
 }
