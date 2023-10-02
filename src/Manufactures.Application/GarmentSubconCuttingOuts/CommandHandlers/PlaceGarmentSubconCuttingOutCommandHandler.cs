@@ -5,6 +5,8 @@ using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentSubconCuttingOuts;
 using Manufactures.Domain.GarmentSubconCuttingOuts.Commands;
 using Manufactures.Domain.GarmentSubconCuttingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
         private readonly IGarmentSubconCuttingRepository _garmentSubconCuttingRepository;
         //private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
         private readonly IGarmentSubconCuttingRelationRepository _garmentSubconCuttingRelationRepository;
+        private readonly ILogHistoryRepository _logHistoryRepository;
 
         public PlaceGarmentSubconCuttingOutCommandHandler(IStorage storage)
         {
@@ -36,6 +39,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
             _garmentSubconCuttingRepository = storage.GetRepository<IGarmentSubconCuttingRepository>();
             //_garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
             _garmentSubconCuttingRelationRepository = storage.GetRepository<IGarmentSubconCuttingRelationRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentSubconCuttingOut> Handle(PlaceGarmentSubconCuttingOutCommand request, CancellationToken cancellationToken)
@@ -189,6 +193,10 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
             }
 
             await _garmentCuttingOutRepository.Update(garmentCuttingOut);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Cutting Out Subcon - " + garmentCuttingOut.CutOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

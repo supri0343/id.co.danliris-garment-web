@@ -8,6 +8,8 @@ using Manufactures.Domain.GarmentSewingOuts.Repositories;
 using Manufactures.Domain.GarmentSubconCuttingOuts;
 using Manufactures.Domain.GarmentSubconCuttingOuts.Repositories;
 using Manufactures.Domain.GarmentSubconFinishingIns.Commands;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,13 +25,14 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
         private readonly IGarmentFinishingInRepository _garmentFinishingInRepository;
         private readonly IGarmentFinishingInItemRepository _garmentFinishingInItemRepository;
         private readonly IGarmentSubconCuttingRepository _garmentSubconCuttingRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public RemoveGarmentSubconFinishingInCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentFinishingInRepository = storage.GetRepository<IGarmentFinishingInRepository>();
             _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
             _garmentSubconCuttingRepository = storage.GetRepository<IGarmentSubconCuttingRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentFinishingIn> Handle(RemoveGarmentSubconFinishingInCommand request, CancellationToken cancellationToken)
@@ -75,6 +78,10 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
 
             finIn.Remove();
             await _garmentFinishingInRepository.Update(finIn);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Finishing In Subcon - " + finIn.FinishingInNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

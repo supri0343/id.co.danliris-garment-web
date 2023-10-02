@@ -16,6 +16,8 @@ using Manufactures.Domain.GarmentSubconFinishingIns.Commands;
 using Manufactures.Domain.GarmentSubconCuttingOuts.Repositories;
 using Manufactures.Domain.GarmentSubconCuttingOuts;
 using Manufactures.Domain.GarmentComodityPrices.Repositories;
+using Manufactures.Domain.LogHistory.Repositories;
+using Manufactures.Domain.LogHistory;
 
 namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
 {
@@ -26,7 +28,7 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
         private readonly IGarmentFinishingInItemRepository _garmentFinishingInItemRepository;
         private readonly IGarmentSubconCuttingRepository _garmentSubconCuttingRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public PlaceGarmentSubconFinishingInCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -34,6 +36,7 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
             _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
             _garmentSubconCuttingRepository = storage.GetRepository<IGarmentSubconCuttingRepository>();
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentFinishingIn> Handle(PlaceGarmentSubconFinishingInCommand request, CancellationToken cancellationToken)
@@ -111,6 +114,10 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
             }
 
             await _garmentFinishingInRepository.Update(garmentFinishingIn);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Finishing In Subcon - " + garmentFinishingIn.FinishingInNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 
