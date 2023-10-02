@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentPreparings;
 using Manufactures.Domain.GarmentPreparings.Commands;
 using Manufactures.Domain.GarmentPreparings.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +18,13 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
     {
         private readonly IGarmentPreparingRepository _garmentPreparingRepository;
         private readonly IStorage _storage;
+        private readonly ILogHistoryRepository _logHistoryRepository;
 
         public UpdateDatesGarmentPreparingCommandHandler(IStorage storage)
         {
             _garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
             _storage = storage;
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<int> Handle(UpdateDatesGarmentPreparingCommand request, CancellationToken cancellationToken)
@@ -37,6 +41,10 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
                 model.setProcessDate(request.Date);
                 model.SetModified();
                 await _garmentPreparingRepository.Update(model);
+
+                //Add Log History
+                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Date Preparing - " + model.UENNo, DateTime.Now);
+                await _logHistoryRepository.Update(logHistory);
             }
             _storage.Save();
 

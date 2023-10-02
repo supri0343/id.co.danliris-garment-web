@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentExpenditureGoods;
 using Manufactures.Domain.GarmentExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentExpenditureGoods.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,15 +20,15 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
         private readonly IGarmentExpenditureGoodRepository _garmentExpenditureGoodRepository;
         private readonly IGarmentExpenditureGoodItemRepository _garmentExpenditureGoodItemRepository;
 		private readonly IGarmentExpenditureGoodInvoiceRelationRepository _garmentExpenditureGoodInvoiceRelationRepository;
-
-		public UpdateGarmentExpenditureGoodCommandHandler(IStorage storage)
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        public UpdateGarmentExpenditureGoodCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentExpenditureGoodRepository = storage.GetRepository<IGarmentExpenditureGoodRepository>();
             _garmentExpenditureGoodItemRepository = storage.GetRepository<IGarmentExpenditureGoodItemRepository>();
 			_garmentExpenditureGoodInvoiceRelationRepository = storage.GetRepository<IGarmentExpenditureGoodInvoiceRelationRepository>();
-
-		}
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+        }
 
 		public async Task<GarmentExpenditureGood> Handle(UpdateGarmentExpenditureGoodCommand request, CancellationToken cancellationToken)
         {
@@ -53,6 +55,11 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
 				InvoiceRelation.Modify();
 				await _garmentExpenditureGoodInvoiceRelationRepository.Update(InvoiceRelation);
 			}
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Pengeluaran Barang Jadi - " + ExpenditureGood.ExpenditureGoodNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+
             _storage.Save();
 
             return ExpenditureGood;

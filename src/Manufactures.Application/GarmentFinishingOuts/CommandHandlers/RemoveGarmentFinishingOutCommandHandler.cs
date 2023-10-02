@@ -11,6 +11,8 @@ using Manufactures.Domain.GarmentFinishingOuts.Commands;
 using Manufactures.Domain.GarmentFinishingOuts.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -33,7 +35,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
         private readonly IGarmentSewingInRepository _garmentSewingInRepository;
         private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public RemoveGarmentFinishingOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -46,6 +48,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
             _garmentSewingInRepository = storage.GetRepository<IGarmentSewingInRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentFinishingOut> Handle(RemoveGarmentFinishingOutCommand request, CancellationToken cancellationToken)
@@ -72,6 +75,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
 
                             sewInItem.Remove();
                             await _garmentSewingInItemRepository.Update(sewInItem);
+
                         });
                     }
                     else
@@ -83,6 +87,10 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                 var sewIn = _garmentSewingInRepository.Query.Where(a => a.Identity == sewInId).Select(o => new GarmentSewingIn(o)).Single();
                 sewIn.Remove();
                 await _garmentSewingInRepository.Update(sewIn);
+
+                //Add Log History
+                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI", "Delete Sewing In - " + sewIn.SewingInNo, DateTime.Now);
+                await _logHistoryRepository.Update(logHistory1);
             }
 
             _garmentFinishingOutItemRepository.Find(o => o.FinishingOutId == finishOut.Identity).ForEach(async finishOutItem =>
@@ -204,6 +212,10 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
 
             finishOut.Remove();
             await _garmentFinishingOutRepository.Update(finishOut);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Finishing Out - " + finishOut.FinishingOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

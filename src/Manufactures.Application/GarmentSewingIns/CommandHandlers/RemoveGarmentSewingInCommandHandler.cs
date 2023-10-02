@@ -16,6 +16,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Manufactures.Domain.LogHistory.Repositories;
+using Manufactures.Domain.LogHistory;
 
 namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
 {
@@ -27,7 +29,7 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
         private readonly IGarmentSewingOutItemRepository _garmentSewingOutItemRepository;
         private readonly IGarmentFinishingOutItemRepository _garmentFinishingOutItemRepository;
         private readonly IStorage _storage;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public RemoveGarmentSewingInCommandHandler(IStorage storage)
         {
             _garmentSewingInRepository = storage.GetRepository<IGarmentSewingInRepository>();
@@ -36,6 +38,7 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
             _garmentSewingOutItemRepository = storage.GetRepository<IGarmentSewingOutItemRepository>();
             _garmentFinishingOutItemRepository = storage.GetRepository<IGarmentFinishingOutItemRepository>();
             _storage = storage;
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentSewingIn> Handle(RemoveGarmentSewingInCommand request, CancellationToken cancellationToken)
@@ -85,6 +88,10 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
             garmentSewingIn.Remove();
 
             await _garmentSewingInRepository.Update(garmentSewingIn);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Sewing In - " + garmentSewingIn.SewingInNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 
