@@ -4,6 +4,8 @@ using Manufactures.Domain.GarmentPreparings;
 using Manufactures.Domain.GarmentPreparings.Commands;
 using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Domain.GarmentPreparings.ValueObjects;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,8 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
     {
         private readonly IGarmentPreparingRepository _garmentPreparingRepository;
         private readonly IGarmentPreparingItemRepository _garmentPreparingItemRepository;
+
+        private readonly ILogHistoryRepository _logHistoryRepository;
         private readonly IStorage _storage;
 
         public PlaceGarmentPreparingCommandHandler(IStorage storage)
@@ -23,6 +27,7 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
             _storage = storage;
             _garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
             _garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentPreparing> Handle(PlaceGarmentPreparingCommand request, CancellationToken cancellationToken)
@@ -48,6 +53,10 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
             garmentPreparing.SetModified();
 
             await _garmentPreparingRepository.Update(garmentPreparing);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI","Create Preparing - "+ garmentPreparing.UENNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

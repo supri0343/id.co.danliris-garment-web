@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSewingOuts;
 using Manufactures.Domain.GarmentSewingOuts.Commands;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +18,12 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
     {
         private readonly IStorage _storage;
         private readonly IGarmentSewingOutRepository _garmentSewingOutRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateDatesGarmentSewingOutCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentSewingOutRepository = storage.GetRepository<IGarmentSewingOutRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<int> Handle(UpdateDatesGarmentSewingOutCommand request, CancellationToken cancellationToken)
@@ -37,6 +40,10 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 model.SetDate(request.Date);
                 model.Modify();
                 await _garmentSewingOutRepository.Update(model);
+
+                //Add Log History
+                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Date Sewing Out - " + model.SewingOutNo, DateTime.Now);
+                await _logHistoryRepository.Update(logHistory);
             }
             _storage.Save();
 
