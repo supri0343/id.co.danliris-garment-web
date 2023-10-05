@@ -56,7 +56,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
             RuleForEach(r => r.ItemsAcc).SetValidator(new GarmentSubconDeliveryLetterOutItemAccValueObjectValidator()).When(r => r.SubconCategory == "SUBCON CUTTING SEWING");
             RuleFor(r => r.TotalQty)
                  .LessThanOrEqualTo(r => r.UsedQty)
-                 .WithMessage(x => $"'Jumlah Total' tidak boleh lebih dari '{x.UsedQty}'.");
+                 .WithMessage(x => $"'Jumlah Total' tidak boleh lebih dari '{x.UsedQty}'.").When(r => r.SubconCategory != "SUBCON CUTTING SEWING");
         }
     }
 
