@@ -12,7 +12,7 @@ namespace Manufactures.Data.EntityFrameworkCore.LogHistories.Configs
     {
         public void Configure(EntityTypeBuilder<LogHistoryReadModel> builder)
         {
-            builder.ToTable("LogHistories");
+            builder.ToTable("LogHistory");
             builder.HasKey(e => e.Identity);
 
             builder.Property(a => a.Division).HasMaxLength(255);

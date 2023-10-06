@@ -10859,7 +10859,7 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.HasKey("Identity");
 
-                    b.ToTable("LogHistories");
+                    b.ToTable("LogHistory");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.MonitoringProductionStockFlow.GarmentBalanceMonitoringProductionStockReadModel", b =>
