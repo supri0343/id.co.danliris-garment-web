@@ -8,7 +8,7 @@ namespace DanLiris.Admin.Web.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "LogHistories",
+                name: "LogHistory",
                 columns: table => new
                 {
                     Identity = table.Column<Guid>(nullable: false),
@@ -25,14 +25,14 @@ namespace DanLiris.Admin.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LogHistories", x => x.Identity);
+                    table.PrimaryKey("PK_LogHistory", x => x.Identity);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "LogHistories");
+                name: "LogHistory");
         }
     }
 }
