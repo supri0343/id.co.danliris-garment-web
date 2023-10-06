@@ -8,6 +8,9 @@ using Manufactures.Application.GarmentPreparings.Queries.GetWIP;
 using Manufactures.Domain.GarmentPreparings.Commands;
 using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Dtos;
+
+using Manufactures.Application.GarmentPreparings.Queries.GetHistoryDeleted;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -471,5 +474,52 @@ namespace Manufactures.Controllers.Api
                 viewModel.count
             });
         }
+
+        //========>----------------------------Monitoring History Delet Data MDP Start Controller-----------------------------------<========//
+        [HttpGet("deleted")]
+        public async Task<IActionResult> GetHisDelete(string monType,  DateTime?  dateFrom,DateTime?  dateTo)
+        {
+
+            VerifyUser();
+            GetMonPreHistoryDelQuery query = new GetMonPreHistoryDelQuery(monType, dateFrom, dateTo);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.garmentMonitorings, info: new
+            {
+                viewModel.count
+            });
+        }
+
+        [HttpGet("deleted/download")]
+        public async Task<IActionResult> GetXlsHistoryDeleted(string monType, DateTime? dateFrom, DateTime? dateTo)
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsMonPreHistoryDelQuery query = new GetXlsMonPreHistoryDelQuery(monType, dateFrom, dateTo);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = "Laporan History Deleted Prepare";
+
+                if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+                if (dateTo != null) filename += " - " + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+
+
+        //========>----------------------------Monitoring History Delet Data MDP End-----------------------------------<========//
+
     }
 }
