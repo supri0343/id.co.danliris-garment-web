@@ -43,6 +43,8 @@
     <Compile Remove="Migrations\20230905061827_add-table-SubconPackingOut.Designer.cs" />
     <Compile Remove="Migrations\20230905062350_add-table-SubconPackingOut.cs" />
     <Compile Remove="Migrations\20230905062350_add-table-SubconPackingOut.Designer.cs" />
+    <Compile Remove="Migrations\20231006004740_change-tableName-LogHistory.cs" />
+    <Compile Remove="Migrations\20231006004740_change-tableName-LogHistory.Designer.cs" />
   </ItemGroup>
 
   <!--<ItemGroup>

@@ -10838,7 +10838,7 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("CreatedBy");
 
-                    b.Property<DateTimeOffset>("CreatedDate");
+                    b.Property<DateTime>("CreatedDate");
 
                     b.Property<bool?>("Deleted");
 
