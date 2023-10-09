@@ -52,12 +52,12 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
                 RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutServiceItemValueObjectValidator()).When(r => r.ContractType == "SUBCON JASA");
                 RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutShrinkAgePanelItemValueObjectValidator()).When(r => r.ContractType == "SUBCON BAHAN BAKU" &&  r.SubconCategory == "SUBCON BB SHRINKAGE/PANEL");
                 RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutItemValueObjectValidator()).When(r => r.SubconCategory == "SUBCON CUTTING SEWING");
-                RuleForEach(r => r.ItemsAcc).SetValidator(new GarmentSubconDeliveryLetterOutItemAccValueObjectValidator()).When(r => r.SubconCategory == "SUBCON CUTTING SEWING");
+                //RuleForEach(r => r.ItemsAcc).SetValidator(new GarmentSubconDeliveryLetterOutItemAccValueObjectValidator()).When(r => r.SubconCategory == "SUBCON CUTTING SEWING");
                 RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutServiceComponentValueObjectValidator()).When(r => r.ContractType == "SUBCON JASA" && r.SubconCategory == "SUBCON JASA KOMPONEN");
                 RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutServiceComponentValueObjectValidator()).When(r => r.ContractType == "SUBCON GARMENT" && r.SubconCategory == "SUBCON SEWING");
                 RuleFor(r => r.TotalQty)
                      .LessThanOrEqualTo(r => r.UsedQty)
-                     .WithMessage(x => $"'Jumlah Total' tidak boleh lebih dari '{x.UsedQty}'.");
+                     .WithMessage(x => $"'Jumlah Total' tidak boleh lebih dari '{x.UsedQty}'.").When(r => r.SubconCategory != "SUBCON CUTTING SEWING"); ;
             }
         }
 
