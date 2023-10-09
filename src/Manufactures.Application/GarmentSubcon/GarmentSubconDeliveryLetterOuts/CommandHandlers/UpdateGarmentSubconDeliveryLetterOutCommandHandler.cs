@@ -78,16 +78,16 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
         public async Task<GarmentSubconDeliveryLetterOut> Handle(UpdateGarmentSubconDeliveryLetterOutCommand request, CancellationToken cancellationToken)
         {
 
-            if (request.ItemsAcc != null)
-            {
-                foreach (var itemAcc in request.ItemsAcc)
-                {
-                    if (itemAcc.Id != Guid.Empty || itemAcc.Quantity > 0)
-                    {
-                        request.Items.Add(itemAcc);
-                    }
-                }
-            }
+            //if (request.ItemsAcc != null)
+            //{
+            //    foreach (var itemAcc in request.ItemsAcc)
+            //    {
+            //        if (itemAcc.Id != Guid.Empty || itemAcc.Quantity > 0)
+            //        {
+            //            request.Items.Add(itemAcc);
+            //        }
+            //    }
+            //}
             var subconDeliveryLetterOut = _garmentSubconDeliveryLetterOutRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentSubconDeliveryLetterOut(o)).Single();
 
             //if(subconDeliveryLetterOut.SubconCategory == "SUBCON CUTTING SEWING")
@@ -111,7 +111,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subconDeliveryLetterOut.Identity).ForEach(async subconDLItem =>
             {
                 var item = request.Items.Where(o => o.Id == subconDLItem.Identity).SingleOrDefault();
-                if (item.Quantity == 0)
+                if (item != null && item.Quantity == 0 && subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING")
                 {
                     subconDLItem.Remove();
                 }
@@ -261,7 +261,6 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     _garmentSubconDeliveryLetterOutDetailRepository.Find(x => x.SubconDeliveryLetterOutItemId == subconDLItem.Identity).ForEach(async subconDLDetail =>
                 {
                     subconDLDetail.Remove();
-                    subconDLDetail.Modify();
 
                     await _garmentSubconDeliveryLetterOutDetailRepository.Update(subconDLDetail);
                 });
@@ -294,14 +293,14 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                             await _garmentSubconDeliveryLetterOutDetailRepository.Update(subconDLDetail);
                         });
                     }
-                    else if (subconDeliveryLetterOut.SubconCategory == "SUBCON CUTTING SEWING")
-                    {
-                        if (item.Quantity > 0)
-                        {
-                            subconDLItem.SetQuantity(item.Quantity);
-                            subconDLItem.Modify();
-                        }
-                    }
+                    //else if (subconDeliveryLetterOut.SubconCategory == "SUBCON CUTTING SEWING")
+                    //{
+                    //    if (item.Quantity > 0)
+                    //    {
+                    //        subconDLItem.SetQuantity(item.Quantity);
+                    //        subconDLItem.Modify();
+                    //    }
+                    //}
                 }
                 await _garmentSubconDeliveryLetterOutItemRepository.Update(subconDLItem);
             });
@@ -310,20 +309,30 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             {
                 if (item.Id == Guid.Empty)
                 {
+                    var proId = subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Product.Id : 0;
+                    var proCode = subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Product.Code : "";
+                    var proName = subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Product.Name : "";
+
+                    var UomId = subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Id : 0;
+                    var UomUnit = subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Unit : "";
+
+                    var UomOutId = subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Id : 0;
+                    var UomOutUnit = subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Unit : "";
+
                     GarmentSubconDeliveryLetterOutItem garmentSubconDeliveryLetterOutItem = new GarmentSubconDeliveryLetterOutItem(
                     Guid.NewGuid(),
                     subconDeliveryLetterOut.Identity,
                     item.UENItemId,
-                    new ProductId(item.Product.Id),
-                    item.Product.Code,
-                    item.Product.Name,
+                    new ProductId(proId),
+                    proCode,
+                    proName,
                     item.ProductRemark,
                     item.DesignColor,
                     item.Quantity,
-                    new UomId(item.Uom.Id),
-                    item.Uom.Unit,
-                    new UomId(item.UomOut.Id),
-                    item.UomOut.Unit,
+                    new UomId(UomId),
+                    UomUnit,
+                    new UomId(UomOutId),
+                    UomOutUnit,
                     item.FabricType,
                     item.SubconId,
                     item.RONo,
