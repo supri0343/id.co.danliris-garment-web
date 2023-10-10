@@ -85,12 +85,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
 
             if(request.ItemsAcc != null)
             {
-                foreach(var itemAcc in request.ItemsAcc)
+                foreach (var itemAcc in request.ItemsAcc)
                 {
-                    if(itemAcc.Quantity > 0)
-                    {
-                        request.Items.Add(itemAcc);
-                    }
+                    request.Items.Add(itemAcc);
                 }
             }
 
@@ -115,20 +112,30 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
 
             foreach (var item in request.Items)
             {
+
+                var proId = garmentSubconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ?item.Product.Id : 0;
+                var proCode = garmentSubconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Product.Code : "";
+                var proName = garmentSubconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Product.Name : "";
+
+                var UomId = garmentSubconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Id : 0;
+                var UomUnit = garmentSubconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Unit : "";
+
+                var UomOutId = garmentSubconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Id : 0;
+                var UomOutUnit = garmentSubconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Unit : "";
                 GarmentSubconDeliveryLetterOutItem garmentSubconDeliveryLetterOutItem = new GarmentSubconDeliveryLetterOutItem(
                     Guid.NewGuid(),
                     garmentSubconDeliveryLetterOut.Identity,
                     item.UENItemId,
-                    new ProductId(item.Product.Id),
-                    item.Product.Code,
-                    item.Product.Name,
+                    new ProductId(proId),
+                    proCode,
+                    proName,
                     item.ProductRemark,
                     item.DesignColor,
                     item.Quantity,
-                    new UomId(item.Uom.Id),
-                    item.Uom.Unit,
-                    new UomId(item.UomOut.Id),
-                    item.UomOut.Unit,
+                    new UomId(UomId),
+                    UomUnit,
+                    new UomId(UomOutId),
+                    UomOutUnit,
                     item.FabricType,
                     item.SubconId,
                     item.RONo,
