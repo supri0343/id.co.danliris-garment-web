@@ -90,6 +90,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             double totalQty = query.Sum(a => a.GarmentSubconDeliveryLetterOutItem.Sum(b => b.Quantity));
 
             query = query.Skip((page - 1) * size).Take(size);
+            
 
             List<GarmentSubconDeliveryLetterOutListDto> garmentSubconDeliveryLetterOutListDtos = _garmentSubconDeliveryLetterOutRepository
                 .Find(query)
