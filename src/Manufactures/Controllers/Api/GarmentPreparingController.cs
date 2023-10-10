@@ -516,9 +516,6 @@ namespace Manufactures.Controllers.Api
                 return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
-
-
-
         //========>----------------------------Monitoring History Delet Data MDP End-----------------------------------<========//
 
     }

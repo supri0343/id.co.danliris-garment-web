@@ -1,6 +1,7 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
 using Manufactures.Application.GarmentAvalComponents.Queries.GetAllGarmentAvalComponents;
+using Manufactures.Application.GarmentPreparings.Queries.GetHistoryDeleted;
 using Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepare;
 using Manufactures.Application.GarmentPreparings.Queries.GetPrepareTraceable;
 using Manufactures.Application.GarmentPreparings.Queries.GetWIP;
@@ -596,5 +597,57 @@ namespace Manufactures.Tests.Controllers.Api
             GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
         }
 
+
+        //=====----->mdp unit test history deleted prepare<----====//
+        [Fact]
+        public async Task GetHistoryDeletePrepare()
+        {
+            var unitUnderTest = CreateGarmentPreparingController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetMonPreHistoryDelQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GarmentMonPreHistoryDelViewModel());
+
+            // Act
+            //var result = await unitUnderTest.GetHisDelete( DateTime.Now, DateTime.Now);
+            var result = await unitUnderTest.GetHisDelete(null, DateTime.Now, DateTime.Now);
+
+
+            // Assert
+            GetStatusCode(result).Should().Equals((int)HttpStatusCode.OK);
+        }
+        [Fact]
+        public async Task GetXLSHistoryDeletePrepare_OK()
+        {
+            var unitUnderTest = CreateGarmentPreparingController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsMonPreHistoryDelQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream());
+
+            // Act
+
+            var result = await unitUnderTest.GetXlsHistoryDeleted(null, DateTime.Now, DateTime.Now);
+
+            // Assert
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
+        }
+        [Fact]
+        public async Task GetXLSHistoryDeletePrepare_Error()
+        {
+            var unitUnderTest = CreateGarmentPreparingController();
+
+            _MockMediator
+                .Setup(s => s.Send(It.IsAny<GetXlsMonPreHistoryDelQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception());
+
+            // Act
+
+            var result = await unitUnderTest.GetXlsHistoryDeleted(null, DateTime.Now, DateTime.Now);
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
+        }
+        //=====----->mdp unit test history deleted Ends prepare<----====//
     }
 }
