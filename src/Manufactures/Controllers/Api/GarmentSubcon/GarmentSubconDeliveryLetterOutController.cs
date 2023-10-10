@@ -163,7 +163,9 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 //    await PutGarmentUnitExpenditureNoteCreate(command.UENId);
                 if (command.SubconCategory == "SUBCON CUTTING SEWING")
                 {
-                    var uenIds = command.Items.Select(x => x.UENId).Distinct();
+                    List<int> uenIds = new List<int>();
+                    command.Items.ForEach(x => uenIds.Add(x.UENId));
+                    command.ItemsAcc.ForEach(x => uenIds.Add(x.UENId));
 
                     foreach (var a in uenIds.Distinct())
                     {
@@ -241,11 +243,22 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             if (command.SubconCategory == "SUBCON CUTTING SEWING")
             {      
                 //Add UEN Id to Update Is Preparing True
-                var newData = command.ItemsAcc.Where(x => x.Id == Guid.Empty && x.Quantity > 0).FirstOrDefault();
-                if (newData != null)
+                var newData = command.ItemsAcc.Where(x => x.Id == Guid.Empty).ToList();
+                var newData2 = command.Items.Where(x => x.Id == Guid.Empty).ToList();
+
+                foreach(var a in newData)
                 {
-                    UenToIsPrepTrue.Add(newData.UENId);
+                    UenToIsPrepTrue.Add(a.UENId);
                 }
+
+                foreach (var a in newData2)
+                {
+                    UenToIsPrepTrue.Add(a.UENId);
+                }
+                //if (newData != null)
+                //{
+                //    UenToIsPrepTrue.Add(newData.UENId);
+                //}
             }else if(command.SubconCategory == "SUBCON JASA KOMPONEN" || command.SubconCategory == "SUBCON SEWING")
             {
                 var newData = command.Items.FirstOrDefault().Details.Where(x => x.Id == Guid.Empty && x.Quantity > 0).FirstOrDefault();
@@ -253,6 +266,11 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 {
                     UenToIsPrepTrue.Add(newData.UENId);
                 }
+            }
+
+            foreach(var itemAcc in command.ItemsAcc)
+            {
+                command.Items.Add(itemAcc);
             }
                
             //Find Deleted BUK ACC
@@ -262,12 +280,15 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 {
                     if(command.SubconCategory == "SUBCON CUTTING SEWING")
                     {
-                        var deletedAcc = command.ItemsAcc.Where(x => x.Id == DLItem.Identity).FirstOrDefault();
-                        if (deletedAcc != null && deletedAcc.Quantity == 0)
+                        //var deletedAcc = command.ItemsAcc.Where(x => x.Id == DLItem.Identity).FirstOrDefault();
+                        var deleted = command.Items.Where(x => x.Id == DLItem.Identity).FirstOrDefault();
+                        if (deleted == null)
                         {
-                            UenToIsPrepFalse.Add(deletedAcc.UENId);
+                            UenToIsPrepFalse.Add(DLItem.UENId);
                         }
-                    }else if(command.SubconCategory == "SUBCON JASA KOMPONEN" || command.SubconCategory == "SUBCON SEWING")
+
+                    }
+                    else if(command.SubconCategory == "SUBCON JASA KOMPONEN" || command.SubconCategory == "SUBCON SEWING")
                     {
                         _garmentSubconDeliveryLetterOutDetailRepository.Find(x => x.SubconDeliveryLetterOutItemId == DLItem.Identity).ForEach(async DLDetail =>
                         {
