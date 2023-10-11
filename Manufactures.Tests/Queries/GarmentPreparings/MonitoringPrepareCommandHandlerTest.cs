@@ -206,7 +206,7 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 				}.AsQueryable());
 
 			var rep = new Domain.GarmentPreparings.GarmentPreparing(guidPrepare, 1, "", new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1), "", "", DateTimeOffset.Now, "roNo", "", true, new BuyerId(1), null, null);
-
+			
 
 		
 
@@ -214,9 +214,11 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentPreparingReadModel>
 				{
-					new Domain.GarmentPreparings.GarmentPreparing(guidPrepare,1,"",new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1),"","",DateTimeOffset.Now,"roNo","",true,new BuyerId(1), null,null).GetReadModel()
+					new Domain.GarmentPreparings.GarmentPreparing(guidPrepare,1,"",new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1),"","",DateTimeOffset.Now, "roNo","",true,new BuyerId(1), null,null).GetReadModel()
 
 		}.AsQueryable());
+
+
 
 			//RemoveGarmentPreparingCommand RemoveGarmentPreparingCommand = new RemoveGarmentPreparingCommand();
 			//RemoveGarmentPreparingCommand.SetId(guidPrepare);

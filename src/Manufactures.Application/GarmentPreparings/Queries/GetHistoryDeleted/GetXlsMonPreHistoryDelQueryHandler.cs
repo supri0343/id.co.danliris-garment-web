@@ -134,7 +134,8 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetHistoryDeleted
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SATUAN", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "HARGA", DataType = typeof(double) });
 				int counter = 1;
-				if (garmentMonPreHistoryDelViewModel.garmentMonitorings.Count > 0)
+				//if (garmentMonPreHistoryDelViewModel.garmentMonitorings.Count > 0 || garmentMonPreHistoryDelViewModel.garmentMonitorings != null)
+				if (garmentMonPreHistoryDelViewModel.garmentMonitorings != null)
 				{
 					foreach (var report in garmentMonPreHistoryDelViewModel.garmentMonitorings)
 					{
@@ -142,6 +143,11 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetHistoryDeleted
 						counter++;
 					}
 				}
+            else
+            {
+				reportDataTable.Rows.Add("", "", "","", "","", "", "", "", 0, "", 0);
+				
+			}
 				using (var package = new ExcelPackage())
 				{
 					var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
