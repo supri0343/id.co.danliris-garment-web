@@ -3,6 +3,8 @@ using DanLiris.Admin.Web;
 using ExtCore.Data.Abstractions;
 using FluentAssertions;
 using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
+using Manufactures.Application.GarmentPreparings.CommandHandlers;
+using Manufactures.Application.GarmentPreparings.Queries.GetHistoryDeleted;
 using Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepare;
 using Manufactures.Domain.GarmentAvalProducts;
 using Manufactures.Domain.GarmentAvalProducts.ReadModels;
@@ -18,11 +20,13 @@ using Manufactures.Domain.GarmentPreparings;
 using Manufactures.Domain.GarmentPreparings.ReadModels;
 using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
+using Manufactures.Domain.GarmentPreparings.Commands;
 using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -88,6 +92,11 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 		private GetMonitoringPrepareQueryHandler CreateGetMonitoringPrepareQueryHandler()
 		{
 			return new GetMonitoringPrepareQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
+		}
+
+		private GetMonPreHistoryDelQueryHandler CreateGetMonPreHistoryDelQueryHandler()
+        {
+			return new GetMonPreHistoryDelQueryHandler(_MockStorage.Object, serviceProviderMock.Object);
 		}
 
 		[Fact]
@@ -173,6 +182,103 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 
 			 
 			result.Should().NotBeNull();
+		}
+
+        //=====----->mdp unit test history deleted prepare Handler <----====//
+        [Fact]
+		public async Task Handle_MonHisDeleted_StateUnderTest_ExpectedBehavior_NULLdATE()
+		{
+
+			GetMonPreHistoryDelQueryHandler unitUnderTest = CreateGetMonPreHistoryDelQueryHandler();
+			CancellationToken cancellationToken = CancellationToken.None;
+
+			Guid guidPrepare = Guid.NewGuid();
+			Guid guidPrepareItem = Guid.NewGuid();
+
+			//GetMonPreHistoryDelQuery getHendlerMonHisDelPreQuery = new GetMonPreHistoryDelQuery(null, DateTime.Now, DateTime.Now);
+			GetMonPreHistoryDelQuery getHendlerMonHisDelPreQuery = new GetMonPreHistoryDelQuery(null, null,null);
+
+			_mockGarmentPreparingItemRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentPreparingItemReadModel>
+				{
+					new Domain.GarmentPreparings.GarmentPreparingItem(guidPrepareItem, 1, new Domain.GarmentPreparings.ValueObjects.ProductId(1), "", "", "", 0, new Domain.GarmentPreparings.ValueObjects.UomId(1), "", "", 0, 50, guidPrepare,null).GetReadModel()
+				}.AsQueryable());
+
+			var rep = new Domain.GarmentPreparings.GarmentPreparing(guidPrepare, 1, "", new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1), "", "", DateTimeOffset.Now, "roNo", "", true, new BuyerId(1), null, null);
+			
+
+		
+
+			_mockGarmentPreparingRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentPreparingReadModel>
+				{
+					new Domain.GarmentPreparings.GarmentPreparing(guidPrepare,1,"",new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1),"","",DateTimeOffset.Now, "roNo","",true,new BuyerId(1), null,null).GetReadModel()
+
+		}.AsQueryable());
+
+
+
+			//RemoveGarmentPreparingCommand RemoveGarmentPreparingCommand = new RemoveGarmentPreparingCommand();
+			//RemoveGarmentPreparingCommand.SetId(guidPrepare);
+			//_mockGarmentPreparingRepository
+			//	.Setup(s => s.Find(It.IsAny<Expression<Func<GarmentPreparingReadModel, bool>>>()))
+   //             .Returns(new List<GarmentPreparing>());
+
+            var result = await unitUnderTest.Handle(getHendlerMonHisDelPreQuery, cancellationToken);
+
+
+			result.Should().NotBeNull();
+		}
+
+		[Fact]
+		public async Task Handle_MonHisDeleted_StateUnderTest_ExpectedBehavior_NULLdATE2()
+		{
+
+			GetMonPreHistoryDelQueryHandler unitUnderTest = CreateGetMonPreHistoryDelQueryHandler();
+			CancellationToken cancellationToken = CancellationToken.None;
+
+			Guid guidPrepare = Guid.NewGuid();
+			Guid guidPrepareItem = Guid.NewGuid();
+
+			//GetMonPreHistoryDelQuery getHendlerMonHisDelPreQuery = new GetMonPreHistoryDelQuery(null, DateTime.Now, DateTime.Now);
+			GetMonPreHistoryDelQuery getHendlerMonHisDelPreQuery = new GetMonPreHistoryDelQuery(null, null, null);
+
+			_mockGarmentPreparingItemRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentPreparingItemReadModel>
+				{
+					new Domain.GarmentPreparings.GarmentPreparingItem(guidPrepareItem, 1, new Domain.GarmentPreparings.ValueObjects.ProductId(1), "", "", "", 0, new Domain.GarmentPreparings.ValueObjects.UomId(1), "", "", 0, 50, guidPrepare,null).GetReadModel()
+				}.AsQueryable());
+
+			var rep = new Domain.GarmentPreparings.GarmentPreparing(guidPrepare, 1, "", new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1), "", "", DateTimeOffset.Now, "roNo", "", true, new BuyerId(1), null, null);
+
+
+
+			_mockGarmentPreparingRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentPreparingReadModel>
+				{
+					new Domain.GarmentPreparings.GarmentPreparing(guidPrepare,1,"",new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1),"","",DateTimeOffset.Now,"roNo","",true,new BuyerId(1), null,null).GetReadModel()
+
+		}.AsQueryable());
+
+			// Test case 1: both dateFrom and dateTo are null
+			var result1 = await unitUnderTest.Handle(new GetMonPreHistoryDelQuery(null, null, null), cancellationToken);
+			result1.Should().NotBeNull();
+
+			// Test case 2: dateFrom is null and dateTo is not null
+			var result2 = await unitUnderTest.Handle(new GetMonPreHistoryDelQuery(null,null, DateTime.Now), cancellationToken);
+			result2.Should().NotBeNull();
+
+			// Test case 3: dateFrom is not null and dateTo is null
+			var result3 = await unitUnderTest.Handle(new GetMonPreHistoryDelQuery(null, DateTime.Now, null), cancellationToken);
+			result3.Should().NotBeNull();
+
+			// Test case 4: both dateFrom and dateTo are invalid dates
+			var result4 = await unitUnderTest.Handle(new GetMonPreHistoryDelQuery(null,DateTime.MinValue, DateTime.MaxValue), cancellationToken);
+			result4.Should().NotBeNull();
 		}
 	}
 }

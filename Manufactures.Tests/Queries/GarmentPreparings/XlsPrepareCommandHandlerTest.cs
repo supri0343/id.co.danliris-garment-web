@@ -1,6 +1,7 @@
 ﻿using Barebone.Tests;
 using FluentAssertions;
 using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
+using Manufactures.Application.GarmentPreparings.Queries.GetHistoryDeleted;
 using Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepare;
 using Manufactures.Domain.GarmentAvalProducts;
 using Manufactures.Domain.GarmentAvalProducts.ReadModels;
@@ -260,5 +261,6 @@ namespace Manufactures.Tests.Queries.GarmentPreparings
 			// Assert
 			result.Should().NotBeNull();
 		}
+
 	}
 }
