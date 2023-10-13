@@ -42,7 +42,7 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
                 await _garmentCuttingInRepository.Update(model);
 
                 //Add Log History
-                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Date Cutting In - " + model.CutInNo, DateTime.Now);
+                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING IN", "Update Date Cutting In - " + model.CutInNo, DateTime.Now);
                 await _logHistoryRepository.Update(logHistory);
             }
             _storage.Save();

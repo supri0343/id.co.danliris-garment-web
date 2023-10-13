@@ -87,7 +87,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
             await _garmentExpenditureGoodRepository.Update(ExpenditureGood);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Pengeluaran Barang Jadi - " + ExpenditureGood.ExpenditureGoodNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI PENGELUARAN BARANG JADI", "Delete Pengeluaran Barang Jadi - " + ExpenditureGood.ExpenditureGoodNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();

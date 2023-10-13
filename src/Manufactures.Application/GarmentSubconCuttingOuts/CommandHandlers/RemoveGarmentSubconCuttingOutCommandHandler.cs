@@ -128,7 +128,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
             await _garmentCuttingOutRepository.Update(cutOut);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Cutting Out Subcon - " + cutOut.CutOutNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING OUT SUBCON", "Delete Cutting Out Subcon - " + cutOut.CutOutNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();

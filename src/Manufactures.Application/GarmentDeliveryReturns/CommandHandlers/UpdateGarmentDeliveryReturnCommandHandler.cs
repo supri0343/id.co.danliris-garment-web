@@ -119,7 +119,7 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
             await _garmentDeliveryReturnRepository.Update(garmentDeliveryReturn);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Retur Proses - " + garmentDeliveryReturn.DRNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI RETUR PROSES", "Update Retur Proses - " + garmentDeliveryReturn.DRNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();

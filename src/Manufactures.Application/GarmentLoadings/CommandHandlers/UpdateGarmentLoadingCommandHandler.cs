@@ -82,7 +82,7 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
             await _garmentLoadingRepository.Update(loading);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Loading - " + loading.LoadingNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI LOADING", "Update Loading - " + loading.LoadingNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();

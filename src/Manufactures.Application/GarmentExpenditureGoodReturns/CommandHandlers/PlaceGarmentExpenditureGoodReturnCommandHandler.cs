@@ -210,7 +210,7 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
             await _garmentExpenditureGoodReturnRepository.Update(garmentExpenditureGoodReturn);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Retur Barang Jadi - " + garmentExpenditureGoodReturn.ReturNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI RETUR BARANG JADI", "Create Retur Barang Jadi - " + garmentExpenditureGoodReturn.ReturNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();

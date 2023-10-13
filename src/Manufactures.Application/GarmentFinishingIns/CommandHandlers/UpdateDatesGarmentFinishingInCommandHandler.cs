@@ -43,7 +43,7 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
                 await _garmentFinishingInRepository.Update(model);
 
                 //Add Log History
-                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Date Finishing In - " + model.FinishingInNo, DateTime.Now);
+                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI FINISHING IN", "Update Date Finishing In - " + model.FinishingInNo, DateTime.Now);
                 await _logHistoryRepository.Update(logHistory);
             }
             _storage.Save();

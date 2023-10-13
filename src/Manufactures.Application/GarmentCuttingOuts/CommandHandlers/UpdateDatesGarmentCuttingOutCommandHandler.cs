@@ -43,7 +43,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                 await _garmentCuttingOutRepository.Update(model);
 
                 //Add Log History
-                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Date Cutting Out - " + model.CutOutNo, DateTime.Now);
+                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING OUT", "Update Date Cutting Out - " + model.CutOutNo, DateTime.Now);
                 await _logHistoryRepository.Update(logHistory);
             }
             _storage.Save();

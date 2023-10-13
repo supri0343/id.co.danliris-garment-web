@@ -77,7 +77,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 await _garmentCuttingInRepository.Update(cutIn);
 
                 //Add Log History
-                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI", "Delete Cutting In - " + cutIn.CutInNo, DateTime.Now);
+                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI CUTTING IN", "Delete Cutting In - " + cutIn.CutInNo, DateTime.Now);
                 await _logHistoryRepository.Update(logHistory1);
             }
 
@@ -109,7 +109,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 await _garmentSewingInRepository.Update(sewIn);
 
                 //Add Log History
-                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI", "Delete Sewing In - " + sewIn.SewingInNo, DateTime.Now);
+                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI SEWING IN", "Delete Sewing In - " + sewIn.SewingInNo, DateTime.Now);
                 await _logHistoryRepository.Update(logHistory1);
             }
 
@@ -141,7 +141,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 await _garmentFinishingInRepository.Update(finIn);
 
                 //Add Log History
-                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI", "Delete Finishing In - " + finIn.FinishingInNo, DateTime.Now);
+                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI FINISHING IN", "Delete Finishing In - " + finIn.FinishingInNo, DateTime.Now);
                 await _logHistoryRepository.Update(logHistory1);
             }
 
@@ -195,7 +195,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             await _garmentSewingOutRepository.Update(sewOut);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Sewing Out - " + sewOut.SewingOutNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI SEWING OUT", "Delete Sewing Out - " + sewOut.SewingOutNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
