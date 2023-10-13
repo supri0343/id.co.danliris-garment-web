@@ -394,7 +394,9 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                         SubconExpenditureGood = _garmentServiceSubconExpenditureGoodRepository.Find(o => o.Identity == subconItem.SubconId).Select(sExpend => new GarmentServiceSubconExpenditureGoodDto(sExpend)
                         {
                             Items = _garmentServiceSubconExpenditureGoodItemRepository.Find(o => o.ServiceSubconExpenditureGoodId == sExpend.Identity).Select(sExpendItem => new GarmentServiceSubconExpenditureGoodItemDto(sExpendItem) { }).ToList()
-                        }).FirstOrDefault()
+                        }).FirstOrDefault(),
+
+                        Details = _garmentSubconDeliveryLetterOutDetailRepository.Find(d => d.SubconDeliveryLetterOutItemId == subconItem.Identity).Select(subconDetail => new GarmentSubconDeliveryLetterOutDetailDto(subconDetail)).ToList()
 
 
                     }).ToList()
@@ -479,10 +481,10 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                         ))
                     {
                         Items = _garmentServiceSubconExpenditureGoodItemRepository.Find(o => o.ServiceSubconExpenditureGoodId == sExpend.Identity).Select(sExpendItem => new GarmentServiceSubconExpenditureGoodItemDto(sExpendItem) { }).ToList()
-                    }).FirstOrDefault()
+                    }).FirstOrDefault(),
 
-
-                }).ToList()
+                     Details = _garmentSubconDeliveryLetterOutDetailRepository.Find(d => d.SubconDeliveryLetterOutItemId == subconItem.Identity).Select(subconDetail => new GarmentSubconDeliveryLetterOutDetailDto(subconDetail)).ToList()
+                    }).ToList()
                 }).FirstOrDefault();
             }
             
