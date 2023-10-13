@@ -80,7 +80,7 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
             await _garmentFinishingInRepository.Update(finIn);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Finishing In Subcon - " + finIn.FinishingInNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI FINISHING IN SUBCON", "Delete Finishing In Subcon - " + finIn.FinishingInNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();

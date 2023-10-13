@@ -248,7 +248,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                         finGoodStocks.Add(finishedGood);
 
                         //Add Log History
-                        LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI", "Create FinishedGoodStock - " + finishedGood.FinishedGoodStockNo, DateTime.Now);
+                        LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI FINISHED GOOD STOCK", "Create FinishedGoodStock - " + finishedGood.FinishedGoodStockNo, DateTime.Now);
                         await _logHistoryRepository.Update(logHistory1);
                     }
                     else
@@ -390,7 +390,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                 await _garmentSewingInRepository.Update(garmentSewingIn);
 
                 //Add Log History
-                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI", "Create Sewing In - " + garmentSewingIn.SewingInNo, DateTime.Now);
+                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI SEWING IN", "Create Sewing In - " + garmentSewingIn.SewingInNo, DateTime.Now);
                 await _logHistoryRepository.Update(logHistory1);
 
                 foreach (var item in request.Items)
@@ -460,7 +460,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
             await _garmentFinishingOutRepository.Update(garmentFinishingOut);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Finishing Out - " + garmentFinishingOut.FinishingOutNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI FINISHING OUT", "Create Finishing Out - " + garmentFinishingOut.FinishingOutNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();

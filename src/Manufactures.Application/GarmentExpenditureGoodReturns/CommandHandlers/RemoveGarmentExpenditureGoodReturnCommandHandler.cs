@@ -105,7 +105,7 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
             await _garmentExpenditureGoodReturnRepository.Update(ExpenditureGoodReturn);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Retur Barang Jadi - " + ExpenditureGoodReturn.ReturNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI RETUR BARANG JADI", "Delete Retur Barang Jadi - " + ExpenditureGoodReturn.ReturNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
