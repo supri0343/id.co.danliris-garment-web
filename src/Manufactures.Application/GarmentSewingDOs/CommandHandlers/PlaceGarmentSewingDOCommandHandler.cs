@@ -82,7 +82,7 @@ namespace Manufactures.Application.GarmentSewingDOs.CommandHandlers
             await _garmentSewingDORepository.Update(garmentSewingDO);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Sewing DO - " + garmentSewingDO.SewingDONo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI SEWING DO", "Create Sewing DO - " + garmentSewingDO.SewingDONo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();

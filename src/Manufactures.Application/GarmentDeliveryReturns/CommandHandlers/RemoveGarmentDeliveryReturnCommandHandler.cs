@@ -65,7 +65,7 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
             await _garmentDeliveryReturnRepository.Update(garmentDeliveryReturn);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Retur Proses - " + garmentDeliveryReturn.DRNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI RETUR PROSES", "Delete Retur Proses - " + garmentDeliveryReturn.DRNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();

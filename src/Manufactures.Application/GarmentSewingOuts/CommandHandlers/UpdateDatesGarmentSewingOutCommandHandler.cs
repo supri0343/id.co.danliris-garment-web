@@ -42,7 +42,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 await _garmentSewingOutRepository.Update(model);
 
                 //Add Log History
-                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Date Sewing Out - " + model.SewingOutNo, DateTime.Now);
+                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI SEWING OUT", "Update Date Sewing Out - " + model.SewingOutNo, DateTime.Now);
                 await _logHistoryRepository.Update(logHistory);
             }
             _storage.Save();
