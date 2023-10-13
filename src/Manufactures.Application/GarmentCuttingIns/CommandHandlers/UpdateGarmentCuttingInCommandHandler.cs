@@ -85,7 +85,7 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
             await _garmentCuttingInRepository.Update(cutIn);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Cutting In - " + cutIn.CutInNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING IN", "Update Cutting In - " + cutIn.CutInNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();

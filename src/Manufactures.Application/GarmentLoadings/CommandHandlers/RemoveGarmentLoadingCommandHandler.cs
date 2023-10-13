@@ -84,11 +84,11 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
             await _garmentSewingInRepository.Update(garmentSewingIn);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Loading - " + loading.LoadingNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI LOADING", "Delete Loading - " + loading.LoadingNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             //Add Log History
-            LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI", "Delete Sewing In - " + garmentSewingIn.SewingInNo, DateTime.Now);
+            LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI SEWING IN", "Delete Sewing In - " + garmentSewingIn.SewingInNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory1);
 
             _storage.Save();

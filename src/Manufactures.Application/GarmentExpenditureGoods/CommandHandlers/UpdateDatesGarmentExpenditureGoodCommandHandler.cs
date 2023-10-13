@@ -42,7 +42,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                 await _garmentExpenditureGoodRepository.Update(model);
 
                 //Add Log History
-                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Date Pengeluaran Barang Jadi - " + model.ExpenditureGoodNo, DateTime.Now);
+                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI PENGELUARAN BARANG JADI", "Update Date Pengeluaran Barang Jadi - " + model.ExpenditureGoodNo, DateTime.Now);
                 await _logHistoryRepository.Update(logHistory);
             }
             _storage.Save();

@@ -116,7 +116,7 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
             await _garmentFinishingInRepository.Update(garmentFinishingIn);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Finishing In Subcon - " + garmentFinishingIn.FinishingInNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI FINISHING IN SUBCON", "Create Finishing In Subcon - " + garmentFinishingIn.FinishingInNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
