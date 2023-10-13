@@ -235,52 +235,80 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 tableContent.AddCell(cellCenter);
 
                 var index = 0;
-                foreach (var item in garmentSubconDLOut.Items.Where(x => x.Product.Name == "FABRIC"))
+                foreach (var item in garmentSubconDLOut.Items)
                 {
-                    cellCenter.Phrase = new Phrase((index + 1).ToString(), normal_font);
-                    tableContent.AddCell(cellCenter);
+                    foreach(var detail in item.Details.Where(x => x.Product.Name == "FABRIC"))
+                    {
+                        cellCenter.Phrase = new Phrase((index + 1).ToString(), normal_font);
+                        tableContent.AddCell(cellCenter);
 
-                    cellLeft.Phrase = new Phrase(item.UENNo, normal_font);
-                    tableContent.AddCell(cellLeft);
+                        cellLeft.Phrase = new Phrase(detail.UENNo, normal_font);
+                        tableContent.AddCell(cellLeft);
 
-                    cellLeft.Phrase = new Phrase(item.Product.Code + "/" + item.Product.Name, normal_font);
-                    tableContent.AddCell(cellLeft);
+                        cellLeft.Phrase = new Phrase(detail.Product.Code + "/" + detail.Product.Name, normal_font);
+                        tableContent.AddCell(cellLeft);
 
-                    cellLeft.Phrase = new Phrase(item.DesignColor, normal_font);
-                    tableContent.AddCell(cellLeft);
+                        cellLeft.Phrase = new Phrase(detail.DesignColor, normal_font);
+                        tableContent.AddCell(cellLeft);
 
-                    cellRight.Phrase = new Phrase($"{item.Quantity}", normal_font);
-                    tableContent.AddCell(cellRight);
+                        cellRight.Phrase = new Phrase($"{detail.Quantity}", normal_font);
+                        tableContent.AddCell(cellRight);
 
-                    cellLeft.Phrase = new Phrase(item.UomOut.Unit, normal_font);
-                    tableContent.AddCell(cellLeft);
+                        cellLeft.Phrase = new Phrase(detail.UomOut.Unit, normal_font);
+                        tableContent.AddCell(cellLeft);
 
-                    index++;
+                        index++;
+                    }
+
+                    foreach (var detail in item.Details.Where(x => x.Product.Name != "FABRIC"))
+                    {
+                        cellCenter.Phrase = new Phrase((index + 1).ToString(), normal_font);
+                        tableContent.AddCell(cellCenter);
+
+                        cellLeft.Phrase = new Phrase(detail.UENNo, normal_font);
+                        tableContent.AddCell(cellLeft);
+
+                        cellLeft.Phrase = new Phrase(detail.Product.Code + "/" + detail.Product.Name, normal_font);
+                        tableContent.AddCell(cellLeft);
+
+                        cellLeft.Phrase = new Phrase(detail.DesignColor, normal_font);
+                        tableContent.AddCell(cellLeft);
+
+                        cellRight.Phrase = new Phrase($"{detail.Quantity}", normal_font);
+                        tableContent.AddCell(cellRight);
+
+                        cellLeft.Phrase = new Phrase(detail.UomOut.Unit, normal_font);
+                        tableContent.AddCell(cellLeft);
+
+                        index++;
+                        //total += item.Quantity;
+                    }
+
                 }
 
-                foreach (var item in garmentSubconDLOut.Items.Where(x => x.Product.Name != "FABRIC"))
-                {
-                    cellCenter.Phrase = new Phrase((index + 1).ToString(), normal_font);
-                    tableContent.AddCell(cellCenter);
+                //foreach (var item in garmentSubconDLOut.Items.Where(x => x.Product.Name != "FABRIC"))
+                //{
+                //    cellCenter.Phrase = new Phrase((index + 1).ToString(), normal_font);
+                //    tableContent.AddCell(cellCenter);
 
-                    cellLeft.Phrase = new Phrase(item.UENNo, normal_font);
-                    tableContent.AddCell(cellLeft);
+                //    cellLeft.Phrase = new Phrase(item.UENNo, normal_font);
+                //    tableContent.AddCell(cellLeft);
 
-                    cellLeft.Phrase = new Phrase(item.Product.Code + "/" + item.Product.Name, normal_font);
-                    tableContent.AddCell(cellLeft);
+                //    cellLeft.Phrase = new Phrase(item.Product.Code + "/" + item.Product.Name, normal_font);
+                //    tableContent.AddCell(cellLeft);
 
-                    cellLeft.Phrase = new Phrase(item.DesignColor, normal_font);
-                    tableContent.AddCell(cellLeft);
+                //    cellLeft.Phrase = new Phrase(item.DesignColor, normal_font);
+                //    tableContent.AddCell(cellLeft);
 
-                    cellRight.Phrase = new Phrase($"{item.Quantity}", normal_font);
-                    tableContent.AddCell(cellRight);
+                //    cellRight.Phrase = new Phrase($"{item.Quantity}", normal_font);
+                //    tableContent.AddCell(cellRight);
 
-                    cellLeft.Phrase = new Phrase(item.UomOut.Unit, normal_font);
-                    tableContent.AddCell(cellLeft);
+                //    cellLeft.Phrase = new Phrase(item.UomOut.Unit, normal_font);
+                //    tableContent.AddCell(cellLeft);
 
-                    index++;
-                    //total += item.Quantity;
-                }
+                //    index++;
+                //    //total += item.Quantity;
+                //}
 
                 //cellLeft.Phrase = new Phrase("TOTAL", bold_font);
                 //cellLeft.Colspan = 3;
