@@ -4,6 +4,8 @@ using Manufactures.Domain.GarmentSample.SamplePreparings;
 using Manufactures.Domain.GarmentSample.SamplePreparings.Commands;
 using Manufactures.Domain.GarmentSample.SamplePreparings.Repositories;
 using Manufactures.Domain.GarmentSample.SamplePreparings.ValueObjects;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +20,17 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.CommandHandler
         private readonly IGarmentSamplePreparingRepository _garmentSamplePreparingRepository;
         private readonly IGarmentSamplePreparingItemRepository _garmentSamplePreparingItemRepository;
         private readonly IStorage _storage;
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
 
         public PlaceGarmentSamplePreparingCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentSamplePreparingItemRepository = storage.GetRepository<IGarmentSamplePreparingItemRepository>();
             _garmentSamplePreparingRepository = storage.GetRepository<IGarmentSamplePreparingRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+
         }
 
         public async Task<GarmentSamplePreparing> Handle(PlaceGarmentSamplePreparingCommand request, CancellationToken cancellationToken)
@@ -37,6 +44,10 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.CommandHandler
 
             await _garmentSamplePreparingRepository.Update(garmentSamplePreparing);
 
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "SAMPLE PREPARING SAMPLE", "Create Preparing Sample - " + garmentSamplePreparing.UENNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
             _storage.Save();
 
             return garmentSamplePreparing;
