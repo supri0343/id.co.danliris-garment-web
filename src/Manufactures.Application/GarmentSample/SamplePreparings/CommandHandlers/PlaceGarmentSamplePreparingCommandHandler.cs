@@ -45,7 +45,7 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.CommandHandler
             await _garmentSamplePreparingRepository.Update(garmentSamplePreparing);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "SAMPLE PREPARING SAMPLE", "Create Preparing Sample - " + garmentSamplePreparing.UENNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI PREPARING SAMPLE", "Create Preparing Sample - " + garmentSamplePreparing.UENNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
             //-----------
             _storage.Save();
