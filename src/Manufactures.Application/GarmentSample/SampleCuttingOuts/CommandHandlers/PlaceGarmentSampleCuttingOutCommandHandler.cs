@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using Manufactures.Domain.GarmentSample.SampleCuttingIns;
 using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.LogHistory.Repositories;
+using Manufactures.Domain.LogHistory;
 
 namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandlers
 {
@@ -29,7 +31,9 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandle
         private readonly IGarmentSampleSewingInItemRepository _garmentSewingInItemRepository;
         private readonly IGarmentSampleCuttingInDetailRepository _garmentCuttingInDetailRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
-
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
         public PlaceGarmentSampleCuttingOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -40,6 +44,9 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandle
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSampleSewingInItemRepository>();
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentSampleCuttingInDetailRepository>();
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
+            //------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //-----------
         }
 
         public async Task<GarmentSampleCuttingOut> Handle(PlaceGarmentSampleCuttingOutCommand request, CancellationToken cancellationToken)
@@ -168,8 +175,16 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandle
             }
 
             await _GarmentSampleCuttingOutRepository.Update(GarmentSampleCuttingOut);
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING OUT SAMPLE", "Create Cutting Out Sample - " + GarmentSampleCuttingOut.CutOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
 
             await _garmentSewingInRepository.Update(garmentSewingIn);
+            //Add Log History
+            LogHistory logHistory2 = new LogHistory(new Guid(), "PRODUKSI CUTTING OUT SAMPLE", "Create Cutting Out Sample - " + garmentSewingIn.CuttingOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory2);
+            //-----------
 
             _storage.Save();
 
