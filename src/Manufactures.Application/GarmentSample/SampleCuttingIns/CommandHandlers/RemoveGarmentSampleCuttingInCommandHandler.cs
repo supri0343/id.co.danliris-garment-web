@@ -5,6 +5,8 @@ using Manufactures.Domain.GarmentSample.SampleCuttingIns.Commands;
 using Manufactures.Domain.GarmentSample.SampleCuttingIns.Repositories;
 using Manufactures.Domain.GarmentSample.SamplePreparings;
 using Manufactures.Domain.GarmentSample.SamplePreparings.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +23,9 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingIns.CommandHandler
         private readonly IGarmentSampleCuttingInItemRepository _garmentSampleCuttingInItemRepository;
         private readonly IGarmentSampleCuttingInDetailRepository _garmentSampleCuttingInDetailRepository;
         private readonly IGarmentSamplePreparingItemRepository _garmentSamplePreparingItemRepository;
-
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
         public RemoveGarmentSampleCuttingInCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -29,6 +33,9 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingIns.CommandHandler
             _garmentSampleCuttingInItemRepository = storage.GetRepository<IGarmentSampleCuttingInItemRepository>();
             _garmentSampleCuttingInDetailRepository = storage.GetRepository<IGarmentSampleCuttingInDetailRepository>();
             _garmentSamplePreparingItemRepository = storage.GetRepository<IGarmentSamplePreparingItemRepository>();
+            //------------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //------------
         }
 
         public async Task<GarmentSampleCuttingIn> Handle(RemoveGarmentSampleCuttingInCommand request, CancellationToken cancellationToken)
@@ -68,6 +75,11 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingIns.CommandHandler
 
             cutIn.Remove();
             await _garmentSampleCuttingInRepository.Update(cutIn);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING IN SAMPLE", "Delete Cutting In Sample - " + cutIn.CutInNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
 
             _storage.Save();
 

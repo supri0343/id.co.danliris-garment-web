@@ -12,6 +12,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Manufactures.Domain.Shared.ValueObjects;
 using Manufactures.Domain.GarmentSample.SamplePreparings;
+using Manufactures.Domain.LogHistory.Repositories;
+using Manufactures.Domain.LogHistory;
 
 namespace Manufactures.Application.GarmentSample.SampleCuttingIns.CommandHandlers
 {
@@ -22,7 +24,9 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingIns.CommandHandler
         private readonly IGarmentSampleCuttingInItemRepository _garmentSampleCuttingInItemRepository;
         private readonly IGarmentSampleCuttingInDetailRepository _garmentSampleCuttingInDetailRepository;
         private readonly IGarmentSamplePreparingItemRepository _garmentSamplePreparingItemRepository;
-
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
         public PlaceGarmentSampleCuttingInCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -30,6 +34,9 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingIns.CommandHandler
             _garmentSampleCuttingInItemRepository = storage.GetRepository<IGarmentSampleCuttingInItemRepository>();
             _garmentSampleCuttingInDetailRepository = storage.GetRepository<IGarmentSampleCuttingInDetailRepository>();
             _garmentSamplePreparingItemRepository = storage.GetRepository<IGarmentSamplePreparingItemRepository>();
+            //----------------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //------------
         }
 
         public async Task<GarmentSampleCuttingIn> Handle(PlaceGarmentSampleCuttingInCommand request, CancellationToken cancellationToken)
@@ -119,6 +126,10 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingIns.CommandHandler
 
             await _garmentSampleCuttingInRepository.Update(garmentSampleCuttingIn);
 
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING IN SAMPLE", "Create Cutting In Sample - " + garmentSampleCuttingIn.CutInNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
             _storage.Save();
 
             return garmentSampleCuttingIn;

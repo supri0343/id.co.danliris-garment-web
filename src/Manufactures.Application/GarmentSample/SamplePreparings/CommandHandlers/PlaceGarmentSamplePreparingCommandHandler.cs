@@ -29,8 +29,9 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.CommandHandler
             _storage = storage;
             _garmentSamplePreparingItemRepository = storage.GetRepository<IGarmentSamplePreparingItemRepository>();
             _garmentSamplePreparingRepository = storage.GetRepository<IGarmentSamplePreparingRepository>();
+            //------
             _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
-
+            //-----------
         }
 
         public async Task<GarmentSamplePreparing> Handle(PlaceGarmentSamplePreparingCommand request, CancellationToken cancellationToken)
