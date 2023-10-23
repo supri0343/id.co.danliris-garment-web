@@ -176,13 +176,13 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandle
 
             await _GarmentSampleCuttingOutRepository.Update(GarmentSampleCuttingOut);
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING OUT SAMPLE", "Create Cutting Out Sample - " + GarmentSampleCuttingOut.CutOutNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING SAMPLE", "Create Cutting Out Sample - " + GarmentSampleCuttingOut.CutOutNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
             //-----------
 
             await _garmentSewingInRepository.Update(garmentSewingIn);
             //Add Log History
-            LogHistory logHistory2 = new LogHistory(new Guid(), "PRODUKSI CUTTING OUT SAMPLE", "Create Cutting Out Sample - " + garmentSewingIn.CuttingOutNo, DateTime.Now);
+            LogHistory logHistory2 = new LogHistory(new Guid(), "PRODUKSI SEWING SAMPLE", "Create Sewing In Sample - " + garmentSewingIn.SewingInNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory2);
             //-----------
 
