@@ -89,14 +89,14 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingOuts.CommandHandle
             sewingIn.Remove();
             await _GarmentSampleSewingInRepository.Update(sewingIn);
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING OUT SAMPLE", "Delete Cutting Out Sample - " + sewingIn.CuttingOutNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI SEWING SAMPLE", "Delete Sewing In Sample - " + sewingIn.SewingInNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
             //-----------
 
             cutOut.Remove();
             await _GarmentSampleCuttingOutRepository.Update(cutOut);
             //Add Log History
-            LogHistory logHistory2 = new LogHistory(new Guid(), "PRODUKSI CUTTING OUT SAMPLE", "Delete Cutting Out Sample - " + cutOut.CutOutNo, DateTime.Now);
+            LogHistory logHistory2 = new LogHistory(new Guid(), "PRODUKSI CUTTING SAMPLE", "Delete Cutting Out Sample - " + cutOut.CutOutNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory2);
             //-----------
 
