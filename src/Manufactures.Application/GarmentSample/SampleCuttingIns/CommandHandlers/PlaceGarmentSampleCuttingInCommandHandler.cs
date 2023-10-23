@@ -127,7 +127,7 @@ namespace Manufactures.Application.GarmentSample.SampleCuttingIns.CommandHandler
             await _garmentSampleCuttingInRepository.Update(garmentSampleCuttingIn);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING IN SAMPLE", "Create Cutting In Sample - " + garmentSampleCuttingIn.CutInNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING SAMPLE", "Create Cutting In Sample - " + garmentSampleCuttingIn.CutInNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
             //-----------
             _storage.Save();
