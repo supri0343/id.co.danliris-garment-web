@@ -22,7 +22,10 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
         private readonly IGarmentPreparingRepository _garmentPreparingRepository;
         private readonly IGarmentPreparingItemRepository _garmentPreparingItemRepository;
         private readonly IStorage _storage;
+        //-------------
         private readonly ILogHistoryRepository _logHistoryRepository;
+        //------------
+
         public PlaceGarmentDeliveryReturnCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -30,7 +33,9 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
             _garmentDeliveryReturnItemRepository = storage.GetRepository<IGarmentDeliveryReturnItemRepository>();
             _garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
             _garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
+            //--------------
             _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //------------
         }
 
         public async Task<GarmentDeliveryReturn> Handle(PlaceGarmentDeliveryReturnCommand request, CancellationToken cancellationToken)
@@ -81,10 +86,12 @@ namespace Manufactures.Application.GarmentDeliveryReturns.CommandHandlers
             //Add Log History
             LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI RETUR PROSES", "Create Retur Proses - " + garmentDeliveryReturn.DRNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
-
+            //-----------
             _storage.Save();
 
             return garmentDeliveryReturn;
+
+            
 
         }
 
