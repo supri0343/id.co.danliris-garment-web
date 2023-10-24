@@ -13,6 +13,7 @@ namespace Manufactures.Application.GarmentSubconCuttings.Queries.GetAllGarmentSu
         public string keyword { get; private set; }
         public string filter { get; private set; }
 
+        
         public GetAllGarmentSubconCuttingsQuery(int page, int size, string order, string keyword, string filter)
         {
             this.page = page;
