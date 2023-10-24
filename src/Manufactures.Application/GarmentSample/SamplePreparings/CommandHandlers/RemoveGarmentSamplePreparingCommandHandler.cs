@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSample.SamplePreparings;
 using Manufactures.Domain.GarmentSample.SamplePreparings.Commands;
 using Manufactures.Domain.GarmentSample.SamplePreparings.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Moonlay;
 using System;
 using System.Collections.Generic;
@@ -18,12 +20,18 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.CommandHandler
         private readonly IGarmentSamplePreparingRepository _garmentSamplePreparingRepository;
         private readonly IGarmentSamplePreparingItemRepository _garmentSamplePreparingItemRepository;
         private readonly IStorage _storage;
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
 
         public RemoveGarmentSamplePreparingCommandHandler(IStorage storage)
         {
             _garmentSamplePreparingRepository = storage.GetRepository<IGarmentSamplePreparingRepository>();
             _garmentSamplePreparingItemRepository = storage.GetRepository<IGarmentSamplePreparingItemRepository>();
             _storage = storage;
+            //------------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //------------
         }
 
         public async Task<GarmentSamplePreparing> Handle(RemoveGarmentSamplePreparingCommand request, CancellationToken cancellationToken)
@@ -44,6 +52,11 @@ namespace Manufactures.Application.GarmentSample.SamplePreparings.CommandHandler
             garmentSamplePreparing.Remove();
 
             await _garmentSamplePreparingRepository.Update(garmentSamplePreparing);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI PREPARING SAMPLE", "Delete Preparing Sample - " + garmentSamplePreparing.UENNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
 
             _storage.Save();
 
