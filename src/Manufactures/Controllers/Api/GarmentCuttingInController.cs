@@ -1,5 +1,6 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Manufactures.Application.GarmentCuttingIns.Queries.GetHistoryDeleted;
 using Manufactures.Domain.GarmentCuttingIns.Commands;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentPreparings.Repositories;
@@ -245,6 +246,47 @@ namespace Manufactures.Controllers.Api
             await Task.Yield();
 
             return Ok(rOs);
+        }
+
+        [HttpGet("deleted")]
+        public async Task<IActionResult> GetHisDelete(string monType, DateTime? dateFrom, DateTime? dateTo)
+        {
+
+            VerifyUser();
+            GetMonCuttingHistoryDelQuery query = new GetMonCuttingHistoryDelQuery(monType, dateFrom, dateTo);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.garmentMonitorings, info: new
+            {
+                viewModel.count
+            });
+        }
+
+        [HttpGet("deleted/download")]
+        public async Task<IActionResult> GetXlsLoadsHistoryDeleted(string monType, DateTime? dateFrom, DateTime? dateTo)
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsCuttingHistoryDelQuery query = new GetXlsCuttingHistoryDelQuery(monType, dateFrom, dateTo);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = "Laporan History Deleted Cutting In";
+
+                if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+                if (dateTo != null) filename += " - " + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
         }
     }
 }
