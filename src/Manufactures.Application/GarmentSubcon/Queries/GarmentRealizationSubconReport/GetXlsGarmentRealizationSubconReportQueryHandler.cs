@@ -59,6 +59,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
             public string subconNo { get; set; }
             public string bpjNo { get; set; }
             public DateTimeOffset dueDate { get; set; }
+            public double subconContractQuantity { get; set; }
         }
         public class monitoringViewINTemp
         {
@@ -154,7 +155,20 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
             //                     dueDate = c.DueDate
             //                 };
 
-            foreach (var i in QueryKeluar3)
+            var groupKeluar = QueryKeluar3.GroupBy(x => new { x.uomOut, x.jobtype, x.subconNo, x.bpjNo, x.dueDate, x.bcNoOut, x.bcDateOut, x.subconContractQuantity }, (key, group) => new monitoringViewTemp
+            {
+                uomOut = key.uomOut,
+                jobtype = key.jobtype,
+                subconNo = key.subconNo,
+                bpjNo = key.bpjNo,
+                dueDate = key.dueDate,
+                subconContractQuantity = key.subconContractQuantity,
+                bcNoOut = key.bcNoOut,
+                bcDateOut = key.bcDateOut,
+                quantityOut = group.Sum(s => s.quantityOut)
+            }).OrderBy(x => x.bcDateOut);
+
+            foreach (var i in groupKeluar)
             {
                 GarmentRealizationSubconReportDto dto = new GarmentRealizationSubconReportDto
                 {
@@ -165,13 +179,22 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
                     jobType = i.jobtype,
                     subconNo = i.subconNo,
                     bpjNo = i.bpjNo,
-                    dueDate = i.dueDate
+                    dueDate = i.dueDate,
+                    subconContractQuantity = i.subconContractQuantity,
                 };
 
                 monitoringDtosOut.Add(dto);
             }
 
-            foreach (var i in QueryMasuk)
+            var groupMasuk = QueryMasuk.GroupBy(x => new { x.bcDateIn, x.bcNoIn, x.fintype }, (key, group) => new monitoringViewINTemp
+            {
+                bcDateIn = key.bcDateIn,
+                bcNoIn = key.bcNoIn,
+                fintype = key.fintype,
+                quantityIn = group.Sum(s => s.quantityIn)
+            }).OrderBy(x => x.bcDateIn);
+
+            foreach (var i in groupMasuk)
             {
                 GarmentRealizationSubconReportDto dto = new GarmentRealizationSubconReportDto
                 {
