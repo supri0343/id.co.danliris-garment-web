@@ -564,7 +564,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             await _garmentSubconDeliveryLetterOutRepository.Update(subconDeliveryLetterOut);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Surat Jalan Subcon - " + subconDeliveryLetterOut.DLNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PEMBELIAN", "Update Surat Jalan Subcon - " + subconDeliveryLetterOut.DLNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
 

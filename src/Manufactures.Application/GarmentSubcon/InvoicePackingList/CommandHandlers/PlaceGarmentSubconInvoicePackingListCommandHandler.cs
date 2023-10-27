@@ -159,7 +159,7 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
             await _subconInvoicePackingListRepository.Update(subconInvoicePackingList);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Invoice Packing List  - " + subconInvoicePackingList.InvoiceNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "EXIM", "Create Invoice Packing List  - " + subconInvoicePackingList.InvoiceNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
 

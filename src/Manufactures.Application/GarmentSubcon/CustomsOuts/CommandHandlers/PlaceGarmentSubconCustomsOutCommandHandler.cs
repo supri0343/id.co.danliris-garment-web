@@ -82,7 +82,7 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
             await _garmentSubconCustomsOutRepository.Update(garmentSubconCustomsOut);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create BC Keluar Subcon - " + garmentSubconCustomsOut.CustomsOutNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "EXIM", "Create BC Keluar Subcon - " + garmentSubconCustomsOut.CustomsOutNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();

@@ -42,7 +42,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
             await _garmentSubconContractRepository.Update(subconContract);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Subcon Kontrak - " + subconContract.ContractNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "EXIM", "Delete Subcon Kontrak - " + subconContract.ContractNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
