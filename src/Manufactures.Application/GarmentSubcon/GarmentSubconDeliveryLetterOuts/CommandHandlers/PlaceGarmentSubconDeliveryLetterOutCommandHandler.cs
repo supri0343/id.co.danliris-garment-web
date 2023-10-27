@@ -34,6 +34,8 @@ using Manufactures.Domain.GarmentSample.ServiceSampleSewings;
 using Manufactures.Domain.GarmentSample.ServiceSampleShrinkagePanels;
 using Manufactures.Domain.GarmentSample.ServiceSampleFabricWashes;
 using Manufactures.Domain.GarmentSample.ServiceSampleExpenditureGood;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 
 namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts.CommandHandlers
 {
@@ -58,6 +60,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
         private readonly IGarmentServiceSampleFabricWashRepository _garmentServiceSubconSampleFabricWashRepository;
         private readonly IGarmentServiceSampleExpenditureGoodRepository _garmentServiceSubconSampleExpenditureGoodRepository;
 
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public PlaceGarmentSubconDeliveryLetterOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -77,6 +80,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             _garmentServiceSubconSampleShrinkagePanelRepository = storage.GetRepository<IGarmentServiceSampleShrinkagePanelRepository>();
             _garmentServiceSubconSampleFabricWashRepository = storage.GetRepository<IGarmentServiceSampleFabricWashRepository>();
             _garmentServiceSubconSampleExpenditureGoodRepository = storage.GetRepository<IGarmentServiceSampleExpenditureGoodRepository>();
+
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentSubconDeliveryLetterOut> Handle(PlaceGarmentSubconDeliveryLetterOutCommand request, CancellationToken cancellationToken)
@@ -336,6 +341,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             await _garmentSubconContractRepository.Update(subconContract);
 
             await _garmentSubconDeliveryLetterOutRepository.Update(garmentSubconDeliveryLetterOut);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Surat Jalan Subcon - " + garmentSubconDeliveryLetterOut.DLNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
             return garmentSubconDeliveryLetterOut;

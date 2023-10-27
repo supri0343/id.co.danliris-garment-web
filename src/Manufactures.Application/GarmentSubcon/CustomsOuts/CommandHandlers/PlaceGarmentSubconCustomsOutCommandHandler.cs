@@ -7,6 +7,8 @@ using Manufactures.Domain.GarmentSubcon.SubconContracts;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,7 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
         private readonly IGarmentSubconCustomsOutItemRepository _garmentSubconCustomsOutItemRepository;
         private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;
         private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public PlaceGarmentSubconCustomsOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -31,6 +34,7 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
             _garmentSubconCustomsOutItemRepository = storage.GetRepository<IGarmentSubconCustomsOutItemRepository>();
             _garmentSubconDeliveryLetterOutRepository = storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
             _garmentSubconContractRepository = storage.GetRepository<IGarmentSubconContractRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentSubconCustomsOut> Handle(PlaceGarmentSubconCustomsOutCommand request, CancellationToken cancellationToken)
@@ -76,6 +80,10 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
             await _garmentSubconContractRepository.Update(subconContract);
 
             await _garmentSubconCustomsOutRepository.Update(garmentSubconCustomsOut);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create BC Keluar Subcon - " + garmentSubconCustomsOut.CustomsOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

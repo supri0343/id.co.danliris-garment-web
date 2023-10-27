@@ -14,6 +14,8 @@ using Manufactures.Domain.GarmentSample.ServiceSampleExpenditureGood.Repositorie
 using Manufactures.Domain.GarmentSample.ServiceSampleSewings;
 using Manufactures.Domain.GarmentSample.ServiceSampleSewings.Commands;
 using Manufactures.Domain.GarmentSample.ServiceSampleSewings.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 
 namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditureGoods.CommandHandlers
@@ -27,7 +29,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditure
         private readonly IGarmentSampleFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
         private readonly IGarmentSampleFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateGarmentServiceSampleExpenditureGoodCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -37,6 +39,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditure
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
             _garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentSampleFinishedGoodStockRepository>();
             _garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentSampleFinishedGoodStockHistoryRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentServiceSampleExpenditureGood> Handle(UpdateGarmentServiceSampleExpenditureGoodCommand request, CancellationToken cancellationToken)
@@ -63,6 +66,10 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditure
             SampleExpenditureGood.SetUomUnit(request.UomUnit);
             SampleExpenditureGood.Modify();
             await _garmentServiceSampleExpenditureGoodRepository.Update(SampleExpenditureGood);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Packing List Subcon Sample - Jasa Barang Jadi - " + SampleExpenditureGood.ServiceSampleExpenditureGoodNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

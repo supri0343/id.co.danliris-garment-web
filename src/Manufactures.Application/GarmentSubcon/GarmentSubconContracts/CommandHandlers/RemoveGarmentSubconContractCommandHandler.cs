@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconContracts;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +19,13 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
         private readonly IStorage _storage;
         private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
         private readonly IGarmentSubconContractItemRepository _garmentSubconContractItemRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public RemoveGarmentSubconContractCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentSubconContractRepository = storage.GetRepository<IGarmentSubconContractRepository>();
             _garmentSubconContractItemRepository = storage.GetRepository<IGarmentSubconContractItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentSubconContract> Handle(RemoveGarmentSubconContractCommand request, CancellationToken cancellationToken)
@@ -37,6 +40,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconContracts.CommandH
 
             subconContract.Remove();
             await _garmentSubconContractRepository.Update(subconContract);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Subcon Kontrak - " + subconContract.ContractNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

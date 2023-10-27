@@ -8,6 +8,8 @@ using Manufactures.Domain.GarmentSubcon.InvoicePackingList.Commands;
 using Manufactures.Domain.GarmentSubcon.InvoicePackingList.ISubconInvoicePackingListReceiptItemRepositories;
 using Manufactures.Domain.GarmentSubcon.InvoicePackingList.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -27,7 +29,7 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
         private readonly ISubconInvoicePackingListRepository _subconInvoicePackingListRepository;
         private readonly ISubconInvoicePackingListItemRepository _subconInvoicePackingListItemRepository;
         private readonly ISubconInvoicePackingListReceiptItemRepository _subconInvoicePackingListReceiptItemRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public RemoveGarmentSubconInvoicePackingListCommandHandler(IStorage storage, IWebApiContext webApiContext, IHttpClientService http)
         {
             _storage = storage;
@@ -36,6 +38,7 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
             _subconInvoicePackingListRepository = storage.GetRepository<ISubconInvoicePackingListRepository>();
             _subconInvoicePackingListItemRepository = storage.GetRepository<ISubconInvoicePackingListItemRepository>();
             _subconInvoicePackingListReceiptItemRepository = storage.GetRepository<ISubconInvoicePackingListReceiptItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<SubconInvoicePackingList> Handle(RemoveGarmentSubconInvoicePackingListCommand request, CancellationToken cancellationToken)
@@ -82,6 +85,10 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
 
             subconContract.Remove();
             await _subconInvoicePackingListRepository.Update(subconContract);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Invoice Packing List  - " + subconContract.InvoiceNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 
