@@ -9,6 +9,8 @@ using Manufactures.Domain.GarmentSample.SampleSewingIns.Repositories;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts.Commands;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -30,7 +32,9 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
         private readonly IGarmentSampleCuttingInItemRepository _garmentCuttingInItemRepository;
         private readonly IGarmentSampleCuttingInDetailRepository _garmentCuttingInDetailRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
-
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
         public UpdateGarmentSampleSewingOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -42,6 +46,9 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
             _garmentCuttingInItemRepository = storage.GetRepository<IGarmentSampleCuttingInItemRepository>();
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentSampleCuttingInDetailRepository>();
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
+            //------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //-----------
         }
 
         public async Task<GarmentSampleSewingOut> Handle(UpdateGarmentSampleSewingOutCommand request, CancellationToken cancellationToken)
@@ -63,6 +70,11 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
                 cutIn.SetDate(request.SewingOutDate.GetValueOrDefault());
                 cutIn.Modify();
                 await _garmentCuttingInRepository.Update(cutIn);
+                //disini
+                //Add Log History
+                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING SAMPLE", "Update Cutting In Sample - " + cutIn.CutInNo, DateTime.Now);
+                await _logHistoryRepository.Update(logHistory);
+                //-----------
             }
 
             Dictionary<Guid, double> sewInItemToBeUpdated = new Dictionary<Guid, double>();
@@ -285,6 +297,8 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
 
 
                 await _garmentSewingOutItemRepository.Update(sewOutItem);
+
+                //????
             });
 
             foreach (var sewingInItem in sewInItemToBeUpdated)
@@ -298,7 +312,12 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
             sewOut.SetDate(request.SewingOutDate.GetValueOrDefault());
             sewOut.Modify();
             await _garmentSewingOutRepository.Update(sewOut);
+            //disini
 
+            //Add Log History
+            LogHistory logHistory2 = new LogHistory(new Guid(), "PRODUKSI SEWING SAMPLE", "Update Sewing Out Sample - " + sewOut.SewingOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory2);
+            //-----------
             _storage.Save();
 
             return sewOut;
