@@ -161,7 +161,7 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
             await _logHistoryRepository.Update(logHistory);
 
             //Add Log History
-            LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI SEWING IN", "Create Sewing In - " + garmentSewingIn.SewingInNo, DateTime.Now);
+            LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI SEWING", "Create Sewing In - " + garmentSewingIn.SewingInNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory1);
 
             _storage.Save();

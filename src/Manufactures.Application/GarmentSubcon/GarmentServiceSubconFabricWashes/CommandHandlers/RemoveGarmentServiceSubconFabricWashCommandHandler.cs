@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +20,14 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
         private readonly IGarmentServiceSubconFabricWashRepository _garmentServiceSubconFabricWashRepository;
         private readonly IGarmentServiceSubconFabricWashItemRepository _garmentServiceSubconFabricWashItemRepository;
         private readonly IGarmentServiceSubconFabricWashDetailRepository _garmentServiceSubconFabricWashDetailRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public RemoveGarmentServiceSubconFabricWashCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentServiceSubconFabricWashRepository = storage.GetRepository<IGarmentServiceSubconFabricWashRepository>();
             _garmentServiceSubconFabricWashItemRepository = storage.GetRepository<IGarmentServiceSubconFabricWashItemRepository>();
             _garmentServiceSubconFabricWashDetailRepository = storage.GetRepository<IGarmentServiceSubconFabricWashDetailRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentServiceSubconFabricWash> Handle(RemoveGarmentServiceSubconFabricWashCommand request, CancellationToken cancellationToken)
@@ -44,6 +47,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
 
             serviceSubconFabricWash.Remove();
             await _garmentServiceSubconFabricWashRepository.Update(serviceSubconFabricWash);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Packing List Subcon - Fabric Wash / Print - " + serviceSubconFabricWash.ServiceSubconFabricWashNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

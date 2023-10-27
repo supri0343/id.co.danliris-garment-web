@@ -162,7 +162,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
             await _garmentFinishingOutRepository.Update(finishOut);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI FINISHING OUT", "Update Finishing Out - " + finishOut.FinishingOutNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI FINISHING", "Update Finishing Out - " + finishOut.FinishingOutNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();

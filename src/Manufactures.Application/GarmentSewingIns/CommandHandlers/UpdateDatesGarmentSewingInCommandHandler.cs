@@ -18,12 +18,10 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
     {
         private readonly IStorage _storage;
         private readonly IGarmentSewingInRepository _garmentSewingInRepository;
-        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateDatesGarmentSewingInCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentSewingInRepository = storage.GetRepository<IGarmentSewingInRepository>();
-            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<int> Handle(UpdateDatesGarmentSewingInCommand request, CancellationToken cancellationToken)
@@ -41,9 +39,6 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
                 model.Modify();
                 await _garmentSewingInRepository.Update(model);
 
-                //Add Log History
-                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI SEWING IN", "Update Date Sewing In - " + model.SewingInNo, DateTime.Now);
-                await _logHistoryRepository.Update(logHistory);
             }
             _storage.Save();
 

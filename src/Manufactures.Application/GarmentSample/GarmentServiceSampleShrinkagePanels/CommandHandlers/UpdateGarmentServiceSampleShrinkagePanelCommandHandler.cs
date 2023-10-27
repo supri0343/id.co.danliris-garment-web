@@ -6,6 +6,8 @@ using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Manufactures.Domain.GarmentSample.ServiceSampleShrinkagePanels;
 using Manufactures.Domain.GarmentSample.ServiceSampleShrinkagePanels.Commands;
 using Manufactures.Domain.GarmentSample.ServiceSampleShrinkagePanels.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using Newtonsoft.Json;
 using System;
@@ -26,7 +28,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleShrinkagePa
         private readonly IGarmentServiceSampleShrinkagePanelRepository _garmentServiceSampleShrinkagePanelRepository;
         private readonly IGarmentServiceSampleShrinkagePanelItemRepository _garmentServiceSampleShrinkagePanelItemRepository;
         private readonly IGarmentServiceSampleShrinkagePanelDetailRepository _garmentServiceSampleShrinkagePanelDetailRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateGarmentServiceSampleShrinkagePanelCommandHandler(IStorage storage, IWebApiContext webApiContext, IHttpClientService http)
         {
             _storage = storage;
@@ -35,6 +37,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleShrinkagePa
             _garmentServiceSampleShrinkagePanelRepository = _storage.GetRepository<IGarmentServiceSampleShrinkagePanelRepository>();
             _garmentServiceSampleShrinkagePanelItemRepository = _storage.GetRepository<IGarmentServiceSampleShrinkagePanelItemRepository>();
             _garmentServiceSampleShrinkagePanelDetailRepository = storage.GetRepository<IGarmentServiceSampleShrinkagePanelDetailRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentServiceSampleShrinkagePanel> Handle(UpdateGarmentServiceSampleShrinkagePanelCommand request, CancellationToken cancellationToken)
@@ -146,6 +149,10 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleShrinkagePa
             }
 
             await _garmentServiceSampleShrinkagePanelRepository.Update(serviceSampleShrinkagePanel);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Packing List Subcon Sample - BB Shrinkage / Panel - " + serviceSampleShrinkagePanel.ServiceSampleShrinkagePanelNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

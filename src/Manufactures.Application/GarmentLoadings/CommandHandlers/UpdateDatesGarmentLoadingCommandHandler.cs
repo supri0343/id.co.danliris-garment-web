@@ -18,12 +18,10 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
     {
         private readonly IGarmentLoadingRepository _garmentLoadingRepository;
         private readonly IStorage _storage;
-        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateDatesGarmentLoadingCommandHandler(IStorage storage)
         {
             _garmentLoadingRepository = storage.GetRepository<IGarmentLoadingRepository>();
             _storage = storage;
-            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<int> Handle(UpdateDatesGarmentLoadingCommand request, CancellationToken cancellationToken)
@@ -41,9 +39,6 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
                 model.Modify();
                 await _garmentLoadingRepository.Update(model);
 
-                //Add Log History
-                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI LOADING", "Update Date Loading - " + model.LoadingNo, DateTime.Now);
-                await _logHistoryRepository.Update(logHistory);
             }
             _storage.Save();
 

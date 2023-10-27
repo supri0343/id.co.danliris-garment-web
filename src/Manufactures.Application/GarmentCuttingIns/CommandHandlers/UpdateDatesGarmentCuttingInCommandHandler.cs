@@ -18,12 +18,10 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
     {
         private readonly IStorage _storage;
         private readonly IGarmentCuttingInRepository _garmentCuttingInRepository;
-        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateDatesGarmentCuttingInCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
-            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<int> Handle(UpdateDatesGarmentCuttingInCommand request, CancellationToken cancellationToken)
@@ -40,10 +38,6 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
                 model.SetDate(request.Date);
                 model.Modify();
                 await _garmentCuttingInRepository.Update(model);
-
-                //Add Log History
-                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING IN", "Update Date Cutting In - " + model.CutInNo, DateTime.Now);
-                await _logHistoryRepository.Update(logHistory);
             }
             _storage.Save();
 

@@ -91,11 +91,11 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
             await _garmentCuttingOutRepository.Update(cutOut);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING OUT", "Delete Cutting Out - " + cutOut.CutOutNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING", "Delete Cutting Out - " + cutOut.CutOutNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             //Add Log History
-            LogHistory logHistory2 = new LogHistory(new Guid(), "PRODUKSI SEWING DO", "Delete Sewing DO - " + sewingDO.SewingDONo, DateTime.Now);
+            LogHistory logHistory2 = new LogHistory(new Guid(), "PRODUKSI SEWING", "Delete Sewing DO - " + sewingDO.SewingDONo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory2);
 
             _storage.Save();
