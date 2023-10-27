@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentCuttingIns;
 using Manufactures.Domain.GarmentPreparings.Repositories;
+using Manufactures.Domain.LogHistory.Repositories;
+using Manufactures.Domain.LogHistory;
 
 namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.CommandHandlers
 {
@@ -27,7 +29,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
         private readonly IGarmentCuttingInItemRepository _garmentCuttingInItemRepository;
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
         private readonly IGarmentPreparingRepository _garmentPreparingRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public PlaceGarmentServiceSubconCuttingCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -39,7 +41,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
             _garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
-
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentServiceSubconCutting> Handle(PlaceGarmentServiceSubconCuttingCommand request, CancellationToken cancellationToken)
@@ -271,6 +273,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
             }
 
             await _garmentServiceSubconCuttingRepository.Update(garmentServiceSubconCutting);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Packing List Subcon - Jasa Komponen - " + garmentServiceSubconCutting.SubconNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

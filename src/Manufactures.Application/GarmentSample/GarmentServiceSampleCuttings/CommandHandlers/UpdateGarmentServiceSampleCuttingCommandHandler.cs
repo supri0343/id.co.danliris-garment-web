@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSample.ServiceSampleCuttings;
 using Manufactures.Domain.GarmentSample.ServiceSampleCuttings.Commands;
 using Manufactures.Domain.GarmentSample.ServiceSampleCuttings.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -20,7 +22,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleCuttings.Co
         private readonly IGarmentServiceSampleCuttingItemRepository _garmentServiceSampleCuttingItemRepository;
         private readonly IGarmentServiceSampleCuttingDetailRepository _garmentServiceSampleCuttingDetailRepository;
         private readonly IGarmentServiceSampleCuttingSizeRepository _garmentServiceSampleCuttingSizeRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateGarmentServiceSampleCuttingCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -28,6 +30,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleCuttings.Co
             _garmentServiceSampleCuttingItemRepository = storage.GetRepository<IGarmentServiceSampleCuttingItemRepository>();
             _garmentServiceSampleCuttingDetailRepository = storage.GetRepository<IGarmentServiceSampleCuttingDetailRepository>();
             _garmentServiceSampleCuttingSizeRepository = storage.GetRepository<IGarmentServiceSampleCuttingSizeRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentServiceSampleCutting> Handle(UpdateGarmentServiceSampleCuttingCommand request, CancellationToken cancellationToken)
@@ -185,6 +188,10 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleCuttings.Co
             }
 
             await _garmentServiceSampleCuttingRepository.Update(SampleCutting);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Packing List Subcon Sample - Jasa Komponen - " + SampleCutting.SampleNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 
