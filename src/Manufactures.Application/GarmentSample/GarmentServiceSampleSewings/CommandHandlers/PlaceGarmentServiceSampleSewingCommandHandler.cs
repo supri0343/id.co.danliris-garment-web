@@ -13,6 +13,8 @@ using Manufactures.Domain.GarmentSample.ServiceSampleSewings.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using Manufactures.Domain.GarmentSample.SampleSewingIns.Repositories;
 using Manufactures.Domain.GarmentSample.SamplePreparings.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 
 namespace Manufactures.Application.GarmentSample.GarmentServiceSampleSewings.CommandHandlers
 {
@@ -25,7 +27,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleSewings.Com
         private readonly IGarmentSampleSewingInRepository _garmentSewingInRepository;
         private readonly IGarmentSampleSewingInItemRepository _garmentSewingInItemRepository;
         private readonly IGarmentSamplePreparingRepository _garmentPreparingRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public PlaceGarmentServiceSampleSewingCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -35,6 +37,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleSewings.Com
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSampleSewingInItemRepository>();
             _garmentServiceSampleSewingDetailRepository= storage.GetRepository<IGarmentServiceSampleSewingDetailRepository>();
             _garmentPreparingRepository = storage.GetRepository<IGarmentSamplePreparingRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentServiceSampleSewing> Handle(PlaceGarmentServiceSampleSewingCommand request, CancellationToken cancellationToken)
@@ -257,6 +260,10 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleSewings.Com
             }
 
             await _garmentServiceSampleSewingRepository.Update(garmentServiceSampleSewing);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Packing List Subcon Sample - Jasa Garment Wash - " + garmentServiceSampleSewing.ServiceSampleSewingNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

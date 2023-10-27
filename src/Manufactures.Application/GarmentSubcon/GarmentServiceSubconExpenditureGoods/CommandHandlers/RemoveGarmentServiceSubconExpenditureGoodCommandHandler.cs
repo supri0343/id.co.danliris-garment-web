@@ -8,6 +8,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconExpenditureGood.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconExpenditureGood;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconExpenditureGood.Commands;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 
 namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconExpenditureGoods.CommandHandlers
 {
@@ -16,7 +18,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconExpenditure
         private readonly IStorage _storage;
         private readonly IGarmentServiceSubconExpenditureGoodRepository _garmentServiceSubconExpenditureGoodRepository;
         private readonly IGarmentServiceSubconExpenditureGoodtemRepository _garmentServiceSubconExpenditureGoodItemRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public RemoveGarmentServiceSubconExpenditureGoodCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -36,6 +38,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconExpenditure
          
             subconExpenditureGood.Remove();
             await _garmentServiceSubconExpenditureGoodRepository.Update(subconExpenditureGood);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Packing List Subcon - Jasa Barang Jadi - " + subconExpenditureGood.ServiceSubconExpenditureGoodNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

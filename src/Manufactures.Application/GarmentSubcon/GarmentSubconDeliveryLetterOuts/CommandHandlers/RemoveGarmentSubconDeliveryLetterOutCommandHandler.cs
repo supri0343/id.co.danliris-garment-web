@@ -27,6 +27,8 @@ using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Repositories;
 using Manufactures.Domain.GarmentSubconCuttingOuts;
 using Manufactures.Domain.GarmentSubconCuttingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +58,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
         private readonly IGarmentServiceSampleFabricWashRepository _garmentServiceSubconSampleFabricWashRepository;
         private readonly IGarmentServiceSampleExpenditureGoodRepository _garmentServiceSubconSampleExpenditureGoodRepository;
 
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public RemoveGarmentSubconDeliveryLetterOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -75,6 +78,8 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             _garmentServiceSubconSampleShrinkagePanelRepository = storage.GetRepository<IGarmentServiceSampleShrinkagePanelRepository>();
             _garmentServiceSubconSampleFabricWashRepository = storage.GetRepository<IGarmentServiceSampleFabricWashRepository>();
             _garmentServiceSubconSampleExpenditureGoodRepository = storage.GetRepository<IGarmentServiceSampleExpenditureGoodRepository>();
+
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
 
@@ -247,6 +252,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
 
             subconDeliveryLetterOut.Remove();
             await _garmentSubconDeliveryLetterOutRepository.Update(subconDeliveryLetterOut);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Surat Jalan Subcon - " + subconDeliveryLetterOut.DLNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

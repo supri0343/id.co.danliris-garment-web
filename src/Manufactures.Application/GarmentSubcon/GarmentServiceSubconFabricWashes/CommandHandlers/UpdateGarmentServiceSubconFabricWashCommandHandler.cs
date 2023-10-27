@@ -6,6 +6,8 @@ using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconFabricWashes.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -24,7 +26,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
         private readonly IGarmentServiceSubconFabricWashRepository _garmentServiceSubconFabricWashRepository;
         private readonly IGarmentServiceSubconFabricWashItemRepository _garmentServiceSubconFabricWashItemRepository;
         private readonly IGarmentServiceSubconFabricWashDetailRepository _garmentServiceSubconFabricWashDetailRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateGarmentServiceSubconFabricWashCommandHandler(IStorage storage, IWebApiContext webApiContext, IHttpClientService http)
         {
             _storage = storage;
@@ -33,6 +35,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
             _garmentServiceSubconFabricWashRepository = _storage.GetRepository<IGarmentServiceSubconFabricWashRepository>();
             _garmentServiceSubconFabricWashItemRepository = _storage.GetRepository<IGarmentServiceSubconFabricWashItemRepository>();
             _garmentServiceSubconFabricWashDetailRepository = storage.GetRepository<IGarmentServiceSubconFabricWashDetailRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentServiceSubconFabricWash> Handle(UpdateGarmentServiceSubconFabricWashCommand request, CancellationToken cancellationToken)
@@ -166,6 +169,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
                 var joinUenNo = string.Join(",", listUsedUenNo.Distinct());
                 await PutGarmentUnitExpenditureNoteByNo(joinUenNo, true);
             }
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Packing List Subcon - Fabric Wash / Print - " + serviceSubconFabricWash.ServiceSubconFabricWashNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 
