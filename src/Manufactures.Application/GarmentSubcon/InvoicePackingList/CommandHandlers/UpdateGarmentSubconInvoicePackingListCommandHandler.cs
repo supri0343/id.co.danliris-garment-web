@@ -177,7 +177,7 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
             await _subconInvoicePackingListRepository.Update(invoicePackingList);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Invoice Packing List  - " + invoicePackingList.InvoiceNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "EXIM", "Update Invoice Packing List  - " + invoicePackingList.InvoiceNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
