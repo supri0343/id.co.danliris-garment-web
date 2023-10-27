@@ -8,6 +8,8 @@ using Manufactures.Domain.GarmentSubcon.InvoicePackingList.Commands;
 using Manufactures.Domain.GarmentSubcon.InvoicePackingList.ISubconInvoicePackingListReceiptItemRepositories;
 using Manufactures.Domain.GarmentSubcon.InvoicePackingList.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconInvoicePackingListReceiptItemModel;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -27,6 +29,7 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
         private readonly ISubconInvoicePackingListRepository _subconInvoicePackingListRepository;
         private readonly ISubconInvoicePackingListItemRepository _subconInvoicePackingListItemRepository;
         private readonly ISubconInvoicePackingListReceiptItemRepository _subconInvoicePackingListReceiptItemRepository;
+        private readonly ILogHistoryRepository _logHistoryRepository;
 
         public PlaceGarmentSubconInvoicePackingListCommandHandler(IStorage storage, IHttpClientService http, IWebApiContext webApiContext)
         {
@@ -36,6 +39,7 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
             _subconInvoicePackingListRepository = storage.GetRepository<ISubconInvoicePackingListRepository>();
             _subconInvoicePackingListItemRepository = storage.GetRepository<ISubconInvoicePackingListItemRepository>();
             _subconInvoicePackingListReceiptItemRepository = storage.GetRepository<ISubconInvoicePackingListReceiptItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
         public async Task<SubconInvoicePackingList> Handle(PlaceGarmentSubconInvoicePackingListCommand request, CancellationToken cancellationToken)
         {
@@ -153,6 +157,12 @@ namespace Manufactures.Application.GarmentSubcon.InvoicePackingList.CommandHandl
             }
 
             await _subconInvoicePackingListRepository.Update(subconInvoicePackingList);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Invoice Packing List  - " + subconInvoicePackingList.InvoiceNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+
+
             _storage.Save();
 
             return subconInvoicePackingList;

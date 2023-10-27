@@ -303,7 +303,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             await _garmentSewingOutRepository.Update(sewOut);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI SEWING OUT", "Update Sewing Out - " + sewOut.SewingOutNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI SEWING", "Update Sewing Out - " + sewOut.SewingOutNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();

@@ -281,7 +281,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 await _garmentCuttingInRepository.Update(garmentCuttingIn);
 
                 //Add Log History
-                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI CUTTING IN", "Create Cutting In - " + garmentCuttingIn.CutInNo, DateTime.Now);
+                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI CUTTING", "Create Cutting In - " + garmentCuttingIn.CutInNo, DateTime.Now);
                 await _logHistoryRepository.Update(logHistory1);
             }
 
@@ -312,7 +312,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 await _garmentSewingInRepository.Update(garmentSewingIn);
 
                 //Add Log History
-                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI SEWING IN", "Create Sewing In - " + garmentSewingIn.SewingInNo, DateTime.Now);
+                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI SEWING", "Create Sewing In - " + garmentSewingIn.SewingInNo, DateTime.Now);
                 await _logHistoryRepository.Update(logHistory1);
 
                 foreach (var item in request.Items)
@@ -405,7 +405,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 await _garmentFinishingInRepository.Update(garmentFinishingIn);
 
                 //Add Log History
-                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI FINISHING IN", "Create Finishing In - " + garmentFinishingIn.FinishingInNo, DateTime.Now);
+                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI FINISHING", "Create Finishing In - " + garmentFinishingIn.FinishingInNo, DateTime.Now);
                 await _logHistoryRepository.Update(logHistory1);
 
                 foreach (var item in request.Items)
@@ -469,7 +469,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             #endregion
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI SEWING OUT", "Create Sewing Out - " + garmentSewingOut.SewingOutNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI SEWING", "Create Sewing Out - " + garmentSewingOut.SewingOutNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();

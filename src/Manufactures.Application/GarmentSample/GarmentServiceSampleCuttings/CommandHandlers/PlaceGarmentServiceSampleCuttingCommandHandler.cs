@@ -15,6 +15,8 @@ using Manufactures.Domain.GarmentCuttingIns;
 using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Domain.GarmentSample.SampleCuttingIns.Repositories;
 using Manufactures.Domain.GarmentSample.SamplePreparings.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 
 namespace Manufactures.Application.GarmentSample.GarmentServiceSampleCuttings.CommandHandlers
 {
@@ -29,7 +31,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleCuttings.Co
         private readonly IGarmentSampleCuttingInItemRepository _garmentCuttingInItemRepository;
         private readonly IGarmentSampleCuttingInDetailRepository _garmentCuttingInDetailRepository;
         private readonly IGarmentSamplePreparingRepository _garmentPreparingRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public PlaceGarmentServiceSampleCuttingCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -41,7 +43,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleCuttings.Co
             _garmentCuttingInItemRepository = storage.GetRepository<IGarmentSampleCuttingInItemRepository>();
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentSampleCuttingInDetailRepository>();
             _garmentPreparingRepository = storage.GetRepository<IGarmentSamplePreparingRepository>();
-
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentServiceSampleCutting> Handle(PlaceGarmentServiceSampleCuttingCommand request, CancellationToken cancellationToken)
@@ -276,6 +278,12 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleCuttings.Co
 
 
             await _garmentServiceSampleCuttingRepository.Update(garmentServiceSampleCutting);
+
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Packing List Subcon Sample - Jasa Komponen - " + garmentServiceSampleCutting.SampleNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+
 
             _storage.Save();
 

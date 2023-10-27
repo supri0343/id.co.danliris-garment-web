@@ -173,11 +173,11 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
             await _garmentSewingDORepository.Update(garmentSewingDO);
 
             //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING OUT", "Create Cutting Out - " + garmentCuttingOut.CutOutNo, DateTime.Now);
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING", "Create Cutting Out - " + garmentCuttingOut.CutOutNo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory);
 
             //Add Log History
-            LogHistory logHistory2 = new LogHistory(new Guid(), "PRODUKSI SEWING DO", "Create Sewing DO - " + garmentSewingDO.SewingDONo, DateTime.Now);
+            LogHistory logHistory2 = new LogHistory(new Guid(), "PRODUKSI SEWING", "Create Sewing DO - " + garmentSewingDO.SewingDONo, DateTime.Now);
             await _logHistoryRepository.Update(logHistory2);
 
             _storage.Save();

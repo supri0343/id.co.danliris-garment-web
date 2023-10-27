@@ -6,6 +6,8 @@ using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconShrinkagePanels.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -24,7 +26,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconShrinkagePa
         private readonly IGarmentServiceSubconShrinkagePanelRepository _garmentServiceSubconShrinkagePanelRepository;
         private readonly IGarmentServiceSubconShrinkagePanelItemRepository _garmentServiceSubconShrinkagePanelItemRepository;
         private readonly IGarmentServiceSubconShrinkagePanelDetailRepository _garmentServiceSubconShrinkagePanelDetailRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateGarmentServiceSubconShrinkagePanelCommandHandler(IStorage storage, IWebApiContext webApiContext, IHttpClientService http)
         {
             _storage = storage;
@@ -33,6 +35,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconShrinkagePa
             _garmentServiceSubconShrinkagePanelRepository = _storage.GetRepository<IGarmentServiceSubconShrinkagePanelRepository>();
             _garmentServiceSubconShrinkagePanelItemRepository = _storage.GetRepository<IGarmentServiceSubconShrinkagePanelItemRepository>();
             _garmentServiceSubconShrinkagePanelDetailRepository = storage.GetRepository<IGarmentServiceSubconShrinkagePanelDetailRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentServiceSubconShrinkagePanel> Handle(UpdateGarmentServiceSubconShrinkagePanelCommand request, CancellationToken cancellationToken)
@@ -143,6 +146,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconShrinkagePa
                 var joinUenNo = string.Join(",", listUsedUenNo.Distinct());
                 await PutGarmentUnitExpenditureNoteByNo(joinUenNo, true);
             }
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Packing List Subcon - BB Shrinkage / Panel - " + serviceSubconShrinkagePanel.ServiceSubconShrinkagePanelNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

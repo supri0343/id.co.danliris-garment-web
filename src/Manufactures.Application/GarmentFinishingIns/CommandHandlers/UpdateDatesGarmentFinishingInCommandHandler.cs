@@ -18,12 +18,10 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
     {
         private readonly IStorage _storage;
         private readonly IGarmentFinishingInRepository _garmentFinishingInRepository;
-        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateDatesGarmentFinishingInCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentFinishingInRepository = storage.GetRepository<IGarmentFinishingInRepository>();
-            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<int> Handle(UpdateDatesGarmentFinishingInCommand request, CancellationToken cancellationToken)
@@ -42,9 +40,6 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
                 model.Modify();
                 await _garmentFinishingInRepository.Update(model);
 
-                //Add Log History
-                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI FINISHING IN", "Update Date Finishing In - " + model.FinishingInNo, DateTime.Now);
-                await _logHistoryRepository.Update(logHistory);
             }
             _storage.Save();
 
