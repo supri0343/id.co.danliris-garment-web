@@ -11,21 +11,21 @@ namespace Manufactures.Domain.LogHistory
     {
         public string Division { get; private set; }
         public string Activity { get; private set; }
-        public DateTime CreatedDate { get; private set; }
+        //public DateTime CreatedDate { get; private set; }
         //public string CreatedBy { get; private set; }
 
         public LogHistory(Guid id, string division, string activity, DateTime createdDate/*, string createdBy*/) : base(id)
         {
             Division = division;
             Activity = activity;
-            CreatedDate = createdDate;
+            //CreatedDate = createdDate;
             //CreatedBy = createdBy;
 
             ReadModel = new LogHistoryReadModel(Identity)
             {
                 Division = Division,
                 Activity = Activity,
-                CreatedDate = CreatedDate,
+                //CreatedDate = CreatedDate,
                 //CreatedBy = CreatedBy,
             };
 
