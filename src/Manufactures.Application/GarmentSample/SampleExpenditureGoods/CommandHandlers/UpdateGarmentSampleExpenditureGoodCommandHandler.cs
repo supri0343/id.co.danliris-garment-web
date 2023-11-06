@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +19,17 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
         private readonly IStorage _storage;
         private readonly IGarmentSampleExpenditureGoodRepository _GarmentSampleExpenditureGoodRepository;
         private readonly IGarmentSampleExpenditureGoodItemRepository _GarmentSampleExpenditureGoodItemRepository;
-
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
         public UpdateGarmentSampleExpenditureGoodCommandHandler(IStorage storage)
         {
             _storage = storage;
             _GarmentSampleExpenditureGoodRepository = storage.GetRepository<IGarmentSampleExpenditureGoodRepository>();
             _GarmentSampleExpenditureGoodItemRepository = storage.GetRepository<IGarmentSampleExpenditureGoodItemRepository>();
-
+            //------------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //------------
         }
 
         public async Task<GarmentSampleExpenditureGood> Handle(UpdateGarmentSampleExpenditureGoodCommand request, CancellationToken cancellationToken)
@@ -41,6 +47,11 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
             ExpenditureGood.SetIsReceived(request.IsReceived);
             ExpenditureGood.Modify();
             await _GarmentSampleExpenditureGoodRepository.Update(ExpenditureGood);
+            //disini
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI PENGELUARAN BARANG JADI SAMPLE", "Update Pengeluaran Barang Jadi Sample - " + ExpenditureGood.ExpenditureGoodNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
 
             _storage.Save();
 
