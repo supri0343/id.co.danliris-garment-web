@@ -19,6 +19,8 @@ using Manufactures.Domain.GarmentSample.ServiceSampleSewings.Commands;
 using Manufactures.Domain.GarmentSample.ServiceSampleSewings.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using Manufactures.Domain.GarmentSample.SampleFinishedGoodStocks.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 
 namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditureGoods.CommandHandlers
 {
@@ -31,7 +33,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditure
         private readonly IGarmentSampleFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
         private readonly IGarmentSampleFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
 
         public PlaceGarmentServiceSampleExpenditureGoodCommandHandler(IStorage storage)
         {
@@ -42,6 +44,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditure
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
             _garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentSampleFinishedGoodStockRepository>();
             _garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentSampleFinishedGoodStockHistoryRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentServiceSampleExpenditureGood> Handle(PlaceGarmentServiceSampleExpenditureGoodCommand request, CancellationToken cancellationToken)
@@ -127,6 +130,10 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleExpenditure
             }
 
             await _garmentServiceSampleExpenditureGoodRepository.Update(garmentServiceSampleExpenditureGood);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Create Packing List Subcon Sample - Jasa Barang Jadi - " + garmentServiceSampleExpenditureGood.ServiceSampleExpenditureGoodNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

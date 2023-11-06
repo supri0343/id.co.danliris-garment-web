@@ -9,6 +9,8 @@ using Manufactures.Domain.GarmentSewingIns.Commands;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentSewingOuts;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -27,7 +29,7 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
         private readonly IGarmentLoadingItemRepository _garmentLoadingItemRepository;
         private readonly IGarmentSewingOutItemRepository _garmentSewingOutItemRepository;
         private readonly IGarmentFinishingOutItemRepository _garmentFinishingOutItemRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public PlaceGarmentSewingInCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -37,6 +39,7 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
             //_garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _garmentSewingOutItemRepository = storage.GetRepository<IGarmentSewingOutItemRepository>();
             _garmentFinishingOutItemRepository = storage.GetRepository<IGarmentFinishingOutItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentSewingIn> Handle(PlaceGarmentSewingInCommand request, CancellationToken cancellationToken)
@@ -120,6 +123,10 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
             }
 
             await _garmentSewingInRepository.Update(garmentSewingIn);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI SEWING", "Create Sewing In - " + garmentSewingIn.SewingInNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

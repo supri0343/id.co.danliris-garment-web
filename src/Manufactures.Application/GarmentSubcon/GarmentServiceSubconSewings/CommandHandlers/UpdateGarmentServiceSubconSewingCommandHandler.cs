@@ -9,6 +9,8 @@ using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Commands;
 using Manufactures.Domain.GarmentSubcon.ServiceSubconSewings.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 
 namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.CommandHandlers
@@ -21,7 +23,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
         private readonly IGarmentServiceSubconSewingDetailRepository _garmentServiceSubconSewingDetailRepository;
         private readonly IGarmentSewingInRepository _garmentSewingInRepository;
         private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateGarmentServiceSubconSewingCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -30,6 +32,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
             _garmentServiceSubconSewingDetailRepository = _storage.GetRepository<IGarmentServiceSubconSewingDetailRepository>();
             _garmentSewingInRepository = storage.GetRepository<IGarmentSewingInRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentServiceSubconSewing> Handle(UpdateGarmentServiceSubconSewingCommand request, CancellationToken cancellationToken)
@@ -267,6 +270,10 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconSewings.Com
             serviceSubconSewing.SetUomUnit(request.UomUnit);
             serviceSubconSewing.Modify();
             await _garmentServiceSubconSewingRepository.Update(serviceSubconSewing);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Packing List Subcon - Jasa Garment Wash - " + serviceSubconSewing.ServiceSubconSewingNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

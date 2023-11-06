@@ -5,6 +5,8 @@ using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentFinishingOuts;
 using Manufactures.Domain.GarmentFinishingOuts.Commands;
 using Manufactures.Domain.GarmentFinishingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -22,6 +24,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
         private readonly IGarmentFinishingOutItemRepository _garmentFinishingOutItemRepository;
         private readonly IGarmentFinishingOutDetailRepository _garmentFinishingOutDetailRepository;
         private readonly IGarmentFinishingInItemRepository _garmentFinishingInItemRepository;
+        private readonly ILogHistoryRepository _logHistoryRepository;
 
         public UpdateGarmentFinishingOutCommandHandler(IStorage storage)
         {
@@ -30,6 +33,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
             _garmentFinishingOutItemRepository = storage.GetRepository<IGarmentFinishingOutItemRepository>();
             _garmentFinishingOutDetailRepository = storage.GetRepository<IGarmentFinishingOutDetailRepository>();
             _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentFinishingOut> Handle(UpdateGarmentFinishingOutCommand request, CancellationToken cancellationToken)
@@ -156,6 +160,10 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
             finishOut.SetDate(request.FinishingOutDate.GetValueOrDefault());
             finishOut.Modify();
             await _garmentFinishingOutRepository.Update(finishOut);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI FINISHING", "Update Finishing Out - " + finishOut.FinishingOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

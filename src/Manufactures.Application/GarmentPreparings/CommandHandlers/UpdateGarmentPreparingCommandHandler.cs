@@ -4,6 +4,8 @@ using Manufactures.Domain.GarmentPreparings;
 using Manufactures.Domain.GarmentPreparings.Commands;
 using Manufactures.Domain.GarmentPreparings.Repositories;
 using Manufactures.Domain.GarmentPreparings.ValueObjects;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Moonlay;
 using System;
 using System.Collections.Generic;
@@ -19,12 +21,13 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
         private readonly IGarmentPreparingRepository _garmentPreparingRepository;
         private readonly IGarmentPreparingItemRepository _garmentPreparingItemRepository;
         private readonly IStorage _storage;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateGarmentPreparingCommandHandler(IStorage storage)
         {
             _garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
             _garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
             _storage = storage;
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentPreparing> Handle(UpdateGarmentPreparingCommand request, CancellationToken cancellaitonToken)
@@ -75,10 +78,13 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
                 await _garmentPreparingItemRepository.Update(item);
             }
 
-
             garmentPreparing.SetModified();
 
             await _garmentPreparingRepository.Update(garmentPreparing);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI PREPARING", "Update Preparing - " + garmentPreparing.UENNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentCuttingOuts;
 using Manufactures.Domain.GarmentCuttingOuts.Commands;
 using Manufactures.Domain.GarmentCuttingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;

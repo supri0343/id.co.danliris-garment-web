@@ -9,6 +9,8 @@ using Manufactures.Domain.GarmentExpenditureGoods.Repositories;
 using Manufactures.Domain.GarmentFinishedGoodStocks;
 using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
 using Manufactures.Domain.GarmentReturGoodReturns.Commands;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -29,7 +31,7 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
         private readonly IGarmentExpenditureGoodItemRepository _garmentExpenditureGoodItemRepository;
         private readonly IGarmentExpenditureGoodRepository _garmentExpenditureGoodRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public PlaceGarmentExpenditureGoodReturnCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -40,6 +42,7 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
             _garmentExpenditureGoodItemRepository= storage.GetRepository<IGarmentExpenditureGoodItemRepository>();
             _garmentExpenditureGoodRepository = storage.GetRepository<IGarmentExpenditureGoodRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentExpenditureGoodReturn> Handle(PlaceGarmentExpenditureGoodReturnCommand request, CancellationToken cancellationToken)
@@ -189,6 +192,7 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
                 garmentExpenditureGoodItem.Modify();
 
                 await _garmentExpenditureGoodItemRepository.Update(garmentExpenditureGoodItem);
+
             }
 
             foreach (var finStock in finstockQty)
@@ -204,6 +208,10 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
             }
 
             await _garmentExpenditureGoodReturnRepository.Update(garmentExpenditureGoodReturn);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI RETUR BARANG JADI", "Create Retur Barang Jadi - " + garmentExpenditureGoodReturn.ReturNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

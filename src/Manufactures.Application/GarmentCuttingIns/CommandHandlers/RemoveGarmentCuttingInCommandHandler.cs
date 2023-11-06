@@ -5,6 +5,8 @@ using Manufactures.Domain.GarmentCuttingIns.Commands;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentPreparings;
 using Manufactures.Domain.GarmentPreparings.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +23,8 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
         private readonly IGarmentCuttingInItemRepository _garmentCuttingInItemRepository;
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
         private readonly IGarmentPreparingItemRepository _garmentPreparingItemRepository;
+        private readonly ILogHistoryRepository _logHistoryRepository;
+
 
         public RemoveGarmentCuttingInCommandHandler(IStorage storage)
         {
@@ -29,6 +33,7 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
             _garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentCuttingIn> Handle(RemoveGarmentCuttingInCommand request, CancellationToken cancellationToken)
@@ -68,6 +73,10 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
 
             cutIn.Remove();
             await _garmentCuttingInRepository.Update(cutIn);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING", "Delete Cutting In - " + cutIn.CutInNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

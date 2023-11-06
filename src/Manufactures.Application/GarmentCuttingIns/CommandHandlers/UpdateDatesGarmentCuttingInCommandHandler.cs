@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentCuttingIns;
 using Manufactures.Domain.GarmentCuttingIns.Commands;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,6 @@ namespace Manufactures.Application.GarmentCuttingIns.CommandHandlers
     {
         private readonly IStorage _storage;
         private readonly IGarmentCuttingInRepository _garmentCuttingInRepository;
-
         public UpdateDatesGarmentCuttingInCommandHandler(IStorage storage)
         {
             _storage = storage;

@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentExpenditureGoods;
 using Manufactures.Domain.GarmentExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentExpenditureGoods.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,6 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
     {
         private readonly IStorage _storage;
         private readonly IGarmentExpenditureGoodRepository _garmentExpenditureGoodRepository;
-
         public UpdateDatesGarmentExpenditureGoodCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -37,6 +38,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                 model.SetExpenditureDate(request.Date);
                 model.Modify();
                 await _garmentExpenditureGoodRepository.Update(model);
+
             }
             _storage.Save();
 

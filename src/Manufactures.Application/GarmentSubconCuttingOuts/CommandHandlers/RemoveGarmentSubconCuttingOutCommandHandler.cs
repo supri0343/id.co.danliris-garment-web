@@ -5,6 +5,8 @@ using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentSubconCuttingOuts;
 using Manufactures.Domain.GarmentSubconCuttingOuts.Commands;
 using Manufactures.Domain.GarmentSubconCuttingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
         private readonly IGarmentSubconCuttingRepository _garmentSubconCuttingRepository;
         private readonly IGarmentSubconCuttingRelationRepository _garmentSubconCuttingRelationRepository;
+        private readonly ILogHistoryRepository _logHistoryRepository;
 
         public RemoveGarmentSubconCuttingOutCommandHandler(IStorage storage)
         {
@@ -33,6 +36,7 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _garmentSubconCuttingRepository = storage.GetRepository<IGarmentSubconCuttingRepository>();
             _garmentSubconCuttingRelationRepository = storage.GetRepository<IGarmentSubconCuttingRelationRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentSubconCuttingOut> Handle(RemoveGarmentSubconCuttingOutCommand request, CancellationToken cancellationToken)
@@ -122,6 +126,10 @@ namespace Manufactures.Application.GarmentSubconCuttingOuts.CommandHandlers
 
             cutOut.Remove();
             await _garmentCuttingOutRepository.Update(cutOut);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING OUT SUBCON", "Delete Cutting Out Subcon - " + cutOut.CutOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentFinishingOuts;
 using Manufactures.Domain.GarmentFinishingOuts.Commands;
 using Manufactures.Domain.GarmentFinishingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +39,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                 model.SetDate(request.Date);
                 model.Modify();
                 await _garmentFinishingOutRepository.Update(model);
+
             }
             _storage.Save();
 

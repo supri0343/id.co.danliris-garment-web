@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Manufactures.Domain.GarmentSewingOuts;
+using Manufactures.Domain.LogHistory.Repositories;
+using Manufactures.Domain.LogHistory;
 
 namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
 {
@@ -21,6 +23,7 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
         private readonly IGarmentFinishingInRepository _garmentFinishingInRepository;
         private readonly IGarmentFinishingInItemRepository _garmentFinishingInItemRepository;
         private readonly IGarmentSewingOutItemRepository _garmentSewingOutItemRepository;
+        private readonly ILogHistoryRepository _logHistoryRepository;
 
         public PlaceGarmentFinishingInCommandHandler(IStorage storage)
         {
@@ -28,6 +31,7 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
             _garmentFinishingInRepository = storage.GetRepository<IGarmentFinishingInRepository>();
             _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
             _garmentSewingOutItemRepository = storage.GetRepository<IGarmentSewingOutItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentFinishingIn> Handle(PlaceGarmentFinishingInCommand request, CancellationToken cancellationToken)
@@ -103,6 +107,10 @@ namespace Manufactures.Application.GarmentFinishingIns.CommandHandlers
             }
 
             await _garmentFinishingInRepository.Update(garmentFinishingIn);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI FINISHING", "Create Finishing In - " + garmentFinishingIn.FinishingInNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

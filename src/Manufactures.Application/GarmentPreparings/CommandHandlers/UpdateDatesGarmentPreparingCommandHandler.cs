@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentPreparings;
 using Manufactures.Domain.GarmentPreparings.Commands;
 using Manufactures.Domain.GarmentPreparings.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +39,7 @@ namespace Manufactures.Application.GarmentPreparings.CommandHandlers
                 model.setProcessDate(request.Date);
                 model.SetModified();
                 await _garmentPreparingRepository.Update(model);
+
             }
             _storage.Save();
 
