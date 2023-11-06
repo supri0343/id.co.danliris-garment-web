@@ -4,6 +4,8 @@ using Manufactures.Domain.GarmentSample.SampleDeliveryReturns;
 using Manufactures.Domain.GarmentSample.SampleDeliveryReturns.Commands;
 using Manufactures.Domain.GarmentSample.SampleDeliveryReturns.Repositories;
 using Manufactures.Domain.GarmentSample.SamplePreparings.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Moonlay;
 using System;
 using System.Collections.Generic;
@@ -21,6 +23,9 @@ namespace Manufactures.Application.GarmentSample.SampleDeliveryReturns.CommandHa
         private readonly IGarmentSamplePreparingRepository _garmentSamplePreparingRepository;
         private readonly IGarmentSamplePreparingItemRepository _garmentSamplePreparingItemRepository;
         private readonly IStorage _storage;
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
 
         public RemoveGarmentSampleDeliveryReturnCommandHandler(IStorage storage)
         {
@@ -29,6 +34,9 @@ namespace Manufactures.Application.GarmentSample.SampleDeliveryReturns.CommandHa
             _garmentSamplePreparingRepository = storage.GetRepository<IGarmentSamplePreparingRepository>();
             _garmentSamplePreparingItemRepository = storage.GetRepository<IGarmentSamplePreparingItemRepository>();
             _storage = storage;
+            //------------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //------------
         }
 
         public async Task<GarmentSampleDeliveryReturn> Handle(RemoveGarmentSampleDeliveryReturnCommand request, CancellationToken cancellationToken)
@@ -59,6 +67,11 @@ namespace Manufactures.Application.GarmentSample.SampleDeliveryReturns.CommandHa
             garmentSampleDeliveryReturn.Remove();
 
             await _garmentSampleDeliveryReturnRepository.Update(garmentSampleDeliveryReturn);
+            //disini
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI DELIVERY RETURN SAMPLE", "Delete Delivery Return Sample - " + garmentSampleDeliveryReturn.DRNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
 
             _storage.Save();
 
