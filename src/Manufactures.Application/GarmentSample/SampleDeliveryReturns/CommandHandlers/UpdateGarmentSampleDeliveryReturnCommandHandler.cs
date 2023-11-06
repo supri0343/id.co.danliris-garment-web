@@ -6,6 +6,8 @@ using Manufactures.Domain.GarmentSample.SampleDeliveryReturns.Repositories;
 using Manufactures.Domain.GarmentSample.SampleDeliveryReturns.ValueObjects;
 using Manufactures.Domain.GarmentSample.SamplePreparings;
 using Manufactures.Domain.GarmentSample.SamplePreparings.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Moonlay;
 using System;
 using System.Collections.Generic;
@@ -23,6 +25,9 @@ namespace Manufactures.Application.GarmentSample.SampleDeliveryReturns.CommandHa
         private readonly IGarmentSamplePreparingRepository _garmentSamplePreparingRepository;
         private readonly IGarmentSamplePreparingItemRepository _garmentSamplePreparingItemRepository;
         private readonly IStorage _storage;
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
 
         public UpdateGarmentSampleDeliveryReturnCommandHandler(IStorage storage)
         {
@@ -31,6 +36,9 @@ namespace Manufactures.Application.GarmentSample.SampleDeliveryReturns.CommandHa
             _garmentSampleDeliveryReturnItemRepository = storage.GetRepository<IGarmentSampleDeliveryReturnItemRepository>();
             _garmentSamplePreparingRepository = storage.GetRepository<IGarmentSamplePreparingRepository>();
             _garmentSamplePreparingItemRepository = storage.GetRepository<IGarmentSamplePreparingItemRepository>();
+            //------------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //------------
         }
 
         public async Task<GarmentSampleDeliveryReturn> Handle(UpdateGarmentSampleDeliveryReturnCommand request, CancellationToken cancellaitonToken)
@@ -114,7 +122,11 @@ namespace Manufactures.Application.GarmentSample.SampleDeliveryReturns.CommandHa
             garmentSampleDeliveryReturn.SetModified();
 
             await _garmentSampleDeliveryReturnRepository.Update(garmentSampleDeliveryReturn);
-
+            //dsni
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI DELIVERY RETRUN SAMPLE", "Update Delivery Return Sample - " + garmentSampleDeliveryReturn.DRNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
             _storage.Save();
 
             return garmentSampleDeliveryReturn;
