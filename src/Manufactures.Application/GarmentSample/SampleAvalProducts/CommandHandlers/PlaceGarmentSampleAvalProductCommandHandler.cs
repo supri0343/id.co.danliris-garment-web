@@ -11,6 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Manufactures.Domain.LogHistory.Repositories;
+using Manufactures.Domain.LogHistory;
 
 namespace Manufactures.Application.GarmentSample.SampleAvalProducts.CommandHandlers
 {
@@ -21,6 +23,9 @@ namespace Manufactures.Application.GarmentSample.SampleAvalProducts.CommandHandl
         private readonly IGarmentSamplePreparingRepository _garmentSamplePreparingRepository;
         private readonly IGarmentSamplePreparingItemRepository _garmentSamplePreparingItemRepository;
         private readonly IStorage _storage;
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
 
         public PlaceGarmentSampleAvalProductCommandHandler(IStorage storage)
         {
@@ -29,6 +34,9 @@ namespace Manufactures.Application.GarmentSample.SampleAvalProducts.CommandHandl
             _garmentSampleAvalProductRepository = storage.GetRepository<IGarmentSampleAvalProductRepository>();
             _garmentSamplePreparingRepository = storage.GetRepository<IGarmentSamplePreparingRepository>();
             _garmentSamplePreparingItemRepository = storage.GetRepository<IGarmentSamplePreparingItemRepository>();
+            //------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //-----------        
         }
 
         public async Task<GarmentSampleAvalProduct> Handle(PlaceGarmentSampleAvalProductCommand request, CancellationToken cancellationToken)
@@ -58,7 +66,11 @@ namespace Manufactures.Application.GarmentSample.SampleAvalProducts.CommandHandl
             garmentSampleAvalProduct.SetModified();
 
             await _garmentSampleAvalProductRepository.Update(garmentSampleAvalProduct);
-
+            //disni
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "GUDANG SISA SAMPLE", "Create Aval Kain Besar Sample - " + garmentSampleAvalProduct.RONo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
             _storage.Save();
 
             return garmentSampleAvalProduct;

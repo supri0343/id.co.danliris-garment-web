@@ -4,6 +4,8 @@ using Manufactures.Domain.GarmentSample.SampleAvalProducts;
 using Manufactures.Domain.GarmentSample.SampleAvalProducts.Commands;
 using Manufactures.Domain.GarmentSample.SampleAvalProducts.Repositories;
 using Manufactures.Domain.GarmentSample.SampleAvalProducts.ValueObjects;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Moonlay;
 using System;
 using System.Collections.Generic;
@@ -19,12 +21,18 @@ namespace Manufactures.Application.GarmentSample.SampleAvalProducts.CommandHandl
         private readonly IGarmentSampleAvalProductRepository _garmentSampleAvalProductRepository;
         private readonly IGarmentSampleAvalProductItemRepository _garmentSampleAvalProductItemRepository;
         private readonly IStorage _storage;
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
 
         public UpdateGarmentSampleAvalProductCommandHandler(IStorage storage)
         {
             _garmentSampleAvalProductRepository = storage.GetRepository<IGarmentSampleAvalProductRepository>();
             _garmentSampleAvalProductItemRepository = storage.GetRepository<IGarmentSampleAvalProductItemRepository>();
             _storage = storage;
+            //------------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //------------
         }
 
         public async Task<GarmentSampleAvalProduct> Handle(UpdateGarmentSampleAvalProductCommand request, CancellationToken cancellaitonToken)
@@ -71,6 +79,11 @@ namespace Manufactures.Application.GarmentSample.SampleAvalProducts.CommandHandl
             garmentSampleAvalProduct.SetModified();
 
             await _garmentSampleAvalProductRepository.Update(garmentSampleAvalProduct);
+            //DISINI
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "GUDANG SISA SAMPLE", "Update Aval Kain Besar Sample - " + garmentSampleAvalProduct.RONo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
 
             _storage.Save();
 
