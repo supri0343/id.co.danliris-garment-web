@@ -4,6 +4,8 @@ using Manufactures.Domain.GarmentSample.SampleAvalProducts;
 using Manufactures.Domain.GarmentSample.SampleAvalProducts.Commands;
 using Manufactures.Domain.GarmentSample.SampleAvalProducts.Repositories;
 using Manufactures.Domain.GarmentSample.SamplePreparings.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Moonlay;
 using System;
 using System.Collections.Generic;
@@ -21,6 +23,9 @@ namespace Manufactures.Application.GarmentSample.SampleAvalProducts.CommandHandl
         private readonly IGarmentSamplePreparingRepository _garmentSamplePreparingRepository;
         private readonly IGarmentSamplePreparingItemRepository _garmentSamplePreparingItemRepository;
         private readonly IStorage _storage;
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
 
         public RemoveGarmentSampleAvalProductCommandHandler(IStorage storage)
         {
@@ -29,6 +34,9 @@ namespace Manufactures.Application.GarmentSample.SampleAvalProducts.CommandHandl
             _garmentSamplePreparingRepository = storage.GetRepository<IGarmentSamplePreparingRepository>();
             _garmentSamplePreparingItemRepository = storage.GetRepository<IGarmentSamplePreparingItemRepository>();
             _storage = storage;
+            //------------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //------------
         }
 
         public async Task<GarmentSampleAvalProduct> Handle(RemoveGarmentSampleAvalProductCommand request, CancellationToken cancellationToken)
@@ -56,6 +64,11 @@ namespace Manufactures.Application.GarmentSample.SampleAvalProducts.CommandHandl
             garmentSampleAvalProduct.Remove();
 
             await _garmentSampleAvalProductRepository.Update(garmentSampleAvalProduct);
+            //disini
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "GUDANG SISA SAMPLE", "Delete Aval Kain Besar Sample - " + garmentSampleAvalProduct.RONo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
 
             _storage.Save();
 
