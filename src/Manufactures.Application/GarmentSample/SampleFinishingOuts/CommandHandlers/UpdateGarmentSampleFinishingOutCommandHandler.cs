@@ -5,6 +5,8 @@ using Manufactures.Domain.GarmentSample.SampleFinishingIns.Repositories;
 using Manufactures.Domain.GarmentSample.SampleFinishingOuts;
 using Manufactures.Domain.GarmentSample.SampleFinishingOuts.Commands;
 using Manufactures.Domain.GarmentSample.SampleFinishingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,9 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.CommandHand
         private readonly IGarmentSampleFinishingOutItemRepository _GarmentSampleFinishingOutItemRepository;
         private readonly IGarmentSampleFinishingOutDetailRepository _GarmentSampleFinishingOutDetailRepository;
         private readonly IGarmentSampleFinishingInItemRepository _GarmentSampleFinishingInItemRepository;
-
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
         public UpdateGarmentSampleFinishingOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -30,6 +34,9 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.CommandHand
             _GarmentSampleFinishingOutItemRepository = storage.GetRepository<IGarmentSampleFinishingOutItemRepository>();
             _GarmentSampleFinishingOutDetailRepository = storage.GetRepository<IGarmentSampleFinishingOutDetailRepository>();
             _GarmentSampleFinishingInItemRepository = storage.GetRepository<IGarmentSampleFinishingInItemRepository>();
+            //------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //-----------
         }
 
         public async Task<GarmentSampleFinishingOut> Handle(UpdateGarmentSampleFinishingOutCommand request, CancellationToken cancellationToken)
@@ -156,8 +163,14 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.CommandHand
             finishOut.SetDate(request.FinishingOutDate.GetValueOrDefault());
             finishOut.Modify();
             await _GarmentSampleFinishingOutRepository.Update(finishOut);
+            //disini
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI FINISHING SAMPLE", "Update Finishing Out Sample - " + finishOut.FinishingOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
 
             _storage.Save();
+            
 
             return finishOut;
         }

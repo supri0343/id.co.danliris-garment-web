@@ -11,6 +11,8 @@ using Manufactures.Domain.GarmentSample.SampleFinishingOuts.Commands;
 using Manufactures.Domain.GarmentSample.SampleFinishingOuts.Repositories;
 using Manufactures.Domain.GarmentSample.SampleSewingIns;
 using Manufactures.Domain.GarmentSample.SampleSewingIns.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -33,7 +35,9 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.CommandHand
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
         private readonly IGarmentSampleSewingInRepository _GarmentSampleSewingInRepository;
         private readonly IGarmentSampleSewingInItemRepository _GarmentSampleSewingInItemRepository;
-
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
         public PlaceGarmentSampleFinishingOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -46,6 +50,9 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.CommandHand
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
             _GarmentSampleSewingInRepository = storage.GetRepository<IGarmentSampleSewingInRepository>();
             _GarmentSampleSewingInItemRepository = storage.GetRepository<IGarmentSampleSewingInItemRepository>();
+            //------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //-----------
         }
 
         public async Task<GarmentSampleFinishingOut> Handle(PlaceGarmentSampleFinishingOutCommand request, CancellationToken cancellationToken)
@@ -357,6 +364,7 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.CommandHand
 
                 }
             }
+
             #region Create SewingIn
             if (request.FinishingTo == "SEWING")
             {
@@ -380,6 +388,11 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.CommandHand
                     request.FinishingOutDate.GetValueOrDefault()
                 );
                 await _GarmentSampleSewingInRepository.Update(garmentSampleSewingIn);
+                //disini
+                //Add Log History
+                LogHistory logHistory2 = new LogHistory(new Guid(), "PRODUKSI SEWING SAMPLE", "Create Sewing In Sample - " + garmentSampleSewingIn.SewingInNo, DateTime.Now);
+                await _logHistoryRepository.Update(logHistory2);
+                //-----------
 
                 foreach (var item in request.Items)
                 {
@@ -444,6 +457,11 @@ namespace Manufactures.Application.GarmentSample.SampleFinishingOuts.CommandHand
             #endregion
 
             await _GarmentSampleFinishingOutRepository.Update(GarmentSampleFinishingOut);
+            //disini
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI FINISHING SAMPLE", "Create Finishing Out Sample - " + GarmentSampleFinishingOut.FinishingOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
 
             _storage.Save();
 

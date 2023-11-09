@@ -5,6 +5,8 @@ using Manufactures.Domain.GarmentSample.SampleAvalComponents.Commands;
 using Manufactures.Domain.GarmentSample.SampleAvalComponents.Repositories;
 using Manufactures.Domain.GarmentSample.SampleCuttingIns.Repositories;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +26,9 @@ namespace Manufactures.Application.GarmentSample.SampleAvalComponents.CommandHan
         private readonly IGarmentSampleCuttingInDetailRepository _garmentSampleCuttingInDetailRepository;
         private readonly IGarmentSampleSewingOutItemRepository _garmentSampleSewingOutItemRepository;
         //private readonly IGarmentSewingOutDetailRepository _garmentSewingOutDetailRepository;
-
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
         public RemoveGarmentSampleAvalComponentCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -35,6 +39,10 @@ namespace Manufactures.Application.GarmentSample.SampleAvalComponents.CommandHan
             _garmentSampleCuttingInDetailRepository = storage.GetRepository<IGarmentSampleCuttingInDetailRepository>();
             _garmentSampleSewingOutItemRepository = storage.GetRepository<IGarmentSampleSewingOutItemRepository>();
             //_garmentSewingOutDetailRepository = storage.GetRepository<IGarmentSewingOutDetailRepository>();
+            //------------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //------------
+
         }
 
         public async Task<GarmentSampleAvalComponent> Handle(RemoveGarmentSampleAvalComponentCommand request, CancellationToken cancellationToken)
@@ -97,6 +105,11 @@ namespace Manufactures.Application.GarmentSample.SampleAvalComponents.CommandHan
 
             garmentSampleAvalComponent.Remove();
             await _garmentSampleAvalComponentRepository.Update(garmentSampleAvalComponent);
+            //disini
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "GUDANG SISA SAMPLE", "Delete Aval Komponen Sample - " + garmentSampleAvalComponent.SampleAvalComponentNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
 
             _storage.Save();
 

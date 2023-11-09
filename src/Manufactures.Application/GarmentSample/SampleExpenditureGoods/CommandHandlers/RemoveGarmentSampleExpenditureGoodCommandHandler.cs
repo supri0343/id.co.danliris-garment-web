@@ -9,6 +9,8 @@ using Manufactures.Domain.GarmentSample.SampleFinishedGoodStocks;
 using Manufactures.Domain.GarmentSample.SampleFinishedGoodStocks.Repositories;
 using Manufactures.Domain.GarmentSample.SampleStocks;
 using Manufactures.Domain.GarmentSample.SampleStocks.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -29,7 +31,9 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
         private readonly IGarmentSampleStockRepository _GarmentSampleStockRepository;
         private readonly IGarmentSampleStockHistoryRepository _GarmentSampleStockHistoryRepository;
-
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
         public RemoveGarmentSampleExpenditureGoodCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -40,6 +44,9 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
             _GarmentSampleStockRepository = storage.GetRepository<IGarmentSampleStockRepository>();
             _GarmentSampleStockHistoryRepository = storage.GetRepository<IGarmentSampleStockHistoryRepository>();
+            //------------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //------------
         }
 
         public async Task<GarmentSampleExpenditureGood> Handle(RemoveGarmentSampleExpenditureGoodCommand request, CancellationToken cancellationToken)
@@ -104,6 +111,11 @@ namespace Manufactures.Application.GarmentSample.SampleExpenditureGoods.CommandH
 
             ExpenditureGood.Remove();
             await _GarmentSampleExpenditureGoodRepository.Update(ExpenditureGood);
+            //disini
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI PENGELUARAN BARANG JADI SAMPLE", "Delete Pengeluaran Barang Jadi Sample - " + ExpenditureGood.ExpenditureGoodNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
 
             _storage.Save();
 
