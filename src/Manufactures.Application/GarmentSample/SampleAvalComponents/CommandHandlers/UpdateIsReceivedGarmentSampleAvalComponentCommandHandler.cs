@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSample.SampleAvalComponents;
 using Manufactures.Domain.GarmentSample.SampleAvalComponents.Commands;
 using Manufactures.Domain.GarmentSample.SampleAvalComponents.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +18,16 @@ namespace Manufactures.Application.GarmentSample.SampleAvalComponents.CommandHan
     {
         private readonly IGarmentSampleAvalComponentRepository _garmentSampleAvalComponentRepository;
         private readonly IStorage _storage;
-
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
         public UpdateIsReceivedGarmentSampleAvalComponentCommandHandler(IStorage storage)
         {
             _garmentSampleAvalComponentRepository = storage.GetRepository<IGarmentSampleAvalComponentRepository>();
             _storage = storage;
+            //------------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //------------
         }
 
         public async Task<bool> Handle(UpdateIsReceivedGarmentSampleAvalComponentCommand request, CancellationToken cancellationToken)
@@ -30,6 +37,12 @@ namespace Manufactures.Application.GarmentSample.SampleAvalComponents.CommandHan
             SampleAvalComponent.SetIsReceived(request.IsReceived);
             SampleAvalComponent.SetDeleted();
             await _garmentSampleAvalComponentRepository.Update(SampleAvalComponent);
+            //disini
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "GUDANG SISA SAMPLE", "Update Aval Komponen Sample - " + SampleAvalComponent.SampleAvalComponentNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+            //-----------
+
             _storage.Save();
 
             return request.IsReceived;
