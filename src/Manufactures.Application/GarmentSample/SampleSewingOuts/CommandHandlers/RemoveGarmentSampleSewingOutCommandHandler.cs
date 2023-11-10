@@ -9,6 +9,8 @@ using Manufactures.Domain.GarmentSample.SampleSewingIns.Repositories;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts.Commands;
 using Manufactures.Domain.GarmentSample.SampleSewingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +32,9 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
         private readonly IGarmentSampleCuttingInDetailRepository _garmentCuttingInDetailRepository;
         private readonly IGarmentSampleFinishingInRepository _garmentFinishingInRepository;
         private readonly IGarmentSampleFinishingInItemRepository _garmentFinishingInItemRepository;
-
+        //----------
+        private readonly ILogHistoryRepository _logHistoryRepository;
+        //-------
         public RemoveGarmentSampleSewingOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -43,6 +47,9 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentSampleCuttingInDetailRepository>();
             _garmentFinishingInRepository = storage.GetRepository<IGarmentSampleFinishingInRepository>();
             _garmentFinishingInItemRepository = storage.GetRepository<IGarmentSampleFinishingInItemRepository>();
+            //------
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            //-----------
         }
 
         public async Task<GarmentSampleSewingOut> Handle(RemoveGarmentSampleSewingOutCommand request, CancellationToken cancellationToken)
@@ -70,8 +77,13 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
 
                 cutIn.Remove();
                 await _garmentCuttingInRepository.Update(cutIn);
+                //disini
+                //Add Log History
+                LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI CUTTING SAMPLE", "Delete Cutting In Sample - " + cutIn.CutInNo, DateTime.Now);
+                await _logHistoryRepository.Update(logHistory);
+                //-----------
             }
-            
+
             if (sewOut.SewingTo == "FINISHING")
             {
                 Guid finInId = Guid.Empty;
@@ -98,6 +110,11 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
                 var finIn = _garmentFinishingInRepository.Query.Where(a => a.Identity == finInId).Select(o => new GarmentSampleFinishingIn(o)).Single();
                 finIn.Remove();
                 await _garmentFinishingInRepository.Update(finIn);
+                //disini
+                //Add Log History
+                LogHistory logHistory2 = new LogHistory(new Guid(), "PRODUKSI FINISHING SAMPLE", "Delete Finishing In Sample - " + finIn.FinishingInNo, DateTime.Now);
+                await _logHistoryRepository.Update(logHistory2);
+                //-----------
             }
 
             Dictionary<Guid, double> sewInItemToBeUpdated = new Dictionary<Guid, double>();
@@ -136,6 +153,7 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
 
                 sewOutItem.Remove();
                 await _garmentSewingOutItemRepository.Update(sewOutItem);
+                
             });
 
             foreach (var sewingInItem in sewInItemToBeUpdated)
@@ -148,6 +166,11 @@ namespace Manufactures.Application.GarmentSample.SampleSewingOuts.CommandHandler
 
             sewOut.Remove();
             await _garmentSewingOutRepository.Update(sewOut);
+            //disini 
+            //Add Log History
+            LogHistory logHistory3 = new LogHistory(new Guid(), "PRODUKSI SEWING SAMPLE", "Delete Sewing Out Sample - " + sewOut.SewingOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory3);
+            //-----------
 
             _storage.Save();
 
