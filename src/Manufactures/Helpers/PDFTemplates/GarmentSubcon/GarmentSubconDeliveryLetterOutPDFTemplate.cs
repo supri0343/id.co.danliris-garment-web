@@ -409,7 +409,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 //cellCenter.Phrase = new Phrase("Jumlah Kemasan", bold_font);
                 //tableContent.AddCell(cellCenter);
                 //cellCenter.Phrase = new Phrase("Satuan Kemasan", bold_font);
-                tableContent.AddCell(cellCenter);
+                //tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase("Quantity", bold_font);
                 tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase("Satuan", bold_font);
