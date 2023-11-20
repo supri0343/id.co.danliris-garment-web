@@ -1,5 +1,5 @@
 ﻿using Infrastructure.Domain;
-using Manufactures.Domain.Events.GarmentReceiptSubcon;
+using Manufactures.Domain.Events;
 using Manufactures.Domain.LogHistories.ReadModels;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace Manufactures.Domain.LogHistory
                 //CreatedBy = CreatedBy,
             };
 
-            ReadModel.AddDomainEvent(new OnGarmentSubconPackingInPlaced(Identity));
+            ReadModel.AddDomainEvent(new OnGarmentPreparingPlaced(Identity));
         }
 
         public LogHistory(LogHistoryReadModel readModel) : base(readModel)
