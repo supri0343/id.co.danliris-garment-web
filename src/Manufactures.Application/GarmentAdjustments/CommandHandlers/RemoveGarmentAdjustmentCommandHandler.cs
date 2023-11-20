@@ -13,6 +13,8 @@ using Manufactures.Domain.GarmentSewingDOs;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -34,20 +36,21 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
 		private readonly IGarmentFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
 		private readonly IGarmentFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
-    
+        private readonly ILogHistoryRepository _logHistoryRepository;
 
-    public RemoveGarmentAdjustmentCommandHandler(IStorage storage)
-    {
-        _storage = storage;
-        _garmentAdjustmentRepository = storage.GetRepository<IGarmentAdjustmentRepository>();
-        _garmentAdjustmentItemRepository = storage.GetRepository<IGarmentAdjustmentItemRepository>();
-        _garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
-        _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
-        _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
-        _garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentFinishedGoodStockRepository>();
-        _garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentFinishedGoodStockHistoryRepository>();
-        _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
-    }
+        public RemoveGarmentAdjustmentCommandHandler(IStorage storage)
+        {
+            _storage = storage;
+            _garmentAdjustmentRepository = storage.GetRepository<IGarmentAdjustmentRepository>();
+            _garmentAdjustmentItemRepository = storage.GetRepository<IGarmentAdjustmentItemRepository>();
+            _garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
+            _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
+            _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
+            _garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentFinishedGoodStockRepository>();
+            _garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentFinishedGoodStockHistoryRepository>();
+            _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+        }
 
         public async Task<GarmentAdjustment> Handle(RemoveGarmentAdjustmentCommand request, CancellationToken cancellationToken)
         {
@@ -168,6 +171,11 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
 			
 			adjustment.Remove();
             await _garmentAdjustmentRepository.Update(adjustment);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Delete Adjusment " + adjustment.AdjustmentType + " - " + adjustment.AdjustmentNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+
             _storage.Save();
             return adjustment;
         }

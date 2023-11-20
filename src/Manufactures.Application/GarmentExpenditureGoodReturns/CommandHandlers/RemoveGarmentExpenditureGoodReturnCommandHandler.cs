@@ -9,6 +9,8 @@ using Manufactures.Domain.GarmentExpenditureGoods;
 using Manufactures.Domain.GarmentExpenditureGoods.Repositories;
 using Manufactures.Domain.GarmentFinishedGoodStocks;
 using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,7 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
         private readonly IGarmentFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
         private readonly IGarmentExpenditureGoodItemRepository _garmentExpenditureGoodItemRepository;
+        private readonly ILogHistoryRepository _logHistoryRepository;
 
         public RemoveGarmentExpenditureGoodReturnCommandHandler(IStorage storage)
         {
@@ -38,6 +41,7 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
             _garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentFinishedGoodStockHistoryRepository>();
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
             _garmentExpenditureGoodItemRepository = storage.GetRepository<IGarmentExpenditureGoodItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentExpenditureGoodReturn> Handle(RemoveGarmentExpenditureGoodReturnCommand request, CancellationToken cancellationToken)
@@ -99,6 +103,10 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
 
             ExpenditureGoodReturn.Remove();
             await _garmentExpenditureGoodReturnRepository.Update(ExpenditureGoodReturn);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI RETUR BARANG JADI", "Delete Retur Barang Jadi - " + ExpenditureGoodReturn.ReturNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

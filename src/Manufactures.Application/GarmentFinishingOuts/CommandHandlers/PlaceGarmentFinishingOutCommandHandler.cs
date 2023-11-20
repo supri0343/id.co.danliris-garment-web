@@ -12,6 +12,8 @@ using Manufactures.Domain.GarmentFinishingOuts.Commands;
 using Manufactures.Domain.GarmentFinishingOuts.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -34,7 +36,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
         private readonly IGarmentSewingInRepository _garmentSewingInRepository;
         private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public PlaceGarmentFinishingOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -47,6 +49,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
             _garmentComodityPriceRepository= storage.GetRepository<IGarmentComodityPriceRepository>();
             _garmentSewingInRepository = storage.GetRepository<IGarmentSewingInRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentFinishingOut> Handle(PlaceGarmentFinishingOutCommand request, CancellationToken cancellationToken)
@@ -243,6 +246,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                         count++;
                         await _garmentFinishedGoodStockRepository.Update(finishedGood);
                         finGoodStocks.Add(finishedGood);
+
                     }
                     else
                     {
@@ -382,6 +386,10 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                 );
                 await _garmentSewingInRepository.Update(garmentSewingIn);
 
+                //Add Log History
+                LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI SEWING", "Create Sewing In - " + garmentSewingIn.SewingInNo, DateTime.Now);
+                await _logHistoryRepository.Update(logHistory1);
+
                 foreach (var item in request.Items)
                 {
                     if (item.IsSave)
@@ -447,6 +455,10 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
             #endregion
 
             await _garmentFinishingOutRepository.Update(garmentFinishingOut);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI FINISHING", "Create Finishing Out - " + garmentFinishingOut.FinishingOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

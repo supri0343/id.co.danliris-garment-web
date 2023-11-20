@@ -5,6 +5,8 @@ using Manufactures.Domain.GarmentLoadings.Commands;
 using Manufactures.Domain.GarmentLoadings.Repositories;
 using Manufactures.Domain.GarmentSewingDOs;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +22,14 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
         private readonly IGarmentLoadingRepository _garmentLoadingRepository;
         private readonly IGarmentLoadingItemRepository _garmentLoadingItemRepository;
         private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateGarmentLoadingCommandHandler(IStorage storage)
         {
             _storage = storage;
             _garmentLoadingRepository = storage.GetRepository<IGarmentLoadingRepository>();
             _garmentLoadingItemRepository = storage.GetRepository<IGarmentLoadingItemRepository>();
             _garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentLoading> Handle(UpdateGarmentLoadingCommand request, CancellationToken cancellationToken)
@@ -77,6 +80,10 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
 
             loading.Modify();
             await _garmentLoadingRepository.Update(loading);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI LOADING", "Update Loading - " + loading.LoadingNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

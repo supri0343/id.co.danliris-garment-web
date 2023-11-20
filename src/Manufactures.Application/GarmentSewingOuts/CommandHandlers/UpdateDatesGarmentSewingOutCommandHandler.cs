@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSewingOuts;
 using Manufactures.Domain.GarmentSewingOuts.Commands;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,6 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
     {
         private readonly IStorage _storage;
         private readonly IGarmentSewingOutRepository _garmentSewingOutRepository;
-
         public UpdateDatesGarmentSewingOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -37,6 +38,7 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 model.SetDate(request.Date);
                 model.Modify();
                 await _garmentSewingOutRepository.Update(model);
+
             }
             _storage.Save();
 

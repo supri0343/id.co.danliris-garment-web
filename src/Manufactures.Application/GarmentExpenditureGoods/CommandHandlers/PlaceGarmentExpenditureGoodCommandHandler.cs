@@ -7,6 +7,8 @@ using Manufactures.Domain.GarmentExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentExpenditureGoods.Repositories;
 using Manufactures.Domain.GarmentFinishedGoodStocks;
 using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -26,7 +28,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
         private readonly IGarmentFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
         private readonly IGarmentFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
         private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public PlaceGarmentExpenditureGoodCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -36,7 +38,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
             _garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentFinishedGoodStockHistoryRepository>();
             _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
 			_garmentExpenditureGoodInvoiceRelationRepository = storage.GetRepository<IGarmentExpenditureGoodInvoiceRelationRepository>();
-		}
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+        }
 
         public async Task<GarmentExpenditureGood> Handle(PlaceGarmentExpenditureGoodCommand request, CancellationToken cancellationToken)
         {
@@ -183,6 +186,10 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
 			}
 
             await _garmentExpenditureGoodRepository.Update(garmentExpenditureGood);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI PENGELUARAN BARANG JADI", "Create Pengeluaran Barang Jadi - " + garmentExpenditureGood.ExpenditureGoodNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 			var _expend = (from a in _garmentExpenditureGoodRepository.Query

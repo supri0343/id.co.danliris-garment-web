@@ -8940,6 +8940,40 @@ namespace DanLiris.Admin.Web.Migrations
                     b.ToTable("GarmentSubconCuttingRelations");
                 });
 
+            modelBuilder.Entity("Manufactures.Domain.LogHistories.ReadModels.LogHistoryReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Activity")
+                        .HasMaxLength(1000);
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<string>("Division")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("ModifiedBy");
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.HasKey("Identity");
+
+                    b.ToTable("LogHistory");
+                });
+
             modelBuilder.Entity("Manufactures.Domain.MonitoringProductionStockFlow.GarmentBalanceMonitoringProductionStockReadModel", b =>
                 {
                     b.Property<Guid>("Identity")

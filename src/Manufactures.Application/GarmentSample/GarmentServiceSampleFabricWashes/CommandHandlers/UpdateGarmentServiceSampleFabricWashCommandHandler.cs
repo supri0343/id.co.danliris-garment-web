@@ -6,6 +6,8 @@ using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Manufactures.Domain.GarmentSample.ServiceSampleFabricWashes;
 using Manufactures.Domain.GarmentSample.ServiceSampleFabricWashes.Commands;
 using Manufactures.Domain.GarmentSample.ServiceSampleFabricWashes.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -24,7 +26,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleFabricWashe
         private readonly IGarmentServiceSampleFabricWashRepository _garmentServiceSampleFabricWashRepository;
         private readonly IGarmentServiceSampleFabricWashItemRepository _garmentServiceSampleFabricWashItemRepository;
         private readonly IGarmentServiceSampleFabricWashDetailRepository _garmentServiceSampleFabricWashDetailRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateGarmentServiceSampleFabricWashCommandHandler(IStorage storage, IWebApiContext webApiContext, IHttpClientService http)
         {
             _storage = storage;
@@ -33,6 +35,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleFabricWashe
             _garmentServiceSampleFabricWashRepository = _storage.GetRepository<IGarmentServiceSampleFabricWashRepository>();
             _garmentServiceSampleFabricWashItemRepository = _storage.GetRepository<IGarmentServiceSampleFabricWashItemRepository>();
             _garmentServiceSampleFabricWashDetailRepository = storage.GetRepository<IGarmentServiceSampleFabricWashDetailRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentServiceSampleFabricWash> Handle(UpdateGarmentServiceSampleFabricWashCommand request, CancellationToken cancellationToken)
@@ -168,6 +171,10 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleFabricWashe
 
 
             await _garmentServiceSampleFabricWashRepository.Update(serviceSampleFabricWash);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Packing List Subcon Sample - Fabric Wash / Print - " + serviceSampleFabricWash.ServiceSampleFabricWashNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

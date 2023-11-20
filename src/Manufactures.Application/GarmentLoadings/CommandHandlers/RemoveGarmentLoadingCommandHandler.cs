@@ -7,6 +7,8 @@ using Manufactures.Domain.GarmentSewingDOs;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +26,7 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
         private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
         private readonly IGarmentSewingInRepository _garmentSewingInRepository;
         private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public RemoveGarmentLoadingCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -33,6 +35,7 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
             _garmentSewingDOItemRepository = storage.GetRepository<IGarmentSewingDOItemRepository>();
             _garmentSewingInRepository = storage.GetRepository<IGarmentSewingInRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSewingInItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentLoading> Handle(RemoveGarmentLoadingCommand request, CancellationToken cancellationToken)
@@ -79,6 +82,14 @@ namespace Manufactures.Application.GarmentLoadings.CommandHandlers
             garmentSewingIn.Remove();
             await _garmentLoadingRepository.Update(loading);
             await _garmentSewingInRepository.Update(garmentSewingIn);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI LOADING", "Delete Loading - " + loading.LoadingNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
+
+            //Add Log History
+            LogHistory logHistory1 = new LogHistory(new Guid(), "PRODUKSI SEWING", "Delete Sewing In - " + garmentSewingIn.SewingInNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory1);
 
             _storage.Save();
 

@@ -7,6 +7,8 @@ using Manufactures.Domain.GarmentSubcon.SubconContracts;
 using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,7 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
         private readonly IGarmentSubconCustomsOutItemRepository _garmentSubconCustomsOutItemRepository;
         private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;
         private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public RemoveGarmentSubconCustomsOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -30,6 +33,7 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
             _garmentSubconCustomsOutItemRepository = storage.GetRepository<IGarmentSubconCustomsOutItemRepository>();
             _garmentSubconDeliveryLetterOutRepository = storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
             _garmentSubconContractRepository = storage.GetRepository<IGarmentSubconContractRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
 
@@ -61,6 +65,10 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
            
             subconCustomsOut.Remove();
             await _garmentSubconCustomsOutRepository.Update(subconCustomsOut);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "EXIM", "Delete BC Keluar Subcon - " + subconCustomsOut.CustomsOutNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

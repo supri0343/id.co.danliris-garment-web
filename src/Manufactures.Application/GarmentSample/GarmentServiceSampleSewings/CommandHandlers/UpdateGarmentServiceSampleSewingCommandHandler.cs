@@ -11,6 +11,8 @@ using Manufactures.Domain.GarmentSample.ServiceSampleSewings.Commands;
 using Manufactures.Domain.GarmentSample.ServiceSampleSewings.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using Manufactures.Domain.GarmentSample.SampleSewingIns.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 
 namespace Manufactures.Application.GarmentSample.GarmentServiceSampleSewings.CommandHandlers
 {
@@ -22,7 +24,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleSewings.Com
         private readonly IGarmentServiceSampleSewingDetailRepository _garmentServiceSampleSewingDetailRepository;
         private readonly IGarmentSampleSewingInRepository _garmentSewingInRepository;
         private readonly IGarmentSampleSewingInItemRepository _garmentSewingInItemRepository;
-
+        private readonly ILogHistoryRepository _logHistoryRepository;
         public UpdateGarmentServiceSampleSewingCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -31,6 +33,7 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleSewings.Com
             _garmentServiceSampleSewingDetailRepository = _storage.GetRepository<IGarmentServiceSampleSewingDetailRepository>();
             _garmentSewingInRepository = storage.GetRepository<IGarmentSampleSewingInRepository>();
             _garmentSewingInItemRepository = storage.GetRepository<IGarmentSampleSewingInItemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentServiceSampleSewing> Handle(UpdateGarmentServiceSampleSewingCommand request, CancellationToken cancellationToken)
@@ -268,6 +271,10 @@ namespace Manufactures.Application.GarmentSample.GarmentServiceSampleSewings.Com
             serviceSampleSewing.SetUomUnit(request.UomUnit);
             serviceSampleSewing.Modify();
             await _garmentServiceSampleSewingRepository.Update(serviceSampleSewing);
+
+            //Add Log History
+            LogHistory logHistory = new LogHistory(new Guid(), "PRODUKSI", "Update Packing List Subcon Sample - Jasa Garment Wash - " + serviceSampleSewing.ServiceSampleSewingNo, DateTime.Now);
+            await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

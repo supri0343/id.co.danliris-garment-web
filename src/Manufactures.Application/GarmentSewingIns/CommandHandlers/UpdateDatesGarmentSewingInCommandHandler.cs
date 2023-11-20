@@ -3,6 +3,8 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSewingIns;
 using Manufactures.Domain.GarmentSewingIns.Commands;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
+using Manufactures.Domain.LogHistory;
+using Manufactures.Domain.LogHistory.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,6 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
     {
         private readonly IStorage _storage;
         private readonly IGarmentSewingInRepository _garmentSewingInRepository;
-
         public UpdateDatesGarmentSewingInCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -37,6 +38,7 @@ namespace Manufactures.Application.GarmentSewingIns.CommandHandlers
                 model.setDate(request.Date);
                 model.Modify();
                 await _garmentSewingInRepository.Update(model);
+
             }
             _storage.Save();
 
