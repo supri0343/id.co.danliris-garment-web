@@ -382,6 +382,16 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
                     worksheet.Cells[$"B{16 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = listViewModel.garmentRealizationSubconReportDtosOUT.Sum(x => x.quantityOut);
                     worksheet.Cells[$"A{17 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Sisa = ";
                     worksheet.Cells[$"B{17 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = buyer.Quantity - listViewModel.garmentRealizationSubconReportDtosOUT.Sum(x => x.quantityOut);
+
+                    worksheet.Cells[$"I{14 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Sesuai dengan BC.262";
+                    worksheet.Cells[$"I{15 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Barang Keluar = ";
+                    worksheet.Cells[$"J{15 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = listViewModel.garmentRealizationSubconReportDtosOUT.Sum(x => x.quantityOut);
+                    worksheet.Cells[$"I{16 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Realisasi Barang Masuk = ";
+                    worksheet.Cells[$"J{16 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = listViewModel.garmentRealizationSubconReportDtos.Sum(x => x.quantityOut);
+                    worksheet.Cells[$"I{17 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Sisa barang yang belum masuk = ";
+                    worksheet.Cells[$"J{17 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = listViewModel.garmentRealizationSubconReportDtosOUT.Sum(b => b.quantityOut) - listViewModel.garmentRealizationSubconReportDtos.Sum(a => a.quantityOut);
+
+
                     worksheet.Cells[$"I{20 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = string.Format("Sukoharjo, {0}", DateTimeOffset.Now.ToString("dd MMM yyyy", new CultureInfo("id-ID")));
                     worksheet.Cells[$"I{21 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Mengetahui";
                     worksheet.Cells[$"I{21 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -406,6 +416,15 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
                     worksheet.Cells[$"B{16 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = listViewModel.garmentRealizationSubconReportDtosOUT.Sum(x => x.quantityOut);
                     worksheet.Cells[$"A{17 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Sisa barang belum keluar = ";
                     worksheet.Cells[$"B{17 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = buyer.Quantity - listViewModel.garmentRealizationSubconReportDtosOUT.Sum(x => x.quantityOut);
+
+                    worksheet.Cells[$"I{14 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Sesuai dengan BC.262";
+                    worksheet.Cells[$"I{15 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Barang Keluar = ";
+                    worksheet.Cells[$"J{15 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = listViewModel.garmentRealizationSubconReportDtosOUT.Sum(x => x.quantityOut);
+                    worksheet.Cells[$"I{16 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Realisasi Barang Masuk = ";
+                    worksheet.Cells[$"J{16 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = listViewModel.garmentRealizationSubconReportDtos.Sum(x => x.quantityOut);
+                    worksheet.Cells[$"I{17 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = "Sisa barang yang belum masuk = ";
+                    worksheet.Cells[$"J{17 + listViewModel.garmentRealizationSubconReportDtos.Count()}"].Value = listViewModel.garmentRealizationSubconReportDtosOUT.Sum(b => b.quantityOut) - listViewModel.garmentRealizationSubconReportDtos.Sum(a => a.quantityOut);
+
                     worksheet.Cells[$"I{20 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = string.Format("Sukoharjo, {0}", DateTimeOffset.Now.ToString("dd MMM yyyy", new CultureInfo("id-ID")));
                     worksheet.Cells[$"I{21 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Mengetahui";
                     worksheet.Cells[$"I{21 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -413,13 +432,13 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentRealizationSubco
                     worksheet.Cells[$"I{22 + listViewModel.garmentRealizationSubconReportDtosOUT.Count()}"].Value = "Pemeriksa Bea dan Cukai Pertama/Ahli Pertama";
                 }
 
-                worksheet.Cells[$"I15"].Value = "Sesuai dengan BC.262";
-                worksheet.Cells[$"I16"].Value = "Barang Keluar = ";
-                worksheet.Cells[$"J16"].Value = listViewModel.garmentRealizationSubconReportDtosOUT.Sum(x => x.quantityOut);
-                worksheet.Cells[$"I17"].Value = "Realisasi Barang Masuk = ";
-                worksheet.Cells[$"J17"].Value = listViewModel.garmentRealizationSubconReportDtos.Sum(x => x.quantityOut);
-                worksheet.Cells[$"I18"].Value = "Sisa barang yang belum masuk = ";
-                worksheet.Cells[$"J18"].Value = listViewModel.garmentRealizationSubconReportDtosOUT.Sum(b => b.quantityOut) - listViewModel.garmentRealizationSubconReportDtos.Sum(a => a.quantityOut);
+                //worksheet.Cells[$"I15"].Value = "Sesuai dengan BC.262";
+                //worksheet.Cells[$"I16"].Value = "Barang Keluar = ";
+                //worksheet.Cells[$"J16"].Value = listViewModel.garmentRealizationSubconReportDtosOUT.Sum(x => x.quantityOut);
+                //worksheet.Cells[$"I17"].Value = "Realisasi Barang Masuk = ";
+                //worksheet.Cells[$"J17"].Value = listViewModel.garmentRealizationSubconReportDtos.Sum(x => x.quantityOut);
+                //worksheet.Cells[$"I18"].Value = "Sisa barang yang belum masuk = ";
+                //worksheet.Cells[$"J18"].Value = listViewModel.garmentRealizationSubconReportDtosOUT.Sum(b => b.quantityOut) - listViewModel.garmentRealizationSubconReportDtos.Sum(a => a.quantityOut);
 
                 var stream = new MemoryStream();
 
