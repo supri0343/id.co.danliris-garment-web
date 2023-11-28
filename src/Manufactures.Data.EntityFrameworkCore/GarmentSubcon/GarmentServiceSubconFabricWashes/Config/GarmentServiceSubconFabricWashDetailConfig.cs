@@ -20,7 +20,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
             builder.Property(a => a.ProductCode).HasMaxLength(25);
             builder.Property(a => a.ProductName).HasMaxLength(100);
             builder.Property(a => a.ProductRemark).HasMaxLength(1000);
-            builder.Property(a => a.DesignColor).HasMaxLength(100);
+            builder.Property(a => a.DesignColor).HasMaxLength(1000);
             builder.Property(a => a.UomUnit).HasMaxLength(100);
             builder.Property(a => a.Quantity).HasMaxLength(100);
 
