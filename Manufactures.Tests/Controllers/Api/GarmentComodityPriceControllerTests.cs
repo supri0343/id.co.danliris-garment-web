@@ -160,7 +160,7 @@ namespace Manufactures.Tests.Controllers.Api
                 Date = DateTimeOffset.Now
             };
             
-            await  Assert.ThrowsAsync<Exception>(() => unitUnderTest.Put(command));
+            await  Assert.ThrowsAsync<Exception>(() => unitUnderTest.Put(command)); 
         }
     }
 }
