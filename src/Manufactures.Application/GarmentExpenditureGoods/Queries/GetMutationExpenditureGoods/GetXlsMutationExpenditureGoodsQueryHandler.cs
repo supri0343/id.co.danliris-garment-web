@@ -23,6 +23,7 @@ using OfficeOpenXml;
 using Manufactures.Domain.GarmentSample.SampleCuttingOuts.Repositories;
 using Manufactures.Domain.GarmentSample.SampleFinishingOuts.Repositories;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Repositories;
+using OfficeOpenXml.Style;
 
 namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationExpenditureGoods
 {
@@ -247,8 +248,29 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
 
             });
 
+            var mm = new GarmentMutationExpenditureGoodDto();
+
+            mm.KodeBarang = "TOTAL";
+            mm.NamaBarang = "";
+            mm.Pemasukan = 0;
+            mm.Pengeluaran = 0;
+            mm.Penyesuaian = 0;
+            mm.SaldoAwal = 0;
+            mm.SaldoBuku = 0;
+            mm.Selisih = 0;
+            mm.StockOpname = 0;
+            mm.UnitQtyName = "";
+
             foreach (var i in mutationTemp.Where(x => x.saldoAwal != 0 || x.pemasukan != 0 || x.pengeluaran != 0 || x.penyesuaian != 0 || x.stockOpname != 0 || x.saldoBuku != 0))
             {
+                mm.Pemasukan += i.pemasukan;
+                mm.Pengeluaran += i.pengeluaran;
+                mm.Penyesuaian += i.penyesuaian;
+                mm.SaldoAwal += i.saldoAwal;
+                mm.SaldoBuku += i.saldoBuku;
+                mm.Selisih += i.selisih;
+                mm.StockOpname += i.stockOpname;
+
                 var comodity = (from a in garmentCuttingOutRepository.Query
                                 where a.ComodityCode == i.kodeBarang
                                 select a.ComodityName).FirstOrDefault();
@@ -271,6 +293,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
             }
 
             expenditureGoodListViewModel.garmentMutations = mutationExpenditureGoodDto.OrderBy(x => x.KodeBarang).ToList();
+            expenditureGoodListViewModel.garmentMutations.Add(mm);
 
             var reportDataTable = new DataTable();
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(string) });
@@ -296,6 +319,16 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                 var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
 
                 worksheet.Cells["A2"].LoadFromDataTable(reportDataTable, true, OfficeOpenXml.Table.TableStyles.Light16);
+
+                var a = expenditureGoodListViewModel.garmentMutations.Count();
+
+                worksheet.Cells[$"A{a + 2}"].Value = "T O T A L  . . . . . . . . . . . . . . .";
+                worksheet.Cells[$"A{a + 2}:D{a + 2}"].Merge = true;
+                worksheet.Cells[$"A{a + 2}:D{a + 2}"].Style.Font.Bold = true;
+                worksheet.Cells[$"A{a + 2}:D{a + 2}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells[$"A{a + 2}:D{a + 2}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
                 var stream = new MemoryStream();
 
