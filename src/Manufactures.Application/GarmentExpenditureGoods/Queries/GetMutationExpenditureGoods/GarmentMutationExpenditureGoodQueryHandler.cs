@@ -250,8 +250,28 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
 
             });
 
+            var mm = new GarmentMutationExpenditureGoodDto();
+
+            mm.KodeBarang = "TOTAL";
+            mm.NamaBarang = "";
+            mm.Pemasukan = 0;
+            mm.Pengeluaran = 0;
+            mm.Penyesuaian = 0;
+            mm.SaldoAwal = 0;
+            mm.SaldoBuku = 0;
+            mm.Selisih = 0;
+            mm.StockOpname = 0;
+            mm.UnitQtyName = "";
             foreach (var i in mutationTemp.Where(x => x.saldoAwal != 0 || x.pemasukan != 0 || x.pengeluaran != 0 || x.penyesuaian != 0 || x.stockOpname != 0 || x.saldoBuku != 0))
             {
+                mm.Pemasukan += i.pemasukan;
+                mm.Pengeluaran += i.pengeluaran;
+                mm.Penyesuaian += i.penyesuaian;
+                mm.SaldoAwal += i.saldoAwal;
+                mm.SaldoBuku += i.saldoBuku;
+                mm.Selisih += i.selisih;
+                mm.StockOpname += i.stockOpname;
+
                 var comodity = (from a in garmentCuttingOutRepository.Query
                                 where a.ComodityCode == i.kodeBarang
                                 select a.ComodityName).FirstOrDefault();
@@ -274,6 +294,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
             }
 
             expenditureGoodListViewModel.garmentMutations = mutationExpenditureGoodDto.OrderBy(x=>x.KodeBarang).ToList();
+
+            expenditureGoodListViewModel.garmentMutations.Add(mm);
             return expenditureGoodListViewModel;
 
 
