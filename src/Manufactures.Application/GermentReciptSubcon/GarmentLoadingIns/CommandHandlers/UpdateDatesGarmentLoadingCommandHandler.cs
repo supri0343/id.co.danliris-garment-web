@@ -1,9 +1,9 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentLoadings;
-using Manufactures.Domain.GarmentLoadings.Commands;
 using Manufactures.Domain.GarmentLoadings.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentLoadingIns;
+using Manufactures.Domain.GermentReciptSubcon.GarmentLoadingIns.Commands;
 using Manufactures.Domain.GermentReciptSubcon.GarmentLoadingIns.Repositories;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Manufactures.Application.GermentReciptSubcon.GarmentLoadings.CommandHandlers
 {
-    public class UpdateDatesGarmentLoadingCommandHandler : ICommandHandler<UpdateDatesGarmentLoadingCommand, int>
+    public class UpdateDatesGarmentLoadingCommandHandler : ICommandHandler<UpdateDatesGarmentSubconLoadingInCommand, int>
     {
         private readonly IGarmentSubconLoadingInRepository _garmentLoadingRepository;
         private readonly IStorage _storage;
@@ -25,7 +25,7 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentLoadings.CommandHa
             _storage = storage;
         }
 
-        public async Task<int> Handle(UpdateDatesGarmentLoadingCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(UpdateDatesGarmentSubconLoadingInCommand request, CancellationToken cancellationToken)
         {
             List<Guid> guids = new List<Guid>();
             foreach (var id in request.Identities)
