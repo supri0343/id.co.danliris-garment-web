@@ -127,7 +127,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 			//dateTo = dateTo.AddHours(7);
 
 			var QueryMutationPrepareNow = from a in (from aa in garmentPreparingRepository.Query
-													 where aa.UnitId == request.unit && aa.ProcessDate.Value.AddHours(7) <= dateTo
+													 where aa.UnitId == request.unit && aa.ProcessDate.Value.AddHours(7).Date <= dateTo.Date
 													 select new
 													 {
 														 aa.Identity,
@@ -230,7 +230,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 
 			//NEW QUERY
 			var QueryCuttingDONow = from a in (from data in garmentCuttingInRepository.Query
-											   where data.UnitId == request.unit && data.CuttingInDate.AddHours(7) <= dateTo
+											   where data.UnitId == request.unit && data.CuttingInDate.AddHours(7).Date <= dateTo.Date
 											   select new
 											   {
 												   data.RONo,
@@ -248,9 +248,9 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 										expenditure = 0,
 										aval = 0,
 										uomUnit = "",
-										stock = a.CuttingInDate.AddHours(7) < dateFrom ? -c.PreparingQuantity : 0,
-										nonMainFabricExpenditure = a.CuttingType == "Non Main Fabric" && (a.CuttingInDate >= dateFrom) ? c.PreparingQuantity : 0,
-										mainFabricExpenditure = a.CuttingType == "Main Fabric" && (a.CuttingInDate >= dateFrom) ? c.PreparingQuantity : 0,
+										stock = a.CuttingInDate.AddHours(7).Date <= dateFrom.Date ? -c.PreparingQuantity : 0,
+										nonMainFabricExpenditure = a.CuttingType == "Non Main Fabric" && (a.CuttingInDate.AddHours(7).Date >= dateFrom.Date) ? c.PreparingQuantity : 0,
+										mainFabricExpenditure = a.CuttingType == "Main Fabric" && (a.CuttingInDate.AddHours(7).Date >= dateFrom.Date) ? c.PreparingQuantity : 0,
 										remark = d.DesignColor,
 										receipt = 0,
 										productCode = c.ProductCode,
@@ -265,11 +265,11 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 												   prepareItemid = e.Identity,
 												   price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == d.RO select aa.Total).FirstOrDefault()),
 												   uomUnit = "",
-												   stock = d.Processdate.Value.AddHours(7) < dateFrom ? e.Quantity : 0,
+												   stock = d.Processdate.Value.AddHours(7).Date <= dateFrom.Date ? e.Quantity : 0,
 												   mainFabricExpenditure = 0,
 												   nonMainFabricExpenditure = 0,
 												   remark = e.DesignColor,
-												   receipt = (d.Processdate.Value.AddHours(7) >= dateFrom ? e.Quantity : 0),
+												   receipt = (d.Processdate.Value.AddHours(7).Date >= dateFrom.Date ? e.Quantity : 0),
 												   productCode = e.ProductCode,
 												   remainQty = e.RemainingQuantity
 											   }).Distinct();
@@ -296,7 +296,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 
 			//NEW QUERY
 			var QueryAval = from a in (from data in garmentAvalProductRepository.Query
-									   where data.AvalDate <= dateTo
+									   where data.AvalDate.Value.AddHours(7).Date <= dateTo.Date
 									   select new
 									   {
 										   data.Identity,
@@ -317,9 +317,9 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 								prepareItemid = c.Identity,
 								price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.Total).FirstOrDefault()),
 								expenditure = 0,
-								aval = a.AvalDate >= dateFrom ? b.Quantity : 0,
+								aval = a.AvalDate.Value.AddHours(7).Date >= dateFrom.Date ? b.Quantity : 0,
 								uomUnit = "",
-								stock = a.AvalDate < dateFrom ? -b.Quantity : 0,
+								stock = a.AvalDate.Value.AddHours(7).Date <= dateFrom.Date ? -b.Quantity : 0,
 								mainFabricExpenditure = 0,
 								nonMainFabricExpenditure = 0,
 								remark = c.DesignColor,
@@ -329,7 +329,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 							};
 
 			var QueryDRPrepare = from a in (from data in garmentDeliveryReturnRepository.Query
-											where data.CreatedDate <= dateTo && data.UnitId == request.unit 
+											where data.CreatedDate.Date <= dateTo.Date && data.UnitId == request.unit 
 											&& data.StorageName.Contains("GUDANG BAHAN BAKU")
 											select new
 											{
@@ -366,10 +366,10 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepar
 									  {
 										  prepareItemid = c.Identity,
 										  price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.Total).FirstOrDefault()),
-										  expenditure = a.CreatedDate >= dateFrom ? a.Quantity : 0,
+										  expenditure = a.CreatedDate.Date >= dateFrom.Date ? a.Quantity : 0,
 										  aval = 0,
 										  uomUnit = "",
-										  stock = a.CreatedDate < dateFrom ? -a.Quantity : 0,
+										  stock = a.CreatedDate.Date <= dateFrom.Date ? -a.Quantity : 0,
 										  mainFabricExpenditure = 0,
 										  nonMainFabricExpenditure = 0,
 										  remark = c.DesignColor,
