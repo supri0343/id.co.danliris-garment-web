@@ -193,9 +193,11 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                 List<GarmentFinishedGoodStock> finGoodStocks = new List<GarmentFinishedGoodStock>();
                 foreach (var finGoodStock in finGood)
                 {
-                    SizeId sizeId = new SizeId(Convert.ToInt32(finGoodStock.Key.Split("~")[0]));
+                    //SizeId sizeId = new SizeId(Convert.ToInt32(finGoodStock.Key.Split("~")[0]));
+                    int sizeId = Convert.ToInt32(finGoodStock.Key.Split("~")[0]);
                     string sizeName = finGoodStock.Key.Split("~")[1];
-                    UomId uomId = new UomId(Convert.ToInt32(finGoodStock.Key.Split("~")[2]));
+                    //UomId uomId = new UomId(Convert.ToInt32(finGoodStock.Key.Split("~")[2]));
+                    int uomId =Convert.ToInt32(finGoodStock.Key.Split("~")[2]);
                     string uomUnit = finGoodStock.Key.Split("~")[3];
                     double basicPrice = Convert.ToDouble(finGoodStock.Key.Split("~")[4]);
                     var garmentFinishedGoodExist = _garmentFinishedGoodStockRepository.Query.Where(
@@ -203,9 +205,11 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                             a.Article == request.Article &&
                             a.BasicPrice == basicPrice &&
                             a.UnitId == request.UnitTo.Id &&
-                            new SizeId(a.SizeId) == sizeId &&
+                            //new SizeId(a.SizeId) == sizeId &&
+                            a.SizeId == sizeId &&
                             a.ComodityId == request.Comodity.Id &&
-                            new UomId(a.UomId) == uomId
+                            //new UomId(a.UomId) == uomId
+                            a.UomId == uomId
                         ).Select(s => new GarmentFinishedGoodStock(s)).SingleOrDefault();
 
                     double qty = garmentFinishedGoodExist == null ? finGoodStock.Value : (finGoodStock.Value + garmentFinishedGoodExist.Quantity);
@@ -235,9 +239,11 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                                         new GarmentComodityId(request.Comodity.Id),
                                         request.Comodity.Code,
                                         request.Comodity.Name,
-                                        sizeId,
+                                        //sizeId,
+                                        new SizeId(sizeId),
                                         sizeName,
-                                        uomId,
+                                        //uomId,
+                                        new UomId(uomId),
                                         uomUnit,
                                         qty,
                                         basicPrice,
