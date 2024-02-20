@@ -14,11 +14,13 @@ namespace Manufactures.Dtos.GarmentSubcon
             SubconDLOutId = garmentSubconCustomsOutItem.SubconDLOutId;
             Quantity = garmentSubconCustomsOutItem.Quantity;
             SubconCustomsOutId = garmentSubconCustomsOutItem.SubconCustomsOutId;
+            Details = new List<GarmentSubconCustomsOutDetailDto>();
         }
         public Guid Id { get; set; }
         public string SubconDLOutNo { get; set; }
         public Guid SubconDLOutId { get; set; }
         public double Quantity { get; set; }
         public Guid SubconCustomsOutId { get; set; }
+        public List<GarmentSubconCustomsOutDetailDto> Details { get; set; }
     }
 }
