@@ -24,6 +24,7 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
         private readonly IStorage _storage;
         private readonly IGarmentSubconCustomsOutRepository _garmentSubconCustomsOutRepository;
         private readonly IGarmentSubconCustomsOutItemRepository _garmentSubconCustomsOutItemRepository;
+        private readonly IGarmentSubconCustomsOutDetailRepository _garmentSubconCustomsOutDetailRepository;
         private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;
         private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
         private readonly ILogHistoryRepository _logHistoryRepository;
@@ -35,6 +36,7 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
             _garmentSubconDeliveryLetterOutRepository = storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
             _garmentSubconContractRepository = storage.GetRepository<IGarmentSubconContractRepository>();
             _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            _garmentSubconCustomsOutDetailRepository = storage.GetRepository<IGarmentSubconCustomsOutDetailRepository>();
         }
 
         public async Task<GarmentSubconCustomsOut> Handle(PlaceGarmentSubconCustomsOutCommand request, CancellationToken cancellationToken)
@@ -67,6 +69,23 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
                     item.Quantity
                 );
 
+                foreach(var detail in item.Details)
+                {
+                    GarmentSubconCustomsOutDetail garmentSubconCustomsOutDetail = new GarmentSubconCustomsOutDetail(
+                        Guid.NewGuid(),
+                        garmentSubconCustomsOutItem.Identity,
+                        new ProductId(detail.Product.Id),
+                        detail.Product.Code,
+                        detail.Product.Name,
+                        detail.Product.Remark,
+                        detail.Quantity,
+                        new UomId(detail.Uom.Id),
+                        detail.Uom.Unit
+                        );
+
+                    await _garmentSubconCustomsOutDetailRepository.Update(garmentSubconCustomsOutDetail);
+                }
+
                 var subconDLOut = _garmentSubconDeliveryLetterOutRepository.Query.Where(x => x.Identity == item.SubconDLOutId).Select(s => new GarmentSubconDeliveryLetterOut(s)).Single();
                 subconDLOut.SetIsUsed(true);
                 subconDLOut.Modify();
@@ -81,9 +100,9 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
 
             await _garmentSubconCustomsOutRepository.Update(garmentSubconCustomsOut);
 
-            //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "EXIM", "Create BC Keluar Subcon - " + garmentSubconCustomsOut.CustomsOutNo, DateTime.Now);
-            await _logHistoryRepository.Update(logHistory);
+            ////Add Log History
+            //LogHistory logHistory = new LogHistory(new Guid(), "EXIM", "Create BC Keluar Subcon - " + garmentSubconCustomsOut.CustomsOutNo, DateTime.Now);
+            //await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 
