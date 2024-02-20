@@ -13,6 +13,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.ValueObjects
         public Guid SubconCustomsOutId { get; set; }
         public double Quantity { get; set; }
         public double ContractQuantity { get; set; }
+        public List<GarmentSubconCustomsOutDetailValueObject> Details { get; set; }
         public GarmentSubconCustomsOutItemValueObject()
         {
         }

@@ -37,7 +37,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.Commands
             RuleFor(r => r.CustomsOutDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.Items).NotEmpty().OverridePropertyName("Item");
             RuleFor(r => r.Items).NotEmpty().WithMessage("Item tidak boleh kosong").OverridePropertyName("ItemsCount").When(s => s.Items != null);
-            RuleForEach(r => r.Items).SetValidator(new GarmentSubconCustomsOutItemValueObjectValidator()).When(s => s.Items != null);
+            RuleForEach(r => r.Items).SetValidator(new GarmentSubconCustomsOutItemValueObjectValidator()).When(s => s.Items != null && s.SubconCategory != "SUBCON CUTTING SEWING");
             /*RuleFor(r => r.TotalQty)
                  .LessThanOrEqualTo(r => r.UsedQty)
                  .WithMessage(x => $"'Jumlah Total' tidak boleh lebih dari '{x.UsedQty}'.");*/
@@ -52,12 +52,9 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts.Commands
     {
         public GarmentSubconCustomsOutItemValueObjectValidator()
         {
-
             RuleFor(r => r.Quantity)
                 .GreaterThan(0)
                 .WithMessage("'Jumlah' harus lebih dari '0'.");
-
-
         }
     }
 }
