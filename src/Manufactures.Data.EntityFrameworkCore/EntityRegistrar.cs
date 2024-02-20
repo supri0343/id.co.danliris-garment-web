@@ -70,6 +70,7 @@ using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentFinishing
 using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentPackingIns.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentPackingOut.Configs;
 using Manufactures.Data.EntityFrameworkCore.LogHistories.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.CustomsOuts.Cofigs;
 
 namespace Manufactures.Data.EntityFrameworkCore
 {
@@ -181,6 +182,7 @@ namespace Manufactures.Data.EntityFrameworkCore
 
             modelBuilder.ApplyConfiguration(new GarmentSubconCustomsOutConfig());
             modelBuilder.ApplyConfiguration(new GarmentSubconCustomsOutItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconCustomsOutDetailConfig());
 			
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconShrinkagePanelConfig());
 			modelBuilder.ApplyConfiguration(new GarmentServiceSubconShrinkagePanelItemConfig());
