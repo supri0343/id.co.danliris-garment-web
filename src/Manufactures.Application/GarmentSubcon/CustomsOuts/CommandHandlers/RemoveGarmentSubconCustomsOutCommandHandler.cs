@@ -23,6 +23,7 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
         private readonly IStorage _storage;
         private readonly IGarmentSubconCustomsOutRepository _garmentSubconCustomsOutRepository;
         private readonly IGarmentSubconCustomsOutItemRepository _garmentSubconCustomsOutItemRepository;
+        private readonly IGarmentSubconCustomsOutDetailRepository _garmentSubconCustomsOutDetailRepository;
         private readonly IGarmentSubconDeliveryLetterOutRepository _garmentSubconDeliveryLetterOutRepository;
         private readonly IGarmentSubconContractRepository _garmentSubconContractRepository;
         private readonly ILogHistoryRepository _logHistoryRepository;
@@ -34,6 +35,7 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
             _garmentSubconDeliveryLetterOutRepository = storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
             _garmentSubconContractRepository = storage.GetRepository<IGarmentSubconContractRepository>();
             _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
+            _garmentSubconCustomsOutDetailRepository = storage.GetRepository<IGarmentSubconCustomsOutDetailRepository>();
         }
 
 
@@ -49,6 +51,12 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
                 subconDLOut.SetIsUsed(false);
                 subconDLOut.Modify();
                 await _garmentSubconDeliveryLetterOutRepository.Update(subconDLOut);
+
+                _garmentSubconCustomsOutDetailRepository.Find(x => x.SubconCustomsOutItemId == subconCustomsOutItem.Identity).ForEach(async subconCustomsDetail =>
+                {
+                    subconCustomsDetail.Remove();
+                    await _garmentSubconCustomsOutDetailRepository.Update(subconCustomsDetail);
+                });
 
                 await _garmentSubconCustomsOutItemRepository.Update(subconCustomsOutItem);
             });
@@ -66,9 +74,9 @@ namespace Manufactures.Application.GarmentSubcon.CustomsOuts.CommandHandlers
             subconCustomsOut.Remove();
             await _garmentSubconCustomsOutRepository.Update(subconCustomsOut);
 
-            //Add Log History
-            LogHistory logHistory = new LogHistory(new Guid(), "EXIM", "Delete BC Keluar Subcon - " + subconCustomsOut.CustomsOutNo, DateTime.Now);
-            await _logHistoryRepository.Update(logHistory);
+            ////Add Log History
+            //LogHistory logHistory = new LogHistory(new Guid(), "EXIM", "Delete BC Keluar Subcon - " + subconCustomsOut.CustomsOutNo, DateTime.Now);
+            //await _logHistoryRepository.Update(logHistory);
 
             _storage.Save();
 

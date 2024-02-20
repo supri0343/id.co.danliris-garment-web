@@ -21,11 +21,12 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
     {
         private readonly IGarmentSubconCustomsOutRepository _garmentSubconCustomsOutRepository;
         private readonly IGarmentSubconCustomsOutItemRepository _garmentSubconCustomsOutItemRepository;
-
+        private readonly IGarmentSubconCustomsOutDetailRepository _garmentSubconCustomsOutDetailRepository;
         public GarmentSubconCustomsOutController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentSubconCustomsOutRepository = Storage.GetRepository<IGarmentSubconCustomsOutRepository>();
             _garmentSubconCustomsOutItemRepository = Storage.GetRepository<IGarmentSubconCustomsOutItemRepository>();
+            _garmentSubconCustomsOutDetailRepository = Storage.GetRepository<IGarmentSubconCustomsOutDetailRepository>();
         }
 
         [HttpGet]
@@ -65,10 +66,8 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             {
                 Items = _garmentSubconCustomsOutItemRepository.Find(o => o.SubconCustomsOutId == subcon.Identity).Select(subconItem => new GarmentSubconCustomsOutItemDto(subconItem)
                 {
-
-                }).ToList()
-            }
-            ).FirstOrDefault();
+                    Details = _garmentSubconCustomsOutDetailRepository.Find(o => o.SubconCustomsOutItemId == subconItem.Identity).Select(subconDetail => new GarmentSubconCustomsOutDetailDto(subconDetail) { }).ToList()
+                }).ToList()}).FirstOrDefault();
 
             await Task.Yield();
             return Ok(garmentSubconCustomsOutDto);

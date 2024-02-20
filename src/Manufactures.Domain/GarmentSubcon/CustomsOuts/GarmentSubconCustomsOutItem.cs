@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Domain;
 using Manufactures.Domain.Events.GarmentSubcon;
 using Manufactures.Domain.GarmentSubcon.CustomsOuts.ReadModels;
+using Manufactures.Domain.GarmentSubcon.CustomsOuts.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +15,7 @@ namespace Manufactures.Domain.GarmentSubcon.CustomsOuts
         public Guid SubconDLOutId { get; private set; }
         public double Quantity { get; private set; }
         public Guid SubconCustomsOutId { get; internal set; }
+        public List<GarmentSubconCustomsOutDetailValueObject> Details { get; set; }
 
         public GarmentSubconCustomsOutItem(Guid identity, Guid subconCustomsOutId, string subconDLOutNo, Guid subconDLOutId, double quantity) : base(identity)
         {
