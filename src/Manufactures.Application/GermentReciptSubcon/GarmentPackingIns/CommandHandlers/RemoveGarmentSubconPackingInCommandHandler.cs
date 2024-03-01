@@ -1,9 +1,13 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
+using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentCuttingIns;
 using Manufactures.Domain.GermentReciptSubcon.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts;
 using Manufactures.Domain.GermentReciptSubcon.GarmentCuttingOuts.Repositories;
+using Manufactures.Domain.GermentReciptSubcon.GarmentFinishedGoodStocks;
+using Manufactures.Domain.GermentReciptSubcon.GarmentFinishedGoodStocks.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentFinishingIns;
 using Manufactures.Domain.GermentReciptSubcon.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentFinishingOuts;
@@ -15,6 +19,7 @@ using Manufactures.Domain.GermentReciptSubcon.GarmentSewingIns;
 using Manufactures.Domain.GermentReciptSubcon.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts;
 using Manufactures.Domain.GermentReciptSubcon.GarmentSewingOuts.Repositories;
+using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +50,9 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentPackingIns.Command
         private readonly IGarmentSubconFinishingOutItemRepository _garmentFinishingOutItemRepository;
         private readonly IGarmentSubconFinishingInItemRepository _garmentFinishingInItemRepository;
 
+        private readonly IGarmentSubconFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
+        private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
+
         public RemoveGarmentSubconPackingInCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -65,11 +73,18 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentPackingIns.Command
             _garmentFinishingOutDetailRepository = storage.GetRepository<IGarmentSubconFinishingOutDetailRepository>();
             _garmentFinishingOutItemRepository = storage.GetRepository<IGarmentSubconFinishingOutItemRepository>();
             _garmentFinishingInItemRepository = storage.GetRepository<IGarmentSubconFinishingInItemRepository>();
+
+            _garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentSubconFinishedGoodStockRepository>();
+            _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
         }
 
         public async Task<GarmentSubconPackingIn> Handle(RemoveGarmentSubconPackingInCommand request, CancellationToken cancellationToken)
         {
             var packIn = _garmentPackingInRepository.Query.Where(o => o.Identity == request.Identity).Select(o => new GarmentSubconPackingIn(o)).Single();
+
+            Dictionary<GarmentSubconFinishedGoodStock, double> finGood = new Dictionary<GarmentSubconFinishedGoodStock, double>();
+
+            GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && new UnitDepartmentId(a.UnitId) == packIn.UnitId && new GarmentComodityId(a.ComodityId) == packIn.ComodityId).Select(s => new GarmentComodityPrice(s)).Single();
 
             _garmentPackingInItemRepository.Find(o => o.PackingInId == packIn.Identity).ForEach(async packingInItem =>
             {
@@ -164,12 +179,48 @@ namespace Manufactures.Application.GermentReciptSubcon.GarmentPackingIns.Command
                             await _garmentFinishingInItemRepository.Update(garmentFinishingInItem);
                         }
                         break;
+
+                       
+                }
+
+                var garmentFinishedGoodExist = _garmentFinishedGoodStockRepository.Query.Where(
+                           a => a.RONo == packIn.RONo &&
+                               a.Article == packIn.Article &&
+                               a.BasicPrice == packingInItem.BasicPrice &&
+                               new UnitDepartmentId(a.UnitId) == packIn.UnitId &&
+                               new SizeId(a.SizeId) == packingInItem.SizeId &&
+                               new GarmentComodityId(a.ComodityId) == packIn.ComodityId &&
+                               new UomId(a.UomId) == packingInItem.UomId
+                           ).Select(s => new GarmentSubconFinishedGoodStock(s)).Single();
+
+                if (finGood.ContainsKey(garmentFinishedGoodExist))
+                {
+                    finGood[garmentFinishedGoodExist] += packingInItem.Quantity;
+                }
+                else
+                {
+                    finGood.Add(garmentFinishedGoodExist, packingInItem.Quantity);
                 }
 
                 packingInItem.Remove();
 
                 await _garmentPackingInItemRepository.Update(packingInItem);
             });
+
+            foreach (var finGoodStock in finGood)
+            {
+                var garmentFinishedGoodExist = _garmentFinishedGoodStockRepository.Query.Where(
+                    a => a.Identity == finGoodStock.Key.Identity
+                    ).Select(s => new GarmentSubconFinishedGoodStock(s)).Single();
+
+                var qty = garmentFinishedGoodExist.Quantity - finGoodStock.Value;
+
+                garmentFinishedGoodExist.SetQuantity(qty);
+                garmentFinishedGoodExist.SetPrice((garmentFinishedGoodExist.BasicPrice + (double)garmentComodityPrice.Price) * (qty));
+                garmentFinishedGoodExist.Modify();
+
+                await _garmentFinishedGoodStockRepository.Update(garmentFinishedGoodExist);
+            }
 
             packIn.Remove();
             await _garmentPackingInRepository.Update(packIn);
