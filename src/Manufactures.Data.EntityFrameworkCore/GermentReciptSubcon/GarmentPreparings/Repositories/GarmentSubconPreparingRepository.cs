@@ -84,6 +84,9 @@ namespace Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentPrepa
                     BasicPrice = y.BasicPrice,
                     GarmentPreparingId = y.GarmentSubconPreparingId,
                     ROSource = y.ROSource,
+                    BeacukaiNo = y.BeacukaiNo,
+                    BeacukaiType = y.BeacukaiType,
+                    BeacukaiDate = y.BeacukaiDate
                 }).OrderBy(y => y.Id)
             });
             
