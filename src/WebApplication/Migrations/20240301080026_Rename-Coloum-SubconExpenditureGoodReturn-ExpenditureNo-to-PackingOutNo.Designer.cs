@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20240301080026_Rename-Coloum-SubconExpenditureGoodReturn-ExpenditureNo-to-PackingOutNo")]
+    partial class RenameColoumSubconExpenditureGoodReturnExpenditureNotoPackingOutNo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -9145,35 +9147,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.ToTable("GarmentSubconCuttingRelations");
                 });
 
-            modelBuilder.Entity("Manufactures.Domain.LogHistories.ReadModels.LogHistoryReadModel", b =>
-
-            {
-                  b.Property<DateTimeOffset>("CreatedDate");
-                  b.Property<string>("CreatedBy")
-                   .IsRequired()
-                        .HasMaxLength(32);
-                    b.Property<bool?>("Deleted");
-
-                    b.Property<string>("DeletedBy");
-
-                      b.Property<string>("Activity")
-                      .HasMaxLength(1000);
-                    
-
-                    b.Property<DateTimeOffset?>("DeletedDate");
-
-                    b.Property<string>("Division")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("ModifiedBy");
-
-                    b.Property<DateTimeOffset?>("ModifiedDate");
-
-                    b.HasKey("Identity");
-
-                    b.ToTable("LogHistory");
-
-                     });
             modelBuilder.Entity("Manufactures.Domain.GermentReciptSubcon.GarmentCuttingIns.ReadModels.GarmentSubconCuttingInDetailReadModel", b =>
                 {
                     b.Property<Guid>("Identity")
@@ -9190,7 +9163,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset>("CreatedDate");
 
-    
                     b.Property<Guid>("CutInItemId");
 
                     b.Property<int>("CuttingInQuantity");
@@ -10655,13 +10627,13 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("BeacukaiType")
                         .HasMaxLength(20);
 
-                    b.Property<DateTimeOffset>("CreatedDate");
-
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(32);
 
-                     b.Property<bool?>("Deleted");
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(32);
@@ -10699,7 +10671,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
-
 
                     b.Property<int>("UENItemId");
 
@@ -11154,6 +11125,40 @@ namespace DanLiris.Admin.Web.Migrations
                         .HasFilter("[Deleted]=(0)");
 
                     b.ToTable("GarmentSubconSewingOuts");
+                });
+
+            modelBuilder.Entity("Manufactures.Domain.LogHistories.ReadModels.LogHistoryReadModel", b =>
+                {
+                    b.Property<Guid>("Identity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Activity")
+                        .HasMaxLength(1000);
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTimeOffset?>("DeletedDate");
+
+                    b.Property<string>("Division")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("ModifiedBy");
+
+                    b.Property<DateTimeOffset?>("ModifiedDate");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.HasKey("Identity");
+
+                    b.ToTable("LogHistory");
                 });
 
             modelBuilder.Entity("Manufactures.Domain.MonitoringProductionStockFlow.GarmentBalanceMonitoringProductionStockReadModel", b =>

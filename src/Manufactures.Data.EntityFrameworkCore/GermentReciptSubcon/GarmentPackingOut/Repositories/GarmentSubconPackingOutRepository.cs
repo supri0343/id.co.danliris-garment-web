@@ -141,6 +141,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentPackingOut.Repositories
                     BasicPrice = packingOutItem.BasicPrice,
                     Price = packingOutItem.Price,
                     ReturQuantity = packingOutItem.ReturQuantity,
+                    FinishedGoodStockId = packingOutItem.FinishedGoodStockId,
                     //IsPackingList = packingOutItem.IsPackingList,
 
                 })
