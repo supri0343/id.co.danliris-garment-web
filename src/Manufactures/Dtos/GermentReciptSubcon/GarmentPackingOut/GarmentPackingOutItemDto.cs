@@ -13,7 +13,7 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GarmentPackingOut
         {
             Id = garmentSubconPackingOutItem.Identity;
             PackingOutId = garmentSubconPackingOutItem.PackingOutId;
-            PackingInItemId = garmentSubconPackingOutItem.PackingInItemId;
+            FinishedGoodStockId = garmentSubconPackingOutItem.FinishedGoodStockId;
             Size = new SizeValueObject(garmentSubconPackingOutItem.SizeId.Value, garmentSubconPackingOutItem.SizeName);
             Quantity = garmentSubconPackingOutItem.Quantity;
             Uom = new Uom(garmentSubconPackingOutItem.UomId.Value, garmentSubconPackingOutItem.UomUnit);
@@ -25,7 +25,7 @@ namespace Manufactures.Dtos.GermentReciptSubcon.GarmentPackingOut
 
         public Guid Id { get; set; }
         public Guid PackingOutId { get; set; }
-        public Guid PackingInItemId { get; set; }
+        public Guid FinishedGoodStockId { get; set; }
         public SizeValueObject Size { get; set; }
         public double Quantity { get; set; }
         public double ReturQuantity { get; set; }
