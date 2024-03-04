@@ -31,7 +31,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentPackingOut.Repositories
                 "UnitName",
                 "ContractNo",
                 "Invoice",
-                "BuyerName"
+                //"BuyerName"
             };
             data = QueryHelper<GarmentSubconPackingOutReadModel>.Search(data, SearchAttributes, keyword);
 
