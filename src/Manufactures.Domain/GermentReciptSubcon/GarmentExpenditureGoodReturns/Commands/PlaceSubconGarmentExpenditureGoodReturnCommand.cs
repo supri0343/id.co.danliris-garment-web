@@ -44,8 +44,8 @@ namespace Manufactures.Domain.GermentReciptSubcon.GarmentReturGoodReturns.Comman
             RuleFor(r => r.PackingOutNo).NotNull();
             //RuleFor(r => r.DONo).NotNull();
             //RuleFor(r => r.URNNo).NotNull();
-            //RuleFor(r => r.BCNo).NotNull();
-            //RuleFor(r => r.BCType).NotNull();
+            RuleFor(r => r.BCNo).NotNull();
+            RuleFor(r => r.BCType).NotNull();
             RuleFor(r => r.RONo).NotNull();
             RuleFor(r => r.ReturDate).NotNull().GreaterThan(DateTimeOffset.MinValue).WithMessage("Tanggal Tidak Boleh Kosong");
             RuleFor(r => r.ReturDate).NotNull().LessThan(DateTimeOffset.Now).WithMessage("Tanggal Tidak Boleh Lebih dari Hari Ini");
