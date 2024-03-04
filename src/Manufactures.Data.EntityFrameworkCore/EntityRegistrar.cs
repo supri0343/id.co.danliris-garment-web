@@ -72,6 +72,8 @@ using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentPackingIn
 using Manufactures.Data.EntityFrameworkCore.GarmentPackingOut.Configs;
 using Manufactures.Data.EntityFrameworkCore.LogHistories.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.CustomsOuts.Cofigs;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentFinishedGoodStocks.Configs;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentExpenditureGoodReturns.Configs;
 
 namespace Manufactures.Data.EntityFrameworkCore
 {
@@ -284,7 +286,6 @@ namespace Manufactures.Data.EntityFrameworkCore
 			modelBuilder.ApplyConfiguration(new GarmentServiceSampleExpenditureGoodConfig());
 			modelBuilder.ApplyConfiguration(new GarmentServiceSampleExpenditureGoodItemConfig());
 
-			modelBuilder.ApplyConfiguration(new LogHistoryConfig());
 			//Receipt Subcon
 			modelBuilder.ApplyConfiguration(new GarmentSubconPreparingConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSubconPreparingItemConfig());
@@ -322,6 +323,13 @@ namespace Manufactures.Data.EntityFrameworkCore
 
 			modelBuilder.ApplyConfiguration(new GarmentSubconPackingOutConfig());
 			modelBuilder.ApplyConfiguration(new GarmentSubconPackingOutItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconFinishedGoodStockConfig());
+
+			modelBuilder.ApplyConfiguration(new LogHistoryConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconExpenditureGoodReturnConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconExpenditureGoodReturnItemConfig());
 		}
 	}
 }
