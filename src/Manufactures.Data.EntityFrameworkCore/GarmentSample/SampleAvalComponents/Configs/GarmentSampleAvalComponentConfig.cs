@@ -19,7 +19,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleAvalComponen
             builder.Property(p => p.UnitName).HasMaxLength(100);
             builder.Property(p => p.SampleAvalComponentType).HasMaxLength(25);
             builder.Property(p => p.RONo).HasMaxLength(25);
-            builder.Property(p => p.Article).HasMaxLength(1000);
+            builder.Property(p => p.Article).HasMaxLength(5000);
             builder.Property(p => p.ComodityCode).HasMaxLength(25);
             builder.Property(p => p.ComodityName).HasMaxLength(100);
 
