@@ -15,7 +15,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleFinishingOut
             builder.HasKey(e => e.RoJob);
 
             builder.Property(a => a.RoJob).HasMaxLength(25);
-            builder.Property(a => a.Article).HasMaxLength(100);
+            builder.Property(a => a.Article).HasMaxLength(5000);
             builder.Property(a => a.UomUnit).HasMaxLength(50);
         }
     }
