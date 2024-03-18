@@ -430,7 +430,7 @@ namespace Manufactures.Controllers.Api
 
                 var xls = await Mediator.Send(query);
 
-                string filename = "Laporan WIP";
+                string filename = "Laporan Posisi Barang dalam Proses (Work In Process/WIP)";
 
                 if (date != null) filename += " " + ((DateTime)date).ToString("dd-MM-yyyy");
                 filename += ".xlsx";

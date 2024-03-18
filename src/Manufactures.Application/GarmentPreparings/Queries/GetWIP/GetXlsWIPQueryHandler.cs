@@ -991,15 +991,16 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NO", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "KODE BARANG", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NAMA BARANG", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SATUAN", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "WIP", DataType = typeof(double) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SATUAN BARANG", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "JUMLAH BARANG", DataType = typeof(double) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "KETERANGAN", DataType = typeof(string) });
 
             int counter = 1;
             if (listViewModel.garmentWIP.Count > 0)
             {
                 foreach (var report in listViewModel.garmentWIP)
                 {
-                    reportDataTable.Rows.Add(counter ,report.Kode, report.Comodity, report.UnitQtyName, report.WIP);
+                    reportDataTable.Rows.Add(counter ,report.Kode, report.Comodity, report.UnitQtyName, report.WIP,"-");
                     counter++;
                 }
             }
