@@ -299,18 +299,20 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kode Barang", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nama Barang", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Sat", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Satuan Barang", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jumlah Barang", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Saldo Awal", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Pemasukan", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Pengeluaran", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Penyesuaian", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Saldo Buku", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Stock Opname", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Selisih", DataType = typeof(double) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jumlah Pemasukan Barang", DataType = typeof(double) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jumlah Pengeluaran Barang", DataType = typeof(double) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Penyesuaian (Adjustment)", DataType = typeof(double) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Saldo Akhir", DataType = typeof(double) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Hasil Pencacahan", DataType = typeof(double) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jumlah Selisih", DataType = typeof(double) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
             int counter = 1;
             foreach (var report in expenditureGoodListViewModel.garmentMutations)
             {
-                reportDataTable.Rows.Add(counter, report.KodeBarang, report.NamaBarang, report.UnitQtyName, report.SaldoAwal, report.Pemasukan, report.Pengeluaran, report.Penyesuaian, report.SaldoBuku, report.StockOpname, report.Selisih);
+                reportDataTable.Rows.Add(counter, report.KodeBarang, report.NamaBarang, report.UnitQtyName, 0,report.SaldoAwal, report.Pemasukan, report.Pengeluaran, report.Penyesuaian, report.SaldoBuku, report.StockOpname, report.Selisih,"-");
                 counter++;
             }
 
