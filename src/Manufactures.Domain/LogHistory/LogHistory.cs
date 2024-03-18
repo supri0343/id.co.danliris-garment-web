@@ -16,6 +16,7 @@ namespace Manufactures.Domain.LogHistory
 
         public LogHistory(Guid id, string division, string activity, DateTime createdDate/*, string createdBy*/) : base(id)
         {
+            Identity = id;
             Division = division;
             Activity = activity;
             //CreatedDate = createdDate;
