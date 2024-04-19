@@ -161,7 +161,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
                 //if(command.SubconCategory== "SUBCON CUTTING SEWING")
                 //    await PutGarmentUnitExpenditureNoteCreate(command.UENId);
-                if (command.SubconCategory == "SUBCON CUTTING SEWING")
+                if (command.SubconCategory == "SUBCON CUTTING SEWING" || command.SubconCategory == "SUBCON CUTTING SEWING FINISHING")
                 {
                     List<int> uenIds = new List<int>();
                     command.Items.ForEach(x => uenIds.Add(x.UENId));
@@ -240,7 +240,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             List<int> UenToIsPrepTrue = new List<int>();
             List<int> UenToIsPrepFalse = new List<int>();
 
-            if (command.SubconCategory == "SUBCON CUTTING SEWING")
+            if (command.SubconCategory == "SUBCON CUTTING SEWING" || command.SubconCategory == "SUBCON CUTTING SEWING FINISHING")
             {      
                 //Add UEN Id to Update Is Preparing True
                 var newData = command.ItemsAcc.Where(x => x.Id == Guid.Empty).ToList();
@@ -278,7 +278,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             {
                 _garmentSubconDeliveryLetterOutItemRepository.Find(x => x.SubconDeliveryLetterOutId == DLOut.Identity).ForEach(async DLItem =>
                 {
-                    if(command.SubconCategory == "SUBCON CUTTING SEWING")
+                    if(command.SubconCategory == "SUBCON CUTTING SEWING" || command.SubconCategory == "SUBCON CUTTING SEWING FINISHING")
                     {
                         //var deletedAcc = command.ItemsAcc.Where(x => x.Id == DLItem.Identity).FirstOrDefault();
                         var deleted = command.Items.Where(x => x.Id == DLItem.Identity).FirstOrDefault();
@@ -348,7 +348,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                         await PutGarmentUnitExpenditureNoteDelete(a);
                     }
                 }
-            }else if (garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON CUTTING SEWING")
+            }else if (garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON CUTTING SEWING" || garmentSubconDeliveryLetterOut.SubconCategory == "SUBCON CUTTING SEWING FINISHING")
             {
                 foreach (var a in itemsData.Select(x => x.UENId).Distinct()) 
                 {

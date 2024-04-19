@@ -113,10 +113,12 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             //}
             //else
             //{
+            string[] subconToIgnore = { "SUBCON CUTTING SEWING FINISHING", "SUBCON CUTTING SEWING" };
+            
             _garmentSubconDeliveryLetterOutItemRepository.Find(o => o.SubconDeliveryLetterOutId == subconDeliveryLetterOut.Identity).ForEach(async subconDLItem =>
             {
                 var item = request.Items.Where(o => o.Id == subconDLItem.Identity).SingleOrDefault();
-                if (item != null && item.Quantity == 0 && subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING")
+                if (item != null && item.Quantity == 0 && (!subconToIgnore.Contains(subconDeliveryLetterOut.SubconCategory)))
                 {
                     subconDLItem.Remove();
                 }
@@ -314,15 +316,15 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
             {
                 if (item.Id == Guid.Empty)
                 {
-                    var proId = subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Product.Id : 0;
-                    var proCode = subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Product.Code : "";
-                    var proName = subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Product.Name : "";
+                    var proId = !subconToIgnore.Contains(subconDeliveryLetterOut.SubconCategory) ? item.Product.Id : 0;
+                    var proCode = !subconToIgnore.Contains(subconDeliveryLetterOut.SubconCategory) ? item.Product.Code : "";
+                    var proName = !subconToIgnore.Contains(subconDeliveryLetterOut.SubconCategory) ? item.Product.Name : "";
 
-                    var UomId = subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Id : 0;
-                    var UomUnit = subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Unit : "";
+                    var UomId = !subconToIgnore.Contains(subconDeliveryLetterOut.SubconCategory) ? item.Uom.Id : 0;
+                    var UomUnit = !subconToIgnore.Contains(subconDeliveryLetterOut.SubconCategory) ? item.Uom.Unit : "";
 
-                    var UomOutId = subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Id : 0;
-                    var UomOutUnit = subconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Unit : "";
+                    var UomOutId = !subconToIgnore.Contains(subconDeliveryLetterOut.SubconCategory) ? item.Uom.Id : 0;
+                    var UomOutUnit = !subconToIgnore.Contains(subconDeliveryLetterOut.SubconCategory) ? item.Uom.Unit : "";
 
                     GarmentSubconDeliveryLetterOutItem garmentSubconDeliveryLetterOutItem = new GarmentSubconDeliveryLetterOutItem(
                     Guid.NewGuid(),

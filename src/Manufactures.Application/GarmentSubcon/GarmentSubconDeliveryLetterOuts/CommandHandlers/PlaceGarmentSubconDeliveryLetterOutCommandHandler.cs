@@ -114,19 +114,19 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                 request.SubconCategory,
                 request.OrderType
             );
-
+            string[] subconToIgnore = { "SUBCON CUTTING SEWING FINISHING", "SUBCON CUTTING SEWING" };
             foreach (var item in request.Items)
             {
+                
+                var proId = !subconToIgnore.Contains(garmentSubconDeliveryLetterOut.SubconCategory) ? item.Product.Id : 0;
+                var proCode = !subconToIgnore.Contains(garmentSubconDeliveryLetterOut.SubconCategory) ? item.Product.Code : "";
+                var proName = !subconToIgnore.Contains(garmentSubconDeliveryLetterOut.SubconCategory) ? item.Product.Name : "";
 
-                var proId = garmentSubconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ?item.Product.Id : 0;
-                var proCode = garmentSubconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Product.Code : "";
-                var proName = garmentSubconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Product.Name : "";
+                var UomId = !subconToIgnore.Contains(garmentSubconDeliveryLetterOut.SubconCategory) ? item.Uom.Id : 0;
+                var UomUnit = !subconToIgnore.Contains(garmentSubconDeliveryLetterOut.SubconCategory) ? item.Uom.Unit : "";
 
-                var UomId = garmentSubconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Id : 0;
-                var UomUnit = garmentSubconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Unit : "";
-
-                var UomOutId = garmentSubconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Id : 0;
-                var UomOutUnit = garmentSubconDeliveryLetterOut.SubconCategory != "SUBCON CUTTING SEWING" ? item.Uom.Unit : "";
+                var UomOutId = !subconToIgnore.Contains(garmentSubconDeliveryLetterOut.SubconCategory) ? item.Uom.Id : 0;
+                var UomOutUnit = !subconToIgnore.Contains(garmentSubconDeliveryLetterOut.SubconCategory) ? item.Uom.Unit : "";
                 GarmentSubconDeliveryLetterOutItem garmentSubconDeliveryLetterOutItem = new GarmentSubconDeliveryLetterOutItem(
                     Guid.NewGuid(),
                     garmentSubconDeliveryLetterOut.Identity,
