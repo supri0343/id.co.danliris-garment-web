@@ -3,6 +3,7 @@ using Infrastructure.Domain.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
@@ -38,6 +39,7 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
         {
             public UpdateGarmentSubconDeliveryLetterOutCommandValidator()
             {
+                string[] SubconGarment = { "SUBCON CUTTING SEWING", "SUBCON CUTTING SEWING FINISHING" };
                 RuleFor(r => r.SubconContractId).NotNull();
                 RuleFor(r => r.ContractNo).NotNull();
                 //RuleFor(r => r.UENId).NotEmpty().When(r => r.ContractType == "SUBCON BAHAN BAKU");
@@ -51,13 +53,13 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
                 RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutCuttingItemValueObjectValidator()).When(r => r.ContractType == "SUBCON CUTTING");
                 RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutServiceItemValueObjectValidator()).When(r => r.ContractType == "SUBCON JASA");
                 RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutShrinkAgePanelItemValueObjectValidator()).When(r => r.ContractType == "SUBCON BAHAN BAKU" &&  r.SubconCategory == "SUBCON BB SHRINKAGE/PANEL");
-                RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutItemValueObjectValidator()).When(r => r.SubconCategory == "SUBCON CUTTING SEWING");
+                RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutItemValueObjectValidator()).When(r => SubconGarment.Contains(r.SubconCategory));
                 //RuleForEach(r => r.ItemsAcc).SetValidator(new GarmentSubconDeliveryLetterOutItemAccValueObjectValidator()).When(r => r.SubconCategory == "SUBCON CUTTING SEWING");
                 RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutServiceComponentValueObjectValidator()).When(r => r.ContractType == "SUBCON JASA" && r.SubconCategory == "SUBCON JASA KOMPONEN");
                 RuleForEach(r => r.Items).SetValidator(new GarmentSubconDeliveryLetterOutServiceComponentValueObjectValidator()).When(r => r.ContractType == "SUBCON GARMENT" && r.SubconCategory == "SUBCON SEWING");
                 RuleFor(r => r.TotalQty)
                      .LessThanOrEqualTo(r => r.UsedQty)
-                     .WithMessage(x => $"'Jumlah Total' tidak boleh lebih dari '{x.UsedQty}'.").When(r => r.SubconCategory != "SUBCON CUTTING SEWING"); ;
+                     .WithMessage(x => $"'Jumlah Total' tidak boleh lebih dari '{x.UsedQty}'.").When(r => !SubconGarment.Contains(r.SubconCategory));
             }
         }
 
