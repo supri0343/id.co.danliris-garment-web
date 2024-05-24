@@ -24,6 +24,7 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconExpenditure
             _storage = storage;
             _garmentServiceSubconExpenditureGoodRepository = storage.GetRepository<IGarmentServiceSubconExpenditureGoodRepository>();
             _garmentServiceSubconExpenditureGoodItemRepository = storage.GetRepository<IGarmentServiceSubconExpenditureGoodtemRepository>();
+            _logHistoryRepository = storage.GetRepository<ILogHistoryRepository>();
         }
 
         public async Task<GarmentServiceSubconExpenditureGood> Handle(RemoveGarmentServiceSubconExpenditureGoodCommand request, CancellationToken cancellationToken)
