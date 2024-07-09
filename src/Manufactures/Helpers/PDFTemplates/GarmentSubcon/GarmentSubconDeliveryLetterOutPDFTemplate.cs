@@ -2,6 +2,7 @@
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.draw;
 using Manufactures.Dtos.GarmentSubcon;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -598,6 +599,174 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 tableContent.ExtendLastRow = false;
                 tableContent.SpacingAfter = 5f;
                 document.Add(tableContent);
+            }
+            else if (garmentSubconDLOut.SubconCategory == "SUBCON SEWING")
+            {
+                #region TableContent1
+                if (!garmentSubconDLOut.Items.Any(x => x.SubconId == Guid.Empty))
+                {
+                    PdfPTable tableContent = new PdfPTable(6);
+                    tableContent.SetWidths(new float[] { 1.5f, 3f, 3f, 3f, 2.5f, 2.5f });
+
+                    cellCenter.Phrase = new Phrase("No", bold_font);
+                    tableContent.AddCell(cellCenter);
+                    cellCenter.Phrase = new Phrase("No RO", bold_font);
+                    tableContent.AddCell(cellCenter);
+                    cellCenter.Phrase = new Phrase("No PO", bold_font);
+                    tableContent.AddCell(cellCenter);
+                    cellCenter.Phrase = new Phrase("Warna", bold_font);
+                    tableContent.AddCell(cellCenter);
+                    cellCenter.Phrase = new Phrase("Quantity", bold_font);
+                    tableContent.AddCell(cellCenter);
+                    cellCenter.Phrase = new Phrase("Satuan", bold_font);
+                    tableContent.AddCell(cellCenter);
+                    int indexItem = 0;
+                    foreach (var DLItem in garmentSubconDLOut.Items)
+                    {
+                        if (DLItem.SubconCutting != null)
+                        {
+                            var cols = DLItem.SubconCutting.Items.Count;
+                            foreach (var item in DLItem.SubconCutting.Items)
+                            {
+                                cellCenter.Phrase = new Phrase((indexItem + 1).ToString(), normal_font);
+                                cellCenter.VerticalAlignment = Element.ALIGN_TOP;
+                                tableContent.AddCell(cellCenter);
+                                indexItem++;
+                                if (cols > 0)
+                                {
+                                    cellLeft.Phrase = new Phrase(DLItem.RONo, normal_font);
+                                    cellLeft.Rowspan = cols;
+                                    cellCenter.VerticalAlignment = Element.ALIGN_TOP;
+                                    tableContent.AddCell(cellLeft);
+
+                                    cellLeft.Phrase = new Phrase(DLItem.POSerialNumber, normal_font);
+                                    tableContent.AddCell(cellLeft);
+                                    cols = 0;
+                                }
+
+
+                                cellLeft.Phrase = new Phrase(item.DesignColor, normal_font);
+                                cellLeft.Rowspan = 1;
+                                tableContent.AddCell(cellLeft);
+
+                                cellRight.Phrase = new Phrase($"{item.TotalCuttingOut}", normal_font);
+                                tableContent.AddCell(cellRight);
+
+                                cellLeft.Phrase = new Phrase("PCS", normal_font);
+                                tableContent.AddCell(cellLeft);
+
+                                total += item.TotalCuttingOut;
+                            }
+                        }
+                    }
+                    cellLeft.Phrase = new Phrase("TOTAL", bold_font);
+                    cellLeft.Colspan = 4;
+                    tableContent.AddCell(cellLeft);
+                    cellRight.Phrase = new Phrase($"{total}", bold_font);
+                    cellRight.Colspan = 1;
+                    tableContent.AddCell(cellRight);
+                    cellLeft.Phrase = new Phrase("PCS", bold_font);
+                    cellLeft.Colspan = 1;
+                    tableContent.AddCell(cellLeft);
+
+                    PdfPCell cellContent = new PdfPCell(tableContent);
+                    tableContent.ExtendLastRow = false;
+                    tableContent.SpacingAfter = 5f;
+                    document.Add(tableContent);
+                }
+                #endregion
+                #region TableContent2
+                if (garmentSubconDLOut.Items.Any(x => x.Details.Count > 0))
+                {
+                    PdfPTable tableContent2 = new PdfPTable(7);
+                    tableContent2.SetWidths(new float[] { 1.5f, 3f, 3f, 3f, 3f, 2.5f, 2.5f });
+
+                    cellCenter.Phrase = new Phrase("No", bold_font);
+                    tableContent2.AddCell(cellCenter);
+                    cellCenter.Phrase = new Phrase("No RO", bold_font);
+                    tableContent2.AddCell(cellCenter);
+                    cellCenter.Phrase = new Phrase("No BUK", bold_font);
+                    tableContent2.AddCell(cellCenter);
+                    cellCenter.Phrase = new Phrase("Kode Barang", bold_font);
+                    tableContent2.AddCell(cellCenter);
+                    cellCenter.Phrase = new Phrase("Barang", bold_font);
+                    tableContent2.AddCell(cellCenter);
+                    cellCenter.Phrase = new Phrase("Quantity", bold_font);
+                    tableContent2.AddCell(cellCenter);
+                    cellCenter.Phrase = new Phrase("Satuan", bold_font);
+                    tableContent2.AddCell(cellCenter);
+
+                    int indexItem2 = 0;
+
+                    foreach (var DLItem in garmentSubconDLOut.Items)
+                    {
+                        var cols2 = DLItem.Details.Count;
+
+                        Dictionary<string, int> dictQty = new Dictionary<string, int>();
+
+                        //create dictionary that key is UENNo and value is repeatition of uenno in details
+                        foreach (var detail in DLItem.Details)
+                        {
+                            if (dictQty.ContainsKey(detail.UENNo))
+                            {
+                                dictQty[detail.UENNo]++;
+                            }
+                            else
+                            {
+                                dictQty.Add(detail.UENNo, 1);
+                            }
+                        }
+
+                        foreach (var detail in DLItem.Details.OrderBy(x => x.UENNo))
+                        {
+                            cellCenter.Phrase = new Phrase((indexItem2 + 1).ToString(), normal_font);
+                            cellCenter.VerticalAlignment = Element.ALIGN_TOP;
+                            tableContent2.AddCell(cellCenter);
+                            indexItem2++;
+
+                            if (cols2 > 0)
+                            {
+                                cellLeft.Phrase = new Phrase(DLItem.RONo, normal_font);
+                                cellLeft.Rowspan = cols2;
+                                cellCenter.VerticalAlignment = Element.ALIGN_TOP;
+                                tableContent2.AddCell(cellLeft);
+                                cols2 = 0;
+                            }
+
+                            var matchUEn = dictQty.FirstOrDefault(x => x.Key == detail.UENNo);
+                            if (matchUEn.Value > 0)
+                            {
+                                cellLeft.Phrase = new Phrase(detail.UENNo, normal_font);
+                                cellLeft.Rowspan = matchUEn.Value;
+                                cellCenter.VerticalAlignment = Element.ALIGN_TOP;
+                                tableContent2.AddCell(cellLeft);
+
+                                //set value of matchUEn to 0 to avoid duplicate row
+                                dictQty[matchUEn.Key] = 0;
+                            }
+
+                            cellLeft.Phrase = new Phrase(detail.Product.Code, normal_font);
+                            cellLeft.Rowspan = 1;
+                            tableContent2.AddCell(cellLeft);
+
+                            cellLeft.Phrase = new Phrase(detail.Product.Name, normal_font);
+                            tableContent2.AddCell(cellLeft);
+
+                            cellRight.Phrase = new Phrase($"{detail.Quantity}", normal_font);
+                            tableContent2.AddCell(cellRight);
+
+                            cellLeft.Phrase = new Phrase(detail.UomOut.Unit, normal_font);
+                            tableContent2.AddCell(cellLeft);
+
+                        }
+                    }
+
+                    PdfPCell cellContent2 = new PdfPCell(tableContent2);
+                    tableContent2.ExtendLastRow = false;
+                    tableContent2.SpacingAfter = 5f;
+                    document.Add(tableContent2);
+                }
+                #endregion
             }
             else
             {
