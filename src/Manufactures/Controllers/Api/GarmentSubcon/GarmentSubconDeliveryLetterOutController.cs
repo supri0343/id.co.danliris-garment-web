@@ -15,6 +15,7 @@ using Manufactures.Domain.GarmentSubcon.SubconContracts.Repositories;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Repositories;
+using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ValueObjects;
 using Manufactures.Domain.GarmentSubconCuttingOuts;
 using Manufactures.Domain.GarmentSubconCuttingOuts.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
@@ -157,6 +158,42 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
                 VerifyUser();
 
+                //if (command.SubconCategory == "SUBCON SEWING")
+                if (command.SubconCategory == "SUBCON SEWING")
+                {
+                   
+                    foreach (var item in command.Items)
+                    {
+                        var newDetails = new List<GarmentSubconDeliveryLetterOutDetailValueObject>();
+                        foreach (var detail in item.Details)
+                        {
+                            foreach(var detail2 in detail.Details)
+                            {
+                                if (detail2.Quantity > 0)
+                                {
+                                    newDetails.Add(new GarmentSubconDeliveryLetterOutDetailValueObject
+                                    {
+                                        Id = detail2.Id,
+                                        UENItemId = detail2.UENItemId,
+                                        Product = detail2.Product,
+                                        ProductRemark = detail2.ProductRemark,
+                                        DesignColor = detail2.DesignColor,
+                                        Quantity = detail2.Quantity,
+                                        Uom = detail2.Uom,
+                                        UomOut = detail2.UomOut,
+                                        FabricType = detail2.FabricType,
+                                        ContractQuantity = detail2.ContractQuantity,
+                                        UENId = detail2.UENId,
+                                        UENNo = detail2.UENNo
+                                    });
+                                }
+                                    
+                            }
+                        }
+                        item.Details = newDetails;
+                    }
+                }
+
                 var order = await Mediator.Send(command);
 
                 //if(command.SubconCategory== "SUBCON CUTTING SEWING")
@@ -240,7 +277,42 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             List<int> UenToIsPrepTrue = new List<int>();
             List<int> UenToIsPrepFalse = new List<int>();
 
-            if (command.SubconCategory == "SUBCON CUTTING SEWING" || command.SubconCategory == "SUBCON CUTTING SEWING FINISHING")
+            if (command.SubconCategory == "SUBCON SEWING")
+            {
+
+                foreach (var item in command.Items)
+                {
+                    var newDetails = new List<GarmentSubconDeliveryLetterOutDetailValueObject>();
+                    foreach (var detail in item.Details)
+                    {
+                        foreach (var detail2 in detail.Details)
+                        {
+                            if (detail2.Quantity > 0)
+                            {
+                                newDetails.Add(new GarmentSubconDeliveryLetterOutDetailValueObject
+                                {
+                                    Id = detail2.Id,
+                                    UENItemId = detail2.UENItemId,
+                                    Product = detail2.Product,
+                                    ProductRemark = detail2.ProductRemark,
+                                    DesignColor = detail2.DesignColor,
+                                    Quantity = detail2.Quantity,
+                                    Uom = detail2.Uom,
+                                    UomOut = detail2.UomOut,
+                                    FabricType = detail2.FabricType,
+                                    ContractQuantity = detail2.ContractQuantity,
+                                    UENId = detail2.UENId,
+                                    UENNo = detail2.UENNo
+                                });
+                            }
+
+                        }
+                    }
+                    item.Details = newDetails;
+                }
+            }
+
+            if (command.SubconCategory == "SUBCON CUTTING SEWING")
             {      
                 //Add UEN Id to Update Is Preparing True
                 var newData = command.ItemsAcc.Where(x => x.Id == Guid.Empty).ToList();
@@ -293,7 +365,8 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                         _garmentSubconDeliveryLetterOutDetailRepository.Find(x => x.SubconDeliveryLetterOutItemId == DLItem.Identity).ForEach(async DLDetail =>
                         {
                             var deletedAcc = command.Items.FirstOrDefault().Details.Where(x => x.Id == DLDetail.Identity).FirstOrDefault();
-                            if (deletedAcc != null && deletedAcc.Quantity == 0)
+                            var deleteNotAll = command.Items.FirstOrDefault().Details.Where(x => x.UENNo == DLDetail.UENNo && x.Quantity > 0).Select(x => x.UENNo).ToArray();
+                            if (deletedAcc != null && deletedAcc.Quantity == 0 && !deleteNotAll.Contains(deletedAcc.UENNo))
                             {
                                 UenToIsPrepFalse.Add(deletedAcc.UENId);
                             }
@@ -302,19 +375,19 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
                 });
             });
 
-            if (UenToIsPrepTrue.Count > 0)
-            {
-                foreach (var a in UenToIsPrepTrue.Select(x => x).Distinct())
-                {
-                    await PutGarmentUnitExpenditureNoteCreate(a);
-                }
-            }
-
             if (UenToIsPrepFalse.Count > 0)
             {
                 foreach (var a in UenToIsPrepFalse.Select(x => x).Distinct())
                 {
                     await PutGarmentUnitExpenditureNoteDelete(a);
+                }
+            }
+
+            if (UenToIsPrepTrue.Count > 0)
+            {
+                foreach (var a in UenToIsPrepTrue.Select(x => x).Distinct())
+                {
+                    await PutGarmentUnitExpenditureNoteCreate(a);
                 }
             }
 

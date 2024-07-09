@@ -144,11 +144,15 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     switch (subconDeliveryLetterOut.SubconCategory)
                     {
                         case "SUBCON SEWING":
-                            var subconCuttingOut = _garmentCuttingOutRepository.Query.Where(x => x.Identity == subconDeliveryLetterOutItem.SubconId).Select(s => new GarmentSubconCuttingOut(s)).Single();
-                            subconCuttingOut.SetIsUsed(false);
-                            subconCuttingOut.Modify();
+                            if (subconDeliveryLetterOutItem.SubconId != Guid.Empty)
+                            {
+                                var subconCuttingOut = _garmentCuttingOutRepository.Query.Where(x => x.Identity == subconDeliveryLetterOutItem.SubconId).Select(s => new GarmentSubconCuttingOut(s)).Single();
+                                subconCuttingOut.SetIsUsed(false);
+                                subconCuttingOut.Modify();
 
-                            await _garmentCuttingOutRepository.Update(subconCuttingOut);
+                                await _garmentCuttingOutRepository.Update(subconCuttingOut);
+                                
+                            }
                             break;
                         case "SUBCON JASA KOMPONEN":
                             var subconCutting = _garmentSubconCuttingRepository.Query.Where(x => x.Identity == subconDeliveryLetterOutItem.SubconId).Select(s => new GarmentServiceSubconCutting(s)).Single();

@@ -102,17 +102,17 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
         public GarmentSubconDeliveryLetterOutCuttingItemValueObjectValidator()
         {
 
-            RuleFor(r => r.Quantity)
-                .GreaterThan(0)
-                .WithMessage("'Jumlah' harus lebih dari '0'.");
+            //RuleFor(r => r.Quantity)
+            //    .GreaterThan(0)
+            //    .WithMessage("'Jumlah' harus lebih dari '0'.");
             //RuleFor(r => r.Quantity)
             //   .LessThanOrEqualTo(r => r.ContractQuantity)
             //   .WithMessage(x => $"'Jumlah' tidak boleh lebih dari '{x.ContractQuantity}'.");
 
             RuleFor(r => r.RONo).NotNull();
-            RuleFor(r => r.POSerialNumber).NotNull();
-            RuleFor(r => r.SubconId).NotNull();
-            RuleFor(r => r.SubconNo).NotNull();
+        //RuleFor(r => r.POSerialNumber).NotNull();
+        RuleFor(r => r.SubconId).NotNull().When(s => s.Details.Count == 0);
+        RuleFor(r => r.SubconNo).NotNull().When(s => s.Details.Count == 0);
         //RuleFor(r => r.Details).NotEmpty().OverridePropertyName("Detail").When(s => s.Details != null);
         //RuleFor(r => r.Details).NotEmpty().WithMessage("Detail tidak boleh kosong").OverridePropertyName("ItemsCount").When(s => s.Details != null);
         RuleForEach(r => r.Details).SetValidator(new GarmentSubconDeliveryLetterOutDetailValueObjectValidator()).When(s => s.Details != null);
