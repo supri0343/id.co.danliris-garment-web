@@ -27,6 +27,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ValueObject
         public int UENId { get;  set; }
         public string UENNo { get;  set; }
 
+        public List<GarmentSubconDeliveryLetterOutDetailValueObject> Details { get; set; }
+
         public GarmentSubconDeliveryLetterOutDetailValueObject()
         {
         }
