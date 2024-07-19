@@ -605,7 +605,7 @@ namespace Manufactures.Application.GarmentPreparings.Queries.GetWIP
                                       });
             #endregion
 
-            var queryUnionCut = queryBalanceCutting.Union(QueryCuttNow).Union(QueryAvalCompCutting).Union(QueryCuttingAdj).Union(QueryCuttNowSample).AsEnumerable();
+            var queryUnionCut = queryBalanceCutting.Union(QueryCuttNow).Union(QueryAvalCompCutting).Union(QueryCuttingAdj).Union(QueryCuttNowSample).Union(QueryAvalCompCuttingSample).AsEnumerable();
 
             var SakirCutting = queryUnionCut.GroupBy(x => new { x.itemCode, x.itemname }, (key, group) => new monitoringViewsTemp
             {
